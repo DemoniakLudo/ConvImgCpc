@@ -50,6 +50,21 @@
 			this.label9 = new System.Windows.Forms.Label();
 			this.bpRazLumi = new System.Windows.Forms.Button();
 			this.bpRazSat = new System.Windows.Forms.Button();
+			this.newReduc = new System.Windows.Forms.CheckBox();
+			this.reducPal2 = new System.Windows.Forms.CheckBox();
+			this.reducPal1 = new System.Windows.Forms.CheckBox();
+			this.newMethode = new System.Windows.Forms.CheckBox();
+			this.autoRecalc = new System.Windows.Forms.CheckBox();
+			this.bpRazContrast = new System.Windows.Forms.Button();
+			this.contrast = new System.Windows.Forms.TrackBar();
+			this.radioKeepLarger = new System.Windows.Forms.RadioButton();
+			this.radioKeepSmaller = new System.Windows.Forms.RadioButton();
+			this.radioFit = new System.Windows.Forms.RadioButton();
+			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.label10 = new System.Windows.Forms.Label();
+			this.nb = new System.Windows.Forms.CheckBox();
+			this.sortPal = new System.Windows.Forms.CheckBox();
+			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -57,6 +72,9 @@
 			this.tramage.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.lumi)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.sat)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.contrast)).BeginInit();
+			this.groupBox1.SuspendLayout();
+			this.groupBox2.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// checkImageSource
@@ -181,6 +199,7 @@
 			this.methode.Name = "methode";
 			this.methode.Size = new System.Drawing.Size(97, 21);
 			this.methode.TabIndex = 8;
+			this.methode.SelectedIndexChanged += new System.EventHandler(this.methode_SelectedIndexChanged);
 			// 
 			// matrice
 			// 
@@ -193,6 +212,7 @@
 			this.matrice.Name = "matrice";
 			this.matrice.Size = new System.Drawing.Size(97, 21);
 			this.matrice.TabIndex = 8;
+			this.matrice.SelectedIndexChanged += new System.EventHandler(this.matrice_SelectedIndexChanged);
 			// 
 			// pctTrame
 			// 
@@ -205,6 +225,7 @@
 			this.pctTrame.Name = "pctTrame";
 			this.pctTrame.Size = new System.Drawing.Size(70, 20);
 			this.pctTrame.TabIndex = 9;
+			this.pctTrame.ValueChanged += new System.EventHandler(this.pctTrame_ValueChanged);
 			// 
 			// renderMode
 			// 
@@ -219,6 +240,7 @@
 			this.renderMode.Name = "renderMode";
 			this.renderMode.Size = new System.Drawing.Size(97, 21);
 			this.renderMode.TabIndex = 10;
+			this.renderMode.SelectedIndexChanged += new System.EventHandler(this.renderMode_SelectedIndexChanged);
 			// 
 			// resoCPC
 			// 
@@ -257,7 +279,7 @@
 			this.tramage.Controls.Add(this.pctTrame);
 			this.tramage.Controls.Add(this.label4);
 			this.tramage.Controls.Add(this.renderMode);
-			this.tramage.Location = new System.Drawing.Point(275, 12);
+			this.tramage.Location = new System.Drawing.Point(390, 12);
 			this.tramage.Name = "tramage";
 			this.tramage.Size = new System.Drawing.Size(203, 129);
 			this.tramage.TabIndex = 11;
@@ -302,26 +324,28 @@
 			// 
 			// lumi
 			// 
-			this.lumi.Location = new System.Drawing.Point(137, 147);
+			this.lumi.Location = new System.Drawing.Point(59, 91);
 			this.lumi.Maximum = 200;
 			this.lumi.Name = "lumi";
-			this.lumi.Size = new System.Drawing.Size(341, 42);
+			this.lumi.Size = new System.Drawing.Size(360, 42);
 			this.lumi.TabIndex = 12;
 			this.lumi.Value = 100;
+			this.lumi.ValueChanged += new System.EventHandler(this.lumi_ValueChanged);
 			// 
 			// sat
 			// 
-			this.sat.Location = new System.Drawing.Point(137, 185);
+			this.sat.Location = new System.Drawing.Point(59, 141);
 			this.sat.Maximum = 200;
 			this.sat.Name = "sat";
-			this.sat.Size = new System.Drawing.Size(341, 42);
+			this.sat.Size = new System.Drawing.Size(360, 42);
 			this.sat.TabIndex = 12;
 			this.sat.Value = 100;
+			this.sat.ValueChanged += new System.EventHandler(this.sat_ValueChanged);
 			// 
 			// label8
 			// 
 			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(85, 164);
+			this.label8.Location = new System.Drawing.Point(5, 101);
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(57, 13);
 			this.label8.TabIndex = 13;
@@ -330,7 +354,7 @@
 			// label9
 			// 
 			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(85, 200);
+			this.label9.Location = new System.Drawing.Point(5, 151);
 			this.label9.Name = "label9";
 			this.label9.Size = new System.Drawing.Size(55, 13);
 			this.label9.TabIndex = 13;
@@ -338,7 +362,7 @@
 			// 
 			// bpRazLumi
 			// 
-			this.bpRazLumi.Location = new System.Drawing.Point(479, 156);
+			this.bpRazLumi.Location = new System.Drawing.Point(415, 96);
 			this.bpRazLumi.Name = "bpRazLumi";
 			this.bpRazLumi.Size = new System.Drawing.Size(35, 23);
 			this.bpRazLumi.TabIndex = 14;
@@ -348,7 +372,7 @@
 			// 
 			// bpRazSat
 			// 
-			this.bpRazSat.Location = new System.Drawing.Point(479, 190);
+			this.bpRazSat.Location = new System.Drawing.Point(415, 146);
 			this.bpRazSat.Name = "bpRazSat";
 			this.bpRazSat.Size = new System.Drawing.Size(35, 23);
 			this.bpRazSat.TabIndex = 14;
@@ -356,17 +380,194 @@
 			this.bpRazSat.UseVisualStyleBackColor = true;
 			this.bpRazSat.Click += new System.EventHandler(this.bpRazSat_Click);
 			// 
+			// newReduc
+			// 
+			this.newReduc.AutoSize = true;
+			this.newReduc.Enabled = false;
+			this.newReduc.Location = new System.Drawing.Point(357, 53);
+			this.newReduc.Name = "newReduc";
+			this.newReduc.Size = new System.Drawing.Size(84, 17);
+			this.newReduc.TabIndex = 48;
+			this.newReduc.Text = "Réduction 3";
+			this.newReduc.UseVisualStyleBackColor = true;
+			this.newReduc.CheckedChanged += new System.EventHandler(this.newReduc_CheckedChanged);
+			// 
+			// reducPal2
+			// 
+			this.reducPal2.AutoSize = true;
+			this.reducPal2.Enabled = false;
+			this.reducPal2.Location = new System.Drawing.Point(174, 53);
+			this.reducPal2.Name = "reducPal2";
+			this.reducPal2.Size = new System.Drawing.Size(84, 17);
+			this.reducPal2.TabIndex = 47;
+			this.reducPal2.Text = "Réduction 2";
+			this.reducPal2.UseVisualStyleBackColor = true;
+			this.reducPal2.CheckedChanged += new System.EventHandler(this.reducPal2_CheckedChanged);
+			// 
+			// reducPal1
+			// 
+			this.reducPal1.AutoSize = true;
+			this.reducPal1.Enabled = false;
+			this.reducPal1.Location = new System.Drawing.Point(6, 53);
+			this.reducPal1.Name = "reducPal1";
+			this.reducPal1.Size = new System.Drawing.Size(84, 17);
+			this.reducPal1.TabIndex = 46;
+			this.reducPal1.Text = "Réduction 1";
+			this.reducPal1.UseVisualStyleBackColor = true;
+			this.reducPal1.CheckedChanged += new System.EventHandler(this.reducPal1_CheckedChanged);
+			// 
+			// newMethode
+			// 
+			this.newMethode.AutoSize = true;
+			this.newMethode.Location = new System.Drawing.Point(175, 30);
+			this.newMethode.Name = "newMethode";
+			this.newMethode.Size = new System.Drawing.Size(83, 17);
+			this.newMethode.TabIndex = 45;
+			this.newMethode.Text = "Plus précise";
+			this.newMethode.UseVisualStyleBackColor = true;
+			this.newMethode.CheckedChanged += new System.EventHandler(this.newMethode_CheckedChanged);
+			// 
+			// autoRecalc
+			// 
+			this.autoRecalc.AutoSize = true;
+			this.autoRecalc.Location = new System.Drawing.Point(3, 161);
+			this.autoRecalc.Name = "autoRecalc";
+			this.autoRecalc.Size = new System.Drawing.Size(108, 30);
+			this.autoRecalc.TabIndex = 44;
+			this.autoRecalc.Text = "Recalculer\r\nAutomatiquement";
+			this.autoRecalc.UseVisualStyleBackColor = true;
+			this.autoRecalc.CheckedChanged += new System.EventHandler(this.autoRecalc_CheckedChanged);
+			// 
+			// bpRazContrast
+			// 
+			this.bpRazContrast.Location = new System.Drawing.Point(415, 196);
+			this.bpRazContrast.Name = "bpRazContrast";
+			this.bpRazContrast.Size = new System.Drawing.Size(35, 23);
+			this.bpRazContrast.TabIndex = 43;
+			this.bpRazContrast.Text = "Raz";
+			this.bpRazContrast.UseVisualStyleBackColor = true;
+			this.bpRazContrast.Click += new System.EventHandler(this.bpRazContrast_Click);
+			// 
+			// contrast
+			// 
+			this.contrast.Location = new System.Drawing.Point(59, 191);
+			this.contrast.Maximum = 200;
+			this.contrast.Name = "contrast";
+			this.contrast.Size = new System.Drawing.Size(360, 42);
+			this.contrast.TabIndex = 42;
+			this.contrast.Value = 100;
+			this.contrast.ValueChanged += new System.EventHandler(this.contrast_ValueChanged);
+			// 
+			// radioKeepLarger
+			// 
+			this.radioKeepLarger.AutoSize = true;
+			this.radioKeepLarger.Location = new System.Drawing.Point(6, 65);
+			this.radioKeepLarger.Name = "radioKeepLarger";
+			this.radioKeepLarger.Size = new System.Drawing.Size(80, 17);
+			this.radioKeepLarger.TabIndex = 39;
+			this.radioKeepLarger.Text = "KeepLarger";
+			this.radioKeepLarger.UseVisualStyleBackColor = true;
+			this.radioKeepLarger.CheckedChanged += new System.EventHandler(this.radioKeepLarger_CheckedChanged);
+			// 
+			// radioKeepSmaller
+			// 
+			this.radioKeepSmaller.AutoSize = true;
+			this.radioKeepSmaller.Location = new System.Drawing.Point(6, 42);
+			this.radioKeepSmaller.Name = "radioKeepSmaller";
+			this.radioKeepSmaller.Size = new System.Drawing.Size(84, 17);
+			this.radioKeepSmaller.TabIndex = 40;
+			this.radioKeepSmaller.Text = "KeepSmaller";
+			this.radioKeepSmaller.UseVisualStyleBackColor = true;
+			this.radioKeepSmaller.CheckedChanged += new System.EventHandler(this.radioKeepSmaller_CheckedChanged);
+			// 
+			// radioFit
+			// 
+			this.radioFit.AutoSize = true;
+			this.radioFit.Checked = true;
+			this.radioFit.Location = new System.Drawing.Point(6, 19);
+			this.radioFit.Name = "radioFit";
+			this.radioFit.Size = new System.Drawing.Size(36, 17);
+			this.radioFit.TabIndex = 41;
+			this.radioFit.TabStop = true;
+			this.radioFit.Text = "Fit";
+			this.radioFit.UseVisualStyleBackColor = true;
+			this.radioFit.CheckedChanged += new System.EventHandler(this.radioFit_CheckedChanged);
+			// 
+			// groupBox1
+			// 
+			this.groupBox1.Controls.Add(this.radioFit);
+			this.groupBox1.Controls.Add(this.radioKeepSmaller);
+			this.groupBox1.Controls.Add(this.radioKeepLarger);
+			this.groupBox1.Location = new System.Drawing.Point(275, 12);
+			this.groupBox1.Name = "groupBox1";
+			this.groupBox1.Size = new System.Drawing.Size(109, 129);
+			this.groupBox1.TabIndex = 49;
+			this.groupBox1.TabStop = false;
+			this.groupBox1.Text = "Rapport d\'aspect";
+			// 
+			// label10
+			// 
+			this.label10.AutoSize = true;
+			this.label10.Location = new System.Drawing.Point(5, 201);
+			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(52, 13);
+			this.label10.TabIndex = 13;
+			this.label10.Text = "Contraste";
+			// 
+			// nb
+			// 
+			this.nb.AutoSize = true;
+			this.nb.Location = new System.Drawing.Point(6, 30);
+			this.nb.Name = "nb";
+			this.nb.Size = new System.Drawing.Size(81, 17);
+			this.nb.TabIndex = 51;
+			this.nb.Text = "noir && blanc";
+			this.nb.UseVisualStyleBackColor = true;
+			this.nb.CheckedChanged += new System.EventHandler(this.nb_CheckedChanged);
+			// 
+			// sortPal
+			// 
+			this.sortPal.AutoSize = true;
+			this.sortPal.Location = new System.Drawing.Point(358, 30);
+			this.sortPal.Name = "sortPal";
+			this.sortPal.Size = new System.Drawing.Size(47, 17);
+			this.sortPal.TabIndex = 50;
+			this.sortPal.Text = "Trier";
+			this.sortPal.UseVisualStyleBackColor = true;
+			this.sortPal.CheckedChanged += new System.EventHandler(this.sortPal_CheckedChanged);
+			// 
+			// groupBox2
+			// 
+			this.groupBox2.Controls.Add(this.nb);
+			this.groupBox2.Controls.Add(this.sortPal);
+			this.groupBox2.Controls.Add(this.newReduc);
+			this.groupBox2.Controls.Add(this.bpRazContrast);
+			this.groupBox2.Controls.Add(this.reducPal2);
+			this.groupBox2.Controls.Add(this.contrast);
+			this.groupBox2.Controls.Add(this.reducPal1);
+			this.groupBox2.Controls.Add(this.bpRazSat);
+			this.groupBox2.Controls.Add(this.newMethode);
+			this.groupBox2.Controls.Add(this.bpRazLumi);
+			this.groupBox2.Controls.Add(this.label10);
+			this.groupBox2.Controls.Add(this.lumi);
+			this.groupBox2.Controls.Add(this.label9);
+			this.groupBox2.Controls.Add(this.sat);
+			this.groupBox2.Controls.Add(this.label8);
+			this.groupBox2.Location = new System.Drawing.Point(137, 147);
+			this.groupBox2.Name = "groupBox2";
+			this.groupBox2.Size = new System.Drawing.Size(456, 238);
+			this.groupBox2.TabIndex = 52;
+			this.groupBox2.TabStop = false;
+			this.groupBox2.Text = "Effets de palette";
+			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(516, 239);
-			this.Controls.Add(this.bpRazSat);
-			this.Controls.Add(this.bpRazLumi);
-			this.Controls.Add(this.label9);
-			this.Controls.Add(this.label8);
-			this.Controls.Add(this.sat);
-			this.Controls.Add(this.lumi);
+			this.ClientSize = new System.Drawing.Size(597, 388);
+			this.Controls.Add(this.groupBox2);
+			this.Controls.Add(this.groupBox1);
+			this.Controls.Add(this.autoRecalc);
 			this.Controls.Add(this.tramage);
 			this.Controls.Add(this.resoCPC);
 			this.Controls.Add(this.bpConvert);
@@ -386,6 +587,11 @@
 			this.tramage.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.lumi)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.sat)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.contrast)).EndInit();
+			this.groupBox1.ResumeLayout(false);
+			this.groupBox1.PerformLayout();
+			this.groupBox2.ResumeLayout(false);
+			this.groupBox2.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -420,6 +626,21 @@
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.Button bpRazLumi;
 		private System.Windows.Forms.Button bpRazSat;
+		private System.Windows.Forms.CheckBox newReduc;
+		private System.Windows.Forms.CheckBox reducPal2;
+		private System.Windows.Forms.CheckBox reducPal1;
+		private System.Windows.Forms.CheckBox newMethode;
+		private System.Windows.Forms.CheckBox autoRecalc;
+		private System.Windows.Forms.Button bpRazContrast;
+		private System.Windows.Forms.TrackBar contrast;
+		private System.Windows.Forms.RadioButton radioKeepLarger;
+		private System.Windows.Forms.RadioButton radioKeepSmaller;
+		private System.Windows.Forms.RadioButton radioFit;
+		private System.Windows.Forms.GroupBox groupBox1;
+		private System.Windows.Forms.Label label10;
+		private System.Windows.Forms.CheckBox nb;
+		private System.Windows.Forms.CheckBox sortPal;
+		private System.Windows.Forms.GroupBox groupBox2;
 	}
 }
 
