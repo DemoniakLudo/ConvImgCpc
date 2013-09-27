@@ -10,32 +10,43 @@ namespace CpcConvImg {
 		private Label[] colors = new Label[16];
 		private CheckBox[] lockColors = new CheckBox[16];
 		public int[] lockState = new int[16];
+		private int offsetX = 0, offsetY = 0;
+		private int zoom;
+		private int numCol = 0;
+		private int penWidth = 1;
+		private EditImage editImage;
 
 		public ImageCpc() {
 			InitializeComponent();
-			bmp = new Bitmap(pictureBox.Width, pictureBox.Height);
+			int tx = pictureBox.Width;
+			int ty = pictureBox.Height;
+			bmp = new Bitmap(tx, ty);
 			pictureBox.Image = bmp;
 			bmpLock = new LockBitmap(bmp);
-			bitmapCpc = new BitmapCpc(768, 544, 1); // ###
+			bitmapCpc = new BitmapCpc(640, 400, 1); // ###
+			vScrollBar.Height = ty;
+			vScrollBar.Left = tx + 3;
+			hScrollBar.Width = tx;
+			hScrollBar.Top = ty + 3;
 			for (int i = 0; i < 16; i++) {
 				// Générer les contrôles de "couleurs"
 				colors[i] = new Label();
 				colors[i].BorderStyle = BorderStyle.FixedSingle;
-				colors[i].Location = new Point(4 + i * 48, 550);
+				colors[i].Location = new Point(4 + i * 48, 564);
 				colors[i].Size = new Size(40, 32);
 				colors[i].Tag = i;
 				colors[i].Click += ClickColor;
 				Controls.Add(colors[i]);
 				// Générer les contrôles de "bloquage couleur"
 				lockColors[i] = new CheckBox();
-				lockColors[i].Location = new Point(16 + i * 48, 586);
+				lockColors[i].Location = new Point(16 + i * 48, 598);
 				lockColors[i].Size = new Size(20, 20);
 				lockColors[i].Tag = i;
 				lockColors[i].Click += ClickLock;
 				Controls.Add(lockColors[i]);
 				lockColors[i].Update();
 			}
-			Render();
+			ChangeZoom(1);
 		}
 
 		// Click sur un "lock"
@@ -45,14 +56,21 @@ namespace CpcConvImg {
 			lockState[numLock] = colorLock.Checked ? 1 : 0;
 		}
 
+		// Changement de la palette
 		void ClickColor(object sender, System.EventArgs e) {
 			Label colorClick = sender as Label;
-			int numCol = colorClick.Tag != null ? (int)colorClick.Tag : 0;
-			EditColor ed = new EditColor(numCol, bitmapCpc.Palette[numCol], bitmapCpc.GetPaletteColor(numCol).GetColorArgb, bitmapCpc.cpcPlus);
-			ed.ShowDialog();
-			if (ed.isValide) {
-				bitmapCpc.SetPalette(numCol, ed.ValColor);
-				UpdatePalette();
+			numCol = colorClick.Tag != null ? (int)colorClick.Tag : 0;
+			if (!modeEdition.Checked) {
+				EditColor ed = new EditColor(numCol, bitmapCpc.Palette[numCol], bitmapCpc.GetPaletteColor(numCol).GetColorArgb, bitmapCpc.cpcPlus);
+				ed.ShowDialog(this);
+				if (ed.isValide) {
+					bitmapCpc.SetPalette(numCol, ed.ValColor);
+					UpdatePalette();
+				}
+			}
+			else {
+				if (editImage != null)
+					editImage.SetPenColor(bitmapCpc.GetPaletteColor(numCol));
 			}
 		}
 
@@ -81,7 +99,7 @@ namespace CpcConvImg {
 		}
 
 		public void Render() {
-			bitmapCpc.Render(bmpLock, bitmapCpc.ModeCPC, 1, 0, 0, false);
+			bitmapCpc.Render(bmpLock, bitmapCpc.ModeCPC, zoom, offsetX, offsetY, false);
 			pictureBox.Refresh();
 			UpdatePalette();
 		}
@@ -91,6 +109,82 @@ namespace CpcConvImg {
 				lockColors[i].Checked = lockAllPal.Checked;
 				lockState[i] = lockAllPal.Checked ? 1 : 0;
 			}
+		}
+
+		/* Mode édition */
+		private void modeEdition_CheckedChanged(object sender, System.EventArgs e) {
+			if (modeEdition.Checked) {
+				if (editImage == null)
+					editImage = new EditImage();
+
+				editImage.Show();
+				editImage.evtChangeZoom += ChangeZoom;
+				editImage.evtChangePen += ChangePen;
+				editImage.evtClose += CloseEditImage;
+				editImage.SetPenColor(bitmapCpc.GetPaletteColor(numCol));
+			}
+			else {
+				if (editImage != null) {
+					editImage.Hide();
+					editImage.evtChangeZoom -= ChangeZoom;
+					editImage.evtChangePen -= ChangePen;
+					editImage.evtClose -= CloseEditImage;
+					editImage = null;
+					ChangeZoom(1);
+				}
+			}
+		}
+
+		private void ChangeZoom(int p) {
+			zoom = p;
+			vScrollBar.Enabled = hScrollBar.Enabled = zoom > 1;
+			hScrollBar.Maximum = hScrollBar.LargeChange + bmp.Width - (bmp.Width / zoom);
+			vScrollBar.Maximum = vScrollBar.LargeChange + bmp.Height - (bmp.Height / zoom);
+			hScrollBar.Value = offsetX = (bmp.Width - bmp.Width / zoom) / 2;
+			vScrollBar.Value = offsetY = (bmp.Height - bmp.Height / zoom) / 2;
+			Render();
+		}
+
+		private void ChangePen(int p) {
+			penWidth = p;
+		}
+
+		private void CloseEditImage() {
+			modeEdition.Checked = false;
+		}
+
+		private void Draw(MouseEventArgs e) {
+			if (modeEdition.Checked) {
+				int Tx = (4 >> (bitmapCpc.ModeCPC == 3 ? 1 : bitmapCpc.ModeCPC));
+				for (int y = 0; y < penWidth * 2; y += 2)
+					for (int x = 0; x < penWidth * Tx; x += Tx) {
+						int xReel = x + offsetX + (e.X / zoom) - ((penWidth * Tx) >> 1);
+						int yReel = y + offsetY + (e.Y / zoom) - penWidth;
+						if (xReel >= 0 && yReel > 0 && xReel < bitmapCpc.TailleX && yReel < bitmapCpc.TailleY)
+							bitmapCpc.SetPixelCpc(xReel, yReel, numCol);
+					}
+				Render();
+			}
+		}
+
+		private void pictureBox_MouseDown(object sender, MouseEventArgs e) {
+			if (modeEdition.Checked)
+				Draw(e);
+		}
+
+		private void pictureBox_MouseMove(object sender, MouseEventArgs e) {
+			if (e.Button == MouseButtons.Left && modeEdition.Checked)
+				Draw(e);
+		}
+
+		private void vScrollBar_Scroll(object sender, ScrollEventArgs e) {
+			offsetY = (vScrollBar.Value >> 1) << 1;
+			Render();
+		}
+
+		private void hScrollBar_Scroll(object sender, ScrollEventArgs e) {
+			offsetX = (hScrollBar.Value >> 3) << 3;
+			Render();
 		}
 	}
 }

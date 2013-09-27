@@ -33,9 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ConvImgCpc">
-      <HintPath>dll\ConvImgCpc.dll</HintPath>
-    </Reference>
     <Reference Include="Pack">
       <HintPath>dll\Pack.dll</HintPath>
     </Reference>
@@ -96,6 +93,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\DLL\ConvImgCpc\ConvImgCpc\ConvImgCpc.csproj">
+      <Project>{38d06e94-903a-4414-96d5-fe3e36e8b6b6}</Project>
+      <Name>ConvImgCpc</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
