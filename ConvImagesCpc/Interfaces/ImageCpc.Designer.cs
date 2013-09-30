@@ -63,21 +63,25 @@
 			this.modeEdition.UseVisualStyleBackColor = true;
 			this.modeEdition.CheckedChanged += new System.EventHandler(this.modeEdition_CheckedChanged);
 			// 
-			// vScrollBar
-			// 
-			this.vScrollBar.LargeChange = 32;
-			this.vScrollBar.Location = new System.Drawing.Point(771, 0);
-			this.vScrollBar.Size = new System.Drawing.Size(16, 544);
-			this.vScrollBar.SmallChange = 8;
-			this.vScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vScrollBar_Scroll);
-			// 
 			// hScrollBar
 			// 
 			this.hScrollBar.LargeChange = 32;
 			this.hScrollBar.Location = new System.Drawing.Point(0, 547);
+			this.hScrollBar.Name = "hScrollBar";
 			this.hScrollBar.Size = new System.Drawing.Size(768, 16);
 			this.hScrollBar.SmallChange = 8;
+			this.hScrollBar.TabIndex = 1;
 			this.hScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar_Scroll);
+			// 
+			// vScrollBar
+			// 
+			this.vScrollBar.LargeChange = 32;
+			this.vScrollBar.Location = new System.Drawing.Point(771, 0);
+			this.vScrollBar.Name = "vScrollBar";
+			this.vScrollBar.Size = new System.Drawing.Size(16, 544);
+			this.vScrollBar.SmallChange = 8;
+			this.vScrollBar.TabIndex = 0;
+			this.vScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vScrollBar_Scroll);
 			// 
 			// ImageCpc
 			// 

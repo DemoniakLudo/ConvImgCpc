@@ -24,10 +24,6 @@ namespace CpcConvImg {
 			pictureBox.Image = bmp;
 			bmpLock = new LockBitmap(bmp);
 			bitmapCpc = new BitmapCpc(640, 400, 1); // ###
-			vScrollBar.Height = ty;
-			vScrollBar.Left = tx + 3;
-			hScrollBar.Width = tx;
-			hScrollBar.Top = ty + 3;
 			for (int i = 0; i < 16; i++) {
 				// Générer les contrôles de "couleurs"
 				colors[i] = new Label();
@@ -46,6 +42,7 @@ namespace CpcConvImg {
 				Controls.Add(lockColors[i]);
 				lockColors[i].Update();
 			}
+			Reset();
 			ChangeZoom(1);
 		}
 
@@ -75,11 +72,16 @@ namespace CpcConvImg {
 		}
 
 		public void Reset() {
+			int col = System.Drawing.SystemColors.Control.ToArgb();
 			bmpLock.LockBits();
 			for (int x = 0; x < bmpLock.Width; x++)
 				for (int y = 0; y < bmpLock.Height; y++)
-					bmpLock.SetPixel(x, y, 0);
+					bmpLock.SetPixel(x, y, col);
 			bmpLock.UnlockBits();
+			vScrollBar.Height = bitmapCpc.TailleY;
+			vScrollBar.Left = bitmapCpc.TailleX + 3;
+			hScrollBar.Width = bitmapCpc.TailleX;
+			hScrollBar.Top = bitmapCpc.TailleY + 3;
 		}
 
 		public void SetPixelCpc(int pixelX, int pixelY, int pix) {
@@ -138,10 +140,10 @@ namespace CpcConvImg {
 		private void ChangeZoom(int p) {
 			zoom = p;
 			vScrollBar.Enabled = hScrollBar.Enabled = zoom > 1;
-			hScrollBar.Maximum = hScrollBar.LargeChange + bmp.Width - (bmp.Width / zoom);
-			vScrollBar.Maximum = vScrollBar.LargeChange + bmp.Height - (bmp.Height / zoom);
-			hScrollBar.Value = offsetX = (bmp.Width - bmp.Width / zoom) / 2;
-			vScrollBar.Value = offsetY = (bmp.Height - bmp.Height / zoom) / 2;
+			hScrollBar.Maximum = hScrollBar.LargeChange + bitmapCpc.TailleX - (bitmapCpc.TailleX / zoom);
+			vScrollBar.Maximum = vScrollBar.LargeChange + bitmapCpc.TailleY - (bitmapCpc.TailleY / zoom);
+			hScrollBar.Value = offsetX = (bitmapCpc.TailleX - bitmapCpc.TailleX / zoom) / 2;
+			vScrollBar.Value = offsetY = (bitmapCpc.TailleY - bitmapCpc.TailleY / zoom) / 2;
 			Render();
 		}
 
@@ -158,8 +160,8 @@ namespace CpcConvImg {
 				int Tx = (4 >> (bitmapCpc.ModeCPC == 3 ? 1 : bitmapCpc.ModeCPC));
 				for (int y = 0; y < penWidth * 2; y += 2)
 					for (int x = 0; x < penWidth * Tx; x += Tx) {
-						int xReel = x + offsetX + (e.X / zoom) - ((penWidth * Tx) >> 1);
-						int yReel = y + offsetY + (e.Y / zoom) - penWidth;
+						int xReel = x + offsetX + (e.X / zoom) - ((penWidth * Tx) >> 1) + 1;
+						int yReel = y + offsetY + (e.Y / zoom) - penWidth + 1;
 						if (xReel >= 0 && yReel > 0 && xReel < bitmapCpc.TailleX && yReel < bitmapCpc.TailleY)
 							bitmapCpc.SetPixelCpc(xReel, yReel, numCol);
 					}
