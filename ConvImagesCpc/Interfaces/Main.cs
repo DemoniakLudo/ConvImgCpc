@@ -82,7 +82,7 @@ namespace CpcConvImg {
 		}
 
 		private void mode_SelectedIndexChanged(object sender, System.EventArgs e) {
-			imgCpc.bitmapCpc.ModeCPC = int.Parse(mode.SelectedItem.ToString());
+			imgCpc.bitmapCpc.ModeCPC = int.Parse(mode.SelectedItem.ToString(),System.Globalization.CultureInfo.CurrentCulture);
 			imgCpc.Reset();
 			bpConvert_Click(autoRecalc.Checked ? sender : null, e);
 		}
@@ -139,11 +139,6 @@ namespace CpcConvImg {
 		}
 
 		private void newMethode_CheckedChanged(object sender, System.EventArgs e) {
-			bpConvert_Click(autoRecalc.Checked ? sender : null, e);
-		}
-
-		private void cpcPlus_CheckedChanged(object sender, System.EventArgs e) {
-			reducPal1.Enabled = reducPal2.Enabled = modePlus.Checked;
 			bpConvert_Click(autoRecalc.Checked ? sender : null, e);
 		}
 

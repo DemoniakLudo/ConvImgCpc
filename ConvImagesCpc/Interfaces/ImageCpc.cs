@@ -155,7 +155,7 @@ namespace CpcConvImg {
 			modeEdition.Checked = false;
 		}
 
-		private void Draw(MouseEventArgs e) {
+		private void DrawPen(MouseEventArgs e) {
 			if (modeEdition.Checked) {
 				int Tx = (4 >> (bitmapCpc.ModeCPC == 3 ? 1 : bitmapCpc.ModeCPC));
 				for (int y = 0; y < penWidth * 2; y += 2)
@@ -171,12 +171,12 @@ namespace CpcConvImg {
 
 		private void pictureBox_MouseDown(object sender, MouseEventArgs e) {
 			if (modeEdition.Checked)
-				Draw(e);
+				DrawPen(e);
 		}
 
 		private void pictureBox_MouseMove(object sender, MouseEventArgs e) {
 			if (e.Button == MouseButtons.Left && modeEdition.Checked)
-				Draw(e);
+				DrawPen(e);
 		}
 
 		private void vScrollBar_Scroll(object sender, ScrollEventArgs e) {

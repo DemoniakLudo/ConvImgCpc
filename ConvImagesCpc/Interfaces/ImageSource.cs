@@ -6,7 +6,6 @@ namespace CpcConvImg {
 	public partial class ImageSource: Form {
 		private LockBitmap bmpLock;
 
-		public byte[] GetPixels { get { return bmpLock.Pixels; } }
 		public int GetWidth { get { return bmpLock.Width; } }
 		public int GetHeight { get { return bmpLock.Height; } }
 		public Bitmap GetImage { get { return (Bitmap)pictureBox.Image; } }
