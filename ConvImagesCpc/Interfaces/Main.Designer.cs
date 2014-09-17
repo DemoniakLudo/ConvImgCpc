@@ -67,6 +67,7 @@
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.bpLoadParam = new System.Windows.Forms.Button();
 			this.bpSaveParam = new System.Windows.Forms.Button();
+			this.bpSaveImage = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -432,7 +433,7 @@
 			// autoRecalc
 			// 
 			this.autoRecalc.AutoSize = true;
-			this.autoRecalc.Location = new System.Drawing.Point(3, 161);
+			this.autoRecalc.Location = new System.Drawing.Point(3, 136);
 			this.autoRecalc.Name = "autoRecalc";
 			this.autoRecalc.Size = new System.Drawing.Size(108, 30);
 			this.autoRecalc.TabIndex = 44;
@@ -582,11 +583,22 @@
 			this.bpSaveParam.UseVisualStyleBackColor = true;
 			this.bpSaveParam.Click += new System.EventHandler(this.bpSaveParam_Click);
 			// 
+			// bpSaveImage
+			// 
+			this.bpSaveImage.Location = new System.Drawing.Point(3, 177);
+			this.bpSaveImage.Name = "bpSaveImage";
+			this.bpSaveImage.Size = new System.Drawing.Size(108, 23);
+			this.bpSaveImage.TabIndex = 52;
+			this.bpSaveImage.Text = "Sauver image";
+			this.bpSaveImage.UseVisualStyleBackColor = true;
+			this.bpSaveImage.Click += new System.EventHandler(this.bpSaveImage_Click);
+			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(597, 388);
+			this.Controls.Add(this.bpSaveImage);
 			this.Controls.Add(this.bpSaveParam);
 			this.Controls.Add(this.bpLoadParam);
 			this.Controls.Add(this.groupBox2);
@@ -667,6 +679,7 @@
 		private System.Windows.Forms.GroupBox groupBox2;
 		private System.Windows.Forms.Button bpLoadParam;
 		private System.Windows.Forms.Button bpSaveParam;
+		private System.Windows.Forms.Button bpSaveImage;
 	}
 }
 

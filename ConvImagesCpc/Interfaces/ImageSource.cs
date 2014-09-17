@@ -28,6 +28,9 @@ namespace CpcConvImg {
 
 				if (pictureBox.Height < bmp.Height)
 					Height = ++y;
+
+				if (x > 20000 || y > 20000)
+					break;
 			}
 			bmpLock.UnlockBits();
 			Visible = visible;
