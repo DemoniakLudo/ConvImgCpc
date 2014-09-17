@@ -65,6 +65,8 @@
 			this.nb = new System.Windows.Forms.CheckBox();
 			this.sortPal = new System.Windows.Forms.CheckBox();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.bpLoadParam = new System.Windows.Forms.Button();
+			this.bpSaveParam = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -103,7 +105,7 @@
 			// 
 			this.bpReadSrc.Location = new System.Drawing.Point(3, 12);
 			this.bpReadSrc.Name = "bpReadSrc";
-			this.bpReadSrc.Size = new System.Drawing.Size(97, 23);
+			this.bpReadSrc.Size = new System.Drawing.Size(108, 23);
 			this.bpReadSrc.TabIndex = 2;
 			this.bpReadSrc.Text = "Lecture source";
 			this.bpReadSrc.UseVisualStyleBackColor = true;
@@ -113,7 +115,7 @@
 			// 
 			this.bpConvert.Location = new System.Drawing.Point(3, 107);
 			this.bpConvert.Name = "bpConvert";
-			this.bpConvert.Size = new System.Drawing.Size(97, 23);
+			this.bpConvert.Size = new System.Drawing.Size(108, 23);
 			this.bpConvert.TabIndex = 3;
 			this.bpConvert.Text = "Conversion";
 			this.bpConvert.UseVisualStyleBackColor = true;
@@ -560,11 +562,33 @@
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Effets de palette";
 			// 
+			// bpLoadParam
+			// 
+			this.bpLoadParam.Location = new System.Drawing.Point(3, 248);
+			this.bpLoadParam.Name = "bpLoadParam";
+			this.bpLoadParam.Size = new System.Drawing.Size(108, 23);
+			this.bpLoadParam.TabIndex = 53;
+			this.bpLoadParam.Text = "Lire paramètres";
+			this.bpLoadParam.UseVisualStyleBackColor = true;
+			this.bpLoadParam.Click += new System.EventHandler(this.bpLoadParam_Click);
+			// 
+			// bpSaveParam
+			// 
+			this.bpSaveParam.Location = new System.Drawing.Point(3, 277);
+			this.bpSaveParam.Name = "bpSaveParam";
+			this.bpSaveParam.Size = new System.Drawing.Size(108, 23);
+			this.bpSaveParam.TabIndex = 53;
+			this.bpSaveParam.Text = "Sauver paramètres";
+			this.bpSaveParam.UseVisualStyleBackColor = true;
+			this.bpSaveParam.Click += new System.EventHandler(this.bpSaveParam_Click);
+			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(597, 388);
+			this.Controls.Add(this.bpSaveParam);
+			this.Controls.Add(this.bpLoadParam);
 			this.Controls.Add(this.groupBox2);
 			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.autoRecalc);
@@ -641,6 +665,8 @@
 		private System.Windows.Forms.CheckBox nb;
 		private System.Windows.Forms.CheckBox sortPal;
 		private System.Windows.Forms.GroupBox groupBox2;
+		private System.Windows.Forms.Button bpLoadParam;
+		private System.Windows.Forms.Button bpSaveParam;
 	}
 }
 

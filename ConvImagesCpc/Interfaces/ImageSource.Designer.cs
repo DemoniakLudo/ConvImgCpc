@@ -46,7 +46,7 @@
 			this.Controls.Add(this.pictureBox);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.MaximizeBox = false;
-			this.MaximumSize = new System.Drawing.Size(2000, 2000);
+			this.MaximumSize = new System.Drawing.Size(16384, 16384);
 			this.MinimizeBox = false;
 			this.MinimumSize = new System.Drawing.Size(320, 200);
 			this.Name = "ImageSource";
