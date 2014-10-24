@@ -65,6 +65,7 @@
 			this.nb = new System.Windows.Forms.CheckBox();
 			this.sortPal = new System.Windows.Forms.CheckBox();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.checkBox1 = new System.Windows.Forms.CheckBox();
 			this.bpLoadParam = new System.Windows.Forms.Button();
 			this.bpSaveParam = new System.Windows.Forms.Button();
 			this.bpSaveImage = new System.Windows.Forms.Button();
@@ -541,6 +542,7 @@
 			// 
 			// groupBox2
 			// 
+			this.groupBox2.Controls.Add(this.checkBox1);
 			this.groupBox2.Controls.Add(this.nb);
 			this.groupBox2.Controls.Add(this.sortPal);
 			this.groupBox2.Controls.Add(this.newReduc);
@@ -562,6 +564,16 @@
 			this.groupBox2.TabIndex = 52;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Effets de palette";
+			// 
+			// checkBox1
+			// 
+			this.checkBox1.AutoSize = true;
+			this.checkBox1.Location = new System.Drawing.Point(254, 19);
+			this.checkBox1.Name = "checkBox1";
+			this.checkBox1.Size = new System.Drawing.Size(80, 17);
+			this.checkBox1.TabIndex = 52;
+			this.checkBox1.Text = "checkBox1";
+			this.checkBox1.UseVisualStyleBackColor = true;
 			// 
 			// bpLoadParam
 			// 
@@ -680,6 +692,7 @@
 		private System.Windows.Forms.Button bpLoadParam;
 		private System.Windows.Forms.Button bpSaveParam;
 		private System.Windows.Forms.Button bpSaveImage;
+		private System.Windows.Forms.CheckBox checkBox1;
 	}
 }
 

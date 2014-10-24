@@ -57,7 +57,7 @@ namespace CpcConvImg {
 				param.methode = methode.SelectedIndex;
 				param.matrice = matrice.SelectedIndex + 2;
 				param.lockState = imgCpc.lockState;
-				Conversion.Convert(imgSrc.GetImage, imgCpc.bitmapCpc, param);
+				Conversion.Convert(imgSrc.GetImage, imgCpc.bitmapCpc, param, checkBox1.Checked);
 				bpConvert.Enabled = true;
 			}
 			UpdateImgCPC();
@@ -240,5 +240,6 @@ namespace CpcConvImg {
 				SauveImage.SauveEcran(dlg.FileName, imgCpc.bitmapCpc, param.cpcPlus);
 			}
 		}
+
 	}
 }
