@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ConvImagesCPC</RootNamespace>
     <AssemblyName>ConvImagesCPC</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -33,9 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Pack">
-      <HintPath>dll\Pack.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -100,6 +97,10 @@
     <ProjectReference Include="..\..\DLL\ConvImgCpc\ConvImgCpc\ConvImgCpc.csproj">
       <Project>{38d06e94-903a-4414-96d5-fe3e36e8b6b6}</Project>
       <Name>ConvImgCpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DLL\Pack\Pack\Pack.csproj">
+      <Project>{8d64efde-9ce9-4eea-91d4-5e6cb46b8a19}</Project>
+      <Name>Pack</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

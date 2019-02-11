@@ -44,7 +44,7 @@
 			// lockAllPal
 			// 
 			this.lockAllPal.AutoSize = true;
-			this.lockAllPal.Location = new System.Drawing.Point(784, 596);
+			this.lockAllPal.Location = new System.Drawing.Point(784, 602);
 			this.lockAllPal.Name = "lockAllPal";
 			this.lockAllPal.Size = new System.Drawing.Size(93, 17);
 			this.lockAllPal.TabIndex = 1;
@@ -87,7 +87,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(909, 635);
+			this.ClientSize = new System.Drawing.Size(879, 620);
 			this.ControlBox = false;
 			this.Controls.Add(this.vScrollBar);
 			this.Controls.Add(this.hScrollBar);

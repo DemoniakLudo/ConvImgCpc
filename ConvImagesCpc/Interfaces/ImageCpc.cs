@@ -16,7 +16,11 @@ namespace CpcConvImg {
 		private int penWidth = 1;
 		private EditImage editImage;
 
-		public ImageCpc() {
+		public delegate void ConvertDelegate(bool doConvertbook);
+
+		private ConvertDelegate Convert;
+
+		public ImageCpc(ConvertDelegate fctConvert) {
 			InitializeComponent();
 			int tx = pictureBox.Width;
 			int ty = pictureBox.Height;
@@ -28,14 +32,14 @@ namespace CpcConvImg {
 				// Générer les contrôles de "couleurs"
 				colors[i] = new Label();
 				colors[i].BorderStyle = BorderStyle.FixedSingle;
-				colors[i].Location = new Point(4 + i * 48, 564);
+				colors[i].Location = new Point(4 + i * 48, 568);
 				colors[i].Size = new Size(40, 32);
 				colors[i].Tag = i;
 				colors[i].Click += ClickColor;
 				Controls.Add(colors[i]);
 				// Générer les contrôles de "bloquage couleur"
 				lockColors[i] = new CheckBox();
-				lockColors[i].Location = new Point(16 + i * 48, 598);
+				lockColors[i].Location = new Point(16 + i * 48, 600);
 				lockColors[i].Size = new Size(20, 20);
 				lockColors[i].Tag = i;
 				lockColors[i].Click += ClickLock;
@@ -44,6 +48,7 @@ namespace CpcConvImg {
 			}
 			Reset();
 			ChangeZoom(1);
+			Convert = fctConvert;
 		}
 
 		// Click sur un "lock"
@@ -63,6 +68,7 @@ namespace CpcConvImg {
 				if (ed.isValide) {
 					bitmapCpc.SetPalette(numCol, ed.ValColor);
 					UpdatePalette();
+					Convert(false);
 				}
 			}
 			else {
@@ -111,6 +117,7 @@ namespace CpcConvImg {
 				lockColors[i].Checked = lockAllPal.Checked;
 				lockState[i] = lockAllPal.Checked ? 1 : 0;
 			}
+			Convert(false);
 		}
 
 		/* Mode édition */
