@@ -1,10 +1,8 @@
-﻿using ConvImgCpc;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace CpcConvImg {
-	public partial class ImageCpc: Form {
-		private Bitmap bmp;
+namespace ConvImgCpc {
+	public partial class ImageCpc : Form {
 		private LockBitmap bmpLock;
 		public BitmapCpc bitmapCpc;
 		private Label[] colors = new Label[16];
@@ -24,7 +22,7 @@ namespace CpcConvImg {
 			InitializeComponent();
 			int tx = pictureBox.Width;
 			int ty = pictureBox.Height;
-			bmp = new Bitmap(tx, ty);
+			Bitmap bmp = new Bitmap(tx, ty);
 			pictureBox.Image = bmp;
 			bmpLock = new LockBitmap(bmp);
 			bitmapCpc = new BitmapCpc(640, 400, 1); // ###
@@ -78,7 +76,7 @@ namespace CpcConvImg {
 		}
 
 		public void Reset() {
-			int col = System.Drawing.SystemColors.Control.ToArgb();
+			int col = SystemColors.Control.ToArgb();
 			bmpLock.LockBits();
 			for (int x = 0; x < bmpLock.Width; x++)
 				for (int y = 0; y < bmpLock.Height; y++)
@@ -90,13 +88,13 @@ namespace CpcConvImg {
 			hScrollBar.Top = bitmapCpc.TailleY + 3;
 		}
 
-		public void SetPixelCpc(int pixelX, int pixelY, int pix) {
-			bitmapCpc.SetPixelCpc(pixelX, pixelY, pix);
+		public void SetPixelCpc(int pixelX, int pixelY, int pix, int mode) {
+			bitmapCpc.SetPixelCpc(pixelX, pixelY, pix, mode);
 		}
 
 		public void UpdatePalette() {
 			for (int i = 0; i < 16; i++) {
-				colors[i].BackColor = System.Drawing.Color.FromArgb(bitmapCpc.GetPaletteColor(i).GetColorArgb);
+				colors[i].BackColor = Color.FromArgb(bitmapCpc.GetPaletteColor(i).GetColorArgb);
 				colors[i].Refresh();
 			}
 		}
@@ -107,7 +105,10 @@ namespace CpcConvImg {
 		}
 
 		public void Render() {
-			bitmapCpc.Render(bmpLock, bitmapCpc.ModeCPC, zoom, offsetX, offsetY, false);
+			for (int y = 0; y < bitmapCpc.TailleY; y += 2) {
+				int mode = (bitmapCpc.ModeCPC >= 3 ? (y & 2) == 0 ? bitmapCpc.ModeCPC - 2 : bitmapCpc.ModeCPC - 3 : bitmapCpc.ModeCPC);
+				bitmapCpc.Render(bmpLock, y, mode, zoom, offsetX, offsetY);
+			}
 			pictureBox.Refresh();
 			UpdatePalette();
 		}
@@ -164,14 +165,16 @@ namespace CpcConvImg {
 
 		private void DrawPen(MouseEventArgs e) {
 			if (modeEdition.Checked) {
-				int Tx = (4 >> (bitmapCpc.ModeCPC == 3 ? 1 : bitmapCpc.ModeCPC));
-				for (int y = 0; y < penWidth * 2; y += 2)
+				for (int y = 0; y < penWidth * 2; y += 2) {
+					int mode = (bitmapCpc.ModeCPC >= 3 ? (y & 2) == 0 ? bitmapCpc.ModeCPC - 2 : bitmapCpc.ModeCPC - 3 : bitmapCpc.ModeCPC);
+					int Tx = (4 >> mode);
 					for (int x = 0; x < penWidth * Tx; x += Tx) {
 						int xReel = x + offsetX + (e.X / zoom) - ((penWidth * Tx) >> 1) + 1;
 						int yReel = y + offsetY + (e.Y / zoom) - penWidth + 1;
 						if (xReel >= 0 && yReel > 0 && xReel < bitmapCpc.TailleX && yReel < bitmapCpc.TailleY)
-							bitmapCpc.SetPixelCpc(xReel, yReel, numCol);
+							bitmapCpc.SetPixelCpc(xReel, yReel, numCol, mode);
 					}
+				}
 				Render();
 			}
 		}

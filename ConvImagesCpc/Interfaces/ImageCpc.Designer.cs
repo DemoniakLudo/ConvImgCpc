@@ -1,4 +1,4 @@
-﻿namespace CpcConvImg {
+﻿namespace ConvImgCpc {
 	partial class ImageCpc {
 		/// <summary>
 		/// Required designer variable.

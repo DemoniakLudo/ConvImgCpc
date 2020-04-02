@@ -3,9 +3,8 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
-using ConvImgCpc;
 
-namespace CpcConvImg {
+namespace ConvImgCpc {
 	public partial class Main: Form {
 		private ImageSource imgSrc;
 		private ImageCpc imgCpc;
@@ -47,10 +46,13 @@ namespace CpcConvImg {
 				param.methode = methode.SelectedIndex;
 				param.matrice = matrice.SelectedIndex + 2;
 				param.lockState = imgCpc.lockState;
-				Conversion.Convert(imgSrc.GetImage, imgCpc.bitmapCpc, param, checkBox1.Checked);
+				Conversion.Convert(imgSrc.GetImage, imgCpc.bitmapCpc, param);
 				bpConvert.Enabled = true;
 			}
+			long t1 = DateTime.Now.Ticks;
 			UpdateImgCPC();
+			long t2 = DateTime.Now.Ticks - t1;
+			long t3 = t2 - t1;
 		}
 
 		private void bpConvert_Click(object sender, System.EventArgs e) {
@@ -80,7 +82,7 @@ namespace CpcConvImg {
 		}
 
 		private void mode_SelectedIndexChanged(object sender, System.EventArgs e) {
-			imgCpc.bitmapCpc.ModeCPC = int.Parse(mode.SelectedItem.ToString(), System.Globalization.CultureInfo.CurrentCulture);
+			imgCpc.bitmapCpc.ModeCPC = int.Parse(mode.SelectedItem.ToString().Substring(0,1));
 			imgCpc.Reset();
 			Convert(false);
 		}

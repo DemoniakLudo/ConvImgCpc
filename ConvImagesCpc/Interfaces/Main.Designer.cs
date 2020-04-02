@@ -1,4 +1,4 @@
-﻿namespace CpcConvImg {
+﻿namespace ConvImgCpc {
 	partial class Main {
 		/// <summary>
 		/// Variable nécessaire au concepteur.
@@ -65,7 +65,6 @@
 			this.nb = new System.Windows.Forms.CheckBox();
 			this.sortPal = new System.Windows.Forms.CheckBox();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
-			this.checkBox1 = new System.Windows.Forms.CheckBox();
 			this.bpLoadParam = new System.Windows.Forms.Button();
 			this.bpSaveParam = new System.Windows.Forms.Button();
 			this.bpSaveImage = new System.Windows.Forms.Button();
@@ -86,7 +85,7 @@
 			this.checkImageSource.AutoSize = true;
 			this.checkImageSource.Location = new System.Drawing.Point(3, 51);
 			this.checkImageSource.Name = "checkImageSource";
-			this.checkImageSource.Size = new System.Drawing.Size(128, 17);
+			this.checkImageSource.Size = new System.Drawing.Size(144, 19);
 			this.checkImageSource.TabIndex = 0;
 			this.checkImageSource.Text = "Afficher image source";
 			this.checkImageSource.UseVisualStyleBackColor = true;
@@ -97,7 +96,7 @@
 			this.checkImageCPC.AutoSize = true;
 			this.checkImageCPC.Location = new System.Drawing.Point(3, 74);
 			this.checkImageCPC.Name = "checkImageCPC";
-			this.checkImageCPC.Size = new System.Drawing.Size(117, 17);
+			this.checkImageCPC.Size = new System.Drawing.Size(131, 19);
 			this.checkImageCPC.TabIndex = 1;
 			this.checkImageCPC.Text = "Afficher image CPC";
 			this.checkImageCPC.UseVisualStyleBackColor = true;
@@ -154,7 +153,7 @@
 			this.label1.AutoSize = true;
 			this.label1.Location = new System.Drawing.Point(6, 28);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(68, 13);
+			this.label1.Size = new System.Drawing.Size(78, 15);
 			this.label1.TabIndex = 6;
 			this.label1.Text = "Nb Colonnes";
 			// 
@@ -163,7 +162,7 @@
 			this.label2.AutoSize = true;
 			this.label2.Location = new System.Drawing.Point(19, 54);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(55, 13);
+			this.label2.Size = new System.Drawing.Size(63, 15);
 			this.label2.TabIndex = 6;
 			this.label2.Text = "Nb Lignes";
 			// 
@@ -174,7 +173,9 @@
 			this.mode.Items.AddRange(new object[] {
             "0",
             "1",
-            "2"});
+            "2",
+            "3(X1)",
+            "4(X2)"});
 			this.mode.Location = new System.Drawing.Point(80, 78);
 			this.mode.Name = "mode";
 			this.mode.Size = new System.Drawing.Size(44, 21);
@@ -186,7 +187,7 @@
 			this.label3.AutoSize = true;
 			this.label3.Location = new System.Drawing.Point(40, 81);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(34, 13);
+			this.label3.Size = new System.Drawing.Size(39, 15);
 			this.label3.TabIndex = 6;
 			this.label3.Text = "Mode";
 			// 
@@ -267,7 +268,7 @@
 			this.modePlus.AutoSize = true;
 			this.modePlus.Location = new System.Drawing.Point(71, 106);
 			this.modePlus.Name = "modePlus";
-			this.modePlus.Size = new System.Drawing.Size(53, 17);
+			this.modePlus.Size = new System.Drawing.Size(57, 19);
 			this.modePlus.TabIndex = 8;
 			this.modePlus.Text = "CPC+";
 			this.modePlus.UseVisualStyleBackColor = true;
@@ -295,7 +296,7 @@
 			this.label6.AutoSize = true;
 			this.label6.Location = new System.Drawing.Point(173, 48);
 			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(15, 13);
+			this.label6.Size = new System.Drawing.Size(18, 15);
 			this.label6.TabIndex = 12;
 			this.label6.Text = "%";
 			// 
@@ -304,7 +305,7 @@
 			this.label7.AutoSize = true;
 			this.label7.Location = new System.Drawing.Point(9, 104);
 			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(83, 13);
+			this.label7.Size = new System.Drawing.Size(93, 15);
 			this.label7.TabIndex = 12;
 			this.label7.Text = "Niveau Forçage";
 			// 
@@ -313,7 +314,7 @@
 			this.label5.AutoSize = true;
 			this.label5.Location = new System.Drawing.Point(50, 75);
 			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(42, 13);
+			this.label5.Size = new System.Drawing.Size(48, 15);
 			this.label5.TabIndex = 12;
 			this.label5.Text = "Matrice";
 			// 
@@ -322,7 +323,7 @@
 			this.label4.AutoSize = true;
 			this.label4.Location = new System.Drawing.Point(50, 22);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(31, 13);
+			this.label4.Size = new System.Drawing.Size(33, 15);
 			this.label4.TabIndex = 12;
 			this.label4.Text = "Type";
 			// 
@@ -331,7 +332,7 @@
 			this.lumi.Location = new System.Drawing.Point(59, 91);
 			this.lumi.Maximum = 200;
 			this.lumi.Name = "lumi";
-			this.lumi.Size = new System.Drawing.Size(360, 42);
+			this.lumi.Size = new System.Drawing.Size(360, 50);
 			this.lumi.TabIndex = 12;
 			this.lumi.Value = 100;
 			this.lumi.ValueChanged += new System.EventHandler(this.lumi_ValueChanged);
@@ -341,7 +342,7 @@
 			this.sat.Location = new System.Drawing.Point(59, 141);
 			this.sat.Maximum = 200;
 			this.sat.Name = "sat";
-			this.sat.Size = new System.Drawing.Size(360, 42);
+			this.sat.Size = new System.Drawing.Size(360, 50);
 			this.sat.TabIndex = 12;
 			this.sat.Value = 100;
 			this.sat.ValueChanged += new System.EventHandler(this.sat_ValueChanged);
@@ -351,7 +352,7 @@
 			this.label8.AutoSize = true;
 			this.label8.Location = new System.Drawing.Point(5, 101);
 			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(57, 13);
+			this.label8.Size = new System.Drawing.Size(68, 15);
 			this.label8.TabIndex = 13;
 			this.label8.Text = "Luminosité";
 			// 
@@ -360,7 +361,7 @@
 			this.label9.AutoSize = true;
 			this.label9.Location = new System.Drawing.Point(5, 151);
 			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(55, 13);
+			this.label9.Size = new System.Drawing.Size(63, 15);
 			this.label9.TabIndex = 13;
 			this.label9.Text = "Saturation";
 			// 
@@ -390,7 +391,7 @@
 			this.newReduc.Enabled = false;
 			this.newReduc.Location = new System.Drawing.Point(357, 53);
 			this.newReduc.Name = "newReduc";
-			this.newReduc.Size = new System.Drawing.Size(84, 17);
+			this.newReduc.Size = new System.Drawing.Size(92, 19);
 			this.newReduc.TabIndex = 48;
 			this.newReduc.Text = "Réduction 3";
 			this.newReduc.UseVisualStyleBackColor = true;
@@ -402,7 +403,7 @@
 			this.reducPal2.Enabled = false;
 			this.reducPal2.Location = new System.Drawing.Point(174, 53);
 			this.reducPal2.Name = "reducPal2";
-			this.reducPal2.Size = new System.Drawing.Size(84, 17);
+			this.reducPal2.Size = new System.Drawing.Size(92, 19);
 			this.reducPal2.TabIndex = 47;
 			this.reducPal2.Text = "Réduction 2";
 			this.reducPal2.UseVisualStyleBackColor = true;
@@ -414,7 +415,7 @@
 			this.reducPal1.Enabled = false;
 			this.reducPal1.Location = new System.Drawing.Point(6, 53);
 			this.reducPal1.Name = "reducPal1";
-			this.reducPal1.Size = new System.Drawing.Size(84, 17);
+			this.reducPal1.Size = new System.Drawing.Size(92, 19);
 			this.reducPal1.TabIndex = 46;
 			this.reducPal1.Text = "Réduction 1";
 			this.reducPal1.UseVisualStyleBackColor = true;
@@ -425,7 +426,7 @@
 			this.newMethode.AutoSize = true;
 			this.newMethode.Location = new System.Drawing.Point(175, 30);
 			this.newMethode.Name = "newMethode";
-			this.newMethode.Size = new System.Drawing.Size(83, 17);
+			this.newMethode.Size = new System.Drawing.Size(93, 19);
 			this.newMethode.TabIndex = 45;
 			this.newMethode.Text = "Plus précise";
 			this.newMethode.UseVisualStyleBackColor = true;
@@ -436,7 +437,7 @@
 			this.autoRecalc.AutoSize = true;
 			this.autoRecalc.Location = new System.Drawing.Point(3, 136);
 			this.autoRecalc.Name = "autoRecalc";
-			this.autoRecalc.Size = new System.Drawing.Size(108, 30);
+			this.autoRecalc.Size = new System.Drawing.Size(123, 34);
 			this.autoRecalc.TabIndex = 44;
 			this.autoRecalc.Text = "Recalculer\r\nAutomatiquement";
 			this.autoRecalc.UseVisualStyleBackColor = true;
@@ -457,7 +458,7 @@
 			this.contrast.Location = new System.Drawing.Point(59, 191);
 			this.contrast.Maximum = 200;
 			this.contrast.Name = "contrast";
-			this.contrast.Size = new System.Drawing.Size(360, 42);
+			this.contrast.Size = new System.Drawing.Size(360, 50);
 			this.contrast.TabIndex = 42;
 			this.contrast.Value = 100;
 			this.contrast.ValueChanged += new System.EventHandler(this.contrast_ValueChanged);
@@ -467,7 +468,7 @@
 			this.radioKeepLarger.AutoSize = true;
 			this.radioKeepLarger.Location = new System.Drawing.Point(6, 65);
 			this.radioKeepLarger.Name = "radioKeepLarger";
-			this.radioKeepLarger.Size = new System.Drawing.Size(80, 17);
+			this.radioKeepLarger.Size = new System.Drawing.Size(90, 19);
 			this.radioKeepLarger.TabIndex = 39;
 			this.radioKeepLarger.Text = "KeepLarger";
 			this.radioKeepLarger.UseVisualStyleBackColor = true;
@@ -478,7 +479,7 @@
 			this.radioKeepSmaller.AutoSize = true;
 			this.radioKeepSmaller.Location = new System.Drawing.Point(6, 42);
 			this.radioKeepSmaller.Name = "radioKeepSmaller";
-			this.radioKeepSmaller.Size = new System.Drawing.Size(84, 17);
+			this.radioKeepSmaller.Size = new System.Drawing.Size(97, 19);
 			this.radioKeepSmaller.TabIndex = 40;
 			this.radioKeepSmaller.Text = "KeepSmaller";
 			this.radioKeepSmaller.UseVisualStyleBackColor = true;
@@ -490,7 +491,7 @@
 			this.radioFit.Checked = true;
 			this.radioFit.Location = new System.Drawing.Point(6, 19);
 			this.radioFit.Name = "radioFit";
-			this.radioFit.Size = new System.Drawing.Size(36, 17);
+			this.radioFit.Size = new System.Drawing.Size(38, 19);
 			this.radioFit.TabIndex = 41;
 			this.radioFit.TabStop = true;
 			this.radioFit.Text = "Fit";
@@ -514,7 +515,7 @@
 			this.label10.AutoSize = true;
 			this.label10.Location = new System.Drawing.Point(5, 201);
 			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(52, 13);
+			this.label10.Size = new System.Drawing.Size(59, 15);
 			this.label10.TabIndex = 13;
 			this.label10.Text = "Contraste";
 			// 
@@ -523,7 +524,7 @@
 			this.nb.AutoSize = true;
 			this.nb.Location = new System.Drawing.Point(6, 30);
 			this.nb.Name = "nb";
-			this.nb.Size = new System.Drawing.Size(81, 17);
+			this.nb.Size = new System.Drawing.Size(91, 19);
 			this.nb.TabIndex = 51;
 			this.nb.Text = "noir && blanc";
 			this.nb.UseVisualStyleBackColor = true;
@@ -534,7 +535,7 @@
 			this.sortPal.AutoSize = true;
 			this.sortPal.Location = new System.Drawing.Point(358, 30);
 			this.sortPal.Name = "sortPal";
-			this.sortPal.Size = new System.Drawing.Size(47, 17);
+			this.sortPal.Size = new System.Drawing.Size(51, 19);
 			this.sortPal.TabIndex = 50;
 			this.sortPal.Text = "Trier";
 			this.sortPal.UseVisualStyleBackColor = true;
@@ -542,7 +543,6 @@
 			// 
 			// groupBox2
 			// 
-			this.groupBox2.Controls.Add(this.checkBox1);
 			this.groupBox2.Controls.Add(this.nb);
 			this.groupBox2.Controls.Add(this.sortPal);
 			this.groupBox2.Controls.Add(this.newReduc);
@@ -564,16 +564,6 @@
 			this.groupBox2.TabIndex = 52;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Effets de palette";
-			// 
-			// checkBox1
-			// 
-			this.checkBox1.AutoSize = true;
-			this.checkBox1.Location = new System.Drawing.Point(254, 19);
-			this.checkBox1.Name = "checkBox1";
-			this.checkBox1.Size = new System.Drawing.Size(80, 17);
-			this.checkBox1.TabIndex = 52;
-			this.checkBox1.Text = "checkBox1";
-			this.checkBox1.UseVisualStyleBackColor = true;
 			// 
 			// bpLoadParam
 			// 
@@ -692,7 +682,6 @@
 		private System.Windows.Forms.Button bpLoadParam;
 		private System.Windows.Forms.Button bpSaveParam;
 		private System.Windows.Forms.Button bpSaveImage;
-		private System.Windows.Forms.CheckBox checkBox1;
 	}
 }
 

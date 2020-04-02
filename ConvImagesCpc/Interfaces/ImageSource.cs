@@ -1,8 +1,7 @@
-﻿using ConvImgCpc;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace CpcConvImg {
+namespace ConvImgCpc {
 	public partial class ImageSource: Form {
 		private LockBitmap bmpLock;
 
