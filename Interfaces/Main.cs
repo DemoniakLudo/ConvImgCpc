@@ -18,9 +18,7 @@ namespace ConvImgCpc {
 			nbLignes.Value = imgCpc.TailleY >> 1;
 			mode.SelectedIndex = imgCpc.ModeCPC;
 			methode.SelectedIndex = 0;
-			matrice.SelectedIndex = 0;
 			param.pctContrast = param.pctLumi = param.pctSat = 100;
-			param.matrice = 2;
 		}
 
 		private void checkImageSource_CheckedChanged(object sender, System.EventArgs e) {
@@ -42,8 +40,7 @@ namespace ConvImgCpc {
 				bpConvert.Enabled = false;
 				imgCpc.Reset();
 				param.sizeMode = radioKeepLarger.Checked ? Param.SizeMode.KeepLarger : radioKeepSmaller.Checked ? Param.SizeMode.KeepSmaller : Param.SizeMode.Fit;
-				param.methode = methode.SelectedIndex;
-				param.matrice = matrice.SelectedIndex + 2;
+				param.methode = methode.SelectedItem.ToString();
 				param.lockState = imgCpc.lockState;
 
 				int tailleX = imgCpc.TailleX;
@@ -227,8 +224,7 @@ namespace ConvImgCpc {
 				try {
 					param = (Param)new XmlSerializer(typeof(Param)).Deserialize(file);
 					// Initialisation paramètres...
-					methode.SelectedIndex = param.methode;
-					matrice.SelectedIndex = param.matrice - 2;
+					methode.SelectedItem = param.methode;
 					pctTrame.Value = param.pct;
 					imgCpc.lockState = param.lockState;
 					lumi.Value = param.pctLumi;

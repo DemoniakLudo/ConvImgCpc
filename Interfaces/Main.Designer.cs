@@ -34,13 +34,11 @@
 			this.mode = new System.Windows.Forms.ComboBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.methode = new System.Windows.Forms.ComboBox();
-			this.matrice = new System.Windows.Forms.ComboBox();
 			this.pctTrame = new System.Windows.Forms.NumericUpDown();
 			this.resoCPC = new System.Windows.Forms.GroupBox();
 			this.modePlus = new System.Windows.Forms.CheckBox();
 			this.tramage = new System.Windows.Forms.GroupBox();
 			this.label6 = new System.Windows.Forms.Label();
-			this.label5 = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
 			this.lumi = new System.Windows.Forms.TrackBar();
 			this.sat = new System.Windows.Forms.TrackBar();
@@ -194,28 +192,21 @@
 			this.methode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.methode.FormattingEnabled = true;
 			this.methode.Items.AddRange(new object[] {
-            "Pas de tramage",
-            "Méthode 1",
-            "Méthode 2",
-            "Méthode 3"});
+				"Aucun",
+            "Bayer 1 (2X2)",
+            "Bayer 2 (4x4)",
+            "Bayer 3 (4X4)",
+            "Ordered 1 (3x3)",
+            "Ordered 2 (3x3)",
+            "Ordered 3 (4x4)",
+			"ZigZag1 (3x3)",
+			"ZigZag2 (4x3)",
+			});
 			this.methode.Location = new System.Drawing.Point(92, 19);
 			this.methode.Name = "methode";
 			this.methode.Size = new System.Drawing.Size(97, 21);
 			this.methode.TabIndex = 8;
 			this.methode.SelectedIndexChanged += new System.EventHandler(this.methode_SelectedIndexChanged);
-			// 
-			// matrice
-			// 
-			this.matrice.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.matrice.FormattingEnabled = true;
-			this.matrice.Items.AddRange(new object[] {
-            "Matrice 2x2",
-            "Matrice 3x3"});
-			this.matrice.Location = new System.Drawing.Point(92, 72);
-			this.matrice.Name = "matrice";
-			this.matrice.Size = new System.Drawing.Size(97, 21);
-			this.matrice.TabIndex = 8;
-			this.matrice.SelectedIndexChanged += new System.EventHandler(this.matrice_SelectedIndexChanged);
 			// 
 			// pctTrame
 			// 
@@ -261,8 +252,6 @@
 			// 
 			this.tramage.Controls.Add(this.label6);
 			this.tramage.Controls.Add(this.methode);
-			this.tramage.Controls.Add(this.matrice);
-			this.tramage.Controls.Add(this.label5);
 			this.tramage.Controls.Add(this.pctTrame);
 			this.tramage.Controls.Add(this.label4);
 			this.tramage.Location = new System.Drawing.Point(390, 12);
@@ -280,15 +269,6 @@
 			this.label6.Size = new System.Drawing.Size(15, 13);
 			this.label6.TabIndex = 12;
 			this.label6.Text = "%";
-			// 
-			// label5
-			// 
-			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(50, 75);
-			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(42, 13);
-			this.label5.TabIndex = 12;
-			this.label5.Text = "Matrice";
 			// 
 			// label4
 			// 
@@ -620,12 +600,10 @@
 		private System.Windows.Forms.ComboBox mode;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.ComboBox methode;
-		private System.Windows.Forms.ComboBox matrice;
 		private System.Windows.Forms.NumericUpDown pctTrame;
 		private System.Windows.Forms.GroupBox resoCPC;
 		private System.Windows.Forms.GroupBox tramage;
 		private System.Windows.Forms.Label label6;
-		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.CheckBox modePlus;
 		private System.Windows.Forms.TrackBar lumi;

@@ -50,6 +50,14 @@ namespace ConvImgCpc {
 			Pixels[adr++] = (byte)(color >> 16);
 			Pixels[adr] = 0xFF;
 		}
+
+		public void SetPixel(int pixelX, int pixelY, RvbColor color) {
+			int adr = ((pixelY * Width) + pixelX) << 2;
+			Pixels[adr++] = color.red;
+			Pixels[adr++] = color.green;
+			Pixels[adr++] = color.blue;
+			Pixels[adr] = 0xFF;
+		}
 	}
 
 	public class RvbColor {

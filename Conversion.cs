@@ -31,75 +31,48 @@ namespace ConvImgCpc {
 			return (c.red > r ? (c.red - r) * K_R : (r - c.red) * K_R) + (c.green > v ? (c.green - v) * K_V : (v - c.green) * K_V) + (c.blue > b ? (c.blue - b) * K_B : (b - c.blue) * K_B);
 		}
 
+		static int[,] bayer2 = new int[2, 2] {	{1, 3 },
+												{4, 2 } };
+		static int[,] bayer3 = new int[4, 4] {	{0, 12, 3, 15},
+												{8, 4, 11, 7},
+												{2, 14, 1, 13},
+												{10, 6, 9, 5}};
+		static int[,] bayer4 = new int[4, 4] {	{1, 9, 3, 11},
+												{13, 5, 15, 7},
+												{4, 12, 2, 10},
+												{16, 8, 14, 6}};
+		static int[,] ord1 = new int[3, 3] {	{8, 3, 4},
+												{6, 1, 2},
+												{7, 5, 9}};
+		static int[,] ord2 = new int[3, 3] {	{1, 7, 4},
+												{5, 8, 3},
+												{6, 2, 9}};
+		static int[,] ord4 = new int[4, 4] {	{0, 8, 2, 10},
+												{12, 4, 14, 6},
+												{3, 11, 1, 9},
+												{15, 7, 13, 5}};
+		static int[,] zigzag1 = new int[3, 3] {	{0, 4, 0},
+												{3, 0, 1},
+												{0, 2, 0}};
+		static int[,] zigzag2 = new int[3, 4] {	{0, 4, 2, 0},
+												{6, 0, 5, 3},
+												{0, 7, 1, 0}};
+
+		static int[,] mat = bayer2;
+
 		static private void AddPixel(int x, int y, int corr, int decalMasque) {
 			int adr = (((y * bitmap.Width) + x) << 2) + decalMasque;
 			if (adr < bitmap.Pixels.Length)
 				bitmap.Pixels[adr] = (byte)MinMax(bitmap.Pixels[adr] + corr);
 		}
 
-		static void CalcDiffMethode1Mat2(int diff, int decalMasque, int mode, int Tx) {
+		static void CalcDiffMethodeMat(int diff, int decalMasque, int mode, int Tx) {
+			int rowsOrHeight = mat.GetLength(0);
+			int colsOrWidth = mat.GetLength(1);
 			int incY = mode < 3 ? 2 : 4;
-			AddPixel(xPix + Tx, yPix, (diff * 7) / coeffMat, decalMasque);
-			AddPixel(xPix - Tx, yPix + incY, (diff * 3) / coeffMat, decalMasque);
-			AddPixel(xPix, yPix + incY, (diff * 5) / coeffMat, decalMasque);
-			AddPixel(xPix + Tx, yPix + incY, diff / coeffMat, decalMasque);
-		}
-
-		static void CalcDiffMethode2Mat2(int diff, int decalMasque, int mode, int Tx) {
-			int incY = mode < 3 ? 2 : 4;
-			AddPixel(xPix + Tx, yPix, (diff << 3) / coeffMat, decalMasque);
-			AddPixel(xPix - Tx, yPix + incY, (diff << 2) / coeffMat, decalMasque);
-			AddPixel(xPix, yPix + incY, (diff << 1) / coeffMat, decalMasque);
-			AddPixel(xPix + Tx, yPix + incY, diff / coeffMat, decalMasque);
-		}
-
-		static void CalcDiffMethode3Mat2(int diff, int decalMasque, int mode, int Tx) {
-			int incY = mode < 3 ? 2 : 4;
-			AddPixel(xPix + Tx, yPix, (diff * 3) / coeffMat, decalMasque);
-			AddPixel(xPix - Tx, yPix + incY, (diff << 1) / coeffMat, decalMasque);
-			AddPixel(xPix, yPix + incY, (diff << 1) / coeffMat, decalMasque);
-		}
-
-		static void CalcDiffMethode1Mat3(int diff, int decalMasque, int mode, int Tx) {
-			int incY = mode < 3 ? 2 : 4;
-			AddPixel(xPix + Tx, yPix, (diff * 7) / coeffMat, decalMasque);
-			AddPixel(xPix + 2 * Tx, yPix, (diff * 5) / coeffMat, decalMasque);
-
-			AddPixel(xPix - 2 * Tx, yPix + 2, (diff * 3) / coeffMat, decalMasque);
-			AddPixel(xPix - Tx, yPix + incY, (diff * 5) / coeffMat, decalMasque);
-			AddPixel(xPix, yPix + 2, (diff * 7) / coeffMat, decalMasque);
-			AddPixel(xPix + Tx, yPix + incY, (diff * 5) / coeffMat, decalMasque);
-			AddPixel(xPix + 2 * Tx, yPix + incY, (diff * 3) / coeffMat, decalMasque);
-
-			AddPixel(xPix - 2 * Tx, yPix + incY + incY, diff / coeffMat, decalMasque);
-			AddPixel(xPix - Tx, yPix + incY + incY, (diff * 3) / coeffMat, decalMasque);
-			AddPixel(xPix, yPix + incY + incY, (diff * 5) / coeffMat, decalMasque);
-			AddPixel(xPix + Tx, yPix + incY + incY, (diff * 3) / coeffMat, decalMasque);
-			AddPixel(xPix + 2 * Tx, yPix + incY + incY, diff / coeffMat, decalMasque);
-		}
-
-		static void CalcDiffMethode2Mat3(int diff, int decalMasque, int mode, int Tx) {
-			int incY = mode < 3 ? 2 : 4;
-			AddPixel(xPix + Tx, yPix, (diff << 2) / coeffMat, decalMasque);
-			AddPixel(xPix + 2 * Tx, yPix, (diff << 1) / coeffMat, decalMasque);
-
-			AddPixel(xPix - 2 * Tx, yPix + incY, diff / coeffMat, decalMasque);
-			AddPixel(xPix - Tx, yPix + incY, (diff << 1) / coeffMat, decalMasque);
-			AddPixel(xPix, yPix + incY, diff / coeffMat, decalMasque);
-			AddPixel(xPix + Tx, yPix + incY, (diff << 1) / coeffMat, decalMasque);
-			AddPixel(xPix + 2 * Tx, yPix + incY, diff / coeffMat, decalMasque);
-		}
-
-		static void CalcDiffMethode3Mat3(int diff, int decalMasque, int mode, int Tx) {
-			int incY = mode < 3 ? 2 : 4;
-			AddPixel(xPix + Tx, yPix, (diff << 2) / coeffMat, decalMasque);
-			AddPixel(xPix + 2 * Tx, yPix, (diff * 3) / coeffMat, decalMasque);
-
-			AddPixel(xPix - 2 * Tx, yPix + incY, diff / coeffMat, decalMasque);
-			AddPixel(xPix - Tx, yPix + incY, (diff << 1) / coeffMat, decalMasque);
-			AddPixel(xPix, yPix + incY, (diff * 3) / coeffMat, decalMasque);
-			AddPixel(xPix + Tx, yPix + incY, diff / coeffMat, decalMasque);
-			AddPixel(xPix + 2 * Tx, yPix + incY, (diff << 1) / coeffMat, decalMasque);
+			for (int y = 0; y < colsOrWidth; y++)
+				for (int x = 0; x < rowsOrHeight; x++)
+					AddPixel(xPix + Tx * x, yPix + incY * y, (diff * mat[x, y]) / coeffMat, decalMasque);
 		}
 
 		// Modification luminosité / saturation
@@ -181,8 +154,6 @@ namespace ConvImgCpc {
 		// Calcule le nombre de couleurs utilisées dans l'image, et
 		// remplit un tableau avec ces couleurs
 		//
-		// p.methode, p.matrice, p.pct, p.cpcPlus, p.newMethode, dest.ModeCPC, p.cpcPlus, p.reductPal1, p.reductPal2, p.newReduct, p.pctLumi, p.pctSat, p.pctContrast);
-		//
 		static private int ConvertPasse1(int xdest, int ydest, Param prm, int Mode) {
 			//if (prm.cpcPlus)
 			//	prm.pct <<= 2;
@@ -198,45 +169,58 @@ namespace ConvImgCpc {
 				tblContrast[i] = (byte)MinMax((int)contrast);
 			}
 			fctCalcDiff = null;
-			if (prm.pct > 0)
-				switch (prm.matrice) {
-					case 2:
-						switch (prm.methode) {
-							case 1:
-								fctCalcDiff = CalcDiffMethode1Mat2;
-								coeffMat = 1600 / prm.pct;
-								break;
-
-							case 2:
-								fctCalcDiff = CalcDiffMethode2Mat2;
-								coeffMat = 1500 / prm.pct;
-								break;
-
-							case 3:
-								fctCalcDiff = CalcDiffMethode3Mat2;
-								coeffMat = 800 / prm.pct;
-								break;
-						}
+			if (prm.pct > 0) {
+				fctCalcDiff = CalcDiffMethodeMat;
+				switch (prm.methode) {
+					case "Bayer 1 (2X2)":
+						mat = bayer2;
 						break;
-					case 3:
-						switch (prm.methode) {
-							case 1:
-								fctCalcDiff = CalcDiffMethode1Mat3;
-								coeffMat = 4800 / prm.pct;
-								break;
 
-							case 2:
-								fctCalcDiff = CalcDiffMethode2Mat3;
-								coeffMat = 1600 / prm.pct;
-								break;
+					case "Ordered 1 (3x3)":
+						mat = ord1;
+						break;
 
-							case 3:
-								fctCalcDiff = CalcDiffMethode3Mat3;
-								coeffMat = 1600 / prm.pct;
-								break;
-						}
+					case "Ordered 2 (3x3)":
+						mat = ord2;
+						break;
+
+					case "Bayer 2 (4x4)":
+						mat = bayer3;
+						break;
+
+					case "Bayer 3 (4X4)":
+						mat = bayer4;
+						break;
+
+					case "Ordered 3 (4x4)":
+						mat = ord4;
+						break;
+
+					case "ZigZag1 (3x3)":
+						mat = zigzag1;
+						break;
+
+					case "ZigZag2 (4x3)":
+						mat = zigzag2;
+						break;
+
+					default:
+						fctCalcDiff = null;
 						break;
 				}
+				if (fctCalcDiff != null) {
+					int rowsOrHeight = mat.GetLength(0);
+					int colsOrWidth = mat.GetLength(1);
+					int sum = 0;
+					for (int j = 0; j < colsOrWidth; j++)
+						for (int i = 0; i < rowsOrHeight; i++)
+							sum += mat[i, j];
+
+					coeffMat = sum * 100 / prm.pct;
+
+					//coeffMat = 1000 * rowsOrHeight * colsOrWidth / prm.pct;
+				}
+			}
 
 			RvbColor choix, p = new RvbColor(0);
 			for (yPix = 0; yPix < ydest; yPix += 2) {
@@ -291,7 +275,7 @@ namespace ConvImgCpc {
 						// Modifie composante Bleue
 						fctCalcDiff(p.blue - choix.blue, 2, Mode, Tx);
 					}
-					bitmap.SetPixel(xPix, yPix, choix.GetColor);
+					bitmap.SetPixel(xPix, yPix, choix);
 				}
 			}
 			if (prm.cpcPlus) {

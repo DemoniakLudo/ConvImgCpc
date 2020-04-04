@@ -6,8 +6,7 @@ namespace ConvImgCpc {
 		public enum SizeMode { Fit, KeepSmaller, KeepLarger };
 
 		public SizeMode sizeMode;
-		public int methode;
-		public int matrice;
+		public string methode;
 		public int pct;
 		public int[] lockState = new int[16];
 		public int pctLumi;
