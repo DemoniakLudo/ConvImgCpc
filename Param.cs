@@ -19,6 +19,7 @@ namespace ConvImgCpc {
 		public bool reductPal2;
 		public bool newReduct;
 		public bool sortPal;
-		public int pixMode;
+		public int nbCols, nbLignes;
+		public string modeCpc;
 	}
 }

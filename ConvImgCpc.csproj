@@ -7,8 +7,8 @@
     <ProjectGuid>{1549DEC1-C5C4-4F68-8C61-F5E3CA995032}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ConvImagesCPC</RootNamespace>
-    <AssemblyName>ConvImagesCPC</AssemblyName>
+    <RootNamespace>ConvImgCpc</RootNamespace>
+    <AssemblyName>ConvImgCpc</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

@@ -3,9 +3,6 @@ using System.Drawing;
 
 namespace ConvImgCpc {
 	public static class Conversion {
-		//const int K_R = 256;
-		//const int K_V = 256;
-		//const int K_B = 256;
 		const int K_R = 9798;
 		const int K_V = 19235;
 		const int K_B = 3735;
@@ -363,19 +360,23 @@ namespace ConvImgCpc {
 		//
 		// Passe 2 : réduit l'image à MaxCol couleurs.
 		//
-		static void Passe2(BitmapCpc dest, int[] CChoix, int maxCol, bool cpcPlus, int pixMode) {
+		static private void Passe2(Bitmap source, BitmapCpc dest, int modeCpc, Param p, int[] CChoix) {
+			int Tx = 4 >> modeCpc;
+			int maxCol = 1 << Tx;
+			RechercheCMax(CChoix, maxCol, p.lockState, p.cpcPlus, p.sortPal);
+
+			// réduit l'image à MaxCol couleurs.
 			for (int i = 0; i < maxCol; i++)
-				tabCol[i] = cpcPlus ? new RvbColor((byte)(((CChoix[i] & 0xF0) >> 4) * 17), (byte)(((CChoix[i] & 0xF00) >> 8) * 17), (byte)((CChoix[i] & 0x0F) * 17)) : BitmapCpc.RgbCPC[CChoix[i] < 27 ? CChoix[i] : 0];
+				tabCol[i] = p.cpcPlus ? new RvbColor((byte)(((CChoix[i] & 0xF0) >> 4) * 17), (byte)(((CChoix[i] & 0xF00) >> 8) * 17), (byte)((CChoix[i] & 0x0F) * 17)) : BitmapCpc.RgbCPC[CChoix[i] < 27 ? CChoix[i] : 0];
 
 			for (int y = 0; y < dest.TailleY; y += 2) {
-				int Tx = 4 >> (dest.ModeCPC >= 3 ? (y & 2) == 0 ? dest.ModeCPC - 2 : dest.ModeCPC - 3 : dest.ModeCPC);
 				for (int x = 0; x < dest.TailleX; x += Tx) {
 					int oldDist = 0x7FFFFFFF;
-					int p = bitmap.GetPixel(x, y);
+					int pix = bitmap.GetPixel(x, y);
 					int choix = 0;
 					for (int i = 0; i < maxCol; i++) {
 						int c = tabCol[i].GetColor;
-						int Dist = ((p & 0xFF) > (c & 0xFF) ? ((p & 0xFF) - (c & 0xFF)) * K_R : ((c & 0xFF) - (p & 0xFF)) * K_R) + (((p >> 8) & 0xFF) > ((c >> 8) & 0xFF) ? (((p >> 8) & 0xFF) - ((c >> 8) & 0xFF)) * K_V : (((c >> 8) & 0xFF) - ((p >> 8) & 0xFF)) * K_V) + ((p >> 16) > (c >> 16) ? ((p - c) >> 16) * K_B : ((c - p) >> 16) * K_B);
+						int Dist = ((pix & 0xFF) > (c & 0xFF) ? ((pix & 0xFF) - (c & 0xFF)) * K_R : ((c & 0xFF) - (pix & 0xFF)) * K_R) + (((pix >> 8) & 0xFF) > ((c >> 8) & 0xFF) ? (((pix >> 8) & 0xFF) - ((c >> 8) & 0xFF)) * K_V : (((c >> 8) & 0xFF) - ((pix >> 8) & 0xFF)) * K_V) + ((pix >> 16) > (c >> 16) ? ((pix - c) >> 16) * K_B : ((c - pix) >> 16) * K_B);
 						if (Dist < oldDist) {
 							choix = i;
 							oldDist = Dist;
@@ -383,126 +384,59 @@ namespace ConvImgCpc {
 								break;
 						}
 					}
-					dest.SetPixelCpc(x, y, choix, (dest.ModeCPC >= 3 ? (y & 2) == 0 ? dest.ModeCPC - 2 : dest.ModeCPC - 3 : dest.ModeCPC));
+					dest.SetPixelCpc(x, y, choix, modeCpc);
 				}
 			}
 		}
 
 		static public int Convert(Bitmap source, BitmapCpc dest, Param p) {
-			int i, ret = 0;
 			int[] memoLockState = new int[16];
-			for (i = 0; i < 16; i++)
+			int[] CChoix = new int[16];
+			int i;
+
+			bitmap = new LockBitmap(source);
+			bitmap.LockBits();
+			for (i = 0; i < 16; i++) {
 				memoLockState[i] = p.lockState[i];
-
-
+				CChoix[i] = dest.Palette[i];
+			}
+			int nbCol = ConvertPasse1(dest.TailleX, dest.TailleY, p, dest.ModeCPC);
 			if (dest.ModeCPC <= 2)
-				ret = DoConvert(source, dest, p);
+				Passe2(source, dest, dest.ModeCPC, p, CChoix);
 			else {
 				BitmapCpc bmpTmp = new BitmapCpc(dest.TailleX, dest.TailleY, 1);
 				switch (dest.ModeCPC) {
 					case 3:
-						dest.ModeCPC = 1;
-						ret = DoConvert(source, dest, p);
+						Passe2(source, bmpTmp, dest.ModeCPC - 2, p, CChoix);
 						for (i = 0; i < 4; i++)
 							p.lockState[i] = 1;
 
-						for (int y = 0; y < dest.TailleY; y += 4) {
-							for (int x = 0; x < dest.TailleX; x += 8)
-								bmpTmp.SetByte(x, y, dest.GetByte(x, y));
-						}
-						dest.ModeCPC = 0;
-						ret = DoConvert(source, dest, p);
-
+						Passe2(source, dest, dest.ModeCPC - 3, p, CChoix);
 						for (int y = 0; y < dest.TailleY; y += 4) {
 							for (int x = 0; x < dest.TailleX; x += 8)
 								dest.SetByte(x, y, bmpTmp.GetByte(x, y));
 						}
-						dest.ModeCPC = 3;
 						break;
 
 					case 4:
-						dest.ModeCPC = 2;
-						ret = DoConvert(source, dest, p);
+						Passe2(source, bmpTmp, dest.ModeCPC - 2, p, CChoix);
 						for (i = 0; i < 2; i++)
 							p.lockState[i] = 1;
 
-						for (int y = 0; y < dest.TailleY; y += 4) {
-							for (int x = 0; x < dest.TailleX; x += 8)
-								bmpTmp.SetByte(x, y, dest.GetByte(x, y));
-						}
-						dest.ModeCPC = 1;
-						ret = DoConvert(source, dest, p);
-
+						Passe2(source, dest, dest.ModeCPC - 3, p, CChoix);
 						for (int y = 0; y < dest.TailleY; y += 4) {
 							for (int x = 0; x < dest.TailleX; x += 8)
 								dest.SetByte(x, y, bmpTmp.GetByte(x, y));
 						}
-						dest.ModeCPC = 4;
 						break;
 				}
 			}
-			for (i = 0; i < 16; i++)
+			for (i = 0; i < 16; i++) {
 				p.lockState[i] = memoLockState[i];
-
-			return ret;
-		}
-
-		static private int DoConvert(Bitmap source, BitmapCpc dest, Param p) {
-			int[] CChoix = new int[16];
-			int maxCol = 1 << (4 >> (dest.ModeCPC == 3 ? 0 : dest.ModeCPC));
-			for (int i = 0; i < 16; i++)
-				CChoix[i] = dest.Palette[i];
-
-			int tailleX = dest.TailleX;
-			int tailleY = dest.TailleY;
-			double ratio = source.Width * tailleY / (double)(source.Height * tailleX);
-			Bitmap tmp = new Bitmap(tailleX, tailleY);
-			Graphics g = Graphics.FromImage(tmp);
-			switch (p.sizeMode) {
-				case Param.SizeMode.KeepSmaller:
-					if (ratio < 1) {
-						int newW = (int)(tailleX * ratio);
-						g.DrawImage(source, (tailleX - newW) >> 1, 0, newW, tailleY);
-					}
-					else {
-						int newH = (int)(tailleY / ratio);
-						g.DrawImage(source, 0, (tailleY - newH) >> 1, tailleX, newH);
-					}
-					bitmap = new LockBitmap(tmp);
-					break;
-
-				case Param.SizeMode.KeepLarger:
-					if (ratio < 1) {
-						int newY = (int)(tailleY / ratio);
-						g.DrawImage(source, 0, (tailleY - newY) >> 1, tailleX, newY);
-					}
-					else {
-						int newX = (int)(tailleX * ratio);
-						g.DrawImage(source, (tailleX - newX) >> 1, 0, newX, tailleY);
-					}
-					bitmap = new LockBitmap(tmp);
-					break;
-
-				case Param.SizeMode.Fit:
-					bitmap = new LockBitmap(new Bitmap(source, tailleX, tailleY));
-					break;
-			}
-
-			bitmap.LockBits();
-
-			int nbCol = ConvertPasse1(dest.TailleX, dest.TailleY, p, dest.ModeCPC);
-			
-			
-			RechercheCMax(CChoix, maxCol, p.lockState, p.cpcPlus, p.sortPal);
-			
-			
-			Passe2(dest, CChoix, maxCol, p.cpcPlus, p.pixMode);
-			
-			
-			for (int i = 0; i < 16; i++)
 				dest.SetPalette(i, CChoix[i]);
-
+			}
 			bitmap.UnlockBits();
+
 			return nbCol;
 		}
 	}

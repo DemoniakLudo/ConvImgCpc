@@ -1,5 +1,6 @@
-/ConvImagesCpc/bin
-/ConvImagesCpc/obj
+/bin
+/obj
 *.suo
 *.user
 *.bak
+

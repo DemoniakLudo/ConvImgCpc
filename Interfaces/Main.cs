@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using System.Xml.Serialization;
 
 namespace ConvImgCpc {
-	public partial class Main: Form {
+	public partial class Main : Form {
 		private ImageSource imgSrc;
 		private ImageCpc imgCpc;
 		private Param param = new Param();
@@ -19,7 +19,6 @@ namespace ConvImgCpc {
 			mode.SelectedIndex = imgCpc.bitmapCpc.ModeCPC;
 			methode.SelectedIndex = 0;
 			matrice.SelectedIndex = 0;
-			renderMode.SelectedIndex = 0;
 			param.pctContrast = param.pctLumi = param.pctSat = 100;
 			param.matrice = 2;
 		}
@@ -46,13 +45,43 @@ namespace ConvImgCpc {
 				param.methode = methode.SelectedIndex;
 				param.matrice = matrice.SelectedIndex + 2;
 				param.lockState = imgCpc.lockState;
-				Conversion.Convert(imgSrc.GetImage, imgCpc.bitmapCpc, param);
+
+				int tailleX = imgCpc.bitmapCpc.TailleX;
+				int tailleY = imgCpc.bitmapCpc.TailleY;
+				Bitmap tmp = new Bitmap(tailleX, tailleY);
+				Graphics g = Graphics.FromImage(tmp);
+				double ratio = imgSrc.GetImage.Width * tailleY / (double)(imgSrc.GetImage.Height * tailleX);
+				switch (param.sizeMode) {
+					case Param.SizeMode.KeepSmaller:
+						if (ratio < 1) {
+							int newW = (int)(tailleX * ratio);
+							g.DrawImage(imgSrc.GetImage, (tailleX - newW) >> 1, 0, newW, tailleY);
+						}
+						else {
+							int newH = (int)(tailleY / ratio);
+							g.DrawImage(imgSrc.GetImage, 0, (tailleY - newH) >> 1, tailleX, newH);
+						}
+						break;
+
+					case Param.SizeMode.KeepLarger:
+						if (ratio < 1) {
+							int newY = (int)(tailleY / ratio);
+							g.DrawImage(imgSrc.GetImage, 0, (tailleY - newY) >> 1, tailleX, newY);
+						}
+						else {
+							int newX = (int)(tailleX * ratio);
+							g.DrawImage(imgSrc.GetImage, (tailleX - newX) >> 1, 0, newX, tailleY);
+						}
+						break;
+
+					case Param.SizeMode.Fit:
+						tmp = new Bitmap(imgSrc.GetImage, tailleX, tailleY);
+						break;
+				}
+				Conversion.Convert(tmp, imgCpc.bitmapCpc, param);
 				bpConvert.Enabled = true;
 			}
-			long t1 = DateTime.Now.Ticks;
 			UpdateImgCPC();
-			long t2 = DateTime.Now.Ticks - t1;
-			long t3 = t2 - t1;
 		}
 
 		private void bpConvert_Click(object sender, System.EventArgs e) {
@@ -70,19 +99,22 @@ namespace ConvImgCpc {
 		}
 
 		private void nbCols_ValueChanged(object sender, System.EventArgs e) {
-			imgCpc.bitmapCpc.TailleX = (int)nbCols.Value << 3;
+			param.nbCols = (int)nbCols.Value;
+			imgCpc.bitmapCpc.TailleX = param.nbCols << 3;
 			imgCpc.Reset();
 			Convert(false);
 		}
 
 		private void nbLignes_ValueChanged(object sender, System.EventArgs e) {
-			imgCpc.bitmapCpc.TailleY = (int)nbLignes.Value << 1;
+			param.nbLignes = (int)nbLignes.Value;
+			imgCpc.bitmapCpc.TailleY = param.nbLignes << 1;
 			imgCpc.Reset();
 			Convert(false);
 		}
 
 		private void mode_SelectedIndexChanged(object sender, System.EventArgs e) {
-			imgCpc.bitmapCpc.ModeCPC = int.Parse(mode.SelectedItem.ToString().Substring(0,1));
+			param.modeCpc = mode.SelectedItem.ToString();
+			imgCpc.bitmapCpc.ModeCPC = int.Parse(mode.SelectedItem.ToString().Substring(0, 1));
 			imgCpc.Reset();
 			Convert(false);
 		}
@@ -117,11 +149,6 @@ namespace ConvImgCpc {
 		}
 
 		private void matrice_SelectedIndexChanged(object sender, System.EventArgs e) {
-			Convert(false);
-		}
-
-		private void renderMode_SelectedIndexChanged(object sender, System.EventArgs e) {
-			param.pixMode = renderMode.SelectedIndex;
 			Convert(false);
 		}
 
@@ -213,10 +240,12 @@ namespace ConvImgCpc {
 					reducPal2.Checked = param.reductPal2;
 					newReduc.Checked = param.newReduct;
 					sortPal.Checked = param.sortPal;
-					renderMode.SelectedIndex = param.pixMode;
 					radioFit.Checked = param.sizeMode == Param.SizeMode.Fit;
 					radioKeepLarger.Checked = param.sizeMode == Param.SizeMode.KeepLarger;
 					radioKeepSmaller.Checked = param.sizeMode == Param.SizeMode.KeepSmaller;
+					nbCols.Value = param.nbCols;
+					nbLignes.Value = param.nbLignes;
+					mode.SelectedItem = param.modeCpc;
 				}
 				catch (Exception ex) {
 				}
