@@ -14,9 +14,9 @@ namespace ConvImgCpc {
 			InitializeComponent();
 			imgSrc = new ImageSource();
 			imgCpc = new ImageCpc(Convert);
-			nbCols.Value = imgCpc.bitmapCpc.TailleX >> 3;
-			nbLignes.Value = imgCpc.bitmapCpc.TailleY >> 1;
-			mode.SelectedIndex = imgCpc.bitmapCpc.ModeCPC;
+			nbCols.Value = imgCpc.TailleX >> 3;
+			nbLignes.Value = imgCpc.TailleY >> 1;
+			mode.SelectedIndex = imgCpc.ModeCPC;
 			methode.SelectedIndex = 0;
 			matrice.SelectedIndex = 0;
 			param.pctContrast = param.pctLumi = param.pctSat = 100;
@@ -46,8 +46,8 @@ namespace ConvImgCpc {
 				param.matrice = matrice.SelectedIndex + 2;
 				param.lockState = imgCpc.lockState;
 
-				int tailleX = imgCpc.bitmapCpc.TailleX;
-				int tailleY = imgCpc.bitmapCpc.TailleY;
+				int tailleX = imgCpc.TailleX;
+				int tailleY = imgCpc.TailleY;
 				Bitmap tmp = new Bitmap(tailleX, tailleY);
 				Graphics g = Graphics.FromImage(tmp);
 				double ratio = imgSrc.GetImage.Width * tailleY / (double)(imgSrc.GetImage.Height * tailleX);
@@ -78,7 +78,7 @@ namespace ConvImgCpc {
 						tmp = new Bitmap(imgSrc.GetImage, tailleX, tailleY);
 						break;
 				}
-				Conversion.Convert(tmp, imgCpc.bitmapCpc, param);
+				Conversion.Convert(tmp, imgCpc, param);
 				bpConvert.Enabled = true;
 			}
 			UpdateImgCPC();
@@ -100,27 +100,27 @@ namespace ConvImgCpc {
 
 		private void nbCols_ValueChanged(object sender, System.EventArgs e) {
 			param.nbCols = (int)nbCols.Value;
-			imgCpc.bitmapCpc.TailleX = param.nbCols << 3;
+			imgCpc.TailleX = param.nbCols << 3;
 			imgCpc.Reset();
 			Convert(false);
 		}
 
 		private void nbLignes_ValueChanged(object sender, System.EventArgs e) {
 			param.nbLignes = (int)nbLignes.Value;
-			imgCpc.bitmapCpc.TailleY = param.nbLignes << 1;
+			imgCpc.TailleY = param.nbLignes << 1;
 			imgCpc.Reset();
 			Convert(false);
 		}
 
 		private void mode_SelectedIndexChanged(object sender, System.EventArgs e) {
 			param.modeCpc = mode.SelectedItem.ToString();
-			imgCpc.bitmapCpc.ModeCPC = int.Parse(mode.SelectedItem.ToString().Substring(0, 1));
+			imgCpc.ModeCPC = int.Parse(mode.SelectedItem.ToString().Substring(0, 1));
 			imgCpc.Reset();
 			Convert(false);
 		}
 
 		private void modePlus_CheckedChanged(object sender, System.EventArgs e) {
-			imgCpc.bitmapCpc.cpcPlus = modePlus.Checked;
+			imgCpc.cpcPlus = modePlus.Checked;
 			newMethode.Enabled = !modePlus.Checked;
 			reducPal1.Enabled = reducPal2.Enabled = newReduc.Enabled = modePlus.Checked;
 			param.cpcPlus = modePlus.Checked;
@@ -273,7 +273,7 @@ namespace ConvImgCpc {
 			dlg.Filter = "Image CPC (*.scr)|*.scr";
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
-				SauveImage.SauveEcran(dlg.FileName, imgCpc.bitmapCpc, param.cpcPlus);
+				//SauveImage.SauveEcran(dlg.FileName, imgCpc, param.cpcPlus);
 			}
 		}
 	}

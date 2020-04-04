@@ -28,10 +28,9 @@ namespace ConvImgCpc {
 			Marshal.Copy(Iptr, Pixels, 0, Pixels.Length);
 		}
 
-		public Bitmap UnlockBits() {
+		public void UnlockBits() {
 			Marshal.Copy(Pixels, 0, Iptr, Pixels.Length);
 			source.UnlockBits(bitmapData);
-			return source;
 		}
 
 		public int GetPixel(int pixelX, int pixelY) {
@@ -44,37 +43,12 @@ namespace ConvImgCpc {
 			return new RvbColor(Pixels[adr] + (Pixels[adr + 1] << 8) + (Pixels[adr + 2] << 16));
 		}
 
-		public void GetPixel(int pixelX, int pixelY, ref int red, ref int green, ref int blue) {
-			int adr = ((pixelY * Width) + pixelX) << 2;
-			red = Pixels[adr];
-			green = Pixels[adr + 1];
-			blue = Pixels[adr + 2];
-		}
-
-		public void AddGetPixel(int pixelX, int pixelY, ref int red, ref int green, ref int blue) {
-			int adr = ((pixelY * Width) + pixelX) << 2;
-			red += Pixels[adr];
-			green += Pixels[adr + 1];
-			blue += Pixels[adr + 2];
-		}
-
 		public void SetPixel(int pixelX, int pixelY, int color) {
 			int adr = ((pixelY * Width) + pixelX) << 2;
 			Pixels[adr++] = (byte)(color);
 			Pixels[adr++] = (byte)(color >> 8);
 			Pixels[adr++] = (byte)(color >> 16);
 			Pixels[adr] = 0xFF;
-		}
-
-		public void CopyPixel(int xs, int ys, int xd, int yd, int nb) {
-			int adrd = ((yd * Width) + xd) << 2;
-			int adr = ((ys * Width) + xs) << 2;
-			for (; nb-- > 0; ) {
-				Pixels[adrd++] = Pixels[adr];
-				Pixels[adrd++] = Pixels[adr + 1];
-				Pixels[adrd++] = Pixels[adr + 2];
-				Pixels[adrd++] = 0xFF;
-			}
 		}
 	}
 

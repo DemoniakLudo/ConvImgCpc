@@ -267,7 +267,7 @@ namespace ConvImgCpc {
 						else {
 							int OldDist1 = 0x7FFFFFFF;
 							for (int i = 0; i < 27; i++) {
-								RvbColor s = BitmapCpc.RgbCPC[i];
+								RvbColor s = ImageCpc.RgbCPC[i];
 								int Dist1 = CalcDist(s.red, s.green, s.blue, p.red, p.green, p.blue);
 								if (Dist1 < OldDist1) {
 									OldDist1 = Dist1;
@@ -277,7 +277,7 @@ namespace ConvImgCpc {
 								}
 							}
 						}
-						choix = BitmapCpc.RgbCPC[indexChoix];
+						choix = ImageCpc.RgbCPC[indexChoix];
 					}
 					Coul[indexChoix]++;
 
@@ -360,14 +360,16 @@ namespace ConvImgCpc {
 		//
 		// Passe 2 : réduit l'image à MaxCol couleurs.
 		//
-		static private void Passe2(Bitmap source, BitmapCpc dest, int modeCpc, Param p, int[] CChoix) {
+		static private void Passe2(ImageCpc dest, int modeCpc, Param p, int[] CChoix) {
 			int Tx = 4 >> modeCpc;
 			int maxCol = 1 << Tx;
 			RechercheCMax(CChoix, maxCol, p.lockState, p.cpcPlus, p.sortPal);
+			for (int i = 0; i < maxCol; i++)
+				dest.SetPalette(i, CChoix[i]);
 
 			// réduit l'image à MaxCol couleurs.
 			for (int i = 0; i < maxCol; i++)
-				tabCol[i] = p.cpcPlus ? new RvbColor((byte)(((CChoix[i] & 0xF0) >> 4) * 17), (byte)(((CChoix[i] & 0xF00) >> 8) * 17), (byte)((CChoix[i] & 0x0F) * 17)) : BitmapCpc.RgbCPC[CChoix[i] < 27 ? CChoix[i] : 0];
+				tabCol[i] = p.cpcPlus ? new RvbColor((byte)(((CChoix[i] & 0xF0) >> 4) * 17), (byte)(((CChoix[i] & 0xF00) >> 8) * 17), (byte)((CChoix[i] & 0x0F) * 17)) : ImageCpc.RgbCPC[CChoix[i] < 27 ? CChoix[i] : 0];
 
 			for (int y = 0; y < dest.TailleY; y += 2) {
 				for (int x = 0; x < dest.TailleX; x += Tx) {
@@ -389,7 +391,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		static public int Convert(Bitmap source, BitmapCpc dest, Param p) {
+		static public int Convert(Bitmap source, ImageCpc dest, Param p) {
 			int[] memoLockState = new int[16];
 			int[] CChoix = new int[16];
 			int i;
@@ -401,42 +403,27 @@ namespace ConvImgCpc {
 				CChoix[i] = dest.Palette[i];
 			}
 			int nbCol = ConvertPasse1(dest.TailleX, dest.TailleY, p, dest.ModeCPC);
+			dest.LockBits();
 			if (dest.ModeCPC <= 2)
-				Passe2(source, dest, dest.ModeCPC, p, CChoix);
+				Passe2(dest, dest.ModeCPC, p, CChoix);
 			else {
-				BitmapCpc bmpTmp = new BitmapCpc(dest.TailleX, dest.TailleY, 1);
-				switch (dest.ModeCPC) {
-					case 3:
-						Passe2(source, bmpTmp, dest.ModeCPC - 2, p, CChoix);
-						for (i = 0; i < 4; i++)
-							p.lockState[i] = 1;
+				ImageCpc cpcTmp = new ImageCpc(null);
+				int m1 = dest.ModeCPC - 2;
+				int m2 = dest.ModeCPC - 3;
+				Passe2(cpcTmp, m1, p, CChoix);
+				for (i = 0; i < 4; i++)
+					p.lockState[i] = 1;
 
-						Passe2(source, dest, dest.ModeCPC - 3, p, CChoix);
-						for (int y = 0; y < dest.TailleY; y += 4) {
-							for (int x = 0; x < dest.TailleX; x += 8)
-								dest.SetByte(x, y, bmpTmp.GetByte(x, y));
-						}
-						break;
-
-					case 4:
-						Passe2(source, bmpTmp, dest.ModeCPC - 2, p, CChoix);
-						for (i = 0; i < 2; i++)
-							p.lockState[i] = 1;
-
-						Passe2(source, dest, dest.ModeCPC - 3, p, CChoix);
-						for (int y = 0; y < dest.TailleY; y += 4) {
-							for (int x = 0; x < dest.TailleX; x += 8)
-								dest.SetByte(x, y, bmpTmp.GetByte(x, y));
-						}
-						break;
-				}
+				Passe2(dest, m2, p, CChoix);
+				for (int y = 0; y < dest.TailleY; y += 4)
+					for (int x = 0; x < dest.TailleX; x++)
+						dest.CopyPixel(x, y, cpcTmp.GetPixel(x, y));
 			}
-			for (i = 0; i < 16; i++) {
+			dest.UnlockBits();
+			for (i = 0; i < 16; i++)
 				p.lockState[i] = memoLockState[i];
-				dest.SetPalette(i, CChoix[i]);
-			}
-			bitmap.UnlockBits();
 
+			bitmap.UnlockBits();
 			return nbCol;
 		}
 	}
