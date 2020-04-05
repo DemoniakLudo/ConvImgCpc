@@ -264,9 +264,8 @@ namespace ConvImgCpc {
 			SaveFileDialog dlg = new SaveFileDialog();
 			dlg.Filter = "Image CPC (*.scr)|*.scr";
 			DialogResult result = dlg.ShowDialog();
-			if (result == DialogResult.OK) {
-				//SauveImage.SauveEcran(dlg.FileName, imgCpc, param.cpcPlus);
-			}
+			if (result == DialogResult.OK)
+				imgCpc.SauveScr(dlg.FileName, param);
 		}
 	}
 }

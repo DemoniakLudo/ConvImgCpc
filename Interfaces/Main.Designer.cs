@@ -530,7 +530,6 @@
 			// 
 			// bpSaveImage
 			// 
-			this.bpSaveImage.Enabled = false;
 			this.bpSaveImage.Location = new System.Drawing.Point(3, 177);
 			this.bpSaveImage.Name = "bpSaveImage";
 			this.bpSaveImage.Size = new System.Drawing.Size(108, 23);

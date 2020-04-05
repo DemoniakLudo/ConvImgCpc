@@ -3,6 +3,7 @@ using System.Windows.Forms;
 
 namespace ConvImgCpc {
 	public partial class ImageCpc : Form {
+		public byte[] bmpCpc = new byte[0x10000];
 		private LockBitmap bmpLock;
 		private Label[] colors = new Label[16];
 		private CheckBox[] lockColors = new CheckBox[16];
@@ -19,9 +20,6 @@ namespace ConvImgCpc {
 
 		public int[] Palette = new int[17];
 		static private int[] paletteStandardCPC = { 1, 24, 20, 6, 26, 0, 2, 7, 10, 12, 14, 16, 18, 22, 1, 14 };
-		static private int[] tabMasqueMode0 = { 0xAA, 0x55 };
-		static private int[] tabMasqueMode1 = { 0x88, 0x44, 0x22, 0x11 };
-		static private int[] tabMasqueMode2 = { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
 		static private int[] tabOctetMode01 = { 0x00, 0x80, 0x08, 0x88, 0x20, 0xA0, 0x28, 0xA8, 0x02, 0x82, 0x0A, 0x8A, 0x22, 0xA2, 0x2A, 0xAA };
 		const int maxColsCpc = 96;
 		const int maxLignesCpc = 272;
@@ -72,8 +70,17 @@ namespace ConvImgCpc {
 			get { return nbLig << 1; }
 			set { nbLig = value >> 1; }
 		}
+		public int BitmapSize { get { return GetAdrCpc(TailleY - 2); } }
 		public int ModeCPC = 1;
 		public bool cpcPlus = false;
+
+		private int GetAdrCpc(int y) {
+			int adrCPC = (y >> 4) * nbCol + (y & 14) * 0x400;
+			if (y > 255 && (nbCol * nbLig > 0x3FFF))
+				adrCPC += 0x3800;
+
+			return adrCPC;
+		}
 
 		public ImageCpc(ConvertDelegate fctConvert) {
 			InitializeComponent();
@@ -82,9 +89,6 @@ namespace ConvImgCpc {
 			Bitmap bmp = new Bitmap(tx, ty);
 			pictureBox.Image = bmp;
 			bmpLock = new LockBitmap(bmp);
-
-			TailleX = 768;
-			TailleY = 544;
 			ModeCPC = 1;
 			for (int i = 0; i < 16; i++)
 				Palette[i] = paletteStandardCPC[i];
@@ -110,6 +114,20 @@ namespace ConvImgCpc {
 			Reset();
 			ChangeZoom(1);
 			Convert = fctConvert;
+		}
+
+		public void Reset() {
+			int col = System.Drawing.SystemColors.Control.ToArgb();
+			bmpLock.LockBits();
+			for (int x = 0; x < bmpLock.Width; x++)
+				for (int y = 0; y < bmpLock.Height; y++)
+					bmpLock.SetPixel(x, y, col);
+
+			bmpLock.UnlockBits();
+			vScrollBar.Height = TailleY;
+			vScrollBar.Left = TailleX + 3;
+			hScrollBar.Width = TailleX;
+			hScrollBar.Top = TailleY + 3;
 		}
 
 		public void SetPalette(int entree, int valeur) {
@@ -176,20 +194,6 @@ namespace ConvImgCpc {
 			}
 		}
 
-		public void Reset() {
-			int col = 0;
-			bmpLock.LockBits();
-			for (int x = 0; x < bmpLock.Width; x++)
-				for (int y = 0; y < bmpLock.Height; y++)
-					bmpLock.SetPixel(x, y, col);
-
-			bmpLock.UnlockBits();
-			vScrollBar.Height = TailleY;
-			vScrollBar.Left = TailleX + 3;
-			hScrollBar.Width = TailleX;
-			hScrollBar.Top = TailleY + 3;
-		}
-
 		public void UpdatePalette() {
 			for (int i = 0; i < 16; i++) {
 				colors[i].BackColor = Color.FromArgb(GetPaletteColor(i).GetColorArgb);
@@ -216,6 +220,30 @@ namespace ConvImgCpc {
 				lockState[i] = lockAllPal.Checked ? 1 : 0;
 			}
 			Convert(false);
+		}
+
+		public void SauveScr(string fileName, Param param) {
+			for (int y = 0; y < TailleY; y += 2) {
+				int modeCPC = (ModeCPC >= 3 ? (y & 2) == 0 ? ModeCPC - 2 : ModeCPC - 3 : ModeCPC);
+				int adrCPC = GetAdrCpc(y);
+				int tx = 4 >> modeCPC;
+				for (int x = 0; x < TailleX; x += 8) {
+					byte octet = 0;
+					int pixel = 0;
+					for (int p = 0; p < 8; p++) {
+						int color = bmpLock.GetPixel(x + p, y);
+						for (int i = 0; i < 16; i++)
+							if (ImageCpc.RgbCPC[Palette[i]].GetColor == color) {
+								pixel = i;
+								break;
+							}
+						if ((p % tx) == 0)
+							octet |= (byte)(tabOctetMode01[pixel] >> (p / tx));
+					}
+					bmpCpc[adrCPC + (x >> 3)] = octet;
+				}
+			}
+			SauveImage.SauveEcran(fileName, this, param.cpcPlus);
 		}
 
 		#region Mode édition

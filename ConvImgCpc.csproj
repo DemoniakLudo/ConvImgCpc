@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conversion.cs" />
+    <Compile Include="CpcSystem.cs" />
     <Compile Include="Interfaces\EditColor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,9 +73,11 @@
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
     <Compile Include="LockBitmap.cs" />
+    <Compile Include="PackDepack.cs" />
     <Compile Include="Param.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SauveImage.cs" />
     <EmbeddedResource Include="Interfaces\EditColor.resx">
       <DependentUpon>EditColor.cs</DependentUpon>
     </EmbeddedResource>
