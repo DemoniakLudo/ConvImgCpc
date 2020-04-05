@@ -24,7 +24,6 @@
 		/// </summary>
 		private void InitializeComponent() {
 			this.checkImageSource = new System.Windows.Forms.CheckBox();
-			this.checkImageCPC = new System.Windows.Forms.CheckBox();
 			this.bpReadSrc = new System.Windows.Forms.Button();
 			this.bpConvert = new System.Windows.Forms.Button();
 			this.nbCols = new System.Windows.Forms.NumericUpDown();
@@ -86,17 +85,6 @@
 			this.checkImageSource.Text = "Afficher image source";
 			this.checkImageSource.UseVisualStyleBackColor = true;
 			this.checkImageSource.CheckedChanged += new System.EventHandler(this.checkImageSource_CheckedChanged);
-			// 
-			// checkImageCPC
-			// 
-			this.checkImageCPC.AutoSize = true;
-			this.checkImageCPC.Location = new System.Drawing.Point(3, 74);
-			this.checkImageCPC.Name = "checkImageCPC";
-			this.checkImageCPC.Size = new System.Drawing.Size(117, 17);
-			this.checkImageCPC.TabIndex = 1;
-			this.checkImageCPC.Text = "Afficher image CPC";
-			this.checkImageCPC.UseVisualStyleBackColor = true;
-			this.checkImageCPC.CheckedChanged += new System.EventHandler(this.checkImageCPC_CheckedChanged);
 			// 
 			// bpReadSrc
 			// 
@@ -192,16 +180,17 @@
 			this.methode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.methode.FormattingEnabled = true;
 			this.methode.Items.AddRange(new object[] {
-				"Aucun",
+            "Aucun",
+            "Floyd-Steinberg (2x2)",
             "Bayer 1 (2X2)",
             "Bayer 2 (4x4)",
             "Bayer 3 (4X4)",
             "Ordered 1 (3x3)",
             "Ordered 2 (3x3)",
             "Ordered 3 (4x4)",
-			"ZigZag1 (3x3)",
-			"ZigZag2 (4x3)",
-			});
+            "ZigZag1 (3x3)",
+            "ZigZag2 (4x3)",
+            "Test"});
 			this.methode.Location = new System.Drawing.Point(92, 19);
 			this.methode.Name = "methode";
 			this.methode.Size = new System.Drawing.Size(97, 21);
@@ -539,6 +528,7 @@
 			// 
 			// bpSaveImage
 			// 
+			this.bpSaveImage.Enabled = false;
 			this.bpSaveImage.Location = new System.Drawing.Point(3, 177);
 			this.bpSaveImage.Name = "bpSaveImage";
 			this.bpSaveImage.Size = new System.Drawing.Size(108, 23);
@@ -562,7 +552,6 @@
 			this.Controls.Add(this.resoCPC);
 			this.Controls.Add(this.bpConvert);
 			this.Controls.Add(this.bpReadSrc);
-			this.Controls.Add(this.checkImageCPC);
 			this.Controls.Add(this.checkImageSource);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
@@ -590,7 +579,6 @@
 		#endregion
 
 		private System.Windows.Forms.CheckBox checkImageSource;
-		private System.Windows.Forms.CheckBox checkImageCPC;
 		private System.Windows.Forms.Button bpReadSrc;
 		private System.Windows.Forms.Button bpConvert;
 		private System.Windows.Forms.NumericUpDown nbCols;

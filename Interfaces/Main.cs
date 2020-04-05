@@ -19,6 +19,7 @@ namespace ConvImgCpc {
 			mode.SelectedIndex = imgCpc.ModeCPC;
 			methode.SelectedIndex = 0;
 			param.pctContrast = param.pctLumi = param.pctSat = 100;
+			imgCpc.Visible = true;
 		}
 
 		private void checkImageSource_CheckedChanged(object sender, System.EventArgs e) {
@@ -26,13 +27,7 @@ namespace ConvImgCpc {
 		}
 
 		private void UpdateImgCPC() {
-			if (checkImageCPC.Checked)
-				imgCpc.Render();
-		}
-
-		private void checkImageCPC_CheckedChanged(object sender, System.EventArgs e) {
-			UpdateImgCPC();
-			imgCpc.Visible = checkImageCPC.Checked;
+			imgCpc.Render();
 		}
 
 		private void Convert(bool doConvert) {
@@ -91,6 +86,7 @@ namespace ConvImgCpc {
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
 				imgSrc.SetBitmap(new Bitmap(dlg.FileName), checkImageSource.Checked);
+				Text = "ConvImgCPC - " + Path.GetFileName(dlg.FileName);
 				Convert(false);
 			}
 		}

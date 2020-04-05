@@ -262,16 +262,20 @@ namespace ConvImgCpc {
 
 		private void DrawPen(MouseEventArgs e) {
 			if (modeEdition.Checked) {
+				LockBits();
 				for (int y = 0; y < penWidth * 2; y += 2) {
-					int mode = (ModeCPC >= 3 ? (y & 2) == 0 ? ModeCPC - 2 : ModeCPC - 3 : ModeCPC);
+					int yReel = offsetY + (e.Y / zoom) - penWidth + 1;
+					int mode = (ModeCPC >= 3 ? (yReel & 2) == 0 ? ModeCPC - 2 : ModeCPC - 3 : ModeCPC);
 					int Tx = (4 >> mode);
+					yReel += y;
 					for (int x = 0; x < penWidth * Tx; x += Tx) {
 						int xReel = x + offsetX + (e.X / zoom) - ((penWidth * Tx) >> 1) + 1;
-						int yReel = y + offsetY + (e.Y / zoom) - penWidth + 1;
+						xReel &= mode == 0 ? 0x3FFC : mode == 1 ? 0x3FFE : 0x3FFF;
 						if (xReel >= 0 && yReel > 0 && xReel < TailleX && yReel < TailleY)
 							SetPixelCpc(xReel, yReel, numCol, mode);
 					}
 				}
+				UnlockBits();
 				Render();
 			}
 		}
