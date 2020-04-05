@@ -185,11 +185,13 @@
             "Bayer 1 (2X2)",
             "Bayer 2 (4x4)",
             "Bayer 3 (4X4)",
-            "Ordered 1 (3x3)",
+            "Ordered 1 (2x2)",
             "Ordered 2 (3x3)",
-            "Ordered 3 (4x4)",
+            "Ordered 3 (3x3)",
+            "Ordered 4 (4x4)",
             "ZigZag1 (3x3)",
             "ZigZag2 (4x3)",
+            "ZigZag3 (5x4)",
             "Test"});
 			this.methode.Location = new System.Drawing.Point(92, 19);
 			this.methode.Name = "methode";

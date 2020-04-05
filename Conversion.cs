@@ -7,57 +7,62 @@ namespace ConvImgCpc {
 		const int K_V = 19235;
 		const int K_B = 3735;
 
-		const int SEUIL_LUM_1 = 0x55;
-		const int SEUIL_LUM_2 = 0xAA;
+		const int SEUIL_LUM_1 = 0x40;
+		const int SEUIL_LUM_2 = 0x80;
 
 		public delegate void DlgCalcDiff(int diff, int decalMasque, int modeCpc, int tx);
 		static private DlgCalcDiff fctCalcDiff = null;
 		static private int[] Coul = new int[4096];
 		static private LockBitmap bitmap;
 		static private int xPix, yPix;
-		static private int coeffMat;
 		static private byte[] tblContrast = new byte[256];
 
-		static int[,] bayer2 = new int[2, 2] {	{1, 3 },
-												{4, 2 } };
-		static int[,] bayer3 = new int[4, 4] {	{0, 12, 3, 15},
-												{8, 4, 11, 7},
-												{2, 14, 1, 13},
-												{10, 6, 9, 5}};
-		static int[,] bayer4 = new int[4, 4] {	{1, 9, 3, 11},
-												{13, 5, 15, 7},
-												{4, 12, 2, 10},
-												{16, 8, 14, 6}};
-		static int[,] ord1 = new int[3, 3] {	{8, 3, 4},
-												{6, 1, 2},
-												{7, 5, 9}};
-		static int[,] ord2 = new int[3, 3] {	{1, 7, 4},
-												{5, 8, 3},
-												{6, 2, 9}};
-		static int[,] ord4 = new int[4, 4] {	{0, 8, 2, 10},
-												{12, 4, 14, 6},
-												{3, 11, 1, 9},
-												{15, 7, 13, 5}};
-		static int[,] zigzag1 = new int[3, 3] {	{0, 4, 0},
-												{3, 0, 1},
-												{0, 2, 0}};
-		static int[,] zigzag2 = new int[3, 4] {	{0, 4, 2, 0},
-												{6, 0, 5, 3},
-												{0, 7, 1, 0}};
-		static int[,] floyd = new int[2, 2] {	{7, 3},
-												{5, 1}};
-		static int[,] test3 = new int[3, 2] {	{0, 3,},
-												{0, 5},
-												{7, 1}};
-		static int[,] test2 = new int[3, 3] {	{8, 4, 5},
-												{3, 0, 1},
-												{7, 2, 6}};
-		static int[,] test1 = new int[3, 1] { { 1 }, { 4 }, { 2 } };
+		static double[,] bayer2 = new double[2, 2] {	{1 / 1600.0, 3 / 1600.0 },
+														{4 / 1600.0, 2 / 1600.0 } };
+		static double[,] bayer3 = new double[4, 4] {	{0, 12 / 32000.0, 3 / 32000.0, 15 / 32000.0},
+														{8 / 32000.0, 4 / 32000.0, 11 / 32000.0, 7 / 32000.0},
+														{2 / 32000.0, 14 / 32000.0, 1 / 32000.0, 13 / 32000.0},
+														{10 / 32000.0, 6 / 32000.0, 9 / 32000.0, 5 / 32000.0}};
+		static double[,] bayer4 = new double[4, 4] {	{1 / 32000.0, 9 / 32000.0, 3 / 32000.0, 11 / 32000.0},
+														{13 / 32000.0, 5 / 32000.0, 15 / 32000.0, 7 / 32000.0},
+														{4 / 32000.0, 12 / 32000.0, 2 / 32000.0, 10 / 32000.0},
+														{16 / 32000.0, 8 / 32000.0, 14 / 32000.0, 6 / 32000.0}};
+		static double[,] ord1 = new double[2, 2] {	{1 / 1600.0, 3 / 1600.0},
+													{2 / 1600.0, 4 / 1600.0}};
+		static double[,] ord2 = new double[3, 3] {	{8 / 4000.0, 3 / 4000.0, 4 / 4000.0},
+													{6 / 4000.0, 1 / 4000.0, 2 / 4000.0},
+													{7 / 4000.0, 5 / 4000.0, 9 / 4000.0}};
+		static double[,] ord3 = new double[3, 3] {	{1 / 4000.0, 7 / 4000.0, 4 / 4000.0},
+													{5 / 4000.0, 8 / 4000.0, 3 / 4000.0},
+													{6 / 4000.0, 2 / 4000.0, 9 / 4000.0}};
+		static double[,] ord4 = new double[4, 4] {	{0 / 32000.0, 8 / 32000.0, 2 / 32000.0, 10 / 32000.0},
+													{12 / 32000.0, 4 / 32000.0, 14 / 32000.0, 6 / 32000.0},
+													{3 / 32000.0, 11 / 32000.0, 1 / 32000.0, 9 / 32000.0},
+													{15 / 32000.0, 7 / 32000.0, 13 / 32000.0, 5 / 32000.0}};
+		static double[,] zigzag1 = new double[3, 3] {	{0, 4 / 1600.0, 0},
+														{3 / 1600.0, 0, 1 / 1600.0},
+														{0, 2 / 1600.0, 0}};
+		static double[,] zigzag2 = new double[3, 4] {	{0, 4 / 4000.0, 2 / 4000.0, 0},
+														{6 / 4000.0, 0, 5 / 4000.0, 3 / 4000.0},
+														{0, 7 / 4000.0, 1 / 4000.0, 0}};
+		static double[,] zigzag3 = new double[4, 5] {	{0, 0, 0, 7 / 4000.0, 0},
+														{0, 2 / 4000.0, 6 / 4000.0, 9 / 4000.0, 8 / 4000.0},
+														{3 / 4000.0, 0, 1 / 4000.0, 5 / 4000.0, 0},
+														{0, 4 / 4000.0, 0, 0, 0}};
+		static double[,] floyd = new double[2, 2] {	{7 / 1600.0, 3 / 1600.0},
+													{5 / 1600.0, 1 / 1600.0}};
+		static double[,] test3 = new double[3, 2] {	{0, 3 / 1600.0},
+													{0, 5 / 1600.0},
+													{7 / 1600.0, 1 / 1600.0}};
+		static double[,] test2 = new double[3, 3] {	{8 / 4000.0, 4 / 4000.0, 5 / 4000.0},
+													{3 / 4000.0, 0, 1 / 4000.0},
+													{7 / 4000.0, 2 / 4000.0, 6 / 4000.0}};
+		static double[,] test1 = new double[3, 1] { { 1 }, { 4 }, { 2 } };
+		static double[,] test4 = new double[2, 3] {	{0, 0, 7 / 1600.0},
+													{3 / 1600.0, 5 / 1600.0, 1 / 1600.0}};
+		static double[,] test = new double[1, 2] { { 1 / 1600.0, 7 / 1600.0 } };
 
-		static int[,] test = new int[2, 3] {	{0, 0, 7},
-												{3, 5, 1}};
-
-		static int[,] mat = bayer2;
+		static double[,] mat = bayer2;
 
 		static byte MinMax(int value) {
 			return value >= 0 ? value <= 255 ? (byte)value : (byte)255 : (byte)0;
@@ -68,7 +73,7 @@ namespace ConvImgCpc {
 				int adr = ((((yPix + 2 * y) * bitmap.Width) + xPix) << 2) + decalMasque;
 				for (int x = 0; x < mat.GetLength(0); x++) {
 					if (adr < bitmap.Pixels.Length)
-						bitmap.Pixels[adr] = (byte)MinMax(bitmap.Pixels[adr] + (diff * mat[x, y]) / coeffMat);
+						bitmap.Pixels[adr] = (byte)MinMax((int)(bitmap.Pixels[adr] + (diff * mat[x, y])));
 
 					adr += Tx << 2;
 				}
@@ -171,16 +176,12 @@ namespace ConvImgCpc {
 			if (prm.pct > 0) {
 				fctCalcDiff = CalcDiffMethodeMat;
 				switch (prm.methode) {
+					case "Floyd-Steinberg (2x2)":
+						mat = floyd;
+						break;
+
 					case "Bayer 1 (2X2)":
 						mat = bayer2;
-						break;
-
-					case "Ordered 1 (3x3)":
-						mat = ord1;
-						break;
-
-					case "Ordered 2 (3x3)":
-						mat = ord2;
 						break;
 
 					case "Bayer 2 (4x4)":
@@ -191,7 +192,19 @@ namespace ConvImgCpc {
 						mat = bayer4;
 						break;
 
+					case "Ordered 1 (2x2)":
+						mat = ord1;
+						break;
+
+					case "Ordered 2 (3x3)":
+						mat = ord2;
+						break;
+
 					case "Ordered 3 (4x4)":
+						mat = ord3;
+						break;
+
+					case "Ordered 4 (4x4)":
 						mat = ord4;
 						break;
 
@@ -203,8 +216,8 @@ namespace ConvImgCpc {
 						mat = zigzag2;
 						break;
 
-					case "Floyd-Steinberg (2x2)":
-						mat = floyd;
+					case "ZigZag3 (5x4)":
+						mat = zigzag3;
 						break;
 
 					case "Test":
@@ -215,19 +228,9 @@ namespace ConvImgCpc {
 						fctCalcDiff = null;
 						break;
 				}
-				if (fctCalcDiff != null) {
-					int rowsOrHeight = mat.GetLength(0);
-					int colsOrWidth = mat.GetLength(1);
-					int sum = 0;
-					for (int j = 0; j < colsOrWidth; j++)
-						for (int i = 0; i < rowsOrHeight; i++)
-							sum += mat[i, j];
-
-					coeffMat = sum * 100 / prm.pct;
-				}
 			}
 
-			RvbColor choix, p = new RvbColor(0);
+			RvbColor choix, p;
 			for (yPix = 0; yPix < ydest; yPix += 2) {
 				int Tx = 4 >> (Mode >= 3 ? (yPix & 2) == 0 ? Mode - 2 : Mode - 3 : Mode);
 				for (xPix = 0; xPix < xdest; xPix += Tx) {
@@ -257,7 +260,7 @@ namespace ConvImgCpc {
 							int oldDist = 0x7FFFFFFF;
 							for (int i = 0; i < 27; i++) {
 								RvbColor s = ImageCpc.RgbCPC[i];
-								int dist = Math.Abs(p.red - s.red) * K_R + Math.Abs(p.green - s.green) * K_V + Math.Abs(p.blue - s.blue) * K_B;
+								int dist = (p.red - s.red) * (p.red - s.red) * K_R + (p.green - s.green) * (p.green - s.green) * K_V + (p.blue - s.blue) * (p.blue - s.blue) * K_B;
 								if (dist < oldDist) {
 									oldDist = dist;
 									indexChoix = i;
@@ -271,9 +274,9 @@ namespace ConvImgCpc {
 					Coul[indexChoix]++;
 
 					if (fctCalcDiff != null) {
-						fctCalcDiff(p.red - choix.red, 0, Mode, Tx);		// Modif. rouge
-						fctCalcDiff(p.green - choix.green, 1, Mode, Tx);	// Modif. Vert
-						fctCalcDiff(p.blue - choix.blue, 2, Mode, Tx);		// Modif. Bleu
+						fctCalcDiff(prm.pct * (p.red - choix.red), 0, Mode, Tx);		// Modif. rouge
+						fctCalcDiff(prm.pct * (p.green - choix.green), 1, Mode, Tx);	// Modif. Vert
+						fctCalcDiff(prm.pct * (p.blue - choix.blue), 2, Mode, Tx);		// Modif. Bleu
 					}
 					bitmap.SetPixel(xPix, yPix, choix);
 				}
@@ -364,7 +367,7 @@ namespace ConvImgCpc {
 
 			// réduit l'image à MaxCol couleurs.
 			for (i = 0; i < maxCol; i++)
-				tabCol[i] = p.cpcPlus ? new RvbColor((byte)(((dest.Palette[i] & 0xF0) >> 4) * 17), (byte)(((dest.Palette[i] & 0xF00) >> 8) * 17), (byte)((dest.Palette[i] & 0x0F) * 17)) : ImageCpc.RgbCPC[dest.Palette[i] < 27 ? dest.Palette[i] : 0];
+				tabCol[i] = p.cpcPlus ? new RvbColor((byte)(((dest.Palette[i] & 0xF0) >> 4) * 17), (byte)(((dest.Palette[i] & 0xF00) >> 8) * 17), (byte)((dest.Palette[i] & 0x0F) * 17)) : ImageCpc.RgbCPC[dest.Palette[i]];
 
 			for (int y = 0; y < dest.TailleY; y += 2) {
 				modeCpc = (dest.ModeCPC >= 3 ? (y & 2) == 0 ? dest.ModeCPC - 2 : dest.ModeCPC - 3 : dest.ModeCPC);
