@@ -10,7 +10,6 @@ namespace ConvImgCpc {
 		private ImageSource imgSrc;
 		private ImageCpc imgCpc;
 		private Param param = new Param();
-
 		public Main() {
 			InitializeComponent();
 			imgSrc = new ImageSource();
@@ -24,12 +23,8 @@ namespace ConvImgCpc {
 			lblInfoVersion.Text = "Version " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
 		}
 
-		private void checkImageSource_CheckedChanged(object sender, System.EventArgs e) {
+		private void checkImageSource_CheckedChanged(object sender, EventArgs e) {
 			imgSrc.Visible = checkImageSource.Checked;
-		}
-
-		private void UpdateImgCPC() {
-			imgCpc.Render();
 		}
 
 		private void Convert(bool doConvert) {
@@ -39,50 +34,47 @@ namespace ConvImgCpc {
 				param.sizeMode = radioKeepLarger.Checked ? Param.SizeMode.KeepLarger : radioKeepSmaller.Checked ? Param.SizeMode.KeepSmaller : Param.SizeMode.Fit;
 				param.methode = methode.SelectedItem.ToString();
 				param.lockState = imgCpc.lockState;
-
-				int tailleX = imgCpc.TailleX;
-				int tailleY = imgCpc.TailleY;
-				Bitmap tmp = new Bitmap(tailleX, tailleY);
+				Bitmap tmp = new Bitmap(imgCpc.TailleX, imgCpc.TailleY);
 				Graphics g = Graphics.FromImage(tmp);
-				double ratio = imgSrc.GetImage.Width * tailleY / (double)(imgSrc.GetImage.Height * tailleX);
+				double ratio = imgSrc.GetImage.Width * imgCpc.TailleY / (double)(imgSrc.GetImage.Height * imgCpc.TailleX);
 				switch (param.sizeMode) {
 					case Param.SizeMode.KeepSmaller:
 						if (ratio < 1) {
-							int newW = (int)(tailleX * ratio);
-							g.DrawImage(imgSrc.GetImage, (tailleX - newW) >> 1, 0, newW, tailleY);
+							int newW = (int)(imgCpc.TailleX * ratio);
+							g.DrawImage(imgSrc.GetImage, (imgCpc.TailleX - newW) >> 1, 0, newW, imgCpc.TailleY);
 						}
 						else {
-							int newH = (int)(tailleY / ratio);
-							g.DrawImage(imgSrc.GetImage, 0, (tailleY - newH) >> 1, tailleX, newH);
+							int newH = (int)(imgCpc.TailleY / ratio);
+							g.DrawImage(imgSrc.GetImage, 0, (imgCpc.TailleY - newH) >> 1, imgCpc.TailleX, newH);
 						}
 						break;
 
 					case Param.SizeMode.KeepLarger:
 						if (ratio < 1) {
-							int newY = (int)(tailleY / ratio);
-							g.DrawImage(imgSrc.GetImage, 0, (tailleY - newY) >> 1, tailleX, newY);
+							int newY = (int)(imgCpc.TailleY / ratio);
+							g.DrawImage(imgSrc.GetImage, 0, (imgCpc.TailleY - newY) >> 1, imgCpc.TailleX, newY);
 						}
 						else {
-							int newX = (int)(tailleX * ratio);
-							g.DrawImage(imgSrc.GetImage, (tailleX - newX) >> 1, 0, newX, tailleY);
+							int newX = (int)(imgCpc.TailleX * ratio);
+							g.DrawImage(imgSrc.GetImage, (imgCpc.TailleX - newX) >> 1, 0, newX, imgCpc.TailleY);
 						}
 						break;
 
 					case Param.SizeMode.Fit:
-						tmp = new Bitmap(imgSrc.GetImage, tailleX, tailleY);
+						tmp = new Bitmap(imgSrc.GetImage, imgCpc.TailleX, imgCpc.TailleY);
 						break;
 				}
 				Conversion.Convert(tmp, imgCpc, param);
-				bpConvert.Enabled = true;
+				bpSaveImage.Enabled = bpConvert.Enabled = true;
 			}
-			UpdateImgCPC();
+			imgCpc.Render();
 		}
 
-		private void bpConvert_Click(object sender, System.EventArgs e) {
+		private void bpConvert_Click(object sender, EventArgs e) {
 			Convert(true);
 		}
 
-		private void bpReadSrc_Click(object sender, System.EventArgs e) {
+		private void bpReadSrc_Click(object sender, EventArgs e) {
 			OpenFileDialog dlg = new OpenFileDialog();
 			dlg.Filter = "Images (*.bmp, *.gif, *.png, *.jpg)|*.bmp;*.gif;*.png;*.jpg";
 			DialogResult result = dlg.ShowDialog();
@@ -93,28 +85,25 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void nbCols_ValueChanged(object sender, System.EventArgs e) {
+		private void nbCols_ValueChanged(object sender, EventArgs e) {
 			param.nbCols = (int)nbCols.Value;
 			imgCpc.TailleX = param.nbCols << 3;
-			imgCpc.Reset();
 			Convert(false);
 		}
 
-		private void nbLignes_ValueChanged(object sender, System.EventArgs e) {
+		private void nbLignes_ValueChanged(object sender, EventArgs e) {
 			param.nbLignes = (int)nbLignes.Value;
 			imgCpc.TailleY = param.nbLignes << 1;
-			imgCpc.Reset();
 			Convert(false);
 		}
 
-		private void mode_SelectedIndexChanged(object sender, System.EventArgs e) {
+		private void mode_SelectedIndexChanged(object sender, EventArgs e) {
 			param.modeCpc = mode.SelectedItem.ToString();
-			imgCpc.ModeCPC = int.Parse(mode.SelectedItem.ToString().Substring(0, 1));
-			imgCpc.Reset();
+			imgCpc.ModeCPC = int.Parse(param.modeCpc.Substring(0, 1));
 			Convert(false);
 		}
 
-		private void modePlus_CheckedChanged(object sender, System.EventArgs e) {
+		private void modePlus_CheckedChanged(object sender, EventArgs e) {
 			imgCpc.cpcPlus = modePlus.Checked;
 			newMethode.Enabled = !modePlus.Checked;
 			reducPal1.Enabled = reducPal2.Enabled = newReduc.Enabled = modePlus.Checked;
@@ -122,95 +111,75 @@ namespace ConvImgCpc {
 			Convert(false);
 		}
 
-		private void radioFit_CheckedChanged(object sender, System.EventArgs e) {
+		private void InterfaceChange(object sender, EventArgs e) {
 			Convert(false);
 		}
 
-		private void radioKeepSmaller_CheckedChanged(object sender, System.EventArgs e) {
-			Convert(false);
-		}
-
-		private void radioKeepLarger_CheckedChanged(object sender, System.EventArgs e) {
-			Convert(false);
-		}
-
-		private void pctTrame_ValueChanged(object sender, System.EventArgs e) {
+		private void pctTrame_ValueChanged(object sender, EventArgs e) {
 			param.pct = (int)pctTrame.Value;
 			Convert(false);
 		}
 
-		private void methode_SelectedIndexChanged(object sender, System.EventArgs e) {
-			Convert(false);
-		}
-
-		private void matrice_SelectedIndexChanged(object sender, System.EventArgs e) {
-			Convert(false);
-		}
-
-		private void lumi_ValueChanged(object sender, System.EventArgs e) {
+		private void lumi_ValueChanged(object sender, EventArgs e) {
 			param.pctLumi = (int)lumi.Value;
 			Convert(false);
 		}
 
-		private void sat_ValueChanged(object sender, System.EventArgs e) {
+		private void sat_ValueChanged(object sender, EventArgs e) {
 			param.pctSat = nb.Checked ? 0 : (int)sat.Value;
 			Convert(false);
 		}
 
-		private void contrast_ValueChanged(object sender, System.EventArgs e) {
+		private void contrast_ValueChanged(object sender, EventArgs e) {
 			param.pctContrast = (int)contrast.Value;
 			Convert(false);
 		}
 
-		private void sortPal_CheckedChanged(object sender, System.EventArgs e) {
+		private void sortPal_CheckedChanged(object sender, EventArgs e) {
 			param.sortPal = sortPal.Checked;
 			Convert(false);
 		}
 
-		private void newMethode_CheckedChanged(object sender, System.EventArgs e) {
+		private void newMethode_CheckedChanged(object sender, EventArgs e) {
 			param.newMethode = newMethode.Checked;
 			Convert(false);
 		}
 
-		private void nb_CheckedChanged(object sender, System.EventArgs e) {
+		private void nb_CheckedChanged(object sender, EventArgs e) {
 			bpRazSat.Enabled = sat.Enabled = !nb.Checked;
 			param.pctSat = nb.Checked ? 0 : (int)sat.Value;
 			Convert(false);
 		}
 
-		private void reducPal1_CheckedChanged(object sender, System.EventArgs e) {
+		private void reducPal1_CheckedChanged(object sender, EventArgs e) {
 			newReduc.Enabled = reducPal1.Checked || reducPal2.Checked;
 			param.reductPal1 = reducPal1.Checked;
 			param.newReduct = newReduc.Checked;
 			Convert(false);
 		}
 
-		private void reducPal2_CheckedChanged(object sender, System.EventArgs e) {
+		private void reducPal2_CheckedChanged(object sender, EventArgs e) {
 			newReduc.Enabled = reducPal1.Checked || reducPal2.Checked;
 			param.reductPal2 = reducPal2.Checked;
 			param.newReduct = newReduc.Checked;
 			Convert(false);
 		}
 
-		private void newReduc_CheckedChanged(object sender, System.EventArgs e) {
+		private void newReduc_CheckedChanged(object sender, EventArgs e) {
 			param.newReduct = newReduc.Checked;
 			Convert(false);
 		}
 
-		private void bpRazLumi_Click(object sender, System.EventArgs e) {
+		private void bpRazLumi_Click(object sender, EventArgs e) {
 			lumi.Value = 100;
 		}
 
-		private void bpRazSat_Click(object sender, System.EventArgs e) {
+		private void bpRazSat_Click(object sender, EventArgs e) {
 			sat.Value = 100;
 		}
 
-		private void bpRazContrast_Click(object sender, System.EventArgs e) {
+		private void bpRazContrast_Click(object sender, EventArgs e) {
 			contrast.Value = 100;
-		}
-
-		private void autoRecalc_CheckedChanged(object sender, System.EventArgs e) {
-			Convert(false);
 		}
 
 		private void bpLoadParam_Click(object sender, EventArgs e) {
@@ -264,10 +233,18 @@ namespace ConvImgCpc {
 
 		private void bpSaveImage_Click(object sender, EventArgs e) {
 			SaveFileDialog dlg = new SaveFileDialog();
-			dlg.Filter = "Image CPC (*.scr)|*.scr";
+			dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.bmp)|*.bmp";
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK)
-				imgCpc.SauveScr(dlg.FileName, param);
+				switch (dlg.FilterIndex) {
+					case 1:
+						imgCpc.SauveScr(dlg.FileName, param);
+						break;
+
+					case 2:
+						imgCpc.SauveBmp(dlg.FileName);
+						break;
+				}
 		}
 
 		private void chkOverscan_CheckedChanged(object sender, EventArgs e) {

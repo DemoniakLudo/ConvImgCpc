@@ -13,6 +13,7 @@ namespace ConvImgCpc {
 		private int numCol = 0;
 		private int penWidth = 1;
 		private EditImage editImage;
+		private Image imgOrigine;
 
 		public delegate void ConvertDelegate(bool doConvertbook);
 
@@ -21,11 +22,9 @@ namespace ConvImgCpc {
 		public int[] Palette = new int[17];
 		static private int[] paletteStandardCPC = { 1, 24, 20, 6, 26, 0, 2, 7, 10, 12, 14, 16, 18, 22, 1, 14 };
 		static private int[] tabOctetMode01 = { 0x00, 0x80, 0x08, 0x88, 0x20, 0xA0, 0x28, 0xA8, 0x02, 0x82, 0x0A, 0x8A, 0x22, 0xA2, 0x2A, 0xAA };
-		const int maxColsCpc = 96;
-		const int maxLignesCpc = 272;
 
 		public const int Lum0 = 0x00;
-		public const int Lum1 = 0x66;
+		public const int Lum1 = 0x70;
 		public const int Lum2 = 0xFF;
 
 		static public RvbColor[] RgbCPC = new RvbColor[27] {
@@ -87,7 +86,7 @@ namespace ConvImgCpc {
 			int tx = pictureBox.Width;
 			int ty = pictureBox.Height;
 			Bitmap bmp = new Bitmap(tx, ty);
-			pictureBox.Image = bmp;
+			pictureBox.Image = imgOrigine = bmp;
 			bmpLock = new LockBitmap(bmp);
 			ModeCPC = 1;
 			for (int i = 0; i < 16; i++)
@@ -192,11 +191,6 @@ namespace ConvImgCpc {
 			}
 		}
 
-		public void Render() {
-			UpdatePalette();
-			pictureBox.Refresh();
-		}
-
 		public void LockBits() {
 			bmpLock.LockBits();
 		}
@@ -230,6 +224,10 @@ namespace ConvImgCpc {
 			SauveImage.SauveEcran(fileName, this, param.cpcPlus);
 		}
 
+		public void SauveBmp(string fileName) {
+			bmpLock.Save(fileName);
+		}
+
 		#region Mode édition
 		private void modeEdition_CheckedChanged(object sender, System.EventArgs e) {
 			if (modeEdition.Checked) {
@@ -252,6 +250,30 @@ namespace ConvImgCpc {
 					ChangeZoom(1);
 				}
 			}
+		}
+
+		public void Render() {
+			UpdatePalette();
+			if (zoom != 1) {
+				Bitmap MyBitMap = new Bitmap(imgOrigine.Width, imgOrigine.Height);
+				LockBitmap loc = new LockBitmap(MyBitMap);
+				loc.LockBits();
+				bmpLock.LockBits();
+				for (int y = 0; y < TailleY; y++) {
+					int ySrc = offsetY + (y / zoom);
+					for (int x = 0; x < TailleX; x++) {
+						int xSrc = offsetX + (x / zoom);
+						loc.SetPixel(x, y, bmpLock.GetPixel(xSrc, ySrc));
+					}
+				}
+				bmpLock.UnlockBits();
+				loc.UnlockBits();
+				pictureBox.Image = MyBitMap;
+			}
+			else
+				pictureBox.Image = imgOrigine;
+
+			pictureBox.Refresh();
 		}
 
 		private void ChangeZoom(int p) {

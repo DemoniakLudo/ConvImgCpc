@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace ConvImgCpc {
@@ -10,70 +11,85 @@ namespace ConvImgCpc {
 		const int SEUIL_LUM_1 = 0x40;
 		const int SEUIL_LUM_2 = 0x80;
 
-		public delegate void DlgCalcDiff(int diff, int decalMasque, int modeCpc, int tx);
+		public delegate void DlgCalcDiff(int diff, int decalMasque, int tx);
 		static private DlgCalcDiff fctCalcDiff = null;
-		static private int[] Coul = new int[4096];
+		static private int[] CoulTouvee = new int[4096];
 		static private LockBitmap bitmap;
 		static private int xPix, yPix;
 		static private byte[] tblContrast = new byte[256];
 
-		static double[,] bayer2 = new double[2, 2] {	{1 / 1600.0, 3 / 1600.0 },
+		static double[,] bayer2 = new double[2, 2]	{	{1 / 1600.0, 3 / 1600.0 },
 														{4 / 1600.0, 2 / 1600.0 } };
-		static double[,] bayer3 = new double[4, 4] {	{0, 12 / 32000.0, 3 / 32000.0, 15 / 32000.0},
+		static double[,] bayer3 = new double[4, 4]	{	{0, 12 / 32000.0, 3 / 32000.0, 15 / 32000.0},
 														{8 / 32000.0, 4 / 32000.0, 11 / 32000.0, 7 / 32000.0},
 														{2 / 32000.0, 14 / 32000.0, 1 / 32000.0, 13 / 32000.0},
 														{10 / 32000.0, 6 / 32000.0, 9 / 32000.0, 5 / 32000.0}};
-		static double[,] bayer4 = new double[4, 4] {	{1 / 32000.0, 9 / 32000.0, 3 / 32000.0, 11 / 32000.0},
+		static double[,] bayer4 = new double[4, 4]	{	{1 / 32000.0, 9 / 32000.0, 3 / 32000.0, 11 / 32000.0},
 														{13 / 32000.0, 5 / 32000.0, 15 / 32000.0, 7 / 32000.0},
 														{4 / 32000.0, 12 / 32000.0, 2 / 32000.0, 10 / 32000.0},
 														{16 / 32000.0, 8 / 32000.0, 14 / 32000.0, 6 / 32000.0}};
-		static double[,] ord1 = new double[2, 2] {	{1 / 1600.0, 3 / 1600.0},
-													{2 / 1600.0, 4 / 1600.0}};
-		static double[,] ord2 = new double[3, 3] {	{8 / 4000.0, 3 / 4000.0, 4 / 4000.0},
-													{6 / 4000.0, 1 / 4000.0, 2 / 4000.0},
-													{7 / 4000.0, 5 / 4000.0, 9 / 4000.0}};
-		static double[,] ord3 = new double[3, 3] {	{1 / 4000.0, 7 / 4000.0, 4 / 4000.0},
-													{5 / 4000.0, 8 / 4000.0, 3 / 4000.0},
-													{6 / 4000.0, 2 / 4000.0, 9 / 4000.0}};
-		static double[,] ord4 = new double[4, 4] {	{0 / 32000.0, 8 / 32000.0, 2 / 32000.0, 10 / 32000.0},
-													{12 / 32000.0, 4 / 32000.0, 14 / 32000.0, 6 / 32000.0},
-													{3 / 32000.0, 11 / 32000.0, 1 / 32000.0, 9 / 32000.0},
-													{15 / 32000.0, 7 / 32000.0, 13 / 32000.0, 5 / 32000.0}};
-		static double[,] zigzag1 = new double[3, 3] {	{0, 4 / 1600.0, 0},
+		static double[,] ord1 = new double[2, 2]	{	{1 / 1600.0, 3 / 1600.0},
+														{2 / 1600.0, 4 / 1600.0}};
+		static double[,] ord2 = new double[3, 3]	{	{8 / 4000.0, 3 / 4000.0, 4 / 4000.0},
+														{6 / 4000.0, 1 / 4000.0, 2 / 4000.0},
+														{7 / 4000.0, 5 / 4000.0, 9 / 4000.0}};
+		static double[,] ord3 = new double[3, 3]	{	{1 / 4000.0, 7 / 4000.0, 4 / 4000.0},
+														{5 / 4000.0, 8 / 4000.0, 3 / 4000.0},
+														{6 / 4000.0, 2 / 4000.0, 9 / 4000.0}};
+		static double[,] ord4 = new double[4, 4]	{	{0 / 32000.0, 8 / 32000.0, 2 / 32000.0, 10 / 32000.0},
+														{12 / 32000.0, 4 / 32000.0, 14 / 32000.0, 6 / 32000.0},
+														{3 / 32000.0, 11 / 32000.0, 1 / 32000.0, 9 / 32000.0},
+														{15 / 32000.0, 7 / 32000.0, 13 / 32000.0, 5 / 32000.0}};
+		static double[,] zigzag1 = new double[3, 3]	{	{0, 4 / 1600.0, 0},
 														{3 / 1600.0, 0, 1 / 1600.0},
 														{0, 2 / 1600.0, 0}};
-		static double[,] zigzag2 = new double[3, 4] {	{0, 4 / 4000.0, 2 / 4000.0, 0},
+		static double[,] zigzag2 = new double[3, 4]	{	{0, 4 / 4000.0, 2 / 4000.0, 0},
 														{6 / 4000.0, 0, 5 / 4000.0, 3 / 4000.0},
 														{0, 7 / 4000.0, 1 / 4000.0, 0}};
 		static double[,] zigzag3 = new double[4, 5] {	{0, 0, 0, 7 / 4000.0, 0},
 														{0, 2 / 4000.0, 6 / 4000.0, 9 / 4000.0, 8 / 4000.0},
 														{3 / 4000.0, 0, 1 / 4000.0, 5 / 4000.0, 0},
 														{0, 4 / 4000.0, 0, 0, 0}};
-		static double[,] floyd = new double[2, 2] {	{7 / 1600.0, 3 / 1600.0},
-													{5 / 1600.0, 1 / 1600.0}};
-		static double[,] test3 = new double[3, 2] {	{0, 3 / 1600.0},
-													{0, 5 / 1600.0},
-													{7 / 1600.0, 1 / 1600.0}};
-		static double[,] test2 = new double[3, 3] {	{8 / 4000.0, 4 / 4000.0, 5 / 4000.0},
-													{3 / 4000.0, 0, 1 / 4000.0},
-													{7 / 4000.0, 2 / 4000.0, 6 / 4000.0}};
+		static double[,] floyd = new double[2, 2]	{	{7 / 1600.0, 3 / 1600.0},
+														{5 / 1600.0, 1 / 1600.0}};
+		static double[,] test3 = new double[3, 2]	{	{0, 3 / 1600.0},
+														{0, 5 / 1600.0},
+														{7 / 1600.0, 1 / 1600.0}};
+		static double[,] test2 = new double[3, 3]	{	{8 / 4000.0, 4 / 4000.0, 5 / 4000.0},
+														{3 / 4000.0, 0, 1 / 4000.0},
+														{7 / 4000.0, 2 / 4000.0, 6 / 4000.0}};
 		static double[,] test1 = new double[3, 1] { { 1 }, { 4 }, { 2 } };
-		static double[,] test4 = new double[2, 3] {	{0, 0, 7 / 1600.0},
-													{3 / 1600.0, 5 / 1600.0, 1 / 1600.0}};
+		static double[,] test4 = new double[2, 3]	{	{0, 0, 7 / 1600.0},
+														{3 / 1600.0, 5 / 1600.0, 1 / 1600.0}};
 		static double[,] test = new double[1, 2] { { 1 / 1600.0, 7 / 1600.0 } };
 
-		static double[,] mat = bayer2;
+		static double[,] matDither;
+		
+		static private Dictionary<string, double[,]> dicMat = new Dictionary<string, double[,]>() {
+			{"Floyd-Steinberg (2x2)",	floyd},
+			{ "Bayer 1 (2X2)",			bayer2},
+			{ "Bayer 2 (4x4)",			bayer3},
+			{ "Bayer 3 (4X4)",			bayer4},
+			{ "Ordered 1 (2x2)",		ord1},
+			{ "Ordered 2 (3x3)",		ord2},
+			{ "Ordered 3 (4x4)",		ord3},
+			{ "Ordered 4 (4x4)",		ord4},
+			{ "ZigZag1 (3x3)",			zigzag1},
+			{ "ZigZag2 (4x3)",			zigzag2},
+			{ "ZigZag3 (5x4)",			zigzag3},
+			{ "Test",					test},
+		};
 
 		static byte MinMax(int value) {
 			return value >= 0 ? value <= 255 ? (byte)value : (byte)255 : (byte)0;
 		}
 
-		static void CalcDiffMethodeMat(int diff, int decalMasque, int mode, int Tx) {
-			for (int y = 0; y < mat.GetLength(1); y++) {
+		static void CalcDiffMethodeMat(int diff, int decalMasque, int Tx) {
+			for (int y = 0; y < matDither.GetLength(1); y++) {
 				int adr = ((((yPix + 2 * y) * bitmap.Width) + xPix) << 2) + decalMasque;
-				for (int x = 0; x < mat.GetLength(0); x++) {
+				for (int x = 0; x < matDither.GetLength(0); x++) {
 					if (adr < bitmap.Pixels.Length)
-						bitmap.Pixels[adr] = (byte)MinMax((int)(bitmap.Pixels[adr] + (diff * mat[x, y])));
+						bitmap.Pixels[adr] = (byte)MinMax((int)(bitmap.Pixels[adr] + (diff * matDither[x, y])));
 
 					adr += Tx << 2;
 				}
@@ -95,12 +111,7 @@ namespace ConvImgCpc {
 						hue = (r - v) / dif * 60f + 240f;
 					}
 					else
-						if (b > v) {
-							hue = (v - b) / dif * 60f + 360f;
-						}
-						else {
-							hue = (v - b) / dif * 60f;
-						}
+						hue = (v - b) / dif * 60f + (b > v ? 360f : 0);
 				if (hue < 0)
 					hue = hue + 360f;
 			}
@@ -160,11 +171,11 @@ namespace ConvImgCpc {
 		// remplit un tableau avec ces couleurs
 		//
 		static private int ConvertPasse1(int xdest, int ydest, Param prm, int Mode) {
-			//if (prm.cpcPlus)
-			//	prm.pct <<= 2;
+			if (prm.cpcPlus)
+				prm.pct <<= 2;
 
-			for (int i = 0; i < Coul.Length; i++)
-				Coul[i] = 0;
+			for (int i = 0; i < CoulTouvee.Length; i++)
+				CoulTouvee[i] = 0;
 
 			float lumi = prm.pctLumi / 100.0F;
 			float satur = prm.pctSat / 100.0F;
@@ -173,61 +184,9 @@ namespace ConvImgCpc {
 				tblContrast[i] = (byte)MinMax((int)(((((i / 255.0) - 0.5) * c) + 0.5) * 255));
 
 			fctCalcDiff = null;
-			if (prm.pct > 0) {
+			if (prm.pct > 0 && dicMat.ContainsKey(prm.methode)) {
 				fctCalcDiff = CalcDiffMethodeMat;
-				switch (prm.methode) {
-					case "Floyd-Steinberg (2x2)":
-						mat = floyd;
-						break;
-
-					case "Bayer 1 (2X2)":
-						mat = bayer2;
-						break;
-
-					case "Bayer 2 (4x4)":
-						mat = bayer3;
-						break;
-
-					case "Bayer 3 (4X4)":
-						mat = bayer4;
-						break;
-
-					case "Ordered 1 (2x2)":
-						mat = ord1;
-						break;
-
-					case "Ordered 2 (3x3)":
-						mat = ord2;
-						break;
-
-					case "Ordered 3 (4x4)":
-						mat = ord3;
-						break;
-
-					case "Ordered 4 (4x4)":
-						mat = ord4;
-						break;
-
-					case "ZigZag1 (3x3)":
-						mat = zigzag1;
-						break;
-
-					case "ZigZag2 (4x3)":
-						mat = zigzag2;
-						break;
-
-					case "ZigZag3 (5x4)":
-						mat = zigzag3;
-						break;
-
-					case "Test":
-						mat = test;
-						break;
-
-					default:
-						fctCalcDiff = null;
-						break;
-				}
+				matDither = dicMat[prm.methode];
 			}
 
 			RvbColor choix, p;
@@ -271,12 +230,12 @@ namespace ConvImgCpc {
 						}
 						choix = ImageCpc.RgbCPC[indexChoix];
 					}
-					Coul[indexChoix]++;
+					CoulTouvee[indexChoix]++;
 
 					if (fctCalcDiff != null) {
-						fctCalcDiff(prm.pct * (p.red - choix.red), 0, Mode, Tx);		// Modif. rouge
-						fctCalcDiff(prm.pct * (p.green - choix.green), 1, Mode, Tx);	// Modif. Vert
-						fctCalcDiff(prm.pct * (p.blue - choix.blue), 2, Mode, Tx);		// Modif. Bleu
+						fctCalcDiff(prm.pct * (p.red - choix.red), 0, Tx);		// Modif. rouge
+						fctCalcDiff(prm.pct * (p.green - choix.green), 1, Tx);	// Modif. Vert
+						fctCalcDiff(prm.pct * (p.blue - choix.blue), 2, Tx);		// Modif. Bleu
 					}
 					bitmap.SetPixel(xPix, yPix, choix, 0);
 				}
@@ -288,24 +247,24 @@ namespace ConvImgCpc {
 				//
 				if (satur > 0) {
 					// Masquer 1 bit par composante
-					for (int i = 0; i < Coul.Length; i++) {
+					for (int i = 0; i < CoulTouvee.Length; i++) {
 						if (((i & 1) == 1 && prm.reductPal1) || ((i & 1) == 0 && prm.reductPal2)) {
 							int c1 = (i & 0xC00) * 0xFFF / 0xC00;
 							int c2 = (i & 0xC0) * 0xFF / 0xC0;
 							int c3 = (i & 0x0C) * 0x0F / 0x0C;
-							int t = Coul[i];
-							Coul[i] = 0;
+							int t = CoulTouvee[i];
+							CoulTouvee[i] = 0;
 							if (prm.newReduct)
-								Coul[(c1 & 0xF00) + (c2 & 0xF0) + (c3 & 0x0F)] += t;
+								CoulTouvee[(c1 & 0xF00) + (c2 & 0xF0) + (c3 & 0x0F)] += t;
 							else
-								Coul[(c1 & 0xC00) + (c2 & 0xC0) + (c3 & 0x0C)] += t;
+								CoulTouvee[(c1 & 0xC00) + (c2 & 0xC0) + (c3 & 0x0C)] += t;
 						}
 					}
 				}
 			}
 			int NbCol = 0;
-			for (int i = 0; i < Coul.Length; i++)
-				if (Coul[i] > 0)
+			for (int i = 0; i < CoulTouvee.Length; i++)
+				if (CoulTouvee[i] > 0)
 					NbCol++;
 
 			return NbCol;
@@ -319,18 +278,20 @@ namespace ConvImgCpc {
 
 			for (x = 0; x < maxCol; x++)
 				if (lockState[x] > 0)
-					Coul[CChoix[x]] = 0;
+					CoulTouvee[CChoix[x]] = 0;
 
 			for (x = 0; x < maxCol; x++) {
 				int valMax = 0;
 				if (lockState[x] == 0) {
 					for (int i = 0; i < FindMax; i++) {
-						if (valMax < Coul[i]) {
-							valMax = Coul[i];
+						if (valMax < CoulTouvee[i]) {
+							valMax = CoulTouvee[i];
 							CChoix[x] = i;
+							if (valMax == 0)
+								break;
 						}
 					}
-					Coul[CChoix[x]] = 0;
+					CoulTouvee[CChoix[x]] = 0;
 				}
 			}
 
@@ -393,13 +354,13 @@ namespace ConvImgCpc {
 		}
 
 		static public int Convert(Bitmap source, ImageCpc dest, Param p) {
+			dest.LockBits();
 			bitmap = new LockBitmap(source);
 			bitmap.LockBits();
 			int nbCol = ConvertPasse1(dest.TailleX, dest.TailleY, p, dest.ModeCPC);
-			dest.LockBits();
 			Passe2(dest, p);
-			dest.UnlockBits();
 			bitmap.UnlockBits();
+			dest.UnlockBits();
 			return nbCol;
 		}
 	}
