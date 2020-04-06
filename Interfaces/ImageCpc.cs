@@ -4,7 +4,7 @@ using System.Windows.Forms;
 namespace ConvImgCpc {
 	public partial class ImageCpc : Form {
 		public byte[] bmpCpc = new byte[0x10000];
-		private LockBitmap bmpLock;
+		private LockBitmap bmpLock, tmpLock;
 		private Label[] colors = new Label[16];
 		private CheckBox[] lockColors = new CheckBox[16];
 		public int[] lockState = new int[16];
@@ -145,7 +145,7 @@ namespace ConvImgCpc {
 				byte b = (byte)((c & 0x0F) * 17);
 				byte r = (byte)(((c & 0xF0) >> 4) * 17);
 				byte v = (byte)(((c & 0xF00) >> 8) * 17);
-				return (int)(r + (v << 8) + (b << 16) + 0xFF000000);
+				return (int)(r + (v << 8) + (b << 16));
 			}
 			return RgbCPC[c < 27 ? c : 0].GetColor;
 		}
@@ -225,7 +225,18 @@ namespace ConvImgCpc {
 		}
 
 		public void SauveBmp(string fileName) {
-			bmpLock.Save(fileName);
+			Bitmap bmp = new Bitmap(TailleX, TailleY);
+			LockBitmap loc = new LockBitmap(bmp);
+			loc.LockBits();
+			bmpLock.LockBits();
+			for (int y = 0; y < TailleY; y++)
+				for (int x = 0; x < TailleX; x++)
+					loc.SetPixel(x, y, bmpLock.GetPixel(x, y));
+
+			bmpLock.UnlockBits();
+			loc.UnlockBits();
+			bmp.Save(fileName, System.Drawing.Imaging.ImageFormat.Bmp);
+			bmp.Dispose();
 		}
 
 		#region Mode édition
@@ -256,22 +267,24 @@ namespace ConvImgCpc {
 			UpdatePalette();
 			if (zoom != 1) {
 				Bitmap MyBitMap = new Bitmap(imgOrigine.Width, imgOrigine.Height);
-				LockBitmap loc = new LockBitmap(MyBitMap);
-				loc.LockBits();
+				tmpLock = new LockBitmap(MyBitMap);
+				tmpLock.LockBits();
 				bmpLock.LockBits();
 				for (int y = 0; y < TailleY; y++) {
 					int ySrc = offsetY + (y / zoom);
 					for (int x = 0; x < TailleX; x++) {
 						int xSrc = offsetX + (x / zoom);
-						loc.SetPixel(x, y, bmpLock.GetPixel(xSrc, ySrc));
+						tmpLock.SetPixel(x, y, bmpLock.GetPixel(xSrc, ySrc));
 					}
 				}
 				bmpLock.UnlockBits();
-				loc.UnlockBits();
+				tmpLock.UnlockBits();
 				pictureBox.Image = MyBitMap;
 			}
-			else
+			else {
 				pictureBox.Image = imgOrigine;
+				tmpLock = null;
+			}
 
 			pictureBox.Refresh();
 		}
@@ -295,18 +308,28 @@ namespace ConvImgCpc {
 		}
 
 		private void DrawPen(MouseEventArgs e) {
+			int[] maskMode = new int[3] { 16, 4, 2 };
 			if (modeEdition.Checked) {
 				LockBits();
 				for (int y = 0; y < penWidth * 2; y += 2) {
 					int yReel = offsetY + (e.Y / zoom) - penWidth + 1;
-					int mode = (ModeCPC >= 3 ? (yReel & 2) == 0 ? ModeCPC - 2 : ModeCPC - 3 : ModeCPC);
+					int mode = (ModeCPC >= 3 ? (yReel & 4) == 0 ? ModeCPC - 2 : ModeCPC - 3 : ModeCPC);
 					int Tx = (4 >> mode);
 					yReel += y;
+					int col = numCol % maskMode[mode];
 					for (int x = 0; x < penWidth * Tx; x += Tx) {
 						int xReel = x + offsetX + (e.X / zoom) - ((penWidth * Tx) >> 1) + 1;
 						xReel &= mode == 0 ? 0x3FFC : mode == 1 ? 0x3FFE : 0x3FFF;
 						if (xReel >= 0 && yReel > 0 && xReel < TailleX && yReel < TailleY)
-							SetPixelCpc(xReel, yReel, numCol, mode);
+							if (tmpLock != null) {
+								tmpLock.LockBits();
+								for (int yz = 0; yz < zoom; yz++)
+									for (int xz = 0; xz < zoom; xz++)
+										tmpLock.SetPixel(xz + (x / zoom), yz + (y / zoom), GetPalCPC(Palette[col]), col);
+
+								tmpLock.UnlockBits();
+							}
+						SetPixelCpc(xReel, yReel, col, mode);
 					}
 				}
 				UnlockBits();

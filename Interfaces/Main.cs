@@ -79,9 +79,14 @@ namespace ConvImgCpc {
 			dlg.Filter = "Images (*.bmp, *.gif, *.png, *.jpg)|*.bmp;*.gif;*.png;*.jpg";
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
-				imgSrc.SetBitmap(new Bitmap(dlg.FileName), checkImageSource.Checked);
-				Text = "ConvImgCPC - " + Path.GetFileName(dlg.FileName);
-				Convert(false);
+				try {
+					Bitmap bmp = new Bitmap(dlg.FileName);
+					imgSrc.SetBitmap(bmp, checkImageSource.Checked);
+					Text = "ConvImgCPC - " + Path.GetFileName(dlg.FileName);
+					Convert(false);
+				}
+				catch (Exception ex) {
+				}
 			}
 		}
 
@@ -232,19 +237,23 @@ namespace ConvImgCpc {
 		}
 
 		private void bpSaveImage_Click(object sender, EventArgs e) {
-			SaveFileDialog dlg = new SaveFileDialog();
-			dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.bmp)|*.bmp";
-			DialogResult result = dlg.ShowDialog();
-			if (result == DialogResult.OK)
-				switch (dlg.FilterIndex) {
-					case 1:
-						imgCpc.SauveScr(dlg.FileName, param);
-						break;
+			try {
+				SaveFileDialog dlg = new SaveFileDialog();
+				dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.bmp)|*.bmp";
+				DialogResult result = dlg.ShowDialog();
+				if (result == DialogResult.OK)
+					switch (dlg.FilterIndex) {
+						case 1:
+							imgCpc.SauveScr(dlg.FileName, param);
+							break;
 
-					case 2:
-						imgCpc.SauveBmp(dlg.FileName);
-						break;
-				}
+						case 2:
+							imgCpc.SauveBmp(dlg.FileName);
+							break;
+					}
+			}
+			catch (Exception ex) {
+			}
 		}
 
 		private void chkOverscan_CheckedChanged(object sender, EventArgs e) {
