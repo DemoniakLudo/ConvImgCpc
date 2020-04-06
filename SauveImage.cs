@@ -233,24 +233,24 @@ namespace ConvImgCpc {
 
 		static char[] CpcVGA = new char[27] { 'T', 'D', 'U', '\\', 'X', ']', 'L', 'E', 'M', 'V', 'F', 'W', '^', '@', '_', 'N', 'G', 'O', 'R', 'B', 'S', 'Z', 'Y', '[', 'J', 'C', 'K' };
 
-		static public int SauveEcran(string NomFic, ImageCpc bitmap, bool CpcPlus) {
-			bool Overscan = (bitmap.NbLig * bitmap.NbCol > 0x3F00);
+		static public int SauveEcran(string NomFic, ImageCpc bitmapCpc, bool CpcPlus) {
+			bool Overscan = (bitmapCpc.NbLig * bitmapCpc.NbCol > 0x3F00);
 			bool WithCode = true; // ###
 			if (CpcPlus) {
-				ModePal[0] = (byte)(bitmap.ModeCPC | 0x8C);
+				ModePal[0] = (byte)(bitmapCpc.ModeCPC | 0x8C);
 				int k = 1;
 				for (int i = 0; i < 16; i++) {
-					ModePal[k++] = (byte)((bitmap.Palette[i] >> 4) | (bitmap.Palette[i] << 4));
-					ModePal[k++] = (byte)(bitmap.Palette[i] >> 8);
+					ModePal[k++] = (byte)(((bitmapCpc.Palette[i] >> 4) & 0x0F) | (bitmapCpc.Palette[i] << 4));
+					ModePal[k++] = (byte)(bitmapCpc.Palette[i] >> 8);
 				}
 			}
 			else {
-				ModePal[0] = (byte)bitmap.ModeCPC;
+				ModePal[0] = (byte)bitmapCpc.ModeCPC;
 				for (int i = 0; i < 16; i++)
-					ModePal[1 + i] = (byte)bitmap.Palette[i];
+					ModePal[1 + i] = (byte)bitmapCpc.Palette[i];
 			}
 
-			byte[] imgCpc = bitmap.bmpCpc;
+			byte[] imgCpc = bitmapCpc.bmpCpc;
 			if (WithCode) {
 				if (!Overscan) {
 					Buffer.BlockCopy(ModePal, 0, imgCpc, 0x17D0, ModePal.Length);
@@ -262,7 +262,7 @@ namespace ConvImgCpc {
 					else
 						Buffer.BlockCopy(CodeStd, 0, imgCpc, 0x07D0, CodeStd.Length);
 
-					if (bitmap.ModeCPC > 2) {
+					if (bitmapCpc.ModeCPC > 2) {
 						Buffer.BlockCopy(codeEgx0, 0, imgCpc, 0x37D0, codeEgx0.Length);
 						Buffer.BlockCopy(codeEgx1, 0, imgCpc, 0x3FD0, codeEgx1.Length);
 						imgCpc[0x07F2] = 0xD0;
@@ -271,14 +271,14 @@ namespace ConvImgCpc {
 					}
 				}
 				else {
-					if (bitmap.NbLig == 272 && bitmap.NbCol == 96) {
+					if (bitmapCpc.NbLig == 272 && bitmapCpc.NbCol == 96) {
 						Buffer.BlockCopy(ModePal, 0, imgCpc, 0x600, ModePal.Length);
 						if (CpcPlus)
 							Buffer.BlockCopy(CodeOvP, 0, imgCpc, 0x621, CodeOvP.Length);
 						else
 							Buffer.BlockCopy(CodeOv, 0, imgCpc, 0x611, CodeOv.Length);
 
-						if (bitmap.ModeCPC > 2) {
+						if (bitmapCpc.ModeCPC > 2) {
 							Buffer.BlockCopy(codeEgx0, 0, imgCpc, 0x1600, codeEgx0.Length);
 							Buffer.BlockCopy(codeEgx1, 0, imgCpc, 0x1640, codeEgx1.Length);
 							if (CpcPlus) {
@@ -296,11 +296,11 @@ namespace ConvImgCpc {
 					}
 				}
 			}
-			int Lg = bitmap.BitmapSize;
+			int Lg = bitmapCpc.BitmapSize;
 			BinaryWriter fp = new BinaryWriter(new FileStream(NomFic, FileMode.Create));
 			CpcAmsdos entete = CpcSystem.CreeEntete(NomFic, (short)(Overscan ? 0x200 : 0xC000), (short)Lg, (short)(Overscan ? CpcPlus ? 0x821 : 0x811 : 0xC7D0));
 			fp.Write(CpcSystem.AmsdosToByte(entete));
-			fp.Write(bitmap.bmpCpc, 0, Lg);
+			fp.Write(bitmapCpc.bmpCpc, 0, Lg);
 			fp.Close();
 			return (Lg);
 		}

@@ -171,8 +171,8 @@ namespace ConvImgCpc {
 		// remplit un tableau avec ces couleurs
 		//
 		static private int ConvertPasse1(int xdest, int ydest, Param prm, int Mode) {
-			if (prm.cpcPlus)
-				prm.pct <<= 2;
+			//if (prm.cpcPlus)
+			//	prm.pct <<= 2;
 
 			for (int i = 0; i < CoulTouvee.Length; i++)
 				CoulTouvee[i] = 0;
