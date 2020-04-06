@@ -231,12 +231,23 @@ namespace ConvImgCpc {
 					byte octet = 0;
 					int pixel = 0;
 					for (int p = 0; p < 8; p++) {
-						int color = bmpLock.GetPixel(x + p, y);
-						for (int i = 0; i < 16; i++)
-							if (ImageCpc.RgbCPC[Palette[i]].GetColor == color) {
-								pixel = i;
-								break;
-							}
+						if (param.cpcPlus) {
+							RvbColor colorp = bmpLock.GetPixelColor(x + p, y);
+							int color = ((colorp.green >> 4) << 8) + ((colorp.red >> 4) << 4) + (colorp.blue >> 4);
+							for (int i = 0; i < 16; i++)
+								if (Palette[i] == color) {
+									pixel = i;
+									break;
+								}
+						}
+						else {
+							int color = bmpLock.GetPixel(x + p, y);
+							for (int i = 0; i < 16; i++)
+								if (ImageCpc.RgbCPC[Palette[i]].GetColor == color) {
+									pixel = i;
+									break;
+								}
+						}
 						if ((p % tx) == 0)
 							octet |= (byte)(tabOctetMode01[pixel] >> (p / tx));
 					}

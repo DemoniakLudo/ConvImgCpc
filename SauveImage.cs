@@ -180,6 +180,54 @@ namespace ConvImgCpc {
 			0x28, 0x02, 0x2E, 0x06, 0x19, 0x07, 0x1E, 0x0C,
 			0x30
 			};
+		static byte[] codeEgx0 = new byte[47] {
+			0x21, 0x00, 0x20,			//				LD		HL,#2000
+			0x2B,						//	Wait0:		DEC		HL
+			0x7C,						//				LD		A,H
+			0xB5,						//				OR		L
+			0x20, 0xFB,					//				JR		NZ,Wait0
+			0xF3,						//				DI
+			0x06, 0xF5,					//	WaitVbl:	LD		B,#F5
+			0xED, 0x78,					//				IN		A,(C)
+			0x1F,						//				RRA
+			0x30,0xF9,					//				JR		NC,WaitVbl
+			0x21, 0x2F, 0x01,			//				LD		HL,#012F
+			0x11, 0x01, 0x8C,			//				LD		DE,#8C01
+			0x06, 0x7F,					//	SetMode:	LD		B,#7F
+			0xED, 0x51,					//				OUT		(C),D
+			0x7A,						//				LD		A,D
+			0xAB,						//				XOR		E
+			0x57,						//				LD		D,A
+			0x06, 0x0B,					//				LD		B,#0B
+			0x10, 0xFE,					//	WaitNextLine:	DJNZ	WaitNextLine
+			0xCB, 0x46,					//				BIT		0,(HL)
+			0x2B,						//				DEC		HL
+			0x7C,						//				LD		A,H
+			0xB5,						//				OR		L
+			0x20, 0xEE,					//				JR		NZ,SetMode
+			0xCD, 0xD0, 0xFF,			//				CALL	WaitKey
+			0x28, 0xDC,					//				JR		Z,WaitVbl
+			0xFB,						//				EI
+			0xC9						//				RET
+		};
+
+		static byte[] codeEgx1 = new byte[33] {	
+			0x01, 0x0E, 0xF4,			//				LD		BC,#F40E
+			0xED, 0x49,					//				OUT		(C),C
+			0x01, 0xC0, 0xF6,			//				LD		BC,#F6C0
+			0xED, 0x49,					//				OUT		(C),C
+			0xED, 0x71,					//				OUT		(0),A
+			0x01, 0x92, 0xF7,			//				LD		BC,#F792
+			0xED, 0x49,					//				OUT		(C),C
+			0x01, 0x45, 0xF6,			//				LD		BC,#F645
+			0xED, 0x49,					//				OUT		(C),C
+			0x06, 0xF4,					//				LD		B,#F4
+			0xED, 0x78,					//				IN		A,(C)
+			0x01, 0x82, 0xF7,			//				LD		BC,#F782
+			0xED, 0x49,					//				OUT		(C),C
+			0x3C,						//				INC		A
+			0xC9						//				RET
+		};
 
 		static byte[] ModePal = new byte[48];
 
@@ -199,10 +247,7 @@ namespace ConvImgCpc {
 			else {
 				ModePal[0] = (byte)bitmap.ModeCPC;
 				for (int i = 0; i < 16; i++)
-					if (bitmap.ModeCPC < 3)
-						ModePal[1 + i] = (byte)bitmap.Palette[i];
-					else
-						ModePal[1 + i] = (byte)CpcVGA[bitmap.Palette[i]];
+					ModePal[1 + i] = (byte)bitmap.Palette[i];
 			}
 
 			byte[] imgCpc = bitmap.bmpCpc;
@@ -216,6 +261,14 @@ namespace ConvImgCpc {
 					}
 					else
 						Buffer.BlockCopy(CodeStd, 0, imgCpc, 0x07D0, CodeStd.Length);
+
+					if (bitmap.ModeCPC > 2) {
+						Buffer.BlockCopy(codeEgx0, 0, imgCpc, 0x37D0, codeEgx0.Length);
+						Buffer.BlockCopy(codeEgx1, 0, imgCpc, 0x3FD0, codeEgx1.Length);
+						imgCpc[0x07F2] = 0xD0;
+						imgCpc[0x07F3] = 0xF7;	//	CALL 0xF7D0
+						imgCpc[0x37FA] = 0xFF;	//	Call 0xFFD0
+					}
 				}
 				else {
 					if (bitmap.NbLig == 272 && bitmap.NbCol == 96) {
@@ -224,10 +277,25 @@ namespace ConvImgCpc {
 							Buffer.BlockCopy(CodeOvP, 0, imgCpc, 0x621, CodeOvP.Length);
 						else
 							Buffer.BlockCopy(CodeOv, 0, imgCpc, 0x611, CodeOv.Length);
+
+						if (bitmap.ModeCPC > 2) {
+							Buffer.BlockCopy(codeEgx0, 0, imgCpc, 0x1600, codeEgx0.Length);
+							Buffer.BlockCopy(codeEgx1, 0, imgCpc, 0x1640, codeEgx1.Length);
+							if (CpcPlus) {
+								imgCpc[0x669] = 0xCD;
+								imgCpc[0x66A] = 0x00;
+								imgCpc[0x66B] = 0x18;		// CALL	#1800
+							}
+							else {
+								imgCpc[0x631] = 0x00;
+								imgCpc[0x632] = 0x18;		// CALL	#1800
+							}
+							imgCpc[0x1629] = 0x40;
+							imgCpc[0x162A] = 0x18;	//	CALL	#1840
+						}
 					}
 				}
 			}
-
 			int Lg = bitmap.BitmapSize;
 			BinaryWriter fp = new BinaryWriter(new FileStream(NomFic, FileMode.Create));
 			CpcAmsdos entete = CpcSystem.CreeEntete(NomFic, (short)(Overscan ? 0x200 : 0xC000), (short)Lg, (short)(Overscan ? CpcPlus ? 0x821 : 0x811 : 0xC7D0));
