@@ -38,25 +38,30 @@ namespace ConvImgCpc {
 			return Pixels[adr] + (Pixels[adr + 1] << 8) + (Pixels[adr + 2] << 16);
 		}
 
+		public byte GetPixelColorPal(int pixelX, int pixelY) {
+			int adr = ((pixelY * Width) + pixelX) << 2;
+			return Pixels[adr + 3];
+		}
+
 		public RvbColor GetPixelColor(int pixelX, int pixelY) {
 			int adr = ((pixelY * Width) + pixelX) << 2;
 			return new RvbColor(Pixels[adr] + (Pixels[adr + 1] << 8) + (Pixels[adr + 2] << 16));
 		}
 
-		public void SetPixel(int pixelX, int pixelY, int color) {
+		public void SetPixel(int pixelX, int pixelY, int color, int indexColor) {
 			int adr = ((pixelY * Width) + pixelX) << 2;
 			Pixels[adr++] = (byte)(color);
 			Pixels[adr++] = (byte)(color >> 8);
 			Pixels[adr++] = (byte)(color >> 16);
-			Pixels[adr] = 0xFF;
+			Pixels[adr] = (byte)indexColor;
 		}
 
-		public void SetPixel(int pixelX, int pixelY, RvbColor color) {
+		public void SetPixel(int pixelX, int pixelY, RvbColor color, int indexColor) {
 			int adr = ((pixelY * Width) + pixelX) << 2;
 			Pixels[adr++] = color.red;
 			Pixels[adr++] = color.green;
 			Pixels[adr++] = color.blue;
-			Pixels[adr] = 0xFF;
+			Pixels[adr] = (byte)indexColor;
 		}
 	}
 

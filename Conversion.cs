@@ -278,7 +278,7 @@ namespace ConvImgCpc {
 						fctCalcDiff(prm.pct * (p.green - choix.green), 1, Mode, Tx);	// Modif. Vert
 						fctCalcDiff(prm.pct * (p.blue - choix.blue), 2, Mode, Tx);		// Modif. Bleu
 					}
-					bitmap.SetPixel(xPix, yPix, choix);
+					bitmap.SetPixel(xPix, yPix, choix, 0);
 				}
 			}
 			if (prm.cpcPlus) {
@@ -367,7 +367,7 @@ namespace ConvImgCpc {
 
 			// réduit l'image à MaxCol couleurs.
 			for (i = 0; i < maxCol; i++)
-				tabCol[i] = p.cpcPlus ? new RvbColor((byte)(((dest.Palette[i] & 0xF0) >> 4) * 17), (byte)(((dest.Palette[i] & 0xF00) >> 8) * 17), (byte)((dest.Palette[i] & 0x0F) * 17)) : ImageCpc.RgbCPC[dest.Palette[i]];
+				tabCol[i] = p.cpcPlus ? new RvbColor((byte)(((dest.Palette[i] & 0xF0) >> 4) * 17), (byte)(((dest.Palette[i] & 0xF00) >> 8) * 17), (byte)((dest.Palette[i] & 0x0F) * 17)) : ImageCpc.RgbCPC[dest.Palette[i] < 27 ? dest.Palette[i] : 0];
 
 			for (int y = 0; y < dest.TailleY; y += 2) {
 				modeCpc = (dest.ModeCPC >= 3 ? (y & 2) == 0 ? dest.ModeCPC - 2 : dest.ModeCPC - 3 : dest.ModeCPC);

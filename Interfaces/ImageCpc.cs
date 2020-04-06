@@ -121,7 +121,7 @@ namespace ConvImgCpc {
 			bmpLock.LockBits();
 			for (int x = 0; x < bmpLock.Width; x++)
 				for (int y = 0; y < bmpLock.Height; y++)
-					bmpLock.SetPixel(x, y, col);
+					bmpLock.SetPixel(x, y, col, 0);
 
 			bmpLock.UnlockBits();
 			vScrollBar.Height = TailleY;
@@ -154,18 +154,9 @@ namespace ConvImgCpc {
 		public void SetPixelCpc(int xPos, int yPos, int col, int mode) {
 			int nb = 4 >> mode;
 			for (int i = 0; i < nb; i++) {
-				bmpLock.SetPixel(xPos + i, yPos, GetPalCPC(Palette[col]));
-				bmpLock.SetPixel(xPos + i, yPos + 1, GetPalCPC(Palette[col]));
+				bmpLock.SetPixel(xPos + i, yPos, GetPalCPC(Palette[col]), col);
+				bmpLock.SetPixel(xPos + i, yPos + 1, GetPalCPC(Palette[col]), col);
 			}
-		}
-
-		public int GetPixel(int pixelX, int pixelY) {
-			return bmpLock.GetPixel(pixelX, pixelY);
-		}
-
-		public void CopyPixel(int xPos, int yPos, int color) {
-			bmpLock.SetPixel(xPos, yPos, color);
-			bmpLock.SetPixel(xPos, yPos + 1, color);
 		}
 
 		// Click sur un "lock"
@@ -229,28 +220,10 @@ namespace ConvImgCpc {
 				int tx = 4 >> modeCPC;
 				for (int x = 0; x < TailleX; x += 8) {
 					byte octet = 0;
-					int pixel = 0;
-					for (int p = 0; p < 8; p++) {
-						if (param.cpcPlus) {
-							RvbColor colorp = bmpLock.GetPixelColor(x + p, y);
-							int color = ((colorp.green >> 4) << 8) + ((colorp.red >> 4) << 4) + (colorp.blue >> 4);
-							for (int i = 0; i < 16; i++)
-								if (Palette[i] == color) {
-									pixel = i;
-									break;
-								}
-						}
-						else {
-							int color = bmpLock.GetPixel(x + p, y);
-							for (int i = 0; i < 16; i++)
-								if (ImageCpc.RgbCPC[Palette[i]].GetColor == color) {
-									pixel = i;
-									break;
-								}
-						}
+					for (int p = 0; p < 8; p++)
 						if ((p % tx) == 0)
-							octet |= (byte)(tabOctetMode01[pixel] >> (p / tx));
-					}
+							octet |= (byte)(tabOctetMode01[bmpLock.GetPixelColorPal(x + p, y)] >> (p / tx));
+
 					bmpCpc[adrCPC + (x >> 3)] = octet;
 				}
 			}
