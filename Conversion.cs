@@ -235,7 +235,7 @@ namespace ConvImgCpc {
 				int Tx = 4 >> (Mode >= 3 ? (yPix & 2) == 0 ? Mode - 2 : Mode - 3 : Mode);
 				for (xPix = 0; xPix < xdest; xPix += Tx) {
 					p = bitmap.GetPixelColor(xPix, yPix);
-					if (p.red != 0 && p.green != 0 && p.blue != 0) {
+					if (p.red != 0 || p.green != 0 || p.blue != 0) {
 						float r = tblContrast[p.red];
 						float v = tblContrast[p.green];
 						float b = tblContrast[p.blue];
@@ -286,7 +286,7 @@ namespace ConvImgCpc {
 				// Réduction du nombre de couleurs pour éviter les couleurs
 				// trop proches
 				//
-				if (Mode < 3) {
+				if (satur > 0) {
 					// Masquer 1 bit par composante
 					for (int i = 0; i < Coul.Length; i++) {
 						if (((i & 1) == 1 && prm.reductPal1) || ((i & 1) == 0 && prm.reductPal2)) {
