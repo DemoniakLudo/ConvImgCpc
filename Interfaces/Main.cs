@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
@@ -20,6 +21,7 @@ namespace ConvImgCpc {
 			methode.SelectedIndex = 0;
 			param.pctContrast = param.pctLumi = param.pctSat = 100;
 			imgCpc.Visible = true;
+			lblInfoVersion.Text = "Version " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
 		}
 
 		private void checkImageSource_CheckedChanged(object sender, System.EventArgs e) {
@@ -266,6 +268,11 @@ namespace ConvImgCpc {
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK)
 				imgCpc.SauveScr(dlg.FileName, param);
+		}
+
+		private void chkOverscan_CheckedChanged(object sender, EventArgs e) {
+			nbLignes.Value = 272;
+			nbCols.Value = 96;
 		}
 	}
 }
