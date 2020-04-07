@@ -21,6 +21,7 @@ namespace ConvImgCpc {
 			param.pctContrast = param.pctLumi = param.pctSat = 100;
 			imgCpc.Visible = true;
 			lblInfoVersion.Text = "Version " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+			radioUserSize_CheckedChanged(null, null);
 		}
 
 		private void checkImageSource_CheckedChanged(object sender, EventArgs e) {
@@ -32,7 +33,7 @@ namespace ConvImgCpc {
 				try {
 					bpConvert.Enabled = false;
 					imgCpc.Reset();
-					param.sMode = radioKeepLarger.Checked ? Param.SizeMode.KeepLarger : radioKeepSmaller.Checked ? Param.SizeMode.KeepSmaller : Param.SizeMode.Fit;
+					param.sMode = radioKeepLarger.Checked ? Param.SizeMode.KeepLarger : radioKeepSmaller.Checked ? Param.SizeMode.KeepSmaller : radioFit.Checked ? Param.SizeMode.Fit : Param.SizeMode.UserSize;
 					param.methode = methode.SelectedItem.ToString();
 					param.pct = (int)pctTrame.Value;
 					param.lockState = imgCpc.lockState;
@@ -65,6 +66,15 @@ namespace ConvImgCpc {
 						case Param.SizeMode.Fit:
 							tmp = new Bitmap(imgSrc.GetImage, imgCpc.TailleX, imgCpc.TailleY);
 							break;
+
+						case Param.SizeMode.UserSize:
+							int posx = 0, posy = 0, tx = imgCpc.TailleX, ty = imgCpc.TailleY;
+							int.TryParse(tbxSizeX.Text, out tx);
+							int.TryParse(tbxSizeY.Text, out ty);
+							int.TryParse(tbxPosX.Text, out posx);
+							int.TryParse(tbxPosY.Text, out posy);
+							g.DrawImage(imgSrc.GetImage, posx, posy, tx, ty);
+							break;
 					}
 					Conversion.Convert(tmp, imgCpc, param);
 					bpSaveImage.Enabled = bpConvert.Enabled = true;
@@ -89,6 +99,8 @@ namespace ConvImgCpc {
 					Bitmap bmp = new Bitmap(dlg.FileName);
 					imgSrc.SetBitmap(bmp, checkImageSource.Checked);
 					Text = "ConvImgCPC - " + Path.GetFileName(dlg.FileName);
+					tbxSizeX.Text = imgSrc.GetImage.Width.ToString();
+					tbxSizeY.Text = imgSrc.GetImage.Height.ToString();
 					Convert(false);
 				}
 				catch (Exception ex) {
@@ -269,6 +281,10 @@ namespace ConvImgCpc {
 		private void chkOverscan_CheckedChanged(object sender, EventArgs e) {
 			nbLignes.Value = 272;
 			nbCols.Value = 96;
+		}
+
+		private void radioUserSize_CheckedChanged(object sender, EventArgs e) {
+			tbxPosX.Visible = tbxPosY.Visible = tbxSizeX.Visible = tbxSizeY.Visible = label5.Visible = label7.Visible = radioUserSize.Checked;
 		}
 	}
 }

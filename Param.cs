@@ -3,7 +3,7 @@
 namespace ConvImgCpc {
 	[Serializable]
 	public class Param {
-		public enum SizeMode { Fit, KeepSmaller, KeepLarger };
+		public enum SizeMode { Fit, KeepSmaller, KeepLarger, UserSize };
 
 		public SizeMode sMode;
 		public string methode;
