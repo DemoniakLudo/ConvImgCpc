@@ -117,7 +117,7 @@ namespace ConvImgCpc {
 			bmpLock.LockBits();
 			for (int x = 0; x < bmpLock.Width; x++)
 				for (int y = 0; y < bmpLock.Height; y++)
-					bmpLock.SetPixel(x, y, x < TailleX && y < TailleY ? GetPalCPC(Palette[0]) : col, 0);
+					bmpLock.SetPixel(x, y, x < TailleX && y < TailleY ? GetPalCPC(Palette[0]) : col);
 
 			bmpLock.UnlockBits();
 		}
@@ -145,9 +145,10 @@ namespace ConvImgCpc {
 
 		public void SetPixelCpc(int xPos, int yPos, int col, int mode) {
 			int nb = 4 >> mode;
+			int realColor = GetPalCPC(Palette[col]);
 			for (int i = 0; i < nb; i++) {
-				bmpLock.SetPixel(xPos + i, yPos, GetPalCPC(Palette[col]), col);
-				bmpLock.SetPixel(xPos + i, yPos + 1, GetPalCPC(Palette[col]), col);
+				bmpLock.SetPixel(xPos + i, yPos, realColor);
+				bmpLock.SetPixel(xPos + i, yPos + 1, realColor);
 			}
 		}
 
@@ -206,11 +207,25 @@ namespace ConvImgCpc {
 				int adrCPC = GetAdrCpc(y);
 				int tx = 4 >> modeCPC;
 				for (int x = 0; x < TailleX; x += 8) {
-					byte octet = 0;
+					byte pen = 0, octet = 0;
 					for (int p = 0; p < 8; p++)
-						if ((p % tx) == 0)
-							octet |= (byte)(tabOctetMode[bmpLock.GetPixelColorPal(x + p, y)] >> (p / tx));
-
+						if ((p % tx) == 0) {
+							RvbColor col = bmpLock.GetPixelColor(x + p, y);
+							if (param.cpcPlus) {
+								for (pen = 0; pen < 16; pen++) {
+									if ((col.green >> 4) == (Palette[pen] >> 8) && (col.red >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.blue >> 4) == (Palette[pen] & 0x0F))
+										break;
+								}
+							}
+							else {
+								for (pen = 0; pen < 16; pen++) {
+									RvbColor fixedCol = RgbCPC[Palette[pen]];
+									if (fixedCol.red == col.red && fixedCol.blue == col.blue && fixedCol.green == col.green)
+										break;
+								}
+							}
+							octet |= (byte)(tabOctetMode[pen] >> (p / tx));
+						}
 					bmpCpc[adrCPC + (x >> 3)] = octet;
 				}
 			}
@@ -239,9 +254,19 @@ namespace ConvImgCpc {
 				tailleCrayon_SelectedIndexChanged(null, null);
 			}
 			else {
+				CloseRendu();
 				grpEdition.Visible = comboZoom.Enabled = tailleCrayon.Enabled = vScrollBar.Visible = hScrollBar.Visible = false;
 				zoom = 1;
 				Render();
+			}
+		}
+
+		private void CloseRendu() {
+			if (fenetreRendu != null) {
+				fenetreRendu.Hide();
+				fenetreRendu.Close();
+				fenetreRendu.Dispose();
+				fenetreRendu = null;
 			}
 		}
 
@@ -281,14 +306,14 @@ namespace ConvImgCpc {
 
 			int penSizeY = penWidth * 2;
 			for (int y = 0; y < penSizeY; y += 2) {
-				int yReel = (y + offsetY + (e.Y / zoom) - penWidth + 1) & 0xFFE;
+				int yReel = (y + offsetY + (e.Y / zoom)) & 0xFFE;
 				int mode = (ModeCPC >= 3 ? (yReel & 2) == 0 ? ModeCPC - 2 : ModeCPC - 3 : ModeCPC);
 				int Tx = (4 >> mode);
 				int pensizeX = penWidth * Tx;
 				int col = numCol % maskMode[mode];
 				for (int x = 0; x < pensizeX; x += Tx) {
 					int xReel = (x + offsetX + (e.X / zoom)) & -Tx;
-					if (xReel >= 0 && yReel > 0 && xReel < TailleX && yReel < TailleY)
+					if (xReel >= 0 && yReel >= 0 && xReel < TailleX && yReel < TailleY)
 						SetPixelCpc(xReel, yReel, col, mode);
 				}
 			}
@@ -301,11 +326,11 @@ namespace ConvImgCpc {
 
 		private void TrtMouseMove(MouseEventArgs e) {
 			if (modeEdition.Checked) {
-				int yReel = (offsetY + (e.Y / zoom) - penWidth + 1) & 0xFFE;
+				int yReel = (offsetY + (e.Y / zoom)) & 0xFFE;
 				int mode = (ModeCPC >= 3 ? (yReel & 2) == 0 ? ModeCPC - 2 : ModeCPC - 3 : ModeCPC);
 				int Tx = (4 >> mode);
 				int xReel = (offsetX + (e.X / zoom)) & -Tx;
-				if (xReel >= 0 && yReel > 0 && xReel < TailleX && yReel < TailleY) {
+				if (xReel >= 0 && yReel >= 0 && xReel < TailleX && yReel < TailleY) {
 					RvbColor col = GetPaletteColor(numCol % maskMode[mode]);
 					crayonColor.BackColor = Color.FromArgb(col.blue, col.green, col.red);
 					crayonColor.Refresh();
@@ -353,12 +378,8 @@ namespace ConvImgCpc {
 				fenetreRendu.Show();
 				Render();
 			}
-			else {
-				fenetreRendu.Hide();
-				fenetreRendu.Close();
-				fenetreRendu.Dispose();
-				fenetreRendu = null;
-			}
+			else
+				CloseRendu();
 		}
 	}
 }

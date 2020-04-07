@@ -33,11 +33,6 @@ namespace ConvImgCpc {
 			source.UnlockBits(bitmapData);
 		}
 
-		public byte GetPixelColorPal(int pixelX, int pixelY) {
-			int adr = ((pixelY * Width) + pixelX) << 2;
-			return Pixels[adr + 3];
-		}
-
 		public int GetPixel(int pixelX, int pixelY) {
 			int adr = ((pixelY * Width) + pixelX) << 2;
 			return (Pixels[adr] + (Pixels[adr + 1] << 8) + (Pixels[adr + 2] << 16) + (int)(Pixels[adr + 3] << 24));
@@ -48,28 +43,20 @@ namespace ConvImgCpc {
 			return new RvbColor(Pixels[adr] + (Pixels[adr + 1] << 8) + (Pixels[adr + 2] << 16));
 		}
 
-		public void SetPixel(int pixelX, int pixelY, int val) {
-			int adr = ((pixelY * Width) + pixelX) << 2;
-			Pixels[adr++] = (byte)(val);
-			Pixels[adr++] = (byte)(val >> 8);
-			Pixels[adr++] = (byte)(val >> 16);
-			Pixels[adr] = (byte)(val >> 24);
-		}
-
-		public void SetPixel(int pixelX, int pixelY, int color, int indexColor) {
+		public void SetPixel(int pixelX, int pixelY, int color) {
 			int adr = ((pixelY * Width) + pixelX) << 2;
 			Pixels[adr++] = (byte)(color);
 			Pixels[adr++] = (byte)(color >> 8);
-			Pixels[adr++] = (byte)(color >> 16);
-			Pixels[adr] = (byte)indexColor;
+			Pixels[adr] = (byte)(color >> 16);
+
 		}
 
-		public void SetPixel(int pixelX, int pixelY, RvbColor color, int indexColor) {
+		public void SetPixel(int pixelX, int pixelY, RvbColor color) {
 			int adr = ((pixelY * Width) + pixelX) << 2;
 			Pixels[adr++] = color.red;
 			Pixels[adr++] = color.green;
-			Pixels[adr++] = color.blue;
-			Pixels[adr] = (byte)indexColor;
+			Pixels[adr] = color.blue;
+
 		}
 
 		public void Save(string fileName) {

@@ -64,7 +64,7 @@ namespace ConvImgCpc {
 		static double[,] test = new double[1, 2] { { 1 / 1600.0, 7 / 1600.0 } };
 
 		static double[,] matDither;
-		
+
 		static private Dictionary<string, double[,]> dicMat = new Dictionary<string, double[,]>() {
 			{"Floyd-Steinberg (2x2)",	floyd},
 			{ "Bayer 1 (2X2)",			bayer2},
@@ -237,7 +237,7 @@ namespace ConvImgCpc {
 						fctCalcDiff(prm.pct * (p.green - choix.green), 1, Tx);	// Modif. Vert
 						fctCalcDiff(prm.pct * (p.blue - choix.blue), 2, Tx);		// Modif. Bleu
 					}
-					bitmap.SetPixel(xPix, yPix, choix, 0);
+					bitmap.SetPixel(xPix, yPix, choix);
 				}
 			}
 			if (prm.cpcPlus) {

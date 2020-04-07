@@ -29,43 +29,48 @@ namespace ConvImgCpc {
 
 		private void Convert(bool doConvert) {
 			if (imgSrc.GetImage != null && (autoRecalc.Checked || doConvert)) {
-				bpConvert.Enabled = false;
-				imgCpc.Reset();
-				param.sizeMode = radioKeepLarger.Checked ? Param.SizeMode.KeepLarger : radioKeepSmaller.Checked ? Param.SizeMode.KeepSmaller : Param.SizeMode.Fit;
-				param.methode = methode.SelectedItem.ToString();
-				param.lockState = imgCpc.lockState;
-				Bitmap tmp = new Bitmap(imgCpc.TailleX, imgCpc.TailleY);
-				Graphics g = Graphics.FromImage(tmp);
-				double ratio = imgSrc.GetImage.Width * imgCpc.TailleY / (double)(imgSrc.GetImage.Height * imgCpc.TailleX);
-				switch (param.sizeMode) {
-					case Param.SizeMode.KeepSmaller:
-						if (ratio < 1) {
-							int newW = (int)(imgCpc.TailleX * ratio);
-							g.DrawImage(imgSrc.GetImage, (imgCpc.TailleX - newW) >> 1, 0, newW, imgCpc.TailleY);
-						}
-						else {
-							int newH = (int)(imgCpc.TailleY / ratio);
-							g.DrawImage(imgSrc.GetImage, 0, (imgCpc.TailleY - newH) >> 1, imgCpc.TailleX, newH);
-						}
-						break;
+				try {
+					bpConvert.Enabled = false;
+					imgCpc.Reset();
+					param.sizeMode = radioKeepLarger.Checked ? Param.SizeMode.KeepLarger : radioKeepSmaller.Checked ? Param.SizeMode.KeepSmaller : Param.SizeMode.Fit;
+					param.methode = methode.SelectedItem.ToString();
+					param.lockState = imgCpc.lockState;
+					Bitmap tmp = new Bitmap(imgCpc.TailleX, imgCpc.TailleY);
+					Graphics g = Graphics.FromImage(tmp);
+					double ratio = imgSrc.GetImage.Width * imgCpc.TailleY / (double)(imgSrc.GetImage.Height * imgCpc.TailleX);
+					switch (param.sizeMode) {
+						case Param.SizeMode.KeepSmaller:
+							if (ratio < 1) {
+								int newW = (int)(imgCpc.TailleX * ratio);
+								g.DrawImage(imgSrc.GetImage, (imgCpc.TailleX - newW) >> 1, 0, newW, imgCpc.TailleY);
+							}
+							else {
+								int newH = (int)(imgCpc.TailleY / ratio);
+								g.DrawImage(imgSrc.GetImage, 0, (imgCpc.TailleY - newH) >> 1, imgCpc.TailleX, newH);
+							}
+							break;
 
-					case Param.SizeMode.KeepLarger:
-						if (ratio < 1) {
-							int newY = (int)(imgCpc.TailleY / ratio);
-							g.DrawImage(imgSrc.GetImage, 0, (imgCpc.TailleY - newY) >> 1, imgCpc.TailleX, newY);
-						}
-						else {
-							int newX = (int)(imgCpc.TailleX * ratio);
-							g.DrawImage(imgSrc.GetImage, (imgCpc.TailleX - newX) >> 1, 0, newX, imgCpc.TailleY);
-						}
-						break;
+						case Param.SizeMode.KeepLarger:
+							if (ratio < 1) {
+								int newY = (int)(imgCpc.TailleY / ratio);
+								g.DrawImage(imgSrc.GetImage, 0, (imgCpc.TailleY - newY) >> 1, imgCpc.TailleX, newY);
+							}
+							else {
+								int newX = (int)(imgCpc.TailleX * ratio);
+								g.DrawImage(imgSrc.GetImage, (imgCpc.TailleX - newX) >> 1, 0, newX, imgCpc.TailleY);
+							}
+							break;
 
-					case Param.SizeMode.Fit:
-						tmp = new Bitmap(imgSrc.GetImage, imgCpc.TailleX, imgCpc.TailleY);
-						break;
+						case Param.SizeMode.Fit:
+							tmp = new Bitmap(imgSrc.GetImage, imgCpc.TailleX, imgCpc.TailleY);
+							break;
+					}
+					Conversion.Convert(tmp, imgCpc, param);
+					bpSaveImage.Enabled = bpConvert.Enabled = true;
 				}
-				Conversion.Convert(tmp, imgCpc, param);
-				bpSaveImage.Enabled = bpConvert.Enabled = true;
+				catch (Exception ex) {
+					MessageBox.Show(ex.StackTrace, ex.Message);
+				}
 			}
 			imgCpc.Render();
 		}
@@ -86,7 +91,80 @@ namespace ConvImgCpc {
 					Convert(false);
 				}
 				catch (Exception ex) {
+					MessageBox.Show(ex.StackTrace, ex.Message);
 				}
+			}
+		}
+
+		private void bpLoadParam_Click(object sender, EventArgs e) {
+			OpenFileDialog dlg = new OpenFileDialog();
+			dlg.Filter = "Paramètres ConvImagesCpc (*.xml)|*.xml";
+			DialogResult result = dlg.ShowDialog();
+			if (result == DialogResult.OK) {
+				FileStream file = File.Open(dlg.FileName, FileMode.Open);
+				try {
+					param = (Param)new XmlSerializer(typeof(Param)).Deserialize(file);
+					// Initialisation paramètres...
+					methode.SelectedItem = param.methode;
+					pctTrame.Value = param.pct;
+					imgCpc.lockState = param.lockState;
+					lumi.Value = param.pctLumi;
+					sat.Value = param.pctSat;
+					contrast.Value = param.pctContrast;
+					modePlus.Checked = param.cpcPlus;
+					newMethode.Checked = param.newMethode;
+					reducPal1.Checked = param.reductPal1;
+					reducPal2.Checked = param.reductPal2;
+					newReduc.Checked = param.newReduct;
+					sortPal.Checked = param.sortPal;
+					radioFit.Checked = param.sizeMode == Param.SizeMode.Fit;
+					radioKeepLarger.Checked = param.sizeMode == Param.SizeMode.KeepLarger;
+					radioKeepSmaller.Checked = param.sizeMode == Param.SizeMode.KeepSmaller;
+					nbCols.Value = param.nbCols;
+					nbLignes.Value = param.nbLignes;
+					mode.SelectedItem = param.modeCpc;
+				}
+				catch (Exception ex) {
+					MessageBox.Show(ex.StackTrace, ex.Message);
+				}
+				file.Close();
+			}
+		}
+
+		private void bpSaveParam_Click(object sender, EventArgs e) {
+			SaveFileDialog dlg = new SaveFileDialog();
+			dlg.Filter = "Paramètres ConvImagesCpc (*.xml)|*.xml";
+			DialogResult result = dlg.ShowDialog();
+			if (result == DialogResult.OK) {
+				FileStream file = File.Open(dlg.FileName, FileMode.Create);
+				try {
+					new XmlSerializer(typeof(Param)).Serialize(file, param);
+				}
+				catch (Exception ex) {
+					MessageBox.Show(ex.StackTrace, ex.Message);
+				}
+				file.Close();
+			}
+		}
+
+		private void bpSaveImage_Click(object sender, EventArgs e) {
+			try {
+				SaveFileDialog dlg = new SaveFileDialog();
+				dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.bmp)|*.bmp";
+				DialogResult result = dlg.ShowDialog();
+				if (result == DialogResult.OK)
+					switch (dlg.FilterIndex) {
+						case 1:
+							imgCpc.SauveScr(dlg.FileName, param);
+							break;
+
+						case 2:
+							imgCpc.SauveBmp(dlg.FileName);
+							break;
+					}
+			}
+			catch (Exception ex) {
+				MessageBox.Show(ex.StackTrace, ex.Message);
 			}
 		}
 
@@ -185,75 +263,6 @@ namespace ConvImgCpc {
 
 		private void bpRazContrast_Click(object sender, EventArgs e) {
 			contrast.Value = 100;
-		}
-
-		private void bpLoadParam_Click(object sender, EventArgs e) {
-			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.Filter = "Paramètres ConvImagesCpc (*.xml)|*.xml";
-			DialogResult result = dlg.ShowDialog();
-			if (result == DialogResult.OK) {
-				FileStream file = File.Open(dlg.FileName, FileMode.Open);
-				try {
-					param = (Param)new XmlSerializer(typeof(Param)).Deserialize(file);
-					// Initialisation paramètres...
-					methode.SelectedItem = param.methode;
-					pctTrame.Value = param.pct;
-					imgCpc.lockState = param.lockState;
-					lumi.Value = param.pctLumi;
-					sat.Value = param.pctSat;
-					contrast.Value = param.pctContrast;
-					modePlus.Checked = param.cpcPlus;
-					newMethode.Checked = param.newMethode;
-					reducPal1.Checked = param.reductPal1;
-					reducPal2.Checked = param.reductPal2;
-					newReduc.Checked = param.newReduct;
-					sortPal.Checked = param.sortPal;
-					radioFit.Checked = param.sizeMode == Param.SizeMode.Fit;
-					radioKeepLarger.Checked = param.sizeMode == Param.SizeMode.KeepLarger;
-					radioKeepSmaller.Checked = param.sizeMode == Param.SizeMode.KeepSmaller;
-					nbCols.Value = param.nbCols;
-					nbLignes.Value = param.nbLignes;
-					mode.SelectedItem = param.modeCpc;
-				}
-				catch (Exception ex) {
-				}
-				file.Close();
-			}
-		}
-
-		private void bpSaveParam_Click(object sender, EventArgs e) {
-			SaveFileDialog dlg = new SaveFileDialog();
-			dlg.Filter = "Paramètres ConvImagesCpc (*.xml)|*.xml";
-			DialogResult result = dlg.ShowDialog();
-			if (result == DialogResult.OK) {
-				FileStream file = File.Open(dlg.FileName, FileMode.Create);
-				try {
-					new XmlSerializer(typeof(Param)).Serialize(file, param);
-				}
-				catch (Exception ex) {
-				}
-				file.Close();
-			}
-		}
-
-		private void bpSaveImage_Click(object sender, EventArgs e) {
-			try {
-				SaveFileDialog dlg = new SaveFileDialog();
-				dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.bmp)|*.bmp";
-				DialogResult result = dlg.ShowDialog();
-				if (result == DialogResult.OK)
-					switch (dlg.FilterIndex) {
-						case 1:
-							imgCpc.SauveScr(dlg.FileName, param);
-							break;
-
-						case 2:
-							imgCpc.SauveBmp(dlg.FileName);
-							break;
-					}
-			}
-			catch (Exception ex) {
-			}
 		}
 
 		private void chkOverscan_CheckedChanged(object sender, EventArgs e) {
