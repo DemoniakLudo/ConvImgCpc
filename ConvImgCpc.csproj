@@ -48,12 +48,6 @@
     <Compile Include="Interfaces\EditColor.Designer.cs">
       <DependentUpon>EditColor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\EditImage.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Interfaces\EditImage.Designer.cs">
-      <DependentUpon>EditImage.cs</DependentUpon>
-    </Compile>
     <Compile Include="Interfaces\ImageCpc.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -77,12 +71,15 @@
     <Compile Include="Param.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Interfaces\Rendu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interfaces\Rendu.Designer.cs">
+      <DependentUpon>Rendu.cs</DependentUpon>
+    </Compile>
     <Compile Include="SauveImage.cs" />
     <EmbeddedResource Include="Interfaces\EditColor.resx">
       <DependentUpon>EditColor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Interfaces\EditImage.resx">
-      <DependentUpon>EditImage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Interfaces\ImageCpc.resx">
       <DependentUpon>ImageCpc.cs</DependentUpon>
@@ -103,6 +100,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Interfaces\Rendu.resx">
+      <DependentUpon>Rendu.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

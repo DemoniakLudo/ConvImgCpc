@@ -199,7 +199,7 @@
 			this.methode.Name = "methode";
 			this.methode.Size = new System.Drawing.Size(97, 21);
 			this.methode.TabIndex = 8;
-			this.methode.SelectedIndexChanged += new System.EventHandler(InterfaceChange);
+			this.methode.SelectedIndexChanged += new System.EventHandler(this.InterfaceChange);
 			// 
 			// pctTrame
 			// 
@@ -398,7 +398,7 @@
 			this.autoRecalc.TabIndex = 44;
 			this.autoRecalc.Text = "Recalculer\r\nAutomatiquement";
 			this.autoRecalc.UseVisualStyleBackColor = true;
-			this.autoRecalc.CheckedChanged += new System.EventHandler(InterfaceChange);
+			this.autoRecalc.CheckedChanged += new System.EventHandler(this.InterfaceChange);
 			// 
 			// bpRazContrast
 			// 
@@ -429,7 +429,7 @@
 			this.radioKeepLarger.TabIndex = 39;
 			this.radioKeepLarger.Text = "KeepLarger";
 			this.radioKeepLarger.UseVisualStyleBackColor = true;
-			this.radioKeepLarger.CheckedChanged += new System.EventHandler(InterfaceChange);
+			this.radioKeepLarger.CheckedChanged += new System.EventHandler(this.InterfaceChange);
 			// 
 			// radioKeepSmaller
 			// 
@@ -440,7 +440,7 @@
 			this.radioKeepSmaller.TabIndex = 40;
 			this.radioKeepSmaller.Text = "KeepSmaller";
 			this.radioKeepSmaller.UseVisualStyleBackColor = true;
-			this.radioKeepSmaller.CheckedChanged += new System.EventHandler(InterfaceChange);
+			this.radioKeepSmaller.CheckedChanged += new System.EventHandler(this.InterfaceChange);
 			// 
 			// radioFit
 			// 
@@ -453,7 +453,7 @@
 			this.radioFit.TabStop = true;
 			this.radioFit.Text = "Fit";
 			this.radioFit.UseVisualStyleBackColor = true;
-			this.radioFit.CheckedChanged += new System.EventHandler(InterfaceChange);
+			this.radioFit.CheckedChanged += new System.EventHandler(this.InterfaceChange);
 			// 
 			// groupBox1
 			// 
@@ -581,6 +581,7 @@
 			this.Controls.Add(this.checkImageSource);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
+			this.MinimizeBox = false;
 			this.Name = "Main";
 			this.Text = "ConvImgCPC";
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).EndInit();

@@ -19,7 +19,7 @@ namespace ConvImgCpc {
 			Width = source.Width;
 			Height = source.Height;
 			Depth = Bitmap.GetPixelFormatSize(source.PixelFormat);
-			Pixels = new byte[Width * Height * (Depth / 8)];
+			Pixels = new byte[Width * Height * (Depth >> 3)];
 		}
 
 		public void LockBits() {

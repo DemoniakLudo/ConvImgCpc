@@ -12,17 +12,16 @@ namespace ConvImgCpc {
 		private int zoom;
 		private int numCol = 0;
 		private int penWidth = 1;
-		private EditImage editImage;
 		private Image imgOrigine;
+		private Rendu fenetreRendu;
 
 		public delegate void ConvertDelegate(bool doConvertbook);
 
 		private ConvertDelegate Convert;
 
-		public int[] Palette = new int[17];
-		static private int[] paletteStandardCPC = { 1, 24, 20, 6, 26, 0, 2, 7, 10, 12, 14, 16, 18, 22, 1, 14 };
-		static private int[] tabOctetMode01 = { 0x00, 0x80, 0x08, 0x88, 0x20, 0xA0, 0x28, 0xA8, 0x02, 0x82, 0x0A, 0x8A, 0x22, 0xA2, 0x2A, 0xAA };
-
+		public int[] Palette = { 1, 24, 20, 6, 26, 0, 2, 7, 10, 12, 14, 16, 18, 22, 1, 14, 1 };
+		private int[] tabOctetMode = { 0x00, 0x80, 0x08, 0x88, 0x20, 0xA0, 0x28, 0xA8, 0x02, 0x82, 0x0A, 0x8A, 0x22, 0xA2, 0x2A, 0xAA };
+		private int[] maskMode = new int[3] { 16, 4, 2 };
 		public const int Lum0 = 0x00;
 		public const int Lum1 = 0x70;
 		public const int Lum2 = 0xFF;
@@ -89,9 +88,6 @@ namespace ConvImgCpc {
 			pictureBox.Image = imgOrigine = bmp;
 			bmpLock = new LockBitmap(bmp);
 			ModeCPC = 1;
-			for (int i = 0; i < 16; i++)
-				Palette[i] = paletteStandardCPC[i];
-
 			for (int i = 0; i < 16; i++) {
 				// Générer les contrôles de "couleurs"
 				colors[i] = new Label();
@@ -111,7 +107,8 @@ namespace ConvImgCpc {
 				lockColors[i].Update();
 			}
 			Reset();
-			ChangeZoom(1);
+			comboZoom.SelectedItem = "1";
+			tailleCrayon.SelectedItem = "1";
 			Convert = fctConvert;
 		}
 
@@ -120,13 +117,9 @@ namespace ConvImgCpc {
 			bmpLock.LockBits();
 			for (int x = 0; x < bmpLock.Width; x++)
 				for (int y = 0; y < bmpLock.Height; y++)
-					bmpLock.SetPixel(x, y, col, 0);
+					bmpLock.SetPixel(x, y, x < TailleX && y < TailleY ? GetPalCPC(Palette[0]) : col, 0);
 
 			bmpLock.UnlockBits();
-			vScrollBar.Height = TailleY;
-			vScrollBar.Left = TailleX + 3;
-			hScrollBar.Width = TailleX;
-			hScrollBar.Top = TailleY + 3;
 		}
 
 		public void SetPalette(int entree, int valeur) {
@@ -159,14 +152,14 @@ namespace ConvImgCpc {
 		}
 
 		// Click sur un "lock"
-		void ClickLock(object sender, System.EventArgs e) {
+		private void ClickLock(object sender, System.EventArgs e) {
 			CheckBox colorLock = sender as CheckBox;
 			int numLock = colorLock.Tag != null ? (int)colorLock.Tag : 0;
 			lockState[numLock] = colorLock.Checked ? 1 : 0;
 		}
 
 		// Changement de la palette
-		void ClickColor(object sender, System.EventArgs e) {
+		private void ClickColor(object sender, System.EventArgs e) {
 			Label colorClick = sender as Label;
 			numCol = colorClick.Tag != null ? (int)colorClick.Tag : 0;
 			if (!modeEdition.Checked) {
@@ -179,8 +172,8 @@ namespace ConvImgCpc {
 				}
 			}
 			else {
-				if (editImage != null)
-					editImage.SetPenColor(GetPaletteColor(numCol));
+				RvbColor col = GetPaletteColor(numCol);
+				crayonColor.BackColor = Color.FromArgb(col.blue, col.green, col.red);
 			}
 		}
 
@@ -216,7 +209,7 @@ namespace ConvImgCpc {
 					byte octet = 0;
 					for (int p = 0; p < 8; p++)
 						if ((p % tx) == 0)
-							octet |= (byte)(tabOctetMode01[bmpLock.GetPixelColorPal(x + p, y)] >> (p / tx));
+							octet |= (byte)(tabOctetMode[bmpLock.GetPixelColorPal(x + p, y)] >> (p / tx));
 
 					bmpCpc[adrCPC + (x >> 3)] = octet;
 				}
@@ -239,27 +232,16 @@ namespace ConvImgCpc {
 			bmp.Dispose();
 		}
 
-		#region Mode édition
 		private void modeEdition_CheckedChanged(object sender, System.EventArgs e) {
 			if (modeEdition.Checked) {
-				if (editImage == null)
-					editImage = new EditImage();
-
-				editImage.Show();
-				editImage.evtChangeZoom += ChangeZoom;
-				editImage.evtChangePen += ChangePen;
-				editImage.evtClose += CloseEditImage;
-				editImage.SetPenColor(GetPaletteColor(numCol));
+				grpEdition.Visible = comboZoom.Enabled = tailleCrayon.Enabled = true;
+				comboZoom_SelectedIndexChanged(null, null);
+				tailleCrayon_SelectedIndexChanged(null, null);
 			}
 			else {
-				if (editImage != null) {
-					editImage.Hide();
-					editImage.evtChangeZoom -= ChangeZoom;
-					editImage.evtChangePen -= ChangePen;
-					editImage.evtClose -= CloseEditImage;
-					editImage = null;
-					ChangeZoom(1);
-				}
+				grpEdition.Visible = comboZoom.Enabled = tailleCrayon.Enabled = vScrollBar.Visible = hScrollBar.Visible = false;
+				zoom = 1;
+				Render();
 			}
 		}
 
@@ -270,9 +252,9 @@ namespace ConvImgCpc {
 				tmpLock = new LockBitmap(MyBitMap);
 				tmpLock.LockBits();
 				bmpLock.LockBits();
-				for (int y = 0; y < TailleY; y++) {
+				for (int y = 0; y < imgOrigine.Height; y++) {
 					int ySrc = offsetY + (y / zoom);
-					for (int x = 0; x < TailleX; x++) {
+					for (int x = 0; x < imgOrigine.Width; x++) {
 						int xSrc = offsetX + (x / zoom);
 						tmpLock.SetPixel(x, y, bmpLock.GetPixel(xSrc, ySrc));
 					}
@@ -285,66 +267,60 @@ namespace ConvImgCpc {
 				pictureBox.Image = imgOrigine;
 				tmpLock = null;
 			}
-
 			pictureBox.Refresh();
-		}
-
-		private void ChangeZoom(int p) {
-			zoom = p;
-			vScrollBar.Enabled = hScrollBar.Enabled = zoom > 1;
-			hScrollBar.Maximum = hScrollBar.LargeChange + TailleX - (TailleX / zoom);
-			vScrollBar.Maximum = vScrollBar.LargeChange + TailleY - (TailleY / zoom);
-			hScrollBar.Value = offsetX = (TailleX - TailleX / zoom) / 2;
-			vScrollBar.Value = offsetY = (TailleY - TailleY / zoom) / 2;
-			Render();
-		}
-
-		private void ChangePen(int p) {
-			penWidth = p;
-		}
-
-		private void CloseEditImage() {
-			modeEdition.Checked = false;
+			if (fenetreRendu != null) {
+				fenetreRendu.Picture.Image = imgOrigine;
+				fenetreRendu.Picture.Refresh();
+			}
 		}
 
 		private void DrawPen(MouseEventArgs e) {
-			int[] maskMode = new int[3] { 16, 4, 2 };
-			if (modeEdition.Checked) {
-				LockBits();
-				for (int y = 0; y < penWidth * 2; y += 2) {
-					int yReel = offsetY + (e.Y / zoom) - penWidth + 1;
-					int mode = (ModeCPC >= 3 ? (yReel & 4) == 0 ? ModeCPC - 2 : ModeCPC - 3 : ModeCPC);
-					int Tx = (4 >> mode);
-					yReel += y;
-					int col = numCol % maskMode[mode];
-					for (int x = 0; x < penWidth * Tx; x += Tx) {
-						int xReel = x + offsetX + (e.X / zoom) - ((penWidth * Tx) >> 1) + 1;
-						xReel &= mode == 0 ? 0x3FFC : mode == 1 ? 0x3FFE : 0x3FFF;
-						if (xReel >= 0 && yReel > 0 && xReel < TailleX && yReel < TailleY)
-							if (tmpLock != null) {
-								tmpLock.LockBits();
-								for (int yz = 0; yz < zoom; yz++)
-									for (int xz = 0; xz < zoom; xz++)
-										tmpLock.SetPixel(xz + (x / zoom), yz + (y / zoom), GetPalCPC(Palette[col]), col);
+			LockBits();
+			if (tmpLock != null)
+				tmpLock.LockBits();
 
-								tmpLock.UnlockBits();
-							}
+			int penSizeY = penWidth * 2;
+			for (int y = 0; y < penSizeY; y += 2) {
+				int yReel = (y + offsetY + (e.Y / zoom) - penWidth + 1) & 0xFFE;
+				int mode = (ModeCPC >= 3 ? (yReel & 2) == 0 ? ModeCPC - 2 : ModeCPC - 3 : ModeCPC);
+				int Tx = (4 >> mode);
+				int pensizeX = penWidth * Tx;
+				int col = numCol % maskMode[mode];
+				for (int x = 0; x < pensizeX; x += Tx) {
+					int xReel = (x + offsetX + (e.X / zoom)) & -Tx;
+					if (xReel >= 0 && yReel > 0 && xReel < TailleX && yReel < TailleY)
 						SetPixelCpc(xReel, yReel, col, mode);
-					}
 				}
-				UnlockBits();
-				Render();
+			}
+			if (tmpLock != null)
+				tmpLock.UnlockBits();
+
+			UnlockBits();
+			Render();
+		}
+
+		private void TrtMouseMove(MouseEventArgs e) {
+			if (modeEdition.Checked) {
+				int yReel = (offsetY + (e.Y / zoom) - penWidth + 1) & 0xFFE;
+				int mode = (ModeCPC >= 3 ? (yReel & 2) == 0 ? ModeCPC - 2 : ModeCPC - 3 : ModeCPC);
+				int Tx = (4 >> mode);
+				int xReel = (offsetX + (e.X / zoom)) & -Tx;
+				if (xReel >= 0 && yReel > 0 && xReel < TailleX && yReel < TailleY) {
+					RvbColor col = GetPaletteColor(numCol % maskMode[mode]);
+					crayonColor.BackColor = Color.FromArgb(col.blue, col.green, col.red);
+					crayonColor.Refresh();
+					if (e.Button == MouseButtons.Left)
+						DrawPen(e);
+				}
 			}
 		}
 
 		private void pictureBox_MouseDown(object sender, MouseEventArgs e) {
-			if (modeEdition.Checked)
-				DrawPen(e);
+			TrtMouseMove(e);
 		}
 
 		private void pictureBox_MouseMove(object sender, MouseEventArgs e) {
-			if (e.Button == MouseButtons.Left && modeEdition.Checked)
-				DrawPen(e);
+			TrtMouseMove(e);
 		}
 
 		private void vScrollBar_Scroll(object sender, ScrollEventArgs e) {
@@ -356,6 +332,33 @@ namespace ConvImgCpc {
 			offsetX = (hScrollBar.Value >> 3) << 3;
 			Render();
 		}
-		#endregion
+
+		private void comboZoom_SelectedIndexChanged(object sender, System.EventArgs e) {
+			zoom = int.Parse(comboZoom.SelectedItem.ToString());
+			vScrollBar.Visible = hScrollBar.Visible = zoom > 1;
+			hScrollBar.Maximum = hScrollBar.LargeChange + TailleX - (TailleX / zoom);
+			vScrollBar.Maximum = vScrollBar.LargeChange + TailleY - (TailleY / zoom);
+			hScrollBar.Value = offsetX = (TailleX - TailleX / zoom) / 2;
+			vScrollBar.Value = offsetY = (TailleY - TailleY / zoom) / 2;
+			Render();
+		}
+
+		private void tailleCrayon_SelectedIndexChanged(object sender, System.EventArgs e) {
+			penWidth = int.Parse(tailleCrayon.SelectedItem.ToString());
+		}
+
+		private void chkRendu_CheckedChanged(object sender, System.EventArgs e) {
+			if (chkRendu.Checked) {
+				fenetreRendu = new Rendu();
+				fenetreRendu.Show();
+				Render();
+			}
+			else {
+				fenetreRendu.Hide();
+				fenetreRendu.Close();
+				fenetreRendu.Dispose();
+				fenetreRendu = null;
+			}
+		}
 	}
 }
