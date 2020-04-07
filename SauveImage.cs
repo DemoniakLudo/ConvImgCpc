@@ -13,7 +13,7 @@ namespace ConvImgCpc {
 		(3 premiers octets /12 de la palette = composante R,B,V)
 		*/
 
-		static byte[] CodeStd = new byte[36] {  // Routine à mettre en #C7D0
+		static byte[] CodeStd = {  // Routine à mettre en #C7D0
 			0x3A, 0xD0, 0xD7,               //      LD      A,  (#D7D0)
 			0xCD, 0x1C, 0xBD,               //      CALL    #BD1C
 			0x21, 0xD1, 0xD7,               //      LD      HL, #D7D1
@@ -36,7 +36,7 @@ namespace ConvImgCpc {
 			0xC3, 0x18, 0xBB,               //      JP      #BB18
 			};
 
-		static byte[] CodeP0 = new byte[47] {
+		static byte[] CodeP0 = {
 			0xF3,						//				DI
 			0x01, 0x11, 0xBC,			//				LD		BC,#BC11
 			0x21, 0xD0, 0xDF,			//				LD		HL,#DFD0
@@ -61,7 +61,7 @@ namespace ConvImgCpc {
 			0xC9						//				RET
 			};
 
-		static byte[] CodeP1 = new byte[39] {
+		static byte[] CodeP1 = {
 			0x01, 0x0E, 0xF4,			//	WaitKey:	LD		BC,#F40E
 			0xED, 0x49,					//				OUT		(C),C
 			0x01, 0xC0, 0xF6,			//				LD		BC,#F6C0
@@ -83,9 +83,9 @@ namespace ConvImgCpc {
 			};
 
 		// Unlock ASIC
-		static byte[] CodeP3 = new byte[17] { 0xFF, 0x00, 0xFF, 0x77, 0xB3, 0x51, 0xA8, 0xD4, 0x62, 0x39, 0x9C, 0x46, 0x2B, 0x15, 0x8A, 0xCD, 0xEE };
+		static byte[] CodeP3 = { 0xFF, 0x00, 0xFF, 0x77, 0xB3, 0x51, 0xA8, 0xD4, 0x62, 0x39, 0x9C, 0x46, 0x2B, 0x15, 0x8A, 0xCD, 0xEE };
 
-		static byte[] CodeOv = new byte[83] {
+		static byte[] CodeOv = {
 			0x21, 0x47, 0x08,			//				LD		HL,#847
 			0xCD, 0x36, 0x08,			//				CALL	SetRegs
 			0x3A, 0x00, 0x08,			//				LD		A,(#0800)
@@ -123,7 +123,7 @@ namespace ConvImgCpc {
 			0x07, 0x1E, 0x0C, 0x30, 0x00
 			};
 
-		static byte[] CodeOvP = new byte[142] {
+		static byte[] CodeOvP = {
 			0xF3,						//				DI
 			0x01, 0x11, 0xBC,			//				LD		BC,#BC11
 			0x21, 0x86, 0x08,			//				LD		HL,#0886
@@ -180,7 +180,7 @@ namespace ConvImgCpc {
 			0x28, 0x02, 0x2E, 0x06, 0x19, 0x07, 0x1E, 0x0C,
 			0x30
 			};
-		static byte[] codeEgx0 = new byte[47] {
+		static byte[] codeEgx0 = {
 			0x21, 0x00, 0x20,			//				LD		HL,#2000
 			0x2B,						//	Wait0:		DEC		HL
 			0x7C,						//				LD		A,H
@@ -211,7 +211,7 @@ namespace ConvImgCpc {
 			0xC9						//				RET
 		};
 
-		static byte[] codeEgx1 = new byte[33] {	
+		static byte[] codeEgx1 = {	
 			0x01, 0x0E, 0xF4,			//				LD		BC,#F40E
 			0xED, 0x49,					//				OUT		(C),C
 			0x01, 0xC0, 0xF6,			//				LD		BC,#F6C0
@@ -230,8 +230,6 @@ namespace ConvImgCpc {
 		};
 
 		static byte[] ModePal = new byte[48];
-
-		static char[] CpcVGA = new char[27] { 'T', 'D', 'U', '\\', 'X', ']', 'L', 'E', 'M', 'V', 'F', 'W', '^', '@', '_', 'N', 'G', 'O', 'R', 'B', 'S', 'Z', 'Y', '[', 'J', 'C', 'K' };
 
 		static public int SauveEcran(string NomFic, ImageCpc bitmapCpc, bool CpcPlus) {
 			bool Overscan = (bitmapCpc.NbLig * bitmapCpc.NbCol > 0x3F00);

@@ -132,14 +132,14 @@
             "8"});
 			this.tailleCrayon.Location = new System.Drawing.Point(93, 208);
 			this.tailleCrayon.Name = "tailleCrayon";
-			this.tailleCrayon.Size = new System.Drawing.Size(74, 21);
+			this.tailleCrayon.Size = new System.Drawing.Size(31, 21);
 			this.tailleCrayon.TabIndex = 3;
 			this.tailleCrayon.SelectedIndexChanged += new System.EventHandler(this.tailleCrayon_SelectedIndexChanged);
 			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(22, 34);
+			this.label1.Location = new System.Drawing.Point(14, 34);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(40, 13);
 			this.label1.TabIndex = 6;
@@ -157,7 +157,7 @@
             "8"});
 			this.comboZoom.Location = new System.Drawing.Point(68, 31);
 			this.comboZoom.Name = "comboZoom";
-			this.comboZoom.Size = new System.Drawing.Size(98, 21);
+			this.comboZoom.Size = new System.Drawing.Size(33, 21);
 			this.comboZoom.TabIndex = 8;
 			this.comboZoom.SelectedIndexChanged += new System.EventHandler(this.comboZoom_SelectedIndexChanged);
 			// 

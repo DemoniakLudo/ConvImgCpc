@@ -21,12 +21,12 @@ namespace ConvImgCpc {
 
 		public int[] Palette = { 1, 24, 20, 6, 26, 0, 2, 7, 10, 12, 14, 16, 18, 22, 1, 14, 1 };
 		private int[] tabOctetMode = { 0x00, 0x80, 0x08, 0x88, 0x20, 0xA0, 0x28, 0xA8, 0x02, 0x82, 0x0A, 0x8A, 0x22, 0xA2, 0x2A, 0xAA };
-		private int[] maskMode = new int[3] { 16, 4, 2 };
+		private int[] maskMode = { 16, 4, 2 };
 		public const int Lum0 = 0x00;
 		public const int Lum1 = 0x70;
 		public const int Lum2 = 0xFF;
 
-		static public RvbColor[] RgbCPC = new RvbColor[27] {
+		static public RvbColor[] RgbCPC = {
 							new RvbColor( Lum0, Lum0, Lum0),
 							new RvbColor( Lum1, Lum0, Lum0),
 							new RvbColor( Lum2, Lum0, Lum0),
@@ -115,32 +115,12 @@ namespace ConvImgCpc {
 		public void Reset() {
 			int col = System.Drawing.SystemColors.Control.ToArgb();
 			bmpLock.LockBits();
-			for (int x = 0; x < bmpLock.Width; x++)
-				for (int y = 0; y < bmpLock.Height; y++)
-					bmpLock.SetPixel(x, y, x < TailleX && y < TailleY ? GetPalCPC(Palette[0]) : col);
-
-			bmpLock.UnlockBits();
-		}
-
-		public void SetPalette(int entree, int valeur) {
-			Palette[entree] = valeur;
-		}
-
-		public RvbColor GetPaletteColor(int col) {
-			if (cpcPlus)
-				return new RvbColor((byte)(((Palette[col] & 0xF0) >> 4) * 17), (byte)(((Palette[col] & 0xF00) >> 8) * 17), (byte)((Palette[col] & 0x0F) * 17));
-
-			return RgbCPC[Palette[col] < 27 ? Palette[col] : 0];
-		}
-
-		private int GetPalCPC(int c) {
-			if (cpcPlus) {
-				byte b = (byte)((c & 0x0F) * 17);
-				byte r = (byte)(((c & 0xF0) >> 4) * 17);
-				byte v = (byte)(((c & 0xF00) >> 8) * 17);
-				return (int)(r + (v << 8) + (b << 16));
+			for (int y = 0; y < bmpLock.Height; y++) {
+				int startX = y < TailleY ? TailleX : 0;
+				bmpLock.SetHorLine(0, y, startX, GetPalCPC(Palette[0]));
+				bmpLock.SetHorLine(startX, y, bmpLock.Width - startX, col);
 			}
-			return RgbCPC[c < 27 ? c : 0].GetColor;
+			bmpLock.UnlockBits();
 		}
 
 		public void SetPixelCpc(int xPos, int yPos, int col, int mode) {
@@ -152,39 +132,6 @@ namespace ConvImgCpc {
 			}
 		}
 
-		// Click sur un "lock"
-		private void ClickLock(object sender, System.EventArgs e) {
-			CheckBox colorLock = sender as CheckBox;
-			int numLock = colorLock.Tag != null ? (int)colorLock.Tag : 0;
-			lockState[numLock] = colorLock.Checked ? 1 : 0;
-		}
-
-		// Changement de la palette
-		private void ClickColor(object sender, System.EventArgs e) {
-			Label colorClick = sender as Label;
-			numCol = colorClick.Tag != null ? (int)colorClick.Tag : 0;
-			if (!modeEdition.Checked) {
-				EditColor ed = new EditColor(numCol, Palette[numCol], GetPaletteColor(numCol).GetColorArgb, cpcPlus);
-				ed.ShowDialog(this);
-				if (ed.isValide) {
-					SetPalette(numCol, ed.ValColor);
-					UpdatePalette();
-					Convert(false);
-				}
-			}
-			else {
-				RvbColor col = GetPaletteColor(numCol);
-				crayonColor.BackColor = Color.FromArgb(col.blue, col.green, col.red);
-			}
-		}
-
-		public void UpdatePalette() {
-			for (int i = 0; i < 16; i++) {
-				colors[i].BackColor = Color.FromArgb(GetPaletteColor(i).GetColorArgb);
-				colors[i].Refresh();
-			}
-		}
-
 		public void LockBits() {
 			bmpLock.LockBits();
 		}
@@ -193,12 +140,33 @@ namespace ConvImgCpc {
 			bmpLock.UnlockBits();
 		}
 
-		private void lockAllPal_CheckedChanged(object sender, System.EventArgs e) {
-			for (int i = 0; i < 16; i++) {
-				lockColors[i].Checked = lockAllPal.Checked;
-				lockState[i] = lockAllPal.Checked ? 1 : 0;
+		public void Render() {
+			UpdatePalette();
+			if (zoom != 1) {
+				Bitmap MyBitMap = new Bitmap(imgOrigine.Width, imgOrigine.Height);
+				tmpLock = new LockBitmap(MyBitMap);
+				tmpLock.LockBits();
+				bmpLock.LockBits();
+				for (int y = 0; y < imgOrigine.Height; y++) {
+					int ySrc = offsetY + (y / zoom);
+					for (int x = 0; x < imgOrigine.Width; x++) {
+						int xSrc = offsetX + (x / zoom);
+						tmpLock.SetPixel(x, y, bmpLock.GetPixel(xSrc, ySrc));
+					}
+				}
+				bmpLock.UnlockBits();
+				tmpLock.UnlockBits();
+				pictureBox.Image = MyBitMap;
 			}
-			Convert(false);
+			else {
+				pictureBox.Image = imgOrigine;
+				tmpLock = null;
+			}
+			pictureBox.Refresh();
+			if (fenetreRendu != null) {
+				fenetreRendu.Picture.Image = imgOrigine;
+				fenetreRendu.Picture.Refresh();
+			}
 		}
 
 		public void SauveScr(string fileName, Param param) {
@@ -247,6 +215,55 @@ namespace ConvImgCpc {
 			bmp.Dispose();
 		}
 
+		private RvbColor GetPaletteColor(int col) {
+			return cpcPlus ? new RvbColor((byte)(((Palette[col] & 0xF0) >> 4) * 17), (byte)(((Palette[col] & 0xF00) >> 8) * 17), (byte)((Palette[col] & 0x0F) * 17)) : RgbCPC[Palette[col] < 27 ? Palette[col] : 0];
+		}
+
+		private int GetPalCPC(int c) {
+			return cpcPlus ? (((c & 0xF0) >> 4) * 17) + ((((c & 0xF00) >> 8) * 17) << 8) + (((c & 0x0F) * 17) << 16) : RgbCPC[c < 27 ? c : 0].GetColor;
+		}
+
+		// Click sur un "lock"
+		private void ClickLock(object sender, System.EventArgs e) {
+			CheckBox colorLock = sender as CheckBox;
+			int numLock = colorLock.Tag != null ? (int)colorLock.Tag : 0;
+			lockState[numLock] = colorLock.Checked ? 1 : 0;
+		}
+
+		// Changement de la palette
+		private void ClickColor(object sender, System.EventArgs e) {
+			Label colorClick = sender as Label;
+			numCol = colorClick.Tag != null ? (int)colorClick.Tag : 0;
+			if (!modeEdition.Checked) {
+				EditColor ed = new EditColor(numCol, Palette[numCol], GetPaletteColor(numCol).GetColorArgb, cpcPlus);
+				ed.ShowDialog(this);
+				if (ed.isValide) {
+					Palette[numCol] = ed.ValColor;
+					UpdatePalette();
+					Convert(false);
+				}
+			}
+			else {
+				RvbColor col = GetPaletteColor(numCol);
+				crayonColor.BackColor = Color.FromArgb(col.blue, col.green, col.red);
+			}
+		}
+
+		private void UpdatePalette() {
+			for (int i = 0; i < 16; i++) {
+				colors[i].BackColor = Color.FromArgb(GetPaletteColor(i).GetColorArgb);
+				colors[i].Refresh();
+			}
+		}
+
+		private void lockAllPal_CheckedChanged(object sender, System.EventArgs e) {
+			for (int i = 0; i < 16; i++) {
+				lockColors[i].Checked = lockAllPal.Checked;
+				lockState[i] = lockAllPal.Checked ? 1 : 0;
+			}
+			Convert(false);
+		}
+
 		private void modeEdition_CheckedChanged(object sender, System.EventArgs e) {
 			if (modeEdition.Checked) {
 				grpEdition.Visible = comboZoom.Enabled = tailleCrayon.Enabled = true;
@@ -270,60 +287,6 @@ namespace ConvImgCpc {
 			}
 		}
 
-		public void Render() {
-			UpdatePalette();
-			if (zoom != 1) {
-				Bitmap MyBitMap = new Bitmap(imgOrigine.Width, imgOrigine.Height);
-				tmpLock = new LockBitmap(MyBitMap);
-				tmpLock.LockBits();
-				bmpLock.LockBits();
-				for (int y = 0; y < imgOrigine.Height; y++) {
-					int ySrc = offsetY + (y / zoom);
-					for (int x = 0; x < imgOrigine.Width; x++) {
-						int xSrc = offsetX + (x / zoom);
-						tmpLock.SetPixel(x, y, bmpLock.GetPixel(xSrc, ySrc));
-					}
-				}
-				bmpLock.UnlockBits();
-				tmpLock.UnlockBits();
-				pictureBox.Image = MyBitMap;
-			}
-			else {
-				pictureBox.Image = imgOrigine;
-				tmpLock = null;
-			}
-			pictureBox.Refresh();
-			if (fenetreRendu != null) {
-				fenetreRendu.Picture.Image = imgOrigine;
-				fenetreRendu.Picture.Refresh();
-			}
-		}
-
-		private void DrawPen(MouseEventArgs e) {
-			LockBits();
-			if (tmpLock != null)
-				tmpLock.LockBits();
-
-			int penSizeY = penWidth * 2;
-			for (int y = 0; y < penSizeY; y += 2) {
-				int yReel = (y + offsetY + (e.Y / zoom)) & 0xFFE;
-				int mode = (ModeCPC >= 3 ? (yReel & 2) == 0 ? ModeCPC - 2 : ModeCPC - 3 : ModeCPC);
-				int Tx = (4 >> mode);
-				int pensizeX = penWidth * Tx;
-				int col = numCol % maskMode[mode];
-				for (int x = 0; x < pensizeX; x += Tx) {
-					int xReel = (x + offsetX + (e.X / zoom)) & -Tx;
-					if (xReel >= 0 && yReel >= 0 && xReel < TailleX && yReel < TailleY)
-						SetPixelCpc(xReel, yReel, col, mode);
-				}
-			}
-			if (tmpLock != null)
-				tmpLock.UnlockBits();
-
-			UnlockBits();
-			Render();
-		}
-
 		private void TrtMouseMove(MouseEventArgs e) {
 			if (modeEdition.Checked) {
 				int yReel = (offsetY + (e.Y / zoom)) & 0xFFE;
@@ -334,8 +297,32 @@ namespace ConvImgCpc {
 					RvbColor col = GetPaletteColor(numCol % maskMode[mode]);
 					crayonColor.BackColor = Color.FromArgb(col.blue, col.green, col.red);
 					crayonColor.Refresh();
-					if (e.Button == MouseButtons.Left)
-						DrawPen(e);
+					if (e.Button == MouseButtons.Left) {
+						LockBits();
+						if (tmpLock != null)
+							tmpLock.LockBits();
+
+						for (int y = 0; y < penWidth * 2; y += 2) {
+							mode = (ModeCPC >= 3 ? (yReel & 2) == 0 ? ModeCPC - 2 : ModeCPC - 3 : ModeCPC);
+							Tx = (4 >> mode);
+							int realColor = GetPalCPC(Palette[numCol % maskMode[mode]]);
+							for (int x = 0; x < penWidth * Tx; x += Tx) {
+								xReel = (x + offsetX + (e.X / zoom)) & -Tx;
+								if (xReel >= 0 && yReel >= 0 && xReel < TailleX && yReel < TailleY) {
+									for (int i = 0; i < Tx; i++) {
+										bmpLock.SetPixel(xReel + i, yReel, realColor);
+										bmpLock.SetPixel(xReel + i, yReel + 1, realColor);
+									}
+								}
+							}
+							yReel += 2;
+						}
+						if (tmpLock != null)
+							tmpLock.UnlockBits();
+
+						UnlockBits();
+						Render();
+					}
 				}
 			}
 		}

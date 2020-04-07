@@ -48,7 +48,16 @@ namespace ConvImgCpc {
 			Pixels[adr++] = (byte)(color);
 			Pixels[adr++] = (byte)(color >> 8);
 			Pixels[adr] = (byte)(color >> 16);
+		}
 
+		public void SetHorLine(int pixelX, int pixelY, int lineLength, int color) {
+			int adr = ((pixelY * Width) + pixelX) << 2;
+			for (; lineLength-- > 0; ) {
+				Pixels[adr++] = (byte)(color);
+				Pixels[adr++] = (byte)(color >> 8);
+				Pixels[adr++] = (byte)(color >> 16);
+				adr++;
+			}
 		}
 
 		public void SetPixel(int pixelX, int pixelY, RvbColor color) {
@@ -56,7 +65,6 @@ namespace ConvImgCpc {
 			Pixels[adr++] = color.red;
 			Pixels[adr++] = color.green;
 			Pixels[adr] = color.blue;
-
 		}
 
 		public void Save(string fileName) {

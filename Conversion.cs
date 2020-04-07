@@ -11,57 +11,55 @@ namespace ConvImgCpc {
 		const int SEUIL_LUM_1 = 0x40;
 		const int SEUIL_LUM_2 = 0x80;
 
-		public delegate void DlgCalcDiff(int diff, int decalMasque, int tx);
-		static private DlgCalcDiff fctCalcDiff = null;
 		static private int[] CoulTouvee = new int[4096];
 		static private LockBitmap bitmap;
 		static private int xPix, yPix;
 		static private byte[] tblContrast = new byte[256];
 
-		static double[,] bayer2 = new double[2, 2]	{	{1 / 1600.0, 3 / 1600.0 },
-														{4 / 1600.0, 2 / 1600.0 } };
-		static double[,] bayer3 = new double[4, 4]	{	{0, 12 / 32000.0, 3 / 32000.0, 15 / 32000.0},
-														{8 / 32000.0, 4 / 32000.0, 11 / 32000.0, 7 / 32000.0},
-														{2 / 32000.0, 14 / 32000.0, 1 / 32000.0, 13 / 32000.0},
-														{10 / 32000.0, 6 / 32000.0, 9 / 32000.0, 5 / 32000.0}};
-		static double[,] bayer4 = new double[4, 4]	{	{1 / 32000.0, 9 / 32000.0, 3 / 32000.0, 11 / 32000.0},
-														{13 / 32000.0, 5 / 32000.0, 15 / 32000.0, 7 / 32000.0},
-														{4 / 32000.0, 12 / 32000.0, 2 / 32000.0, 10 / 32000.0},
-														{16 / 32000.0, 8 / 32000.0, 14 / 32000.0, 6 / 32000.0}};
-		static double[,] ord1 = new double[2, 2]	{	{1 / 1600.0, 3 / 1600.0},
-														{2 / 1600.0, 4 / 1600.0}};
-		static double[,] ord2 = new double[3, 3]	{	{8 / 4000.0, 3 / 4000.0, 4 / 4000.0},
-														{6 / 4000.0, 1 / 4000.0, 2 / 4000.0},
-														{7 / 4000.0, 5 / 4000.0, 9 / 4000.0}};
-		static double[,] ord3 = new double[3, 3]	{	{1 / 4000.0, 7 / 4000.0, 4 / 4000.0},
-														{5 / 4000.0, 8 / 4000.0, 3 / 4000.0},
-														{6 / 4000.0, 2 / 4000.0, 9 / 4000.0}};
-		static double[,] ord4 = new double[4, 4]	{	{0 / 32000.0, 8 / 32000.0, 2 / 32000.0, 10 / 32000.0},
-														{12 / 32000.0, 4 / 32000.0, 14 / 32000.0, 6 / 32000.0},
-														{3 / 32000.0, 11 / 32000.0, 1 / 32000.0, 9 / 32000.0},
-														{15 / 32000.0, 7 / 32000.0, 13 / 32000.0, 5 / 32000.0}};
-		static double[,] zigzag1 = new double[3, 3]	{	{0, 4 / 1600.0, 0},
-														{3 / 1600.0, 0, 1 / 1600.0},
-														{0, 2 / 1600.0, 0}};
-		static double[,] zigzag2 = new double[3, 4]	{	{0, 4 / 4000.0, 2 / 4000.0, 0},
-														{6 / 4000.0, 0, 5 / 4000.0, 3 / 4000.0},
-														{0, 7 / 4000.0, 1 / 4000.0, 0}};
-		static double[,] zigzag3 = new double[4, 5] {	{0, 0, 0, 7 / 4000.0, 0},
-														{0, 2 / 4000.0, 6 / 4000.0, 9 / 4000.0, 8 / 4000.0},
-														{3 / 4000.0, 0, 1 / 4000.0, 5 / 4000.0, 0},
-														{0, 4 / 4000.0, 0, 0, 0}};
-		static double[,] floyd = new double[2, 2]	{	{7 / 1600.0, 3 / 1600.0},
-														{5 / 1600.0, 1 / 1600.0}};
-		static double[,] test3 = new double[3, 2]	{	{0, 3 / 1600.0},
-														{0, 5 / 1600.0},
-														{7 / 1600.0, 1 / 1600.0}};
-		static double[,] test2 = new double[3, 3]	{	{8 / 4000.0, 4 / 4000.0, 5 / 4000.0},
-														{3 / 4000.0, 0, 1 / 4000.0},
-														{7 / 4000.0, 2 / 4000.0, 6 / 4000.0}};
-		static double[,] test1 = new double[3, 1] { { 1 }, { 4 }, { 2 } };
-		static double[,] test4 = new double[2, 3]	{	{0, 0, 7 / 1600.0},
-														{3 / 1600.0, 5 / 1600.0, 1 / 1600.0}};
-		static double[,] test = new double[1, 2] { { 1 / 1600.0, 7 / 1600.0 } };
+		static double[,] floyd = {	{7 / 1600.0, 3 / 1600.0},
+									{5 / 1600.0, 1 / 1600.0}};
+		static double[,] bayer2 = {	{1 / 1600.0, 3 / 1600.0 },
+									{4 / 1600.0, 2 / 1600.0 } };
+		static double[,] bayer3 = {	{0, 12 / 32000.0, 3 / 32000.0, 15 / 32000.0},
+									{8 / 32000.0, 4 / 32000.0, 11 / 32000.0, 7 / 32000.0},
+									{2 / 32000.0, 14 / 32000.0, 1 / 32000.0, 13 / 32000.0},
+									{10 / 32000.0, 6 / 32000.0, 9 / 32000.0, 5 / 32000.0}};
+		static double[,] bayer4 = {	{1 / 32000.0, 9 / 32000.0, 3 / 32000.0, 11 / 32000.0},
+									{13 / 32000.0, 5 / 32000.0, 15 / 32000.0, 7 / 32000.0},
+									{4 / 32000.0, 12 / 32000.0, 2 / 32000.0, 10 / 32000.0},
+									{16 / 32000.0, 8 / 32000.0, 14 / 32000.0, 6 / 32000.0}};
+		static double[,] ord1 = {	{1 / 1600.0, 3 / 1600.0},
+									{2 / 1600.0, 4 / 1600.0}};
+		static double[,] ord2 = {	{8 / 4000.0, 3 / 4000.0, 4 / 4000.0},
+									{6 / 4000.0, 1 / 4000.0, 2 / 4000.0},
+									{7 / 4000.0, 5 / 4000.0, 9 / 4000.0}};
+		static double[,] ord3 = {	{1 / 4000.0, 7 / 4000.0, 4 / 4000.0},
+									{5 / 4000.0, 8 / 4000.0, 3 / 4000.0},
+									{6 / 4000.0, 2 / 4000.0, 9 / 4000.0}};
+		static double[,] ord4 = {	{0 / 32000.0, 8 / 32000.0, 2 / 32000.0, 10 / 32000.0},
+									{12 / 32000.0, 4 / 32000.0, 14 / 32000.0, 6 / 32000.0},
+									{3 / 32000.0, 11 / 32000.0, 1 / 32000.0, 9 / 32000.0},
+									{15 / 32000.0, 7 / 32000.0, 13 / 32000.0, 5 / 32000.0}};
+		static double[,] zigzag1 = {	{0, 4 / 1600.0, 0},
+										{3 / 1600.0, 0, 1 / 1600.0},
+										{0, 2 / 1600.0, 0}};
+		static double[,] zigzag2 = {	{0, 4 / 4000.0, 2 / 4000.0, 0},
+										{6 / 4000.0, 0, 5 / 4000.0, 3 / 4000.0},
+										{0, 7 / 4000.0, 1 / 4000.0, 0}};
+		static double[,] zigzag3 = {	{0, 0, 0, 7 / 4000.0, 0},
+										{0, 2 / 4000.0, 6 / 4000.0, 9 / 4000.0, 8 / 4000.0},
+										{3 / 4000.0, 0, 1 / 4000.0, 5 / 4000.0, 0},
+										{0, 4 / 4000.0, 0, 0, 0}};
+		static double[,] test3 = {	{0, 3 / 1600.0},
+									{0, 5 / 1600.0},
+									{7 / 1600.0, 1 / 1600.0}};
+		static double[,] test2 = {	{8 / 4000.0, 4 / 4000.0, 5 / 4000.0},
+									{3 / 4000.0, 0, 1 / 4000.0},
+									{7 / 4000.0, 2 / 4000.0, 6 / 4000.0}};
+		static double[,] test1 = { { 1 }, { 4 }, { 2 } };
+		static double[,] test4 = {	{0, 0, 7 / 1600.0},
+									{3 / 1600.0, 5 / 1600.0, 1 / 1600.0}};
+		static double[,] test = { { 1 / 1600.0, 7 / 1600.0 } };
 
 		static double[,] matDither;
 
@@ -183,11 +181,11 @@ namespace ConvImgCpc {
 			for (int i = 0; i < 256; i++)
 				tblContrast[i] = (byte)MinMax((int)(((((i / 255.0) - 0.5) * c) + 0.5) * 255));
 
-			fctCalcDiff = null;
 			if (prm.pct > 0 && dicMat.ContainsKey(prm.methode)) {
-				fctCalcDiff = CalcDiffMethodeMat;
 				matDither = dicMat[prm.methode];
 			}
+			else
+				prm.pct = 0;
 
 			RvbColor choix, p;
 			for (yPix = 0; yPix < ydest; yPix += 2) {
@@ -231,11 +229,10 @@ namespace ConvImgCpc {
 						choix = ImageCpc.RgbCPC[indexChoix];
 					}
 					CoulTouvee[indexChoix]++;
-
-					if (fctCalcDiff != null) {
-						fctCalcDiff(prm.pct * (p.red - choix.red), 0, Tx);		// Modif. rouge
-						fctCalcDiff(prm.pct * (p.green - choix.green), 1, Tx);	// Modif. Vert
-						fctCalcDiff(prm.pct * (p.blue - choix.blue), 2, Tx);		// Modif. Bleu
+					if (prm.pct > 0) {
+						CalcDiffMethodeMat(prm.pct * (p.red - choix.red), 0, Tx);		// Modif. rouge
+						CalcDiffMethodeMat(prm.pct * (p.green - choix.green), 1, Tx);	// Modif. Vert
+						CalcDiffMethodeMat(prm.pct * (p.blue - choix.blue), 2, Tx);		// Modif. Bleu
 					}
 					bitmap.SetPixel(xPix, yPix, choix);
 				}

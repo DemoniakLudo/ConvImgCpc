@@ -5,7 +5,7 @@ namespace ConvImgCpc {
 	public class Param {
 		public enum SizeMode { Fit, KeepSmaller, KeepLarger };
 
-		public SizeMode sizeMode;
+		public SizeMode sMode;
 		public string methode;
 		public int pct;
 		public int[] lockState = new int[16];

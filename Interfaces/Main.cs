@@ -32,13 +32,14 @@ namespace ConvImgCpc {
 				try {
 					bpConvert.Enabled = false;
 					imgCpc.Reset();
-					param.sizeMode = radioKeepLarger.Checked ? Param.SizeMode.KeepLarger : radioKeepSmaller.Checked ? Param.SizeMode.KeepSmaller : Param.SizeMode.Fit;
+					param.sMode = radioKeepLarger.Checked ? Param.SizeMode.KeepLarger : radioKeepSmaller.Checked ? Param.SizeMode.KeepSmaller : Param.SizeMode.Fit;
 					param.methode = methode.SelectedItem.ToString();
+					param.pct = (int)pctTrame.Value;
 					param.lockState = imgCpc.lockState;
 					Bitmap tmp = new Bitmap(imgCpc.TailleX, imgCpc.TailleY);
 					Graphics g = Graphics.FromImage(tmp);
 					double ratio = imgSrc.GetImage.Width * imgCpc.TailleY / (double)(imgSrc.GetImage.Height * imgCpc.TailleX);
-					switch (param.sizeMode) {
+					switch (param.sMode) {
 						case Param.SizeMode.KeepSmaller:
 							if (ratio < 1) {
 								int newW = (int)(imgCpc.TailleX * ratio);
@@ -117,9 +118,9 @@ namespace ConvImgCpc {
 					reducPal2.Checked = param.reductPal2;
 					newReduc.Checked = param.newReduct;
 					sortPal.Checked = param.sortPal;
-					radioFit.Checked = param.sizeMode == Param.SizeMode.Fit;
-					radioKeepLarger.Checked = param.sizeMode == Param.SizeMode.KeepLarger;
-					radioKeepSmaller.Checked = param.sizeMode == Param.SizeMode.KeepSmaller;
+					radioFit.Checked = param.sMode == Param.SizeMode.Fit;
+					radioKeepLarger.Checked = param.sMode == Param.SizeMode.KeepLarger;
+					radioKeepSmaller.Checked = param.sMode == Param.SizeMode.KeepSmaller;
 					nbCols.Value = param.nbCols;
 					nbLignes.Value = param.nbLignes;
 					mode.SelectedItem = param.modeCpc;
