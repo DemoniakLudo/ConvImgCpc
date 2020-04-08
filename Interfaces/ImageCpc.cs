@@ -23,10 +23,10 @@ namespace ConvImgCpc {
 		public int[] Palette = { 1, 24, 20, 6, 26, 0, 2, 7, 10, 12, 14, 16, 18, 22, 1, 14, 1 };
 		private int[] tabOctetMode = { 0x00, 0x80, 0x08, 0x88, 0x20, 0xA0, 0x28, 0xA8, 0x02, 0x82, 0x0A, 0x8A, 0x22, 0xA2, 0x2A, 0xAA };
 		private int[] maskMode = { 16, 4, 2 };
-		public const int Lum0 = 0x00;
-		public const int Lum1 = 0x70;
-		public const int Lum2 = 0xFF;
-
+		private const int Lum0 = 0x00;
+		private const int Lum1 = 0x70;
+		private const int Lum2 = 0xFF;
+		public int[,] colMode5 = new int[2, 272];
 		static public RvbColor[] RgbCPC = {
 							new RvbColor( Lum0, Lum0, Lum0),
 							new RvbColor( Lum1, Lum0, Lum0),
@@ -70,7 +70,7 @@ namespace ConvImgCpc {
 			set { nbLig = value >> 1; }
 		}
 		public int BitmapSize { get { return GetAdrCpc(TailleY - 2); } }
-		public int ModeCPC = 1;
+		public int ModeVirtuel = 1;
 		public bool cpcPlus = false;
 
 		private int GetAdrCpc(int y) {
@@ -88,7 +88,6 @@ namespace ConvImgCpc {
 			Bitmap bmp = new Bitmap(tx, ty);
 			pictureBox.Image = imgOrigine = bmp;
 			bmpLock = new LockBitmap(bmp);
-			ModeCPC = 1;
 			for (int i = 0; i < 16; i++) {
 				// Générer les contrôles de "couleurs"
 				colors[i] = new Label();
@@ -133,6 +132,13 @@ namespace ConvImgCpc {
 			}
 		}
 
+		public void SetPixelMode5(int xPos, int yPos, int col) {
+			int realColor = GetPalCPC(col < 2 ? colMode5[col, yPos >> 1] : Palette[col]);
+			for (int i = 0; i < 2; i++) {
+				bmpLock.SetPixel(xPos + i, yPos, realColor);
+				bmpLock.SetPixel(xPos + i, yPos + 1, realColor);
+			}
+		}
 		public void LockBits() {
 			bmpLock.LockBits();
 		}
@@ -172,7 +178,7 @@ namespace ConvImgCpc {
 
 		public void SauveScr(string fileName, Param param) {
 			for (int y = 0; y < TailleY; y += 2) {
-				int modeCPC = (ModeCPC >= 3 ? (y & 2) == 0 ? ModeCPC - 2 : ModeCPC - 3 : ModeCPC);
+				int modeCPC = (ModeVirtuel == 5 ? 1 : ModeVirtuel >= 3 ? (y & 2) == 0 ? ModeVirtuel - 2 : ModeVirtuel - 3 : ModeVirtuel);
 				int adrCPC = GetAdrCpc(y);
 				int tx = 4 >> modeCPC;
 				for (int x = 0; x < TailleX; x += 8) {
@@ -225,7 +231,7 @@ namespace ConvImgCpc {
 				for (int y = 0; y < TailleY; y += 2) {
 					string line = "\tDB\t";
 					int nbOctets = 0;
-					int modeCPC = (ModeCPC >= 3 ? (y & 2) == 0 ? ModeCPC - 2 : ModeCPC - 3 : ModeCPC);
+					int modeCPC = (ModeVirtuel == 5 ? 1 : ModeVirtuel >= 3 ? (y & 2) == 0 ? ModeVirtuel - 2 : ModeVirtuel - 3 : ModeVirtuel);
 					int adrCPC = GetAdrCpc(y);
 					int tx = 4 >> modeCPC;
 					for (int x = 0; x < TailleX; x += 8) {
@@ -336,7 +342,7 @@ namespace ConvImgCpc {
 		private void TrtMouseMove(MouseEventArgs e) {
 			if (modeEdition.Checked) {
 				int yReel = (offsetY + (e.Y / zoom)) & 0xFFE;
-				int mode = (ModeCPC >= 3 ? (yReel & 2) == 0 ? ModeCPC - 2 : ModeCPC - 3 : ModeCPC);
+				int mode = (ModeVirtuel == 5 ? 1 : ModeVirtuel >= 3 ? (yReel & 2) == 0 ? ModeVirtuel - 2 : ModeVirtuel - 3 : ModeVirtuel);
 				int Tx = (4 >> mode);
 				int xReel = (offsetX + (e.X / zoom)) & -Tx;
 				if (xReel >= 0 && yReel >= 0 && xReel < TailleX && yReel < TailleY) {
@@ -349,7 +355,7 @@ namespace ConvImgCpc {
 							tmpLock.LockBits();
 
 						for (int y = 0; y < penWidth * 2; y += 2) {
-							mode = (ModeCPC >= 3 ? (yReel & 2) == 0 ? ModeCPC - 2 : ModeCPC - 3 : ModeCPC);
+							mode = (ModeVirtuel == 5 ? 1 : ModeVirtuel >= 3 ? (yReel & 2) == 0 ? ModeVirtuel - 2 : ModeVirtuel - 3 : ModeVirtuel);
 							Tx = (4 >> mode);
 							int realColor = GetPalCPC(Palette[numCol % maskMode[mode]]);
 							for (int x = 0; x < penWidth * Tx; x += Tx) {

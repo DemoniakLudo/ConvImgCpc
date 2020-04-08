@@ -1,4 +1,6 @@
-﻿using System;
+﻿//#define TRY_CATCH
+
+using System;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
@@ -16,7 +18,7 @@ namespace ConvImgCpc {
 			imgCpc = new ImageCpc(Convert);
 			nbCols.Value = imgCpc.TailleX >> 3;
 			nbLignes.Value = imgCpc.TailleY >> 1;
-			mode.SelectedIndex = imgCpc.ModeCPC;
+			mode.SelectedIndex = imgCpc.ModeVirtuel;
 			methode.SelectedIndex = 0;
 			param.pctContrast = param.pctLumi = param.pctSat = 100;
 			imgCpc.Visible = true;
@@ -30,7 +32,9 @@ namespace ConvImgCpc {
 
 		private void Convert(bool doConvert) {
 			if (imgSrc.GetImage != null && (autoRecalc.Checked || doConvert)) {
+#if  TRY_CATCH
 				try {
+#endif
 					bpConvert.Enabled = false;
 					imgCpc.Reset();
 					param.sMode = radioKeepLarger.Checked ? Param.SizeMode.KeepLarger : radioKeepSmaller.Checked ? Param.SizeMode.KeepSmaller : radioFit.Checked ? Param.SizeMode.Fit : Param.SizeMode.UserSize;
@@ -78,10 +82,12 @@ namespace ConvImgCpc {
 					}
 					Conversion.Convert(tmp, imgCpc, param);
 					bpSaveImage.Enabled = bpConvert.Enabled = true;
+#if TRY_CATCH
 				}
 				catch (Exception ex) {
 					MessageBox.Show(ex.StackTrace, ex.Message);
 				}
+#endif
 			}
 			imgCpc.Render();
 		}
@@ -95,17 +101,21 @@ namespace ConvImgCpc {
 			dlg.Filter = "Images (*.bmp, *.gif, *.png, *.jpg)|*.bmp;*.gif;*.png;*.jpg";
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
+#if TRY_CATCH
 				try {
+#endif
 					Bitmap bmp = new Bitmap(dlg.FileName);
 					imgSrc.SetBitmap(bmp, checkImageSource.Checked);
 					Text = "ConvImgCPC - " + Path.GetFileName(dlg.FileName);
 					tbxSizeX.Text = imgSrc.GetImage.Width.ToString();
 					tbxSizeY.Text = imgSrc.GetImage.Height.ToString();
 					Convert(false);
+#if TRY_CATCH
 				}
 				catch (Exception ex) {
 					MessageBox.Show(ex.StackTrace, ex.Message);
 				}
+#endif
 			}
 		}
 
@@ -115,7 +125,9 @@ namespace ConvImgCpc {
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
 				FileStream file = File.Open(dlg.FileName, FileMode.Open);
+#if TRY_CATCH
 				try {
+#endif
 					param = (Param)new XmlSerializer(typeof(Param)).Deserialize(file);
 					// Initialisation paramètres...
 					methode.SelectedItem = param.methode;
@@ -136,10 +148,12 @@ namespace ConvImgCpc {
 					nbCols.Value = param.nbCols;
 					nbLignes.Value = param.nbLignes;
 					mode.SelectedItem = param.modeCpc;
+#if TRY_CATCH
 				}
 				catch (Exception ex) {
 					MessageBox.Show(ex.StackTrace, ex.Message);
 				}
+#endif
 				file.Close();
 			}
 		}
@@ -150,18 +164,24 @@ namespace ConvImgCpc {
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
 				FileStream file = File.Open(dlg.FileName, FileMode.Create);
+#if TRY_CATCH
 				try {
+#endif
 					new XmlSerializer(typeof(Param)).Serialize(file, param);
+#if TRY_CATCH
 				}
 				catch (Exception ex) {
 					MessageBox.Show(ex.StackTrace, ex.Message);
 				}
+#endif
 				file.Close();
 			}
 		}
 
 		private void bpSaveImage_Click(object sender, EventArgs e) {
+#if TRY_CATCH
 			try {
+#endif
 				SaveFileDialog dlg = new SaveFileDialog();
 				dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.bmp)|*.bmp|Sprite assembleur (.asm)|*.asm";
 				DialogResult result = dlg.ShowDialog();
@@ -179,10 +199,12 @@ namespace ConvImgCpc {
 							imgCpc.SauveSprite(dlg.FileName,lblInfoVersion.Text, param);
 							break;
 					}
+#if TRY_CATCH
 			}
 			catch (Exception ex) {
 				MessageBox.Show(ex.StackTrace, ex.Message);
 			}
+#endif
 		}
 
 		private void nbCols_ValueChanged(object sender, EventArgs e) {
@@ -199,7 +221,7 @@ namespace ConvImgCpc {
 
 		private void mode_SelectedIndexChanged(object sender, EventArgs e) {
 			param.modeCpc = mode.SelectedItem.ToString();
-			imgCpc.ModeCPC = int.Parse(param.modeCpc.Substring(0, 1));
+			imgCpc.ModeVirtuel = int.Parse(param.modeCpc.Substring(0, 1));
 			Convert(false);
 		}
 
