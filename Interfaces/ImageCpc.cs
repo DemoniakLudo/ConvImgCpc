@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace ConvImgCpc {
@@ -213,6 +214,51 @@ namespace ConvImgCpc {
 			loc.UnlockBits();
 			bmp.Save(fileName, System.Drawing.Imaging.ImageFormat.Bmp);
 			bmp.Dispose();
+		}
+
+		public void SauveSprite(string fileName, string version, Param param) {
+			using (StreamWriter sw = File.CreateText(fileName)) {
+				sw.WriteLine("; Généré par ConvImgCpc" + version);
+				sw.WriteLine("; mode écran : " + param.modeCpc);
+				sw.WriteLine("; Taille (nbColsxNbLignes) : " + nbCol.ToString() + "x" + NbLig.ToString());
+				sw.WriteLine(";");
+				for (int y = 0; y < TailleY; y += 2) {
+					string line = "\tDB\t";
+					int nbOctets = 0;
+					int modeCPC = (ModeCPC >= 3 ? (y & 2) == 0 ? ModeCPC - 2 : ModeCPC - 3 : ModeCPC);
+					int adrCPC = GetAdrCpc(y);
+					int tx = 4 >> modeCPC;
+					for (int x = 0; x < TailleX; x += 8) {
+						byte pen = 0, octet = 0;
+						for (int p = 0; p < 8; p++)
+							if ((p % tx) == 0) {
+								RvbColor col = bmpLock.GetPixelColor(x + p, y);
+								if (param.cpcPlus) {
+									for (pen = 0; pen < 16; pen++) {
+										if ((col.green >> 4) == (Palette[pen] >> 8) && (col.red >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.blue >> 4) == (Palette[pen] & 0x0F))
+											break;
+									}
+								}
+								else {
+									for (pen = 0; pen < 16; pen++) {
+										RvbColor fixedCol = RgbCPC[Palette[pen]];
+										if (fixedCol.red == col.red && fixedCol.blue == col.blue && fixedCol.green == col.green)
+											break;
+									}
+								}
+								octet |= (byte)(tabOctetMode[pen] >> (p / tx));
+							}
+						line += "#" + octet.ToString("X2") + ",";
+						if (++nbOctets > 15) {
+							sw.WriteLine(line.Substring(0, line.Length - 1));
+							line = "\tDB\t";
+							nbOctets = 0;
+						}
+					}
+					if (nbOctets > 0)
+						sw.WriteLine(line.Substring(0, line.Length - 1));
+				}
+			}
 		}
 
 		private RvbColor GetPaletteColor(int col) {

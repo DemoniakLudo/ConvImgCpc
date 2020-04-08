@@ -163,7 +163,7 @@ namespace ConvImgCpc {
 		private void bpSaveImage_Click(object sender, EventArgs e) {
 			try {
 				SaveFileDialog dlg = new SaveFileDialog();
-				dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.bmp)|*.bmp";
+				dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.bmp)|*.bmp|Sprite assembleur (.asm)|*.asm";
 				DialogResult result = dlg.ShowDialog();
 				if (result == DialogResult.OK)
 					switch (dlg.FilterIndex) {
@@ -173,6 +173,10 @@ namespace ConvImgCpc {
 
 						case 2:
 							imgCpc.SauveBmp(dlg.FileName);
+							break;
+
+						case 3:
+							imgCpc.SauveSprite(dlg.FileName,lblInfoVersion.Text, param);
 							break;
 					}
 			}
