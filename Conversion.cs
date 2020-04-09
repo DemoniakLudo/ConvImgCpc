@@ -18,13 +18,13 @@ namespace ConvImgCpc {
 
 		static double[,] floyd = {	{7 / 1600.0, 3 / 1600.0},
 									{5 / 1600.0, 1 / 1600.0}};
-		static double[,] bayer2 = {	{1 / 1600.0, 3 / 1600.0 },
+		static double[,] bayer1 = {	{1 / 1600.0, 3 / 1600.0 },
 									{4 / 1600.0, 2 / 1600.0 } };
-		static double[,] bayer3 = {	{0, 12 / 32000.0, 3 / 32000.0, 15 / 32000.0},
+		static double[,] bayer2 = {	{0, 12 / 32000.0, 3 / 32000.0, 15 / 32000.0},
 									{8 / 32000.0, 4 / 32000.0, 11 / 32000.0, 7 / 32000.0},
 									{2 / 32000.0, 14 / 32000.0, 1 / 32000.0, 13 / 32000.0},
 									{10 / 32000.0, 6 / 32000.0, 9 / 32000.0, 5 / 32000.0}};
-		static double[,] bayer4 = {	{1 / 32000.0, 9 / 32000.0, 3 / 32000.0, 11 / 32000.0},
+		static double[,] bayer3 = {	{1 / 32000.0, 9 / 32000.0, 3 / 32000.0, 11 / 32000.0},
 									{13 / 32000.0, 5 / 32000.0, 15 / 32000.0, 7 / 32000.0},
 									{4 / 32000.0, 12 / 32000.0, 2 / 32000.0, 10 / 32000.0},
 									{16 / 32000.0, 8 / 32000.0, 14 / 32000.0, 6 / 32000.0}};
@@ -65,9 +65,9 @@ namespace ConvImgCpc {
 
 		static private Dictionary<string, double[,]> dicMat = new Dictionary<string, double[,]>() {
 			{"Floyd-Steinberg (2x2)",	floyd},
-			{ "Bayer 1 (2X2)",			bayer2},
-			{ "Bayer 2 (4x4)",			bayer3},
-			{ "Bayer 3 (4X4)",			bayer4},
+			{ "Bayer 1 (2X2)",			bayer1},
+			{ "Bayer 2 (4x4)",			bayer2},
+			{ "Bayer 3 (4X4)",			bayer3},
 			{ "Ordered 1 (2x2)",		ord1},
 			{ "Ordered 2 (3x3)",		ord2},
 			{ "Ordered 3 (3x3)",		ord3},
@@ -459,7 +459,7 @@ namespace ConvImgCpc {
 					if (dest.modeVirtuel == 5)
 						dest.SetPixelMode5(x, y, choix);
 					else
-						dest.SetPixelCpc(x, y, choix, modeCpc);
+						dest.SetPixelCpc(x, y, choix, Tx);
 				}
 			}
 		}

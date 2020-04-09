@@ -123,10 +123,9 @@ namespace ConvImgCpc {
 			bmpLock.UnlockBits();
 		}
 
-		public void SetPixelCpc(int xPos, int yPos, int col, int mode) {
-			int nb = 4 >> mode;
+		public void SetPixelCpc(int xPos, int yPos, int col, int tx) {
 			int realColor = GetPalCPC(Palette[col]);
-			for (int i = 0; i < nb; i++) {
+			for (int i = 0; i < tx; i++) {
 				bmpLock.SetPixel(xPos + i, yPos, realColor);
 				bmpLock.SetPixel(xPos + i, yPos + 1, realColor);
 			}
