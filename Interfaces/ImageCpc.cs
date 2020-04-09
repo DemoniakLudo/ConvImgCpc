@@ -70,7 +70,7 @@ namespace ConvImgCpc {
 			set { nbLig = value >> 1; }
 		}
 		public int BitmapSize { get { return GetAdrCpc(TailleY - 2); } }
-		public int ModeVirtuel = 1;
+		public int modeVirtuel = 1;
 		public bool cpcPlus = false;
 
 		private int GetAdrCpc(int y) {
@@ -178,7 +178,7 @@ namespace ConvImgCpc {
 
 		public void SauveScr(string fileName, Param param) {
 			for (int y = 0; y < TailleY; y += 2) {
-				int modeCPC = (ModeVirtuel == 5 ? 1 : ModeVirtuel >= 3 ? (y & 2) == 0 ? ModeVirtuel - 2 : ModeVirtuel - 3 : ModeVirtuel);
+				int modeCPC = (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 				int adrCPC = GetAdrCpc(y);
 				int tx = 4 >> modeCPC;
 				for (int x = 0; x < TailleX; x += 8) {
@@ -225,13 +225,13 @@ namespace ConvImgCpc {
 		public void SauveSprite(string fileName, string version, Param param) {
 			using (StreamWriter sw = File.CreateText(fileName)) {
 				sw.WriteLine("; Généré par ConvImgCpc" + version);
-				sw.WriteLine("; mode écran : " + param.modeCpc);
+				sw.WriteLine("; mode écran : " + param.modeVirtuel);
 				sw.WriteLine("; Taille (nbColsxNbLignes) : " + nbCol.ToString() + "x" + NbLig.ToString());
 				sw.WriteLine(";");
 				for (int y = 0; y < TailleY; y += 2) {
 					string line = "\tDB\t";
 					int nbOctets = 0;
-					int modeCPC = (ModeVirtuel == 5 ? 1 : ModeVirtuel >= 3 ? (y & 2) == 0 ? ModeVirtuel - 2 : ModeVirtuel - 3 : ModeVirtuel);
+					int modeCPC = (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 					int adrCPC = GetAdrCpc(y);
 					int tx = 4 >> modeCPC;
 					for (int x = 0; x < TailleX; x += 8) {
@@ -342,7 +342,7 @@ namespace ConvImgCpc {
 		private void TrtMouseMove(MouseEventArgs e) {
 			if (modeEdition.Checked) {
 				int yReel = (offsetY + (e.Y / zoom)) & 0xFFE;
-				int mode = (ModeVirtuel == 5 ? 1 : ModeVirtuel >= 3 ? (yReel & 2) == 0 ? ModeVirtuel - 2 : ModeVirtuel - 3 : ModeVirtuel);
+				int mode = (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (yReel & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 				int Tx = (4 >> mode);
 				int xReel = (offsetX + (e.X / zoom)) & -Tx;
 				if (xReel >= 0 && yReel >= 0 && xReel < TailleX && yReel < TailleY) {
@@ -355,7 +355,7 @@ namespace ConvImgCpc {
 							tmpLock.LockBits();
 
 						for (int y = 0; y < penWidth * 2; y += 2) {
-							mode = (ModeVirtuel == 5 ? 1 : ModeVirtuel >= 3 ? (yReel & 2) == 0 ? ModeVirtuel - 2 : ModeVirtuel - 3 : ModeVirtuel);
+							mode = (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (yReel & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 							Tx = (4 >> mode);
 							int realColor = GetPalCPC(Palette[numCol % maskMode[mode]]);
 							for (int x = 0; x < penWidth * Tx; x += Tx) {

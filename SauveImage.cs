@@ -235,7 +235,7 @@ namespace ConvImgCpc {
 			bool Overscan = (bitmapCpc.NbLig * bitmapCpc.NbCol > 0x3F00);
 			bool WithCode = true; // ###
 			if (CpcPlus) {
-				ModePal[0] = (byte)(bitmapCpc.ModeVirtuel | 0x8C);
+				ModePal[0] = (byte)(bitmapCpc.modeVirtuel | 0x8C);
 				int k = 1;
 				for (int i = 0; i < 16; i++) {
 					ModePal[k++] = (byte)(((bitmapCpc.Palette[i] >> 4) & 0x0F) | (bitmapCpc.Palette[i] << 4));
@@ -243,7 +243,7 @@ namespace ConvImgCpc {
 				}
 			}
 			else {
-				ModePal[0] = (byte)bitmapCpc.ModeVirtuel;
+				ModePal[0] = (byte)bitmapCpc.modeVirtuel;
 				for (int i = 0; i < 16; i++)
 					ModePal[1 + i] = (byte)bitmapCpc.Palette[i];
 			}
@@ -260,7 +260,7 @@ namespace ConvImgCpc {
 					else
 						Buffer.BlockCopy(CodeStd, 0, imgCpc, 0x07D0, CodeStd.Length);
 
-					if (bitmapCpc.ModeVirtuel > 2) {
+					if (bitmapCpc.modeVirtuel > 2) {
 						Buffer.BlockCopy(codeEgx0, 0, imgCpc, 0x37D0, codeEgx0.Length);
 						Buffer.BlockCopy(codeEgx1, 0, imgCpc, 0x3FD0, codeEgx1.Length);
 						imgCpc[0x07F2] = 0xD0;
@@ -276,7 +276,7 @@ namespace ConvImgCpc {
 						else
 							Buffer.BlockCopy(CodeOv, 0, imgCpc, 0x611, CodeOv.Length);
 
-						if (bitmapCpc.ModeVirtuel > 2) {
+						if (bitmapCpc.modeVirtuel > 2) {
 							Buffer.BlockCopy(codeEgx0, 0, imgCpc, 0x1600, codeEgx0.Length);
 							Buffer.BlockCopy(codeEgx1, 0, imgCpc, 0x1640, codeEgx1.Length);
 							if (CpcPlus) {

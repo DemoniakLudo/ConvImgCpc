@@ -72,6 +72,7 @@
 			this.bpSaveParam = new System.Windows.Forms.Button();
 			this.bpSaveImage = new System.Windows.Forms.Button();
 			this.lblInfoVersion = new System.Windows.Forms.Label();
+			this.trackModeX = new System.Windows.Forms.TrackBar();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -82,6 +83,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.contrast)).BeginInit();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.trackModeX)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// checkImageSource
@@ -163,13 +165,6 @@
 			// 
 			this.mode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.mode.FormattingEnabled = true;
-			this.mode.Items.AddRange(new object[] {
-            "0",
-            "1",
-            "2",
-            "3 (EGX1)",
-            "4 (EGX2)",
-            "5 (Mode X)"});
 			this.mode.Location = new System.Drawing.Point(49, 100);
 			this.mode.Name = "mode";
 			this.mode.Size = new System.Drawing.Size(78, 21);
@@ -224,6 +219,7 @@
 			// 
 			// resoCPC
 			// 
+			this.resoCPC.Controls.Add(this.trackModeX);
 			this.resoCPC.Controls.Add(this.chkOverscan);
 			this.resoCPC.Controls.Add(this.label1);
 			this.resoCPC.Controls.Add(this.nbCols);
@@ -233,7 +229,7 @@
 			this.resoCPC.Controls.Add(this.mode);
 			this.resoCPC.Location = new System.Drawing.Point(137, 12);
 			this.resoCPC.Name = "resoCPC";
-			this.resoCPC.Size = new System.Drawing.Size(132, 163);
+			this.resoCPC.Size = new System.Drawing.Size(132, 172);
 			this.resoCPC.TabIndex = 11;
 			this.resoCPC.TabStop = false;
 			this.resoCPC.Text = "Résolution CPC";
@@ -269,7 +265,7 @@
 			this.tramage.Controls.Add(this.label4);
 			this.tramage.Location = new System.Drawing.Point(421, 12);
 			this.tramage.Name = "tramage";
-			this.tramage.Size = new System.Drawing.Size(172, 163);
+			this.tramage.Size = new System.Drawing.Size(172, 172);
 			this.tramage.TabIndex = 11;
 			this.tramage.TabStop = false;
 			this.tramage.Text = "Tramage";
@@ -477,7 +473,7 @@
 			this.groupBox1.Controls.Add(this.radioKeepLarger);
 			this.groupBox1.Location = new System.Drawing.Point(275, 12);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(140, 163);
+			this.groupBox1.Size = new System.Drawing.Size(140, 172);
 			this.groupBox1.TabIndex = 49;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Taille image source";
@@ -591,7 +587,7 @@
 			this.groupBox2.Controls.Add(this.label9);
 			this.groupBox2.Controls.Add(this.sat);
 			this.groupBox2.Controls.Add(this.label8);
-			this.groupBox2.Location = new System.Drawing.Point(137, 181);
+			this.groupBox2.Location = new System.Drawing.Point(137, 190);
 			this.groupBox2.Name = "groupBox2";
 			this.groupBox2.Size = new System.Drawing.Size(456, 238);
 			this.groupBox2.TabIndex = 52;
@@ -637,6 +633,16 @@
 			this.lblInfoVersion.Size = new System.Drawing.Size(0, 13);
 			this.lblInfoVersion.TabIndex = 52;
 			// 
+			// trackModeX
+			// 
+			this.trackModeX.Location = new System.Drawing.Point(0, 127);
+			this.trackModeX.Maximum = 200;
+			this.trackModeX.Name = "trackModeX";
+			this.trackModeX.Size = new System.Drawing.Size(132, 45);
+			this.trackModeX.TabIndex = 9;
+			this.trackModeX.Visible = false;
+			this.trackModeX.Scroll += new System.EventHandler(this.trackModeX_Scroll);
+			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -673,6 +679,7 @@
 			this.groupBox1.PerformLayout();
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.trackModeX)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -729,6 +736,7 @@
 		private System.Windows.Forms.TextBox tbxPosY;
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.TrackBar trackModeX;
 	}
 }
 

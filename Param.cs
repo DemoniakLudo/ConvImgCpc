@@ -19,6 +19,7 @@ namespace ConvImgCpc {
 		public bool newReduct;
 		public bool sortPal;
 		public int nbCols, nbLignes;
-		public string modeCpc;
+		public int modeVirtuel;
+		public int trackModeX;
 	}
 }

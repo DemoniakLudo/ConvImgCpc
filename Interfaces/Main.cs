@@ -1,4 +1,4 @@
-﻿//#define TRY_CATCH
+﻿#define TRY_CATCH
 
 using System;
 using System.Drawing;
@@ -14,11 +14,17 @@ namespace ConvImgCpc {
 		private Param param = new Param();
 		public Main() {
 			InitializeComponent();
+			mode.Items.Insert(0, "Mode 0");
+			mode.Items.Insert(1, "Mode 1");
+			mode.Items.Insert(2, "Mode 2");
+			mode.Items.Insert(3, "Mode EGX1");
+			mode.Items.Insert(4, "Mode EGX2");
+			mode.Items.Insert(5, "Mode X");
 			imgSrc = new ImageSource();
 			imgCpc = new ImageCpc(Convert);
 			nbCols.Value = imgCpc.TailleX >> 3;
 			nbLignes.Value = imgCpc.TailleY >> 1;
-			mode.SelectedIndex = imgCpc.ModeVirtuel;
+			mode.SelectedIndex = imgCpc.modeVirtuel;
 			methode.SelectedIndex = 0;
 			param.pctContrast = param.pctLumi = param.pctSat = 100;
 			imgCpc.Visible = true;
@@ -35,12 +41,13 @@ namespace ConvImgCpc {
 #if  TRY_CATCH
 				try {
 #endif
-					bpConvert.Enabled = false;
+					bpSaveImage.Enabled = bpConvert.Enabled = false;
 					imgCpc.Reset();
 					param.sMode = radioKeepLarger.Checked ? Param.SizeMode.KeepLarger : radioKeepSmaller.Checked ? Param.SizeMode.KeepSmaller : radioFit.Checked ? Param.SizeMode.Fit : Param.SizeMode.UserSize;
 					param.methode = methode.SelectedItem.ToString();
 					param.pct = (int)pctTrame.Value;
 					param.lockState = imgCpc.lockState;
+					param.trackModeX = trackModeX.Value;
 					Bitmap tmp = new Bitmap(imgCpc.TailleX, imgCpc.TailleY);
 					Graphics g = Graphics.FromImage(tmp);
 					double ratio = imgSrc.GetImage.Width * imgCpc.TailleY / (double)(imgSrc.GetImage.Height * imgCpc.TailleX);
@@ -147,7 +154,7 @@ namespace ConvImgCpc {
 					radioKeepSmaller.Checked = param.sMode == Param.SizeMode.KeepSmaller;
 					nbCols.Value = param.nbCols;
 					nbLignes.Value = param.nbLignes;
-					mode.SelectedItem = param.modeCpc;
+					mode.SelectedItem = param.modeVirtuel;
 #if TRY_CATCH
 				}
 				catch (Exception ex) {
@@ -196,7 +203,7 @@ namespace ConvImgCpc {
 							break;
 
 						case 3:
-							imgCpc.SauveSprite(dlg.FileName,lblInfoVersion.Text, param);
+							imgCpc.SauveSprite(dlg.FileName, lblInfoVersion.Text, param);
 							break;
 					}
 #if TRY_CATCH
@@ -220,8 +227,8 @@ namespace ConvImgCpc {
 		}
 
 		private void mode_SelectedIndexChanged(object sender, EventArgs e) {
-			param.modeCpc = mode.SelectedItem.ToString();
-			imgCpc.ModeVirtuel = int.Parse(param.modeCpc.Substring(0, 1));
+			imgCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex;
+			trackModeX.Visible = imgCpc.modeVirtuel == 5;
 			Convert(false);
 		}
 
@@ -311,6 +318,11 @@ namespace ConvImgCpc {
 
 		private void radioUserSize_CheckedChanged(object sender, EventArgs e) {
 			tbxPosX.Visible = tbxPosY.Visible = tbxSizeX.Visible = tbxSizeY.Visible = label5.Visible = label7.Visible = radioUserSize.Checked;
+		}
+
+		private void trackModeX_Scroll(object sender, EventArgs e) {
+			param.trackModeX = trackModeX.Value;
+			Convert(false);
 		}
 	}
 }
