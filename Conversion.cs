@@ -11,7 +11,7 @@ namespace ConvImgCpc {
 		const int SEUIL_LUM_1 = 0x40;
 		const int SEUIL_LUM_2 = 0x80;
 
-		static private int[,] CoulTouvee = new int[4096, 272];
+		static private int[,] CoulTrouvee = new int[4096, 272];
 		static private LockBitmap bitmap;
 		static private int xPix, yPix;
 		static private byte[] tblContrast = new byte[256];
@@ -70,7 +70,7 @@ namespace ConvImgCpc {
 			{ "Bayer 3 (4X4)",			bayer4},
 			{ "Ordered 1 (2x2)",		ord1},
 			{ "Ordered 2 (3x3)",		ord2},
-			{ "Ordered 3 (4x4)",		ord3},
+			{ "Ordered 3 (3x3)",		ord3},
 			{ "Ordered 4 (4x4)",		ord4},
 			{ "ZigZag1 (3x3)",			zigzag1},
 			{ "ZigZag2 (4x3)",			zigzag2},
@@ -82,6 +82,7 @@ namespace ConvImgCpc {
 			return value >= 0 ? value <= 255 ? (byte)value : (byte)255 : (byte)0;
 		}
 
+		// Applique une matrice de tramage
 		static void CalcDiffMethodeMat(int diff, int decalMasque, int Tx) {
 			for (int y = 0; y < matDither.GetLength(1); y++) {
 				int adr = ((((yPix + 2 * y) * bitmap.Width) + xPix) << 2) + decalMasque;
@@ -169,12 +170,11 @@ namespace ConvImgCpc {
 		// remplit un tableau avec ces couleurs
 		//
 		static private int ConvertPasse1(int xdest, int ydest, Param prm, int modeVirtuel) {
-			//if (prm.cpcPlus)
-			//	prm.pct <<= 2;
+			int pct = prm.cpcPlus ? prm.pct << 2 : prm.pct;
 
-			for (int i = 0; i < 4096; i++)
+			for (int i = 0; i < CoulTrouvee.GetLength(0); i++)
 				for (int l = 0; l < (modeVirtuel == 5 ? 272 : 1); l++)
-					CoulTouvee[i, l] = 0;
+					CoulTrouvee[i, l] = 0;
 
 			float lumi = prm.pctLumi / 100.0F;
 			float satur = prm.pctSat / 100.0F;
@@ -182,21 +182,29 @@ namespace ConvImgCpc {
 			for (int i = 0; i < 256; i++)
 				tblContrast[i] = (byte)MinMax((int)(((((i / 255.0) - 0.5) * c) + 0.5) * 255));
 
-			if (prm.pct > 0 && dicMat.ContainsKey(prm.methode)) {
+			if (pct > 0 && dicMat.ContainsKey(prm.methode))
 				matDither = dicMat[prm.methode];
-			}
 			else
-				prm.pct = 0;
+				pct = 0;
 
-			RvbColor choix, p;
+			RvbColor choix, p = new RvbColor(0);
 			for (yPix = 0; yPix < ydest; yPix += 2) {
 				int Tx = 4 >> (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (yPix & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 				for (xPix = 0; xPix < xdest; xPix += Tx) {
-					p = bitmap.GetPixelColor(xPix, yPix);
+					float r = 0, v = 0, b = 0;
+					for (int i = 0; i < Tx; i++) {
+						p = bitmap.GetPixelColor(xPix + i, yPix);
+						r += p.red;
+						b += p.blue;
+						v += p.green;
+					}
+					p.red = (byte)(r / Tx);
+					p.green = (byte)(v / Tx);
+					p.blue = (byte)(b / Tx);
 					if (p.red != 0 || p.green != 0 || p.blue != 0) {
-						float r = tblContrast[p.red];
-						float v = tblContrast[p.green];
-						float b = tblContrast[p.blue];
+						r = tblContrast[p.red];
+						v = tblContrast[p.green];
+						b = tblContrast[p.blue];
 						if (prm.pctLumi != 100 || prm.pctSat != 100)
 							SetLumiSat(lumi, satur, ref r, ref v, ref b);
 
@@ -230,11 +238,11 @@ namespace ConvImgCpc {
 						choix = ImageCpc.RgbCPC[indexChoix];
 					}
 
-					CoulTouvee[indexChoix, (modeVirtuel == 5 ? yPix >> 1 : 0)]++;
-					if (prm.pct > 0) {
-						CalcDiffMethodeMat(prm.pct * (p.red - choix.red), 0, Tx);		// Modif. rouge
-						CalcDiffMethodeMat(prm.pct * (p.green - choix.green), 1, Tx);	// Modif. Vert
-						CalcDiffMethodeMat(prm.pct * (p.blue - choix.blue), 2, Tx);		// Modif. Bleu
+					CoulTrouvee[indexChoix, (modeVirtuel == 5 ? yPix >> 1 : 0)]++;
+					if (pct > 0) {
+						CalcDiffMethodeMat(pct * (p.red - choix.red), 0, Tx);		// Modif. rouge
+						CalcDiffMethodeMat(pct * (p.green - choix.green), 1, Tx);	// Modif. Vert
+						CalcDiffMethodeMat(pct * (p.blue - choix.blue), 2, Tx);		// Modif. Bleu
 					}
 					bitmap.SetPixel(xPix, yPix, choix);
 				}
@@ -246,24 +254,24 @@ namespace ConvImgCpc {
 				//
 				if (satur > 0) {
 					// Masquer 1 bit par composante
-					for (int i = 0; i < CoulTouvee.Length; i++) {
+					for (int i = 0; i < CoulTrouvee.GetLength(0); i++) {
 						if (((i & 1) == 1 && prm.reductPal1) || ((i & 1) == 0 && prm.reductPal2)) {
 							int c1 = (i & 0xC00) * 0xFFF / 0xC00;
 							int c2 = (i & 0xC0) * 0xFF / 0xC0;
 							int c3 = (i & 0x0C) * 0x0F / 0x0C;
-							int t = CoulTouvee[i, 0];
-							CoulTouvee[i, 0] = 0;
+							int t = CoulTrouvee[i, 0];
+							CoulTrouvee[i, 0] = 0;
 							if (prm.newReduct)
-								CoulTouvee[(c1 & 0xF00) + (c2 & 0xF0) + (c3 & 0x0F), 0] += t;
+								CoulTrouvee[(c1 & 0xF00) + (c2 & 0xF0) + (c3 & 0x0F), 0] += t;
 							else
-								CoulTouvee[(c1 & 0xC00) + (c2 & 0xC0) + (c3 & 0x0C), 0] += t;
+								CoulTrouvee[(c1 & 0xC00) + (c2 & 0xC0) + (c3 & 0x0C), 0] += t;
 						}
 					}
 				}
 			}
 			int NbCol = 0;
-			for (int i = 0; i < 4096; i++)
-				if (CoulTouvee[i, 0] > 0)
+			for (int i = 0; i < CoulTrouvee.GetLength(0); i++)
+				if (CoulTrouvee[i, 0] > 0)
 					NbCol++;
 
 			return NbCol;
@@ -277,18 +285,18 @@ namespace ConvImgCpc {
 
 			for (x = 0; x < maxCol; x++)
 				if (lockState[x] > 0)
-					CoulTouvee[palette[x], 0] = 0;
+					CoulTrouvee[palette[x], 0] = 0;
 
 			for (x = 0; x < maxCol; x++) {
 				int valMax = 0;
 				if (lockState[x] == 0) {
 					for (int i = 0; i < FindMax; i++) {
-						if (valMax < CoulTouvee[i, 0]) {
-							valMax = CoulTouvee[i, 0];
+						if (valMax < CoulTrouvee[i, 0]) {
+							valMax = CoulTrouvee[i, 0];
 							palette[x] = i;
 						}
 					}
-					CoulTouvee[palette[x], 0] = 0;
+					CoulTrouvee[palette[x], 0] = 0;
 				}
 			}
 
@@ -307,7 +315,7 @@ namespace ConvImgCpc {
 
 			for (x = 0; x < 4; x++)
 				if (lockState[x] > 0)
-					CoulTouvee[palette[x], 0] = 0;
+					CoulTrouvee[palette[x], 0] = 0;
 
 			// Recherche les couleurs fixes (2 et 3)
 			for (x = 2; x < 4; x++) {
@@ -316,7 +324,7 @@ namespace ConvImgCpc {
 					for (int i = 0; i < FindMax; i++) {
 						int suym = 0;
 						for (int y = 0; y < yMax >> 1; y++)
-							suym += CoulTouvee[i, y];
+							suym += CoulTrouvee[i, y];
 
 						if (valMax < suym) {
 							valMax = suym;
@@ -324,7 +332,7 @@ namespace ConvImgCpc {
 						}
 					}
 					for (int y = 0; y < yMax >> 1; y++)
-						CoulTouvee[palette[x], y] = 0;
+						CoulTrouvee[palette[x], y] = 0;
 				}
 			}
 
@@ -334,13 +342,17 @@ namespace ConvImgCpc {
 					int valMax = 0;
 					if (lockState[x] == 0) {
 						for (int i = 0; i < FindMax; i++) {
-							int c = CoulTouvee[i, y] + (y > 0 ? CoulTouvee[i, y - 1] >> 2 : 0) + (y < (yMax >> 1) - 1 ? CoulTouvee[i, y + 1] >> 2 : 0);
-							if (valMax < c) {
-								valMax = c;
-								colMode5[x, y] = i;
+							int coeff = 0;
+							for (int j = 0; j < 8; j++) {
+								int c = CoulTrouvee[i, y] + (y - j >= 0 ? CoulTrouvee[i, y - j] >> coeff : 0) + (y < (yMax >> 1) - j ? CoulTrouvee[i, y + j] >> coeff : 0);
+								if (valMax < c) {
+									valMax = c;
+									colMode5[x, y] = i;
+								}
+								coeff++;
 							}
 						}
-						CoulTouvee[colMode5[x, y], y] = 0;
+						CoulTrouvee[colMode5[x, y], y] = 0;
 					}
 				}
 			}
@@ -381,7 +393,7 @@ namespace ConvImgCpc {
 			for (int y = 0; y < dest.TailleY; y += 2)
 				for (i = 0; i < maxCol; i++)
 					tabCol[i, y >> 1] = p.cpcPlus ? new RvbColor((byte)(((dest.Palette[i] & 0xF0) >> 4) * 17), (byte)(((dest.Palette[i] & 0xF00) >> 8) * 17), (byte)((dest.Palette[i] & 0x0F) * 17))
-						: ImageCpc.RgbCPC[dest.ModeVirtuel == 5 && i < 2 ? dest.colMode5[i, y >> 1] : dest.Palette[i] < 27 ? dest.Palette[i] : 0];
+						: ImageCpc.RgbCPC[dest.ModeVirtuel == 5 && i < 2 ? dest.colMode5[i, y >> 1] < 27 ? dest.colMode5[i, y >> 1] : 0 : dest.Palette[i] < 27 ? dest.Palette[i] : 0];
 
 			for (int y = 0; y < dest.TailleY; y += 2) {
 				modeCpc = (dest.ModeVirtuel == 5 ? 1 : dest.ModeVirtuel >= 3 ? (y & 2) == 0 ? dest.ModeVirtuel - 2 : dest.ModeVirtuel - 3 : dest.ModeVirtuel);
