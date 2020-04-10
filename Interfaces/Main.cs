@@ -1,4 +1,4 @@
-﻿//#define TRY_CATCH
+﻿#define TRY_CATCH
 
 using System;
 using System.Drawing;
@@ -111,8 +111,9 @@ namespace ConvImgCpc {
 #if TRY_CATCH
 				try {
 #endif
-					Bitmap bmp = new Bitmap(dlg.FileName);
-					imgSrc.SetBitmap(bmp, checkImageSource.Checked);
+					using (var bmpTemp = new Bitmap(dlg.FileName)) {
+						imgSrc.SetBitmap(new Bitmap(bmpTemp), checkImageSource.Checked);
+					}
 					Text = "ConvImgCPC - " + Path.GetFileName(dlg.FileName);
 					tbxSizeX.Text = imgSrc.GetImage.Width.ToString();
 					tbxSizeY.Text = imgSrc.GetImage.Height.ToString();

@@ -12,6 +12,9 @@ namespace ConvImgCpc {
 		}
 
 		public void SetBitmap(Bitmap bmp, bool visible) {
+			if (pictureBox.Image != null)
+				pictureBox.Image.Dispose();
+
 			pictureBox.Image = bmp;
 			int x = Width = bmp.Width;
 			int y = Height = bmp.Height;
