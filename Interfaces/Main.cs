@@ -1,4 +1,4 @@
-﻿#define TRY_CATCH
+﻿//#define TRY_CATCH
 
 using System;
 using System.Drawing;
@@ -87,7 +87,7 @@ namespace ConvImgCpc {
 							g.DrawImage(imgSrc.GetImage, posx, posy, tx, ty);
 							break;
 					}
-					Conversion.Convert(tmp, imgCpc, param);
+					imgCpc.SetNbColors(Conversion.Convert(tmp, imgCpc, param));
 					bpSaveImage.Enabled = bpConvert.Enabled = true;
 #if TRY_CATCH
 				}
@@ -147,7 +147,6 @@ namespace ConvImgCpc {
 					newMethode.Checked = param.newMethode;
 					reducPal1.Checked = param.reductPal1;
 					reducPal2.Checked = param.reductPal2;
-					newReduc.Checked = param.newReduct;
 					sortPal.Checked = param.sortPal;
 					radioFit.Checked = param.sMode == Param.SizeMode.Fit;
 					radioKeepLarger.Checked = param.sMode == Param.SizeMode.KeepLarger;
@@ -234,13 +233,14 @@ namespace ConvImgCpc {
 
 		private void modePlus_CheckedChanged(object sender, EventArgs e) {
 			imgCpc.cpcPlus = modePlus.Checked;
-			newMethode.Enabled = !modePlus.Checked;
-			reducPal1.Enabled = reducPal2.Enabled = newReduc.Enabled = modePlus.Checked;
+			newMethode.Visible = !modePlus.Checked;
+			reducPal1.Visible = reducPal2.Visible = modePlus.Checked;
 			param.cpcPlus = modePlus.Checked;
 			Convert(false);
 		}
 
 		private void InterfaceChange(object sender, EventArgs e) {
+			lblPct.Visible = pctTrame.Visible = methode.SelectedItem.ToString() != "Aucun";
 			Convert(false);
 		}
 
@@ -281,21 +281,12 @@ namespace ConvImgCpc {
 		}
 
 		private void reducPal1_CheckedChanged(object sender, EventArgs e) {
-			newReduc.Enabled = reducPal1.Checked || reducPal2.Checked;
 			param.reductPal1 = reducPal1.Checked;
-			param.newReduct = newReduc.Checked;
 			Convert(false);
 		}
 
 		private void reducPal2_CheckedChanged(object sender, EventArgs e) {
-			newReduc.Enabled = reducPal1.Checked || reducPal2.Checked;
 			param.reductPal2 = reducPal2.Checked;
-			param.newReduct = newReduc.Checked;
-			Convert(false);
-		}
-
-		private void newReduc_CheckedChanged(object sender, EventArgs e) {
-			param.newReduct = newReduc.Checked;
 			Convert(false);
 		}
 

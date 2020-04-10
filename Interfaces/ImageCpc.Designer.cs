@@ -36,6 +36,7 @@
 			this.comboZoom = new System.Windows.Forms.ComboBox();
 			this.grpEdition = new System.Windows.Forms.GroupBox();
 			this.chkRendu = new System.Windows.Forms.CheckBox();
+			this.lblNbColors = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
 			this.grpEdition.SuspendLayout();
 			this.SuspendLayout();
@@ -188,12 +189,21 @@
 			this.chkRendu.UseVisualStyleBackColor = true;
 			this.chkRendu.CheckedChanged += new System.EventHandler(this.chkRendu_CheckedChanged);
 			// 
+			// lblNbColors
+			// 
+			this.lblNbColors.AutoSize = true;
+			this.lblNbColors.Location = new System.Drawing.Point(787, 568);
+			this.lblNbColors.Name = "lblNbColors";
+			this.lblNbColors.Size = new System.Drawing.Size(0, 13);
+			this.lblNbColors.TabIndex = 10;
+			// 
 			// ImageCpc
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(968, 620);
 			this.ControlBox = false;
+			this.Controls.Add(this.lblNbColors);
 			this.Controls.Add(this.grpEdition);
 			this.Controls.Add(this.vScrollBar);
 			this.Controls.Add(this.hScrollBar);
@@ -228,6 +238,7 @@
 		private System.Windows.Forms.ComboBox comboZoom;
 		private System.Windows.Forms.GroupBox grpEdition;
 		private System.Windows.Forms.CheckBox chkRendu;
+		private System.Windows.Forms.Label lblNbColors;
 
 	}
 }

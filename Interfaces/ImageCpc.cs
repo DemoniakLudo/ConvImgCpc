@@ -175,6 +175,10 @@ namespace ConvImgCpc {
 			}
 		}
 
+		public void SetNbColors(int nbCol) {
+			lblNbColors.Text = "Nombre de couleurs : " + nbCol;
+		}
+
 		public void SauveScr(string fileName, Param param) {
 			for (int y = 0; y < TailleY; y += 2) {
 				int modeCPC = (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);

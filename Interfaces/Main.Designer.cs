@@ -35,10 +35,11 @@
 			this.methode = new System.Windows.Forms.ComboBox();
 			this.pctTrame = new System.Windows.Forms.NumericUpDown();
 			this.resoCPC = new System.Windows.Forms.GroupBox();
+			this.trackModeX = new System.Windows.Forms.TrackBar();
 			this.chkOverscan = new System.Windows.Forms.CheckBox();
 			this.modePlus = new System.Windows.Forms.CheckBox();
 			this.tramage = new System.Windows.Forms.GroupBox();
-			this.label6 = new System.Windows.Forms.Label();
+			this.lblPct = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
 			this.lumi = new System.Windows.Forms.TrackBar();
 			this.sat = new System.Windows.Forms.TrackBar();
@@ -46,7 +47,6 @@
 			this.label9 = new System.Windows.Forms.Label();
 			this.bpRazLumi = new System.Windows.Forms.Button();
 			this.bpRazSat = new System.Windows.Forms.Button();
-			this.newReduc = new System.Windows.Forms.CheckBox();
 			this.reducPal2 = new System.Windows.Forms.CheckBox();
 			this.reducPal1 = new System.Windows.Forms.CheckBox();
 			this.newMethode = new System.Windows.Forms.CheckBox();
@@ -72,18 +72,17 @@
 			this.bpSaveParam = new System.Windows.Forms.Button();
 			this.bpSaveImage = new System.Windows.Forms.Button();
 			this.lblInfoVersion = new System.Windows.Forms.Label();
-			this.trackModeX = new System.Windows.Forms.TrackBar();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
 			this.resoCPC.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.trackModeX)).BeginInit();
 			this.tramage.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.lumi)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.sat)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.contrast)).BeginInit();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.trackModeX)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// checkImageSource
@@ -215,6 +214,7 @@
 			this.pctTrame.Name = "pctTrame";
 			this.pctTrame.Size = new System.Drawing.Size(70, 20);
 			this.pctTrame.TabIndex = 9;
+			this.pctTrame.Visible = false;
 			this.pctTrame.ValueChanged += new System.EventHandler(this.pctTrame_ValueChanged);
 			// 
 			// resoCPC
@@ -234,6 +234,16 @@
 			this.resoCPC.TabStop = false;
 			this.resoCPC.Text = "Résolution CPC";
 			// 
+			// trackModeX
+			// 
+			this.trackModeX.Location = new System.Drawing.Point(0, 127);
+			this.trackModeX.Maximum = 200;
+			this.trackModeX.Name = "trackModeX";
+			this.trackModeX.Size = new System.Drawing.Size(132, 45);
+			this.trackModeX.TabIndex = 9;
+			this.trackModeX.Visible = false;
+			this.trackModeX.Scroll += new System.EventHandler(this.trackModeX_Scroll);
+			// 
 			// chkOverscan
 			// 
 			this.chkOverscan.AutoSize = true;
@@ -249,7 +259,7 @@
 			// modePlus
 			// 
 			this.modePlus.AutoSize = true;
-			this.modePlus.Location = new System.Drawing.Point(6, 19);
+			this.modePlus.Location = new System.Drawing.Point(6, 42);
 			this.modePlus.Name = "modePlus";
 			this.modePlus.Size = new System.Drawing.Size(53, 17);
 			this.modePlus.TabIndex = 8;
@@ -259,7 +269,7 @@
 			// 
 			// tramage
 			// 
-			this.tramage.Controls.Add(this.label6);
+			this.tramage.Controls.Add(this.lblPct);
 			this.tramage.Controls.Add(this.methode);
 			this.tramage.Controls.Add(this.pctTrame);
 			this.tramage.Controls.Add(this.label4);
@@ -270,14 +280,15 @@
 			this.tramage.TabStop = false;
 			this.tramage.Text = "Tramage";
 			// 
-			// label6
+			// lblPct
 			// 
-			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(129, 48);
-			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(15, 13);
-			this.label6.TabIndex = 12;
-			this.label6.Text = "%";
+			this.lblPct.AutoSize = true;
+			this.lblPct.Location = new System.Drawing.Point(124, 48);
+			this.lblPct.Name = "lblPct";
+			this.lblPct.Size = new System.Drawing.Size(15, 13);
+			this.lblPct.TabIndex = 12;
+			this.lblPct.Text = "%";
+			this.lblPct.Visible = false;
 			// 
 			// label4
 			// 
@@ -346,46 +357,34 @@
 			this.bpRazSat.UseVisualStyleBackColor = true;
 			this.bpRazSat.Click += new System.EventHandler(this.bpRazSat_Click);
 			// 
-			// newReduc
-			// 
-			this.newReduc.AutoSize = true;
-			this.newReduc.Enabled = false;
-			this.newReduc.Location = new System.Drawing.Point(357, 67);
-			this.newReduc.Name = "newReduc";
-			this.newReduc.Size = new System.Drawing.Size(84, 17);
-			this.newReduc.TabIndex = 48;
-			this.newReduc.Text = "Réduction 3";
-			this.newReduc.UseVisualStyleBackColor = true;
-			this.newReduc.CheckedChanged += new System.EventHandler(this.newReduc_CheckedChanged);
-			// 
 			// reducPal2
 			// 
 			this.reducPal2.AutoSize = true;
-			this.reducPal2.Enabled = false;
-			this.reducPal2.Location = new System.Drawing.Point(174, 67);
+			this.reducPal2.Location = new System.Drawing.Point(357, 42);
 			this.reducPal2.Name = "reducPal2";
 			this.reducPal2.Size = new System.Drawing.Size(84, 17);
 			this.reducPal2.TabIndex = 47;
 			this.reducPal2.Text = "Réduction 2";
 			this.reducPal2.UseVisualStyleBackColor = true;
+			this.reducPal2.Visible = false;
 			this.reducPal2.CheckedChanged += new System.EventHandler(this.reducPal2_CheckedChanged);
 			// 
 			// reducPal1
 			// 
 			this.reducPal1.AutoSize = true;
-			this.reducPal1.Enabled = false;
-			this.reducPal1.Location = new System.Drawing.Point(6, 67);
+			this.reducPal1.Location = new System.Drawing.Point(174, 42);
 			this.reducPal1.Name = "reducPal1";
 			this.reducPal1.Size = new System.Drawing.Size(84, 17);
 			this.reducPal1.TabIndex = 46;
 			this.reducPal1.Text = "Réduction 1";
 			this.reducPal1.UseVisualStyleBackColor = true;
+			this.reducPal1.Visible = false;
 			this.reducPal1.CheckedChanged += new System.EventHandler(this.reducPal1_CheckedChanged);
 			// 
 			// newMethode
 			// 
 			this.newMethode.AutoSize = true;
-			this.newMethode.Location = new System.Drawing.Point(175, 44);
+			this.newMethode.Location = new System.Drawing.Point(358, 19);
 			this.newMethode.Name = "newMethode";
 			this.newMethode.Size = new System.Drawing.Size(83, 17);
 			this.newMethode.TabIndex = 45;
@@ -481,7 +480,7 @@
 			// label7
 			// 
 			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(0, 140);
+			this.label7.Location = new System.Drawing.Point(3, 140);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(50, 13);
 			this.label7.TabIndex = 45;
@@ -490,7 +489,7 @@
 			// label5
 			// 
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(0, 116);
+			this.label5.Location = new System.Drawing.Point(3, 116);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(38, 13);
 			this.label5.TabIndex = 45;
@@ -550,7 +549,7 @@
 			// nb
 			// 
 			this.nb.AutoSize = true;
-			this.nb.Location = new System.Drawing.Point(6, 44);
+			this.nb.Location = new System.Drawing.Point(175, 19);
 			this.nb.Name = "nb";
 			this.nb.Size = new System.Drawing.Size(83, 17);
 			this.nb.TabIndex = 51;
@@ -561,7 +560,7 @@
 			// sortPal
 			// 
 			this.sortPal.AutoSize = true;
-			this.sortPal.Location = new System.Drawing.Point(358, 44);
+			this.sortPal.Location = new System.Drawing.Point(6, 19);
 			this.sortPal.Name = "sortPal";
 			this.sortPal.Size = new System.Drawing.Size(47, 17);
 			this.sortPal.TabIndex = 50;
@@ -574,7 +573,6 @@
 			this.groupBox2.Controls.Add(this.modePlus);
 			this.groupBox2.Controls.Add(this.nb);
 			this.groupBox2.Controls.Add(this.sortPal);
-			this.groupBox2.Controls.Add(this.newReduc);
 			this.groupBox2.Controls.Add(this.bpRazContrast);
 			this.groupBox2.Controls.Add(this.reducPal2);
 			this.groupBox2.Controls.Add(this.contrast);
@@ -633,16 +631,6 @@
 			this.lblInfoVersion.Size = new System.Drawing.Size(0, 13);
 			this.lblInfoVersion.TabIndex = 52;
 			// 
-			// trackModeX
-			// 
-			this.trackModeX.Location = new System.Drawing.Point(0, 127);
-			this.trackModeX.Maximum = 200;
-			this.trackModeX.Name = "trackModeX";
-			this.trackModeX.Size = new System.Drawing.Size(132, 45);
-			this.trackModeX.TabIndex = 9;
-			this.trackModeX.Visible = false;
-			this.trackModeX.Scroll += new System.EventHandler(this.trackModeX_Scroll);
-			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -670,6 +658,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).EndInit();
 			this.resoCPC.ResumeLayout(false);
 			this.resoCPC.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.trackModeX)).EndInit();
 			this.tramage.ResumeLayout(false);
 			this.tramage.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.lumi)).EndInit();
@@ -679,7 +668,6 @@
 			this.groupBox1.PerformLayout();
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.trackModeX)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -700,7 +688,7 @@
 		private System.Windows.Forms.NumericUpDown pctTrame;
 		private System.Windows.Forms.GroupBox resoCPC;
 		private System.Windows.Forms.GroupBox tramage;
-		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.Label lblPct;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.CheckBox modePlus;
 		private System.Windows.Forms.TrackBar lumi;
@@ -709,7 +697,6 @@
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.Button bpRazLumi;
 		private System.Windows.Forms.Button bpRazSat;
-		private System.Windows.Forms.CheckBox newReduc;
 		private System.Windows.Forms.CheckBox reducPal2;
 		private System.Windows.Forms.CheckBox reducPal1;
 		private System.Windows.Forms.CheckBox newMethode;

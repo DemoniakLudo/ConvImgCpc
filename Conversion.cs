@@ -56,10 +56,10 @@ namespace ConvImgCpc {
 		static double[,] test2 =	{	{8 , 4 , 5 },
 										{3 , 0, 1 },
 										{7 , 2 , 6 }};
-		static double[,] test1 =	{ { 1 }, { 4 }, { 2 } };
+		static double[,] test = { { 1 }, { 4 }, { 2 } };
 		static double[,] test4 =	{	{0, 0, 7 },
 										{3 , 5 , 1 }};
-		static double[,] test =		{ { 1 , 7  } };
+		static double[,] test1 = { { 1, 7 } };
 
 		static double[,] matDither;
 
@@ -102,15 +102,7 @@ namespace ConvImgCpc {
 			float dif = max - min;
 			float hue = 0;
 			if (max > min) {
-				if (v == max) {
-					hue = (b - r) / dif * 60f + 120f;
-				}
-				else
-					if (b == max) {
-						hue = (r - v) / dif * 60f + 240f;
-					}
-					else
-						hue = (v - b) / dif * 60f + (b > v ? 360f : 0);
+				hue = v == max ? (b - r) / dif * 60f + 120f : b == max ? (r - v) / dif * 60f + 240f : (v - b) / dif * 60f + (b > v ? 360f : 0);
 				if (hue < 0)
 					hue = hue + 360f;
 			}
@@ -198,6 +190,7 @@ namespace ConvImgCpc {
 				pct = 0;
 
 			RvbColor choix, p = new RvbColor(0);
+			int indexChoix = 0;
 			for (yPix = 0; yPix < ydest; yPix += 2) {
 				int Tx = 4 >> (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (yPix & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 				for (xPix = 0; xPix < xdest; xPix += Tx) {
@@ -224,9 +217,21 @@ namespace ConvImgCpc {
 					}
 
 					// Recherche le point dans la couleur cpc la plus proche
-					int indexChoix = 0;
 					if (prm.cpcPlus) {
-						choix = new RvbColor((byte)((p.red >> 4) * 17), (byte)((p.green >> 4) * 17), (byte)((p.blue >> 4) * 17));
+						int nr = p.red >> 4;
+						int nv = p.green >> 4;
+						int nb = p.blue >> 4;
+						if (prm.reductPal1) {
+							nr &= 0x0E;
+							nv &= 0x0E;
+							nb &= 0x0E;
+						}
+						if (prm.reductPal2) {
+							nr &= 0x0D;
+							nv &= 0x0D;
+							nb &= 0x0D;
+						}
+						choix = new RvbColor((byte)(nr * 17), (byte)(nv * 17), (byte)(nb * 17));
 						indexChoix = ((choix.green << 4) & 0xF00) + ((choix.red) & 0xF0) + ((choix.blue) >> 4);
 					}
 					else {
@@ -255,28 +260,6 @@ namespace ConvImgCpc {
 						CalcDiffMethodeMat(pct * (p.blue - choix.blue), 2, Tx);		// Modif. Bleu
 					}
 					bitmap.SetPixel(xPix, yPix, choix);
-				}
-			}
-			if (prm.cpcPlus) {
-				//
-				// Réduction du nombre de couleurs pour éviter les couleurs
-				// trop proches
-				//
-				if (satur > 0) {
-					// Masquer 1 bit par composante
-					for (int i = 0; i < CoulTrouvee.GetLength(0); i++) {
-						if (((i & 1) == 1 && prm.reductPal1) || ((i & 1) == 0 && prm.reductPal2)) {
-							int c1 = (i & 0xC00) * 0xFFF / 0xC00;
-							int c2 = (i & 0xC0) * 0xFF / 0xC0;
-							int c3 = (i & 0x0C) * 0x0F / 0x0C;
-							int t = CoulTrouvee[i, 0];
-							CoulTrouvee[i, 0] = 0;
-							if (prm.newReduct)
-								CoulTrouvee[(c1 & 0xF00) + (c2 & 0xF0) + (c3 & 0x0F), 0] += t;
-							else
-								CoulTrouvee[(c1 & 0xC00) + (c2 & 0xC0) + (c3 & 0x0C), 0] += t;
-						}
-					}
 				}
 			}
 			int NbCol = 0;

@@ -5,8 +5,6 @@ namespace ConvImgCpc {
 	public partial class ImageSource: Form {
 		private LockBitmap bmpLock;
 
-		public int GetWidth { get { return bmpLock.Width; } }
-		public int GetHeight { get { return bmpLock.Height; } }
 		public Bitmap GetImage { get { return (Bitmap)pictureBox.Image; } }
 
 		public ImageSource() {
@@ -28,7 +26,7 @@ namespace ConvImgCpc {
 				if (pictureBox.Height < bmp.Height)
 					Height = ++y;
 
-				if (x > 20000 || y > 20000)
+				if (x > Screen.PrimaryScreen.Bounds.Width|| y > Screen.PrimaryScreen.Bounds.Height)
 					break;
 			}
 			bmpLock.UnlockBits();

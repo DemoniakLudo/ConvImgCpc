@@ -16,7 +16,6 @@ namespace ConvImgCpc {
 		public bool newMethode;
 		public bool reductPal1;
 		public bool reductPal2;
-		public bool newReduct;
 		public bool sortPal;
 		public int nbCols, nbLignes;
 		public int modeVirtuel;
