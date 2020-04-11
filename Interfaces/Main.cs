@@ -1,4 +1,4 @@
-﻿#define TRY_CATCH
+﻿//#define TRY_CATCH
 
 using System;
 using System.Drawing;
@@ -41,54 +41,55 @@ namespace ConvImgCpc {
 #if  TRY_CATCH
 				try {
 #endif
-					bpSaveImage.Enabled = bpConvert.Enabled = false;
-					imgCpc.Reset();
-					param.sMode = radioKeepLarger.Checked ? Param.SizeMode.KeepLarger : radioKeepSmaller.Checked ? Param.SizeMode.KeepSmaller : radioFit.Checked ? Param.SizeMode.Fit : Param.SizeMode.UserSize;
-					param.methode = methode.SelectedItem.ToString();
-					param.pct = (int)pctTrame.Value;
-					param.lockState = imgCpc.lockState;
-					param.trackModeX = trackModeX.Value;
-					Bitmap tmp = new Bitmap(imgCpc.TailleX, imgCpc.TailleY);
-					Graphics g = Graphics.FromImage(tmp);
-					double ratio = imgSrc.GetImage.Width * imgCpc.TailleY / (double)(imgSrc.GetImage.Height * imgCpc.TailleX);
-					switch (param.sMode) {
-						case Param.SizeMode.KeepSmaller:
-							if (ratio < 1) {
-								int newW = (int)(imgCpc.TailleX * ratio);
-								g.DrawImage(imgSrc.GetImage, (imgCpc.TailleX - newW) >> 1, 0, newW, imgCpc.TailleY);
-							}
-							else {
-								int newH = (int)(imgCpc.TailleY / ratio);
-								g.DrawImage(imgSrc.GetImage, 0, (imgCpc.TailleY - newH) >> 1, imgCpc.TailleX, newH);
-							}
-							break;
+				bpSaveImage.Enabled = bpConvert.Enabled = false;
+				imgCpc.Reset();
+				param.sMode = radioKeepLarger.Checked ? Param.SizeMode.KeepLarger : radioKeepSmaller.Checked ? Param.SizeMode.KeepSmaller : radioFit.Checked ? Param.SizeMode.Fit : Param.SizeMode.UserSize;
+				param.methode = methode.SelectedItem.ToString();
+				param.pct = (int)pctTrame.Value;
+				param.lockState = imgCpc.lockState;
+				param.trackModeX = trackModeX.Value;
+				param.withCode = withCode.Checked;
+				Bitmap tmp = new Bitmap(imgCpc.TailleX, imgCpc.TailleY);
+				Graphics g = Graphics.FromImage(tmp);
+				double ratio = imgSrc.GetImage.Width * imgCpc.TailleY / (double)(imgSrc.GetImage.Height * imgCpc.TailleX);
+				switch (param.sMode) {
+					case Param.SizeMode.KeepSmaller:
+						if (ratio < 1) {
+							int newW = (int)(imgCpc.TailleX * ratio);
+							g.DrawImage(imgSrc.GetImage, (imgCpc.TailleX - newW) >> 1, 0, newW, imgCpc.TailleY);
+						}
+						else {
+							int newH = (int)(imgCpc.TailleY / ratio);
+							g.DrawImage(imgSrc.GetImage, 0, (imgCpc.TailleY - newH) >> 1, imgCpc.TailleX, newH);
+						}
+						break;
 
-						case Param.SizeMode.KeepLarger:
-							if (ratio < 1) {
-								int newY = (int)(imgCpc.TailleY / ratio);
-								g.DrawImage(imgSrc.GetImage, 0, (imgCpc.TailleY - newY) >> 1, imgCpc.TailleX, newY);
-							}
-							else {
-								int newX = (int)(imgCpc.TailleX * ratio);
-								g.DrawImage(imgSrc.GetImage, (imgCpc.TailleX - newX) >> 1, 0, newX, imgCpc.TailleY);
-							}
-							break;
+					case Param.SizeMode.KeepLarger:
+						if (ratio < 1) {
+							int newY = (int)(imgCpc.TailleY / ratio);
+							g.DrawImage(imgSrc.GetImage, 0, (imgCpc.TailleY - newY) >> 1, imgCpc.TailleX, newY);
+						}
+						else {
+							int newX = (int)(imgCpc.TailleX * ratio);
+							g.DrawImage(imgSrc.GetImage, (imgCpc.TailleX - newX) >> 1, 0, newX, imgCpc.TailleY);
+						}
+						break;
 
-						case Param.SizeMode.Fit:
-							tmp = new Bitmap(imgSrc.GetImage, imgCpc.TailleX, imgCpc.TailleY);
-							break;
+					case Param.SizeMode.Fit:
+						tmp = new Bitmap(imgSrc.GetImage, imgCpc.TailleX, imgCpc.TailleY);
+						break;
 
-						case Param.SizeMode.UserSize:
-							int posx = 0, posy = 0, tx = imgCpc.TailleX, ty = imgCpc.TailleY;
-							int.TryParse(tbxSizeX.Text, out tx);
-							int.TryParse(tbxSizeY.Text, out ty);
-							int.TryParse(tbxPosX.Text, out posx);
-							int.TryParse(tbxPosY.Text, out posy);
-							g.DrawImage(imgSrc.GetImage, posx, posy, tx, ty);
-							break;
-					}
-					imgCpc.SetNbColors(Conversion.Convert(tmp, imgCpc, param));
-					bpSaveImage.Enabled = bpConvert.Enabled = true;
+					case Param.SizeMode.UserSize:
+						int posx = 0, posy = 0, tx = imgCpc.TailleX, ty = imgCpc.TailleY;
+						int.TryParse(tbxSizeX.Text, out tx);
+						int.TryParse(tbxSizeY.Text, out ty);
+						int.TryParse(tbxPosX.Text, out posx);
+						int.TryParse(tbxPosY.Text, out posy);
+						g.DrawImage(imgSrc.GetImage, posx, posy, tx, ty);
+						break;
+				}
+				imgCpc.SetNbColors(Conversion.Convert(tmp, imgCpc, param));
+				bpSaveImage.Enabled = bpConvert.Enabled = true;
 #if TRY_CATCH
 				}
 				catch (Exception ex) {
@@ -111,13 +112,32 @@ namespace ConvImgCpc {
 #if TRY_CATCH
 				try {
 #endif
-					using (var bmpTemp = new Bitmap(dlg.FileName)) {
-						imgSrc.SetBitmap(new Bitmap(bmpTemp), checkImageSource.Checked);
+				bool bitmapOk = false;
+				using (MemoryStream ms = new MemoryStream()) {
+					using (FileStream file = new FileStream(dlg.FileName, FileMode.Open, FileAccess.Read)) {
+						byte[] bytes = new byte[file.Length];
+						file.Read(bytes, 0, (int)file.Length);
+						ms.Write(bytes, 0, (int)file.Length);
+						try {
+							if (CpcSystem.CheckAmsdos(bytes)) {
+								imgSrc.SetBitmap(BitmapCpc.CreateImageFromCpc(bytes), checkImageSource.Checked);
+								bitmapOk = true;
+							}
+							else
+								imgSrc.SetBitmap(new Bitmap(ms), checkImageSource.Checked);
+							bitmapOk = true;
+						}
+						catch (Exception ex) {
+							MessageBox.Show("Impossible de lire l'image (format inconnu ???)");
+						}
 					}
+				}
+				if (bitmapOk) {
 					Text = "ConvImgCPC - " + Path.GetFileName(dlg.FileName);
 					tbxSizeX.Text = imgSrc.GetImage.Width.ToString();
 					tbxSizeY.Text = imgSrc.GetImage.Height.ToString();
 					Convert(false);
+				}
 #if TRY_CATCH
 				}
 				catch (Exception ex) {
@@ -136,25 +156,25 @@ namespace ConvImgCpc {
 #if TRY_CATCH
 				try {
 #endif
-					param = (Param)new XmlSerializer(typeof(Param)).Deserialize(file);
-					// Initialisation paramètres...
-					methode.SelectedItem = param.methode;
-					pctTrame.Value = param.pct;
-					imgCpc.lockState = param.lockState;
-					lumi.Value = param.pctLumi;
-					sat.Value = param.pctSat;
-					contrast.Value = param.pctContrast;
-					modePlus.Checked = param.cpcPlus;
-					newMethode.Checked = param.newMethode;
-					reducPal1.Checked = param.reductPal1;
-					reducPal2.Checked = param.reductPal2;
-					sortPal.Checked = param.sortPal;
-					radioFit.Checked = param.sMode == Param.SizeMode.Fit;
-					radioKeepLarger.Checked = param.sMode == Param.SizeMode.KeepLarger;
-					radioKeepSmaller.Checked = param.sMode == Param.SizeMode.KeepSmaller;
-					nbCols.Value = param.nbCols;
-					nbLignes.Value = param.nbLignes;
-					mode.SelectedItem = param.modeVirtuel;
+				param = (Param)new XmlSerializer(typeof(Param)).Deserialize(file);
+				// Initialisation paramètres...
+				methode.SelectedItem = param.methode;
+				pctTrame.Value = param.pct;
+				imgCpc.lockState = param.lockState;
+				lumi.Value = param.pctLumi;
+				sat.Value = param.pctSat;
+				contrast.Value = param.pctContrast;
+				modePlus.Checked = param.cpcPlus;
+				newMethode.Checked = param.newMethode;
+				reducPal1.Checked = param.reductPal1;
+				reducPal2.Checked = param.reductPal2;
+				sortPal.Checked = param.sortPal;
+				radioFit.Checked = param.sMode == Param.SizeMode.Fit;
+				radioKeepLarger.Checked = param.sMode == Param.SizeMode.KeepLarger;
+				radioKeepSmaller.Checked = param.sMode == Param.SizeMode.KeepSmaller;
+				nbCols.Value = param.nbCols;
+				nbLignes.Value = param.nbLignes;
+				mode.SelectedItem = param.modeVirtuel;
 #if TRY_CATCH
 				}
 				catch (Exception ex) {
@@ -174,7 +194,7 @@ namespace ConvImgCpc {
 #if TRY_CATCH
 				try {
 #endif
-					new XmlSerializer(typeof(Param)).Serialize(file, param);
+				new XmlSerializer(typeof(Param)).Serialize(file, param);
 #if TRY_CATCH
 				}
 				catch (Exception ex) {
@@ -189,23 +209,23 @@ namespace ConvImgCpc {
 #if TRY_CATCH
 			try {
 #endif
-				SaveFileDialog dlg = new SaveFileDialog();
-				dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.bmp)|*.bmp|Sprite assembleur (.asm)|*.asm";
-				DialogResult result = dlg.ShowDialog();
-				if (result == DialogResult.OK)
-					switch (dlg.FilterIndex) {
-						case 1:
-							imgCpc.SauveScr(dlg.FileName, param);
-							break;
+			SaveFileDialog dlg = new SaveFileDialog();
+			dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.bmp)|*.bmp|Sprite assembleur (.asm)|*.asm";
+			DialogResult result = dlg.ShowDialog();
+			if (result == DialogResult.OK)
+				switch (dlg.FilterIndex) {
+					case 1:
+						imgCpc.SauveScr(dlg.FileName, param);
+						break;
 
-						case 2:
-							imgCpc.SauveBmp(dlg.FileName);
-							break;
+					case 2:
+						imgCpc.SauveBmp(dlg.FileName);
+						break;
 
-						case 3:
-							imgCpc.SauveSprite(dlg.FileName, lblInfoVersion.Text, param);
-							break;
-					}
+					case 3:
+						imgCpc.SauveSprite(dlg.FileName, lblInfoVersion.Text, param);
+						break;
+				}
 #if TRY_CATCH
 			}
 			catch (Exception ex) {
@@ -291,6 +311,10 @@ namespace ConvImgCpc {
 			Convert(false);
 		}
 
+		private void withCode_CheckedChanged(object sender, EventArgs e) {
+			param.withCode = withCode.Checked;
+		}
+
 		private void bpRazLumi_Click(object sender, EventArgs e) {
 			lumi.Value = 100;
 		}
@@ -316,5 +340,6 @@ namespace ConvImgCpc {
 			param.trackModeX = trackModeX.Value;
 			Convert(false);
 		}
+
 	}
 }

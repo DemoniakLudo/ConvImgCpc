@@ -1,6 +1,6 @@
 ﻿[assembly: System.CLSCompliant(true)]
 
-namespace Pack {
+namespace ConvImgCpc {
 	public static class PackDepack {
 		private const int SEEKBACK = 0x1000;
 		private const int MAXSTRING = 256;

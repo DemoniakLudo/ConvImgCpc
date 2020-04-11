@@ -72,6 +72,7 @@
 			this.bpSaveParam = new System.Windows.Forms.Button();
 			this.bpSaveImage = new System.Windows.Forms.Button();
 			this.lblInfoVersion = new System.Windows.Forms.Label();
+			this.withCode = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -108,7 +109,7 @@
 			// 
 			// bpConvert
 			// 
-			this.bpConvert.Location = new System.Drawing.Point(3, 107);
+			this.bpConvert.Location = new System.Drawing.Point(3, 99);
 			this.bpConvert.Name = "bpConvert";
 			this.bpConvert.Size = new System.Drawing.Size(108, 23);
 			this.bpConvert.TabIndex = 3;
@@ -239,7 +240,7 @@
 			this.trackModeX.Location = new System.Drawing.Point(0, 127);
 			this.trackModeX.Maximum = 200;
 			this.trackModeX.Name = "trackModeX";
-			this.trackModeX.Size = new System.Drawing.Size(132, 45);
+			this.trackModeX.Size = new System.Drawing.Size(132, 42);
 			this.trackModeX.TabIndex = 9;
 			this.trackModeX.Visible = false;
 			this.trackModeX.Scroll += new System.EventHandler(this.trackModeX_Scroll);
@@ -304,7 +305,7 @@
 			this.lumi.Location = new System.Drawing.Point(59, 91);
 			this.lumi.Maximum = 200;
 			this.lumi.Name = "lumi";
-			this.lumi.Size = new System.Drawing.Size(360, 45);
+			this.lumi.Size = new System.Drawing.Size(360, 42);
 			this.lumi.TabIndex = 12;
 			this.lumi.Value = 100;
 			this.lumi.ValueChanged += new System.EventHandler(this.lumi_ValueChanged);
@@ -314,7 +315,7 @@
 			this.sat.Location = new System.Drawing.Point(59, 141);
 			this.sat.Maximum = 200;
 			this.sat.Name = "sat";
-			this.sat.Size = new System.Drawing.Size(360, 45);
+			this.sat.Size = new System.Drawing.Size(360, 42);
 			this.sat.TabIndex = 12;
 			this.sat.Value = 100;
 			this.sat.ValueChanged += new System.EventHandler(this.sat_ValueChanged);
@@ -395,7 +396,7 @@
 			// autoRecalc
 			// 
 			this.autoRecalc.AutoSize = true;
-			this.autoRecalc.Location = new System.Drawing.Point(3, 136);
+			this.autoRecalc.Location = new System.Drawing.Point(3, 122);
 			this.autoRecalc.Name = "autoRecalc";
 			this.autoRecalc.Size = new System.Drawing.Size(108, 30);
 			this.autoRecalc.TabIndex = 44;
@@ -418,7 +419,7 @@
 			this.contrast.Location = new System.Drawing.Point(59, 191);
 			this.contrast.Maximum = 200;
 			this.contrast.Name = "contrast";
-			this.contrast.Size = new System.Drawing.Size(360, 45);
+			this.contrast.Size = new System.Drawing.Size(360, 42);
 			this.contrast.TabIndex = 42;
 			this.contrast.Value = 100;
 			this.contrast.ValueChanged += new System.EventHandler(this.contrast_ValueChanged);
@@ -594,7 +595,7 @@
 			// 
 			// bpLoadParam
 			// 
-			this.bpLoadParam.Location = new System.Drawing.Point(3, 248);
+			this.bpLoadParam.Location = new System.Drawing.Point(3, 275);
 			this.bpLoadParam.Name = "bpLoadParam";
 			this.bpLoadParam.Size = new System.Drawing.Size(108, 23);
 			this.bpLoadParam.TabIndex = 53;
@@ -604,7 +605,7 @@
 			// 
 			// bpSaveParam
 			// 
-			this.bpSaveParam.Location = new System.Drawing.Point(3, 277);
+			this.bpSaveParam.Location = new System.Drawing.Point(3, 304);
 			this.bpSaveParam.Name = "bpSaveParam";
 			this.bpSaveParam.Size = new System.Drawing.Size(108, 23);
 			this.bpSaveParam.TabIndex = 53;
@@ -614,7 +615,6 @@
 			// 
 			// bpSaveImage
 			// 
-			this.bpSaveImage.Enabled = false;
 			this.bpSaveImage.Location = new System.Drawing.Point(3, 177);
 			this.bpSaveImage.Name = "bpSaveImage";
 			this.bpSaveImage.Size = new System.Drawing.Size(108, 23);
@@ -626,16 +626,30 @@
 			// lblInfoVersion
 			// 
 			this.lblInfoVersion.AutoSize = true;
-			this.lblInfoVersion.Location = new System.Drawing.Point(0, 364);
+			this.lblInfoVersion.Location = new System.Drawing.Point(0, 405);
 			this.lblInfoVersion.Name = "lblInfoVersion";
 			this.lblInfoVersion.Size = new System.Drawing.Size(0, 13);
 			this.lblInfoVersion.TabIndex = 52;
+			// 
+			// withCode
+			// 
+			this.withCode.AutoSize = true;
+			this.withCode.Checked = true;
+			this.withCode.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.withCode.Location = new System.Drawing.Point(3, 202);
+			this.withCode.Name = "withCode";
+			this.withCode.Size = new System.Drawing.Size(104, 43);
+			this.withCode.TabIndex = 52;
+			this.withCode.Text = "Inclure le code\r\nd\'affichage dans\r\nl\'image";
+			this.withCode.UseVisualStyleBackColor = true;
+			this.withCode.CheckedChanged += new System.EventHandler(this.withCode_CheckedChanged);
 			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(597, 431);
+			this.Controls.Add(this.withCode);
 			this.Controls.Add(this.lblInfoVersion);
 			this.Controls.Add(this.bpSaveImage);
 			this.Controls.Add(this.bpSaveParam);
@@ -724,6 +738,7 @@
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.TrackBar trackModeX;
+        private System.Windows.Forms.CheckBox withCode;
 	}
 }
 

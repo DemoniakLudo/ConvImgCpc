@@ -231,10 +231,9 @@ namespace ConvImgCpc {
 
 		static byte[] ModePal = new byte[48];
 
-		static public int SauveEcran(string NomFic, ImageCpc bitmapCpc, bool CpcPlus) {
+		static public int SauveEcran(string NomFic, ImageCpc bitmapCpc, Param param) {
 			bool Overscan = (bitmapCpc.NbLig * bitmapCpc.NbCol > 0x3F00);
-			bool WithCode = true; // ###
-			if (CpcPlus) {
+			if (param.cpcPlus) {
 				ModePal[0] = (byte)(bitmapCpc.modeVirtuel | 0x8C);
 				int k = 1;
 				for (int i = 0; i < 16; i++) {
@@ -249,10 +248,10 @@ namespace ConvImgCpc {
 			}
 
 			byte[] imgCpc = bitmapCpc.bmpCpc;
-			if (WithCode) {
+			if (param.withCode) {
 				if (!Overscan) {
 					Buffer.BlockCopy(ModePal, 0, imgCpc, 0x17D0, ModePal.Length);
-					if (CpcPlus) {
+					if (param.cpcPlus) {
 						Buffer.BlockCopy(CodeP0, 0, imgCpc, 0x07D0, CodeP0.Length);
 						Buffer.BlockCopy(CodeP1, 0, imgCpc, 0x0FD0, CodeP1.Length);
 						Buffer.BlockCopy(CodeP3, 0, imgCpc, 0x1FD0, CodeP3.Length);
@@ -271,7 +270,7 @@ namespace ConvImgCpc {
 				else {
 					if (bitmapCpc.NbLig == 272 && bitmapCpc.NbCol == 96) {
 						Buffer.BlockCopy(ModePal, 0, imgCpc, 0x600, ModePal.Length);
-						if (CpcPlus)
+						if (param.cpcPlus)
 							Buffer.BlockCopy(CodeOvP, 0, imgCpc, 0x621, CodeOvP.Length);
 						else
 							Buffer.BlockCopy(CodeOv, 0, imgCpc, 0x611, CodeOv.Length);
@@ -279,7 +278,7 @@ namespace ConvImgCpc {
 						if (bitmapCpc.modeVirtuel > 2) {
 							Buffer.BlockCopy(codeEgx0, 0, imgCpc, 0x1600, codeEgx0.Length);
 							Buffer.BlockCopy(codeEgx1, 0, imgCpc, 0x1640, codeEgx1.Length);
-							if (CpcPlus) {
+							if (param.cpcPlus) {
 								imgCpc[0x669] = 0xCD;
 								imgCpc[0x66A] = 0x00;
 								imgCpc[0x66B] = 0x18;		// CALL	#1800
@@ -296,7 +295,7 @@ namespace ConvImgCpc {
 			}
 			int Lg = bitmapCpc.BitmapSize;
 			BinaryWriter fp = new BinaryWriter(new FileStream(NomFic, FileMode.Create));
-			CpcAmsdos entete = CpcSystem.CreeEntete(NomFic, (short)(Overscan ? 0x200 : 0xC000), (short)Lg, (short)(Overscan ? CpcPlus ? 0x821 : 0x811 : 0xC7D0));
+			CpcAmsdos entete = CpcSystem.CreeEntete(NomFic, (short)(Overscan ? 0x200 : 0xC000), (short)Lg, (short)(Overscan ? param.cpcPlus ? 0x821 : 0x811 : 0xC7D0));
 			fp.Write(CpcSystem.AmsdosToByte(entete));
 			fp.Write(bitmapCpc.bmpCpc, 0, Lg);
 			fp.Close();

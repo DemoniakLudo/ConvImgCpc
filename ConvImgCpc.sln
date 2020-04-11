@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2012 for Windows Desktop
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual C# Express 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConvImgCpc", "ConvImgCpc.csproj", "{1549DEC1-C5C4-4F68-8C61-F5E3CA995032}"
 EndProject
 Global

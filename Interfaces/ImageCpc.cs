@@ -207,7 +207,7 @@ namespace ConvImgCpc {
 					bmpCpc[adrCPC + (x >> 3)] = octet;
 				}
 			}
-			SauveImage.SauveEcran(fileName, this, param.cpcPlus);
+			SauveImage.SauveEcran(fileName, this, param);
 		}
 
 		public void SauveBmp(string fileName) {
