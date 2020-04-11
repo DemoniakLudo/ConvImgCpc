@@ -106,7 +106,7 @@ namespace ConvImgCpc {
 
 		private void bpReadSrc_Click(object sender, EventArgs e) {
 			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.Filter = "Images (*.bmp, *.gif, *.png, *.jpg)|*.bmp;*.gif;*.png;*.jpg";
+			dlg.Filter = "Images (*.bmp, *.gif, *.png, *.jpg)|*.bmp;*.gif;*.png;*.jpg|Tous fichiers|*.*";
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
 #if TRY_CATCH
@@ -120,11 +120,18 @@ namespace ConvImgCpc {
 						ms.Write(bytes, 0, (int)file.Length);
 						try {
 							if (CpcSystem.CheckAmsdos(bytes)) {
-								imgSrc.SetBitmap(BitmapCpc.CreateImageFromCpc(bytes), checkImageSource.Checked);
-								bitmapOk = true;
+								BitmapCpc bmp = new BitmapCpc(bytes);
+								imgSrc.SetBitmap(bmp.CreateImageFromCpc(bytes), checkImageSource.Checked);
+								nbCols.Value = param.nbCols = bmp.nbCol;
+								imgCpc.TailleX = param.nbCols << 3;
+								nbLignes.Value = param.nbLignes = bmp.nbLig;
+								imgCpc.TailleY = param.nbLignes << 1;
+								imgCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = bmp.modeCPC;
+								trackModeX.Visible = imgCpc.modeVirtuel == 5;
 							}
 							else
 								imgSrc.SetBitmap(new Bitmap(ms), checkImageSource.Checked);
+
 							bitmapOk = true;
 						}
 						catch (Exception ex) {

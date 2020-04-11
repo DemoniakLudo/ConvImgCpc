@@ -4,20 +4,24 @@ namespace ConvImgCpc {
 		private const int maxColsCpc = 96;
 		private const int maxLignesCpc = 272;
 
-		static private byte[] bufTmp = new byte[0x10000];
-		static private byte[] bmpCpc = new byte[0x10000];
+		private byte[] bufTmp = new byte[0x10000];
+		private byte[] bmpCpc = new byte[0x10000];
 
-		static public int nbCol = 80, nbLig = 200, modeCPC = 1;
-		static bool cpcPlus = false;
-		static int[] Palette = new int[17];
+		public int nbCol = 80, nbLig = 200, modeCPC = 1;
+		bool cpcPlus = false;
+		int[] Palette = new int[17];
 
-		static private void SetPalette(byte[] palStart, int startAdr, bool plus) {
+		public BitmapCpc(byte[] source) {
+			System.Array.Copy(source, 0x80, bmpCpc, 0, source.Length - 0x80);
+		}
+
+		private void SetPalette(byte[] palStart, int startAdr, bool plus) {
 			modeCPC = palStart[startAdr] & 0x03;
 			for (int i = 0; i < 16; i++)
 				Palette[i] = plus ? palStart[startAdr + 1 + (i << 1)] + (palStart[startAdr + 2 + (i << 1)] << 8) : palStart[startAdr + i + 1];
 		}
 
-		static private bool InitDatas(byte[] bmpCpc) {
+		private bool InitDatas() {
 			bool Ret = false;
 			// Si sauvegardé avec ConvImgCpc, alors la palette se trouve dans l'image...
 			// CPC OLD, écran standard
@@ -58,7 +62,7 @@ namespace ConvImgCpc {
 			return (Ret);
 		}
 
-		static private void DepactOCP(byte[] bmpCpc) {
+		private void DepactOCP() {
 			int PosIn = 0, PosOut = 0;
 			int LgOut, CntBlock = 0;
 
@@ -96,7 +100,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		static private int GetAdrCpc(int y) {
+		private int GetAdrCpc(int y) {
 			int adrCPC = (y >> 4) * nbCol + (y & 14) * 0x400;
 			if (y > 255 && (nbCol * nbLig > 0x3FFF))
 				adrCPC += 0x3800;
@@ -104,9 +108,7 @@ namespace ConvImgCpc {
 			return adrCPC;
 		}
 
-
-
-		static private void DepactPK(byte[] bmpCpc) {
+		private void DepactPK() {
 			byte[] Palette = new byte[0x100];
 
 			// Valeurs par défaut
@@ -145,7 +147,7 @@ namespace ConvImgCpc {
 
 		}
 
-		static private int GetPalCPC(int c) {
+		private int GetPalCPC(int c) {
 			if (cpcPlus) {
 				byte b = (byte)((c & 0x0F) * 17);
 				byte r = (byte)(((c & 0xF0) >> 4) * 17);
@@ -156,18 +158,17 @@ namespace ConvImgCpc {
 		}
 
 
-		static public Bitmap CreateImageFromCpc(byte[] source) {
-			System.Array.Copy(source, 0x80, bmpCpc, 0, source.Length - 0x80);
+		public Bitmap CreateImageFromCpc(byte[] source) {
 			if (bmpCpc[0] == 'M' && bmpCpc[1] == 'J' && bmpCpc[2] == 'H')
-				DepactOCP(bmpCpc);
+				DepactOCP();
 			else
 				if (bmpCpc[0] == 'P' && bmpCpc[1] == 'K' && (bmpCpc[2] == 'O' || bmpCpc[2] == 'V' || bmpCpc[2] == 'S')) {
-					DepactPK(bmpCpc);
+					DepactPK();
 					//GetPalMode = 0;
 					//memcpy(p, Palette, sizeof(Palette));
 				}
 				else
-					InitDatas(bmpCpc);
+					InitDatas();
 			//memcpy(Palette, p, sizeof(Palette));
 			//if (GetPalMode) {
 			//	if (InitDatas(out Mode))
