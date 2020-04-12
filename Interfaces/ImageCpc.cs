@@ -69,7 +69,7 @@ namespace ConvImgCpc {
 			get { return nbLig << 1; }
 			set { nbLig = value >> 1; }
 		}
-		public int BitmapSize { get { return GetAdrCpc(TailleY - 2); } }
+		public int BitmapSize { get { return nbCol + GetAdrCpc(TailleY - 2); } }
 		public int modeVirtuel = 1;
 		public bool cpcPlus = false;
 
@@ -180,6 +180,9 @@ namespace ConvImgCpc {
 		}
 
 		public void SauveScr(string fileName, Param param) {
+			for (int i = 0; i < bmpCpc.Length; i++)
+				bmpCpc[i] = 0;
+
 			for (int y = 0; y < TailleY; y += 2) {
 				int modeCPC = (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 				int adrCPC = GetAdrCpc(y);

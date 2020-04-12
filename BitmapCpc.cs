@@ -163,7 +163,6 @@ namespace ConvImgCpc {
 			return ImageCpc.RgbCPC[c < 27 ? c : 0].GetColor;
 		}
 
-
 		public Bitmap CreateImageFromCpc(byte[] source) {
 			if (bmpCpc[0] == 'M' && bmpCpc[1] == 'J' && bmpCpc[2] == 'H')
 				DepactOCP();
@@ -178,12 +177,12 @@ namespace ConvImgCpc {
 			LockBitmap loc = new LockBitmap(bmp);
 			loc.LockBits();
 			for (int y = 0; y < nbLig << 1; y += 2) {
+				int mode = (modeCPC == 5 ? 1 : modeCPC >= 3 ? (y & 2) == 0 ? modeCPC - 2 : modeCPC - 3 : modeCPC);
 				int adrCPC = GetAdrCpc(y);
-				int tx = 4 >> modeCPC;
 				int xBitmap = 0;
 				for (int x = 0; x < nbCol; x++) {
 					byte octet = bmpCpc[adrCPC + x];
-					switch (modeCPC) {
+					switch (mode) {
 						case 0:
 							loc.SetHorLine(xBitmap, y, 4, GetPalCPC(Palette[(octet >> 7) + ((octet & 0x20) >> 3) + ((octet & 0x08) >> 2) + ((octet & 0x02) << 2)]));
 							loc.SetHorLine(xBitmap + 4, y, 4, GetPalCPC(Palette[((octet & 0x40) >> 6) + ((octet & 0x10) >> 2) + ((octet & 0x04) >> 1) + ((octet & 0x01) << 3)]));
@@ -195,8 +194,7 @@ namespace ConvImgCpc {
 							loc.SetHorLine(xBitmap + 2, y, 2, GetPalCPC(Palette[((octet >> 6) & 1) + ((octet >> 1) & 2)]));
 							loc.SetHorLine(xBitmap + 4, y, 2, GetPalCPC(Palette[((octet >> 5) & 1) + ((octet >> 0) & 2)]));
 							loc.SetHorLine(xBitmap + 6, y, 2, GetPalCPC(Palette[((octet >> 4) & 1) + ((octet << 1) & 2)]));
-							xBitmap += 8;
-							break;
+							xBitmap += 8;						break;
 
 						case 2:
 							for (int i = 8; i-- > 0; )
@@ -207,6 +205,7 @@ namespace ConvImgCpc {
 				}
 			}
 			loc.UnlockBits();
+			//bmp.Save("bmptmp.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
 			return (bmp);
 		}
 	}
