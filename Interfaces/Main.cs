@@ -106,39 +106,39 @@ namespace ConvImgCpc {
 
 		private void bpReadSrc_Click(object sender, EventArgs e) {
 			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.Filter = "Images (*.bmp, *.gif, *.png, *.jpg)|*.bmp;*.gif;*.png;*.jpg|Tous fichiers|*.*";
+			dlg.Filter = "Images (*.bmp, *.gif, *.png, *.jpg)|*.bmp;*.gif;*.png;*.jpg;*.scr|Tous fichiers|*.*";
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
 #if TRY_CATCH
 				try {
 #endif
+				FileStream file = new FileStream(dlg.FileName, FileMode.Open, FileAccess.Read);
+				byte[] tabBytes = new byte[file.Length];
+				file.Read(tabBytes, 0, tabBytes.Length);
+				file.Close();
 				bool bitmapOk = false;
-				using (MemoryStream ms = new MemoryStream()) {
-					using (FileStream file = new FileStream(dlg.FileName, FileMode.Open, FileAccess.Read)) {
-						byte[] bytes = new byte[file.Length];
-						file.Read(bytes, 0, (int)file.Length);
-						ms.Write(bytes, 0, (int)file.Length);
-						try {
-							if (CpcSystem.CheckAmsdos(bytes)) {
-								BitmapCpc bmp = new BitmapCpc(bytes);
-								imgSrc.SetBitmap(bmp.CreateImageFromCpc(bytes), checkImageSource.Checked);
-								nbCols.Value = param.nbCols = bmp.nbCol;
-								imgCpc.TailleX = param.nbCols << 3;
-								nbLignes.Value = param.nbLignes = bmp.nbLig;
-								imgCpc.TailleY = param.nbLignes << 1;
-								imgCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = bmp.modeCPC;
-								trackModeX.Visible = imgCpc.modeVirtuel == 5;
-							}
-							else
-								imgSrc.SetBitmap(new Bitmap(ms), checkImageSource.Checked);
-
-							bitmapOk = true;
-						}
-						catch (Exception ex) {
-							MessageBox.Show("Impossible de lire l'image (format inconnu ???)");
-						}
+				try {
+					if (CpcSystem.CheckAmsdos(tabBytes)) {
+						BitmapCpc bmp = new BitmapCpc(tabBytes);
+						imgSrc.SetBitmap(bmp.CreateImageFromCpc(tabBytes), checkImageSource.Checked);
+						nbCols.Value = param.nbCols = bmp.nbCol;
+						imgCpc.TailleX = param.nbCols << 3;
+						nbLignes.Value = param.nbLignes = bmp.nbLig;
+						imgCpc.TailleY = param.nbLignes << 1;
+						imgCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = bmp.modeCPC;
+						trackModeX.Visible = imgCpc.modeVirtuel == 5;
 					}
+					else {
+						MemoryStream ms = new MemoryStream(tabBytes);
+						imgSrc.SetBitmap(new Bitmap(ms), checkImageSource.Checked);
+						ms.Dispose();
+					}
+					bitmapOk = true;
 				}
+				catch (Exception ex) {
+					MessageBox.Show("Impossible de lire l'image (format inconnu ???)");
+				}
+
 				if (bitmapOk) {
 					Text = "ConvImgCPC - " + Path.GetFileName(dlg.FileName);
 					tbxSizeX.Text = imgSrc.GetImage.Width.ToString();
