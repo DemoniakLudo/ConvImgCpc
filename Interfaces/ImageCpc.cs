@@ -180,9 +180,7 @@ namespace ConvImgCpc {
 		}
 
 		public void SauveScr(string fileName, Param param) {
-			for (int i = 0; i < bmpCpc.Length; i++)
-				bmpCpc[i] = 0;
-
+			System.Array.Clear(bmpCpc, 0, bmpCpc.Length);
 			for (int y = 0; y < TailleY; y += 2) {
 				int modeCPC = (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 				int adrCPC = GetAdrCpc(y);
