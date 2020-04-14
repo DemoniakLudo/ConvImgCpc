@@ -26,7 +26,7 @@ namespace ConvImgCpc {
 		private const int Lum0 = 0x00;
 		private const int Lum1 = 0x70;
 		private const int Lum2 = 0xFF;
-		public int[,] colMode5 = new int[2, 272];
+		public int[] colMode5 = new int[272];
 		static public RvbColor[] RgbCPC = {
 							new RvbColor( Lum0, Lum0, Lum0),
 							new RvbColor( Lum1, Lum0, Lum0),
@@ -132,7 +132,7 @@ namespace ConvImgCpc {
 		}
 
 		public void SetPixelMode5(int xPos, int yPos, int col) {
-			int realColor = GetPalCPC(col < 2 ? colMode5[col, yPos >> 1] : Palette[col]);
+			int realColor = GetPalCPC(col == 3 ? colMode5[yPos >> 1] : Palette[col]);
 			for (int i = 0; i < 2; i++) {
 				bmpLock.SetPixel(xPos + i, yPos, realColor);
 				bmpLock.SetPixel(xPos + i, yPos + 1, realColor);

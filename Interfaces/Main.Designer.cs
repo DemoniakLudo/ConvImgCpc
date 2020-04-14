@@ -35,8 +35,7 @@
 			this.methode = new System.Windows.Forms.ComboBox();
 			this.pctTrame = new System.Windows.Forms.NumericUpDown();
 			this.resoCPC = new System.Windows.Forms.GroupBox();
-			this.trackModeX = new System.Windows.Forms.TrackBar();
-			this.chkOverscan = new System.Windows.Forms.CheckBox();
+			this.bpOverscan = new System.Windows.Forms.Button();
 			this.modePlus = new System.Windows.Forms.CheckBox();
 			this.tramage = new System.Windows.Forms.GroupBox();
 			this.lblPct = new System.Windows.Forms.Label();
@@ -77,7 +76,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
 			this.resoCPC.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.trackModeX)).BeginInit();
 			this.tramage.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.lumi)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.sat)).BeginInit();
@@ -119,7 +117,7 @@
 			// 
 			// nbCols
 			// 
-			this.nbCols.Location = new System.Drawing.Point(80, 26);
+			this.nbCols.Location = new System.Drawing.Point(80, 21);
 			this.nbCols.Maximum = new decimal(new int[] {
             96,
             0,
@@ -132,7 +130,7 @@
 			// 
 			// nbLignes
 			// 
-			this.nbLignes.Location = new System.Drawing.Point(80, 52);
+			this.nbLignes.Location = new System.Drawing.Point(80, 47);
 			this.nbLignes.Maximum = new decimal(new int[] {
             272,
             0,
@@ -146,7 +144,7 @@
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(5, 28);
+			this.label1.Location = new System.Drawing.Point(5, 23);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(68, 13);
 			this.label1.TabIndex = 6;
@@ -155,7 +153,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(5, 54);
+			this.label2.Location = new System.Drawing.Point(5, 49);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(55, 13);
 			this.label2.TabIndex = 6;
@@ -220,8 +218,7 @@
 			// 
 			// resoCPC
 			// 
-			this.resoCPC.Controls.Add(this.trackModeX);
-			this.resoCPC.Controls.Add(this.chkOverscan);
+			this.resoCPC.Controls.Add(this.bpOverscan);
 			this.resoCPC.Controls.Add(this.label1);
 			this.resoCPC.Controls.Add(this.nbCols);
 			this.resoCPC.Controls.Add(this.nbLignes);
@@ -235,27 +232,15 @@
 			this.resoCPC.TabStop = false;
 			this.resoCPC.Text = "Résolution CPC";
 			// 
-			// trackModeX
+			// bpOverscan
 			// 
-			this.trackModeX.Location = new System.Drawing.Point(0, 127);
-			this.trackModeX.Maximum = 200;
-			this.trackModeX.Name = "trackModeX";
-			this.trackModeX.Size = new System.Drawing.Size(132, 42);
-			this.trackModeX.TabIndex = 9;
-			this.trackModeX.Visible = false;
-			this.trackModeX.Scroll += new System.EventHandler(this.trackModeX_Scroll);
-			// 
-			// chkOverscan
-			// 
-			this.chkOverscan.AutoSize = true;
-			this.chkOverscan.Location = new System.Drawing.Point(49, 78);
-			this.chkOverscan.Name = "chkOverscan";
-			this.chkOverscan.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-			this.chkOverscan.Size = new System.Drawing.Size(72, 17);
-			this.chkOverscan.TabIndex = 8;
-			this.chkOverscan.Text = "Overscan";
-			this.chkOverscan.UseVisualStyleBackColor = true;
-			this.chkOverscan.CheckedChanged += new System.EventHandler(this.chkOverscan_CheckedChanged);
+			this.bpOverscan.Location = new System.Drawing.Point(49, 71);
+			this.bpOverscan.Name = "bpOverscan";
+			this.bpOverscan.Size = new System.Drawing.Size(75, 20);
+			this.bpOverscan.TabIndex = 10;
+			this.bpOverscan.Text = "Overscan";
+			this.bpOverscan.UseVisualStyleBackColor = true;
+			this.bpOverscan.Click += new System.EventHandler(this.bpOverscan_Click);
 			// 
 			// modePlus
 			// 
@@ -672,7 +657,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).EndInit();
 			this.resoCPC.ResumeLayout(false);
 			this.resoCPC.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.trackModeX)).EndInit();
 			this.tramage.ResumeLayout(false);
 			this.tramage.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.lumi)).EndInit();
@@ -737,8 +721,8 @@
 		private System.Windows.Forms.TextBox tbxPosY;
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.Label label5;
-		private System.Windows.Forms.TrackBar trackModeX;
         private System.Windows.Forms.CheckBox withCode;
+		private System.Windows.Forms.Button bpOverscan;
 	}
 }
 

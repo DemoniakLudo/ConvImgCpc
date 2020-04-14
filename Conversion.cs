@@ -303,15 +303,15 @@ namespace ConvImgCpc {
 						}
 		}
 
-		static void RechercheCMax(int[] palette, int[,] colMode5, int[] lockState, int yMax, bool cpcPlus, bool sortPal, int trackModeX) {
+		static void RechercheCMax(int[] palette, int[] colMode5, int[] lockState, int yMax, bool cpcPlus, bool sortPal) {
 			int x, FindMax = cpcPlus ? 4096 : 27;
 
 			for (x = 0; x < 4; x++)
 				if (lockState[x] > 0)
 					CoulTrouvee[palette[x], 0] = 0;
 
-			// Recherche les couleurs fixes (2 et 3)
-			for (x = 2; x < 4; x++) {
+			// Recherche les couleurs fixes (0 à 2)
+			for (x = 0; x < 3; x++) {
 				int valMax = 0;
 				if (lockState[x] == 0) {
 					for (int i = 0; i < FindMax; i++) {
@@ -331,31 +331,27 @@ namespace ConvImgCpc {
 
 			// Recherche les couleurs par ligne
 			for (int y = 0; y < yMax >> 1; y++) {
-				for (x = 0; x < 2; x++) {
-					int valMax = 0;
-					if (lockState[x] == 0) {
-						for (int i = 0; i < FindMax; i++) {
-							int coeff = trackModeX;
-							for (int j = 0; j < 8; j++) {
-								int c = CoulTrouvee[i, y] + (y - j >= 0 ? (int)(CoulTrouvee[i, y - j] / (0.01 + coeff / 100)) : 0) + (y < (yMax >> 1) - j ? (int)(CoulTrouvee[i, y + j] / (0.01 + coeff / 100)) : 0);
-								if (valMax < c) {
-									valMax = c;
-									colMode5[x, y] = i;
-								}
-								coeff++;
-							}
+				int valMax = 0;
+				if (lockState[3] == 0) {
+					for (int i = 0; i < FindMax; i++) {
+						int c = CoulTrouvee[i, y];// +(y - j >= 0 ? (int)(CoulTrouvee[i, y - j] / (0.01 + coeff / 100)) : 0) + (y < (yMax >> 1) - j ? (int)(CoulTrouvee[i, y + j] / (0.01 + coeff / 100)) : 0);
+						if (valMax < c) {
+							valMax = c;
+							colMode5[y] = i;
 						}
-						CoulTrouvee[colMode5[x, y], y] = 0;
 					}
+					CoulTrouvee[colMode5[y], y] = 0;
 				}
 			}
 
 			if (sortPal)
-				if (lockState[2] == 0 && lockState[3] == 0 && palette[2] > palette[3]) {
-					int tmp = palette[2];
-					palette[2] = palette[3];
-					palette[3] = tmp;
-				}
+				for (x = 0; x < 2; x++)
+					for (int y = x + 1; y < 3; y++)
+						if (lockState[x] == 0 && lockState[y] == 0 && palette[x] > palette[y]) {
+							int tmp = palette[x];
+							palette[x] = palette[y];
+							palette[y] = tmp;
+						}
 		}
 
 		//
@@ -378,7 +374,7 @@ namespace ConvImgCpc {
 					MemoLockState[i] = 1;
 			}
 			if (dest.modeVirtuel == 5)
-				RechercheCMax(dest.Palette, dest.colMode5, MemoLockState, dest.TailleY, p.cpcPlus, p.sortPal, p.trackModeX);
+				RechercheCMax(dest.Palette, dest.colMode5, MemoLockState, dest.TailleY, p.cpcPlus, p.sortPal);
 			else
 				RechercheCMax(dest.Palette, maxCol, MemoLockState, p.cpcPlus, p.sortPal);
 
@@ -386,7 +382,7 @@ namespace ConvImgCpc {
 			for (int y = 0; y < dest.TailleY; y += 2)
 				for (i = 0; i < maxCol; i++)
 					tabCol[i, y >> 1] = p.cpcPlus ? new RvbColor((byte)(((dest.Palette[i] & 0xF0) >> 4) * 17), (byte)(((dest.Palette[i] & 0xF00) >> 8) * 17), (byte)((dest.Palette[i] & 0x0F) * 17))
-						: ImageCpc.RgbCPC[dest.modeVirtuel == 5 && i < 2 ? dest.colMode5[i, y >> 1] < 27 ? dest.colMode5[i, y >> 1] : 0 : dest.Palette[i] < 27 ? dest.Palette[i] : 0];
+						: ImageCpc.RgbCPC[dest.modeVirtuel == 5 && i == 3 ? dest.colMode5[y >> 1] < 27 ? dest.colMode5[y >> 1] : 0 : dest.Palette[i] < 27 ? dest.Palette[i] : 0];
 
 			//for (int y = 0; y < dest.TailleY; y += 4) {
 			//	maxCol = 1 << Tx;

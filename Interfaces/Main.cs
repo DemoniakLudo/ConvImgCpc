@@ -47,7 +47,6 @@ namespace ConvImgCpc {
 				param.methode = methode.SelectedItem.ToString();
 				param.pct = (int)pctTrame.Value;
 				param.lockState = imgCpc.lockState;
-				param.trackModeX = trackModeX.Value;
 				param.withCode = withCode.Checked;
 				Bitmap tmp = new Bitmap(imgCpc.TailleX, imgCpc.TailleY);
 				Graphics g = Graphics.FromImage(tmp);
@@ -106,7 +105,7 @@ namespace ConvImgCpc {
 
 		private void bpReadSrc_Click(object sender, EventArgs e) {
 			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.Filter = "Images (*.bmp, *.gif, *.png, *.jpg)|*.bmp;*.gif;*.png;*.jpg;*.scr|Tous fichiers|*.*";
+			dlg.Filter = "Images (*.bmp, *.gif, *.png, *.jpg, *.scr)|*.bmp;*.gif;*.png;*.jpg;*.scr|Tous fichiers|*.*";
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
 #if TRY_CATCH
@@ -126,7 +125,6 @@ namespace ConvImgCpc {
 						nbLignes.Value = param.nbLignes = bmp.nbLig;
 						imgCpc.TailleY = param.nbLignes << 1;
 						imgCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = bmp.modeCPC;
-						trackModeX.Visible = imgCpc.modeVirtuel == 5;
 					}
 					else {
 						MemoryStream ms = new MemoryStream(tabBytes);
@@ -255,7 +253,6 @@ namespace ConvImgCpc {
 
 		private void mode_SelectedIndexChanged(object sender, EventArgs e) {
 			imgCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex;
-			trackModeX.Visible = imgCpc.modeVirtuel == 5;
 			Convert(false);
 		}
 
@@ -334,18 +331,13 @@ namespace ConvImgCpc {
 			contrast.Value = 100;
 		}
 
-		private void chkOverscan_CheckedChanged(object sender, EventArgs e) {
-			nbLignes.Value = 272;
-			nbCols.Value = 96;
-		}
-
 		private void radioUserSize_CheckedChanged(object sender, EventArgs e) {
 			tbxPosX.Visible = tbxPosY.Visible = tbxSizeX.Visible = tbxSizeY.Visible = label5.Visible = label7.Visible = radioUserSize.Checked;
 		}
 
-		private void trackModeX_Scroll(object sender, EventArgs e) {
-			param.trackModeX = trackModeX.Value;
-			Convert(false);
+		private void bpOverscan_Click(object sender, EventArgs e) {
+			nbLignes.Value = 272;
+			nbCols.Value = 96;
 		}
 
 	}
