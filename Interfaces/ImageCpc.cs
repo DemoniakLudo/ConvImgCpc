@@ -179,7 +179,22 @@ namespace ConvImgCpc {
 			lblNbColors.Text = "Nombre de couleurs : " + nbCol;
 		}
 
-		public void SauveScr(string fileName, Param param) {
+		public void SauveBmp(string fileName) {
+			Bitmap bmp = new Bitmap(TailleX, TailleY);
+			LockBitmap loc = new LockBitmap(bmp);
+			loc.LockBits();
+			bmpLock.LockBits();
+			for (int y = 0; y < TailleY; y++)
+				for (int x = 0; x < TailleX; x++)
+					loc.SetPixel(x, y, bmpLock.GetPixel(x, y));
+
+			bmpLock.UnlockBits();
+			loc.UnlockBits();
+			bmp.Save(fileName, System.Drawing.Imaging.ImageFormat.Bmp);
+			bmp.Dispose();
+		}
+
+		private void CreeBmpCpc(Param param) {
 			System.Array.Clear(bmpCpc, 0, bmpCpc.Length);
 			for (int y = 0; y < TailleY; y += 2) {
 				int modeCPC = (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
@@ -208,22 +223,16 @@ namespace ConvImgCpc {
 					bmpCpc[adrCPC + (x >> 3)] = octet;
 				}
 			}
-			SauveImage.SauveEcran(fileName, this, param);
 		}
 
-		public void SauveBmp(string fileName) {
-			Bitmap bmp = new Bitmap(TailleX, TailleY);
-			LockBitmap loc = new LockBitmap(bmp);
-			loc.LockBits();
-			bmpLock.LockBits();
-			for (int y = 0; y < TailleY; y++)
-				for (int x = 0; x < TailleX; x++)
-					loc.SetPixel(x, y, bmpLock.GetPixel(x, y));
+		public void SauveScr(string fileName, Param param) {
+			CreeBmpCpc(param);
+			SauveImage.SauveScr(fileName, this, param, false);
+		}
 
-			bmpLock.UnlockBits();
-			loc.UnlockBits();
-			bmp.Save(fileName, System.Drawing.Imaging.ImageFormat.Bmp);
-			bmp.Dispose();
+		public void SauveCmp(string fileName, Param param) {
+			CreeBmpCpc(param);
+			SauveImage.SauveScr(fileName, this, param, true);
 		}
 
 		public void SauveSprite(string fileName, string version, Param param) {

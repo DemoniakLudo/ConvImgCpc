@@ -229,9 +229,112 @@ namespace ConvImgCpc {
 			0xC9						//				RET
 		};
 
+		static byte[] codeDepack = {
+			0x21, 0x00, 0x00,			//				LD		HL,Source
+			0x11, 0x00, 0x00,			//				LD		DE,Dest
+			0x7E,						//	DepkLzw:	LD		A,(HL)
+			0x23,						//				INC		HL
+			0x1F,						//				RRA
+			0xCB, 0xFF,					//				SET		7,A
+			0x32, 0xD3, 0xA5,			//				LD		(BclLzw+1),A
+			0x38, 0x0D,					//				JR		C,TstCodeLzw
+			0xED, 0xA0,					//				LDI
+			0x3E, 0x00,					//	BclLzw:		LD		A,0
+			0xCB, 0x1F,					//				RRA
+			0x32, 0xD3, 0xA5,			//				LD		(BclLzw+1),A
+			0x30, 0xF5,					//				JR		NC,CopByteLzw
+			0x28, 0xE9,					//				JR		Z,DepkLzw
+			0x7E,						//				LD		A,(HL)
+			0xA7,						//				AND		A
+			0xCA, 0x00, 0x00,			//				JP		Z,AfficheImage
+			0x23,						//				INC		HL
+			0x47,						//				LD		B,A
+			0x07,						//				RLCA
+			0x30, 0x1D,					//				JR		NC,TstLzw40
+			0x07,						//				RLCA
+			0x07,						//				RLCA
+			0x07,						//				RLCA
+			0xE6, 0x07,					//				AND		#07
+			0xC6, 0x03,					//				ADD		A,#03
+			0x4F,						//				LD		C,A
+			0x78,						//				LD		A,B
+			0xE6, 0x0F,					//				AND		#0F
+			0x47,						//				LD		B,A
+			0x79,						//				LD		A,C
+			0x37,						//				SCF
+			0x4E,						//	CopyBytes0:	LD		C,(HL)
+			0x23,						//				INC		HL
+			0xE5,						//				PUSH	HL
+			0x62,						//				LD		H,D
+			0x6B,						//				LD		L,E
+			0xED, 0x42,					//				SBC		HL,DE
+			0x06, 0x00,					//				LD		B,#00
+			0x4F,						//	CopyBytes1:	KD		C,A
+			0xED, 0xB0,					//	CopyBytes2:	LDIR
+			0xE1,						//	CopyBytes3:	POP		HL
+			0x18, 0xCE,					//				JR		BclLzw
+			0x07,						//	TstLzw40:	RLCA
+			0x30, 0x10,					//				JR		NC,TstLzw20
+			0x48,						//				LD		C,B
+			0xCB, 0xB1,					//				RES		6,C
+			0x06, 0x00,					//				LD		B,#00
+			0xE5,						//				PUSH	HL
+			0x62,						//				LD		H,D
+			0x6B,						//				LD		L,E
+			0xED, 0x42,					//				SBC		HL,BC
+			0xED, 0xA0,					//				LDI
+			0xED, 0xA0,					//				LDI
+			0x18, 0xEA,					//				JR		CopyBytes3
+			0x07,						//	TstLzw20:	RLCA
+			0x30, 0x29,					//				JR		NC,TstLzw10
+			0x78,						//				LD		A,B
+			0xC6, 0xE2,					//				ADD		A,#E2
+			0x06, 0x00,					//				LD		B,#00
+			0x18, 0xD4,					//				JR		CopyBytes0
+			0x4E,						//	CodeLzw0F:	LD		C,(HL)
+			0xE5,						//				PUSH	HL
+			0x62,						//				LD		H,D
+			0x6B,						//				LD		L,E
+			0xFE, 0xF0,					//				CP		#F0
+			0x20, 0x0B,					//				JR		NZ,CodeLzw02
+			0xAF,						//				XOR		A
+			0x47,						//				LD		B,A
+			0x03,						//				INC		BC
+			0xED, 0x42,					//				SBC		HL,BC
+			0xED, 0xB0,					//				LDIR
+			0xE1,						//				POP		HL
+			0x23,						//				INC		HL
+			0x18, 0x9E,					//				JR		BclLzw
+			0xFE, 0x20,					//	CodeLzw02:	CP		#20
+			0x38, 0x07,					//				JR		C,CodeLzw01
+			0x48,						//				LD		C,B
+			0x06, 0x00,					//				LD		B,#00
+			0xED, 0x42,					//				SBC		HL,BC
+			0x18, 0xC0,					//				JR		CopyBytes2
+			0xAF,						//	CodeLzw01:	XOR		A
+			0x25,						//				DEC		H
+			0x18, 0xBB,					//				JR		CopyBytes1
+			0x07,						//	TstLzw10:	RLCA
+			0x30, 0xDB,					//				JR		NC,CodeLzw0F
+			0xCB, 0xA0,					//				RES		4,B
+			0x4E,						//				LD		C,(HL)
+			0x23,						//				INC		HL
+			0x7E,						//				LD		A,(HL)
+			0x23,						//				INC		HL
+			0xE5,						//				PUSH	HL
+			0x62,						//				LD		H,D
+			0x6B,						//				LD		L,E
+			0xED, 0x42,					//				SBC		HL,BC
+			0x06, 0x00,					//				LD		B,#00
+			0x4F,						//				LD		C,A
+			0x03,						//				INC		BC
+			0x18, 0xA8,					//				JR		CopyBytes2
+			};
+
 		static byte[] ModePal = new byte[48];
 
-		static public int SauveEcran(string NomFic, ImageCpc bitmapCpc, Param param) {
+		static public int SauveScr(string NomFic, ImageCpc bitmapCpc, Param param, bool compact) {
+			byte[] bufPack = new byte[0x8000];
 			bool Overscan = (bitmapCpc.NbLig * bitmapCpc.NbCol > 0x3F00);
 			if (param.cpcPlus) {
 				ModePal[0] = (byte)(bitmapCpc.modeVirtuel | 0x8C);
@@ -293,13 +396,31 @@ namespace ConvImgCpc {
 					}
 				}
 			}
-			int Lg = bitmapCpc.BitmapSize;
+			short startAdr = (short)(Overscan ? 0x200 : 0xC000);
+			short exec = (short)(Overscan ? param.cpcPlus ? 0x821 : 0x811 : 0xC7D0);
+			CpcAmsdos entete;
+			int lg = bitmapCpc.BitmapSize;
+			if (compact) {
+				lg = PackDepack.Pack(bitmapCpc.bmpCpc, lg, bufPack, 0) + 1; // Prendre 1 octet de marge ?
+				Buffer.BlockCopy(codeDepack, 0, bufPack, lg, codeDepack.Length);
+				bufPack[lg + 4] = (byte)(startAdr & 0xFF);
+				bufPack[lg + 5] = (byte)(startAdr >> 8);
+				startAdr = (short)(0xA657 - (lg+codeDepack.Length));
+				bufPack[lg + 1] = (byte)(startAdr & 0xFF);
+				bufPack[lg + 2] = (byte)(startAdr >> 8);
+				bufPack[lg + 32] = (byte)(exec & 0xFF);
+				bufPack[lg + 33] = (byte)(exec >> 8);
+				lg += codeDepack.Length;
+				entete = CpcSystem.CreeEntete(NomFic, (short)startAdr, (short)lg, (short)(0xA657 - codeDepack.Length));
+			}
+			else
+				entete = CpcSystem.CreeEntete(NomFic, startAdr, (short)lg, exec);
+
 			BinaryWriter fp = new BinaryWriter(new FileStream(NomFic, FileMode.Create));
-			CpcAmsdos entete = CpcSystem.CreeEntete(NomFic, (short)(Overscan ? 0x200 : 0xC000), (short)Lg, (short)(Overscan ? param.cpcPlus ? 0x821 : 0x811 : 0xC7D0));
 			fp.Write(CpcSystem.AmsdosToByte(entete));
-			fp.Write(bitmapCpc.bmpCpc, 0, Lg);
+			fp.Write(compact ? bufPack : bitmapCpc.bmpCpc, 0, lg);
 			fp.Close();
-			return (Lg);
+			return (lg);
 		}
 	}
 }

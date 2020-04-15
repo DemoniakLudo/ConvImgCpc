@@ -330,11 +330,12 @@ namespace ConvImgCpc {
 			}
 
 			// Recherche les couleurs par ligne
+			int j = 1;
 			for (int y = 0; y < yMax >> 1; y++) {
 				int valMax = 0;
 				if (lockState[3] == 0) {
 					for (int i = 0; i < FindMax; i++) {
-						int c = CoulTrouvee[i, y];// +(y - j >= 0 ? (int)(CoulTrouvee[i, y - j] / (0.01 + coeff / 100)) : 0) + (y < (yMax >> 1) - j ? (int)(CoulTrouvee[i, y + j] / (0.01 + coeff / 100)) : 0);
+						int c = CoulTrouvee[i, y] + (y - j >= 0 ? (int)(CoulTrouvee[i, y - j] * 0.5) : 0) + (y < (yMax >> 1) - j ? (int)(CoulTrouvee[i, y + j] * .5) : 0);
 						if (valMax < c) {
 							valMax = c;
 							colMode5[y] = i;
