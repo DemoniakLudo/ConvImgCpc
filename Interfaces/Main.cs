@@ -12,6 +12,11 @@ namespace ConvImgCpc {
 		private ImageSource imgSrc;
 		private ImageCpc imgCpc;
 		private Param param = new Param();
+		private string lastReadScreenPath = null;
+		private string lastSaveScreenPath = null;
+		private string lastReadParamPath = null;
+		private string lastSaveParamPath = null;
+
 		public Main() {
 			InitializeComponent();
 			mode.Items.Insert(0, "Mode 0");
@@ -106,11 +111,13 @@ namespace ConvImgCpc {
 		private void bpReadSrc_Click(object sender, EventArgs e) {
 			OpenFileDialog dlg = new OpenFileDialog();
 			dlg.Filter = "Images (*.bmp, *.gif, *.png, *.jpg, *.scr)|*.bmp;*.gif;*.png;*.jpg;*.scr|Tous fichiers|*.*";
+			dlg.InitialDirectory = lastReadScreenPath;
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
 #if TRY_CATCH
 				try {
 #endif
+				lastReadScreenPath = Path.GetDirectoryName(dlg.FileName);
 				FileStream file = new FileStream(dlg.FileName, FileMode.Open, FileAccess.Read);
 				byte[] tabBytes = new byte[file.Length];
 				file.Read(tabBytes, 0, tabBytes.Length);
@@ -154,9 +161,11 @@ namespace ConvImgCpc {
 
 		private void bpLoadParam_Click(object sender, EventArgs e) {
 			OpenFileDialog dlg = new OpenFileDialog();
+			dlg.InitialDirectory = lastReadParamPath;
 			dlg.Filter = "Paramètres ConvImagesCpc (*.xml)|*.xml";
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
+				lastReadParamPath = Path.GetDirectoryName(dlg.FileName);
 				FileStream file = File.Open(dlg.FileName, FileMode.Open);
 #if TRY_CATCH
 				try {
@@ -192,9 +201,11 @@ namespace ConvImgCpc {
 
 		private void bpSaveParam_Click(object sender, EventArgs e) {
 			SaveFileDialog dlg = new SaveFileDialog();
+			dlg.InitialDirectory = lastSaveParamPath;
 			dlg.Filter = "Paramètres ConvImagesCpc (*.xml)|*.xml";
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
+				lastSaveParamPath = Path.GetDirectoryName(dlg.FileName);
 				FileStream file = File.Open(dlg.FileName, FileMode.Create);
 #if TRY_CATCH
 				try {
@@ -215,9 +226,11 @@ namespace ConvImgCpc {
 			try {
 #endif
 			SaveFileDialog dlg = new SaveFileDialog();
+			dlg.InitialDirectory = lastSaveScreenPath;
 			dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.bmp)|*.bmp|Sprite assembleur (.asm)|*.asm|Compacté (.cmp)|*.cmp";
 			DialogResult result = dlg.ShowDialog();
-			if (result == DialogResult.OK)
+			if (result == DialogResult.OK) {
+				lastSaveScreenPath = Path.GetDirectoryName(dlg.FileName);
 				switch (dlg.FilterIndex) {
 					case 1:
 						imgCpc.SauveScr(dlg.FileName, param);
@@ -235,6 +248,7 @@ namespace ConvImgCpc {
 						imgCpc.SauveCmp(dlg.FileName, param);
 						break;
 				}
+			}
 #if TRY_CATCH
 			}
 			catch (Exception ex) {

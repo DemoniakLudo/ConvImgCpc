@@ -351,9 +351,9 @@ namespace ConvImgCpc {
 			}
 
 			byte[] imgCpc = bitmapCpc.bmpCpc;
-			if (param.withCode) {
-				if (!Overscan) {
-					Buffer.BlockCopy(ModePal, 0, imgCpc, 0x17D0, ModePal.Length);
+			if (!Overscan) {
+				Buffer.BlockCopy(ModePal, 0, imgCpc, 0x17D0, ModePal.Length);
+				if (param.withCode) {
 					if (param.cpcPlus) {
 						Buffer.BlockCopy(CodeP0, 0, imgCpc, 0x07D0, CodeP0.Length);
 						Buffer.BlockCopy(CodeP1, 0, imgCpc, 0x0FD0, CodeP1.Length);
@@ -370,9 +370,11 @@ namespace ConvImgCpc {
 						imgCpc[0x37FA] = 0xFF;	//	Call 0xFFD0
 					}
 				}
-				else {
-					if (bitmapCpc.NbLig == 272 && bitmapCpc.NbCol == 96) {
-						Buffer.BlockCopy(ModePal, 0, imgCpc, 0x600, ModePal.Length);
+			}
+			else {
+				if (bitmapCpc.NbLig == 272 && bitmapCpc.NbCol == 96) {
+					Buffer.BlockCopy(ModePal, 0, imgCpc, 0x600, ModePal.Length);
+					if (param.withCode) {
 						if (param.cpcPlus)
 							Buffer.BlockCopy(CodeOvP, 0, imgCpc, 0x621, CodeOvP.Length);
 						else
@@ -396,26 +398,31 @@ namespace ConvImgCpc {
 					}
 				}
 			}
+
 			short startAdr = (short)(Overscan ? 0x200 : 0xC000);
 			short exec = (short)(Overscan ? param.cpcPlus ? 0x821 : 0x811 : 0xC7D0);
 			CpcAmsdos entete;
 			int lg = bitmapCpc.BitmapSize;
 			if (compact) {
 				lg = PackDepack.Pack(bitmapCpc.bmpCpc, lg, bufPack, 0) + 1; // Prendre 1 octet de marge ?
-				Buffer.BlockCopy(codeDepack, 0, bufPack, lg, codeDepack.Length);
-				bufPack[lg + 4] = (byte)(startAdr & 0xFF);
-				bufPack[lg + 5] = (byte)(startAdr >> 8);
-				startAdr = (short)(0xA657 - (lg+codeDepack.Length));
-				bufPack[lg + 1] = (byte)(startAdr & 0xFF);
-				bufPack[lg + 2] = (byte)(startAdr >> 8);
-				bufPack[lg + 32] = (byte)(exec & 0xFF);
-				bufPack[lg + 33] = (byte)(exec >> 8);
-				lg += codeDepack.Length;
-				entete = CpcSystem.CreeEntete(NomFic, (short)startAdr, (short)lg, (short)(0xA657 - codeDepack.Length));
+				if (param.withCode) {
+					Buffer.BlockCopy(codeDepack, 0, bufPack, lg, codeDepack.Length);
+					bufPack[lg + 4] = (byte)(startAdr & 0xFF);
+					bufPack[lg + 5] = (byte)(startAdr >> 8);
+					startAdr = (short)(0xA657 - (lg + codeDepack.Length));
+					bufPack[lg + 1] = (byte)(startAdr & 0xFF);
+					bufPack[lg + 2] = (byte)(startAdr >> 8);
+					bufPack[lg + 32] = (byte)(exec & 0xFF);
+					bufPack[lg + 33] = (byte)(exec >> 8);
+					lg += codeDepack.Length;
+					exec = (short)(0xA657 - codeDepack.Length);
+				}
+				else {
+					startAdr = (short)(0xA657 - lg);
+					exec = 0;
+				}
 			}
-			else
-				entete = CpcSystem.CreeEntete(NomFic, startAdr, (short)lg, exec);
-
+			entete = CpcSystem.CreeEntete(NomFic, startAdr, (short)lg, exec);
 			BinaryWriter fp = new BinaryWriter(new FileStream(NomFic, FileMode.Create));
 			fp.Write(CpcSystem.AmsdosToByte(entete));
 			fp.Write(compact ? bufPack : bitmapCpc.bmpCpc, 0, lg);

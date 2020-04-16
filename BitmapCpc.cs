@@ -169,9 +169,18 @@ namespace ConvImgCpc {
 			else
 				if (bmpCpc[0] == 'P' && bmpCpc[1] == 'K' && (bmpCpc[2] == 'O' || bmpCpc[2] == 'V' || bmpCpc[2] == 'S'))
 					DepactPK();
-				else
-					InitDatas();
-
+				else {
+					if (!InitDatas()) {
+						int l = PackDepack.Depack(bmpCpc, 0, bufTmp);
+						System.Array.Copy(bufTmp, bmpCpc, l);
+						if (!InitDatas()) {
+							cpcPlus = false;
+							nbCol = maxColsCpc;
+							nbLig = maxLignesCpc;
+							SetPalette(bmpCpc, 0x600, cpcPlus);
+						}
+					}
+				}
 			// Rendu dans un bitmap PC
 			Bitmap bmp = new Bitmap(nbCol << 3, nbLig * 2);
 			LockBitmap loc = new LockBitmap(bmp);
