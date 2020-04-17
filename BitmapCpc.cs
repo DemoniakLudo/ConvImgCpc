@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+
 namespace ConvImgCpc {
 	class BitmapCpc {
 		private const int maxColsCpc = 96;
@@ -12,7 +14,7 @@ namespace ConvImgCpc {
 		int[] Palette = new int[17];
 
 		public BitmapCpc(byte[] source) {
-			System.Array.Copy(source, 0x80, bmpCpc, 0, source.Length - 0x80);
+			Array.Copy(source, 0x80, bmpCpc, 0, source.Length - 0x80);
 		}
 
 		private void SetPalette(byte[] palStart, int startAdr, bool plus) {
@@ -139,7 +141,7 @@ namespace ConvImgCpc {
 						bmpCpc[x + GetAdrCpc(y << 1)] = bufTmp[i++];
 			}
 			else
-				System.Array.Copy(bufTmp, bmpCpc, l);
+				Array.Copy(bufTmp, bmpCpc, l);
 			if (Overscan) {
 				nbCol = maxColsCpc;
 				nbLig = maxLignesCpc;
@@ -172,7 +174,7 @@ namespace ConvImgCpc {
 				else {
 					if (!InitDatas()) {
 						int l = PackDepack.Depack(bmpCpc, 0, bufTmp);
-						System.Array.Copy(bufTmp, bmpCpc, l);
+						Array.Copy(bufTmp, bmpCpc, l);
 						if (!InitDatas()) {
 							cpcPlus = false;
 							nbCol = maxColsCpc;

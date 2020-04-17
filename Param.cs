@@ -1,7 +1,5 @@
-﻿using System;
-
-namespace ConvImgCpc {
-	[Serializable]
+﻿namespace ConvImgCpc {
+	[System.Serializable]
 	public class Param {
 		public enum SizeMode { Fit, KeepSmaller, KeepLarger, UserSize };
 
@@ -20,5 +18,6 @@ namespace ConvImgCpc {
 		public int nbCols, nbLignes;
 		public int modeVirtuel;
 		public bool withCode;
+		public bool withPalette;
 	}
 }

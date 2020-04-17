@@ -336,18 +336,20 @@ namespace ConvImgCpc {
 		static public int SauveScr(string NomFic, ImageCpc bitmapCpc, Param param, bool compact) {
 			byte[] bufPack = new byte[0x8000];
 			bool Overscan = (bitmapCpc.NbLig * bitmapCpc.NbCol > 0x3F00);
-			if (param.cpcPlus) {
-				ModePal[0] = (byte)(bitmapCpc.modeVirtuel | 0x8C);
-				int k = 1;
-				for (int i = 0; i < 16; i++) {
-					ModePal[k++] = (byte)(((bitmapCpc.Palette[i] >> 4) & 0x0F) | (bitmapCpc.Palette[i] << 4));
-					ModePal[k++] = (byte)(bitmapCpc.Palette[i] >> 8);
+			if (param.withPalette) {
+				if (param.cpcPlus) {
+					ModePal[0] = (byte)(bitmapCpc.modeVirtuel | 0x8C);
+					int k = 1;
+					for (int i = 0; i < 16; i++) {
+						ModePal[k++] = (byte)(((bitmapCpc.Palette[i] >> 4) & 0x0F) | (bitmapCpc.Palette[i] << 4));
+						ModePal[k++] = (byte)(bitmapCpc.Palette[i] >> 8);
+					}
 				}
-			}
-			else {
-				ModePal[0] = (byte)bitmapCpc.modeVirtuel;
-				for (int i = 0; i < 16; i++)
-					ModePal[1 + i] = (byte)bitmapCpc.Palette[i];
+				else {
+					ModePal[0] = (byte)bitmapCpc.modeVirtuel;
+					for (int i = 0; i < 16; i++)
+						ModePal[1 + i] = (byte)bitmapCpc.Palette[i];
+				}
 			}
 
 			byte[] imgCpc = bitmapCpc.bmpCpc;

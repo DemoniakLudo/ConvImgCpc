@@ -97,7 +97,7 @@
 			// crayonColor
 			// 
 			this.crayonColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.crayonColor.Location = new System.Drawing.Point(40, 121);
+			this.crayonColor.Location = new System.Drawing.Point(9, 121);
 			this.crayonColor.Name = "crayonColor";
 			this.crayonColor.Size = new System.Drawing.Size(100, 75);
 			this.crayonColor.TabIndex = 7;
@@ -105,7 +105,7 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(47, 99);
+			this.label3.Location = new System.Drawing.Point(16, 99);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(84, 13);
 			this.label3.TabIndex = 4;
@@ -114,7 +114,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(14, 211);
+			this.label2.Location = new System.Drawing.Point(5, 211);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(73, 13);
 			this.label2.TabIndex = 5;
@@ -131,7 +131,7 @@
             "3",
             "4",
             "8"});
-			this.tailleCrayon.Location = new System.Drawing.Point(93, 208);
+			this.tailleCrayon.Location = new System.Drawing.Point(84, 208);
 			this.tailleCrayon.Name = "tailleCrayon";
 			this.tailleCrayon.Size = new System.Drawing.Size(31, 21);
 			this.tailleCrayon.TabIndex = 3;
@@ -140,7 +140,7 @@
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(14, 34);
+			this.label1.Location = new System.Drawing.Point(5, 34);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(40, 13);
 			this.label1.TabIndex = 6;
@@ -156,7 +156,7 @@
             "2",
             "4",
             "8"});
-			this.comboZoom.Location = new System.Drawing.Point(68, 31);
+			this.comboZoom.Location = new System.Drawing.Point(59, 31);
 			this.comboZoom.Name = "comboZoom";
 			this.comboZoom.Size = new System.Drawing.Size(33, 21);
 			this.comboZoom.TabIndex = 8;
@@ -173,7 +173,7 @@
 			this.grpEdition.Controls.Add(this.label1);
 			this.grpEdition.Location = new System.Drawing.Point(790, 35);
 			this.grpEdition.Name = "grpEdition";
-			this.grpEdition.Size = new System.Drawing.Size(174, 252);
+			this.grpEdition.Size = new System.Drawing.Size(120, 252);
 			this.grpEdition.TabIndex = 9;
 			this.grpEdition.TabStop = false;
 			this.grpEdition.Visible = false;
@@ -181,7 +181,7 @@
 			// chkRendu
 			// 
 			this.chkRendu.AutoSize = true;
-			this.chkRendu.Location = new System.Drawing.Point(17, 67);
+			this.chkRendu.Location = new System.Drawing.Point(8, 67);
 			this.chkRendu.Name = "chkRendu";
 			this.chkRendu.Size = new System.Drawing.Size(107, 17);
 			this.chkRendu.TabIndex = 9;
@@ -201,7 +201,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(968, 620);
+			this.ClientSize = new System.Drawing.Size(911, 620);
 			this.ControlBox = false;
 			this.Controls.Add(this.lblNbColors);
 			this.Controls.Add(this.grpEdition);

@@ -24,7 +24,7 @@
 		/// </summary>
 		private void InitializeComponent() {
 			this.checkImageSource = new System.Windows.Forms.CheckBox();
-			this.bpReadSrc = new System.Windows.Forms.Button();
+			this.bpLoad = new System.Windows.Forms.Button();
 			this.bpConvert = new System.Windows.Forms.Button();
 			this.nbCols = new System.Windows.Forms.NumericUpDown();
 			this.nbLignes = new System.Windows.Forms.NumericUpDown();
@@ -67,11 +67,10 @@
 			this.nb = new System.Windows.Forms.CheckBox();
 			this.sortPal = new System.Windows.Forms.CheckBox();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
-			this.bpLoadParam = new System.Windows.Forms.Button();
-			this.bpSaveParam = new System.Windows.Forms.Button();
-			this.bpSaveImage = new System.Windows.Forms.Button();
+			this.bpSave = new System.Windows.Forms.Button();
 			this.lblInfoVersion = new System.Windows.Forms.Label();
 			this.withCode = new System.Windows.Forms.CheckBox();
+			this.withPalette = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -87,7 +86,7 @@
 			// checkImageSource
 			// 
 			this.checkImageSource.AutoSize = true;
-			this.checkImageSource.Location = new System.Drawing.Point(3, 51);
+			this.checkImageSource.Location = new System.Drawing.Point(3, 41);
 			this.checkImageSource.Name = "checkImageSource";
 			this.checkImageSource.Size = new System.Drawing.Size(128, 17);
 			this.checkImageSource.TabIndex = 0;
@@ -95,15 +94,15 @@
 			this.checkImageSource.UseVisualStyleBackColor = true;
 			this.checkImageSource.CheckedChanged += new System.EventHandler(this.checkImageSource_CheckedChanged);
 			// 
-			// bpReadSrc
+			// bpLoad
 			// 
-			this.bpReadSrc.Location = new System.Drawing.Point(3, 12);
-			this.bpReadSrc.Name = "bpReadSrc";
-			this.bpReadSrc.Size = new System.Drawing.Size(108, 23);
-			this.bpReadSrc.TabIndex = 2;
-			this.bpReadSrc.Text = "Lecture source";
-			this.bpReadSrc.UseVisualStyleBackColor = true;
-			this.bpReadSrc.Click += new System.EventHandler(this.bpReadSrc_Click);
+			this.bpLoad.Location = new System.Drawing.Point(3, 12);
+			this.bpLoad.Name = "bpLoad";
+			this.bpLoad.Size = new System.Drawing.Size(108, 23);
+			this.bpLoad.TabIndex = 2;
+			this.bpLoad.Text = "Lecture source";
+			this.bpLoad.UseVisualStyleBackColor = true;
+			this.bpLoad.Click += new System.EventHandler(this.bpLoad_Click);
 			// 
 			// bpConvert
 			// 
@@ -578,35 +577,15 @@
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Effets de palette";
 			// 
-			// bpLoadParam
+			// bpSave
 			// 
-			this.bpLoadParam.Location = new System.Drawing.Point(3, 275);
-			this.bpLoadParam.Name = "bpLoadParam";
-			this.bpLoadParam.Size = new System.Drawing.Size(108, 23);
-			this.bpLoadParam.TabIndex = 53;
-			this.bpLoadParam.Text = "Lire paramètres";
-			this.bpLoadParam.UseVisualStyleBackColor = true;
-			this.bpLoadParam.Click += new System.EventHandler(this.bpLoadParam_Click);
-			// 
-			// bpSaveParam
-			// 
-			this.bpSaveParam.Location = new System.Drawing.Point(3, 304);
-			this.bpSaveParam.Name = "bpSaveParam";
-			this.bpSaveParam.Size = new System.Drawing.Size(108, 23);
-			this.bpSaveParam.TabIndex = 53;
-			this.bpSaveParam.Text = "Sauver paramètres";
-			this.bpSaveParam.UseVisualStyleBackColor = true;
-			this.bpSaveParam.Click += new System.EventHandler(this.bpSaveParam_Click);
-			// 
-			// bpSaveImage
-			// 
-			this.bpSaveImage.Location = new System.Drawing.Point(3, 177);
-			this.bpSaveImage.Name = "bpSaveImage";
-			this.bpSaveImage.Size = new System.Drawing.Size(108, 23);
-			this.bpSaveImage.TabIndex = 52;
-			this.bpSaveImage.Text = "Sauver image";
-			this.bpSaveImage.UseVisualStyleBackColor = true;
-			this.bpSaveImage.Click += new System.EventHandler(this.bpSaveImage_Click);
+			this.bpSave.Location = new System.Drawing.Point(3, 241);
+			this.bpSave.Name = "bpSave";
+			this.bpSave.Size = new System.Drawing.Size(108, 23);
+			this.bpSave.TabIndex = 52;
+			this.bpSave.Text = "Enregistrement";
+			this.bpSave.UseVisualStyleBackColor = true;
+			this.bpSave.Click += new System.EventHandler(this.bpSave_Click);
 			// 
 			// lblInfoVersion
 			// 
@@ -621,7 +600,7 @@
 			this.withCode.AutoSize = true;
 			this.withCode.Checked = true;
 			this.withCode.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.withCode.Location = new System.Drawing.Point(3, 202);
+			this.withCode.Location = new System.Drawing.Point(3, 266);
 			this.withCode.Name = "withCode";
 			this.withCode.Size = new System.Drawing.Size(104, 43);
 			this.withCode.TabIndex = 52;
@@ -629,23 +608,35 @@
 			this.withCode.UseVisualStyleBackColor = true;
 			this.withCode.CheckedChanged += new System.EventHandler(this.withCode_CheckedChanged);
 			// 
+			// withPalette
+			// 
+			this.withPalette.AutoSize = true;
+			this.withPalette.Checked = true;
+			this.withPalette.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.withPalette.Location = new System.Drawing.Point(3, 315);
+			this.withPalette.Name = "withPalette";
+			this.withPalette.Size = new System.Drawing.Size(104, 30);
+			this.withPalette.TabIndex = 52;
+			this.withPalette.Text = "Inclure la palette\r\ndans l\'image";
+			this.withPalette.UseVisualStyleBackColor = true;
+			this.withPalette.CheckedChanged += new System.EventHandler(this.withPalette_CheckedChanged);
+			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(597, 431);
+			this.Controls.Add(this.withPalette);
 			this.Controls.Add(this.withCode);
 			this.Controls.Add(this.lblInfoVersion);
-			this.Controls.Add(this.bpSaveImage);
-			this.Controls.Add(this.bpSaveParam);
-			this.Controls.Add(this.bpLoadParam);
+			this.Controls.Add(this.bpSave);
 			this.Controls.Add(this.groupBox2);
 			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.autoRecalc);
 			this.Controls.Add(this.tramage);
 			this.Controls.Add(this.resoCPC);
 			this.Controls.Add(this.bpConvert);
-			this.Controls.Add(this.bpReadSrc);
+			this.Controls.Add(this.bpLoad);
 			this.Controls.Add(this.checkImageSource);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
@@ -674,7 +665,7 @@
 		#endregion
 
 		private System.Windows.Forms.CheckBox checkImageSource;
-		private System.Windows.Forms.Button bpReadSrc;
+		private System.Windows.Forms.Button bpLoad;
 		private System.Windows.Forms.Button bpConvert;
 		private System.Windows.Forms.NumericUpDown nbCols;
 		private System.Windows.Forms.NumericUpDown nbLignes;
@@ -709,9 +700,7 @@
 		private System.Windows.Forms.CheckBox nb;
 		private System.Windows.Forms.CheckBox sortPal;
 		private System.Windows.Forms.GroupBox groupBox2;
-		private System.Windows.Forms.Button bpLoadParam;
-		private System.Windows.Forms.Button bpSaveParam;
-		private System.Windows.Forms.Button bpSaveImage;
+		private System.Windows.Forms.Button bpSave;
 		private System.Windows.Forms.CheckBox chkOverscan;
 		private System.Windows.Forms.Label lblInfoVersion;
 		private System.Windows.Forms.RadioButton radioUserSize;
@@ -723,6 +712,7 @@
 		private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox withCode;
 		private System.Windows.Forms.Button bpOverscan;
+		private System.Windows.Forms.CheckBox withPalette;
 	}
 }
 

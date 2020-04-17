@@ -1,6 +1,4 @@
-﻿//#define TRY_CATCH
-
-using System;
+﻿using System;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
@@ -12,10 +10,8 @@ namespace ConvImgCpc {
 		private ImageSource imgSrc;
 		private ImageCpc imgCpc;
 		private Param param = new Param();
-		private string lastReadScreenPath = null;
-		private string lastSaveScreenPath = null;
-		private string lastReadParamPath = null;
-		private string lastSaveParamPath = null;
+		private string lastReadPath = null;
+		private string lastSavePath = null;
 
 		public Main() {
 			InitializeComponent();
@@ -43,16 +39,12 @@ namespace ConvImgCpc {
 
 		private void Convert(bool doConvert) {
 			if (imgSrc.GetImage != null && (autoRecalc.Checked || doConvert)) {
-#if  TRY_CATCH
-				try {
-#endif
-				bpSaveImage.Enabled = bpConvert.Enabled = false;
+				bpSave.Enabled = bpConvert.Enabled = false;
 				imgCpc.Reset();
 				param.sMode = radioKeepLarger.Checked ? Param.SizeMode.KeepLarger : radioKeepSmaller.Checked ? Param.SizeMode.KeepSmaller : radioFit.Checked ? Param.SizeMode.Fit : Param.SizeMode.UserSize;
 				param.methode = methode.SelectedItem.ToString();
 				param.pct = (int)pctTrame.Value;
 				param.lockState = imgCpc.lockState;
-				param.withCode = withCode.Checked;
 				Bitmap tmp = new Bitmap(imgCpc.TailleX, imgCpc.TailleY);
 				Graphics g = Graphics.FromImage(tmp);
 				double ratio = imgSrc.GetImage.Width * imgCpc.TailleY / (double)(imgSrc.GetImage.Height * imgCpc.TailleX);
@@ -93,13 +85,7 @@ namespace ConvImgCpc {
 						break;
 				}
 				imgCpc.SetNbColors(Conversion.Convert(tmp, imgCpc, param));
-				bpSaveImage.Enabled = bpConvert.Enabled = true;
-#if TRY_CATCH
-				}
-				catch (Exception ex) {
-					MessageBox.Show(ex.StackTrace, ex.Message);
-				}
-#endif
+				bpSave.Enabled = bpConvert.Enabled = true;
 			}
 			imgCpc.Render();
 		}
@@ -108,69 +94,44 @@ namespace ConvImgCpc {
 			Convert(true);
 		}
 
-		private void bpReadSrc_Click(object sender, EventArgs e) {
-			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.Filter = "Images (*.bmp, *.gif, *.png, *.jpg, *.scr)|*.bmp;*.gif;*.png;*.jpg;*.scr|Tous fichiers|*.*";
-			dlg.InitialDirectory = lastReadScreenPath;
-			DialogResult result = dlg.ShowDialog();
-			if (result == DialogResult.OK) {
-#if TRY_CATCH
-				try {
-#endif
-				lastReadScreenPath = Path.GetDirectoryName(dlg.FileName);
-				FileStream file = new FileStream(dlg.FileName, FileMode.Open, FileAccess.Read);
-				byte[] tabBytes = new byte[file.Length];
-				file.Read(tabBytes, 0, tabBytes.Length);
-				file.Close();
-				bool bitmapOk = false;
-				try {
-					if (CpcSystem.CheckAmsdos(tabBytes)) {
-						BitmapCpc bmp = new BitmapCpc(tabBytes);
-						imgSrc.SetBitmap(bmp.CreateImageFromCpc(tabBytes), checkImageSource.Checked);
-						nbCols.Value = param.nbCols = bmp.nbCol;
-						imgCpc.TailleX = param.nbCols << 3;
-						nbLignes.Value = param.nbLignes = bmp.nbLig;
-						imgCpc.TailleY = param.nbLignes << 1;
-						imgCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = bmp.modeCPC;
-					}
-					else {
-						MemoryStream ms = new MemoryStream(tabBytes);
-						imgSrc.SetBitmap(new Bitmap(ms), checkImageSource.Checked);
-						ms.Dispose();
-					}
-					bitmapOk = true;
+		private void ReadScreen(string fileName) {
+			FileStream fileScr = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+			byte[] tabBytes = new byte[fileScr.Length];
+			fileScr.Read(tabBytes, 0, tabBytes.Length);
+			fileScr.Close();
+			bool bitmapOk = false;
+			try {
+				if (CpcSystem.CheckAmsdos(tabBytes)) {
+					BitmapCpc bmp = new BitmapCpc(tabBytes);
+					imgSrc.SetBitmap(bmp.CreateImageFromCpc(tabBytes), checkImageSource.Checked);
+					nbCols.Value = param.nbCols = bmp.nbCol;
+					imgCpc.TailleX = param.nbCols << 3;
+					nbLignes.Value = param.nbLignes = bmp.nbLig;
+					imgCpc.TailleY = param.nbLignes << 1;
+					imgCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = bmp.modeCPC;
 				}
-				catch (Exception ex) {
-					MessageBox.Show("Impossible de lire l'image (format inconnu ???)");
+				else {
+					MemoryStream ms = new MemoryStream(tabBytes);
+					imgSrc.SetBitmap(new Bitmap(ms), checkImageSource.Checked);
+					ms.Dispose();
 				}
-
-				if (bitmapOk) {
-					Text = "ConvImgCPC - " + Path.GetFileName(dlg.FileName);
-					tbxSizeX.Text = imgSrc.GetImage.Width.ToString();
-					tbxSizeY.Text = imgSrc.GetImage.Height.ToString();
-					Convert(false);
-				}
-#if TRY_CATCH
-				}
-				catch (Exception ex) {
-					MessageBox.Show(ex.StackTrace, ex.Message);
-				}
-#endif
+				bitmapOk = true;
+			}
+			catch (Exception ex) {
+				MessageBox.Show("Impossible de lire l'image (format inconnu ???)");
+			}
+			if (bitmapOk) {
+				Text = "ConvImgCPC - " + Path.GetFileName(fileName);
+				tbxSizeX.Text = imgSrc.GetImage.Width.ToString();
+				tbxSizeY.Text = imgSrc.GetImage.Height.ToString();
+				Convert(false);
 			}
 		}
 
-		private void bpLoadParam_Click(object sender, EventArgs e) {
-			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.InitialDirectory = lastReadParamPath;
-			dlg.Filter = "Paramètres ConvImagesCpc (*.xml)|*.xml";
-			DialogResult result = dlg.ShowDialog();
-			if (result == DialogResult.OK) {
-				lastReadParamPath = Path.GetDirectoryName(dlg.FileName);
-				FileStream file = File.Open(dlg.FileName, FileMode.Open);
-#if TRY_CATCH
-				try {
-#endif
-				param = (Param)new XmlSerializer(typeof(Param)).Deserialize(file);
+		private void ReadParam(string fileName) {
+			FileStream fileParam = File.Open(fileName, FileMode.Open);
+			try {
+				param = (Param)new XmlSerializer(typeof(Param)).Deserialize(fileParam);
 				// Initialisation paramètres...
 				methode.SelectedItem = param.methode;
 				pctTrame.Value = param.pct;
@@ -188,49 +149,60 @@ namespace ConvImgCpc {
 				radioKeepSmaller.Checked = param.sMode == Param.SizeMode.KeepSmaller;
 				nbCols.Value = param.nbCols;
 				nbLignes.Value = param.nbLignes;
-				mode.SelectedItem = param.modeVirtuel;
-#if TRY_CATCH
-				}
-				catch (Exception ex) {
-					MessageBox.Show(ex.StackTrace, ex.Message);
-				}
-#endif
-				file.Close();
+				mode.SelectedIndex = param.modeVirtuel;
+				withCode.Checked = param.withCode;
+				withPalette.Checked = param.withPalette;
 			}
+			catch (Exception ex) {
+				MessageBox.Show(ex.StackTrace, ex.Message);
+			}
+			fileParam.Close();
 		}
 
-		private void bpSaveParam_Click(object sender, EventArgs e) {
-			SaveFileDialog dlg = new SaveFileDialog();
-			dlg.InitialDirectory = lastSaveParamPath;
-			dlg.Filter = "Paramètres ConvImagesCpc (*.xml)|*.xml";
-			DialogResult result = dlg.ShowDialog();
-			if (result == DialogResult.OK) {
-				lastSaveParamPath = Path.GetDirectoryName(dlg.FileName);
-				FileStream file = File.Open(dlg.FileName, FileMode.Create);
-#if TRY_CATCH
-				try {
-#endif
-				new XmlSerializer(typeof(Param)).Serialize(file, param);
-#if TRY_CATCH
-				}
-				catch (Exception ex) {
-					MessageBox.Show(ex.StackTrace, ex.Message);
-				}
-#endif
-				file.Close();
-			}
-		}
-
-		private void bpSaveImage_Click(object sender, EventArgs e) {
-#if TRY_CATCH
+		private void SaveParam(string fileName) {
+			FileStream file = File.Open(fileName, FileMode.Create);
 			try {
-#endif
-			SaveFileDialog dlg = new SaveFileDialog();
-			dlg.InitialDirectory = lastSaveScreenPath;
-			dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.bmp)|*.bmp|Sprite assembleur (.asm)|*.asm|Compacté (.cmp)|*.cmp";
+				param.withCode = withCode.Checked;
+				param.withPalette = withPalette.Checked;
+				new XmlSerializer(typeof(Param)).Serialize(file, param);
+			}
+			catch (Exception ex) {
+				MessageBox.Show(ex.StackTrace, ex.Message);
+			}
+			file.Close();
+		}
+
+		private void bpLoad_Click(object sender, EventArgs e) {
+			OpenFileDialog dlg = new OpenFileDialog();
+			dlg.Filter = "Images (*.bmp, *.gif, *.png, *.jpg, *.scr)|*.bmp;*.gif;*.png;*.jpg;*.scr|Palette (*.pal)|*.pal|Paramètres ConvImagesCpc (*.xml)|*.xml|Tous fichiers|*.*";
+			dlg.InitialDirectory = lastReadPath;
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
-				lastSaveScreenPath = Path.GetDirectoryName(dlg.FileName);
+				lastReadPath = Path.GetDirectoryName(dlg.FileName);
+				switch (dlg.FilterIndex) {
+					case 1:
+					case 4:
+						ReadScreen(dlg.FileName);
+						break;
+
+					case 2:
+						// Palette
+						break;
+
+					case 3:
+						ReadParam(dlg.FileName);
+						break;
+				}
+			}
+		}
+
+		private void bpSave_Click(object sender, EventArgs e) {
+			SaveFileDialog dlg = new SaveFileDialog();
+			dlg.InitialDirectory = lastSavePath;
+			dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.bmp)|*.bmp|Sprite assembleur (.asm)|*.asm|Compacté (.cmp)|*.cmp|Palette (.pal)|*.pal|Paramètres (.xml)|*.xml";
+			DialogResult result = dlg.ShowDialog();
+			if (result == DialogResult.OK) {
+				lastSavePath = Path.GetDirectoryName(dlg.FileName);
 				switch (dlg.FilterIndex) {
 					case 1:
 						imgCpc.SauveScr(dlg.FileName, param);
@@ -247,14 +219,16 @@ namespace ConvImgCpc {
 					case 4:
 						imgCpc.SauveCmp(dlg.FileName, param);
 						break;
+
+					case 5:
+						// palette
+						break;
+
+					case 6:
+						SaveParam(dlg.FileName);
+						break;
 				}
 			}
-#if TRY_CATCH
-			}
-			catch (Exception ex) {
-				MessageBox.Show(ex.StackTrace, ex.Message);
-			}
-#endif
 		}
 
 		private void nbCols_ValueChanged(object sender, EventArgs e) {
@@ -284,6 +258,7 @@ namespace ConvImgCpc {
 
 		private void InterfaceChange(object sender, EventArgs e) {
 			lblPct.Visible = pctTrame.Visible = methode.SelectedItem.ToString() != "Aucun";
+			param.methode = methode.SelectedItem.ToString();
 			Convert(false);
 		}
 
@@ -358,5 +333,8 @@ namespace ConvImgCpc {
 			nbCols.Value = 96;
 		}
 
+		private void withPalette_CheckedChanged(object sender, EventArgs e) {
+			param.withPalette = withPalette.Checked;
+		}
 	}
 }
