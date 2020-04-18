@@ -63,9 +63,9 @@ namespace ConvImgCpc {
 
 		public void SetPixel(int pixelX, int pixelY, RvbColor color) {
 			int adr = ((pixelY * Width) + pixelX) << 2;
-			Pixels[adr++] = color.red;
-			Pixels[adr++] = color.green;
-			Pixels[adr++] = color.blue;
+			Pixels[adr++] = color.r;
+			Pixels[adr++] = color.v;
+			Pixels[adr++] = color.b;
 			Pixels[adr] = 0xFF;
 		}
 
@@ -75,21 +75,21 @@ namespace ConvImgCpc {
 	}
 
 	public class RvbColor {
-		public byte red, green, blue;
+		public byte r, v, b;
 
 		public RvbColor(byte compR, byte compV, byte compB) {
-			red = compR;
-			green = compV;
-			blue = compB;
+			r = compR;
+			v = compV;
+			b = compB;
 		}
 
 		public RvbColor(int value) {
-			red = (byte)value;
-			green = (byte)(value >> 8);
-			blue = (byte)(value >> 16);
+			r = (byte)value;
+			v = (byte)(value >> 8);
+			b = (byte)(value >> 16);
 		}
 
-		public int GetColor { get { return red + (green << 8) + (blue << 16); } }
-		public int GetColorArgb { get { return red + (green << 8) + (blue << 16) + (255 << 24); } }
+		public int GetColor { get { return r + (v << 8) + (b << 16); } }
+		public int GetColorArgb { get { return r + (v << 8) + (b << 16) + (255 << 24); } }
 	}
 }

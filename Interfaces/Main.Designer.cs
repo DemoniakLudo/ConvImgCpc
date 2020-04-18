@@ -38,6 +38,8 @@
 			this.bpOverscan = new System.Windows.Forms.Button();
 			this.modePlus = new System.Windows.Forms.CheckBox();
 			this.tramage = new System.Windows.Forms.GroupBox();
+			this.chkPalCpc = new System.Windows.Forms.CheckBox();
+			this.chkMotif = new System.Windows.Forms.CheckBox();
 			this.lblPct = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
 			this.lumi = new System.Windows.Forms.TrackBar();
@@ -254,6 +256,8 @@
 			// 
 			// tramage
 			// 
+			this.tramage.Controls.Add(this.chkPalCpc);
+			this.tramage.Controls.Add(this.chkMotif);
 			this.tramage.Controls.Add(this.lblPct);
 			this.tramage.Controls.Add(this.methode);
 			this.tramage.Controls.Add(this.pctTrame);
@@ -263,7 +267,29 @@
 			this.tramage.Size = new System.Drawing.Size(172, 172);
 			this.tramage.TabIndex = 11;
 			this.tramage.TabStop = false;
-			this.tramage.Text = "Tramage";
+			this.tramage.Text = "Tramage et rendu";
+			// 
+			// chkPalCpc
+			// 
+			this.chkPalCpc.AutoSize = true;
+			this.chkPalCpc.Location = new System.Drawing.Point(48, 75);
+			this.chkPalCpc.Name = "chkPalCpc";
+			this.chkPalCpc.Size = new System.Drawing.Size(110, 30);
+			this.chkPalCpc.TabIndex = 14;
+			this.chkPalCpc.Text = "Réduction palette\nimage source";
+			this.chkPalCpc.UseVisualStyleBackColor = true;
+			this.chkPalCpc.CheckedChanged += new System.EventHandler(this.InterfaceChange);
+			// 
+			// chkMotif
+			// 
+			this.chkMotif.AutoSize = true;
+			this.chkMotif.Location = new System.Drawing.Point(48, 115);
+			this.chkMotif.Name = "chkMotif";
+			this.chkMotif.Size = new System.Drawing.Size(96, 17);
+			this.chkMotif.TabIndex = 13;
+			this.chkMotif.Text = "Trames \"motif\"";
+			this.chkMotif.UseVisualStyleBackColor = true;
+			this.chkMotif.CheckedChanged += new System.EventHandler(this.InterfaceChange);
 			// 
 			// lblPct
 			// 
@@ -713,6 +739,8 @@
         private System.Windows.Forms.CheckBox withCode;
 		private System.Windows.Forms.Button bpOverscan;
 		private System.Windows.Forms.CheckBox withPalette;
+		private System.Windows.Forms.CheckBox chkMotif;
+		private System.Windows.Forms.CheckBox chkPalCpc;
 	}
 }
 

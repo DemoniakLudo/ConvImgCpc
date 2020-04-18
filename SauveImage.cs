@@ -3,6 +3,7 @@ using System.IO;
 
 namespace ConvImgCpc {
 	static public class SauveImage {
+		static string CpcVGA = "TDU\\X]LEMVFW^@_NGORBSZY[JCK";
 		/*
 		Conversion palette OCP+ :
 
@@ -430,6 +431,75 @@ namespace ConvImgCpc {
 			fp.Write(compact ? bufPack : bitmapCpc.bmpCpc, 0, lg);
 			fp.Close();
 			return (lg);
+		}
+
+		static public void SauvePalette(string NomFic, ImageCpc bitmapCpc, Param param) {
+			int i;
+			byte[] pal = new byte[239];
+
+			pal[0] = (byte)param.modeVirtuel;
+			int indexPal = 3;
+			if (param.cpcPlus) {
+				for (i = 0; i < 16; i++) {
+					pal[indexPal++] = (byte)CpcVGA[26 - ((bitmapCpc.Palette[i] >> 4) & 0x0F)];
+					pal[indexPal++] = (byte)CpcVGA[26 - (bitmapCpc.Palette[i] & 0x0F)];
+					pal[indexPal++] = (byte)CpcVGA[26 - ((bitmapCpc.Palette[i] >> 8) & 0x0F)];
+				}
+				pal[195] = pal[3];
+				pal[196] = pal[4];
+				pal[197] = pal[5];
+			}
+			else {
+				for (i = 0; i < 16; i++)
+					for (int j = 0; j < 12; j++)
+						pal[indexPal++] = (byte)CpcVGA[bitmapCpc.Palette[i]];
+
+				for (i = 0; i < 12; i++)
+					pal[indexPal++] = pal[i + 3];
+			}
+			CpcAmsdos entete = CpcSystem.CreeEntete(NomFic, (short)-30711, (short)pal.Length, (short)-30711);
+			BinaryWriter fp = new BinaryWriter(new FileStream(NomFic, FileMode.Create));
+			fp.Write(CpcSystem.AmsdosToByte(entete));
+			fp.Write(pal, 0, pal.Length);
+			fp.Close();
+		}
+
+		static public bool LirePalette(string NomFic, ImageCpc bitmapCpc, Param param) {
+			byte[] entete = new byte[0x80];
+			byte[] pal = new byte[239];
+
+			BinaryReader fp = new BinaryReader(new FileStream(NomFic, FileMode.Open));
+			if (fp != null) {
+				fp.Read(entete, 0, entete.Length);
+				fp.Read(pal, 0, pal.Length);
+				fp.Close();
+				if (CpcSystem.CheckAmsdos(entete) && pal[0] < 3) {
+					if (param.cpcPlus) {
+						for (int i = 0; i < 16; i++) {
+							int r = 0, v = 0, b = 0;
+							for (int k = 26; k-- > 0; ) {
+								if (pal[3 + i * 12] == (byte)CpcVGA[k])
+									r = (26 - k) << 4;
+
+								if (pal[4 + i * 12] == (byte)CpcVGA[k])
+									b = 26 - k;
+
+								if (pal[5 + i * 12] == (byte)CpcVGA[k])
+									v = (26 - k) << 8;
+							}
+							bitmapCpc.Palette[i] = r + v + b;
+						}
+					}
+					else {
+						for (int i = 0; i < 16; i++)
+							for (int j = 0; j < 27; j++)
+								if (pal[3 + i * 12] == (byte)CpcVGA[j])
+									bitmapCpc.Palette[i] = j;
+					}
+					return (true);
+				}
+			}
+			return (false);
 		}
 	}
 }

@@ -207,14 +207,14 @@ namespace ConvImgCpc {
 							RvbColor col = bmpLock.GetPixelColor(x + p, y);
 							if (param.cpcPlus) {
 								for (pen = 0; pen < 16; pen++) {
-									if ((col.green >> 4) == (Palette[pen] >> 8) && (col.red >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.blue >> 4) == (Palette[pen] & 0x0F))
+									if ((col.v >> 4) == (Palette[pen] >> 8) && (col.r >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.b >> 4) == (Palette[pen] & 0x0F))
 										break;
 								}
 							}
 							else {
 								for (pen = 0; pen < 16; pen++) {
 									RvbColor fixedCol = RgbCPC[Palette[pen]];
-									if (fixedCol.red == col.red && fixedCol.blue == col.blue && fixedCol.green == col.green)
+									if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
 										break;
 								}
 							}
@@ -254,14 +254,14 @@ namespace ConvImgCpc {
 								RvbColor col = bmpLock.GetPixelColor(x + p, y);
 								if (param.cpcPlus) {
 									for (pen = 0; pen < 16; pen++) {
-										if ((col.green >> 4) == (Palette[pen] >> 8) && (col.red >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.blue >> 4) == (Palette[pen] & 0x0F))
+										if ((col.v >> 4) == (Palette[pen] >> 8) && (col.r >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.b >> 4) == (Palette[pen] & 0x0F))
 											break;
 									}
 								}
 								else {
 									for (pen = 0; pen < 16; pen++) {
 										RvbColor fixedCol = RgbCPC[Palette[pen]];
-										if (fixedCol.red == col.red && fixedCol.blue == col.blue && fixedCol.green == col.green)
+										if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
 											break;
 									}
 								}
@@ -278,6 +278,15 @@ namespace ConvImgCpc {
 						sw.WriteLine(line.Substring(0, line.Length - 1));
 				}
 			}
+		}
+
+		public void LirePalette(string fileName, Param param) {
+			SauveImage.LirePalette(fileName, this, param);
+			UpdatePalette();
+		}
+
+		public void SauvePalette(string fileName, Param param) {
+			SauveImage.SauvePalette(fileName, this, param);
 		}
 
 		private RvbColor GetPaletteColor(int col) {
@@ -310,7 +319,7 @@ namespace ConvImgCpc {
 			}
 			else {
 				RvbColor col = GetPaletteColor(numCol);
-				crayonColor.BackColor = Color.FromArgb(col.blue, col.green, col.red);
+				crayonColor.BackColor = Color.FromArgb(col.b, col.v, col.r);
 			}
 		}
 
@@ -360,7 +369,7 @@ namespace ConvImgCpc {
 				int xReel = (offsetX + (e.X / zoom)) & -Tx;
 				if (xReel >= 0 && yReel >= 0 && xReel < TailleX && yReel < TailleY) {
 					RvbColor col = GetPaletteColor(numCol % maskMode[mode]);
-					crayonColor.BackColor = Color.FromArgb(col.blue, col.green, col.red);
+					crayonColor.BackColor = Color.FromArgb(col.b, col.v, col.r);
 					crayonColor.Refresh();
 					if (e.Button == MouseButtons.Left) {
 						LockBits();

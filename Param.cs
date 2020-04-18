@@ -19,5 +19,7 @@
 		public int modeVirtuel;
 		public bool withCode;
 		public bool withPalette;
+		public bool motif;
+		public bool setPalCpc;
 	}
 }

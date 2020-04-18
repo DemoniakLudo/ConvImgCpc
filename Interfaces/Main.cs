@@ -28,6 +28,8 @@ namespace ConvImgCpc {
 			mode.SelectedIndex = imgCpc.modeVirtuel;
 			methode.SelectedIndex = 0;
 			param.pctContrast = param.pctLumi = param.pctSat = 100;
+			param.withCode = withCode.Checked;
+			param.withPalette = withPalette.Checked;
 			imgCpc.Visible = true;
 			lblInfoVersion.Text = "Version " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
 			radioUserSize_CheckedChanged(null, null);
@@ -45,6 +47,8 @@ namespace ConvImgCpc {
 				param.methode = methode.SelectedItem.ToString();
 				param.pct = (int)pctTrame.Value;
 				param.lockState = imgCpc.lockState;
+				param.motif = chkMotif.Checked;
+				param.setPalCpc = chkPalCpc.Checked;
 				Bitmap tmp = new Bitmap(imgCpc.TailleX, imgCpc.TailleY);
 				Graphics g = Graphics.FromImage(tmp);
 				double ratio = imgSrc.GetImage.Width * imgCpc.TailleY / (double)(imgSrc.GetImage.Height * imgCpc.TailleX);
@@ -100,26 +104,26 @@ namespace ConvImgCpc {
 			fileScr.Read(tabBytes, 0, tabBytes.Length);
 			fileScr.Close();
 			bool bitmapOk = false;
-			try {
-				if (CpcSystem.CheckAmsdos(tabBytes)) {
-					BitmapCpc bmp = new BitmapCpc(tabBytes);
-					imgSrc.SetBitmap(bmp.CreateImageFromCpc(tabBytes), checkImageSource.Checked);
-					nbCols.Value = param.nbCols = bmp.nbCol;
-					imgCpc.TailleX = param.nbCols << 3;
-					nbLignes.Value = param.nbLignes = bmp.nbLig;
-					imgCpc.TailleY = param.nbLignes << 1;
-					imgCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = bmp.modeCPC;
-				}
-				else {
-					MemoryStream ms = new MemoryStream(tabBytes);
-					imgSrc.SetBitmap(new Bitmap(ms), checkImageSource.Checked);
-					ms.Dispose();
-				}
-				bitmapOk = true;
+			//			try {
+			if (CpcSystem.CheckAmsdos(tabBytes)) {
+				BitmapCpc bmp = new BitmapCpc(tabBytes);
+				imgSrc.SetBitmap(bmp.CreateImageFromCpc(tabBytes), checkImageSource.Checked);
+				nbCols.Value = param.nbCols = bmp.nbCol;
+				imgCpc.TailleX = param.nbCols << 3;
+				nbLignes.Value = param.nbLignes = bmp.nbLig;
+				imgCpc.TailleY = param.nbLignes << 1;
+				imgCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = bmp.modeCPC;
 			}
-			catch (Exception ex) {
-				MessageBox.Show("Impossible de lire l'image (format inconnu ???)");
+			else {
+				MemoryStream ms = new MemoryStream(tabBytes);
+				imgSrc.SetBitmap(new Bitmap(ms), checkImageSource.Checked);
+				ms.Dispose();
 			}
+			bitmapOk = true;
+			//}
+			//catch (Exception ex) {
+			//	MessageBox.Show("Impossible de lire l'image (format inconnu ???)");
+			//}
 			if (bitmapOk) {
 				Text = "ConvImgCPC - " + Path.GetFileName(fileName);
 				tbxSizeX.Text = imgSrc.GetImage.Width.ToString();
@@ -152,6 +156,8 @@ namespace ConvImgCpc {
 				mode.SelectedIndex = param.modeVirtuel;
 				withCode.Checked = param.withCode;
 				withPalette.Checked = param.withPalette;
+				chkMotif.Checked = param.motif;
+				chkPalCpc.Checked = param.setPalCpc;
 			}
 			catch (Exception ex) {
 				MessageBox.Show(ex.StackTrace, ex.Message);
@@ -186,7 +192,7 @@ namespace ConvImgCpc {
 						break;
 
 					case 2:
-						// Palette
+						imgCpc.LirePalette(dlg.FileName, param);
 						break;
 
 					case 3:
@@ -221,7 +227,7 @@ namespace ConvImgCpc {
 						break;
 
 					case 5:
-						// palette
+						imgCpc.SauvePalette(dlg.FileName, param);
 						break;
 
 					case 6:
