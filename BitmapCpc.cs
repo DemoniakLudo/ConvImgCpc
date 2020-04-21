@@ -11,7 +11,7 @@ namespace ConvImgCpc {
 
 		public int nbCol = 80, nbLig = 200, modeCPC = 1;
 		bool cpcPlus = false;
-		int[] Palette = new int[17];
+		int[] Palette = { 1, 24, 20, 6, 26, 0, 2, 7, 10, 12, 14, 16, 18, 22, 1, 14, 1 };
 
 		public BitmapCpc(byte[] source) {
 			Array.Copy(source, 0x80, bmpCpc, 0, source.Length - 0x80);
@@ -173,13 +173,21 @@ namespace ConvImgCpc {
 					DepactPK();
 				else {
 					if (!InitDatas()) {
-						int l = PackDepack.Depack(bmpCpc, 0, bufTmp);
-						Array.Copy(bufTmp, bmpCpc, l);
-						if (!InitDatas()) {
-							cpcPlus = false;
-							nbCol = maxColsCpc;
-							nbLig = maxLignesCpc;
-							SetPalette(bmpCpc, 0x600, cpcPlus);
+						if (source.Length < 32000) {
+							int l = PackDepack.Depack(bmpCpc, 0, bufTmp);
+							Array.Copy(bufTmp, bmpCpc, l);
+							if (!InitDatas()) {
+								cpcPlus = false;
+								nbCol = maxColsCpc;
+								nbLig = maxLignesCpc;
+								SetPalette(bmpCpc, 0x600, cpcPlus);
+							}
+						}
+						else {
+							if (source.Length > 0x4000) {
+								nbCol = maxColsCpc;
+								nbLig = maxLignesCpc;
+							}
 						}
 					}
 				}
@@ -205,7 +213,7 @@ namespace ConvImgCpc {
 							loc.SetHorLine(xBitmap + 2, y, 2, GetPalCPC(Palette[((octet >> 6) & 1) + ((octet >> 1) & 2)]));
 							loc.SetHorLine(xBitmap + 4, y, 2, GetPalCPC(Palette[((octet >> 5) & 1) + ((octet >> 0) & 2)]));
 							loc.SetHorLine(xBitmap + 6, y, 2, GetPalCPC(Palette[((octet >> 4) & 1) + ((octet << 1) & 2)]));
-							xBitmap += 8;						break;
+							xBitmap += 8; break;
 
 						case 2:
 							for (int i = 8; i-- > 0; )
