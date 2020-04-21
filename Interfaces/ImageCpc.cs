@@ -7,6 +7,7 @@ namespace ConvImgCpc {
 	public partial class ImageCpc : Form {
 		public byte[] bmpCpc = new byte[0x10000];
 		private LockBitmap bmpLock, tmpLock;
+		private Bitmap bitmapZoom;
 		private Label[] colors = new Label[16];
 		private CheckBox[] lockColors = new CheckBox[16];
 		public int[] lockState = new int[16];
@@ -140,6 +141,7 @@ namespace ConvImgCpc {
 				bmpLock.SetPixel(xPos + i, yPos + 1, realColor);
 			}
 		}
+
 		public void LockBits() {
 			bmpLock.LockBits();
 		}
@@ -148,23 +150,21 @@ namespace ConvImgCpc {
 			bmpLock.UnlockBits();
 		}
 
-		public void Render() {
+		public void Render(bool forceDrawZoom = false) {
 			UpdatePalette();
 			if (zoom != 1) {
-				Bitmap MyBitMap = new Bitmap(imgOrigine.Width, imgOrigine.Height);
-				tmpLock = new LockBitmap(MyBitMap);
-				tmpLock.LockBits();
-				bmpLock.LockBits();
-				for (int y = 0; y < imgOrigine.Height; y++) {
-					int ySrc = offsetY + (y / zoom);
-					for (int x = 0; x < imgOrigine.Width; x++) {
-						int xSrc = offsetX + (x / zoom);
-						tmpLock.SetPixel(x, y, bmpLock.GetPixel(xSrc, ySrc));
+				if (forceDrawZoom) {
+					tmpLock.LockBits();
+					for (int y = 0; y < imgOrigine.Height; y++) {
+						int ySrc = offsetY + (y / zoom);
+						for (int x = 0; x < imgOrigine.Width; x++) {
+							int xSrc = offsetX + (x / zoom);
+							tmpLock.SetPixel(x, y, bmpLock.GetPixel(xSrc, ySrc));
+						}
 					}
+					tmpLock.UnlockBits();
 				}
-				bmpLock.UnlockBits();
-				tmpLock.UnlockBits();
-				pictureBox.Image = MyBitMap;
+				pictureBox.Image = bitmapZoom;
 			}
 			else {
 				pictureBox.Image = imgOrigine;
@@ -365,6 +365,55 @@ namespace ConvImgCpc {
 			}
 		}
 
+		private void DrawPen(MouseEventArgs e, int yReel) {
+			if (e.Button == MouseButtons.Left) {
+				LockBits();
+				if (tmpLock != null)
+					tmpLock.LockBits();
+
+				for (int y = 0; y < penWidth * 2; y += 2) {
+					int mode = (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (yReel & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
+					int Tx = (4 >> mode);
+					int realColor = GetPalCPC(Palette[numCol % maskMode[mode]]);
+					int yStart = zoom * (yReel - offsetY);
+					for (int x = 0; x < penWidth * Tx; x += Tx) {
+						int xReel = (x + offsetX + (e.X / zoom)) & -Tx;
+						if (xReel >= 0 && yReel >= 0 && xReel < TailleX && yReel < TailleY) {
+							undo.MemoUndoRedo(xReel, yReel, bmpLock.GetPixel(xReel, yReel), realColor, doDraw);
+							for (int i = 0; i < Tx; i++) {
+								bmpLock.SetPixel(xReel + i, yReel, realColor);
+								bmpLock.SetPixel(xReel + i, yReel + 1, realColor);
+							}
+							if (zoom != 1) {
+								for (int yz = yStart; yz < yStart + (zoom << 1); yz += 2) {
+									int xStart = zoom * (xReel - offsetX);
+									for (int xz = xStart; xz < xStart + (zoom * Tx); xz++) {
+										tmpLock.SetPixel(xz, yz, realColor);
+										tmpLock.SetPixel(xz, 1 + yz, realColor);
+									}
+								}
+							}
+						}
+					}
+					yReel += 2;
+				}
+				doDraw = true;
+				UnlockBits();
+				if (tmpLock != null)
+					tmpLock.UnlockBits();
+
+				Render();
+			}
+			else {
+				bpUndo.Enabled = undo.CanUndo;
+				bpRedo.Enabled = undo.CanRedo;
+				if (doDraw) {
+					doDraw = false;
+					undo.EndUndoRedo();
+				}
+			}
+		}
+
 		private void TrtMouseMove(MouseEventArgs e) {
 			if (modeEdition.Checked) {
 				int yReel = (offsetY + (e.Y / zoom)) & 0xFFE;
@@ -375,42 +424,7 @@ namespace ConvImgCpc {
 					RvbColor col = GetPaletteColor(numCol % maskMode[mode]);
 					crayonColor.BackColor = Color.FromArgb(col.b, col.v, col.r);
 					crayonColor.Refresh();
-					if (e.Button == MouseButtons.Left) {
-						LockBits();
-						if (tmpLock != null)
-							tmpLock.LockBits();
-
-						for (int y = 0; y < penWidth * 2; y += 2) {
-							mode = (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (yReel & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
-							Tx = (4 >> mode);
-							int realColor = GetPalCPC(Palette[numCol % maskMode[mode]]);
-							for (int x = 0; x < penWidth * Tx; x += Tx) {
-								xReel = (x + offsetX + (e.X / zoom)) & -Tx;
-								if (xReel >= 0 && yReel >= 0 && xReel < TailleX && yReel < TailleY) {
-									undo.MemoUndoRedo(xReel, yReel, bmpLock.GetPixel(xReel, yReel), realColor, doDraw);
-									for (int i = 0; i < Tx; i++) {
-										bmpLock.SetPixel(xReel + i, yReel, realColor);
-										bmpLock.SetPixel(xReel + i, yReel + 1, realColor);
-									}
-								}
-							}
-							yReel += 2;
-						}
-						if (tmpLock != null)
-							tmpLock.UnlockBits();
-
-						UnlockBits();
-						Render();
-						doDraw = true;
-					}
-					else {
-						bpUndo.Enabled = undo.CanUndo;
-						bpRedo.Enabled = undo.CanRedo;
-						if (doDraw) {
-							doDraw = false;
-							undo.EndUndoRedo();
-						}
-					}
+					DrawPen(e, yReel);
 				}
 			}
 		}
@@ -425,12 +439,12 @@ namespace ConvImgCpc {
 
 		private void vScrollBar_Scroll(object sender, ScrollEventArgs e) {
 			offsetY = (vScrollBar.Value >> 1) << 1;
-			Render();
+			Render(true);
 		}
 
 		private void hScrollBar_Scroll(object sender, ScrollEventArgs e) {
 			offsetX = (hScrollBar.Value >> 3) << 3;
-			Render();
+			Render(true);
 		}
 
 		private void comboZoom_SelectedIndexChanged(object sender, System.EventArgs e) {
@@ -440,7 +454,11 @@ namespace ConvImgCpc {
 			vScrollBar.Maximum = vScrollBar.LargeChange + TailleY - (TailleY / zoom);
 			hScrollBar.Value = offsetX = (TailleX - TailleX / zoom) / 2;
 			vScrollBar.Value = offsetY = (TailleY - TailleY / zoom) / 2;
-			Render();
+			if (zoom != 1) {
+				bitmapZoom = new Bitmap(imgOrigine.Width, imgOrigine.Height);
+				tmpLock = new LockBitmap(bitmapZoom);
+			}
+			Render(true);
 		}
 
 		private void tailleCrayon_SelectedIndexChanged(object sender, System.EventArgs e) {
@@ -459,9 +477,6 @@ namespace ConvImgCpc {
 
 		private void bpUndo_Click(object sender, System.EventArgs e) {
 			LockBits();
-			if (tmpLock != null)
-				tmpLock.LockBits();
-
 			List<MemoPoint> lst = undo.Undo();
 			lst.Sort((x, y) => y.numPt.CompareTo(x.numPt));
 			foreach (MemoPoint p in lst) {
@@ -472,20 +487,14 @@ namespace ConvImgCpc {
 					bmpLock.SetPixel(p.posx + i, p.posy + 1, p.oldColor);
 				}
 			}
-			if (tmpLock != null)
-				tmpLock.UnlockBits();
-
 			UnlockBits();
-			Render();
+			Render(true);
 			bpUndo.Enabled = undo.CanUndo;
 			bpRedo.Enabled = undo.CanRedo;
 		}
 
 		private void bpRedo_Click(object sender, System.EventArgs e) {
 			LockBits();
-			if (tmpLock != null)
-				tmpLock.LockBits();
-
 			List<MemoPoint> lst = undo.Redo();
 			foreach (MemoPoint p in lst) {
 				int mode = (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (p.posy & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
@@ -495,11 +504,8 @@ namespace ConvImgCpc {
 					bmpLock.SetPixel(p.posx + i, p.posy + 1, p.newColor);
 				}
 			}
-			if (tmpLock != null)
-				tmpLock.UnlockBits();
-
 			UnlockBits();
-			Render();
+			Render(true);
 			bpUndo.Enabled = undo.CanUndo;
 			bpRedo.Enabled = undo.CanRedo;
 		}
