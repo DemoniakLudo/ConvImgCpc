@@ -85,7 +85,7 @@ namespace ConvImgCpc {
 						int.TryParse(tbxSizeY.Text, out ty);
 						int.TryParse(tbxPosX.Text, out posx);
 						int.TryParse(tbxPosY.Text, out posy);
-						g.DrawImage(imgSrc.GetImage, posx, posy, tx, ty);
+						g.DrawImage(imgSrc.GetImage, -(posx << 1), -(posy << 1), tx << 1, ty << 1);
 						break;
 				}
 				imgCpc.SetNbColors(Conversion.Convert(tmp, imgCpc, param));
