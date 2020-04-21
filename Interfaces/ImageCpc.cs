@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
@@ -15,7 +16,8 @@ namespace ConvImgCpc {
 		private int penWidth = 1;
 		private Image imgOrigine;
 		private Rendu fenetreRendu;
-
+		private UndoRedo undo = new UndoRedo();
+		private bool doDraw = false;
 		public delegate void ConvertDelegate(bool doConvertbook);
 
 		private ConvertDelegate Convert;
@@ -281,8 +283,8 @@ namespace ConvImgCpc {
 		}
 
 		public void LirePalette(string fileName, Param param) {
-			SauveImage.LirePalette(fileName, this, param);
-			UpdatePalette();
+			if (SauveImage.LirePalette(fileName, this, param))
+				UpdatePalette();
 		}
 
 		public void SauvePalette(string fileName, Param param) {
@@ -340,7 +342,9 @@ namespace ConvImgCpc {
 
 		private void modeEdition_CheckedChanged(object sender, System.EventArgs e) {
 			if (modeEdition.Checked) {
+				undo.Reset();
 				grpEdition.Visible = comboZoom.Enabled = tailleCrayon.Enabled = true;
+				bpUndo.Enabled = bpRedo.Enabled = false;
 				comboZoom_SelectedIndexChanged(null, null);
 				tailleCrayon_SelectedIndexChanged(null, null);
 			}
@@ -383,6 +387,7 @@ namespace ConvImgCpc {
 							for (int x = 0; x < penWidth * Tx; x += Tx) {
 								xReel = (x + offsetX + (e.X / zoom)) & -Tx;
 								if (xReel >= 0 && yReel >= 0 && xReel < TailleX && yReel < TailleY) {
+									undo.MemoUndoRedo(xReel, yReel, bmpLock.GetPixel(xReel, yReel), realColor, doDraw);
 									for (int i = 0; i < Tx; i++) {
 										bmpLock.SetPixel(xReel + i, yReel, realColor);
 										bmpLock.SetPixel(xReel + i, yReel + 1, realColor);
@@ -396,6 +401,15 @@ namespace ConvImgCpc {
 
 						UnlockBits();
 						Render();
+						doDraw = true;
+					}
+					else {
+						bpUndo.Enabled = undo.CanUndo;
+						bpRedo.Enabled = undo.CanRedo;
+						if (doDraw) {
+							doDraw = false;
+							undo.EndUndoRedo();
+						}
 					}
 				}
 			}
@@ -441,6 +455,53 @@ namespace ConvImgCpc {
 			}
 			else
 				CloseRendu();
+		}
+
+		private void bpUndo_Click(object sender, System.EventArgs e) {
+			LockBits();
+			if (tmpLock != null)
+				tmpLock.LockBits();
+
+			List<MemoPoint> lst = undo.Undo();
+			lst.Sort((x, y) => y.numPt.CompareTo(x.numPt));
+			foreach (MemoPoint p in lst) {
+				int mode = (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (p.posy & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
+				int Tx = (4 >> mode);
+				for (int i = 0; i < Tx; i++) {
+					bmpLock.SetPixel(p.posx + i, p.posy, p.oldColor);
+					bmpLock.SetPixel(p.posx + i, p.posy + 1, p.oldColor);
+				}
+			}
+			if (tmpLock != null)
+				tmpLock.UnlockBits();
+
+			UnlockBits();
+			Render();
+			bpUndo.Enabled = undo.CanUndo;
+			bpRedo.Enabled = undo.CanRedo;
+		}
+
+		private void bpRedo_Click(object sender, System.EventArgs e) {
+			LockBits();
+			if (tmpLock != null)
+				tmpLock.LockBits();
+
+			List<MemoPoint> lst = undo.Redo();
+			foreach (MemoPoint p in lst) {
+				int mode = (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (p.posy & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
+				int Tx = (4 >> mode);
+				for (int i = 0; i < Tx; i++) {
+					bmpLock.SetPixel(p.posx + i, p.posy, p.newColor);
+					bmpLock.SetPixel(p.posx + i, p.posy + 1, p.newColor);
+				}
+			}
+			if (tmpLock != null)
+				tmpLock.UnlockBits();
+
+			UnlockBits();
+			Render();
+			bpUndo.Enabled = undo.CanUndo;
+			bpRedo.Enabled = undo.CanRedo;
 		}
 	}
 }

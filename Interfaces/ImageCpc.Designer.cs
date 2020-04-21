@@ -37,6 +37,8 @@
 			this.grpEdition = new System.Windows.Forms.GroupBox();
 			this.chkRendu = new System.Windows.Forms.CheckBox();
 			this.lblNbColors = new System.Windows.Forms.Label();
+			this.bpUndo = new System.Windows.Forms.Button();
+			this.bpRedo = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
 			this.grpEdition.SuspendLayout();
 			this.SuspendLayout();
@@ -164,6 +166,8 @@
 			// 
 			// grpEdition
 			// 
+			this.grpEdition.Controls.Add(this.bpRedo);
+			this.grpEdition.Controls.Add(this.bpUndo);
 			this.grpEdition.Controls.Add(this.chkRendu);
 			this.grpEdition.Controls.Add(this.comboZoom);
 			this.grpEdition.Controls.Add(this.crayonColor);
@@ -173,7 +177,7 @@
 			this.grpEdition.Controls.Add(this.label1);
 			this.grpEdition.Location = new System.Drawing.Point(790, 35);
 			this.grpEdition.Name = "grpEdition";
-			this.grpEdition.Size = new System.Drawing.Size(120, 252);
+			this.grpEdition.Size = new System.Drawing.Size(120, 528);
 			this.grpEdition.TabIndex = 9;
 			this.grpEdition.TabStop = false;
 			this.grpEdition.Visible = false;
@@ -196,6 +200,28 @@
 			this.lblNbColors.Name = "lblNbColors";
 			this.lblNbColors.Size = new System.Drawing.Size(0, 13);
 			this.lblNbColors.TabIndex = 10;
+			// 
+			// bpUndo
+			// 
+			this.bpUndo.Enabled = false;
+			this.bpUndo.Location = new System.Drawing.Point(6, 247);
+			this.bpUndo.Name = "bpUndo";
+			this.bpUndo.Size = new System.Drawing.Size(75, 23);
+			this.bpUndo.TabIndex = 10;
+			this.bpUndo.Text = "Undo";
+			this.bpUndo.UseVisualStyleBackColor = true;
+			this.bpUndo.Click += new System.EventHandler(this.bpUndo_Click);
+			// 
+			// bpRedo
+			// 
+			this.bpRedo.Enabled = false;
+			this.bpRedo.Location = new System.Drawing.Point(6, 276);
+			this.bpRedo.Name = "bpRedo";
+			this.bpRedo.Size = new System.Drawing.Size(75, 23);
+			this.bpRedo.TabIndex = 10;
+			this.bpRedo.Text = "Redo";
+			this.bpRedo.UseVisualStyleBackColor = true;
+			this.bpRedo.Click += new System.EventHandler(this.bpRedo_Click);
 			// 
 			// ImageCpc
 			// 
@@ -239,6 +265,8 @@
 		private System.Windows.Forms.GroupBox grpEdition;
 		private System.Windows.Forms.CheckBox chkRendu;
 		private System.Windows.Forms.Label lblNbColors;
+		private System.Windows.Forms.Button bpRedo;
+		private System.Windows.Forms.Button bpUndo;
 
 	}
 }

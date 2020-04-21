@@ -727,7 +727,6 @@
 		private System.Windows.Forms.CheckBox sortPal;
 		private System.Windows.Forms.GroupBox groupBox2;
 		private System.Windows.Forms.Button bpSave;
-		private System.Windows.Forms.CheckBox chkOverscan;
 		private System.Windows.Forms.Label lblInfoVersion;
 		private System.Windows.Forms.RadioButton radioUserSize;
 		private System.Windows.Forms.TextBox tbxSizeY;
