@@ -73,6 +73,7 @@
 			this.lblInfoVersion = new System.Windows.Forms.Label();
 			this.withCode = new System.Windows.Forms.CheckBox();
 			this.withPalette = new System.Windows.Forms.CheckBox();
+			this.chkLissage = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -256,6 +257,7 @@
 			// 
 			// tramage
 			// 
+			this.tramage.Controls.Add(this.chkLissage);
 			this.tramage.Controls.Add(this.chkPalCpc);
 			this.tramage.Controls.Add(this.chkMotif);
 			this.tramage.Controls.Add(this.lblPct);
@@ -283,7 +285,7 @@
 			// chkMotif
 			// 
 			this.chkMotif.AutoSize = true;
-			this.chkMotif.Location = new System.Drawing.Point(48, 115);
+			this.chkMotif.Location = new System.Drawing.Point(48, 149);
 			this.chkMotif.Name = "chkMotif";
 			this.chkMotif.Size = new System.Drawing.Size(96, 17);
 			this.chkMotif.TabIndex = 13;
@@ -647,6 +649,17 @@
 			this.withPalette.UseVisualStyleBackColor = true;
 			this.withPalette.CheckedChanged += new System.EventHandler(this.withPalette_CheckedChanged);
 			// 
+			// chkLissage
+			// 
+			this.chkLissage.AutoSize = true;
+			this.chkLissage.Location = new System.Drawing.Point(48, 115);
+			this.chkLissage.Name = "chkLissage";
+			this.chkLissage.Size = new System.Drawing.Size(62, 17);
+			this.chkLissage.TabIndex = 15;
+			this.chkLissage.Text = "Lissage";
+			this.chkLissage.UseVisualStyleBackColor = true;
+			this.chkLissage.CheckedChanged += new System.EventHandler(this.InterfaceChange);
+			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -740,6 +753,7 @@
 		private System.Windows.Forms.CheckBox withPalette;
 		private System.Windows.Forms.CheckBox chkMotif;
 		private System.Windows.Forms.CheckBox chkPalCpc;
+		private System.Windows.Forms.CheckBox chkLissage;
 	}
 }
 

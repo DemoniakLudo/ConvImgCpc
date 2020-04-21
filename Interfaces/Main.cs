@@ -158,6 +158,7 @@ namespace ConvImgCpc {
 				withPalette.Checked = param.withPalette;
 				chkMotif.Checked = param.motif;
 				chkPalCpc.Checked = param.setPalCpc;
+				chkLissage.Checked = param.lissage;
 			}
 			catch (Exception ex) {
 				MessageBox.Show(ex.StackTrace, ex.Message);
@@ -265,6 +266,7 @@ namespace ConvImgCpc {
 		private void InterfaceChange(object sender, EventArgs e) {
 			lblPct.Visible = pctTrame.Visible = methode.SelectedItem.ToString() != "Aucun";
 			param.methode = methode.SelectedItem.ToString();
+			param.lissage = chkLissage.Checked;
 			Convert(false);
 		}
 

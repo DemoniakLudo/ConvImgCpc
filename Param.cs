@@ -21,5 +21,6 @@
 		public bool withPalette;
 		public bool motif;
 		public bool setPalCpc;
+		public bool lissage;
 	}
 }

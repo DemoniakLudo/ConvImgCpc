@@ -195,15 +195,23 @@ namespace ConvImgCpc {
 				int Tx = 4 >> (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (yPix & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 				for (xPix = 0; xPix < xdest; xPix += Tx) {
 					float r = 0, v = 0, b = 0;
-					for (int i = 0; i < Tx; i++) {
-						p = bitmap.GetPixelColor(xPix + i, yPix);
-						r += p.r;
-						b += p.b;
-						v += p.v;
+					if (prm.lissage) {
+						for (int i = 0; i < Tx; i++) {
+							p = bitmap.GetPixelColor(xPix + i, yPix);
+							r += p.r;
+							b += p.b;
+							v += p.v;
+						}
+						p.r = (byte)(r / Tx);
+						p.v = (byte)(v / Tx);
+						p.b = (byte)(b / Tx);
 					}
-					p.r = (byte)(r / Tx);
-					p.v = (byte)(v / Tx);
-					p.b = (byte)(b / Tx);
+					else {
+						p = bitmap.GetPixelColor(xPix, yPix);
+						r = p.r;
+						v = p.v;
+						b = p.b;
+					}
 					if (p.r != 0 || p.v != 0 || p.b != 0) {
 						r = tblContrast[p.r];
 						v = tblContrast[p.v];
