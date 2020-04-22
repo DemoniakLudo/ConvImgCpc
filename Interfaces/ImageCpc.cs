@@ -128,18 +128,14 @@ namespace ConvImgCpc {
 
 		public void SetPixelCpc(int xPos, int yPos, int col, int tx) {
 			int realColor = GetPalCPC(Palette[col]);
-			for (int i = 0; i < tx; i++) {
-				bmpLock.SetPixel(xPos + i, yPos, realColor);
-				bmpLock.SetPixel(xPos + i, yPos + 1, realColor);
-			}
+			bmpLock.SetHorLine(xPos, yPos, tx, realColor);
+			bmpLock.SetHorLine(xPos, yPos + 1, tx, realColor);
 		}
 
 		public void SetPixelMode5(int xPos, int yPos, int col) {
 			int realColor = GetPalCPC(col == 3 ? colMode5[yPos >> 1] : Palette[col]);
-			for (int i = 0; i < 2; i++) {
-				bmpLock.SetPixel(xPos + i, yPos, realColor);
-				bmpLock.SetPixel(xPos + i, yPos + 1, realColor);
-			}
+			bmpLock.SetHorLine(xPos, yPos, 2, realColor);
+			bmpLock.SetHorLine(xPos, yPos + 1, 2, realColor);
 		}
 
 		public void LockBits() {
@@ -157,10 +153,8 @@ namespace ConvImgCpc {
 					tmpLock.LockBits();
 					for (int y = 0; y < imgOrigine.Height; y++) {
 						int ySrc = offsetY + (y / zoom);
-						for (int x = 0; x < imgOrigine.Width; x++) {
-							int xSrc = offsetX + (x / zoom);
-							tmpLock.SetPixel(x, y, bmpLock.GetPixel(xSrc, ySrc));
-						}
+						for (int x = 0; x < imgOrigine.Width; x += zoom)
+							tmpLock.SetHorLine(x, y, zoom, bmpLock.GetPixel(offsetX + (x / zoom), ySrc));
 					}
 					tmpLock.UnlockBits();
 				}
@@ -182,18 +176,7 @@ namespace ConvImgCpc {
 		}
 
 		public void SauveBmp(string fileName) {
-			Bitmap bmp = new Bitmap(TailleX, TailleY);
-			LockBitmap loc = new LockBitmap(bmp);
-			loc.LockBits();
-			bmpLock.LockBits();
-			for (int y = 0; y < TailleY; y++)
-				for (int x = 0; x < TailleX; x++)
-					loc.SetPixel(x, y, bmpLock.GetPixel(x, y));
-
-			bmpLock.UnlockBits();
-			loc.UnlockBits();
-			bmp.Save(fileName, System.Drawing.Imaging.ImageFormat.Bmp);
-			bmp.Dispose();
+			bmpLock.Source.Save(fileName, System.Drawing.Imaging.ImageFormat.Bmp);
 		}
 
 		private void CreeBmpCpc(Param param) {
@@ -380,17 +363,13 @@ namespace ConvImgCpc {
 						int xReel = (x + offsetX + (e.X / zoom)) & -Tx;
 						if (xReel >= 0 && yReel >= 0 && xReel < TailleX && yReel < TailleY) {
 							undo.MemoUndoRedo(xReel, yReel, bmpLock.GetPixel(xReel, yReel), realColor, doDraw);
-							for (int i = 0; i < Tx; i++) {
-								bmpLock.SetPixel(xReel + i, yReel, realColor);
-								bmpLock.SetPixel(xReel + i, yReel + 1, realColor);
-							}
+							bmpLock.SetHorLine(xReel, yReel, Tx, realColor);
+							bmpLock.SetHorLine(xReel, yReel + 1, Tx, realColor);
 							if (zoom != 1) {
 								for (int yz = yStart; yz < yStart + (zoom << 1); yz += 2) {
 									int xStart = zoom * (xReel - offsetX);
-									for (int xz = xStart; xz < xStart + (zoom * Tx); xz++) {
-										tmpLock.SetPixel(xz, yz, realColor);
-										tmpLock.SetPixel(xz, 1 + yz, realColor);
-									}
+									tmpLock.SetHorLine(xStart, yz, zoom * Tx, realColor);
+									tmpLock.SetHorLine(xStart, yz + 1, zoom * Tx, realColor);
 								}
 							}
 						}
@@ -478,14 +457,10 @@ namespace ConvImgCpc {
 		private void bpUndo_Click(object sender, System.EventArgs e) {
 			LockBits();
 			List<MemoPoint> lst = undo.Undo();
-			lst.Sort((x, y) => y.numPt.CompareTo(x.numPt));
 			foreach (MemoPoint p in lst) {
-				int mode = (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (p.posy & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
-				int Tx = (4 >> mode);
-				for (int i = 0; i < Tx; i++) {
-					bmpLock.SetPixel(p.posx + i, p.posy, p.oldColor);
-					bmpLock.SetPixel(p.posx + i, p.posy + 1, p.oldColor);
-				}
+				int Tx = 4 >> (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (p.posy & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
+				bmpLock.SetHorLine(p.posx, p.posy, Tx, p.oldColor);
+				bmpLock.SetHorLine(p.posx, p.posy + 1, Tx, p.oldColor);
 			}
 			UnlockBits();
 			Render(true);
@@ -497,12 +472,9 @@ namespace ConvImgCpc {
 			LockBits();
 			List<MemoPoint> lst = undo.Redo();
 			foreach (MemoPoint p in lst) {
-				int mode = (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (p.posy & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
-				int Tx = (4 >> mode);
-				for (int i = 0; i < Tx; i++) {
-					bmpLock.SetPixel(p.posx + i, p.posy, p.newColor);
-					bmpLock.SetPixel(p.posx + i, p.posy + 1, p.newColor);
-				}
+				int Tx = 4 >> (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (p.posy & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
+				bmpLock.SetHorLine(p.posx, p.posy, Tx, p.newColor);
+				bmpLock.SetHorLine(p.posx, p.posy + 1, Tx, p.newColor);
 			}
 			UnlockBits();
 			Render(true);

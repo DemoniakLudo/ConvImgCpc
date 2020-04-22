@@ -35,6 +35,7 @@ namespace ConvImgCpc {
 			if (CanUndo) {
 				numRedo--;
 				lstUndo = lstUndoRedo.Where(m => m.numRedo == numRedo).ToList();
+				lstUndo.Sort((x, y) => y.numPt.CompareTo(x.numPt));
 			}
 			return lstUndo;
 		}

@@ -9,6 +9,7 @@ namespace ConvImgCpc {
 		private IntPtr Iptr = IntPtr.Zero;
 		BitmapData bitmapData = null;
 
+		public Bitmap Source { get { return source; } }
 		public byte[] Pixels { get; set; }
 		public int Depth { get; private set; }
 		public int Width { get; private set; }
@@ -67,10 +68,6 @@ namespace ConvImgCpc {
 			Pixels[adr++] = color.v;
 			Pixels[adr++] = color.b;
 			Pixels[adr] = 0xFF;
-		}
-
-		public void Save(string fileName) {
-			source.Save(fileName);
 		}
 	}
 

@@ -162,18 +162,15 @@ namespace ConvImgCpc {
 		// remplit un tableau avec ces couleurs
 		//
 		static private int ConvertPasse1(int xdest, int ydest, Param prm, int modeVirtuel) {
-			int pct = prm.cpcPlus ? prm.pct << 2 : prm.pct;
-
 			for (int i = 0; i < CoulTrouvee.GetLength(0); i++)
 				for (int l = 0; l < (modeVirtuel == 5 ? 272 : 1); l++)
 					CoulTrouvee[i, l] = 0;
 
-			float lumi = prm.pctLumi / 100.0F;
-			float satur = prm.pctSat / 100.0F;
 			double c = prm.pctContrast / 100.0;
 			for (int i = 0; i < 256; i++)
 				tblContrast[i] = (byte)MinMax((int)(((((i / 255.0) - 0.5) * c) + 0.5) * 255));
 
+			int pct = prm.cpcPlus ? prm.pct << 2 : prm.pct;
 			if (pct > 0 && dicMat.ContainsKey(prm.methode)) {
 				matDither = dicMat[prm.methode];
 				double sum = 0;
@@ -194,8 +191,8 @@ namespace ConvImgCpc {
 			for (yPix = 0; yPix < ydest; yPix += 2) {
 				int Tx = 4 >> (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (yPix & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 				for (xPix = 0; xPix < xdest; xPix += Tx) {
-					float r = 0, v = 0, b = 0;
 					if (prm.lissage) {
+						float r = 0, v = 0, b = 0;
 						for (int i = 0; i < Tx; i++) {
 							p = bitmap.GetPixelColor(xPix + i, yPix);
 							r += p.r;
@@ -206,18 +203,15 @@ namespace ConvImgCpc {
 						p.v = (byte)(v / Tx);
 						p.b = (byte)(b / Tx);
 					}
-					else {
+					else 
 						p = bitmap.GetPixelColor(xPix, yPix);
-						r = p.r;
-						v = p.v;
-						b = p.b;
-					}
+					
 					if (p.r != 0 || p.v != 0 || p.b != 0) {
-						r = tblContrast[p.r];
-						v = tblContrast[p.v];
-						b = tblContrast[p.b];
+						float r = tblContrast[p.r];
+						float v = tblContrast[p.v];
+						float b = tblContrast[p.b];
 						if (prm.pctLumi != 100 || prm.pctSat != 100)
-							SetLumiSat(lumi, satur, ref r, ref v, ref b);
+							SetLumiSat(prm.pctLumi / 100.0F, prm.pctSat / 100.0F, ref r, ref v, ref b);
 
 						p.r = (byte)MinMax((int)r);
 						p.v = (byte)MinMax((int)v);
