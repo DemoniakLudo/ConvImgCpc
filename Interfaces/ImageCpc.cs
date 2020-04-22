@@ -294,6 +294,7 @@ namespace ConvImgCpc {
 			CheckBox colorLock = sender as CheckBox;
 			int numLock = colorLock.Tag != null ? (int)colorLock.Tag : 0;
 			lockState[numLock] = colorLock.Checked ? 1 : 0;
+			Convert(false);
 		}
 
 		// Changement de la palette
@@ -333,6 +334,7 @@ namespace ConvImgCpc {
 
 		private void modeEdition_CheckedChanged(object sender, System.EventArgs e) {
 			zoom = 1;
+			chkRendu.Checked = false;
 			offsetX = offsetY = 0;
 			vScrollBar.Visible = hScrollBar.Visible = setZoomRect = false;
 			if (modeEdition.Checked) {
@@ -459,6 +461,7 @@ namespace ConvImgCpc {
 				if (xReel >= 0 && yReel >= 0 && xReel < TailleX && yReel < TailleY) {
 					RvbColor col = GetPaletteColor(numCol % maskMode[mode]);
 					crayonColor.BackColor = Color.FromArgb(col.b, col.v, col.r);
+					crayonColor.Width = 35 * Tx;
 					crayonColor.Refresh();
 					GestMouseBp(e, yReel);
 				}

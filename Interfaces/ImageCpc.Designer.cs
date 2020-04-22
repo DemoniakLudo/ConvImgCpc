@@ -57,7 +57,7 @@
 			this.lockAllPal.AutoSize = true;
 			this.lockAllPal.Location = new System.Drawing.Point(784, 602);
 			this.lockAllPal.Name = "lockAllPal";
-			this.lockAllPal.Size = new System.Drawing.Size(93, 17);
+			this.lockAllPal.Size = new System.Drawing.Size(103, 19);
 			this.lockAllPal.TabIndex = 1;
 			this.lockAllPal.Text = "Tout vérouiller";
 			this.lockAllPal.UseVisualStyleBackColor = true;
@@ -68,7 +68,7 @@
 			this.modeEdition.AutoSize = true;
 			this.modeEdition.Location = new System.Drawing.Point(797, 12);
 			this.modeEdition.Name = "modeEdition";
-			this.modeEdition.Size = new System.Drawing.Size(84, 17);
+			this.modeEdition.Size = new System.Drawing.Size(96, 19);
 			this.modeEdition.TabIndex = 2;
 			this.modeEdition.Text = "Editer image";
 			this.modeEdition.UseVisualStyleBackColor = true;
@@ -99,9 +99,9 @@
 			// crayonColor
 			// 
 			this.crayonColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.crayonColor.Location = new System.Drawing.Point(9, 121);
+			this.crayonColor.Location = new System.Drawing.Point(5, 121);
 			this.crayonColor.Name = "crayonColor";
-			this.crayonColor.Size = new System.Drawing.Size(100, 75);
+			this.crayonColor.Size = new System.Drawing.Size(70, 70);
 			this.crayonColor.TabIndex = 7;
 			// 
 			// label3
@@ -109,16 +109,16 @@
 			this.label3.AutoSize = true;
 			this.label3.Location = new System.Drawing.Point(16, 99);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(84, 13);
+			this.label3.Size = new System.Drawing.Size(95, 15);
 			this.label3.TabIndex = 4;
 			this.label3.Text = "Couleur crayon :";
 			// 
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(5, 211);
+			this.label2.Location = new System.Drawing.Point(6, 64);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(73, 13);
+			this.label2.Size = new System.Drawing.Size(82, 15);
 			this.label2.TabIndex = 5;
 			this.label2.Text = "Taille crayon :";
 			// 
@@ -133,7 +133,7 @@
             "3",
             "4",
             "8"});
-			this.tailleCrayon.Location = new System.Drawing.Point(84, 208);
+			this.tailleCrayon.Location = new System.Drawing.Point(95, 61);
 			this.tailleCrayon.Name = "tailleCrayon";
 			this.tailleCrayon.Size = new System.Drawing.Size(31, 21);
 			this.tailleCrayon.TabIndex = 3;
@@ -150,7 +150,7 @@
 			this.grpEdition.Controls.Add(this.tailleCrayon);
 			this.grpEdition.Location = new System.Drawing.Point(790, 35);
 			this.grpEdition.Name = "grpEdition";
-			this.grpEdition.Size = new System.Drawing.Size(120, 528);
+			this.grpEdition.Size = new System.Drawing.Size(149, 528);
 			this.grpEdition.TabIndex = 9;
 			this.grpEdition.TabStop = false;
 			this.grpEdition.Visible = false;
@@ -158,7 +158,7 @@
 			// bpRedo
 			// 
 			this.bpRedo.Enabled = false;
-			this.bpRedo.Location = new System.Drawing.Point(6, 276);
+			this.bpRedo.Location = new System.Drawing.Point(36, 276);
 			this.bpRedo.Name = "bpRedo";
 			this.bpRedo.Size = new System.Drawing.Size(75, 23);
 			this.bpRedo.TabIndex = 10;
@@ -169,7 +169,7 @@
 			// bpUndo
 			// 
 			this.bpUndo.Enabled = false;
-			this.bpUndo.Location = new System.Drawing.Point(6, 247);
+			this.bpUndo.Location = new System.Drawing.Point(36, 247);
 			this.bpUndo.Name = "bpUndo";
 			this.bpUndo.Size = new System.Drawing.Size(75, 23);
 			this.bpUndo.TabIndex = 10;
@@ -180,9 +180,9 @@
 			// chkRendu
 			// 
 			this.chkRendu.AutoSize = true;
-			this.chkRendu.Location = new System.Drawing.Point(8, 67);
+			this.chkRendu.Location = new System.Drawing.Point(6, 19);
 			this.chkRendu.Name = "chkRendu";
-			this.chkRendu.Size = new System.Drawing.Size(107, 17);
+			this.chkRendu.Size = new System.Drawing.Size(120, 19);
 			this.chkRendu.TabIndex = 9;
 			this.chkRendu.Text = "Fenêtre de rendu";
 			this.chkRendu.UseVisualStyleBackColor = true;
@@ -193,14 +193,14 @@
 			this.lblNbColors.AutoSize = true;
 			this.lblNbColors.Location = new System.Drawing.Point(787, 568);
 			this.lblNbColors.Name = "lblNbColors";
-			this.lblNbColors.Size = new System.Drawing.Size(0, 13);
+			this.lblNbColors.Size = new System.Drawing.Size(0, 15);
 			this.lblNbColors.TabIndex = 10;
 			// 
 			// ImageCpc
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(911, 620);
+			this.ClientSize = new System.Drawing.Size(946, 620);
 			this.ControlBox = false;
 			this.Controls.Add(this.lblNbColors);
 			this.Controls.Add(this.grpEdition);
