@@ -224,7 +224,6 @@ namespace ConvImgCpc {
 				}
 			}
 			loc.UnlockBits();
-			//bmp.Save("bmptmp.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
 			return (bmp);
 		}
 	}

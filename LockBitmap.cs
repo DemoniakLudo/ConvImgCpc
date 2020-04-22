@@ -54,11 +54,28 @@ namespace ConvImgCpc {
 
 		public void SetHorLine(int pixelX, int pixelY, int lineLength, int color) {
 			int adr = ((pixelY * Width) + pixelX) << 2;
+			byte r = (byte)color;
+			byte v = (byte)(color >> 8);
+			byte b = (byte)(color >> 16);
 			for (; lineLength-- > 0; ) {
-				Pixels[adr++] = (byte)(color);
-				Pixels[adr++] = (byte)(color >> 8);
-				Pixels[adr++] = (byte)(color >> 16);
+				Pixels[adr++] = r;
+				Pixels[adr++] = v;
+				Pixels[adr++] = b;
 				Pixels[adr++] = 0xFF;
+			}
+		}
+
+		public void SetHorLine2Y(int pixelX, int pixelY, int lineLength, int color) {
+			int adr1 = ((pixelY * Width) + pixelX) << 2;
+			int adr2 = adr1 + (Width << 2);
+			byte r = (byte)color;
+			byte v = (byte)(color >> 8);
+			byte b = (byte)(color >> 16);
+			for (; lineLength-- > 0; ) {
+				Pixels[adr1++] = Pixels[adr2++] = r;
+				Pixels[adr1++] = Pixels[adr2++] = v;
+				Pixels[adr1++] = Pixels[adr2++] = b;
+				Pixels[adr1++] = Pixels[adr2++] = 0xFF;
 			}
 		}
 
@@ -69,24 +86,5 @@ namespace ConvImgCpc {
 			Pixels[adr++] = color.b;
 			Pixels[adr] = 0xFF;
 		}
-	}
-
-	public class RvbColor {
-		public byte r, v, b;
-
-		public RvbColor(byte compR, byte compV, byte compB) {
-			r = compR;
-			v = compV;
-			b = compB;
-		}
-
-		public RvbColor(int value) {
-			r = (byte)value;
-			v = (byte)(value >> 8);
-			b = (byte)(value >> 16);
-		}
-
-		public int GetColor { get { return r + (v << 8) + (b << 16); } }
-		public int GetColorArgb { get { return r + (v << 8) + (b << 16) + (255 << 24); } }
 	}
 }

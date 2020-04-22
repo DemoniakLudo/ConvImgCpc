@@ -95,8 +95,10 @@
     <Compile Include="Interfaces\Rendu.Designer.cs">
       <DependentUpon>Rendu.cs</DependentUpon>
     </Compile>
+    <Compile Include="RvbColor.cs" />
     <Compile Include="SauveImage.cs" />
     <Compile Include="UndoRedo.cs" />
+    <Compile Include="XorDrawing.cs" />
     <EmbeddedResource Include="Interfaces\EditColor.resx">
       <DependentUpon>EditColor.cs</DependentUpon>
     </EmbeddedResource>

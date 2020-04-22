@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -12,7 +13,9 @@ namespace ConvImgCpc {
 		private CheckBox[] lockColors = new CheckBox[16];
 		public int[] lockState = new int[16];
 		private int offsetX = 0, offsetY = 0;
-		private int zoom;
+		private int zoom = 1;
+		private bool setZoomRect = false;
+		private int zoomRectx, zoomRecty, zoomRectw, zoomRecth;
 		private int numCol = 0;
 		private int penWidth = 1;
 		private Image imgOrigine;
@@ -110,7 +113,6 @@ namespace ConvImgCpc {
 				lockColors[i].Update();
 			}
 			Reset();
-			comboZoom.SelectedItem = "1";
 			tailleCrayon.SelectedItem = "1";
 			Convert = fctConvert;
 		}
@@ -152,9 +154,11 @@ namespace ConvImgCpc {
 				if (forceDrawZoom) {
 					tmpLock.LockBits();
 					for (int y = 0; y < imgOrigine.Height; y++) {
-						int ySrc = offsetY + (y / zoom);
-						for (int x = 0; x < imgOrigine.Width; x += zoom)
-							tmpLock.SetHorLine(x, y, zoom, bmpLock.GetPixel(offsetX + (x / zoom), ySrc));
+						int ySrc = Math.Min(offsetY + (y / zoom), TailleY - 1);
+						for (int x = 0; x < imgOrigine.Width; x += zoom) {
+							int lMax = Math.Min(zoom, imgOrigine.Width - x - 1);
+							tmpLock.SetHorLine(x, y, lMax, bmpLock.GetPixel(offsetX + (x / zoom), ySrc));
+						}
 					}
 					tmpLock.UnlockBits();
 				}
@@ -172,9 +176,10 @@ namespace ConvImgCpc {
 		}
 
 		public void SetNbColors(int nbCol) {
-			lblNbColors.Text = "Nombre de couleurs : " + nbCol;
+			lblNbColors.Text = "Nbre de couleurs : " + nbCol;
 		}
 
+		#region Lecture/Sauvegarde
 		public void SauveBmp(string fileName) {
 			bmpLock.Source.Save(fileName, System.Drawing.Imaging.ImageFormat.Bmp);
 		}
@@ -273,7 +278,9 @@ namespace ConvImgCpc {
 		public void SauvePalette(string fileName, Param param) {
 			SauveImage.SauvePalette(fileName, this, param);
 		}
+		#endregion
 
+		#region Gestion palette
 		private RvbColor GetPaletteColor(int col) {
 			return cpcPlus ? new RvbColor((byte)(((Palette[col] & 0xF0) >> 4) * 17), (byte)(((Palette[col] & 0xF00) >> 8) * 17), (byte)((Palette[col] & 0x0F) * 17)) : RgbCPC[Palette[col] < 27 ? Palette[col] : 0];
 		}
@@ -322,19 +329,21 @@ namespace ConvImgCpc {
 			}
 			Convert(false);
 		}
+		#endregion
 
 		private void modeEdition_CheckedChanged(object sender, System.EventArgs e) {
+			zoom = 1;
+			offsetX = offsetY = 0;
+			vScrollBar.Visible = hScrollBar.Visible = setZoomRect = false;
 			if (modeEdition.Checked) {
 				undo.Reset();
-				grpEdition.Visible = comboZoom.Enabled = tailleCrayon.Enabled = true;
+				grpEdition.Visible = tailleCrayon.Enabled = true;
 				bpUndo.Enabled = bpRedo.Enabled = false;
-				comboZoom_SelectedIndexChanged(null, null);
 				tailleCrayon_SelectedIndexChanged(null, null);
 			}
 			else {
 				CloseRendu();
-				grpEdition.Visible = comboZoom.Enabled = tailleCrayon.Enabled = vScrollBar.Visible = hScrollBar.Visible = false;
-				zoom = 1;
+				grpEdition.Visible = tailleCrayon.Enabled = false;
 				Render();
 			}
 		}
@@ -348,7 +357,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void DrawPen(MouseEventArgs e, int yReel) {
+		private void GestMouseBp(MouseEventArgs e, int yReel) {
 			if (e.Button == MouseButtons.Left) {
 				LockBits();
 				if (tmpLock != null)
@@ -383,14 +392,62 @@ namespace ConvImgCpc {
 
 				Render();
 			}
-			else {
-				bpUndo.Enabled = undo.CanUndo;
-				bpRedo.Enabled = undo.CanRedo;
-				if (doDraw) {
-					doDraw = false;
-					undo.EndUndoRedo();
+			else
+				if (e.Button == MouseButtons.Right) {
+					if (zoom == 1) {
+						if (!setZoomRect) {
+							setZoomRect = true;
+							zoomRectx = e.X;
+							zoomRecty = e.Y;
+							zoomRecth = 0;
+							zoomRectw = 0;
+						}
+						else {
+							Graphics g = Graphics.FromImage(pictureBox.Image);
+							if (zoomRecth != 0 || zoomRectw != 0) {
+								XorDrawing.DrawXorRectangle(g, (Bitmap)pictureBox.Image, zoomRectx, zoomRecty, zoomRectx + zoomRectw, zoomRecty + zoomRecth);
+							}
+							zoomRectw = e.X - zoomRectx;
+							zoomRecth = e.Y - zoomRecty;
+							XorDrawing.DrawXorRectangle(g, (Bitmap)pictureBox.Image, zoomRectx, zoomRecty, zoomRectx + zoomRectw, zoomRecty + zoomRecth);
+							pictureBox.Refresh();
+						}
+					}
+					else {
+						zoom = 1;
+						offsetX = offsetY = 0;
+						vScrollBar.Visible = hScrollBar.Visible = false;
+						Render(true);
+					}
 				}
-			}
+				else {
+					bpUndo.Enabled = undo.CanUndo;
+					bpRedo.Enabled = undo.CanRedo;
+					if (doDraw) {
+						doDraw = false;
+						undo.EndUndoRedo();
+					}
+					if (setZoomRect) {
+						setZoomRect = false;
+						if (zoomRectw != 0 && zoomRecth != 0) {
+							Graphics g = Graphics.FromImage(pictureBox.Image);
+							XorDrawing.DrawXorRectangle(g, (Bitmap)pictureBox.Image, zoomRectx, zoomRecty, zoomRectx + zoomRectw, zoomRecty + zoomRecth);
+							zoom = Math.Min(Math.Abs(TailleX / zoomRectw), Math.Abs(TailleY / zoomRecth)) & 0x7E;
+							vScrollBar.Visible = hScrollBar.Visible = zoom > 1;
+							hScrollBar.Maximum = hScrollBar.LargeChange + TailleX - (TailleX / zoom);
+							vScrollBar.Maximum = vScrollBar.LargeChange + TailleY - (TailleY / zoom);
+							hScrollBar.Value = Math.Min(Math.Min(zoomRectx, zoomRectx + zoomRectw), TailleX - ((imgOrigine.Width + zoom) / zoom));
+							vScrollBar.Value = Math.Min(Math.Min(zoomRecty, zoomRecty + zoomRecth), TailleY - ((imgOrigine.Height + zoom) / zoom));
+							offsetX = (hScrollBar.Value >> 3) << 3;
+							offsetY = (vScrollBar.Value >> 1) << 1;
+							if (zoom != 1) {
+								bitmapZoom = new Bitmap(imgOrigine.Width, imgOrigine.Height);
+								tmpLock = new LockBitmap(bitmapZoom);
+							}
+							Render(true);
+						}
+					}
+				}
 		}
 
 		private void TrtMouseMove(MouseEventArgs e) {
@@ -403,7 +460,7 @@ namespace ConvImgCpc {
 					RvbColor col = GetPaletteColor(numCol % maskMode[mode]);
 					crayonColor.BackColor = Color.FromArgb(col.b, col.v, col.r);
 					crayonColor.Refresh();
-					DrawPen(e, yReel);
+					GestMouseBp(e, yReel);
 				}
 			}
 		}
@@ -426,20 +483,6 @@ namespace ConvImgCpc {
 			Render(true);
 		}
 
-		private void comboZoom_SelectedIndexChanged(object sender, System.EventArgs e) {
-			zoom = int.Parse(comboZoom.SelectedItem.ToString());
-			vScrollBar.Visible = hScrollBar.Visible = zoom > 1;
-			hScrollBar.Maximum = hScrollBar.LargeChange + TailleX - (TailleX / zoom);
-			vScrollBar.Maximum = vScrollBar.LargeChange + TailleY - (TailleY / zoom);
-			hScrollBar.Value = offsetX = (TailleX - TailleX / zoom) / 2;
-			vScrollBar.Value = offsetY = (TailleY - TailleY / zoom) / 2;
-			if (zoom != 1) {
-				bitmapZoom = new Bitmap(imgOrigine.Width, imgOrigine.Height);
-				tmpLock = new LockBitmap(bitmapZoom);
-			}
-			Render(true);
-		}
-
 		private void tailleCrayon_SelectedIndexChanged(object sender, System.EventArgs e) {
 			penWidth = int.Parse(tailleCrayon.SelectedItem.ToString());
 		}
@@ -455,6 +498,7 @@ namespace ConvImgCpc {
 		}
 
 		private void bpUndo_Click(object sender, System.EventArgs e) {
+			Enabled = false;
 			LockBits();
 			List<MemoPoint> lst = undo.Undo();
 			foreach (MemoPoint p in lst) {
@@ -466,9 +510,11 @@ namespace ConvImgCpc {
 			Render(true);
 			bpUndo.Enabled = undo.CanUndo;
 			bpRedo.Enabled = undo.CanRedo;
+			Enabled = true;
 		}
 
 		private void bpRedo_Click(object sender, System.EventArgs e) {
+			Enabled = false;
 			LockBits();
 			List<MemoPoint> lst = undo.Redo();
 			foreach (MemoPoint p in lst) {
@@ -480,6 +526,7 @@ namespace ConvImgCpc {
 			Render(true);
 			bpUndo.Enabled = undo.CanUndo;
 			bpRedo.Enabled = undo.CanRedo;
+			Enabled = true;
 		}
 	}
 }

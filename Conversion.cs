@@ -162,6 +162,7 @@ namespace ConvImgCpc {
 		// remplit un tableau avec ces couleurs
 		//
 		static private int ConvertPasse1(int xdest, int ydest, Param prm, int modeVirtuel) {
+			//System.Array.Clear(CoulTrouvee, 0, CoulTrouvee.GetLength(0)*CoulTrouvee.GetLength(1));
 			for (int i = 0; i < CoulTrouvee.GetLength(0); i++)
 				for (int l = 0; l < (modeVirtuel == 5 ? 272 : 1); l++)
 					CoulTrouvee[i, l] = 0;

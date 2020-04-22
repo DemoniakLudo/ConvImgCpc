@@ -32,13 +32,11 @@
 			this.label3 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.tailleCrayon = new System.Windows.Forms.ComboBox();
-			this.label1 = new System.Windows.Forms.Label();
-			this.comboZoom = new System.Windows.Forms.ComboBox();
 			this.grpEdition = new System.Windows.Forms.GroupBox();
+			this.bpRedo = new System.Windows.Forms.Button();
+			this.bpUndo = new System.Windows.Forms.Button();
 			this.chkRendu = new System.Windows.Forms.CheckBox();
 			this.lblNbColors = new System.Windows.Forms.Label();
-			this.bpUndo = new System.Windows.Forms.Button();
-			this.bpRedo = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
 			this.grpEdition.SuspendLayout();
 			this.SuspendLayout();
@@ -84,6 +82,7 @@
 			this.hScrollBar.Size = new System.Drawing.Size(768, 16);
 			this.hScrollBar.SmallChange = 8;
 			this.hScrollBar.TabIndex = 1;
+			this.hScrollBar.Visible = false;
 			this.hScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar_Scroll);
 			// 
 			// vScrollBar
@@ -94,6 +93,7 @@
 			this.vScrollBar.Size = new System.Drawing.Size(16, 544);
 			this.vScrollBar.SmallChange = 8;
 			this.vScrollBar.TabIndex = 0;
+			this.vScrollBar.Visible = false;
 			this.vScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vScrollBar_Scroll);
 			// 
 			// crayonColor
@@ -139,48 +139,43 @@
 			this.tailleCrayon.TabIndex = 3;
 			this.tailleCrayon.SelectedIndexChanged += new System.EventHandler(this.tailleCrayon_SelectedIndexChanged);
 			// 
-			// label1
-			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(5, 34);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(40, 13);
-			this.label1.TabIndex = 6;
-			this.label1.Text = "Zoom :";
-			// 
-			// comboZoom
-			// 
-			this.comboZoom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.comboZoom.Enabled = false;
-			this.comboZoom.FormattingEnabled = true;
-			this.comboZoom.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "4",
-            "8"});
-			this.comboZoom.Location = new System.Drawing.Point(59, 31);
-			this.comboZoom.Name = "comboZoom";
-			this.comboZoom.Size = new System.Drawing.Size(33, 21);
-			this.comboZoom.TabIndex = 8;
-			this.comboZoom.SelectedIndexChanged += new System.EventHandler(this.comboZoom_SelectedIndexChanged);
-			// 
 			// grpEdition
 			// 
 			this.grpEdition.Controls.Add(this.bpRedo);
 			this.grpEdition.Controls.Add(this.bpUndo);
 			this.grpEdition.Controls.Add(this.chkRendu);
-			this.grpEdition.Controls.Add(this.comboZoom);
 			this.grpEdition.Controls.Add(this.crayonColor);
 			this.grpEdition.Controls.Add(this.label3);
 			this.grpEdition.Controls.Add(this.label2);
 			this.grpEdition.Controls.Add(this.tailleCrayon);
-			this.grpEdition.Controls.Add(this.label1);
 			this.grpEdition.Location = new System.Drawing.Point(790, 35);
 			this.grpEdition.Name = "grpEdition";
 			this.grpEdition.Size = new System.Drawing.Size(120, 528);
 			this.grpEdition.TabIndex = 9;
 			this.grpEdition.TabStop = false;
 			this.grpEdition.Visible = false;
+			// 
+			// bpRedo
+			// 
+			this.bpRedo.Enabled = false;
+			this.bpRedo.Location = new System.Drawing.Point(6, 276);
+			this.bpRedo.Name = "bpRedo";
+			this.bpRedo.Size = new System.Drawing.Size(75, 23);
+			this.bpRedo.TabIndex = 10;
+			this.bpRedo.Text = "Redo";
+			this.bpRedo.UseVisualStyleBackColor = true;
+			this.bpRedo.Click += new System.EventHandler(this.bpRedo_Click);
+			// 
+			// bpUndo
+			// 
+			this.bpUndo.Enabled = false;
+			this.bpUndo.Location = new System.Drawing.Point(6, 247);
+			this.bpUndo.Name = "bpUndo";
+			this.bpUndo.Size = new System.Drawing.Size(75, 23);
+			this.bpUndo.TabIndex = 10;
+			this.bpUndo.Text = "Undo";
+			this.bpUndo.UseVisualStyleBackColor = true;
+			this.bpUndo.Click += new System.EventHandler(this.bpUndo_Click);
 			// 
 			// chkRendu
 			// 
@@ -200,28 +195,6 @@
 			this.lblNbColors.Name = "lblNbColors";
 			this.lblNbColors.Size = new System.Drawing.Size(0, 13);
 			this.lblNbColors.TabIndex = 10;
-			// 
-			// bpUndo
-			// 
-			this.bpUndo.Enabled = false;
-			this.bpUndo.Location = new System.Drawing.Point(6, 247);
-			this.bpUndo.Name = "bpUndo";
-			this.bpUndo.Size = new System.Drawing.Size(75, 23);
-			this.bpUndo.TabIndex = 10;
-			this.bpUndo.Text = "Undo";
-			this.bpUndo.UseVisualStyleBackColor = true;
-			this.bpUndo.Click += new System.EventHandler(this.bpUndo_Click);
-			// 
-			// bpRedo
-			// 
-			this.bpRedo.Enabled = false;
-			this.bpRedo.Location = new System.Drawing.Point(6, 276);
-			this.bpRedo.Name = "bpRedo";
-			this.bpRedo.Size = new System.Drawing.Size(75, 23);
-			this.bpRedo.TabIndex = 10;
-			this.bpRedo.Text = "Redo";
-			this.bpRedo.UseVisualStyleBackColor = true;
-			this.bpRedo.Click += new System.EventHandler(this.bpRedo_Click);
 			// 
 			// ImageCpc
 			// 
@@ -260,8 +233,6 @@
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.ComboBox tailleCrayon;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.ComboBox comboZoom;
 		private System.Windows.Forms.GroupBox grpEdition;
 		private System.Windows.Forms.CheckBox chkRendu;
 		private System.Windows.Forms.Label lblNbColors;
