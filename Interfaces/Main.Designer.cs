@@ -38,7 +38,9 @@
 			this.bpOverscan = new System.Windows.Forms.Button();
 			this.modePlus = new System.Windows.Forms.CheckBox();
 			this.tramage = new System.Windows.Forms.GroupBox();
+			this.chkLissage = new System.Windows.Forms.CheckBox();
 			this.chkPalCpc = new System.Windows.Forms.CheckBox();
+			this.chkMotif2 = new System.Windows.Forms.CheckBox();
 			this.chkMotif = new System.Windows.Forms.CheckBox();
 			this.lblPct = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
@@ -73,7 +75,6 @@
 			this.lblInfoVersion = new System.Windows.Forms.Label();
 			this.withCode = new System.Windows.Forms.CheckBox();
 			this.withPalette = new System.Windows.Forms.CheckBox();
-			this.chkLissage = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -125,9 +126,19 @@
             0,
             0,
             0});
+			this.nbCols.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
 			this.nbCols.Name = "nbCols";
 			this.nbCols.Size = new System.Drawing.Size(44, 20);
 			this.nbCols.TabIndex = 4;
+			this.nbCols.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
 			this.nbCols.ValueChanged += new System.EventHandler(this.nbCols_ValueChanged);
 			// 
 			// nbLignes
@@ -138,9 +149,19 @@
             0,
             0,
             0});
+			this.nbLignes.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
 			this.nbLignes.Name = "nbLignes";
 			this.nbLignes.Size = new System.Drawing.Size(44, 20);
 			this.nbLignes.TabIndex = 5;
+			this.nbLignes.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
 			this.nbLignes.ValueChanged += new System.EventHandler(this.nbLignes_ValueChanged);
 			// 
 			// label1
@@ -259,6 +280,7 @@
 			// 
 			this.tramage.Controls.Add(this.chkLissage);
 			this.tramage.Controls.Add(this.chkPalCpc);
+			this.tramage.Controls.Add(this.chkMotif2);
 			this.tramage.Controls.Add(this.chkMotif);
 			this.tramage.Controls.Add(this.lblPct);
 			this.tramage.Controls.Add(this.methode);
@@ -271,10 +293,21 @@
 			this.tramage.TabStop = false;
 			this.tramage.Text = "Tramage et rendu";
 			// 
+			// chkLissage
+			// 
+			this.chkLissage.AutoSize = true;
+			this.chkLissage.Location = new System.Drawing.Point(48, 105);
+			this.chkLissage.Name = "chkLissage";
+			this.chkLissage.Size = new System.Drawing.Size(62, 17);
+			this.chkLissage.TabIndex = 15;
+			this.chkLissage.Text = "Lissage";
+			this.chkLissage.UseVisualStyleBackColor = true;
+			this.chkLissage.CheckedChanged += new System.EventHandler(this.InterfaceChange);
+			// 
 			// chkPalCpc
 			// 
 			this.chkPalCpc.AutoSize = true;
-			this.chkPalCpc.Location = new System.Drawing.Point(48, 75);
+			this.chkPalCpc.Location = new System.Drawing.Point(48, 70);
 			this.chkPalCpc.Name = "chkPalCpc";
 			this.chkPalCpc.Size = new System.Drawing.Size(110, 30);
 			this.chkPalCpc.TabIndex = 14;
@@ -282,16 +315,27 @@
 			this.chkPalCpc.UseVisualStyleBackColor = true;
 			this.chkPalCpc.CheckedChanged += new System.EventHandler(this.InterfaceChange);
 			// 
+			// chkMotif2
+			// 
+			this.chkMotif2.AutoSize = true;
+			this.chkMotif2.Location = new System.Drawing.Point(48, 149);
+			this.chkMotif2.Name = "chkMotif2";
+			this.chkMotif2.Size = new System.Drawing.Size(102, 17);
+			this.chkMotif2.TabIndex = 13;
+			this.chkMotif2.Text = "Trames \"motif2\"";
+			this.chkMotif2.UseVisualStyleBackColor = true;
+			this.chkMotif2.CheckedChanged += new System.EventHandler(this.chkMotif2_CheckedChanged);
+			// 
 			// chkMotif
 			// 
 			this.chkMotif.AutoSize = true;
-			this.chkMotif.Location = new System.Drawing.Point(48, 149);
+			this.chkMotif.Location = new System.Drawing.Point(48, 127);
 			this.chkMotif.Name = "chkMotif";
 			this.chkMotif.Size = new System.Drawing.Size(96, 17);
 			this.chkMotif.TabIndex = 13;
 			this.chkMotif.Text = "Trames \"motif\"";
 			this.chkMotif.UseVisualStyleBackColor = true;
-			this.chkMotif.CheckedChanged += new System.EventHandler(this.InterfaceChange);
+			this.chkMotif.CheckedChanged += new System.EventHandler(this.chkMotif_CheckedChanged);
 			// 
 			// lblPct
 			// 
@@ -649,17 +693,6 @@
 			this.withPalette.UseVisualStyleBackColor = true;
 			this.withPalette.CheckedChanged += new System.EventHandler(this.withPalette_CheckedChanged);
 			// 
-			// chkLissage
-			// 
-			this.chkLissage.AutoSize = true;
-			this.chkLissage.Location = new System.Drawing.Point(48, 115);
-			this.chkLissage.Name = "chkLissage";
-			this.chkLissage.Size = new System.Drawing.Size(62, 17);
-			this.chkLissage.TabIndex = 15;
-			this.chkLissage.Text = "Lissage";
-			this.chkLissage.UseVisualStyleBackColor = true;
-			this.chkLissage.CheckedChanged += new System.EventHandler(this.InterfaceChange);
-			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -754,6 +787,7 @@
 		private System.Windows.Forms.CheckBox chkMotif;
 		private System.Windows.Forms.CheckBox chkPalCpc;
 		private System.Windows.Forms.CheckBox chkLissage;
+		private System.Windows.Forms.CheckBox chkMotif2;
 	}
 }
 

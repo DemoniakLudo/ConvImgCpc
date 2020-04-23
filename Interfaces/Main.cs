@@ -42,12 +42,12 @@ namespace ConvImgCpc {
 		private void Convert(bool doConvert) {
 			if (imgSrc.GetImage != null && (autoRecalc.Checked || doConvert)) {
 				bpSave.Enabled = bpConvert.Enabled = false;
-				imgCpc.Reset();
 				param.sMode = radioKeepLarger.Checked ? Param.SizeMode.KeepLarger : radioKeepSmaller.Checked ? Param.SizeMode.KeepSmaller : radioFit.Checked ? Param.SizeMode.Fit : Param.SizeMode.UserSize;
 				param.methode = methode.SelectedItem.ToString();
 				param.pct = (int)pctTrame.Value;
 				param.lockState = imgCpc.lockState;
 				param.motif = chkMotif.Checked;
+				param.motif2 = chkMotif2.Checked;
 				param.setPalCpc = chkPalCpc.Checked;
 				Bitmap tmp = new Bitmap(imgCpc.TailleX, imgCpc.TailleY);
 				Graphics g = Graphics.FromImage(tmp);
@@ -128,6 +128,7 @@ namespace ConvImgCpc {
 				Text = "ConvImgCPC - " + Path.GetFileName(fileName);
 				tbxSizeX.Text = imgSrc.GetImage.Width.ToString();
 				tbxSizeY.Text = imgSrc.GetImage.Height.ToString();
+				imgCpc.Reset();
 				Convert(false);
 			}
 		}
@@ -157,6 +158,7 @@ namespace ConvImgCpc {
 				withCode.Checked = param.withCode;
 				withPalette.Checked = param.withPalette;
 				chkMotif.Checked = param.motif;
+				chkMotif2.Checked = param.motif2;
 				chkPalCpc.Checked = param.setPalCpc;
 				chkLissage.Checked = param.lissage;
 			}
@@ -241,17 +243,20 @@ namespace ConvImgCpc {
 		private void nbCols_ValueChanged(object sender, EventArgs e) {
 			param.nbCols = (int)nbCols.Value;
 			imgCpc.TailleX = param.nbCols << 3;
+			imgCpc.Reset();
 			Convert(false);
 		}
 
 		private void nbLignes_ValueChanged(object sender, EventArgs e) {
 			param.nbLignes = (int)nbLignes.Value;
 			imgCpc.TailleY = param.nbLignes << 1;
+			imgCpc.Reset();
 			Convert(false);
 		}
 
 		private void mode_SelectedIndexChanged(object sender, EventArgs e) {
 			imgCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex;
+			imgCpc.Reset();
 			Convert(false);
 		}
 
@@ -343,6 +348,20 @@ namespace ConvImgCpc {
 
 		private void withPalette_CheckedChanged(object sender, EventArgs e) {
 			param.withPalette = withPalette.Checked;
+		}
+
+		private void chkMotif_CheckedChanged(object sender, EventArgs e) {
+			if (chkMotif.Checked)
+				chkMotif2.Checked = false;
+
+			Convert(false);
+		}
+
+		private void chkMotif2_CheckedChanged(object sender, EventArgs e) {
+			if (chkMotif2.Checked)
+				chkMotif.Checked = false;
+
+			Convert(false);
 		}
 	}
 }

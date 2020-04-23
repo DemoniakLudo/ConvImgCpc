@@ -204,9 +204,9 @@ namespace ConvImgCpc {
 						p.v = (byte)(v / Tx);
 						p.b = (byte)(b / Tx);
 					}
-					else 
+					else
 						p = bitmap.GetPixelColor(xPix, yPix);
-					
+
 					if (p.r != 0 || p.v != 0 || p.b != 0) {
 						float r = tblContrast[p.r];
 						float v = tblContrast[p.v];
@@ -391,7 +391,7 @@ namespace ConvImgCpc {
 					tabCol[i, y >> 1] = p.cpcPlus ? new RvbColor((byte)(((dest.Palette[i] & 0xF0) >> 4) * 17), (byte)(((dest.Palette[i] & 0xF00) >> 8) * 17), (byte)((dest.Palette[i] & 0x0F) * 17))
 						: ImageCpc.RgbCPC[dest.modeVirtuel == 5 && i == 3 ? dest.colMode5[y >> 1] < 27 ? dest.colMode5[y >> 1] : 0 : dest.Palette[i] < 27 ? dest.Palette[i] : 0];
 
-			if (p.motif) {
+			if (p.motif || p.motif2) {
 				for (int y = 0; y < dest.TailleY; y += 2) {
 					modeCpc = (dest.modeVirtuel == 5 ? 1 : dest.modeVirtuel >= 3 ? (y & 2) == 0 ? dest.modeVirtuel - 2 : dest.modeVirtuel - 3 : dest.modeVirtuel);
 					Tx = 4 >> modeCpc;
@@ -402,34 +402,29 @@ namespace ConvImgCpc {
 						RvbColor pix2 = bitmap.GetPixelColor(x + Tx, y);
 						int choix1 = 0, choix2 = 0;
 						for (int i1 = 0; i1 < maxCol; i1++) {
-							int i3 = (y & 2) == 0 ? i1 : maxCol - 1 - i1;
-							RvbColor c1 = tabCol[i3, y >> 1];
+							RvbColor c1 = tabCol[i1, y >> 1];
 							for (int i2 = 0; i2 < maxCol; i2++) {
 								RvbColor c2 = tabCol[i2, y >> 1];
-								dist = Math.Abs(pix1.r - c1.r) * K_R
-									+ Math.Abs(pix1.v - c1.v) * K_V
-									+ Math.Abs(pix1.b - c1.b) * K_B
-									+ Math.Abs(pix2.r - c2.r) * K_R
-									+ Math.Abs(pix2.v - c2.v) * K_V
-									+ Math.Abs(pix2.b - c2.b) * K_B;
-								if (i2 != i3 || i3 == 0 || pix1.r != pix2.r || pix1.b != pix2.b || pix1.v != pix2.v || dist == 0) {
-									if (dist < oldDist) {
-										choix1 = i3;
-										choix2 = i2;
-										oldDist = dist;
-										if (dist == 0) {
-											i1 = i2 = 333;
-											break;
-										}
-									}
+								if (p.motif)
+									dist = Math.Abs(pix1.r - c1.r) * K_R + Math.Abs(pix1.v - c1.v) * K_V + Math.Abs(pix1.b - c1.b) * K_B
+										+ Math.Abs(pix2.r - c2.r) * K_R + Math.Abs(pix2.v - c2.v) * K_V + Math.Abs(pix2.b - c2.b) * K_B;
+								else
+									dist = Math.Abs(pix1.r + pix2.r - c1.r - c2.r) * K_R
+										+ Math.Abs(pix1.v + pix2.v - c1.v - c2.v) * K_V
+										+ Math.Abs(pix1.b + pix2.b - c1.b - c2.b) * K_B;
+								if (dist < oldDist) {
+									choix1 = i1;
+									choix2 = i2;
+									oldDist = dist;
+									if (dist == 0)
+										i1 = i2 = maxCol;
 								}
 							}
 						}
-						dest.SetPixelCpc(x, y, choix1, Tx);
-						dest.SetPixelCpc(x + Tx, y, choix2, Tx);
+						dest.SetPixelCpc((y & 2) == 0 ? x : x + Tx, y, choix1, Tx);
+						dest.SetPixelCpc((y & 2) == 0 ? x + Tx : x, y, choix2, Tx);
 					}
 				}
-
 			}
 			else {
 				for (int y = 0; y < dest.TailleY; y += 2) {

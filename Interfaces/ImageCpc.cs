@@ -126,6 +126,10 @@ namespace ConvImgCpc {
 				bmpLock.SetHorLine(startX, y, bmpLock.Width - startX, col);
 			}
 			bmpLock.UnlockBits();
+			int tx = 4 >> (modeVirtuel == 5 ? 1 : modeVirtuel > 2 ? modeVirtuel - 3 : modeVirtuel);
+			int maxCol = 1 << tx;
+			for (int i = 0; i < 16; i++)
+				colors[i].Visible = lockColors[i].Visible = i < maxCol;
 		}
 
 		public void SetPixelCpc(int xPos, int yPos, int col, int tx) {

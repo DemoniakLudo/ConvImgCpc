@@ -20,6 +20,7 @@
 		public bool withCode;
 		public bool withPalette;
 		public bool motif;
+		public bool motif2;
 		public bool setPalCpc;
 		public bool lissage;
 	}
