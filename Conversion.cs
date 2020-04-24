@@ -4,9 +4,9 @@ using System.Drawing;
 
 namespace ConvImgCpc {
 	public static class Conversion {
-		const int K_R = 2449;	//9798;
-		const int K_V = 4809;	//19235;
-		const int K_B = 934;	//3735;
+		const int K_R = 9798;
+		const int K_V = 19235;
+		const int K_B = 3735;
 
 		const int SEUIL_LUM_1 = 85;		// 0x40;
 		const int SEUIL_LUM_2 = 170;	// 0x80;

@@ -31,7 +31,7 @@ namespace ConvImgCpc {
 			param.withCode = withCode.Checked;
 			param.withPalette = withPalette.Checked;
 			imgCpc.Visible = true;
-			lblInfoVersion.Text = "Version " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+			lblInfoVersion.Text = "Version Béta\n" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
 			radioUserSize_CheckedChanged(null, null);
 		}
 
