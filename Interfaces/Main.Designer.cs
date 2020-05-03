@@ -35,6 +35,7 @@
 			this.methode = new System.Windows.Forms.ComboBox();
 			this.pctTrame = new System.Windows.Forms.NumericUpDown();
 			this.resoCPC = new System.Windows.Forms.GroupBox();
+			this.trackModeX = new System.Windows.Forms.TrackBar();
 			this.bpOverscan = new System.Windows.Forms.Button();
 			this.modePlus = new System.Windows.Forms.CheckBox();
 			this.tramage = new System.Windows.Forms.GroupBox();
@@ -60,6 +61,7 @@
 			this.radioKeepSmaller = new System.Windows.Forms.RadioButton();
 			this.radioFit = new System.Windows.Forms.RadioButton();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.radioOrigin = new System.Windows.Forms.RadioButton();
 			this.label7 = new System.Windows.Forms.Label();
 			this.label5 = new System.Windows.Forms.Label();
 			this.tbxPosY = new System.Windows.Forms.TextBox();
@@ -71,6 +73,12 @@
 			this.nb = new System.Windows.Forms.CheckBox();
 			this.sortPal = new System.Windows.Forms.CheckBox();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.bpCtrstMoins = new System.Windows.Forms.Button();
+			this.bpCtrstPlus = new System.Windows.Forms.Button();
+			this.bpSatMoins = new System.Windows.Forms.Button();
+			this.bpSatPlus = new System.Windows.Forms.Button();
+			this.bpLumMoins = new System.Windows.Forms.Button();
+			this.bpLumPlus = new System.Windows.Forms.Button();
 			this.bpSave = new System.Windows.Forms.Button();
 			this.lblInfoVersion = new System.Windows.Forms.Label();
 			this.withCode = new System.Windows.Forms.CheckBox();
@@ -79,6 +87,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
 			this.resoCPC.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.trackModeX)).BeginInit();
 			this.tramage.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.lumi)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.sat)).BeginInit();
@@ -92,9 +101,9 @@
 			this.checkImageSource.AutoSize = true;
 			this.checkImageSource.Location = new System.Drawing.Point(3, 41);
 			this.checkImageSource.Name = "checkImageSource";
-			this.checkImageSource.Size = new System.Drawing.Size(144, 19);
+			this.checkImageSource.Size = new System.Drawing.Size(93, 30);
 			this.checkImageSource.TabIndex = 0;
-			this.checkImageSource.Text = "Afficher image source";
+			this.checkImageSource.Text = "Afficher image\nsource";
 			this.checkImageSource.UseVisualStyleBackColor = true;
 			this.checkImageSource.CheckedChanged += new System.EventHandler(this.checkImageSource_CheckedChanged);
 			// 
@@ -120,7 +129,7 @@
 			// 
 			// nbCols
 			// 
-			this.nbCols.Location = new System.Drawing.Point(80, 21);
+			this.nbCols.Location = new System.Drawing.Point(103, 21);
 			this.nbCols.Maximum = new decimal(new int[] {
             96,
             0,
@@ -143,7 +152,7 @@
 			// 
 			// nbLignes
 			// 
-			this.nbLignes.Location = new System.Drawing.Point(80, 47);
+			this.nbLignes.Location = new System.Drawing.Point(103, 47);
 			this.nbLignes.Maximum = new decimal(new int[] {
             272,
             0,
@@ -169,7 +178,7 @@
 			this.label1.AutoSize = true;
 			this.label1.Location = new System.Drawing.Point(5, 23);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(78, 15);
+			this.label1.Size = new System.Drawing.Size(68, 13);
 			this.label1.TabIndex = 6;
 			this.label1.Text = "Nb Colonnes";
 			// 
@@ -178,7 +187,7 @@
 			this.label2.AutoSize = true;
 			this.label2.Location = new System.Drawing.Point(5, 49);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(63, 15);
+			this.label2.Size = new System.Drawing.Size(55, 13);
 			this.label2.TabIndex = 6;
 			this.label2.Text = "Nb Lignes";
 			// 
@@ -186,7 +195,7 @@
 			// 
 			this.mode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.mode.FormattingEnabled = true;
-			this.mode.Location = new System.Drawing.Point(45, 100);
+			this.mode.Location = new System.Drawing.Point(65, 100);
 			this.mode.Name = "mode";
 			this.mode.Size = new System.Drawing.Size(82, 21);
 			this.mode.TabIndex = 7;
@@ -197,7 +206,7 @@
 			this.label3.AutoSize = true;
 			this.label3.Location = new System.Drawing.Point(3, 103);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(39, 15);
+			this.label3.Size = new System.Drawing.Size(34, 13);
 			this.label3.TabIndex = 6;
 			this.label3.Text = "Mode";
 			// 
@@ -241,6 +250,7 @@
 			// 
 			// resoCPC
 			// 
+			this.resoCPC.Controls.Add(this.trackModeX);
 			this.resoCPC.Controls.Add(this.bpOverscan);
 			this.resoCPC.Controls.Add(this.label1);
 			this.resoCPC.Controls.Add(this.nbCols);
@@ -248,16 +258,28 @@
 			this.resoCPC.Controls.Add(this.label2);
 			this.resoCPC.Controls.Add(this.label3);
 			this.resoCPC.Controls.Add(this.mode);
-			this.resoCPC.Location = new System.Drawing.Point(137, 12);
+			this.resoCPC.Location = new System.Drawing.Point(117, 12);
 			this.resoCPC.Name = "resoCPC";
-			this.resoCPC.Size = new System.Drawing.Size(132, 172);
+			this.resoCPC.Size = new System.Drawing.Size(152, 172);
 			this.resoCPC.TabIndex = 11;
 			this.resoCPC.TabStop = false;
 			this.resoCPC.Text = "Résolution CPC";
 			// 
+			// trackModeX
+			// 
+			this.trackModeX.Location = new System.Drawing.Point(3, 127);
+			this.trackModeX.Maximum = 32;
+			this.trackModeX.Minimum = 1;
+			this.trackModeX.Name = "trackModeX";
+			this.trackModeX.Size = new System.Drawing.Size(145, 42);
+			this.trackModeX.TabIndex = 11;
+			this.trackModeX.Value = 1;
+			this.trackModeX.Visible = false;
+			this.trackModeX.Scroll += new System.EventHandler(this.InterfaceChange);
+			// 
 			// bpOverscan
 			// 
-			this.bpOverscan.Location = new System.Drawing.Point(44, 71);
+			this.bpOverscan.Location = new System.Drawing.Point(64, 71);
 			this.bpOverscan.Name = "bpOverscan";
 			this.bpOverscan.Size = new System.Drawing.Size(83, 22);
 			this.bpOverscan.TabIndex = 10;
@@ -270,7 +292,7 @@
 			this.modePlus.AutoSize = true;
 			this.modePlus.Location = new System.Drawing.Point(6, 42);
 			this.modePlus.Name = "modePlus";
-			this.modePlus.Size = new System.Drawing.Size(57, 19);
+			this.modePlus.Size = new System.Drawing.Size(53, 17);
 			this.modePlus.TabIndex = 8;
 			this.modePlus.Text = "CPC+";
 			this.modePlus.UseVisualStyleBackColor = true;
@@ -298,7 +320,7 @@
 			this.chkLissage.AutoSize = true;
 			this.chkLissage.Location = new System.Drawing.Point(48, 105);
 			this.chkLissage.Name = "chkLissage";
-			this.chkLissage.Size = new System.Drawing.Size(69, 19);
+			this.chkLissage.Size = new System.Drawing.Size(62, 17);
 			this.chkLissage.TabIndex = 15;
 			this.chkLissage.Text = "Lissage";
 			this.chkLissage.UseVisualStyleBackColor = true;
@@ -309,7 +331,7 @@
 			this.chkPalCpc.AutoSize = true;
 			this.chkPalCpc.Location = new System.Drawing.Point(48, 70);
 			this.chkPalCpc.Name = "chkPalCpc";
-			this.chkPalCpc.Size = new System.Drawing.Size(122, 34);
+			this.chkPalCpc.Size = new System.Drawing.Size(110, 30);
 			this.chkPalCpc.TabIndex = 14;
 			this.chkPalCpc.Text = "Réduction palette\nimage source";
 			this.chkPalCpc.UseVisualStyleBackColor = true;
@@ -320,7 +342,7 @@
 			this.chkMotif2.AutoSize = true;
 			this.chkMotif2.Location = new System.Drawing.Point(48, 149);
 			this.chkMotif2.Name = "chkMotif2";
-			this.chkMotif2.Size = new System.Drawing.Size(113, 19);
+			this.chkMotif2.Size = new System.Drawing.Size(102, 17);
 			this.chkMotif2.TabIndex = 13;
 			this.chkMotif2.Text = "Trames \"motif2\"";
 			this.chkMotif2.UseVisualStyleBackColor = true;
@@ -331,7 +353,7 @@
 			this.chkMotif.AutoSize = true;
 			this.chkMotif.Location = new System.Drawing.Point(48, 127);
 			this.chkMotif.Name = "chkMotif";
-			this.chkMotif.Size = new System.Drawing.Size(106, 19);
+			this.chkMotif.Size = new System.Drawing.Size(96, 17);
 			this.chkMotif.TabIndex = 13;
 			this.chkMotif.Text = "Trames \"motif\"";
 			this.chkMotif.UseVisualStyleBackColor = true;
@@ -342,7 +364,7 @@
 			this.lblPct.AutoSize = true;
 			this.lblPct.Location = new System.Drawing.Point(124, 48);
 			this.lblPct.Name = "lblPct";
-			this.lblPct.Size = new System.Drawing.Size(18, 15);
+			this.lblPct.Size = new System.Drawing.Size(15, 13);
 			this.lblPct.TabIndex = 12;
 			this.lblPct.Text = "%";
 			this.lblPct.Visible = false;
@@ -352,26 +374,26 @@
 			this.label4.AutoSize = true;
 			this.label4.Location = new System.Drawing.Point(6, 22);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(33, 15);
+			this.label4.Size = new System.Drawing.Size(31, 13);
 			this.label4.TabIndex = 12;
 			this.label4.Text = "Type";
 			// 
 			// lumi
 			// 
-			this.lumi.Location = new System.Drawing.Point(59, 91);
+			this.lumi.Location = new System.Drawing.Point(53, 91);
 			this.lumi.Maximum = 200;
 			this.lumi.Name = "lumi";
-			this.lumi.Size = new System.Drawing.Size(360, 50);
+			this.lumi.Size = new System.Drawing.Size(362, 42);
 			this.lumi.TabIndex = 12;
 			this.lumi.Value = 100;
 			this.lumi.ValueChanged += new System.EventHandler(this.lumi_ValueChanged);
 			// 
 			// sat
 			// 
-			this.sat.Location = new System.Drawing.Point(59, 141);
+			this.sat.Location = new System.Drawing.Point(53, 141);
 			this.sat.Maximum = 200;
 			this.sat.Name = "sat";
-			this.sat.Size = new System.Drawing.Size(360, 50);
+			this.sat.Size = new System.Drawing.Size(362, 42);
 			this.sat.TabIndex = 12;
 			this.sat.Value = 100;
 			this.sat.ValueChanged += new System.EventHandler(this.sat_ValueChanged);
@@ -381,22 +403,22 @@
 			this.label8.AutoSize = true;
 			this.label8.Location = new System.Drawing.Point(5, 101);
 			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(68, 15);
+			this.label8.Size = new System.Drawing.Size(30, 13);
 			this.label8.TabIndex = 13;
-			this.label8.Text = "Luminosité";
+			this.label8.Text = "Lum.";
 			// 
 			// label9
 			// 
 			this.label9.AutoSize = true;
 			this.label9.Location = new System.Drawing.Point(5, 151);
 			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(63, 15);
+			this.label9.Size = new System.Drawing.Size(26, 13);
 			this.label9.TabIndex = 13;
-			this.label9.Text = "Saturation";
+			this.label9.Text = "Sat.";
 			// 
 			// bpRazLumi
 			// 
-			this.bpRazLumi.Location = new System.Drawing.Point(415, 96);
+			this.bpRazLumi.Location = new System.Drawing.Point(437, 96);
 			this.bpRazLumi.Name = "bpRazLumi";
 			this.bpRazLumi.Size = new System.Drawing.Size(35, 23);
 			this.bpRazLumi.TabIndex = 14;
@@ -406,7 +428,7 @@
 			// 
 			// bpRazSat
 			// 
-			this.bpRazSat.Location = new System.Drawing.Point(415, 146);
+			this.bpRazSat.Location = new System.Drawing.Point(437, 146);
 			this.bpRazSat.Name = "bpRazSat";
 			this.bpRazSat.Size = new System.Drawing.Size(35, 23);
 			this.bpRazSat.TabIndex = 14;
@@ -419,7 +441,7 @@
 			this.reducPal2.AutoSize = true;
 			this.reducPal2.Location = new System.Drawing.Point(357, 42);
 			this.reducPal2.Name = "reducPal2";
-			this.reducPal2.Size = new System.Drawing.Size(92, 19);
+			this.reducPal2.Size = new System.Drawing.Size(84, 17);
 			this.reducPal2.TabIndex = 47;
 			this.reducPal2.Text = "Réduction 2";
 			this.reducPal2.UseVisualStyleBackColor = true;
@@ -431,7 +453,7 @@
 			this.reducPal1.AutoSize = true;
 			this.reducPal1.Location = new System.Drawing.Point(174, 42);
 			this.reducPal1.Name = "reducPal1";
-			this.reducPal1.Size = new System.Drawing.Size(92, 19);
+			this.reducPal1.Size = new System.Drawing.Size(84, 17);
 			this.reducPal1.TabIndex = 46;
 			this.reducPal1.Text = "Réduction 1";
 			this.reducPal1.UseVisualStyleBackColor = true;
@@ -443,7 +465,7 @@
 			this.newMethode.AutoSize = true;
 			this.newMethode.Location = new System.Drawing.Point(358, 19);
 			this.newMethode.Name = "newMethode";
-			this.newMethode.Size = new System.Drawing.Size(93, 19);
+			this.newMethode.Size = new System.Drawing.Size(83, 17);
 			this.newMethode.TabIndex = 45;
 			this.newMethode.Text = "Plus précise";
 			this.newMethode.UseVisualStyleBackColor = true;
@@ -454,7 +476,7 @@
 			this.autoRecalc.AutoSize = true;
 			this.autoRecalc.Location = new System.Drawing.Point(3, 122);
 			this.autoRecalc.Name = "autoRecalc";
-			this.autoRecalc.Size = new System.Drawing.Size(123, 34);
+			this.autoRecalc.Size = new System.Drawing.Size(108, 30);
 			this.autoRecalc.TabIndex = 44;
 			this.autoRecalc.Text = "Recalculer\r\nAutomatiquement";
 			this.autoRecalc.UseVisualStyleBackColor = true;
@@ -462,7 +484,7 @@
 			// 
 			// bpRazContrast
 			// 
-			this.bpRazContrast.Location = new System.Drawing.Point(415, 196);
+			this.bpRazContrast.Location = new System.Drawing.Point(437, 196);
 			this.bpRazContrast.Name = "bpRazContrast";
 			this.bpRazContrast.Size = new System.Drawing.Size(35, 23);
 			this.bpRazContrast.TabIndex = 43;
@@ -472,10 +494,10 @@
 			// 
 			// contrast
 			// 
-			this.contrast.Location = new System.Drawing.Point(59, 191);
+			this.contrast.Location = new System.Drawing.Point(53, 191);
 			this.contrast.Maximum = 200;
 			this.contrast.Name = "contrast";
-			this.contrast.Size = new System.Drawing.Size(360, 50);
+			this.contrast.Size = new System.Drawing.Size(362, 42);
 			this.contrast.TabIndex = 42;
 			this.contrast.Value = 100;
 			this.contrast.ValueChanged += new System.EventHandler(this.contrast_ValueChanged);
@@ -483,9 +505,9 @@
 			// radioKeepLarger
 			// 
 			this.radioKeepLarger.AutoSize = true;
-			this.radioKeepLarger.Location = new System.Drawing.Point(6, 65);
+			this.radioKeepLarger.Location = new System.Drawing.Point(6, 59);
 			this.radioKeepLarger.Name = "radioKeepLarger";
-			this.radioKeepLarger.Size = new System.Drawing.Size(90, 19);
+			this.radioKeepLarger.Size = new System.Drawing.Size(80, 17);
 			this.radioKeepLarger.TabIndex = 41;
 			this.radioKeepLarger.Text = "KeepLarger";
 			this.radioKeepLarger.UseVisualStyleBackColor = true;
@@ -494,9 +516,9 @@
 			// radioKeepSmaller
 			// 
 			this.radioKeepSmaller.AutoSize = true;
-			this.radioKeepSmaller.Location = new System.Drawing.Point(6, 42);
+			this.radioKeepSmaller.Location = new System.Drawing.Point(6, 39);
 			this.radioKeepSmaller.Name = "radioKeepSmaller";
-			this.radioKeepSmaller.Size = new System.Drawing.Size(97, 19);
+			this.radioKeepSmaller.Size = new System.Drawing.Size(84, 17);
 			this.radioKeepSmaller.TabIndex = 40;
 			this.radioKeepSmaller.Text = "KeepSmaller";
 			this.radioKeepSmaller.UseVisualStyleBackColor = true;
@@ -508,7 +530,7 @@
 			this.radioFit.Checked = true;
 			this.radioFit.Location = new System.Drawing.Point(6, 19);
 			this.radioFit.Name = "radioFit";
-			this.radioFit.Size = new System.Drawing.Size(38, 19);
+			this.radioFit.Size = new System.Drawing.Size(36, 17);
 			this.radioFit.TabIndex = 39;
 			this.radioFit.TabStop = true;
 			this.radioFit.Text = "Fit";
@@ -517,6 +539,7 @@
 			// 
 			// groupBox1
 			// 
+			this.groupBox1.Controls.Add(this.radioOrigin);
 			this.groupBox1.Controls.Add(this.label7);
 			this.groupBox1.Controls.Add(this.label5);
 			this.groupBox1.Controls.Add(this.tbxPosY);
@@ -534,60 +557,78 @@
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Taille image source";
 			// 
+			// radioOrigin
+			// 
+			this.radioOrigin.AutoSize = true;
+			this.radioOrigin.Enabled = false;
+			this.radioOrigin.Location = new System.Drawing.Point(6, 99);
+			this.radioOrigin.Name = "radioOrigin";
+			this.radioOrigin.Size = new System.Drawing.Size(92, 17);
+			this.radioOrigin.TabIndex = 46;
+			this.radioOrigin.TabStop = true;
+			this.radioOrigin.Text = "Taille d\'origine";
+			this.radioOrigin.UseVisualStyleBackColor = true;
+			this.radioOrigin.CheckedChanged += new System.EventHandler(this.radioUserSize_CheckedChanged);
+			// 
 			// label7
 			// 
 			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(3, 140);
+			this.label7.Location = new System.Drawing.Point(3, 149);
 			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(57, 15);
+			this.label7.Size = new System.Drawing.Size(50, 13);
 			this.label7.TabIndex = 45;
 			this.label7.Text = "Position :";
 			// 
 			// label5
 			// 
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(3, 116);
+			this.label5.Location = new System.Drawing.Point(3, 125);
 			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(43, 15);
+			this.label5.Size = new System.Drawing.Size(38, 13);
 			this.label5.TabIndex = 45;
 			this.label5.Text = "Taille :";
 			// 
 			// tbxPosY
 			// 
-			this.tbxPosY.Location = new System.Drawing.Point(100, 137);
+			this.tbxPosY.Location = new System.Drawing.Point(100, 146);
 			this.tbxPosY.Name = "tbxPosY";
 			this.tbxPosY.Size = new System.Drawing.Size(34, 20);
 			this.tbxPosY.TabIndex = 44;
 			this.tbxPosY.Text = "0";
+			this.tbxPosY.Validating += new System.ComponentModel.CancelEventHandler(this.InterfaceChange);
 			// 
 			// tbxSizeY
 			// 
-			this.tbxSizeY.Location = new System.Drawing.Point(100, 113);
+			this.tbxSizeY.Location = new System.Drawing.Point(100, 122);
 			this.tbxSizeY.Name = "tbxSizeY";
 			this.tbxSizeY.Size = new System.Drawing.Size(34, 20);
 			this.tbxSizeY.TabIndex = 44;
+			this.tbxSizeY.Validating += new System.ComponentModel.CancelEventHandler(this.InterfaceChange);
 			// 
 			// tbxPosX
 			// 
-			this.tbxPosX.Location = new System.Drawing.Point(58, 137);
+			this.tbxPosX.Location = new System.Drawing.Point(58, 146);
 			this.tbxPosX.Name = "tbxPosX";
 			this.tbxPosX.Size = new System.Drawing.Size(36, 20);
 			this.tbxPosX.TabIndex = 43;
 			this.tbxPosX.Text = "0";
+			this.tbxPosX.Validating += new System.ComponentModel.CancelEventHandler(this.InterfaceChange);
 			// 
 			// tbxSizeX
 			// 
-			this.tbxSizeX.Location = new System.Drawing.Point(58, 113);
+			this.tbxSizeX.Location = new System.Drawing.Point(58, 122);
 			this.tbxSizeX.Name = "tbxSizeX";
 			this.tbxSizeX.Size = new System.Drawing.Size(36, 20);
 			this.tbxSizeX.TabIndex = 43;
+			this.tbxSizeX.Validating += new System.ComponentModel.CancelEventHandler(this.InterfaceChange);
 			// 
 			// radioUserSize
 			// 
 			this.radioUserSize.AutoSize = true;
-			this.radioUserSize.Location = new System.Drawing.Point(6, 88);
+			this.radioUserSize.Enabled = false;
+			this.radioUserSize.Location = new System.Drawing.Point(6, 79);
 			this.radioUserSize.Name = "radioUserSize";
-			this.radioUserSize.Size = new System.Drawing.Size(111, 19);
+			this.radioUserSize.Size = new System.Drawing.Size(97, 17);
 			this.radioUserSize.TabIndex = 42;
 			this.radioUserSize.TabStop = true;
 			this.radioUserSize.Text = "Taille utilisateur";
@@ -599,16 +640,16 @@
 			this.label10.AutoSize = true;
 			this.label10.Location = new System.Drawing.Point(5, 201);
 			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(59, 15);
+			this.label10.Size = new System.Drawing.Size(31, 13);
 			this.label10.TabIndex = 13;
-			this.label10.Text = "Contraste";
+			this.label10.Text = "Ctrst.";
 			// 
 			// nb
 			// 
 			this.nb.AutoSize = true;
 			this.nb.Location = new System.Drawing.Point(175, 19);
 			this.nb.Name = "nb";
-			this.nb.Size = new System.Drawing.Size(93, 19);
+			this.nb.Size = new System.Drawing.Size(83, 17);
 			this.nb.TabIndex = 51;
 			this.nb.Text = "Noir && blanc";
 			this.nb.UseVisualStyleBackColor = true;
@@ -619,7 +660,7 @@
 			this.sortPal.AutoSize = true;
 			this.sortPal.Location = new System.Drawing.Point(6, 19);
 			this.sortPal.Name = "sortPal";
-			this.sortPal.Size = new System.Drawing.Size(51, 19);
+			this.sortPal.Size = new System.Drawing.Size(47, 17);
 			this.sortPal.TabIndex = 50;
 			this.sortPal.Text = "Trier";
 			this.sortPal.UseVisualStyleBackColor = true;
@@ -627,6 +668,12 @@
 			// 
 			// groupBox2
 			// 
+			this.groupBox2.Controls.Add(this.bpCtrstMoins);
+			this.groupBox2.Controls.Add(this.bpCtrstPlus);
+			this.groupBox2.Controls.Add(this.bpSatMoins);
+			this.groupBox2.Controls.Add(this.bpSatPlus);
+			this.groupBox2.Controls.Add(this.bpLumMoins);
+			this.groupBox2.Controls.Add(this.bpLumPlus);
 			this.groupBox2.Controls.Add(this.modePlus);
 			this.groupBox2.Controls.Add(this.nb);
 			this.groupBox2.Controls.Add(this.sortPal);
@@ -642,12 +689,72 @@
 			this.groupBox2.Controls.Add(this.label9);
 			this.groupBox2.Controls.Add(this.sat);
 			this.groupBox2.Controls.Add(this.label8);
-			this.groupBox2.Location = new System.Drawing.Point(137, 190);
+			this.groupBox2.Location = new System.Drawing.Point(117, 190);
 			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(456, 238);
+			this.groupBox2.Size = new System.Drawing.Size(476, 238);
 			this.groupBox2.TabIndex = 52;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Effets de palette";
+			// 
+			// bpCtrstMoins
+			// 
+			this.bpCtrstMoins.Location = new System.Drawing.Point(37, 196);
+			this.bpCtrstMoins.Name = "bpCtrstMoins";
+			this.bpCtrstMoins.Size = new System.Drawing.Size(23, 23);
+			this.bpCtrstMoins.TabIndex = 55;
+			this.bpCtrstMoins.Text = "-";
+			this.bpCtrstMoins.UseVisualStyleBackColor = true;
+			this.bpCtrstMoins.Click += new System.EventHandler(this.bpCtrstMoins_Click);
+			// 
+			// bpCtrstPlus
+			// 
+			this.bpCtrstPlus.Location = new System.Drawing.Point(409, 196);
+			this.bpCtrstPlus.Name = "bpCtrstPlus";
+			this.bpCtrstPlus.Size = new System.Drawing.Size(23, 23);
+			this.bpCtrstPlus.TabIndex = 56;
+			this.bpCtrstPlus.Text = "+";
+			this.bpCtrstPlus.UseVisualStyleBackColor = true;
+			this.bpCtrstPlus.Click += new System.EventHandler(this.bpCtrstPlus_Click);
+			// 
+			// bpSatMoins
+			// 
+			this.bpSatMoins.Location = new System.Drawing.Point(37, 146);
+			this.bpSatMoins.Name = "bpSatMoins";
+			this.bpSatMoins.Size = new System.Drawing.Size(23, 23);
+			this.bpSatMoins.TabIndex = 53;
+			this.bpSatMoins.Text = "-";
+			this.bpSatMoins.UseVisualStyleBackColor = true;
+			this.bpSatMoins.Click += new System.EventHandler(this.bpSatMoins_Click);
+			// 
+			// bpSatPlus
+			// 
+			this.bpSatPlus.Location = new System.Drawing.Point(409, 146);
+			this.bpSatPlus.Name = "bpSatPlus";
+			this.bpSatPlus.Size = new System.Drawing.Size(23, 23);
+			this.bpSatPlus.TabIndex = 54;
+			this.bpSatPlus.Text = "+";
+			this.bpSatPlus.UseVisualStyleBackColor = true;
+			this.bpSatPlus.Click += new System.EventHandler(this.bpSatPlus_Click);
+			// 
+			// bpLumMoins
+			// 
+			this.bpLumMoins.Location = new System.Drawing.Point(37, 96);
+			this.bpLumMoins.Name = "bpLumMoins";
+			this.bpLumMoins.Size = new System.Drawing.Size(23, 23);
+			this.bpLumMoins.TabIndex = 52;
+			this.bpLumMoins.Text = "-";
+			this.bpLumMoins.UseVisualStyleBackColor = true;
+			this.bpLumMoins.Click += new System.EventHandler(this.bpLumMoins_Click);
+			// 
+			// bpLumPlus
+			// 
+			this.bpLumPlus.Location = new System.Drawing.Point(408, 96);
+			this.bpLumPlus.Name = "bpLumPlus";
+			this.bpLumPlus.Size = new System.Drawing.Size(23, 23);
+			this.bpLumPlus.TabIndex = 52;
+			this.bpLumPlus.Text = "+";
+			this.bpLumPlus.UseVisualStyleBackColor = true;
+			this.bpLumPlus.Click += new System.EventHandler(this.bpLumPlus_Click);
 			// 
 			// bpSave
 			// 
@@ -663,7 +770,7 @@
 			// 
 			this.lblInfoVersion.Location = new System.Drawing.Point(0, 381);
 			this.lblInfoVersion.Name = "lblInfoVersion";
-			this.lblInfoVersion.Size = new System.Drawing.Size(126, 47);
+			this.lblInfoVersion.Size = new System.Drawing.Size(116, 47);
 			this.lblInfoVersion.TabIndex = 52;
 			// 
 			// withCode
@@ -673,7 +780,7 @@
 			this.withCode.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.withCode.Location = new System.Drawing.Point(3, 266);
 			this.withCode.Name = "withCode";
-			this.withCode.Size = new System.Drawing.Size(116, 49);
+			this.withCode.Size = new System.Drawing.Size(104, 43);
 			this.withCode.TabIndex = 52;
 			this.withCode.Text = "Inclure le code\r\nd\'affichage dans\r\nl\'image";
 			this.withCode.UseVisualStyleBackColor = true;
@@ -686,7 +793,7 @@
 			this.withPalette.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.withPalette.Location = new System.Drawing.Point(3, 315);
 			this.withPalette.Name = "withPalette";
-			this.withPalette.Size = new System.Drawing.Size(116, 34);
+			this.withPalette.Size = new System.Drawing.Size(104, 30);
 			this.withPalette.TabIndex = 52;
 			this.withPalette.Text = "Inclure la palette\r\ndans l\'image";
 			this.withPalette.UseVisualStyleBackColor = true;
@@ -719,6 +826,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).EndInit();
 			this.resoCPC.ResumeLayout(false);
 			this.resoCPC.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.trackModeX)).EndInit();
 			this.tramage.ResumeLayout(false);
 			this.tramage.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.lumi)).EndInit();
@@ -787,6 +895,14 @@
 		private System.Windows.Forms.CheckBox chkPalCpc;
 		private System.Windows.Forms.CheckBox chkLissage;
 		private System.Windows.Forms.CheckBox chkMotif2;
+		private System.Windows.Forms.RadioButton radioOrigin;
+		private System.Windows.Forms.TrackBar trackModeX;
+		private System.Windows.Forms.Button bpCtrstMoins;
+		private System.Windows.Forms.Button bpCtrstPlus;
+		private System.Windows.Forms.Button bpSatMoins;
+		private System.Windows.Forms.Button bpSatPlus;
+		private System.Windows.Forms.Button bpLumMoins;
+		private System.Windows.Forms.Button bpLumPlus;
 	}
 }
 

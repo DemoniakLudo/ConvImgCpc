@@ -37,6 +37,7 @@
 			this.bpUndo = new System.Windows.Forms.Button();
 			this.chkRendu = new System.Windows.Forms.CheckBox();
 			this.lblNbColors = new System.Windows.Forms.Label();
+			this.chkDoRedo = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
 			this.grpEdition.SuspendLayout();
 			this.SuspendLayout();
@@ -49,15 +50,15 @@
 			this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.pictureBox.TabIndex = 0;
 			this.pictureBox.TabStop = false;
-			this.pictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseDown);
-			this.pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseMove);
+			this.pictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TrtMouseMove);
+			this.pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TrtMouseMove);
 			// 
 			// lockAllPal
 			// 
 			this.lockAllPal.AutoSize = true;
 			this.lockAllPal.Location = new System.Drawing.Point(784, 602);
 			this.lockAllPal.Name = "lockAllPal";
-			this.lockAllPal.Size = new System.Drawing.Size(103, 19);
+			this.lockAllPal.Size = new System.Drawing.Size(93, 17);
 			this.lockAllPal.TabIndex = 1;
 			this.lockAllPal.Text = "Tout vérouiller";
 			this.lockAllPal.UseVisualStyleBackColor = true;
@@ -68,7 +69,7 @@
 			this.modeEdition.AutoSize = true;
 			this.modeEdition.Location = new System.Drawing.Point(797, 12);
 			this.modeEdition.Name = "modeEdition";
-			this.modeEdition.Size = new System.Drawing.Size(96, 19);
+			this.modeEdition.Size = new System.Drawing.Size(84, 17);
 			this.modeEdition.TabIndex = 2;
 			this.modeEdition.Text = "Editer image";
 			this.modeEdition.UseVisualStyleBackColor = true;
@@ -109,7 +110,7 @@
 			this.label3.AutoSize = true;
 			this.label3.Location = new System.Drawing.Point(16, 99);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(95, 15);
+			this.label3.Size = new System.Drawing.Size(84, 13);
 			this.label3.TabIndex = 4;
 			this.label3.Text = "Couleur crayon :";
 			// 
@@ -118,7 +119,7 @@
 			this.label2.AutoSize = true;
 			this.label2.Location = new System.Drawing.Point(6, 64);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(82, 15);
+			this.label2.Size = new System.Drawing.Size(73, 13);
 			this.label2.TabIndex = 5;
 			this.label2.Text = "Taille crayon :";
 			// 
@@ -141,6 +142,7 @@
 			// 
 			// grpEdition
 			// 
+			this.grpEdition.Controls.Add(this.chkDoRedo);
 			this.grpEdition.Controls.Add(this.bpRedo);
 			this.grpEdition.Controls.Add(this.bpUndo);
 			this.grpEdition.Controls.Add(this.chkRendu);
@@ -182,7 +184,7 @@
 			this.chkRendu.AutoSize = true;
 			this.chkRendu.Location = new System.Drawing.Point(6, 19);
 			this.chkRendu.Name = "chkRendu";
-			this.chkRendu.Size = new System.Drawing.Size(120, 19);
+			this.chkRendu.Size = new System.Drawing.Size(107, 17);
 			this.chkRendu.TabIndex = 9;
 			this.chkRendu.Text = "Fenêtre de rendu";
 			this.chkRendu.UseVisualStyleBackColor = true;
@@ -193,8 +195,18 @@
 			this.lblNbColors.AutoSize = true;
 			this.lblNbColors.Location = new System.Drawing.Point(787, 568);
 			this.lblNbColors.Name = "lblNbColors";
-			this.lblNbColors.Size = new System.Drawing.Size(0, 15);
+			this.lblNbColors.Size = new System.Drawing.Size(0, 13);
 			this.lblNbColors.TabIndex = 10;
+			// 
+			// chkDoRedo
+			// 
+			this.chkDoRedo.AutoSize = true;
+			this.chkDoRedo.Location = new System.Drawing.Point(15, 317);
+			this.chkDoRedo.Name = "chkDoRedo";
+			this.chkDoRedo.Size = new System.Drawing.Size(185, 17);
+			this.chkDoRedo.TabIndex = 11;
+			this.chkDoRedo.Text = "Garder retouches\naprès recalcul";
+			this.chkDoRedo.UseVisualStyleBackColor = true;
 			// 
 			// ImageCpc
 			// 
@@ -238,6 +250,7 @@
 		private System.Windows.Forms.Label lblNbColors;
 		private System.Windows.Forms.Button bpRedo;
 		private System.Windows.Forms.Button bpUndo;
+		private System.Windows.Forms.CheckBox chkDoRedo;
 
 	}
 }

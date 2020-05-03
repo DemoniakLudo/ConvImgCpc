@@ -334,7 +334,7 @@ namespace ConvImgCpc {
 
 		static byte[] ModePal = new byte[48];
 
-		static public int SauveScr(string NomFic, ImageCpc bitmapCpc, Param param, bool compact) {
+		static public int SauveScr(string NomFic, BitmapCpc bitmapCpc, Param param, bool compact) {
 			byte[] bufPack = new byte[0x8000];
 			bool Overscan = (bitmapCpc.NbLig * bitmapCpc.NbCol > 0x3F00);
 			if (param.withPalette) {

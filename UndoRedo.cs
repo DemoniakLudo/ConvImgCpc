@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace ConvImgCpc {
 	public class UndoRedo {
-		List<MemoPoint> lstUndoRedo = new List<MemoPoint>();
+		public List<MemoPoint> lstUndoRedo = new List<MemoPoint>();
 		int numRedo = 0, maxNum = 0, numPt = 0;
 		public int NumRedo { get { return numRedo; } }
 

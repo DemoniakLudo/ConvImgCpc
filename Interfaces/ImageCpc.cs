@@ -6,7 +6,6 @@ using System.Windows.Forms;
 
 namespace ConvImgCpc {
 	public partial class ImageCpc : Form {
-		public byte[] bmpCpc = new byte[0x10000];
 		private LockBitmap bmpLock, tmpLock;
 		private Bitmap bitmapZoom;
 		private Label[] colors = new Label[16];
@@ -23,72 +22,47 @@ namespace ConvImgCpc {
 		private UndoRedo undo = new UndoRedo();
 		private bool doDraw = false;
 		public delegate void ConvertDelegate(bool doConvertbook);
+		public BitmapCpc bitmapCpc = new BitmapCpc();
 
 		private ConvertDelegate Convert;
 
-		public int[] Palette = { 1, 24, 20, 6, 26, 0, 2, 7, 10, 12, 14, 16, 18, 22, 1, 14, 1 };
+		public int[] Palette {
+			get { return bitmapCpc.Palette; }
+			set { bitmapCpc.Palette = value; }
+		}
 		private int[] tabOctetMode = { 0x00, 0x80, 0x08, 0x88, 0x20, 0xA0, 0x28, 0xA8, 0x02, 0x82, 0x0A, 0x8A, 0x22, 0xA2, 0x2A, 0xAA };
-		private int[] maskMode = { 16, 4, 2 };
-		private const int Lum0 = 0x00;
-		private const int Lum1 = 0x70;
-		private const int Lum2 = 0xFF;
 		public int[] colMode5 = new int[272];
-		static public RvbColor[] RgbCPC = {
-							new RvbColor( Lum0, Lum0, Lum0),
-							new RvbColor( Lum1, Lum0, Lum0),
-							new RvbColor( Lum2, Lum0, Lum0),
-							new RvbColor( Lum0, Lum0, Lum1),
-							new RvbColor( Lum1, Lum0, Lum1),
-							new RvbColor( Lum2, Lum0, Lum1),
-							new RvbColor( Lum0, Lum0, Lum2),
-							new RvbColor( Lum1, Lum0, Lum2),
-							new RvbColor( Lum2, Lum0, Lum2),
-							new RvbColor( Lum0, Lum1, Lum0),
-							new RvbColor( Lum1, Lum1, Lum0),
-							new RvbColor( Lum2, Lum1, Lum0),
-							new RvbColor( Lum0, Lum1, Lum1),
-							new RvbColor( Lum1, Lum1, Lum1),
-							new RvbColor( Lum2, Lum1, Lum1),
-							new RvbColor( Lum0, Lum1, Lum2),
-							new RvbColor( Lum1, Lum1, Lum2),
-							new RvbColor( Lum2, Lum1, Lum2),
-							new RvbColor( Lum0, Lum2, Lum0),
-							new RvbColor( Lum1, Lum2, Lum0),
-							new RvbColor( Lum2, Lum2, Lum0),
-							new RvbColor( Lum0, Lum2, Lum1),
-							new RvbColor( Lum1, Lum2, Lum1),
-							new RvbColor( Lum2, Lum2, Lum1),
-							new RvbColor( Lum0, Lum2, Lum2),
-							new RvbColor( Lum1, Lum2, Lum2),
-							new RvbColor( Lum2, Lum2, Lum2)
-							};
 
-		private int nbCol = 80;
-		public int NbCol { get { return nbCol; } }
+
+		public int NbCol { get { return bitmapCpc.NbCol; } }
 		public int TailleX {
-			get { return nbCol << 3; }
-			set { nbCol = value >> 3; }
+			get { return bitmapCpc.TailleX; }
+			set { bitmapCpc.TailleX = value; }
 		}
-		private int nbLig = 200;
-		public int NbLig { get { return nbLig; } }
+		public int NbLig { get { return bitmapCpc.NbLig; } }
 		public int TailleY {
-			get { return nbLig << 1; }
-			set { nbLig = value >> 1; }
+			get { return bitmapCpc.TailleY; }
+			set { bitmapCpc.TailleY = value; }
 		}
-		public int BitmapSize { get { return nbCol + GetAdrCpc(TailleY - 2); } }
-		public int modeVirtuel = 1;
+		public int BitmapSize { get { return NbCol + GetAdrCpc(TailleY - 2); } }
+		public int modeVirtuel {
+			get { return bitmapCpc.modeVirtuel; }
+			set { bitmapCpc.modeVirtuel = value; }
+		}
 		public bool cpcPlus = false;
 
+		private Main main;
 		private int GetAdrCpc(int y) {
-			int adrCPC = (y >> 4) * nbCol + (y & 14) * 0x400;
-			if (y > 255 && (nbCol * nbLig > 0x3FFF))
+			int adrCPC = (y >> 4) * NbCol + (y & 14) * 0x400;
+			if (y > 255 && (NbCol * NbLig > 0x3FFF))
 				adrCPC += 0x3800;
 
 			return adrCPC;
 		}
 
-		public ImageCpc(ConvertDelegate fctConvert) {
+		public ImageCpc(Main m, ConvertDelegate fctConvert) {
 			InitializeComponent();
+			main = m;
 			int tx = pictureBox.Width;
 			int ty = pictureBox.Height;
 			Bitmap bmp = new Bitmap(tx, ty);
@@ -126,8 +100,8 @@ namespace ConvImgCpc {
 				bmpLock.SetHorLine(startX, y, bmpLock.Width - startX, col);
 			}
 			bmpLock.UnlockBits();
-			int tx = 4 >> (modeVirtuel == 5 ? 1 : modeVirtuel > 2 ? modeVirtuel - 3 : modeVirtuel);
-			int maxCol = 1 << tx;
+			int tx = 4 >> (modeVirtuel >= 5 ? 1 : modeVirtuel > 2 ? modeVirtuel - 3 : modeVirtuel);
+			int maxCol = modeVirtuel == 6 ? 16 : 1 << tx;
 			for (int i = 0; i < 16; i++)
 				colors[i].Visible = lockColors[i].Visible = i < maxCol;
 		}
@@ -154,6 +128,21 @@ namespace ConvImgCpc {
 
 		public void Render(bool forceDrawZoom = false) {
 			UpdatePalette();
+			if (chkDoRedo.Checked && modeEdition.Checked) {
+				Enabled = false;
+				LockBits();
+				List<MemoPoint> lst = undo.lstUndoRedo;
+				foreach (MemoPoint p in lst) {
+					int Tx = 4 >> (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (p.posy & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
+					bmpLock.SetHorLine(p.posx, p.posy, Tx, p.newColor);
+					bmpLock.SetHorLine(p.posx, p.posy + 1, Tx, p.newColor);
+				}
+				UnlockBits();
+				forceDrawZoom = true;
+				bpUndo.Enabled = undo.CanUndo;
+				bpRedo.Enabled = undo.CanRedo;
+				Enabled = true;
+			}
 			if (zoom != 1) {
 				if (forceDrawZoom) {
 					tmpLock.LockBits();
@@ -184,61 +173,69 @@ namespace ConvImgCpc {
 		}
 
 		#region Lecture/Sauvegarde
-		public void SauveBmp(string fileName) {
-			bmpLock.Source.Save(fileName, System.Drawing.Imaging.ImageFormat.Bmp);
-		}
+		public void SauvePng(string fileName) {
+			if (modeVirtuel == 6) {
+				Bitmap b1 = new Bitmap(bmpLock.Source.Width >> 1, bmpLock.Source.Height >> 1);
+				Bitmap b2 = new Bitmap(bmpLock.Source.Width >> 1, bmpLock.Source.Height >> 1);
+				bmpLock.LockBits();
+				LockBitmap tmp4cols = new LockBitmap(b1);
+				LockBitmap tmpRaster = new LockBitmap(b2);
+				tmp4cols.LockBits();
+				tmpRaster.LockBits();
+				RvbColor c2 = new RvbColor(0);
+				int posx = 0;
+				for (int y = 0; y < b1.Height; y++) {
+					for (int x = 0; x < b1.Width; x++) {
+						RvbColor c = bmpLock.GetPixelColor(x << 1, y << 1);
+						for (int i = 0; i < 16; i++) {
+							RvbColor p = BitmapCpc.RgbCPC[Palette[i]];
+							if (p.r == c.r && p.v == c.v && p.b == c.b) {
+								if (i > 2) {
+									c = BitmapCpc.RgbCPC[Palette[3]];
+									c2 = p;
 
-		private void CreeBmpCpc(Param param) {
-			System.Array.Clear(bmpCpc, 0, bmpCpc.Length);
-			for (int y = 0; y < TailleY; y += 2) {
-				int modeCPC = (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
-				int adrCPC = GetAdrCpc(y);
-				int tx = 4 >> modeCPC;
-				for (int x = 0; x < TailleX; x += 8) {
-					byte pen = 0, octet = 0;
-					for (int p = 0; p < 8; p++)
-						if ((p % tx) == 0) {
-							RvbColor col = bmpLock.GetPixelColor(x + p, y);
-							if (param.cpcPlus) {
-								for (pen = 0; pen < 16; pen++) {
-									if ((col.v >> 4) == (Palette[pen] >> 8) && (col.r >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.b >> 4) == (Palette[pen] & 0x0F))
-										break;
+									for (int r = x & 0xFF8; r < x; r++)
+										tmpRaster.SetPixel(r, y, c2);
+
+									posx = 0;
 								}
+								break;
 							}
-							else {
-								for (pen = 0; pen < 16; pen++) {
-									RvbColor fixedCol = RgbCPC[Palette[pen]];
-									if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
-										break;
-								}
-							}
-							octet |= (byte)(tabOctetMode[pen] >> (p / tx));
 						}
-					bmpCpc[adrCPC + (x >> 3)] = octet;
+						tmp4cols.SetPixel(x, y, c);
+						tmpRaster.SetPixel(x, y, c2);
+						posx++;
+					}
 				}
+				tmpRaster.UnlockBits();
+				tmp4cols.UnlockBits();
+				bmpLock.UnlockBits();
+				tmp4cols.Source.Save(fileName + ".1", System.Drawing.Imaging.ImageFormat.Png);
+				tmpRaster.Source.Save(fileName + ".2", System.Drawing.Imaging.ImageFormat.Png);
 			}
+			pictureBox.Image.Save(fileName, System.Drawing.Imaging.ImageFormat.Png);
 		}
 
 		public void SauveScr(string fileName, Param param) {
-			CreeBmpCpc(param);
-			SauveImage.SauveScr(fileName, this, param, false);
+			bitmapCpc.CreeBmpCpc(param, bmpLock);
+			SauveImage.SauveScr(fileName, bitmapCpc, param, false);
 		}
 
 		public void SauveCmp(string fileName, Param param) {
-			CreeBmpCpc(param);
-			SauveImage.SauveScr(fileName, this, param, true);
+			bitmapCpc.CreeBmpCpc(param, bmpLock);
+			SauveImage.SauveScr(fileName, bitmapCpc, param, true);
 		}
 
 		public void SauveSprite(string fileName, string version, Param param) {
 			using (StreamWriter sw = File.CreateText(fileName)) {
-				sw.WriteLine("; Généré par ConvImgCpc" + version);
-				sw.WriteLine("; mode écran : " + param.modeVirtuel);
-				sw.WriteLine("; Taille (nbColsxNbLignes) : " + nbCol.ToString() + "x" + NbLig.ToString());
+				sw.WriteLine("; Généré par ConvImgCpc" + version.Replace('\n', ' '));
+				sw.WriteLine("; mode écran " + param.modeVirtuel);
+				sw.WriteLine("; Taille (nbColsxNbLignes) " + NbCol.ToString() + "x" + NbLig.ToString());
 				sw.WriteLine(";");
 				for (int y = 0; y < TailleY; y += 2) {
 					string line = "\tDB\t";
 					int nbOctets = 0;
-					int modeCPC = (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
+					int modeCPC = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 					int adrCPC = GetAdrCpc(y);
 					int tx = 4 >> modeCPC;
 					for (int x = 0; x < TailleX; x += 8) {
@@ -254,7 +251,7 @@ namespace ConvImgCpc {
 								}
 								else {
 									for (pen = 0; pen < 16; pen++) {
-										RvbColor fixedCol = RgbCPC[Palette[pen]];
+										RvbColor fixedCol = BitmapCpc.RgbCPC[Palette[pen]];
 										if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
 											break;
 									}
@@ -286,11 +283,11 @@ namespace ConvImgCpc {
 
 		#region Gestion palette
 		private RvbColor GetPaletteColor(int col) {
-			return cpcPlus ? new RvbColor((byte)(((Palette[col] & 0xF0) >> 4) * 17), (byte)(((Palette[col] & 0xF00) >> 8) * 17), (byte)((Palette[col] & 0x0F) * 17)) : RgbCPC[Palette[col] < 27 ? Palette[col] : 0];
+			return cpcPlus ? new RvbColor((byte)(((Palette[col] & 0xF0) >> 4) * 17), (byte)(((Palette[col] & 0xF00) >> 8) * 17), (byte)((Palette[col] & 0x0F) * 17)) : BitmapCpc.RgbCPC[Palette[col] < 27 ? Palette[col] : 0];
 		}
 
 		private int GetPalCPC(int c) {
-			return cpcPlus ? (((c & 0xF0) >> 4) * 17) + ((((c & 0xF00) >> 8) * 17) << 8) + (((c & 0x0F) * 17) << 16) : RgbCPC[c < 27 ? c : 0].GetColor;
+			return cpcPlus ? (((c & 0xF0) >> 4) * 17) + ((((c & 0xF00) >> 8) * 17) << 8) + (((c & 0x0F) * 17) << 16) : BitmapCpc.RgbCPC[c < 27 ? c : 0].GetColor;
 		}
 
 		// Click sur un "lock"
@@ -363,25 +360,27 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void GestMouseBp(MouseEventArgs e, int yReel) {
+		private void GestMouseEdit(MouseEventArgs e, int yReel) {
 			if (e.Button == MouseButtons.Left) {
 				LockBits();
 				if (tmpLock != null)
 					tmpLock.LockBits();
 
 				for (int y = 0; y < penWidth * 2; y += 2) {
-					int mode = (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (yReel & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
+					int mode = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (yReel & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 					int Tx = (4 >> mode);
-					int realColor = GetPalCPC(Palette[numCol % maskMode[mode]]);
+					int nbCol = modeVirtuel == 6 ? 16 : 1 << Tx;
+					int realColor = GetPalCPC(Palette[numCol % nbCol]);
 					int yStart = zoom * (yReel - offsetY);
 					for (int x = 0; x < penWidth * Tx; x += Tx) {
 						int xReel = (x + offsetX + (e.X / zoom)) & -Tx;
 						if (xReel >= 0 && yReel >= 0 && xReel < TailleX && yReel < TailleY) {
 							undo.MemoUndoRedo(xReel, yReel, bmpLock.GetPixel(xReel, yReel), realColor, doDraw);
+							doDraw = true;
 							bmpLock.SetHorLine(xReel, yReel, Tx, realColor);
 							bmpLock.SetHorLine(xReel, yReel + 1, Tx, realColor);
 							if (zoom != 1) {
-								for (int yz = yStart; yz < yStart + (zoom << 1); yz += 2) {
+								for (int yz = yStart; yz < Math.Min(tmpLock.Height, yStart + (zoom << 1)); yz += 2) {
 									int xStart = zoom * (xReel - offsetX);
 									tmpLock.SetHorLine(xStart, yz, zoom * Tx, realColor);
 									tmpLock.SetHorLine(xStart, yz + 1, zoom * Tx, realColor);
@@ -391,7 +390,6 @@ namespace ConvImgCpc {
 					}
 					yReel += 2;
 				}
-				doDraw = true;
 				UnlockBits();
 				if (tmpLock != null)
 					tmpLock.UnlockBits();
@@ -438,12 +436,12 @@ namespace ConvImgCpc {
 						if (zoomRectw != 0 && zoomRecth != 0) {
 							Graphics g = Graphics.FromImage(pictureBox.Image);
 							XorDrawing.DrawXorRectangle(g, (Bitmap)pictureBox.Image, zoomRectx, zoomRecty, zoomRectx + zoomRectw, zoomRecty + zoomRecth);
-							zoom = Math.Min(Math.Abs(TailleX / zoomRectw), Math.Abs(TailleY / zoomRecth)) & 0x7E;
+							zoom = Math.Max(1, Math.Min(Math.Abs(768 / zoomRectw), Math.Abs(544 / zoomRecth)) & 0x7E);
 							vScrollBar.Visible = hScrollBar.Visible = zoom > 1;
 							hScrollBar.Maximum = hScrollBar.LargeChange + TailleX - (TailleX / zoom);
 							vScrollBar.Maximum = vScrollBar.LargeChange + TailleY - (TailleY / zoom);
-							hScrollBar.Value = Math.Min(Math.Min(zoomRectx, zoomRectx + zoomRectw), TailleX - ((imgOrigine.Width + zoom) / zoom));
-							vScrollBar.Value = Math.Min(Math.Min(zoomRecty, zoomRecty + zoomRecth), TailleY - ((imgOrigine.Height + zoom) / zoom));
+							hScrollBar.Value = Math.Max(0, Math.Min(Math.Min(zoomRectx, zoomRectx + zoomRectw), TailleX - ((imgOrigine.Width + zoom) / zoom)));
+							vScrollBar.Value = Math.Max(0, Math.Min(Math.Min(zoomRecty, zoomRecty + zoomRecth), TailleY - ((imgOrigine.Height + zoom) / zoom)));
 							offsetX = (hScrollBar.Value >> 3) << 3;
 							offsetY = (vScrollBar.Value >> 1) << 1;
 							if (zoom != 1) {
@@ -456,28 +454,67 @@ namespace ConvImgCpc {
 				}
 		}
 
-		private void TrtMouseMove(MouseEventArgs e) {
-			if (modeEdition.Checked) {
-				int yReel = (offsetY + (e.Y / zoom)) & 0xFFE;
-				int mode = (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (yReel & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
-				int Tx = (4 >> mode);
-				int xReel = (offsetX + (e.X / zoom)) & -Tx;
-				if (xReel >= 0 && yReel >= 0 && xReel < TailleX && yReel < TailleY) {
-					RvbColor col = GetPaletteColor(numCol % maskMode[mode]);
-					crayonColor.BackColor = Color.FromArgb(col.b, col.v, col.r);
-					crayonColor.Width = 35 * Tx;
-					crayonColor.Refresh();
-					GestMouseBp(e, yReel);
+		private int posx = 0, posy = 0, sizex = 0, sizey = 0;
+		private int memoMouseX = 0, memoMouseY = 0;
+		private bool movePos = false, moveSize = false;
+
+		private void GestMouse(MouseEventArgs e) {
+			if (e.Button == MouseButtons.Left) {
+				if (!movePos) {
+					main.GetSizePos(ref posx, ref posy, ref sizex, ref sizey);
+					movePos = true;
+					memoMouseX = e.X;
+					memoMouseY = e.Y;
+				}
+				else {
+					main.SetSizePos(posx + memoMouseX - e.X, posy + memoMouseY - e.Y, sizex, sizey, true);
+				}
+			}
+			else {
+				if (e.Button == MouseButtons.Right) {
+					if (!moveSize) {
+						main.GetSizePos(ref posx, ref posy, ref sizex, ref sizey);
+						moveSize = true;
+						memoMouseX = e.X;
+						memoMouseY = e.Y;
+					}
+					else {
+						main.SetSizePos(posx, posy, sizex - memoMouseX + e.X, sizey - memoMouseY + e.Y, true);
+					}
+				}
+				else {
+					movePos = moveSize = false;
 				}
 			}
 		}
 
-		private void pictureBox_MouseDown(object sender, MouseEventArgs e) {
-			TrtMouseMove(e);
-		}
-
-		private void pictureBox_MouseMove(object sender, MouseEventArgs e) {
-			TrtMouseMove(e);
+		private void TrtMouseMove(object sender, MouseEventArgs e) {
+			if (modeEdition.Checked) {
+				int yReel = (offsetY + (e.Y / zoom)) & 0xFFE;
+				int mode = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (yReel & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
+				int Tx = (4 >> mode);
+				RvbColor col = GetPaletteColor(numCol % (modeVirtuel == 6 ? 16 : 1 << Tx));
+				crayonColor.BackColor = Color.FromArgb(col.b, col.v, col.r);
+				crayonColor.Width = 35 * Tx;
+				crayonColor.Refresh();
+				try {
+					GestMouseEdit(e, yReel);
+				}
+				catch (Exception ex) {
+					string msg = ex.StackTrace + Environment.NewLine + Environment.NewLine
+								+ "modeVirtuel=" + modeVirtuel + Environment.NewLine
+								+ "yReel=" + yReel + Environment.NewLine
+								+ "Zoom=" + zoom + Environment.NewLine
+								+ "zoomRectx=" + zoomRectx + Environment.NewLine
+								+ "zoomRecty=" + zoomRecty + Environment.NewLine
+								+ "zoomRecth=" + zoomRecth + Environment.NewLine
+								+ "zoomRectw=" + zoomRectw;
+					MessageBox.Show(msg, ex.Message);
+				}
+			}
+			else {
+				GestMouse(e);
+			}
 		}
 
 		private void vScrollBar_Scroll(object sender, ScrollEventArgs e) {
@@ -509,7 +546,7 @@ namespace ConvImgCpc {
 			LockBits();
 			List<MemoPoint> lst = undo.Undo();
 			foreach (MemoPoint p in lst) {
-				int Tx = 4 >> (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (p.posy & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
+				int Tx = 4 >> (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (p.posy & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 				bmpLock.SetHorLine(p.posx, p.posy, Tx, p.oldColor);
 				bmpLock.SetHorLine(p.posx, p.posy + 1, Tx, p.oldColor);
 			}
@@ -525,7 +562,7 @@ namespace ConvImgCpc {
 			LockBits();
 			List<MemoPoint> lst = undo.Redo();
 			foreach (MemoPoint p in lst) {
-				int Tx = 4 >> (modeVirtuel == 5 ? 1 : modeVirtuel >= 3 ? (p.posy & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
+				int Tx = 4 >> (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (p.posy & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 				bmpLock.SetHorLine(p.posx, p.posy, Tx, p.newColor);
 				bmpLock.SetHorLine(p.posx, p.posy + 1, Tx, p.newColor);
 			}

@@ -2,23 +2,73 @@
 using System.Drawing;
 
 namespace ConvImgCpc {
-	class BitmapCpc {
+	public class BitmapCpc {
 		private const int maxColsCpc = 96;
 		private const int maxLignesCpc = 272;
 
+		public byte[] bmpCpc = new byte[0x10000];
 		private byte[] bufTmp = new byte[0x10000];
-		private byte[] bmpCpc = new byte[0x10000];
 
-		public int nbCol = 80, nbLig = 200, modeCPC = 1;
 		bool cpcPlus = false;
-		int[] Palette = { 1, 24, 20, 6, 26, 0, 2, 7, 10, 12, 14, 16, 18, 22, 1, 14, 1 };
+		public int[] Palette = { 1, 24, 20, 6, 26, 0, 2, 7, 10, 12, 14, 16, 18, 22, 1, 14, 1 };
+		private int[] tabOctetMode = { 0x00, 0x80, 0x08, 0x88, 0x20, 0xA0, 0x28, 0xA8, 0x02, 0x82, 0x0A, 0x8A, 0x22, 0xA2, 0x2A, 0xAA };
+		public const int Lum0 = 0x00;
+		public const int Lum1 = 0x66;
+		public const int Lum2 = 0xFF;
+		static public RvbColor[] RgbCPC = {
+							new RvbColor( Lum0, Lum0, Lum0),
+							new RvbColor( Lum1, Lum0, Lum0),
+							new RvbColor( Lum2, Lum0, Lum0),
+							new RvbColor( Lum0, Lum0, Lum1),
+							new RvbColor( Lum1, Lum0, Lum1),
+							new RvbColor( Lum2, Lum0, Lum1),
+							new RvbColor( Lum0, Lum0, Lum2),
+							new RvbColor( Lum1, Lum0, Lum2),
+							new RvbColor( Lum2, Lum0, Lum2),
+							new RvbColor( Lum0, Lum1, Lum0),
+							new RvbColor( Lum1, Lum1, Lum0),
+							new RvbColor( Lum2, Lum1, Lum0),
+							new RvbColor( Lum0, Lum1, Lum1),
+							new RvbColor( Lum1, Lum1, Lum1),
+							new RvbColor( Lum2, Lum1, Lum1),
+							new RvbColor( Lum0, Lum1, Lum2),
+							new RvbColor( Lum1, Lum1, Lum2),
+							new RvbColor( Lum2, Lum1, Lum2),
+							new RvbColor( Lum0, Lum2, Lum0),
+							new RvbColor( Lum1, Lum2, Lum0),
+							new RvbColor( Lum2, Lum2, Lum0),
+							new RvbColor( Lum0, Lum2, Lum1),
+							new RvbColor( Lum1, Lum2, Lum1),
+							new RvbColor( Lum2, Lum2, Lum1),
+							new RvbColor( Lum0, Lum2, Lum2),
+							new RvbColor( Lum1, Lum2, Lum2),
+							new RvbColor( Lum2, Lum2, Lum2)
+							};
+
+		public int modeVirtuel = 1;
+		private int nbCol = 80;
+		public int NbCol { get { return nbCol; } }
+		public int TailleX {
+			get { return nbCol << 3; }
+			set { nbCol = value >> 3; }
+		}
+		private int nbLig = 200;
+		public int NbLig { get { return nbLig; } }
+		public int TailleY {
+			get { return nbLig << 1; }
+			set { nbLig = value >> 1; }
+		}
+		public int BitmapSize { get { return nbCol + GetAdrCpc(TailleY - 2); } }
+
+		public BitmapCpc() {
+		}
 
 		public BitmapCpc(byte[] source) {
 			Array.Copy(source, 0x80, bmpCpc, 0, source.Length - 0x80);
 		}
 
 		private void SetPalette(byte[] palStart, int startAdr, bool plus) {
-			modeCPC = palStart[startAdr] & 0x03;
+			modeVirtuel = palStart[startAdr] & 0x03;
 			for (int i = 0; i < 16; i++)
 				Palette[i] = plus ? palStart[startAdr + 1 + (i << 1)] + (palStart[startAdr + 2 + (i << 1)] << 8) : palStart[startAdr + i + 1];
 		}
@@ -162,7 +212,38 @@ namespace ConvImgCpc {
 				byte v = (byte)(((c & 0xF00) >> 8) * 17);
 				return (int)(r + (v << 8) + (b << 16) + 0xFF000000);
 			}
-			return ImageCpc.RgbCPC[c < 27 ? c : 0].GetColor;
+			return BitmapCpc.RgbCPC[c < 27 ? c : 0].GetColor;
+		}
+
+		public void CreeBmpCpc(Param param, LockBitmap bmpLock) {
+			System.Array.Clear(bmpCpc, 0, bmpCpc.Length);
+			for (int y = 0; y < TailleY; y += 2) {
+				int modeCPC = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
+				int adrCPC = GetAdrCpc(y);
+				int tx = 4 >> modeCPC;
+				for (int x = 0; x < TailleX; x += 8) {
+					byte pen = 0, octet = 0;
+					for (int p = 0; p < 8; p++)
+						if ((p % tx) == 0) {
+							RvbColor col = bmpLock.GetPixelColor(x + p, y);
+							if (param.cpcPlus) {
+								for (pen = 0; pen < 16; pen++) {
+									if ((col.v >> 4) == (Palette[pen] >> 8) && (col.r >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.b >> 4) == (Palette[pen] & 0x0F))
+										break;
+								}
+							}
+							else {
+								for (pen = 0; pen < 16; pen++) {
+									RvbColor fixedCol = RgbCPC[Palette[pen]];
+									if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
+										break;
+								}
+							}
+							octet |= (byte)(tabOctetMode[pen] >> (p / tx));
+						}
+					bmpCpc[adrCPC + (x >> 3)] = octet;
+				}
+			}
 		}
 
 		public Bitmap CreateImageFromCpc(byte[] source) {
@@ -196,7 +277,7 @@ namespace ConvImgCpc {
 			LockBitmap loc = new LockBitmap(bmp);
 			loc.LockBits();
 			for (int y = 0; y < nbLig << 1; y += 2) {
-				int mode = (modeCPC == 5 ? 1 : modeCPC >= 3 ? (y & 2) == 0 ? modeCPC - 2 : modeCPC - 3 : modeCPC);
+				int mode = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 				int adrCPC = GetAdrCpc(y);
 				int xBitmap = 0;
 				for (int x = 0; x < nbCol; x++) {

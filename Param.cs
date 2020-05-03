@@ -1,7 +1,7 @@
 ﻿namespace ConvImgCpc {
 	[System.Serializable]
 	public class Param {
-		public enum SizeMode { Fit, KeepSmaller, KeepLarger, UserSize };
+		public enum SizeMode { Fit, KeepSmaller, KeepLarger, UserSize, Origin };
 
 		public SizeMode sMode;
 		public string methode;
@@ -23,5 +23,6 @@
 		public bool motif2;
 		public bool setPalCpc;
 		public bool lissage;
+		public int trackModeX;
 	}
 }

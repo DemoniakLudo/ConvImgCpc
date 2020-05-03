@@ -21,8 +21,9 @@ namespace ConvImgCpc {
 			mode.Items.Insert(3, "Mode EGX1");
 			mode.Items.Insert(4, "Mode EGX2");
 			mode.Items.Insert(5, "Mode X");
+			//mode.Items.Insert(6, "Mode Z");
 			imgSrc = new ImageSource();
-			imgCpc = new ImageCpc(Convert);
+			imgCpc = new ImageCpc(this, Convert);
 			nbCols.Value = imgCpc.TailleX >> 3;
 			nbLignes.Value = imgCpc.TailleY >> 1;
 			mode.SelectedIndex = imgCpc.modeVirtuel;
@@ -80,11 +81,9 @@ namespace ConvImgCpc {
 						break;
 
 					case Param.SizeMode.UserSize:
+					case Param.SizeMode.Origin:
 						int posx = 0, posy = 0, tx = imgCpc.TailleX, ty = imgCpc.TailleY;
-						int.TryParse(tbxSizeX.Text, out tx);
-						int.TryParse(tbxSizeY.Text, out ty);
-						int.TryParse(tbxPosX.Text, out posx);
-						int.TryParse(tbxPosY.Text, out posy);
+						GetSizePos(ref posx, ref posy, ref tx, ref ty);
 						g.DrawImage(imgSrc.GetImage, -(posx << 1), -(posy << 1), tx << 1, ty << 1);
 						break;
 				}
@@ -92,6 +91,22 @@ namespace ConvImgCpc {
 				bpSave.Enabled = bpConvert.Enabled = true;
 			}
 			imgCpc.Render();
+		}
+
+		public void GetSizePos(ref int posx, ref int posy, ref int sizex, ref int sizey) {
+			int.TryParse(tbxPosX.Text, out posx);
+			int.TryParse(tbxPosY.Text, out posy);
+			int.TryParse(tbxSizeX.Text, out sizex);
+			int.TryParse(tbxSizeY.Text, out sizey);
+		}
+
+		public void SetSizePos(int posx, int posy, int sizex, int sizey, bool doConvert = false) {
+			tbxPosX.Text = posx.ToString();
+			tbxPosY.Text = posy.ToString();
+			tbxSizeX.Text = sizex.ToString();
+			tbxSizeY.Text = sizey.ToString();
+			if (doConvert)
+				Convert(false);
 		}
 
 		private void bpConvert_Click(object sender, EventArgs e) {
@@ -104,30 +119,35 @@ namespace ConvImgCpc {
 			fileScr.Read(tabBytes, 0, tabBytes.Length);
 			fileScr.Close();
 			bool bitmapOk = false;
-			//			try {
-			if (CpcSystem.CheckAmsdos(tabBytes)) {
-				BitmapCpc bmp = new BitmapCpc(tabBytes);
-				imgSrc.SetBitmap(bmp.CreateImageFromCpc(tabBytes), checkImageSource.Checked);
-				nbCols.Value = param.nbCols = bmp.nbCol;
-				imgCpc.TailleX = param.nbCols << 3;
-				nbLignes.Value = param.nbLignes = bmp.nbLig;
-				imgCpc.TailleY = param.nbLignes << 1;
-				imgCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = bmp.modeCPC;
+			try {
+				if (CpcSystem.CheckAmsdos(tabBytes)) {
+					BitmapCpc bmp = new BitmapCpc(tabBytes);
+					imgSrc.SetBitmap(bmp.CreateImageFromCpc(tabBytes), checkImageSource.Checked);
+					nbCols.Value = param.nbCols = bmp.NbCol;
+					imgCpc.TailleX = param.nbCols << 3;
+					nbLignes.Value = param.nbLignes = bmp.NbLig;
+					imgCpc.TailleY = param.nbLignes << 1;
+					imgCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = bmp.modeVirtuel;
+				}
+				else {
+					MemoryStream ms = new MemoryStream(tabBytes);
+					imgSrc.SetBitmap(new Bitmap(ms), checkImageSource.Checked);
+					ms.Dispose();
+				}
+				bitmapOk = true;
 			}
-			else {
-				MemoryStream ms = new MemoryStream(tabBytes);
-				imgSrc.SetBitmap(new Bitmap(ms), checkImageSource.Checked);
-				ms.Dispose();
+			catch (Exception ex) {
+				MessageBox.Show("Impossible de lire l'image (format inconnu ???)");
 			}
-			bitmapOk = true;
-			//}
-			//catch (Exception ex) {
-			//	MessageBox.Show("Impossible de lire l'image (format inconnu ???)");
-			//}
 			if (bitmapOk) {
+				radioUserSize.Enabled = radioOrigin.Enabled = true;
 				Text = "ConvImgCPC - " + Path.GetFileName(fileName);
-				tbxSizeX.Text = imgSrc.GetImage.Width.ToString();
-				tbxSizeY.Text = imgSrc.GetImage.Height.ToString();
+				if (radioOrigin.Checked) {
+					tbxSizeX.Text = imgSrc.GetImage.Width.ToString();
+					tbxSizeY.Text = imgSrc.GetImage.Height.ToString();
+					tbxPosX.Text = "0";
+					tbxPosY.Text = "0";
+				}
 				imgCpc.Reset();
 				Convert(false);
 			}
@@ -208,7 +228,7 @@ namespace ConvImgCpc {
 		private void bpSave_Click(object sender, EventArgs e) {
 			SaveFileDialog dlg = new SaveFileDialog();
 			dlg.InitialDirectory = lastSavePath;
-			dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.bmp)|*.bmp|Sprite assembleur (.asm)|*.asm|Compacté (.cmp)|*.cmp|Palette (.pal)|*.pal|Paramètres (.xml)|*.xml";
+			dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.png)|*.png|Sprite assembleur (.asm)|*.asm|Compacté (.cmp)|*.cmp|Palette (.pal)|*.pal|Paramètres (.xml)|*.xml";
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
 				lastSavePath = Path.GetDirectoryName(dlg.FileName);
@@ -218,7 +238,7 @@ namespace ConvImgCpc {
 						break;
 
 					case 2:
-						imgCpc.SauveBmp(dlg.FileName);
+						imgCpc.SauvePng(dlg.FileName);
 						break;
 
 					case 3:
@@ -257,6 +277,7 @@ namespace ConvImgCpc {
 		private void mode_SelectedIndexChanged(object sender, EventArgs e) {
 			imgCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex;
 			imgCpc.Reset();
+			trackModeX.Visible = mode.SelectedIndex == 5;
 			Convert(false);
 		}
 
@@ -272,6 +293,7 @@ namespace ConvImgCpc {
 			lblPct.Visible = pctTrame.Visible = methode.SelectedItem.ToString() != "Aucun";
 			param.methode = methode.SelectedItem.ToString();
 			param.lissage = chkLissage.Checked;
+			param.trackModeX = trackModeX.Value;
 			Convert(false);
 		}
 
@@ -293,6 +315,48 @@ namespace ConvImgCpc {
 		private void contrast_ValueChanged(object sender, EventArgs e) {
 			param.pctContrast = (int)contrast.Value;
 			Convert(false);
+		}
+
+		private void bpLumMoins_Click(object sender, EventArgs e) {
+			if (lumi.Value > lumi.Minimum)
+				lumi.Value = lumi.Value - 1;
+		}
+
+		private void bpLumPlus_Click(object sender, EventArgs e) {
+			if (lumi.Value < lumi.Maximum)
+				lumi.Value = lumi.Value + 1;
+		}
+
+		private void bpSatMoins_Click(object sender, EventArgs e) {
+			if (sat.Value > sat.Minimum)
+				sat.Value = sat.Value - 1;
+		}
+
+		private void bpSatPlus_Click(object sender, EventArgs e) {
+			if (sat.Value < sat.Maximum)
+				sat.Value = sat.Value + 1;
+		}
+
+		private void bpCtrstMoins_Click(object sender, EventArgs e) {
+			if (contrast.Value > contrast.Minimum)
+				contrast.Value = contrast.Value - 1;
+		}
+
+		private void bpCtrstPlus_Click(object sender, EventArgs e) {
+			if (contrast.Value < contrast.Maximum)
+				contrast.Value = contrast.Value + 1;
+		}
+
+		private void bpRazLumi_Click(object sender, EventArgs e) {
+			lumi.Value = 100;
+		}
+
+		private void bpRazSat_Click(object sender, EventArgs e) {
+			sat.Value = 100;
+		}
+
+		private void bpRazContrast_Click(object sender, EventArgs e) {
+			contrast.Value = 100;
 		}
 
 		private void sortPal_CheckedChanged(object sender, EventArgs e) {
@@ -325,20 +389,13 @@ namespace ConvImgCpc {
 			param.withCode = withCode.Checked;
 		}
 
-		private void bpRazLumi_Click(object sender, EventArgs e) {
-			lumi.Value = 100;
-		}
-
-		private void bpRazSat_Click(object sender, EventArgs e) {
-			sat.Value = 100;
-		}
-
-		private void bpRazContrast_Click(object sender, EventArgs e) {
-			contrast.Value = 100;
-		}
-
 		private void radioUserSize_CheckedChanged(object sender, EventArgs e) {
-			tbxPosX.Visible = tbxPosY.Visible = tbxSizeX.Visible = tbxSizeY.Visible = label5.Visible = label7.Visible = radioUserSize.Checked;
+			tbxPosX.Visible = tbxPosY.Visible = tbxSizeX.Visible = tbxSizeY.Visible = label5.Visible = label7.Visible = radioUserSize.Checked || radioOrigin.Checked;
+			if (radioOrigin.Checked || (radioUserSize.Checked && tbxSizeX.Text == "" && tbxSizeY.Text == ""))
+				SetSizePos(0, 0, imgSrc.GetImage.Width, imgSrc.GetImage.Height);
+
+			tbxSizeX.Enabled = tbxSizeY.Enabled = tbxPosX.Enabled = tbxPosY.Enabled = !radioOrigin.Checked;
+			Convert(false);
 		}
 
 		private void bpOverscan_Click(object sender, EventArgs e) {

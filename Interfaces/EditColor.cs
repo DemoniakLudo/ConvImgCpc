@@ -48,7 +48,7 @@ namespace ConvImgCpc {
 						colors[i].Location = new Point(4 + x * 48, 80 + y * 40);
 						colors[i].Size = new Size(40, 32);
 						colors[i].Tag = i;
-						colors[i].BackColor = Color.FromArgb(ImageCpc.RgbCPC[i].GetColorArgb);
+						colors[i].BackColor = Color.FromArgb(BitmapCpc.RgbCPC[i].GetColorArgb);
 						colors[i].Click += ClickColor;
 						colors[i].DoubleClick += DblClickColor;
 						Controls.Add(colors[i++]);
