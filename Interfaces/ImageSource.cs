@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Drawing.Imaging;
 using System.Windows.Forms;
 
 namespace ConvImgCpc {
@@ -16,6 +17,7 @@ namespace ConvImgCpc {
 				pictureBox.Image.Dispose();
 
 			pictureBox.Image = bmp;
+			pictureBox.Image.SelectActiveFrame(FrameDimension.Page, 0);
 			int x = Width = bmp.Width;
 			int y = Height = bmp.Height;
 			Visible = false;

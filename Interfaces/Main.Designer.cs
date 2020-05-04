@@ -83,6 +83,9 @@
 			this.lblInfoVersion = new System.Windows.Forms.Label();
 			this.withCode = new System.Windows.Forms.CheckBox();
 			this.withPalette = new System.Windows.Forms.CheckBox();
+			this.lblNumImage = new System.Windows.Forms.Label();
+			this.numImage = new System.Windows.Forms.NumericUpDown();
+			this.bpDeltaPack = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -94,6 +97,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.contrast)).BeginInit();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.numImage)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// checkImageSource
@@ -119,7 +123,7 @@
 			// 
 			// bpConvert
 			// 
-			this.bpConvert.Location = new System.Drawing.Point(3, 99);
+			this.bpConvert.Location = new System.Drawing.Point(3, 148);
 			this.bpConvert.Name = "bpConvert";
 			this.bpConvert.Size = new System.Drawing.Size(108, 23);
 			this.bpConvert.TabIndex = 3;
@@ -474,7 +478,7 @@
 			// autoRecalc
 			// 
 			this.autoRecalc.AutoSize = true;
-			this.autoRecalc.Location = new System.Drawing.Point(3, 122);
+			this.autoRecalc.Location = new System.Drawing.Point(3, 171);
 			this.autoRecalc.Name = "autoRecalc";
 			this.autoRecalc.Size = new System.Drawing.Size(108, 30);
 			this.autoRecalc.TabIndex = 44;
@@ -758,7 +762,7 @@
 			// 
 			// bpSave
 			// 
-			this.bpSave.Location = new System.Drawing.Point(3, 241);
+			this.bpSave.Location = new System.Drawing.Point(3, 290);
 			this.bpSave.Name = "bpSave";
 			this.bpSave.Size = new System.Drawing.Size(108, 23);
 			this.bpSave.TabIndex = 52;
@@ -778,7 +782,7 @@
 			this.withCode.AutoSize = true;
 			this.withCode.Checked = true;
 			this.withCode.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.withCode.Location = new System.Drawing.Point(3, 266);
+			this.withCode.Location = new System.Drawing.Point(3, 315);
 			this.withCode.Name = "withCode";
 			this.withCode.Size = new System.Drawing.Size(104, 43);
 			this.withCode.TabIndex = 52;
@@ -791,7 +795,7 @@
 			this.withPalette.AutoSize = true;
 			this.withPalette.Checked = true;
 			this.withPalette.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.withPalette.Location = new System.Drawing.Point(3, 315);
+			this.withPalette.Location = new System.Drawing.Point(3, 364);
 			this.withPalette.Name = "withPalette";
 			this.withPalette.Size = new System.Drawing.Size(104, 30);
 			this.withPalette.TabIndex = 52;
@@ -799,11 +803,48 @@
 			this.withPalette.UseVisualStyleBackColor = true;
 			this.withPalette.CheckedChanged += new System.EventHandler(this.withPalette_CheckedChanged);
 			// 
+			// lblNumImage
+			// 
+			this.lblNumImage.AutoSize = true;
+			this.lblNumImage.Location = new System.Drawing.Point(0, 88);
+			this.lblNumImage.Name = "lblNumImage";
+			this.lblNumImage.Size = new System.Drawing.Size(51, 13);
+			this.lblNumImage.TabIndex = 53;
+			this.lblNumImage.Text = "N° Image";
+			this.lblNumImage.Visible = false;
+			// 
+			// numImage
+			// 
+			this.numImage.Location = new System.Drawing.Point(57, 84);
+			this.numImage.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.numImage.Name = "numImage";
+			this.numImage.Size = new System.Drawing.Size(59, 20);
+			this.numImage.TabIndex = 54;
+			this.numImage.Visible = false;
+			this.numImage.ValueChanged += new System.EventHandler(this.numImage_ValueChanged);
+			// 
+			// bpDeltaPack
+			// 
+			this.bpDeltaPack.Location = new System.Drawing.Point(3, 228);
+			this.bpDeltaPack.Name = "bpDeltaPack";
+			this.bpDeltaPack.Size = new System.Drawing.Size(104, 23);
+			this.bpDeltaPack.TabIndex = 55;
+			this.bpDeltaPack.Text = "TEST";
+			this.bpDeltaPack.UseVisualStyleBackColor = true;
+			this.bpDeltaPack.Click += new System.EventHandler(this.bpDeltaPack_Click);
+			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(597, 431);
+			this.Controls.Add(this.bpDeltaPack);
+			this.Controls.Add(this.numImage);
+			this.Controls.Add(this.lblNumImage);
 			this.Controls.Add(this.withPalette);
 			this.Controls.Add(this.withCode);
 			this.Controls.Add(this.lblInfoVersion);
@@ -836,6 +877,7 @@
 			this.groupBox1.PerformLayout();
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.numImage)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -903,6 +945,9 @@
 		private System.Windows.Forms.Button bpSatPlus;
 		private System.Windows.Forms.Button bpLumMoins;
 		private System.Windows.Forms.Button bpLumPlus;
+		private System.Windows.Forms.Label lblNumImage;
+		private System.Windows.Forms.NumericUpDown numImage;
+		private System.Windows.Forms.Button bpDeltaPack;
 	}
 }
 

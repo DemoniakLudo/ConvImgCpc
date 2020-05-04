@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
@@ -12,6 +13,9 @@ namespace ConvImgCpc {
 		private Param param = new Param();
 		private string lastReadPath = null;
 		private string lastSavePath = null;
+		private MemoryStream imageStream;
+		private Image selImage;
+		private FrameDimension dimension;
 
 		public Main() {
 			InitializeComponent();
@@ -37,7 +41,12 @@ namespace ConvImgCpc {
 		}
 
 		private void checkImageSource_CheckedChanged(object sender, EventArgs e) {
-			imgSrc.Visible = checkImageSource.Checked;
+			try {
+				imgSrc.Visible = checkImageSource.Checked;
+			}
+			catch (Exception ex) {
+				MessageBox.Show(ex.StackTrace, ex.Message);
+			}
 		}
 
 		private void Convert(bool doConvert) {
@@ -130,9 +139,15 @@ namespace ConvImgCpc {
 					imgCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = bmp.modeVirtuel;
 				}
 				else {
-					MemoryStream ms = new MemoryStream(tabBytes);
-					imgSrc.SetBitmap(new Bitmap(ms), checkImageSource.Checked);
-					ms.Dispose();
+					imageStream = new MemoryStream(tabBytes);
+					imageStream.Position = 0;
+					selImage = new Bitmap(imageStream);
+					dimension = new FrameDimension(selImage.FrameDimensionsList[0]);
+					int frameCount = selImage.GetFrameCount(dimension);
+					numImage.Maximum = frameCount - 1;
+					lblNumImage.Visible = numImage.Visible = frameCount > 1;
+					numImage.Value = 0;
+					SelectImage(0);
 				}
 				bitmapOk = true;
 			}
@@ -151,6 +166,11 @@ namespace ConvImgCpc {
 				imgCpc.Reset();
 				Convert(false);
 			}
+		}
+
+		private void SelectImage(int n) {
+			selImage.SelectActiveFrame(dimension, n);
+			imgSrc.SetBitmap(new Bitmap(selImage), checkImageSource.Checked);
 		}
 
 		private void ReadParam(string fileName) {
@@ -203,7 +223,7 @@ namespace ConvImgCpc {
 
 		private void bpLoad_Click(object sender, EventArgs e) {
 			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.Filter = "Images (*.bmp, *.gif, *.png, *.jpg, *.scr)|*.bmp;*.gif;*.png;*.jpg;*.scr|Palette (*.pal)|*.pal|Paramètres ConvImagesCpc (*.xml)|*.xml|Tous fichiers|*.*";
+			dlg.Filter = "Images (*.bmp, *.gif, *.png, *.jpg,*.jpeg, *.scr)|*.bmp;*.gif;*.png;*.jpg;*.jpeg;*.scr|Palette (*.pal)|*.pal|Paramètres ConvImagesCpc (*.xml)|*.xml|Tous fichiers|*.*";
 			dlg.InitialDirectory = lastReadPath;
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
@@ -419,6 +439,25 @@ namespace ConvImgCpc {
 				chkMotif.Checked = false;
 
 			Convert(false);
+		}
+
+		private void numImage_ValueChanged(object sender, EventArgs e) {
+			SelectImage((int)numImage.Value);
+			Convert(false);
+		}
+
+		private void bpDeltaPack_Click(object sender, EventArgs e) {
+			numImage.Value = 0;
+			int ltot = 0;
+			numImage.Value = numImage.Maximum;
+			DeltaPack.PackWinDC(imgCpc, param, true);
+			for (int i = 0; i < numImage.Maximum; i++) {
+				numImage.Value = i;
+				byte[] toSave = DeltaPack.PackWinDC(imgCpc, param);
+				string lineAdd = "; Taille #" + toSave.Length.ToString("X4") + Environment.NewLine + "Delta" + i.ToString() + ":";
+				imgCpc.SauveAssembleur(toSave, toSave.Length, "Delta" + i.ToString() + ".asm", lblInfoVersion.Text, lineAdd);
+				ltot += toSave.Length;
+			}
 		}
 	}
 }

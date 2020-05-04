@@ -7,6 +7,7 @@ using System.Windows.Forms;
 namespace ConvImgCpc {
 	public partial class ImageCpc : Form {
 		private LockBitmap bmpLock, tmpLock;
+		public LockBitmap BmpLock { get { return bmpLock; } }
 		private Bitmap bitmapZoom;
 		private Label[] colors = new Label[16];
 		private CheckBox[] lockColors = new CheckBox[16];
@@ -44,7 +45,7 @@ namespace ConvImgCpc {
 			get { return bitmapCpc.TailleY; }
 			set { bitmapCpc.TailleY = value; }
 		}
-		public int BitmapSize { get { return NbCol + GetAdrCpc(TailleY - 2); } }
+		public int BitmapSize { get { return bitmapCpc.BitmapSize; } }
 		public int modeVirtuel {
 			get { return bitmapCpc.modeVirtuel; }
 			set { bitmapCpc.modeVirtuel = value; }
@@ -52,12 +53,9 @@ namespace ConvImgCpc {
 		public bool cpcPlus = false;
 
 		private Main main;
-		private int GetAdrCpc(int y) {
-			int adrCPC = (y >> 4) * NbCol + (y & 14) * 0x400;
-			if (y > 255 && (NbCol * NbLig > 0x3FFF))
-				adrCPC += 0x3800;
 
-			return adrCPC;
+		public int GetAdrCpc(int y) {
+			return bitmapCpc.GetAdrCpc(y);
 		}
 
 		public ImageCpc(Main m, ConvertDelegate fctConvert) {
@@ -226,49 +224,107 @@ namespace ConvImgCpc {
 			SauveImage.SauveScr(fileName, bitmapCpc, param, true);
 		}
 
-		public void SauveSprite(string fileName, string version, Param param) {
+		public void SauveAssembleur(byte[] tabByte, int length, string fileName, string version, string lineAdd = null, Param param = null) {
 			using (StreamWriter sw = File.CreateText(fileName)) {
 				sw.WriteLine("; Généré par ConvImgCpc" + version.Replace('\n', ' '));
-				sw.WriteLine("; mode écran " + param.modeVirtuel);
-				sw.WriteLine("; Taille (nbColsxNbLignes) " + NbCol.ToString() + "x" + NbLig.ToString());
+				if (param != null) {
+					sw.WriteLine("; mode écran " + param.modeVirtuel);
+					sw.WriteLine("; Taille (nbColsxNbLignes) " + NbCol.ToString() + "x" + NbLig.ToString());
+				}
+				if (lineAdd != null)
+					sw.WriteLine(lineAdd);
+
 				sw.WriteLine(";");
-				for (int y = 0; y < TailleY; y += 2) {
-					string line = "\tDB\t";
-					int nbOctets = 0;
-					int modeCPC = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
-					int adrCPC = GetAdrCpc(y);
-					int tx = 4 >> modeCPC;
-					for (int x = 0; x < TailleX; x += 8) {
-						byte pen = 0, octet = 0;
-						for (int p = 0; p < 8; p++)
-							if ((p % tx) == 0) {
-								RvbColor col = bmpLock.GetPixelColor(x + p, y);
-								if (param.cpcPlus) {
-									for (pen = 0; pen < 16; pen++) {
-										if ((col.v >> 4) == (Palette[pen] >> 8) && (col.r >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.b >> 4) == (Palette[pen] & 0x0F))
-											break;
-									}
-								}
-								else {
-									for (pen = 0; pen < 16; pen++) {
-										RvbColor fixedCol = BitmapCpc.RgbCPC[Palette[pen]];
-										if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
-											break;
-									}
-								}
-								octet |= (byte)(tabOctetMode[pen] >> (p / tx));
-							}
-						line += "#" + octet.ToString("X2") + ",";
-						if (++nbOctets > 15) {
-							sw.WriteLine(line.Substring(0, line.Length - 1));
-							line = "\tDB\t";
-							nbOctets = 0;
-						}
-					}
-					if (nbOctets > 0)
+				string line = "\tDB\t";
+				int nbOctets = 0;
+				for (int i = 0; i < length; i++) {
+					line += "#" + tabByte[i].ToString("X2") + ",";
+					if (++nbOctets >= Math.Min(16, NbCol)) {
 						sw.WriteLine(line.Substring(0, line.Length - 1));
+						line = "\tDB\t";
+						nbOctets = 0;
+					}
+				}
+				if (nbOctets > 0)
+					sw.WriteLine(line.Substring(0, line.Length - 1));
+			}
+		}
+
+		public void SauveSprite(string fileName, string version, Param param) {
+			byte[] ret = new byte[(TailleX * TailleY) >> 4];
+			Array.Clear(ret, 0, ret.Length);
+			int posRet = 0;
+			for (int y = 0; y < TailleY; y += 2) {
+				int modeCPC = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
+				int tx = 4 >> modeCPC;
+				for (int x = 0; x < TailleX; x += 8) {
+					byte pen = 0, octet = 0;
+					for (int p = 0; p < 8; p++)
+						if ((p % tx) == 0) {
+							RvbColor col = bmpLock.GetPixelColor(x + p, y);
+							if (param.cpcPlus) {
+								for (pen = 0; pen < 16; pen++) {
+									if ((col.v >> 4) == (Palette[pen] >> 8) && (col.r >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.b >> 4) == (Palette[pen] & 0x0F))
+										break;
+								}
+							}
+							else {
+								for (pen = 0; pen < 16; pen++) {
+									RvbColor fixedCol = BitmapCpc.RgbCPC[Palette[pen]];
+									if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
+										break;
+								}
+							}
+							octet |= (byte)(tabOctetMode[pen] >> (p / tx));
+						}
+					ret[posRet++] = octet;
 				}
 			}
+			SauveAssembleur(ret, ret.Length, fileName, version, null, param);
+		}
+
+		public byte[] GetCpcScr(Param param, bool spriteMode = false) {
+			int maxSize = (TailleX >> 3) + ((TailleY - 2) >> 4) * (TailleX >> 3) + ((TailleY - 2) & 14) * 0x400;
+			if (spriteMode)
+				maxSize = (TailleX * TailleY) >> 4;
+			else
+				if (maxSize >= 0x4000)
+					maxSize += 0x3800;
+
+			byte[] ret = new byte[maxSize];
+			Array.Clear(ret, 0, ret.Length);
+			int posRet = 0;
+			for (int y = 0; y < TailleY; y += 2) {
+				int modeCPC = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
+				int adrCPC = GetAdrCpc(y);
+				int tx = 4 >> modeCPC;
+				for (int x = 0; x < TailleX; x += 8) {
+					byte pen = 0, octet = 0;
+					for (int p = 0; p < 8; p++)
+						if ((p % tx) == 0) {
+							RvbColor col = bmpLock.GetPixelColor(x + p, y);
+							if (param.cpcPlus) {
+								for (pen = 0; pen < 16; pen++) {
+									if ((col.v >> 4) == (Palette[pen] >> 8) && (col.r >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.b >> 4) == (Palette[pen] & 0x0F))
+										break;
+								}
+							}
+							else {
+								for (pen = 0; pen < 16; pen++) {
+									RvbColor fixedCol = BitmapCpc.RgbCPC[Palette[pen]];
+									if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
+										break;
+								}
+							}
+							octet |= (byte)(tabOctetMode[pen] >> (p / tx));
+						}
+					if (!spriteMode)
+						posRet = bitmapCpc.GetAdrCpc(y) + (x >> 3);
+
+					ret[posRet++] = octet;
+				}
+			}
+			return ret;
 		}
 
 		public void LirePalette(string fileName, Param param) {

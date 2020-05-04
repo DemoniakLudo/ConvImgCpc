@@ -152,7 +152,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private int GetAdrCpc(int y) {
+		public int GetAdrCpc(int y) {
 			int adrCPC = (y >> 4) * nbCol + (y & 14) * 0x400;
 			if (y > 255 && (nbCol * nbLig > 0x3FFF))
 				adrCPC += 0x3800;

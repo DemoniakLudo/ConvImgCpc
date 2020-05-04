@@ -76,10 +76,10 @@ namespace ConvImgCpc {
 			return (outBytes);
 		}
 
-		static public int Pack(byte[] bufIn, int lengthIn, byte[] bufOut, int lengthOut) {
+		static public int Pack(byte[] bufIn, int lengthIn, byte[] bufOut) {
 			byte[] codebuffer = new byte[24];
 			byte bits = 0;
-			int count = 0, bitcount = 0, codecount = 0;
+			int count = 0, bitcount = 0, codecount = 0, lengthOut = 0;
 			int matchtablestart = 0, matchtableend = 0, oldmatchtablestart;
 			int start, end, max, b, c, d;
 
