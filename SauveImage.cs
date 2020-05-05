@@ -407,7 +407,7 @@ namespace ConvImgCpc {
 			CpcAmsdos entete;
 			int lg = bitmapCpc.BitmapSize;
 			if (compact) {
-				lg = PackDepack.Pack(bitmapCpc.bmpCpc, lg, bufPack) + 1; // Prendre 1 octet de marge ?
+				lg = PackDepack.Pack(bitmapCpc.bmpCpc, lg, bufPack, 0) + 1; // Prendre 1 octet de marge ?
 				if (param.withCode) {
 					Buffer.BlockCopy(codeDepack, 0, bufPack, lg, codeDepack.Length);
 					bufPack[lg + 4] = (byte)(startAdr & 0xFF);

@@ -85,7 +85,7 @@
 			this.withPalette = new System.Windows.Forms.CheckBox();
 			this.lblNumImage = new System.Windows.Forms.Label();
 			this.numImage = new System.Windows.Forms.NumericUpDown();
-			this.bpDeltaPack = new System.Windows.Forms.Button();
+			this.lblMaxImage = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -827,23 +827,22 @@
 			this.numImage.Visible = false;
 			this.numImage.ValueChanged += new System.EventHandler(this.numImage_ValueChanged);
 			// 
-			// bpDeltaPack
+			// lblMaxImage
 			// 
-			this.bpDeltaPack.Location = new System.Drawing.Point(3, 228);
-			this.bpDeltaPack.Name = "bpDeltaPack";
-			this.bpDeltaPack.Size = new System.Drawing.Size(104, 23);
-			this.bpDeltaPack.TabIndex = 55;
-			this.bpDeltaPack.Text = "TEST";
-			this.bpDeltaPack.UseVisualStyleBackColor = true;
-			this.bpDeltaPack.Click += new System.EventHandler(this.bpDeltaPack_Click);
+			this.lblMaxImage.AutoSize = true;
+			this.lblMaxImage.Location = new System.Drawing.Point(0, 111);
+			this.lblMaxImage.Name = "lblMaxImage";
+			this.lblMaxImage.Size = new System.Drawing.Size(0, 13);
+			this.lblMaxImage.TabIndex = 53;
+			this.lblMaxImage.Visible = false;
 			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(597, 431);
-			this.Controls.Add(this.bpDeltaPack);
 			this.Controls.Add(this.numImage);
+			this.Controls.Add(this.lblMaxImage);
 			this.Controls.Add(this.lblNumImage);
 			this.Controls.Add(this.withPalette);
 			this.Controls.Add(this.withCode);
@@ -947,7 +946,7 @@
 		private System.Windows.Forms.Button bpLumPlus;
 		private System.Windows.Forms.Label lblNumImage;
 		private System.Windows.Forms.NumericUpDown numImage;
-		private System.Windows.Forms.Button bpDeltaPack;
+		private System.Windows.Forms.Label lblMaxImage;
 	}
 }
 

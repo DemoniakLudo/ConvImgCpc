@@ -9,7 +9,7 @@ namespace ConvImgCpc {
 		public byte[] bmpCpc = new byte[0x10000];
 		private byte[] bufTmp = new byte[0x10000];
 
-		bool cpcPlus = false;
+
 		public int[] Palette = { 1, 24, 20, 6, 26, 0, 2, 7, 10, 12, 14, 16, 18, 22, 1, 14, 1 };
 		private int[] tabOctetMode = { 0x00, 0x80, 0x08, 0x88, 0x20, 0xA0, 0x28, 0xA8, 0x02, 0x82, 0x0A, 0x8A, 0x22, 0xA2, 0x2A, 0xAA };
 		public const int Lum0 = 0x00;
@@ -46,6 +46,7 @@ namespace ConvImgCpc {
 							};
 
 		public int modeVirtuel = 1;
+		public bool cpcPlus = false;
 		private int nbCol = 80;
 		public int NbCol { get { return nbCol; } }
 		public int TailleX {
@@ -154,7 +155,7 @@ namespace ConvImgCpc {
 
 		public int GetAdrCpc(int y) {
 			int adrCPC = (y >> 4) * nbCol + (y & 14) * 0x400;
-			if (y > 255 && (nbCol * nbLig > 0x3FFF))
+			if (y > 255 && (nbCol * nbLig > 0x4000))
 				adrCPC += 0x3800;
 
 			return adrCPC;
@@ -215,7 +216,7 @@ namespace ConvImgCpc {
 			return BitmapCpc.RgbCPC[c < 27 ? c : 0].GetColor;
 		}
 
-		public void CreeBmpCpc(Param param, LockBitmap bmpLock) {
+		public void CreeBmpCpc(LockBitmap bmpLock) {
 			System.Array.Clear(bmpCpc, 0, bmpCpc.Length);
 			for (int y = 0; y < TailleY; y += 2) {
 				int modeCPC = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
@@ -226,7 +227,7 @@ namespace ConvImgCpc {
 					for (int p = 0; p < 8; p++)
 						if ((p % tx) == 0) {
 							RvbColor col = bmpLock.GetPixelColor(x + p, y);
-							if (param.cpcPlus) {
+							if (cpcPlus) {
 								for (pen = 0; pen < 16; pen++) {
 									if ((col.v >> 4) == (Palette[pen] >> 8) && (col.r >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.b >> 4) == (Palette[pen] & 0x0F))
 										break;

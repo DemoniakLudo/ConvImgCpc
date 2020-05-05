@@ -143,9 +143,9 @@ namespace ConvImgCpc {
 					imageStream.Position = 0;
 					selImage = new Bitmap(imageStream);
 					dimension = new FrameDimension(selImage.FrameDimensionsList[0]);
-					int frameCount = selImage.GetFrameCount(dimension);
-					numImage.Maximum = frameCount - 1;
-					lblNumImage.Visible = numImage.Visible = frameCount > 1;
+					numImage.Maximum = GetMaxImages() - 1;
+					lblMaxImage.Text = "Nbre images:" + GetMaxImages();
+					lblMaxImage.Visible = lblNumImage.Visible = numImage.Visible = GetMaxImages() > 1;
 					numImage.Value = 0;
 					SelectImage(0);
 				}
@@ -168,9 +168,13 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void SelectImage(int n) {
+		public void SelectImage(int n) {
 			selImage.SelectActiveFrame(dimension, n);
 			imgSrc.SetBitmap(new Bitmap(selImage), checkImageSource.Checked);
+		}
+
+		public int GetMaxImages() {
+			return selImage.GetFrameCount(dimension);
 		}
 
 		private void ReadParam(string fileName) {
@@ -248,7 +252,7 @@ namespace ConvImgCpc {
 		private void bpSave_Click(object sender, EventArgs e) {
 			SaveFileDialog dlg = new SaveFileDialog();
 			dlg.InitialDirectory = lastSavePath;
-			dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.png)|*.png|Sprite assembleur (.asm)|*.asm|Compacté (.cmp)|*.cmp|Palette (.pal)|*.pal|Paramètres (.xml)|*.xml";
+			dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.png)|*.png|Sprite assembleur (.asm)|*.asm|Compacté (.cmp)|*.cmp|Palette (.pal)|*.pal|Animation DeltaPack (.asm)|*.asm|Paramètres (.xml)|*.xml";
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
 				lastSavePath = Path.GetDirectoryName(dlg.FileName);
@@ -274,6 +278,10 @@ namespace ConvImgCpc {
 						break;
 
 					case 6:
+						imgCpc.SauveDeltaPack(dlg.FileName, lblInfoVersion.Text, param);
+						break;
+
+					case 7:
 						SaveParam(dlg.FileName);
 						break;
 				}
@@ -444,20 +452,6 @@ namespace ConvImgCpc {
 		private void numImage_ValueChanged(object sender, EventArgs e) {
 			SelectImage((int)numImage.Value);
 			Convert(false);
-		}
-
-		private void bpDeltaPack_Click(object sender, EventArgs e) {
-			numImage.Value = 0;
-			int ltot = 0;
-			numImage.Value = numImage.Maximum;
-			DeltaPack.PackWinDC(imgCpc, param, true);
-			for (int i = 0; i < numImage.Maximum; i++) {
-				numImage.Value = i;
-				byte[] toSave = DeltaPack.PackWinDC(imgCpc, param);
-				string lineAdd = "; Taille #" + toSave.Length.ToString("X4") + Environment.NewLine + "Delta" + i.ToString() + ":";
-				imgCpc.SauveAssembleur(toSave, toSave.Length, "Delta" + i.ToString() + ".asm", lblInfoVersion.Text, lineAdd);
-				ltot += toSave.Length;
-			}
 		}
 	}
 }

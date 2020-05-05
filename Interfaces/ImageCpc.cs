@@ -50,7 +50,10 @@ namespace ConvImgCpc {
 			get { return bitmapCpc.modeVirtuel; }
 			set { bitmapCpc.modeVirtuel = value; }
 		}
-		public bool cpcPlus = false;
+		public bool cpcPlus {
+			get { return bitmapCpc.cpcPlus; }
+			set { bitmapCpc.cpcPlus = value; }
+		}
 
 		private Main main;
 
@@ -215,39 +218,43 @@ namespace ConvImgCpc {
 		}
 
 		public void SauveScr(string fileName, Param param) {
-			bitmapCpc.CreeBmpCpc(param, bmpLock);
+			bitmapCpc.CreeBmpCpc(bmpLock);
 			SauveImage.SauveScr(fileName, bitmapCpc, param, false);
 		}
 
 		public void SauveCmp(string fileName, Param param) {
-			bitmapCpc.CreeBmpCpc(param, bmpLock);
+			bitmapCpc.CreeBmpCpc(bmpLock);
 			SauveImage.SauveScr(fileName, bitmapCpc, param, true);
 		}
 
-		public void SauveAssembleur(byte[] tabByte, int length, string fileName, string version, string lineAdd = null, Param param = null) {
-			using (StreamWriter sw = File.CreateText(fileName)) {
-				sw.WriteLine("; Généré par ConvImgCpc" + version.Replace('\n', ' '));
-				if (param != null) {
-					sw.WriteLine("; mode écran " + param.modeVirtuel);
-					sw.WriteLine("; Taille (nbColsxNbLignes) " + NbCol.ToString() + "x" + NbLig.ToString());
-				}
-				if (lineAdd != null)
-					sw.WriteLine(lineAdd);
-
-				sw.WriteLine(";");
-				string line = "\tDB\t";
-				int nbOctets = 0;
-				for (int i = 0; i < length; i++) {
-					line += "#" + tabByte[i].ToString("X2") + ",";
-					if (++nbOctets >= Math.Min(16, NbCol)) {
-						sw.WriteLine(line.Substring(0, line.Length - 1));
-						line = "\tDB\t";
-						nbOctets = 0;
-					}
-				}
-				if (nbOctets > 0)
-					sw.WriteLine(line.Substring(0, line.Length - 1));
+		private StreamWriter OpenAsm(string fileName, string version, Param param = null) {
+			StreamWriter sw = File.CreateText(fileName);
+			sw.WriteLine("; Généré par ConvImgCpc" + version.Replace('\n', ' '));
+			if (param != null) {
+				sw.WriteLine("; mode écran " + param.modeVirtuel);
+				sw.WriteLine("; Taille (nbColsxNbLignes) " + NbCol.ToString() + "x" + NbLig.ToString());
 			}
+			return sw;
+		}
+
+		private void CloseAsm(StreamWriter sw) {
+			sw.Close();
+			sw.Dispose();
+		}
+
+		public void SauveAssembleur(StreamWriter sw, byte[] tabByte, int length) {
+			string line = "\tDB\t";
+			int nbOctets = 0;
+			for (int i = 0; i < length; i++) {
+				line += "#" + tabByte[i].ToString("X2") + ",";
+				if (++nbOctets >= Math.Min(16, NbCol)) {
+					sw.WriteLine(line.Substring(0, line.Length - 1));
+					line = "\tDB\t";
+					nbOctets = 0;
+				}
+			}
+			if (nbOctets > 0)
+				sw.WriteLine(line.Substring(0, line.Length - 1));
 		}
 
 		public void SauveSprite(string fileName, string version, Param param) {
@@ -262,7 +269,7 @@ namespace ConvImgCpc {
 					for (int p = 0; p < 8; p++)
 						if ((p % tx) == 0) {
 							RvbColor col = bmpLock.GetPixelColor(x + p, y);
-							if (param.cpcPlus) {
+							if (cpcPlus) {
 								for (pen = 0; pen < 16; pen++) {
 									if ((col.v >> 4) == (Palette[pen] >> 8) && (col.r >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.b >> 4) == (Palette[pen] & 0x0F))
 										break;
@@ -280,7 +287,9 @@ namespace ConvImgCpc {
 					ret[posRet++] = octet;
 				}
 			}
-			SauveAssembleur(ret, ret.Length, fileName, version, null, param);
+			StreamWriter sw = OpenAsm(fileName, version, param);
+			SauveAssembleur(sw, ret, ret.Length);
+			CloseAsm(sw);
 		}
 
 		public byte[] GetCpcScr(Param param, bool spriteMode = false) {
@@ -303,7 +312,7 @@ namespace ConvImgCpc {
 					for (int p = 0; p < 8; p++)
 						if ((p % tx) == 0) {
 							RvbColor col = bmpLock.GetPixelColor(x + p, y);
-							if (param.cpcPlus) {
+							if (cpcPlus) {
 								for (pen = 0; pen < 16; pen++) {
 									if ((col.v >> 4) == (Palette[pen] >> 8) && (col.r >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.b >> 4) == (Palette[pen] & 0x0F))
 										break;
@@ -325,6 +334,37 @@ namespace ConvImgCpc {
 				}
 			}
 			return ret;
+		}
+
+		public void SauveDeltaPack(string fileName, string version, Param param) {
+			byte[] bufOut = new byte[0x8000];
+			StreamWriter sw = OpenAsm(fileName, version, param);
+			int nbImages = main.GetMaxImages();
+			main.SelectImage(nbImages - 1);
+			Convert(true);
+			int ltot = 0;
+			DeltaPack.Pack(this, param, bufOut, true);
+			for (int i = 0; i < nbImages; i++) {
+				main.SelectImage(i);
+				Convert(true);
+				int l = DeltaPack.Pack(this, param, bufOut);
+				sw.WriteLine("Delta" + i.ToString() + ":\t\t; Taille #" + l.ToString("X4"));
+				SauveAssembleur(sw, bufOut, l);
+				ltot += l;
+			}
+			sw.WriteLine("AnimDelta:\t\t; Taille totale #" + ltot.ToString("X4"));
+			string line = "\tDW\t";
+			int nbFramesWrite = 0;
+			for (int i = 0; i < nbImages; i++) {
+				line += "Delta" + i.ToString() + ",";
+				if (++nbFramesWrite >= Math.Min(16, NbCol)) {
+					sw.WriteLine(line.Substring(0, line.Length - 1));
+					line = "\tDW\t";
+					nbFramesWrite = 0;
+				}
+			}
+			sw.WriteLine(line + "0");
+			CloseAsm(sw);
 		}
 
 		public void LirePalette(string fileName, Param param) {
@@ -389,6 +429,7 @@ namespace ConvImgCpc {
 		}
 		#endregion
 
+		#region Gestion déplacement souris
 		private void modeEdition_CheckedChanged(object sender, System.EventArgs e) {
 			zoom = 1;
 			chkRendu.Checked = false;
@@ -572,6 +613,7 @@ namespace ConvImgCpc {
 				GestMouse(e);
 			}
 		}
+		#endregion
 
 		private void vScrollBar_Scroll(object sender, ScrollEventArgs e) {
 			offsetY = (vScrollBar.Value >> 1) << 1;
