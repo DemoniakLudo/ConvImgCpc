@@ -336,18 +336,22 @@ namespace ConvImgCpc {
 			return ret;
 		}
 
-		public void SauveDeltaPack(string fileName, string version, Param param) {
+		public void SauveDeltaPack(string fileName, string version, Param param, bool reboucle) {
 			byte[] bufOut = new byte[0x8000];
 			StreamWriter sw = OpenAsm(fileName, version, param);
 			int nbImages = main.GetMaxImages();
-			main.SelectImage(nbImages - 1);
-			Convert(true);
+			if (reboucle) {
+				main.SelectImage(nbImages - 1);
+				Convert(true);
+				DeltaPack.Pack(this, param, bufOut, true);
+			}
 			int ltot = 0;
 			DeltaPack.Pack(this, param, bufOut, true);
 			for (int i = 0; i < nbImages; i++) {
 				main.SelectImage(i);
 				Convert(true);
-				int l = DeltaPack.Pack(this, param, bufOut);
+				Application.DoEvents();
+				int l = DeltaPack.Pack(this, param, bufOut, i == 0 && !reboucle);
 				sw.WriteLine("Delta" + i.ToString() + ":\t\t; Taille #" + l.ToString("X4"));
 				SauveAssembleur(sw, bufOut, l);
 				ltot += l;

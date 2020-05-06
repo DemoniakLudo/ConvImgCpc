@@ -61,6 +61,7 @@
     <Compile Include="Conversion.cs" />
     <Compile Include="CpcSystem.cs" />
     <Compile Include="DeltaPack.cs" />
+    <Compile Include="DirectBitmap.cs" />
     <Compile Include="Interfaces\EditColor.cs">
       <SubType>Form</SubType>
     </Compile>

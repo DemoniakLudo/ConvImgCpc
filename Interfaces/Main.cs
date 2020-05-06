@@ -278,7 +278,7 @@ namespace ConvImgCpc {
 						break;
 
 					case 6:
-						imgCpc.SauveDeltaPack(dlg.FileName, lblInfoVersion.Text, param);
+						imgCpc.SauveDeltaPack(dlg.FileName, lblInfoVersion.Text, param, true);
 						break;
 
 					case 7:
