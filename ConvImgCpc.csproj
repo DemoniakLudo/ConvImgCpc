@@ -86,7 +86,6 @@
     <Compile Include="Interfaces\Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="LockBitmap.cs" />
     <Compile Include="PackDepack.cs" />
     <Compile Include="Param.cs" />
     <Compile Include="Program.cs" />

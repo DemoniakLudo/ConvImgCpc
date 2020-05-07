@@ -12,7 +12,7 @@ namespace ConvImgCpc {
 		const int SEUIL_LUM_2 = 0x99;
 
 		static private int[,] CoulTrouvee = new int[4096, 272];
-		static private LockBitmap bitmap;
+		static private DirectBitmap bitmap;
 		static private int xPix, yPix;
 		static private byte[] tblContrast = new byte[256];
 
@@ -80,19 +80,6 @@ namespace ConvImgCpc {
 
 		static byte MinMax(int value) {
 			return value >= 0 ? value <= 255 ? (byte)value : (byte)255 : (byte)0;
-		}
-
-		// Applique une matrice de tramage
-		static void CalcDiffMethodeMat(int diff, int decalMasque, int Tx) {
-			for (int y = 0; y < matDither.GetLength(1); y++) {
-				int adr = ((((yPix + 2 * y) * bitmap.Width) + xPix) << 2) + decalMasque;
-				for (int x = 0; x < matDither.GetLength(0); x++) {
-					if (adr < bitmap.Pixels.Length)
-						bitmap.Pixels[adr] = (byte)MinMax((int)(bitmap.Pixels[adr] + (diff * matDither[x, y])));
-
-					adr += Tx << 2;
-				}
-			}
 		}
 
 		// Modification luminosité / saturation
@@ -182,7 +169,7 @@ namespace ConvImgCpc {
 				sum *= 100.0;
 				for (int y = 0; y < matDither.GetLength(1); y++)
 					for (int x = 0; x < matDither.GetLength(0); x++)
-						matDither[x, y] /= sum;
+						matDither[x, y] = (matDither[x, y] * pct) / sum;
 			}
 			else
 				pct = 0;
@@ -259,9 +246,19 @@ namespace ConvImgCpc {
 
 					CoulTrouvee[indexChoix, (modeVirtuel == 5 ? yPix >> 1 : 0)]++;
 					if (pct > 0) {
-						CalcDiffMethodeMat(pct * (p.r - choix.r), 0, Tx);	// Modif. rouge
-						CalcDiffMethodeMat(pct * (p.v - choix.v), 1, Tx);	// Modif. Vert
-						CalcDiffMethodeMat(pct * (p.b - choix.b), 2, Tx);	// Modif. Bleu
+						// Applique une matrice de tramage
+						for (int y = 0; y < matDither.GetLength(1); y++) {
+							for (int x = 0; x < matDither.GetLength(0); x++) {
+								int adr = (((yPix + 2 * y) * bitmap.Width) + xPix + x * Tx);
+								if (adr < bitmap.Length) {
+									RvbColor pix = bitmap.GetPixelColor(xPix + Tx * x, yPix + 2 * y);
+									pix.r = (byte)MinMax((int)(pix.r + (p.r - choix.r) * matDither[x, y]));
+									pix.v = (byte)MinMax((int)(pix.v + (p.v - choix.v) * matDither[x, y]));
+									pix.b = (byte)MinMax((int)(pix.b + (p.b - choix.b) * matDither[x, y]));
+									bitmap.SetPixel(xPix + Tx * x, yPix + 2 * y, pix);
+								}
+							}
+						}
 					}
 					bitmap.SetPixel(xPix, yPix, prm.setPalCpc ? choix : p);
 				}
@@ -549,14 +546,10 @@ namespace ConvImgCpc {
 					SetPixCol(dest, maxCol, tabCol);
 		}
 
-		static public int Convert(Bitmap source, ImageCpc dest, Param p) {
-			dest.LockBits();
-			bitmap = new LockBitmap(source);
-			bitmap.LockBits();
+		static public int Convert(DirectBitmap source, ImageCpc dest, Param p) {
+			bitmap = source;
 			int nbCol = ConvertPasse1(dest.TailleX, dest.TailleY, p, dest.modeVirtuel);
 			Passe2(dest, p);
-			bitmap.UnlockBits();
-			dest.UnlockBits();
 			return nbCol;
 		}
 	}

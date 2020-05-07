@@ -10,6 +10,7 @@ namespace ConvImgCpc {
 		public bool Disposed { get; private set; }
 		public int Height { get; private set; }
 		public int Width { get; private set; }
+		public int Length { get { return Width * Height; } }
 
 		protected GCHandle BitsHandle { get; private set; }
 
@@ -18,7 +19,7 @@ namespace ConvImgCpc {
 			Height = height;
 			Bits = new Int32[width * height];
 			BitsHandle = GCHandle.Alloc(Bits, GCHandleType.Pinned);
-			Bitmap = new Bitmap(width, height, width * 4, PixelFormat.Format32bppPArgb, BitsHandle.AddrOfPinnedObject());
+			Bitmap = new Bitmap(width, height, width * 4, PixelFormat.Format32bppRgb, BitsHandle.AddrOfPinnedObject());
 		}
 
 		public void SetPixel(int x, int y, int c) {
@@ -36,14 +37,14 @@ namespace ConvImgCpc {
 		}
 
 		public void SetHorLine(int pixelX, int pixelY, int lineLength, int color) {
-			for (; lineLength-- > 0; ) 
-				SetPixel(pixelX, pixelY, color);
+			for (; lineLength-- > 0; )
+				SetPixel(pixelX++, pixelY, color);
 		}
 
 		public void SetHorLine2Y(int pixelX, int pixelY, int lineLength, int color) {
 			for (; lineLength-- > 0; ) {
 				SetPixel(pixelX, pixelY, color);
-				SetPixel(pixelX, pixelY+1, color);
+				SetPixel(pixelX++, pixelY + 1, color);
 			}
 		}
 

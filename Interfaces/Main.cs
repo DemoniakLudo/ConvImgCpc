@@ -59,8 +59,8 @@ namespace ConvImgCpc {
 				param.motif = chkMotif.Checked;
 				param.motif2 = chkMotif2.Checked;
 				param.setPalCpc = chkPalCpc.Checked;
-				Bitmap tmp = new Bitmap(imgCpc.TailleX, imgCpc.TailleY);
-				Graphics g = Graphics.FromImage(tmp);
+				DirectBitmap tmp = new DirectBitmap(imgCpc.TailleX, imgCpc.TailleY);
+				Graphics g = Graphics.FromImage(tmp.Bitmap);
 				double ratio = imgSrc.GetImage.Width * imgCpc.TailleY / (double)(imgSrc.GetImage.Height * imgCpc.TailleX);
 				switch (param.sMode) {
 					case Param.SizeMode.KeepSmaller:
@@ -86,7 +86,7 @@ namespace ConvImgCpc {
 						break;
 
 					case Param.SizeMode.Fit:
-						tmp = new Bitmap(imgSrc.GetImage, imgCpc.TailleX, imgCpc.TailleY);
+						g.DrawImage(imgSrc.GetImage, 0, 0, imgCpc.TailleX, imgCpc.TailleY);
 						break;
 
 					case Param.SizeMode.UserSize:

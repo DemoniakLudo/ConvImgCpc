@@ -216,7 +216,7 @@ namespace ConvImgCpc {
 			return BitmapCpc.RgbCPC[c < 27 ? c : 0].GetColor;
 		}
 
-		public void CreeBmpCpc(LockBitmap bmpLock) {
+		public void CreeBmpCpc(DirectBitmap bmpLock) {
 			System.Array.Clear(bmpCpc, 0, bmpCpc.Length);
 			for (int y = 0; y < TailleY; y += 2) {
 				int modeCPC = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
@@ -274,9 +274,7 @@ namespace ConvImgCpc {
 					}
 				}
 			// Rendu dans un bitmap PC
-			Bitmap bmp = new Bitmap(nbCol << 3, nbLig * 2);
-			LockBitmap loc = new LockBitmap(bmp);
-			loc.LockBits();
+			DirectBitmap loc = new DirectBitmap(nbCol << 3, nbLig * 2);
 			for (int y = 0; y < nbLig << 1; y += 2) {
 				int mode = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 				int adrCPC = GetAdrCpc(y);
@@ -305,8 +303,7 @@ namespace ConvImgCpc {
 					}
 				}
 			}
-			loc.UnlockBits();
-			return (bmp);
+			return (loc.Bitmap);
 		}
 	}
 }
