@@ -44,6 +44,7 @@ namespace ConvImgCpc {
 							new RvbColor( Lum1, Lum2, Lum2),
 							new RvbColor( Lum2, Lum2, Lum2)
 							};
+		static public string CpcVGA = "TDU\\X]LEMVFW^@_NGORBSZY[JCK";
 
 		public int modeVirtuel = 1;
 		public bool cpcPlus = false;

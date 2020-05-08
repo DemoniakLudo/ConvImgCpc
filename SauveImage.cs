@@ -3,7 +3,6 @@ using System.IO;
 
 namespace ConvImgCpc {
 	static public class SauveImage {
-		static string CpcVGA = "TDU\\X]LEMVFW^@_NGORBSZY[JCK";
 		/*
 		Conversion palette OCP+ :
 
@@ -441,9 +440,9 @@ namespace ConvImgCpc {
 			int indexPal = 3;
 			if (param.cpcPlus) {
 				for (i = 0; i < 16; i++) {
-					pal[indexPal++] = (byte)CpcVGA[26 - ((bitmapCpc.Palette[i] >> 4) & 0x0F)];
-					pal[indexPal++] = (byte)CpcVGA[26 - (bitmapCpc.Palette[i] & 0x0F)];
-					pal[indexPal++] = (byte)CpcVGA[26 - ((bitmapCpc.Palette[i] >> 8) & 0x0F)];
+					pal[indexPal++] = (byte)BitmapCpc.CpcVGA[26 - ((bitmapCpc.Palette[i] >> 4) & 0x0F)];
+					pal[indexPal++] = (byte)BitmapCpc.CpcVGA[26 - (bitmapCpc.Palette[i] & 0x0F)];
+					pal[indexPal++] = (byte)BitmapCpc.CpcVGA[26 - ((bitmapCpc.Palette[i] >> 8) & 0x0F)];
 				}
 				pal[195] = pal[3];
 				pal[196] = pal[4];
@@ -452,7 +451,7 @@ namespace ConvImgCpc {
 			else {
 				for (i = 0; i < 16; i++)
 					for (int j = 0; j < 12; j++)
-						pal[indexPal++] = (byte)CpcVGA[bitmapCpc.Palette[i]];
+						pal[indexPal++] = (byte)BitmapCpc.CpcVGA[bitmapCpc.Palette[i]];
 
 				for (i = 0; i < 12; i++)
 					pal[indexPal++] = pal[i + 3];
@@ -478,13 +477,13 @@ namespace ConvImgCpc {
 						for (int i = 0; i < 16; i++) {
 							int r = 0, v = 0, b = 0;
 							for (int k = 26; k-- > 0; ) {
-								if (pal[3 + i * 12] == (byte)CpcVGA[k])
+								if (pal[3 + i * 12] == (byte)BitmapCpc.CpcVGA[k])
 									r = (26 - k) << 4;
 
-								if (pal[4 + i * 12] == (byte)CpcVGA[k])
+								if (pal[4 + i * 12] == (byte)BitmapCpc.CpcVGA[k])
 									b = 26 - k;
 
-								if (pal[5 + i * 12] == (byte)CpcVGA[k])
+								if (pal[5 + i * 12] == (byte)BitmapCpc.CpcVGA[k])
 									v = (26 - k) << 8;
 							}
 							bitmapCpc.Palette[i] = r + v + b;
@@ -493,7 +492,7 @@ namespace ConvImgCpc {
 					else {
 						for (int i = 0; i < 16; i++)
 							for (int j = 0; j < 27; j++)
-								if (pal[3 + i * 12] == (byte)CpcVGA[j])
+								if (pal[3 + i * 12] == (byte)BitmapCpc.CpcVGA[j])
 									bitmapCpc.Palette[i] = j;
 					}
 					return (true);
