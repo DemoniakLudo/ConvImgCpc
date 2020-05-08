@@ -23,40 +23,38 @@ namespace ConvImgCpc {
 		}
 
 		public void SetPixel(int x, int y, int c) {
-			int index = x + (y * Width);
-			Bits[index] = c;
-		}
-
-		public int GetPixel(int x, int y) {
-			int index = x + (y * Width);
-			return Bits[index];
-		}
-
-		public RvbColor GetPixelColor(int x, int y) {
-			return new RvbColor(GetPixel(x, y));
-		}
-
-		public void SetHorLine(int pixelX, int pixelY, int lineLength, int color) {
-			for (; lineLength-- > 0; )
-				SetPixel(pixelX++, pixelY, color);
-		}
-
-		public void SetHorLine2Y(int pixelX, int pixelY, int lineLength, int color) {
-			for (; lineLength-- > 0; ) {
-				SetPixel(pixelX, pixelY, color);
-				SetPixel(pixelX++, pixelY + 1, color);
-			}
+			Bits[x + (y * Width)] = c;
 		}
 
 		public void SetPixel(int x, int y, RvbColor color) {
-			SetPixel(x, y, color.GetColorArgb);
+			Bits[x + (y * Width)] = color.GetColorArgb;
+		}
+
+		public int GetPixel(int x, int y) {
+			return Bits[x + (y * Width)];
+		}
+
+		public RvbColor GetPixelColor(int x, int y) {
+			return new RvbColor(Bits[x + (y * Width)]);
+		}
+
+		public void SetHorLineDouble(int pixelX, int pixelY, int lineLength, int color) {
+			int index = pixelX + (pixelY * Width);
+			for (; lineLength-- > 0; ) {
+				Bits[index] = color;
+				if (index + Width < Length)
+					Bits[index + Width] = color;
+
+				index++;
+			}
 		}
 
 		public void Dispose() {
-			if (Disposed) return;
-			Disposed = true;
-			Bitmap.Dispose();
-			BitsHandle.Free();
+			if (!Disposed) {
+				Disposed = true;
+				Bitmap.Dispose();
+				BitsHandle.Free();
+			}
 		}
 	}
 }

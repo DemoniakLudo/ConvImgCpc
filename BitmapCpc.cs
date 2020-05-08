@@ -283,21 +283,23 @@ namespace ConvImgCpc {
 					byte octet = bmpCpc[adrCPC + x];
 					switch (mode) {
 						case 0:
-							loc.SetHorLine(xBitmap, y, 4, GetPalCPC(Palette[(octet >> 7) + ((octet & 0x20) >> 3) + ((octet & 0x08) >> 2) + ((octet & 0x02) << 2)]));
-							loc.SetHorLine(xBitmap + 4, y, 4, GetPalCPC(Palette[((octet & 0x40) >> 6) + ((octet & 0x10) >> 2) + ((octet & 0x04) >> 1) + ((octet & 0x01) << 3)]));
+							loc.SetHorLineDouble(xBitmap, y, 4, GetPalCPC(Palette[(octet >> 7) + ((octet & 0x20) >> 3) + ((octet & 0x08) >> 2) + ((octet & 0x02) << 2)]));
+							loc.SetHorLineDouble(xBitmap + 4, y, 4, GetPalCPC(Palette[((octet & 0x40) >> 6) + ((octet & 0x10) >> 2) + ((octet & 0x04) >> 1) + ((octet & 0x01) << 3)]));
 							xBitmap += 8;
 							break;
 
 						case 1:
-							loc.SetHorLine(xBitmap, y, 2, GetPalCPC(Palette[((octet >> 7) & 1) + ((octet >> 2) & 2)]));
-							loc.SetHorLine(xBitmap + 2, y, 2, GetPalCPC(Palette[((octet >> 6) & 1) + ((octet >> 1) & 2)]));
-							loc.SetHorLine(xBitmap + 4, y, 2, GetPalCPC(Palette[((octet >> 5) & 1) + ((octet >> 0) & 2)]));
-							loc.SetHorLine(xBitmap + 6, y, 2, GetPalCPC(Palette[((octet >> 4) & 1) + ((octet << 1) & 2)]));
+							loc.SetHorLineDouble(xBitmap, y, 2, GetPalCPC(Palette[((octet >> 7) & 1) + ((octet >> 2) & 2)]));
+							loc.SetHorLineDouble(xBitmap + 2, y, 2, GetPalCPC(Palette[((octet >> 6) & 1) + ((octet >> 1) & 2)]));
+							loc.SetHorLineDouble(xBitmap + 4, y, 2, GetPalCPC(Palette[((octet >> 5) & 1) + ((octet >> 0) & 2)]));
+							loc.SetHorLineDouble(xBitmap + 6, y, 2, GetPalCPC(Palette[((octet >> 4) & 1) + ((octet << 1) & 2)]));
 							xBitmap += 8; break;
 
 						case 2:
-							for (int i = 8; i-- > 0; )
-								loc.SetPixel(xBitmap++, y, GetPalCPC(Palette[(octet >> i) & 1]));
+							for (int i = 8; i-- > 0; ) {
+								loc.SetPixel(xBitmap, y, GetPalCPC(Palette[(octet >> i) & 1]));
+								loc.SetPixel(xBitmap++, y + 1, GetPalCPC(Palette[(octet >> i) & 1]));
+							}
 
 							break;
 					}
