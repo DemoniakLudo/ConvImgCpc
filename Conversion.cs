@@ -12,7 +12,6 @@ namespace ConvImgCpc {
 		const int SEUIL_LUM_2 = 0x99;
 
 		static private int[,] CoulTrouvee = new int[4096, 272];
-		static private int xPix, yPix;
 		static private byte[] tblContrast = new byte[256];
 
 		static double[,] floyd =	{	{7, 3},
@@ -79,6 +78,54 @@ namespace ConvImgCpc {
 
 		static byte MinMax(int value) {
 			return value >= 0 ? value <= 255 ? (byte)value : (byte)255 : (byte)0;
+		}
+
+		static private int CalcTx(int modeVirtuel, int yPix) {
+			switch (modeVirtuel) {
+				case 0:
+				case 1:
+				case 2:
+					return 4 >> modeVirtuel;
+				case 3:
+				case 4:
+					return 4 >> ((yPix & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3);
+				case 5:
+				case 6:
+				case 7:
+					return 2;
+				case 8:
+					return 8;
+				case 9:
+					return 4;
+				case 10:
+					return 4;
+			}
+			return 1;
+		}
+
+		static private int CalcMaxCol(int modeVirtuel, int yPix) {
+			switch (modeVirtuel) {
+				case 0:
+				case 1:
+				case 2:
+					return 1 << (4 >> modeVirtuel);
+				case 3:
+				case 4:
+					return 1 << (4 >> ((yPix & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3));
+				case 5:
+					return 4;
+				case 6:
+					return 16;
+				case 7:
+					return 2;
+				case 8:
+					return 16;
+				case 9:
+					return 4;
+				case 10:
+					return 2;
+			}
+			return 16;
 		}
 
 		// Modification luminosité / saturation
@@ -171,9 +218,9 @@ namespace ConvImgCpc {
 
 			RvbColor choix, p = new RvbColor(0);
 			int indexChoix = 0;
-			for (yPix = 0; yPix < dest.TailleY; yPix += 2) {
-				int Tx = 4 >> (dest.modeVirtuel >= 5 ? 1 : dest.modeVirtuel >= 3 ? (yPix & 2) == 0 ? dest.modeVirtuel - 2 : dest.modeVirtuel - 3 : dest.modeVirtuel);
-				for (xPix = 0; xPix < dest.TailleX; xPix += Tx) {
+			for (int yPix = 0; yPix < dest.TailleY; yPix += 2) {
+				int Tx = CalcTx(dest.modeVirtuel, yPix);
+				for (int xPix = 0; xPix < dest.TailleX; xPix += Tx) {
 					if (prm.lissage) {
 						float r = 0, v = 0, b = 0;
 						for (int i = 0; i < Tx; i++) {
@@ -329,11 +376,11 @@ namespace ConvImgCpc {
 			}
 		}
 
-		static private void SetPixCol(DirectBitmap bitmap, ImageCpc dest, int maxCol, RvbColor[,] tabCol) {
-			for (int y = 0; y < dest.TailleY; y += 2) {
-				int modeCpc = (dest.modeVirtuel >= 5 ? 1 : dest.modeVirtuel >= 3 ? (y & 2) == 0 ? dest.modeVirtuel - 2 : dest.modeVirtuel - 3 : dest.modeVirtuel);
-				int Tx = 4 >> modeCpc;
-				maxCol = dest.modeVirtuel == 6 ? 16 : 1 << Tx;
+		static private void SetPixCol(DirectBitmap bitmap, ImageCpc dest, int maxCol, RvbColor[,] tabCol, Param p) {
+			int incY = p.modeVirtuel == 8 || p.modeVirtuel == 9 ? 8 : p.modeVirtuel == 10 ? 4 : 2;
+			for (int y = 0; y < dest.TailleY; y += incY) {
+				int Tx = CalcTx(dest.modeVirtuel, y);
+				maxCol = CalcMaxCol(dest.modeVirtuel, y);
 				for (int x = 0; x < dest.TailleX; x += Tx) {
 					int oldDist = 0x7FFFFFFF;
 					RvbColor pix = bitmap.GetPixelColor(x, y);
@@ -348,16 +395,17 @@ namespace ConvImgCpc {
 								i = maxCol;
 						}
 					}
-					dest.SetPixelCpc(x, y, choix, Tx);
+					for (int j = 0; j < incY; j += 2)
+						dest.SetPixelCpc(x, y + j, choix, Tx);
 				}
 			}
 		}
 
-		static private void SetPixCol2(DirectBitmap bitmap, ImageCpc dest, RvbColor[,] tabCol) {
-			for (int y = 0; y < dest.TailleY; y += 2) {
-				int modeCpc = (dest.modeVirtuel >= 5 ? 1 : dest.modeVirtuel >= 3 ? (y & 2) == 0 ? dest.modeVirtuel - 2 : dest.modeVirtuel - 3 : dest.modeVirtuel);
-				int Tx = 4 >> modeCpc;
-				int maxCol = dest.modeVirtuel == 6 ? 16 : 1 << Tx;
+		static private void SetPixCol2(DirectBitmap bitmap, ImageCpc dest, RvbColor[,] tabCol, Param p) {
+			int incY = p.modeVirtuel == 8 || p.modeVirtuel == 9 ? 8 : p.modeVirtuel == 10 ? 4 : 2;
+			for (int y = 0; y < dest.TailleY; y += incY) {
+				int Tx = CalcTx(dest.modeVirtuel, y);
+				int maxCol = CalcMaxCol(dest.modeVirtuel, y);
 				for (int x = 0; x < dest.TailleX; x += (Tx << 1)) {
 					int dist, oldDist = 0x7FFFFFFF;
 					RvbColor pix1 = bitmap.GetPixelColor(x, y);
@@ -378,17 +426,19 @@ namespace ConvImgCpc {
 							}
 						}
 					}
-					dest.SetPixelCpc((y & 2) == 0 ? x : x + Tx, y, choix1, Tx);
-					dest.SetPixelCpc((y & 2) == 0 ? x + Tx : x, y, choix2, Tx);
+					for (int j = 0; j < incY; j += 2) {
+						dest.SetPixelCpc((y & 2) == 0 ? x : x + Tx, y, choix1, Tx);
+						dest.SetPixelCpc((y & 2) == 0 ? x + Tx : x, y, choix2, Tx);
+					}
 				}
 			}
 		}
 
-		static private void SetPixCol3(DirectBitmap bitmap, ImageCpc dest, RvbColor[,] tabCol) {
-			for (int y = 0; y < dest.TailleY; y += 2) {
-				int modeCpc = (dest.modeVirtuel >= 5 ? 1 : dest.modeVirtuel >= 3 ? (y & 2) == 0 ? dest.modeVirtuel - 2 : dest.modeVirtuel - 3 : dest.modeVirtuel);
-				int Tx = 4 >> modeCpc;
-				int maxCol = dest.modeVirtuel == 6 ? 16 : 1 << Tx;
+		static private void SetPixCol3(DirectBitmap bitmap, ImageCpc dest, RvbColor[,] tabCol, Param p) {
+			int incY = p.modeVirtuel == 8 || p.modeVirtuel == 9 ? 8 : p.modeVirtuel == 10 ? 4 : 2;
+			for (int y = 0; y < dest.TailleY; y += incY) {
+				int Tx = CalcTx(dest.modeVirtuel, y);
+				int maxCol = CalcMaxCol(dest.modeVirtuel, y);
 				for (int x = 0; x < dest.TailleX; x += (Tx << 1)) {
 					int dist, oldDist = 0x7FFFFFFF;
 					RvbColor pix1 = bitmap.GetPixelColor(x, y);
@@ -410,17 +460,18 @@ namespace ConvImgCpc {
 							}
 						}
 					}
-					dest.SetPixelCpc((y & 2) == 0 ? x : x + Tx, y, choix1, Tx);
-					dest.SetPixelCpc((y & 2) == 0 ? x + Tx : x, y, choix2, Tx);
+					for (int j = 0; j < incY; j += 2) {
+						dest.SetPixelCpc((y & 2) == 0 ? x : x + Tx, y, choix1, Tx);
+						dest.SetPixelCpc((y & 2) == 0 ? x + Tx : x, y, choix2, Tx);
+					}
 				}
 			}
 		}
 
-		static private void SetPixCol4(DirectBitmap bitmap, ImageCpc dest, RvbColor[,] tabCol) {
+		static private void SetPixCol4(DirectBitmap bitmap, ImageCpc dest, RvbColor[,] tabCol, Param p) {
 			for (int y = 0; y < dest.TailleY; y += 4) {
-				int modeCpc = (dest.modeVirtuel >= 5 ? 1 : dest.modeVirtuel >= 3 ? (y & 2) == 0 ? dest.modeVirtuel - 2 : dest.modeVirtuel - 3 : dest.modeVirtuel);
-				int Tx = 4 >> modeCpc;
-				int maxCol = dest.modeVirtuel == 6 ? 16 : 1 << Tx;
+				int Tx = CalcTx(dest.modeVirtuel, y);
+				int maxCol = CalcMaxCol(dest.modeVirtuel, y);
 				for (int x = 0; x < dest.TailleX; x += (Tx << 1)) {
 					RvbColor pix0 = bitmap.GetPixelColor(x, y);
 					RvbColor pix1 = bitmap.GetPixelColor(x + Tx, y);
@@ -467,10 +518,9 @@ namespace ConvImgCpc {
 		static private void Passe2(DirectBitmap source, ImageCpc dest, Param p) {
 			RvbColor[,] tabCol = new RvbColor[16, 272];
 			int[] MemoLockState = new int[16];
-			int i, modeCpc = (dest.modeVirtuel >= 5 ? 1 : dest.modeVirtuel >= 3 ? dest.modeVirtuel - 3 : dest.modeVirtuel);
-			int Tx = 4 >> modeCpc;
-			int maxCol = dest.modeVirtuel == 6 ? 16 : 1 << Tx;
-
+			int i;
+			int Tx = CalcTx(dest.modeVirtuel, 2);
+			int maxCol = CalcMaxCol(dest.modeVirtuel, 2);
 			for (i = 0; i < 16; i++)
 				MemoLockState[i] = p.lockState[i];
 
@@ -498,16 +548,16 @@ namespace ConvImgCpc {
 			}
 
 			if (p.motif)
-				SetPixCol2(source, dest, tabCol);
+				SetPixCol2(source, dest, tabCol, p);
 			else
 				if (p.motif2) {
-					if (dest.modeVirtuel > 0)
-						SetPixCol4(source, dest, tabCol);
+					if (dest.modeVirtuel > 0 && dest.modeVirtuel < 8)
+						SetPixCol4(source, dest, tabCol, p);
 					else
-						SetPixCol3(source, dest, tabCol);
+						SetPixCol3(source, dest, tabCol, p);
 				}
 				else
-					SetPixCol(source, dest, maxCol, tabCol);
+					SetPixCol(source, dest, maxCol, tabCol, p);
 		}
 
 		static public int Convert(DirectBitmap source, ImageCpc dest, Param p) {

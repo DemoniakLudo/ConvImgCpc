@@ -95,7 +95,7 @@ namespace ConvImgCpc {
 				bmpLock.SetHorLineDouble(0, y, startX, GetPalCPC(Palette[0]));
 				bmpLock.SetHorLineDouble(startX, y, bmpLock.Width - startX, col);
 			}
-			int tx = 4 >> (modeVirtuel >= 5 ? 1 : modeVirtuel > 2 ? modeVirtuel - 3 : modeVirtuel);
+			int tx = 4 >> (modeVirtuel > 7 ? modeVirtuel - 8 : modeVirtuel >= 5 ? 1 : modeVirtuel > 2 ? modeVirtuel - 3 : modeVirtuel);
 			int maxCol = modeVirtuel == 6 ? 16 : 1 << tx;
 			for (int i = 0; i < 16; i++)
 				colors[i].Visible = lockColors[i].Visible = i < maxCol;
@@ -111,7 +111,7 @@ namespace ConvImgCpc {
 				Enabled = false;
 				List<MemoPoint> lst = undo.lstUndoRedo;
 				foreach (MemoPoint p in lst) {
-					int Tx = 4 >> (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (p.posy & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
+					int Tx = 4 >> (modeVirtuel > 7 ? modeVirtuel - 8 : modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (p.posy & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 					bmpLock.SetHorLineDouble(p.posx, p.posy, Tx, p.newColor);
 				}
 				forceDrawZoom = true;
@@ -195,7 +195,7 @@ namespace ConvImgCpc {
 			Array.Clear(ret, 0, ret.Length);
 			int posRet = 0;
 			for (int y = 0; y < TailleY; y += 2) {
-				int modeCPC = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
+				int modeCPC = (modeVirtuel > 7 ? modeVirtuel - 8 : modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 				int tx = 4 >> modeCPC;
 				for (int x = 0; x < TailleX; x += 8) {
 					byte pen = 0, octet = 0;
@@ -237,7 +237,7 @@ namespace ConvImgCpc {
 			Array.Clear(ret, 0, ret.Length);
 			int posRet = 0;
 			for (int y = 0; y < TailleY; y += 2) {
-				int modeCPC = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
+				int modeCPC = (modeVirtuel > 7 ? modeVirtuel - 8 : modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 				int adrCPC = GetAdrCpc(y);
 				int tx = 4 >> modeCPC;
 				for (int x = 0; x < TailleX; x += 8) {
@@ -535,7 +535,7 @@ namespace ConvImgCpc {
 			Enabled = false;
 			List<MemoPoint> lst = undo.Undo();
 			foreach (MemoPoint p in lst) {
-				int Tx = 4 >> (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (p.posy & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
+				int Tx = 4 >> (modeVirtuel > 7 ? modeVirtuel - 8 : modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (p.posy & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 				bmpLock.SetHorLineDouble(p.posx, p.posy, Tx, p.oldColor);
 			}
 			Render(true);
@@ -548,7 +548,7 @@ namespace ConvImgCpc {
 			Enabled = false;
 			List<MemoPoint> lst = undo.Redo();
 			foreach (MemoPoint p in lst) {
-				int Tx = 4 >> (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (p.posy & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
+				int Tx = 4 >> (modeVirtuel > 7 ? modeVirtuel - 8 : modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (p.posy & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 				bmpLock.SetHorLineDouble(p.posx, p.posy, Tx, p.newColor);
 			}
 			Render(true);

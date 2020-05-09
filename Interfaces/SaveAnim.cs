@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 
@@ -21,7 +22,7 @@ namespace ConvImgCpc {
 			InitializeComponent();
 		}
 
-		private int PackWinDC(ImageCpc img, byte[] bufOut, Param param, ref int sizeDepack, bool razDiff = false) {
+		private int PackWinDC(byte[] bufOut, ref int sizeDepack, bool razDiff = false) {
 			int xFin = 0;
 			int xDeb = img.NbCol;
 			int yDeb = img.NbLig;
@@ -68,7 +69,7 @@ namespace ConvImgCpc {
 			return lpack;
 		}
 
-		private int PackOdin(ImageCpc img, byte[] bufOut, Param param, bool razDiff = false) {
+		private int PackOdin(byte[] bufOut, bool razDiff = false) {
 			if (razDiff)
 				Array.Clear(BufPrec, 0, BufPrec.Length);
 
@@ -124,7 +125,7 @@ namespace ConvImgCpc {
 			return lSave;
 		}
 
-		private int PackWinDC4(ImageCpc img, byte[] bufOut, Param param, bool razDiff = false) {
+		private int PackWinDC4(byte[] bufOut, bool razDiff = false) {
 			int[] xFin = { 0, 0, 0, 0 };
 			int[] xDeb = { img.NbCol, img.NbCol, img.NbCol, img.NbCol };
 			int[] yDeb = { img.NbLig, img.NbLig, img.NbLig, img.NbLig };
@@ -179,9 +180,9 @@ namespace ConvImgCpc {
 			return posBufOut;
 		}
 
-		public int Pack(ImageCpc img, byte[] bufOut, Param param, ref int sizeDepack, bool razDiff = false) {
-			return PackWinDC(img, bufOut, param, ref sizeDepack, razDiff);
-			//return PackOdin(img, param, razDiff);
+		public int Pack(byte[] bufOut, ref int sizeDepack, bool razDiff = false) {
+			return PackWinDC(bufOut, ref sizeDepack, razDiff);
+			//return PackOdin(bufOut, razDiff);
 		}
 
 		public void SauveDeltaPack(int adr, bool reboucle, bool checkMem, bool gest128K) {
@@ -196,8 +197,23 @@ namespace ConvImgCpc {
 			if (reboucle) {
 				img.main.SelectImage(nbImages - 1);
 				img.Convert(true);
-				Pack(img, bufOut[0], param, ref sizeDepack, true);
+				Pack(bufOut[0], ref sizeDepack, true);
 			}
+
+			// Calcule les animations
+			int ltot = 0, maxDepack = 0;
+			for (int i = 0; i < nbImages; i++) {
+				img.main.SelectImage(i);
+				img.Convert(true);
+				Application.DoEvents();
+				lg[i] = Pack(bufOut[i], ref sizeDepack, i == 0 && !reboucle);
+				ltot += lg[i];
+				maxDepack = Math.Max(maxDepack, sizeDepack);
+			}
+			if (maxDepack + ltot + adr < 0xBE00)
+				gest128K = false;
+
+			// Sauvegarde
 			StreamWriter sw = Save.OpenAsm(fileName, version, param);
 			GenereEntete(sw, adr);
 			if (img.cpcPlus)
@@ -212,17 +228,8 @@ namespace ConvImgCpc {
 			else
 				GenerePaletteOld(sw, img);
 
-			int maxDepack = 0;
+			int lbank = 0, numBank = 0;
 			for (int i = 0; i < nbImages; i++) {
-				img.main.SelectImage(i);
-				img.Convert(true);
-				Application.DoEvents();
-				lg[i] = Pack(img, bufOut[i], param, ref sizeDepack, i == 0 && !reboucle);
-				maxDepack = Math.Max(maxDepack, sizeDepack);
-			}
-			int ltot = 0, lbank = 0, numBank = 0;
-			for (int i = 0; i < nbImages; i++) {
-				ltot += lg[i];
 				lbank += lg[i];
 				if (gest128K && lbank > (numBank == 0 ? (0xBE00 - maxDepack) : 0x4000)) {
 					if (numBank == 0) {
@@ -243,7 +250,7 @@ namespace ConvImgCpc {
 			GenerePointeurs(sw, nbImages, bank, gest128K);
 			GenereFin(sw);
 			Save.CloseAsm(sw);
-			if (numBank > 7 || (!gest128K && maxDepack + ltot + adr + 0x200 >= 0xC000)) // #100 car environ 256 octets de code
+			if (numBank > 7 || (!gest128K && maxDepack + ltot + adr >= 0xBE00))
 				MessageBox.Show("Attention ! la taille totale (animation + buffer de décompactage) dépassera " + (gest128K ? "112K" : "48Ko") + ", risque d'écrasement de la mémoire vidéo et plantage..."
 								, "Alerte"
 								, MessageBoxButtons.OK
@@ -519,18 +526,15 @@ namespace ConvImgCpc {
 			string adrTxt = txbAdrDeb.Text;
 			int adr = 0;
 			try {
-				if (adrTxt[0] == '#' || adrTxt[0] == '&')
-					adr = int.Parse(adrTxt.Substring(1), System.Globalization.NumberStyles.HexNumber);
-				else
-					adr = int.Parse(adrTxt);
-
+				adr = int.Parse(adrTxt.Substring(1), (adrTxt[0] == '#' || adrTxt[0] == '&') ? NumberStyles.HexNumber : NumberStyles.Integer);
 			}
 			catch (FormatException ex) {
 				MessageBox.Show("L'adresse saisie [" + adr + "] est erronée");
 			}
-			if (adr > 0)
+			if (adr > 0) {
+				Hide();
 				SauveDeltaPack(adr, chkBoucle.Checked, chkMemory.Checked, chk128Ko.Checked);
-
+			}
 			Close();
 		}
 	}
