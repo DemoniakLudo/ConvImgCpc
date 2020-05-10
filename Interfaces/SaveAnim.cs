@@ -69,7 +69,7 @@ namespace ConvImgCpc {
 			return lpack;
 		}
 
-		private int PackOdin(byte[] bufOut, bool razDiff = false) {
+		private int PackOdin(byte[] bufOut, ref int sizeDepack, bool newMethode, bool razDiff) {
 			if (razDiff)
 				Array.Clear(BufPrec, 0, BufPrec.Length);
 
@@ -80,6 +80,7 @@ namespace ConvImgCpc {
 			if (maxSize >= 0x4000)
 				maxSize += 0x3800;
 
+			int maxDelta = newMethode ? 127 : 255;
 			// Recherche les "coordonnées" de l'image différente par rapport à la précédente
 			int bc = 0, posDiff = 0;
 			byte deltaAdr = 0;
@@ -87,7 +88,7 @@ namespace ConvImgCpc {
 				byte o = BufPrec[adr];
 				byte n = img.bitmapCpc.bmpCpc[adr];
 				if (deltaAdr == 127 || (o != n)) {
-					if (adr < maxSize - 256 && BufPrec[adr + 1] != img.bitmapCpc.bmpCpc[adr + 1] && BufPrec[adr + 2] != img.bitmapCpc.bmpCpc[adr + 2] && img.bitmapCpc.bmpCpc[adr + 1] == n && img.bitmapCpc.bmpCpc[adr + 2] == n) {
+					if (newMethode && adr < maxSize - 256 && BufPrec[adr + 1] != img.bitmapCpc.bmpCpc[adr + 1] && BufPrec[adr + 2] != img.bitmapCpc.bmpCpc[adr + 2] && img.bitmapCpc.bmpCpc[adr + 1] == n && img.bitmapCpc.bmpCpc[adr + 2] == n) {
 						DiffAscii[posDiff++] = (byte)(deltaAdr | 0x80);
 						bc++;
 						int d = 0;
@@ -112,17 +113,13 @@ namespace ConvImgCpc {
 				else
 					deltaAdr++;
 			}
-			BufTmp[0] = (byte)'D';
-			//// V1.03 : ajouter l/2 sur 2 octets
-			//BufTmp[1] = (byte)(posDiff >> 1);
-			//BufTmp[2] = (byte)(posDiff >> 9);
-			// V1.03 : ajouter l/2 sur 2 octets
-			BufTmp[1] = (byte)(bc);
-			BufTmp[2] = (byte)(bc >> 8);
-			Buffer.BlockCopy(DiffAscii, 0, BufTmp, 3, posDiff);
-			int lSave = PackDepack.Pack(BufTmp, posDiff + 3, bufOut, 0);
+			BufTmp[0] = (byte)(bc);
+			BufTmp[1] = (byte)(bc >> 8);
+			Buffer.BlockCopy(DiffAscii, 0, BufTmp, 2, posDiff);
+			int lPack = PackDepack.Pack(BufTmp, posDiff + 2, bufOut, 0);
 			Array.Copy(img.bitmapCpc.bmpCpc, BufPrec, BufPrec.Length);
-			return lSave;
+			sizeDepack = posDiff + 2;
+			return lPack;
 		}
 
 		private int PackWinDC4(byte[] bufOut, bool razDiff = false) {
@@ -179,9 +176,11 @@ namespace ConvImgCpc {
 			return posBufOut;
 		}
 
-		public int Pack(byte[] bufOut, ref int sizeDepack, bool razDiff = false) {
-			return PackWinDC(bufOut, ref sizeDepack, razDiff);
-			//return PackOdin(bufOut, razDiff);
+		public int PackFrame(byte[] bufOut, ref int sizeDepack, bool odin, bool razDiff = false) {
+			if (odin)
+				return PackOdin(bufOut, ref sizeDepack, true, razDiff);
+			else
+				return PackWinDC(bufOut, ref sizeDepack, razDiff);
 		}
 
 		private void GenerePointeurs(StreamWriter sw, int nbImages, int[] bank, bool gest128K) {
@@ -209,6 +208,7 @@ namespace ConvImgCpc {
 			sw.WriteLine(line + "0");
 		}
 
+		#region Génération source Z80
 		private void GenereEntete(StreamWriter sw, int adr) {
 			sw.WriteLine("	ORG	#" + adr.ToString("X4"));
 			sw.WriteLine("	RUN	$" + Environment.NewLine);
@@ -419,6 +419,55 @@ namespace ConvImgCpc {
 			sw.WriteLine("	Nolist");
 		}
 
+		private void GenereDrawOdin(StreamWriter sw, bool gest128K) {
+			sw.WriteLine("InitDraw:");
+			sw.WriteLine("	POP	HL			; HL = buffer");
+			sw.WriteLine("	LD	DE,#C000");
+			sw.WriteLine("	LD	C,(HL)");
+			sw.WriteLine("	INC	HL");
+			sw.WriteLine("	LD	B,(HL)");
+			sw.WriteLine("	INC	HL");
+			sw.WriteLine("DrawImgD1:");
+			sw.WriteLine("	LD	A,(HL)			; Deplacement");
+			sw.WriteLine("	INC	HL");
+			sw.WriteLine("	BIT	7,A");
+			sw.WriteLine("	JR	NZ,DrawImgD4");
+			sw.WriteLine("	ADD	A,E");
+			sw.WriteLine("	JR	NC,DrawImgD2");
+			sw.WriteLine("	INC	D");
+			sw.WriteLine("DrawImgD2:");
+			sw.WriteLine("	LD	E,A");
+			sw.WriteLine("	LDI				; Octet a copier");
+			sw.WriteLine("DrawImgD3:");
+			sw.WriteLine("	JP	PE,DrawImgD1");
+			sw.WriteLine("	INC	IX");
+			sw.WriteLine("	INC	IX");
+			if (gest128K)
+				sw.WriteLine("	INC	IX");
+
+			sw.WriteLine("	JP	Boucle" + Environment.NewLine);
+			sw.WriteLine("DrawImgD4:");
+			sw.WriteLine("	AND	#7F");
+			sw.WriteLine("	ADD	A,E");
+			sw.WriteLine("	JR	NC,DrawImgD5");
+			sw.WriteLine("	INC	D");
+			sw.WriteLine("DrawImgD5:");
+			sw.WriteLine("	LD	E,A");
+			sw.WriteLine("	PUSH	BC");
+			sw.WriteLine("	LD	B,(HL)");
+			sw.WriteLine("	INC	HL");
+			sw.WriteLine("	LD	A,(HL)");
+			sw.WriteLine("DrawImgD6:");
+			sw.WriteLine("	LD	(DE),A");
+			sw.WriteLine("	INC	DE");
+			sw.WriteLine("	DJNZ	DrawImgD6");
+			sw.WriteLine("	POP	BC");
+			sw.WriteLine("	DEC	BC");
+			sw.WriteLine("	CPI");
+			sw.WriteLine("	JR	DrawImgD3" + Environment.NewLine);
+			sw.WriteLine("	Nolist");
+		}
+
 		private void GenerePaletteOld(StreamWriter sw, ImageCpc img) {
 			sw.WriteLine("Palette:");
 			string line = "\tDB\t";
@@ -448,8 +497,9 @@ namespace ConvImgCpc {
 			sw.WriteLine("	List");
 			sw.WriteLine("buffer:");
 		}
+		#endregion
 
-		public void SauveDeltaPack(int adrDeb, bool reboucle, bool gest128K, int adrMax) {
+		public void SauveDeltaPack(int adrDeb, bool reboucle, bool gest128K, bool odin, int adrMax) {
 			int sizeDepack = 0;
 			int nbImages = img.main.GetMaxImages();
 			byte[][] bufOut = new byte[nbImages][];
@@ -464,7 +514,7 @@ namespace ConvImgCpc {
 			if (reboucle) {
 				img.main.SelectImage(nbImages - 1);
 				img.Convert(true);
-				Pack(bufOut[0], ref sizeDepack, true);
+				PackFrame(bufOut[0], ref sizeDepack, odin, true);
 			}
 
 			// Calcule les animations
@@ -473,7 +523,7 @@ namespace ConvImgCpc {
 				img.main.SelectImage(i);
 				img.Convert(true);
 				Application.DoEvents();
-				lg[i] = Pack(bufOut[i], ref sizeDepack, i == 0 && !reboucle);
+				lg[i] = PackFrame(bufOut[i], ref sizeDepack, odin, i == 0 && !reboucle);
 				ltot += lg[i];
 				maxDepack = Math.Max(maxDepack, sizeDepack);
 			}
@@ -489,7 +539,11 @@ namespace ConvImgCpc {
 				GenereInitOld(sw);
 
 			GenereAffichage(sw, gest128K);
-			GenereDrawDC(sw, gest128K);
+			if (odin)
+				GenereDrawOdin(sw, gest128K);
+			else
+				GenereDrawDC(sw, gest128K);
+
 			if (img.cpcPlus)
 				GenerePalettePlus(sw, img);
 			else
@@ -520,11 +574,16 @@ namespace ConvImgCpc {
 			for (int i = 0; i < nbImages; i++)
 				bufOut[i] = null;
 
-			if (numBank > 7 || (!gest128K && ltot + adrDeb >= 0xBE00 - maxDepack))
+			img.main.SetInfo("Longueur totale données animation : " + ltot + " octets.");
+			if (numBank > 7 || (!gest128K && ltot + adrDeb >= 0xBE00 - maxDepack)) {
 				MessageBox.Show("Attention ! la taille totale (animation + buffer de décompactage) dépassera " + (gest128K ? "112K" : "48Ko") + ", risque d'écrasement de la mémoire vidéo et plantage..."
 								, "Alerte"
 								, MessageBoxButtons.OK
 								, MessageBoxIcon.Warning);
+				img.main.SetInfo("Dépassement capacité mémoire...");
+			}
+			else
+				img.main.SetInfo("Sauvegarde animation assembleur ok.");
 
 			GC.Collect();
 		}
@@ -551,7 +610,7 @@ namespace ConvImgCpc {
 				img.WindowState = FormWindowState.Minimized;
 				img.Show();
 				img.WindowState = FormWindowState.Normal;
-				SauveDeltaPack(adrDeb, chkBoucle.Checked, chk128Ko.Checked, adrMax);
+				SauveDeltaPack(adrDeb, chkBoucle.Checked, chk128Ko.Checked, chkOdin.Checked, adrMax);
 			}
 			Close();
 		}

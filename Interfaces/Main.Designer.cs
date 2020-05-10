@@ -36,6 +36,7 @@
 			this.pctTrame = new System.Windows.Forms.NumericUpDown();
 			this.resoCPC = new System.Windows.Forms.GroupBox();
 			this.trackModeX = new System.Windows.Forms.TrackBar();
+			this.bpStandard = new System.Windows.Forms.Button();
 			this.bpOverscan = new System.Windows.Forms.Button();
 			this.modePlus = new System.Windows.Forms.CheckBox();
 			this.tramage = new System.Windows.Forms.GroupBox();
@@ -86,6 +87,7 @@
 			this.lblNumImage = new System.Windows.Forms.Label();
 			this.numImage = new System.Windows.Forms.NumericUpDown();
 			this.lblMaxImage = new System.Windows.Forms.Label();
+			this.chkInfo = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -123,7 +125,7 @@
 			// 
 			// bpConvert
 			// 
-			this.bpConvert.Location = new System.Drawing.Point(3, 140);
+			this.bpConvert.Location = new System.Drawing.Point(3, 130);
 			this.bpConvert.Name = "bpConvert";
 			this.bpConvert.Size = new System.Drawing.Size(108, 23);
 			this.bpConvert.TabIndex = 3;
@@ -255,6 +257,7 @@
 			// resoCPC
 			// 
 			this.resoCPC.Controls.Add(this.trackModeX);
+			this.resoCPC.Controls.Add(this.bpStandard);
 			this.resoCPC.Controls.Add(this.bpOverscan);
 			this.resoCPC.Controls.Add(this.label1);
 			this.resoCPC.Controls.Add(this.nbCols);
@@ -281,11 +284,21 @@
 			this.trackModeX.Visible = false;
 			this.trackModeX.Scroll += new System.EventHandler(this.InterfaceChange);
 			// 
+			// bpStandard
+			// 
+			this.bpStandard.Location = new System.Drawing.Point(8, 71);
+			this.bpStandard.Name = "bpStandard";
+			this.bpStandard.Size = new System.Drawing.Size(62, 22);
+			this.bpStandard.TabIndex = 10;
+			this.bpStandard.Text = "Standard";
+			this.bpStandard.UseVisualStyleBackColor = true;
+			this.bpStandard.Click += new System.EventHandler(this.bpStandard_Click);
+			// 
 			// bpOverscan
 			// 
-			this.bpOverscan.Location = new System.Drawing.Point(64, 71);
+			this.bpOverscan.Location = new System.Drawing.Point(85, 71);
 			this.bpOverscan.Name = "bpOverscan";
-			this.bpOverscan.Size = new System.Drawing.Size(83, 22);
+			this.bpOverscan.Size = new System.Drawing.Size(62, 22);
 			this.bpOverscan.TabIndex = 10;
 			this.bpOverscan.Text = "Overscan";
 			this.bpOverscan.UseVisualStyleBackColor = true;
@@ -478,7 +491,7 @@
 			// autoRecalc
 			// 
 			this.autoRecalc.AutoSize = true;
-			this.autoRecalc.Location = new System.Drawing.Point(3, 163);
+			this.autoRecalc.Location = new System.Drawing.Point(3, 153);
 			this.autoRecalc.Name = "autoRecalc";
 			this.autoRecalc.Size = new System.Drawing.Size(108, 30);
 			this.autoRecalc.TabIndex = 44;
@@ -830,17 +843,29 @@
 			// lblMaxImage
 			// 
 			this.lblMaxImage.AutoSize = true;
-			this.lblMaxImage.Location = new System.Drawing.Point(0, 111);
+			this.lblMaxImage.Location = new System.Drawing.Point(0, 100);
 			this.lblMaxImage.Name = "lblMaxImage";
 			this.lblMaxImage.Size = new System.Drawing.Size(0, 13);
 			this.lblMaxImage.TabIndex = 53;
 			this.lblMaxImage.Visible = false;
+			// 
+			// chkInfo
+			// 
+			this.chkInfo.AutoSize = true;
+			this.chkInfo.Location = new System.Drawing.Point(3, 201);
+			this.chkInfo.Name = "chkInfo";
+			this.chkInfo.Size = new System.Drawing.Size(83, 17);
+			this.chkInfo.TabIndex = 55;
+			this.chkInfo.Text = "Informations";
+			this.chkInfo.UseVisualStyleBackColor = true;
+			this.chkInfo.CheckedChanged += new System.EventHandler(this.chkInfo_CheckedChanged);
 			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(597, 431);
+			this.Controls.Add(this.chkInfo);
 			this.Controls.Add(this.numImage);
 			this.Controls.Add(this.lblMaxImage);
 			this.Controls.Add(this.lblNumImage);
@@ -947,6 +972,8 @@
 		private System.Windows.Forms.Label lblNumImage;
 		private System.Windows.Forms.NumericUpDown numImage;
 		private System.Windows.Forms.Label lblMaxImage;
+		private System.Windows.Forms.Button bpStandard;
+		private System.Windows.Forms.CheckBox chkInfo;
 	}
 }
 

@@ -33,11 +33,10 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.tailleCrayon = new System.Windows.Forms.ComboBox();
 			this.grpEdition = new System.Windows.Forms.GroupBox();
+			this.chkDoRedo = new System.Windows.Forms.CheckBox();
 			this.bpRedo = new System.Windows.Forms.Button();
 			this.bpUndo = new System.Windows.Forms.Button();
 			this.chkRendu = new System.Windows.Forms.CheckBox();
-			this.lblNbColors = new System.Windows.Forms.Label();
-			this.chkDoRedo = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
 			this.grpEdition.SuspendLayout();
 			this.SuspendLayout();
@@ -157,6 +156,16 @@
 			this.grpEdition.TabStop = false;
 			this.grpEdition.Visible = false;
 			// 
+			// chkDoRedo
+			// 
+			this.chkDoRedo.AutoSize = true;
+			this.chkDoRedo.Location = new System.Drawing.Point(15, 317);
+			this.chkDoRedo.Name = "chkDoRedo";
+			this.chkDoRedo.Size = new System.Drawing.Size(108, 30);
+			this.chkDoRedo.TabIndex = 11;
+			this.chkDoRedo.Text = "Garder retouches\naprès recalcul";
+			this.chkDoRedo.UseVisualStyleBackColor = true;
+			// 
 			// bpRedo
 			// 
 			this.bpRedo.Enabled = false;
@@ -190,31 +199,12 @@
 			this.chkRendu.UseVisualStyleBackColor = true;
 			this.chkRendu.CheckedChanged += new System.EventHandler(this.chkRendu_CheckedChanged);
 			// 
-			// lblNbColors
-			// 
-			this.lblNbColors.AutoSize = true;
-			this.lblNbColors.Location = new System.Drawing.Point(787, 568);
-			this.lblNbColors.Name = "lblNbColors";
-			this.lblNbColors.Size = new System.Drawing.Size(0, 13);
-			this.lblNbColors.TabIndex = 10;
-			// 
-			// chkDoRedo
-			// 
-			this.chkDoRedo.AutoSize = true;
-			this.chkDoRedo.Location = new System.Drawing.Point(15, 317);
-			this.chkDoRedo.Name = "chkDoRedo";
-			this.chkDoRedo.Size = new System.Drawing.Size(185, 17);
-			this.chkDoRedo.TabIndex = 11;
-			this.chkDoRedo.Text = "Garder retouches\naprès recalcul";
-			this.chkDoRedo.UseVisualStyleBackColor = true;
-			// 
 			// ImageCpc
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(946, 620);
 			this.ControlBox = false;
-			this.Controls.Add(this.lblNbColors);
 			this.Controls.Add(this.grpEdition);
 			this.Controls.Add(this.vScrollBar);
 			this.Controls.Add(this.hScrollBar);
@@ -247,7 +237,6 @@
 		private System.Windows.Forms.ComboBox tailleCrayon;
 		private System.Windows.Forms.GroupBox grpEdition;
 		private System.Windows.Forms.CheckBox chkRendu;
-		private System.Windows.Forms.Label lblNbColors;
 		private System.Windows.Forms.Button bpRedo;
 		private System.Windows.Forms.Button bpUndo;
 		private System.Windows.Forms.CheckBox chkDoRedo;

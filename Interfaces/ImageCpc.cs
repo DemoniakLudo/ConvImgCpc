@@ -140,10 +140,6 @@ namespace ConvImgCpc {
 			}
 		}
 
-		public void SetNbColors(int nbCol) {
-			lblNbColors.Text = "Nbre de couleurs : " + nbCol;
-		}
-
 		#region Lecture/Sauvegarde
 		public void SauvePng(string fileName) {
 			if (modeVirtuel == 6) {
@@ -178,19 +174,22 @@ namespace ConvImgCpc {
 				bmpRaster.Bitmap.Save(fileName + ".2", System.Drawing.Imaging.ImageFormat.Png);
 			}
 			bmpLock.Bitmap.Save(fileName, System.Drawing.Imaging.ImageFormat.Png);
+			main.SetInfo("Sauvegarde image PNG ok.");
 		}
 
 		public void SauveScr(string fileName, Param param) {
 			bitmapCpc.CreeBmpCpc(bmpLock);
 			SauveImage.SauveScr(fileName, bitmapCpc, param, false);
+			main.SetInfo("Sauvegarde image CPC ok.");
 		}
 
 		public void SauveCmp(string fileName, Param param) {
 			bitmapCpc.CreeBmpCpc(bmpLock);
 			SauveImage.SauveScr(fileName, bitmapCpc, param, true);
+			main.SetInfo("Sauvegarde image compactée ok.");
 		}
 
-		public void SauveSprite(string fileName, string version, Param param) {
+		private byte[] MakeSprite() {
 			byte[] ret = new byte[(TailleX * TailleY) >> 4];
 			Array.Clear(ret, 0, ret.Length);
 			int posRet = 0;
@@ -220,9 +219,25 @@ namespace ConvImgCpc {
 					ret[posRet++] = octet;
 				}
 			}
+			return ret;
+		}
+
+		public void SauveSprite(string fileName, string version, Param param) {
+			byte[] ret = MakeSprite();
 			StreamWriter sw = Save.OpenAsm(fileName, version, param);
 			Save.SauveAssembleur(sw, ret, ret.Length, param);
 			Save.CloseAsm(sw);
+			main.SetInfo("Sauvegarde sprite assembleur ok.");
+		}
+
+		public void SauveSpriteCmp(string fileName, string version, Param param) {
+			byte[] ret = MakeSprite();
+			byte[] sprCmp = new byte[ret.Length];
+			int l = PackDepack.Pack(ret, ret.Length, sprCmp, 0);
+			StreamWriter sw = Save.OpenAsm(fileName, version, param);
+			Save.SauveAssembleur(sw, sprCmp, l, param);
+			Save.CloseAsm(sw);
+			main.SetInfo("Sauvegarde sprite assembleur compacté ok.");
 		}
 
 		public byte[] GetCpcScr(Param param, bool spriteMode = false) {
@@ -274,12 +289,17 @@ namespace ConvImgCpc {
 		}
 
 		public void LirePalette(string fileName, Param param) {
-			if (SauveImage.LirePalette(fileName, this, param))
+			if (SauveImage.LirePalette(fileName, this, param)) {
 				UpdatePalette();
+				main.SetInfo("Lecture palette ok.");
+			}
+			else
+				main.SetInfo("Erreur lecture palette...");
 		}
 
 		public void SauvePalette(string fileName, Param param) {
 			SauveImage.SauvePalette(fileName, this, param);
+			main.SetInfo("Sauvegarde palette ok.");
 		}
 		#endregion
 

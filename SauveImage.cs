@@ -472,7 +472,7 @@ namespace ConvImgCpc {
 				fp.Read(entete, 0, entete.Length);
 				fp.Read(pal, 0, pal.Length);
 				fp.Close();
-				if (CpcSystem.CheckAmsdos(entete) && pal[0] < 3) {
+				if (CpcSystem.CheckAmsdos(entete) && pal[0] < 11) {
 					if (param.cpcPlus) {
 						for (int i = 0; i < 16; i++) {
 							int r = 0, v = 0, b = 0;

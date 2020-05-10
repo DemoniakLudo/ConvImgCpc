@@ -4,9 +4,9 @@ using System.Drawing;
 
 namespace ConvImgCpc {
 	public static class Conversion {
-		const int K_R = 9798;
-		const int K_V = 19235;
-		const int K_B = 3735;
+		const int K_R = 299;// 9798;
+		const int K_V = 587; // 19235;
+		const int K_B = 114; // 3735;
 
 		const int SEUIL_LUM_1 = 0x44;
 		const int SEUIL_LUM_2 = 0x99;
@@ -78,29 +78,6 @@ namespace ConvImgCpc {
 
 		static byte MinMax(int value) {
 			return value >= 0 ? value <= 255 ? (byte)value : (byte)255 : (byte)0;
-		}
-
-		static private int CalcTx(int modeVirtuel, int yPix) {
-			switch (modeVirtuel) {
-				case 0:
-				case 1:
-				case 2:
-					return 4 >> modeVirtuel;
-				case 3:
-				case 4:
-					return 4 >> ((yPix & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3);
-				case 5:
-				case 6:
-				case 7:
-					return 2;
-				case 8:
-					return 8;
-				case 9:
-					return 4;
-				case 10:
-					return 4;
-			}
-			return 1;
 		}
 
 		static private int CalcMaxCol(int modeVirtuel, int yPix) {
@@ -219,7 +196,7 @@ namespace ConvImgCpc {
 			RvbColor choix, p = new RvbColor(0);
 			int indexChoix = 0;
 			for (int yPix = 0; yPix < dest.TailleY; yPix += 2) {
-				int Tx = CalcTx(dest.modeVirtuel, yPix);
+				int Tx = 8 >> (prm.modeVirtuel == 8 ? 0 : prm.modeVirtuel > 8 ? 1 : prm.modeVirtuel >= 5 ? 2 : prm.modeVirtuel > 2 ? ((yPix & 2) == 0 ? prm.modeVirtuel - 1 : prm.modeVirtuel - 2) : prm.modeVirtuel + 1);
 				for (int xPix = 0; xPix < dest.TailleX; xPix += Tx) {
 					if (prm.lissage) {
 						float r = 0, v = 0, b = 0;
@@ -301,6 +278,9 @@ namespace ConvImgCpc {
 					source.SetPixel(xPix, yPix, prm.setPalCpc ? choix : p);
 				}
 			}
+
+			//Yliluoma(source, dest, prm);
+
 			int NbCol = 0;
 			for (int i = 0; i < CoulTrouvee.GetLength(0); i++)
 				if (CoulTrouvee[i, 0] > 0)
@@ -379,7 +359,7 @@ namespace ConvImgCpc {
 		static private void SetPixCol(DirectBitmap bitmap, ImageCpc dest, int maxCol, RvbColor[,] tabCol, Param p) {
 			int incY = p.modeVirtuel == 8 || p.modeVirtuel == 9 ? 8 : p.modeVirtuel == 10 ? 4 : 2;
 			for (int y = 0; y < dest.TailleY; y += incY) {
-				int Tx = CalcTx(dest.modeVirtuel, y);
+				int Tx = 8 >> (p.modeVirtuel == 8 ? 0 : p.modeVirtuel > 8 ? 1 : p.modeVirtuel >= 5 ? 2 : p.modeVirtuel > 2 ? ((y & 2) == 0 ? p.modeVirtuel - 1 : p.modeVirtuel - 2) : p.modeVirtuel + 1);
 				maxCol = CalcMaxCol(dest.modeVirtuel, y);
 				for (int x = 0; x < dest.TailleX; x += Tx) {
 					int oldDist = 0x7FFFFFFF;
@@ -404,7 +384,7 @@ namespace ConvImgCpc {
 		static private void SetPixCol2(DirectBitmap bitmap, ImageCpc dest, RvbColor[,] tabCol, Param p) {
 			int incY = p.modeVirtuel == 8 || p.modeVirtuel == 9 ? 8 : p.modeVirtuel == 10 ? 4 : 2;
 			for (int y = 0; y < dest.TailleY; y += incY) {
-				int Tx = CalcTx(dest.modeVirtuel, y);
+				int Tx = 8 >> (p.modeVirtuel == 8 ? 0 : p.modeVirtuel > 8 ? 1 : p.modeVirtuel >= 5 ? 2 : p.modeVirtuel > 2 ? ((y & 2) == 0 ? p.modeVirtuel - 1 : p.modeVirtuel - 2) : p.modeVirtuel + 1);
 				int maxCol = CalcMaxCol(dest.modeVirtuel, y);
 				for (int x = 0; x < dest.TailleX; x += (Tx << 1)) {
 					int dist, oldDist = 0x7FFFFFFF;
@@ -437,7 +417,7 @@ namespace ConvImgCpc {
 		static private void SetPixCol3(DirectBitmap bitmap, ImageCpc dest, RvbColor[,] tabCol, Param p) {
 			int incY = p.modeVirtuel == 8 || p.modeVirtuel == 9 ? 8 : p.modeVirtuel == 10 ? 4 : 2;
 			for (int y = 0; y < dest.TailleY; y += incY) {
-				int Tx = CalcTx(dest.modeVirtuel, y);
+				int Tx = 8 >> (p.modeVirtuel == 8 ? 0 : p.modeVirtuel > 8 ? 1 : p.modeVirtuel >= 5 ? 2 : p.modeVirtuel > 2 ? ((y & 2) == 0 ? p.modeVirtuel - 1 : p.modeVirtuel - 2) : p.modeVirtuel + 1);
 				int maxCol = CalcMaxCol(dest.modeVirtuel, y);
 				for (int x = 0; x < dest.TailleX; x += (Tx << 1)) {
 					int dist, oldDist = 0x7FFFFFFF;
@@ -470,7 +450,7 @@ namespace ConvImgCpc {
 
 		static private void SetPixCol4(DirectBitmap bitmap, ImageCpc dest, RvbColor[,] tabCol, Param p) {
 			for (int y = 0; y < dest.TailleY; y += 4) {
-				int Tx = CalcTx(dest.modeVirtuel, y);
+				int Tx = 8 >> (p.modeVirtuel == 8 ? 0 : p.modeVirtuel > 8 ? 1 : p.modeVirtuel >= 5 ? 2 : p.modeVirtuel > 2 ? ((y & 2) == 0 ? p.modeVirtuel - 1 : p.modeVirtuel - 2) : p.modeVirtuel + 1);
 				int maxCol = CalcMaxCol(dest.modeVirtuel, y);
 				for (int x = 0; x < dest.TailleX; x += (Tx << 1)) {
 					RvbColor pix0 = bitmap.GetPixelColor(x, y);
@@ -519,7 +499,7 @@ namespace ConvImgCpc {
 			RvbColor[,] tabCol = new RvbColor[16, 272];
 			int[] MemoLockState = new int[16];
 			int i;
-			int Tx = CalcTx(dest.modeVirtuel, 2);
+			int Tx = 8 >> (p.modeVirtuel == 8 ? 0 : p.modeVirtuel > 8 ? 1 : p.modeVirtuel >= 5 ? 2 : p.modeVirtuel > 2 ? p.modeVirtuel - 2 : p.modeVirtuel + 1);
 			int maxCol = CalcMaxCol(dest.modeVirtuel, 2);
 			for (i = 0; i < 16; i++)
 				MemoLockState[i] = p.lockState[i];
@@ -558,12 +538,122 @@ namespace ConvImgCpc {
 				}
 				else
 					SetPixCol(source, dest, maxCol, tabCol, p);
+
 		}
 
 		static public int Convert(DirectBitmap source, ImageCpc dest, Param p) {
-			int nbCol = ConvertPasse1(source, dest, p);
+			dest.main.SetInfo("Passe 1...");
+			int nbCol =  ConvertPasse1(source, dest, p);
+			dest.main.SetInfo("Nombre de couleurs dans l'image:" + nbCol);
+			dest.main.SetInfo("Passe 2...");
 			Passe2(source, dest, p);
+			dest.main.SetInfo("Conversion ok.");
 			return nbCol;
 		}
+		/*
+		static byte[,] map = new byte[8, 8] {
+												{0,48,12,60, 3,51,15,63},
+												{32,16,44,28,35,19,47,31},
+												{8,56, 4,52,11,59, 7,55},
+												{40,24,36,20,43,27,39,23},
+												{2,50,14,62, 1,49,13,61},
+												{34,18,46,30,33,17,45,29},
+												{10,58, 6,54, 9,57, 5,53},
+												{42,26,38,22,41,25,37,21 }};
+
+		static int[] luma = new int[27];
+
+		static bool PaletteCompareLuma(int index1, int index2) {
+			return luma[index1] < luma[index2];
+		}
+
+		static double ColorCompare(int r1, int g1, int b1, int r2, int g2, int b2) {
+			double luma1 = (r1 * K_R + g1 * K_V + b1 * K_B);
+			double luma2 = (r2 * K_R + g2 * K_V + b2 * K_B);
+			double lumadiff = luma1 - luma2;
+			double diffR = (r1 - r2), diffG = (g1 - g2), diffB = (b1 - b2);
+			return (diffR * diffR * K_R + diffG * diffG * K_V + diffB * diffB * K_B) * 750 + lumadiff * lumadiff;
+		}
+
+		class MixingPlan {
+			public int n_colors;
+			public int[] colors;
+
+			public MixingPlan(int m) {
+				n_colors = m;
+				colors = new int[m];
+			}
+		};
+
+		static int MySortFunct(int a, int b) {
+			return luma[a] - luma[b];
+		}
+
+		static MixingPlan DeviseBestMixingPlan(int maxCol, RvbColor color) {
+			MixingPlan result = new MixingPlan(maxCol);
+			RvbColor src = new RvbColor(color.r, color.v, color.b);
+			int proportion_total = 0;
+			int[] so_far = new int[3] { 0, 0, 0 };
+			while (proportion_total < result.n_colors) {
+				int chosen_amount = 1;
+				int chosen = 0;
+				int max_test_count = Math.Max(1, proportion_total);
+				double least_penalty = -1;
+				for (int index = 0; index < 27; ++index) {
+					color = BitmapCpc.RgbCPC[index];
+					int[] sum = new int[3] { so_far[0], so_far[1], so_far[2] };
+					int[] add = new int[3] { color.r, color.v, color.b };
+					for (int p = 1; p <= max_test_count; p *= 2) {
+						for (int c = 0; c < 3; ++c)
+							sum[c] += add[c];
+
+						for (int c = 0; c < 3; ++c)
+							add[c] += add[c];
+
+						int t = proportion_total + p;
+						int[] test = new int[3] { sum[0] / t, sum[1] / t, sum[2] / t };
+						double penalty = ColorCompare(src.r, src.v, src.b, test[0], test[1], test[2]);
+						if (penalty < least_penalty || least_penalty < 0) {
+							least_penalty = penalty;
+							chosen = index;
+							chosen_amount = p;
+						}
+					}
+				}
+				for (int p = 0; p < chosen_amount; ++p) {
+					if (proportion_total >= result.n_colors)
+						break;
+
+					result.colors[proportion_total++] = chosen;
+				}
+				color = BitmapCpc.RgbCPC[chosen];
+				int[] palcolor = new int[3] { color.r, color.v, color.b };
+				for (int c = 0; c < 3; ++c)
+					so_far[c] += palcolor[c] * chosen_amount;
+			}
+			// Sort the colors according to luminance
+			Array.Sort(result.colors, MySortFunct);
+
+			//std::sort(result.colors, result.colors+MixingPlan::n_colors, PaletteCompareLuma);
+			return result;
+		}
+
+		static public void Yliluoma(DirectBitmap source, ImageCpc dest, Param p) {
+			for (int c = 0; c < 27; c++) {
+				RvbColor col = BitmapCpc.RgbCPC[c];
+				luma[c] = col.r * K_R + col.v * K_V + col.b * K_B;
+			}
+
+			int incY = p.modeVirtuel == 8 || p.modeVirtuel == 9 ? 8 : p.modeVirtuel == 10 ? 4 : 2;
+			for (int y = 0; y < dest.TailleY; y += incY) {
+				int Tx = 8 >> (p.modeVirtuel == 8 ? 0 : p.modeVirtuel > 8 ? 1 : p.modeVirtuel >= 5 ? 2 : p.modeVirtuel > 2 ? ((y & 2) == 0 ? p.modeVirtuel - 1 : p.modeVirtuel - 2) : p.modeVirtuel + 1);
+				int maxCol = CalcMaxCol(dest.modeVirtuel, y);
+				for (int x = 0; x < dest.TailleX; x += Tx) {
+					MixingPlan plan = DeviseBestMixingPlan(maxCol, source.GetPixelColor(x, y));
+					source.SetPixel(x, y, BitmapCpc.RgbCPC[plan.colors[map[(x / Tx) & 7, (y / incY) & 7] * plan.n_colors / 64]].GetColor);
+				}
+			}
+		}
+		 */
 	}
 }

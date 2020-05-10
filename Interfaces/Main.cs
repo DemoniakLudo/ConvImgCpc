@@ -16,6 +16,7 @@ namespace ConvImgCpc {
 		private MemoryStream imageStream;
 		private Image selImage;
 		private FrameDimension dimension;
+		private Information inf = null;
 
 		public Main() {
 			InitializeComponent();
@@ -25,7 +26,11 @@ namespace ConvImgCpc {
 			mode.Items.Insert(3, "Mode EGX1");
 			mode.Items.Insert(4, "Mode EGX2");
 			mode.Items.Insert(5, "Mode X");
-			//mode.Items.Insert(6, "Mode Z");
+			mode.Items.Insert(6, "Mode Z");
+			mode.Items.Insert(7, "------");
+			mode.Items.Insert(8, "Mode ASC0");
+			mode.Items.Insert(9, "Mode ASC1");
+			mode.Items.Insert(10, "Mode ASC2");
 			imgSrc = new ImageSource();
 			imgCpc = new ImageCpc(this, Convert);
 			nbCols.Value = imgCpc.TailleX >> 3;
@@ -38,6 +43,9 @@ namespace ConvImgCpc {
 			imgCpc.Visible = true;
 			lblInfoVersion.Text = "Version Béta\n" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
 			radioUserSize_CheckedChanged(null, null);
+			string configDetault = "ConvImgCpc.xml";
+			if (File.Exists(configDetault))
+				ReadParam(configDetault);
 		}
 
 		private void checkImageSource_CheckedChanged(object sender, EventArgs e) {
@@ -96,8 +104,10 @@ namespace ConvImgCpc {
 						g.DrawImage(imgSrc.GetImage, -(posx << 1), -(posy << 1), tx << 1, ty << 1);
 						break;
 				}
-				imgCpc.SetNbColors(Conversion.Convert(tmp, imgCpc, param));
+				SetInfo("Conversion en cours...");
+				Conversion.Convert(tmp, imgCpc, param);
 				bpSave.Enabled = bpConvert.Enabled = true;
+				tmp.Dispose();
 			}
 			imgCpc.Render();
 		}
@@ -137,22 +147,26 @@ namespace ConvImgCpc {
 					nbLignes.Value = param.nbLignes = bmp.NbLig;
 					imgCpc.TailleY = param.nbLignes << 1;
 					imgCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = bmp.modeVirtuel;
+					SetInfo("Lecture image de type CPC");
 				}
 				else {
 					imageStream = new MemoryStream(tabBytes);
 					imageStream.Position = 0;
 					selImage = new Bitmap(imageStream);
 					dimension = new FrameDimension(selImage.FrameDimensionsList[0]);
-					numImage.Maximum = GetMaxImages() - 1;
-					lblMaxImage.Text = "Nbre images:" + GetMaxImages();
-					lblMaxImage.Visible = lblNumImage.Visible = numImage.Visible = GetMaxImages() > 1;
+					int nbImg = GetMaxImages();
+					numImage.Maximum = nbImg - 1;
+					lblMaxImage.Text = "Nbre images:" + nbImg;
+					lblMaxImage.Visible = lblNumImage.Visible = numImage.Visible = nbImg > 1;
 					numImage.Value = 0;
+					SetInfo("Lecture image PC" + (nbImg > 0 ? (" de type animation avec " + nbImg + " images.") : "."));
 					SelectImage(0);
 				}
 				bitmapOk = true;
 			}
 			catch (Exception ex) {
 				MessageBox.Show("Impossible de lire l'image (format inconnu ???)");
+				SetInfo("Impossible de lire l'image (format inconnu ???)");
 			}
 			if (bitmapOk) {
 				radioUserSize.Enabled = radioOrigin.Enabled = true;
@@ -171,10 +185,20 @@ namespace ConvImgCpc {
 		public void SelectImage(int n) {
 			selImage.SelectActiveFrame(dimension, n);
 			imgSrc.SetBitmap(new Bitmap(selImage), checkImageSource.Checked);
+			SetInfo("Image sélectionnée: " + n.ToString());
 		}
 
 		public int GetMaxImages() {
 			return selImage.GetFrameCount(dimension);
+		}
+
+		public void InfoClosed() {
+			chkInfo.Checked = false;
+		}
+
+		public void SetInfo(string txt) {
+			if (inf != null)
+				inf.AddInfo(txt);
 		}
 
 		private void ReadParam(string fileName) {
@@ -205,9 +229,11 @@ namespace ConvImgCpc {
 				chkMotif2.Checked = param.motif2;
 				chkPalCpc.Checked = param.setPalCpc;
 				chkLissage.Checked = param.lissage;
+				SetInfo("Lecture paramètres ok.");
 			}
 			catch (Exception ex) {
 				MessageBox.Show(ex.StackTrace, ex.Message);
+				SetInfo("Erreur lecture paramètres...");
 			}
 			fileParam.Close();
 		}
@@ -218,9 +244,11 @@ namespace ConvImgCpc {
 				param.withCode = withCode.Checked;
 				param.withPalette = withPalette.Checked;
 				new XmlSerializer(typeof(Param)).Serialize(file, param);
+				SetInfo("Sauvegarde paramètres ok.");
 			}
 			catch (Exception ex) {
 				MessageBox.Show(ex.StackTrace, ex.Message);
+				SetInfo("Erreur sauvegarde paramètres...");
 			}
 			file.Close();
 		}
@@ -252,7 +280,7 @@ namespace ConvImgCpc {
 		private void bpSave_Click(object sender, EventArgs e) {
 			SaveFileDialog dlg = new SaveFileDialog();
 			dlg.InitialDirectory = lastSavePath;
-			dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.png)|*.png|Sprite assembleur (.asm)|*.asm|Compacté (.cmp)|*.cmp|Palette (.pal)|*.pal|Animation DeltaPack (.asm)|*.asm|Paramètres (.xml)|*.xml";
+			dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.png)|*.png|Sprite assembleur (.asm)|*.asm|Sprite assembleur compacté (.asm)|*.asm|Ecran compacté (.cmp)|*.cmp|Palette (.pal)|*.pal|Animation DeltaPack (.asm)|*.asm|Paramètres (.xml)|*.xml";
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
 				lastSavePath = Path.GetDirectoryName(dlg.FileName);
@@ -270,18 +298,22 @@ namespace ConvImgCpc {
 						break;
 
 					case 4:
-						imgCpc.SauveCmp(dlg.FileName, param);
+						imgCpc.SauveSpriteCmp(dlg.FileName, lblInfoVersion.Text, param);
 						break;
 
 					case 5:
-						imgCpc.SauvePalette(dlg.FileName, param);
+						imgCpc.SauveCmp(dlg.FileName, param);
 						break;
 
 					case 6:
-						imgCpc.SauveDeltaPack(dlg.FileName, lblInfoVersion.Text, param, true);
+						imgCpc.SauvePalette(dlg.FileName, param);
 						break;
 
 					case 7:
+						imgCpc.SauveDeltaPack(dlg.FileName, lblInfoVersion.Text, param, true);
+						break;
+
+					case 8:
 						SaveParam(dlg.FileName);
 						break;
 				}
@@ -431,6 +463,11 @@ namespace ConvImgCpc {
 			nbCols.Value = 96;
 		}
 
+		private void bpStandard_Click(object sender, EventArgs e) {
+			nbLignes.Value = 200;
+			nbCols.Value = 80;
+		}
+
 		private void withPalette_CheckedChanged(object sender, EventArgs e) {
 			param.withPalette = withPalette.Checked;
 		}
@@ -452,6 +489,21 @@ namespace ConvImgCpc {
 		private void numImage_ValueChanged(object sender, EventArgs e) {
 			SelectImage((int)numImage.Value);
 			Convert(false);
+		}
+
+		private void chkInfo_CheckedChanged(object sender, EventArgs e) {
+			if (chkInfo.Checked) {
+				if (inf == null) {
+					inf = new Information(this);
+					inf.Show();
+				}
+			}
+			else {
+				if (inf != null)
+					inf.Close();
+
+				inf = null;
+			}
 		}
 	}
 }

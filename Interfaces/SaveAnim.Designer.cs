@@ -30,6 +30,7 @@
 			this.txbAdrDeb = new System.Windows.Forms.TextBox();
 			this.chkMaxMem = new System.Windows.Forms.CheckBox();
 			this.tbxAdrMax = new System.Windows.Forms.TextBox();
+			this.chkOdin = new System.Windows.Forms.CheckBox();
 			this.SuspendLayout();
 			// 
 			// bpSave
@@ -104,11 +105,22 @@
 			this.tbxAdrMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.tbxAdrMax.Visible = false;
 			// 
+			// chkOdin
+			// 
+			this.chkOdin.AutoSize = true;
+			this.chkOdin.Location = new System.Drawing.Point(25, 125);
+			this.chkOdin.Name = "chkOdin";
+			this.chkOdin.Size = new System.Drawing.Size(112, 17);
+			this.chkOdin.TabIndex = 8;
+			this.chkOdin.Text = "Mode \'Experiment\'";
+			this.chkOdin.UseVisualStyleBackColor = true;
+			// 
 			// SaveAnim
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(495, 156);
+			this.Controls.Add(this.chkOdin);
 			this.Controls.Add(this.tbxAdrMax);
 			this.Controls.Add(this.chkMaxMem);
 			this.Controls.Add(this.txbAdrDeb);
@@ -135,5 +147,6 @@
 		private System.Windows.Forms.TextBox txbAdrDeb;
 		private System.Windows.Forms.CheckBox chkMaxMem;
 		private System.Windows.Forms.TextBox tbxAdrMax;
+		private System.Windows.Forms.CheckBox chkOdin;
 	}
 }
