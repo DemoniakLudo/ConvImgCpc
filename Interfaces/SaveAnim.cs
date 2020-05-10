@@ -8,6 +8,7 @@ namespace ConvImgCpc {
 		private static byte[] BufPrec = new byte[0x8000];
 		private static byte[] DiffAscii = new byte[0x8000];
 		private static byte[] BufTmp = new byte[0x8000];
+		private static byte[] bLigne = new byte[0x8000];
 
 		private string fileName;
 		private string version;
@@ -51,7 +52,6 @@ namespace ConvImgCpc {
 
 			int nbOctets = xFin - xDeb + 1;
 			int length = nbOctets * (yFin + 1 - yDeb);
-			byte[] bLigne = new byte[length + 4];
 			Array.Clear(bLigne, 0, bLigne.Length);
 			int AdrEcr = 0xC000 + xDeb + (yDeb >> 3) * img.NbCol + (yDeb & 7) * 0x800;
 			bLigne[0] = (byte)AdrEcr;
@@ -159,7 +159,6 @@ namespace ConvImgCpc {
 				if (xFin[i] >= xDeb[i] && yFin[i] >= yDeb[i]) {
 					int nbOctets = xFin[i] - xDeb[i] + 1;
 					int length = nbOctets * (yFin[i] + 1 - yDeb[i]);
-					byte[] bLigne = new byte[length + 4];
 					Array.Clear(bLigne, 0, bLigne.Length);
 					int AdrEcr = xDeb[i] + (yDeb[i] >> 3) * img.NbCol + (yDeb[i] & 7) * 0x800;
 					bLigne[0] = (byte)AdrEcr;
@@ -183,78 +182,6 @@ namespace ConvImgCpc {
 		public int Pack(byte[] bufOut, ref int sizeDepack, bool razDiff = false) {
 			return PackWinDC(bufOut, ref sizeDepack, razDiff);
 			//return PackOdin(bufOut, razDiff);
-		}
-
-		public void SauveDeltaPack(int adr, bool reboucle, bool checkMem, bool gest128K) {
-			int sizeDepack = 0;
-			int nbImages = img.main.GetMaxImages();
-			byte[][] bufOut = new byte[nbImages][];
-			int[] lg = new int[nbImages];
-			int[] bank = new int[nbImages];
-			for (int i = 0; i < nbImages; i++)
-				bufOut[i] = new byte[0x8000];
-
-			if (reboucle) {
-				img.main.SelectImage(nbImages - 1);
-				img.Convert(true);
-				Pack(bufOut[0], ref sizeDepack, true);
-			}
-
-			// Calcule les animations
-			int ltot = 0, maxDepack = 0;
-			for (int i = 0; i < nbImages; i++) {
-				img.main.SelectImage(i);
-				img.Convert(true);
-				Application.DoEvents();
-				lg[i] = Pack(bufOut[i], ref sizeDepack, i == 0 && !reboucle);
-				ltot += lg[i];
-				maxDepack = Math.Max(maxDepack, sizeDepack);
-			}
-			if (maxDepack + ltot + adr < 0xBE00)
-				gest128K = false;
-
-			// Sauvegarde
-			StreamWriter sw = Save.OpenAsm(fileName, version, param);
-			GenereEntete(sw, adr);
-			if (img.cpcPlus)
-				GenereInitPlus(sw);
-			else
-				GenereInitOld(sw);
-
-			GenereAffichage(sw, gest128K);
-			GenereDrawDC(sw, gest128K);
-			if (img.cpcPlus)
-				GenerePalettePlus(sw, img);
-			else
-				GenerePaletteOld(sw, img);
-
-			int lbank = 0, numBank = 0;
-			for (int i = 0; i < nbImages; i++) {
-				lbank += lg[i];
-				if (gest128K && lbank > (numBank == 0 ? (0xBE00 - maxDepack) : 0x4000)) {
-					if (numBank == 0) {
-						sw.WriteLine("EndBank0:");
-						numBank = 4;
-					}
-					else
-						numBank++;
-
-					lbank = lg[i];
-					sw.WriteLine("	ORG	#4000");
-					sw.WriteLine("	Write Direct -1,-1,#C" + numBank);
-				}
-				bank[i] = numBank;
-				sw.WriteLine("Delta" + i.ToString() + ":\t\t; Taille #" + lg[i].ToString("X4"));
-				Save.SauveAssembleur(sw, bufOut[i], lg[i], param);
-			}
-			GenerePointeurs(sw, nbImages, bank, gest128K);
-			GenereFin(sw);
-			Save.CloseAsm(sw);
-			if (numBank > 7 || (!gest128K && maxDepack + ltot + adr >= 0xBE00))
-				MessageBox.Show("Attention ! la taille totale (animation + buffer de décompactage) dépassera " + (gest128K ? "112K" : "48Ko") + ", risque d'écrasement de la mémoire vidéo et plantage..."
-								, "Alerte"
-								, MessageBoxButtons.OK
-								, MessageBoxIcon.Warning);
 		}
 
 		private void GenerePointeurs(StreamWriter sw, int nbImages, int[] bank, bool gest128K) {
@@ -522,20 +449,119 @@ namespace ConvImgCpc {
 			sw.WriteLine("buffer:");
 		}
 
+		public void SauveDeltaPack(int adrDeb, bool reboucle, bool gest128K, int adrMax) {
+			int sizeDepack = 0;
+			int nbImages = img.main.GetMaxImages();
+			byte[][] bufOut = new byte[nbImages][];
+			int[] lg = new int[nbImages];
+			int[] bank = new int[nbImages];
+			for (int i = 0; i < nbImages; i++)
+				bufOut[i] = new byte[0x8000];
+
+			if (adrMax == 0)
+				adrMax = 0xBE00;
+
+			if (reboucle) {
+				img.main.SelectImage(nbImages - 1);
+				img.Convert(true);
+				Pack(bufOut[0], ref sizeDepack, true);
+			}
+
+			// Calcule les animations
+			int ltot = 0, maxDepack = 0;
+			for (int i = 0; i < nbImages; i++) {
+				img.main.SelectImage(i);
+				img.Convert(true);
+				Application.DoEvents();
+				lg[i] = Pack(bufOut[i], ref sizeDepack, i == 0 && !reboucle);
+				ltot += lg[i];
+				maxDepack = Math.Max(maxDepack, sizeDepack);
+			}
+			if ((ltot + adrDeb < adrMax) && (ltot + adrDeb < 0xBE00 - maxDepack))
+				gest128K = false;
+
+			// Sauvegarde
+			StreamWriter sw = Save.OpenAsm(fileName, version, param);
+			GenereEntete(sw, adrDeb);
+			if (img.cpcPlus)
+				GenereInitPlus(sw);
+			else
+				GenereInitOld(sw);
+
+			GenereAffichage(sw, gest128K);
+			GenereDrawDC(sw, gest128K);
+			if (img.cpcPlus)
+				GenerePalettePlus(sw, img);
+			else
+				GenerePaletteOld(sw, img);
+
+			int lbank = 0, numBank = 0;
+			for (int i = 0; i < nbImages; i++) {
+				lbank += lg[i];
+				if (gest128K && lbank > (numBank == 0 ? Math.Min((0xBE00 - maxDepack - adrDeb), adrMax - adrDeb) : 0x4000) && (numBank > 0 || lbank + adrDeb - lg[i] >= 0x8000)) {
+					if (numBank == 0) {
+						sw.WriteLine("EndBank0:");
+						numBank = 4;
+					}
+					else
+						numBank++;
+
+					lbank = lg[i];
+					sw.WriteLine("	ORG	#4000");
+					sw.WriteLine("	Write Direct -1,-1,#C" + numBank);
+				}
+				bank[i] = numBank;
+				sw.WriteLine("Delta" + i.ToString() + ":\t\t; Taille #" + lg[i].ToString("X4"));
+				Save.SauveAssembleur(sw, bufOut[i], lg[i], param);
+			}
+			GenerePointeurs(sw, nbImages, bank, gest128K);
+			GenereFin(sw);
+			Save.CloseAsm(sw);
+			for (int i = 0; i < nbImages; i++)
+				bufOut[i] = null;
+
+			if (numBank > 7 || (!gest128K && ltot + adrDeb >= 0xBE00 - maxDepack))
+				MessageBox.Show("Attention ! la taille totale (animation + buffer de décompactage) dépassera " + (gest128K ? "112K" : "48Ko") + ", risque d'écrasement de la mémoire vidéo et plantage..."
+								, "Alerte"
+								, MessageBoxButtons.OK
+								, MessageBoxIcon.Warning);
+
+			GC.Collect();
+		}
+
 		private void bpSave_Click(object sender, EventArgs e) {
 			string adrTxt = txbAdrDeb.Text;
-			int adr = 0;
+			int adrDeb = 0, adrMax = 0;
 			try {
-				adr = int.Parse(adrTxt.Substring(1), (adrTxt[0] == '#' || adrTxt[0] == '&') ? NumberStyles.HexNumber : NumberStyles.Integer);
+				adrDeb = int.Parse(adrTxt.Substring(1), (adrTxt[0] == '#' || adrTxt[0] == '&') ? NumberStyles.HexNumber : NumberStyles.Integer);
 			}
 			catch (FormatException ex) {
-				MessageBox.Show("L'adresse saisie [" + adr + "] est erronée");
+				MessageBox.Show("L'adresse saisie [" + adrTxt + "] est erronée");
 			}
-			if (adr > 0) {
-				Hide();
-				SauveDeltaPack(adr, chkBoucle.Checked, chkMemory.Checked, chk128Ko.Checked);
+			if (chkMaxMem.Checked) {
+				adrTxt = tbxAdrMax.Text;
+				try {
+					adrMax = int.Parse(adrTxt.Substring(1), (adrTxt[0] == '#' || adrTxt[0] == '&') ? NumberStyles.HexNumber : NumberStyles.Integer);
+				}
+				catch (FormatException ex) {
+					MessageBox.Show("L'adresse saisie [" + adrTxt + "] est erronée");
+				}
+			}
+			if (adrDeb > 0) {
+				img.WindowState = FormWindowState.Minimized;
+				img.Show();
+				img.WindowState = FormWindowState.Normal;
+				SauveDeltaPack(adrDeb, chkBoucle.Checked, chk128Ko.Checked, adrMax);
 			}
 			Close();
+		}
+
+		private void chkMaxMem_CheckedChanged(object sender, EventArgs e) {
+			tbxAdrMax.Enabled = chkMaxMem.Checked;
+		}
+
+		private void chk128Ko_CheckedChanged(object sender, EventArgs e) {
+			tbxAdrMax.Visible = chkMaxMem.Visible = chk128Ko.Checked;
 		}
 	}
 }

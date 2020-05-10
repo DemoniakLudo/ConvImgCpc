@@ -123,7 +123,7 @@
 			// 
 			// bpConvert
 			// 
-			this.bpConvert.Location = new System.Drawing.Point(3, 148);
+			this.bpConvert.Location = new System.Drawing.Point(3, 140);
 			this.bpConvert.Name = "bpConvert";
 			this.bpConvert.Size = new System.Drawing.Size(108, 23);
 			this.bpConvert.TabIndex = 3;
@@ -478,7 +478,7 @@
 			// autoRecalc
 			// 
 			this.autoRecalc.AutoSize = true;
-			this.autoRecalc.Location = new System.Drawing.Point(3, 171);
+			this.autoRecalc.Location = new System.Drawing.Point(3, 163);
 			this.autoRecalc.Name = "autoRecalc";
 			this.autoRecalc.Size = new System.Drawing.Size(108, 30);
 			this.autoRecalc.TabIndex = 44;
@@ -762,7 +762,7 @@
 			// 
 			// bpSave
 			// 
-			this.bpSave.Location = new System.Drawing.Point(3, 290);
+			this.bpSave.Location = new System.Drawing.Point(3, 240);
 			this.bpSave.Name = "bpSave";
 			this.bpSave.Size = new System.Drawing.Size(108, 23);
 			this.bpSave.TabIndex = 52;
@@ -782,7 +782,7 @@
 			this.withCode.AutoSize = true;
 			this.withCode.Checked = true;
 			this.withCode.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.withCode.Location = new System.Drawing.Point(3, 315);
+			this.withCode.Location = new System.Drawing.Point(3, 265);
 			this.withCode.Name = "withCode";
 			this.withCode.Size = new System.Drawing.Size(104, 43);
 			this.withCode.TabIndex = 52;
@@ -795,7 +795,7 @@
 			this.withPalette.AutoSize = true;
 			this.withPalette.Checked = true;
 			this.withPalette.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.withPalette.Location = new System.Drawing.Point(3, 364);
+			this.withPalette.Location = new System.Drawing.Point(3, 314);
 			this.withPalette.Name = "withPalette";
 			this.withPalette.Size = new System.Drawing.Size(104, 30);
 			this.withPalette.TabIndex = 52;
@@ -806,7 +806,7 @@
 			// lblNumImage
 			// 
 			this.lblNumImage.AutoSize = true;
-			this.lblNumImage.Location = new System.Drawing.Point(0, 88);
+			this.lblNumImage.Location = new System.Drawing.Point(0, 80);
 			this.lblNumImage.Name = "lblNumImage";
 			this.lblNumImage.Size = new System.Drawing.Size(51, 13);
 			this.lblNumImage.TabIndex = 53;
@@ -815,7 +815,7 @@
 			// 
 			// numImage
 			// 
-			this.numImage.Location = new System.Drawing.Point(57, 84);
+			this.numImage.Location = new System.Drawing.Point(57, 76);
 			this.numImage.Maximum = new decimal(new int[] {
             1,
             0,
