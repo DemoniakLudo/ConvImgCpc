@@ -285,7 +285,10 @@ namespace ConvImgCpc {
 		}
 
 		public void SauveDeltaPack(string fileName, string version, Param param, bool reboucle) {
-			new SaveAnim(fileName, version, this, param).ShowDialog();
+			if (NbCol * NbLig > 0x4000)
+				MessageBox.Show("Les animations avec des écrans de plus de 16ko ne sont pas supportés...");
+			else
+				new SaveAnim(fileName, version, this, param).ShowDialog();
 		}
 
 		public void LirePalette(string fileName, Param param) {

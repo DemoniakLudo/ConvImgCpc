@@ -16,7 +16,6 @@ namespace ConvImgCpc {
 		private MemoryStream imageStream;
 		private Image selImage;
 		private FrameDimension dimension;
-		private Information inf = null;
 
 		public Main() {
 			InitializeComponent();
@@ -192,13 +191,9 @@ namespace ConvImgCpc {
 			return selImage.GetFrameCount(dimension);
 		}
 
-		public void InfoClosed() {
-			chkInfo.Checked = false;
-		}
-
 		public void SetInfo(string txt) {
-			if (inf != null)
-				inf.AddInfo(txt);
+			listInfo.Items.Add(txt);
+			listInfo.SelectedIndex = listInfo.Items.Count - 1;
 		}
 
 		private void ReadParam(string fileName) {
@@ -430,7 +425,7 @@ namespace ConvImgCpc {
 		}
 
 		private void nb_CheckedChanged(object sender, EventArgs e) {
-			bpRazSat.Enabled = sat.Enabled = !nb.Checked;
+			bpSatMoins.Enabled = bpSatPlus.Enabled = bpRazSat.Enabled = sat.Enabled = !nb.Checked;
 			param.pctSat = nb.Checked ? 0 : (int)sat.Value;
 			Convert(false);
 		}
@@ -489,21 +484,6 @@ namespace ConvImgCpc {
 		private void numImage_ValueChanged(object sender, EventArgs e) {
 			SelectImage((int)numImage.Value);
 			Convert(false);
-		}
-
-		private void chkInfo_CheckedChanged(object sender, EventArgs e) {
-			if (chkInfo.Checked) {
-				if (inf == null) {
-					inf = new Information(this);
-					inf.Show();
-				}
-			}
-			else {
-				if (inf != null)
-					inf.Close();
-
-				inf = null;
-			}
 		}
 	}
 }

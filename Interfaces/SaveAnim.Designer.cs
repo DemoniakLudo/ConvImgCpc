@@ -30,7 +30,11 @@
 			this.txbAdrDeb = new System.Windows.Forms.TextBox();
 			this.chkMaxMem = new System.Windows.Forms.CheckBox();
 			this.tbxAdrMax = new System.Windows.Forms.TextBox();
-			this.chkOdin = new System.Windows.Forms.CheckBox();
+			this.chkDirecMem = new System.Windows.Forms.CheckBox();
+			this.chkDelai = new System.Windows.Forms.CheckBox();
+			this.numDelai = new System.Windows.Forms.NumericUpDown();
+			this.lblDelai = new System.Windows.Forms.Label();
+			((System.ComponentModel.ISupportInitialize)(this.numDelai)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// bpSave
@@ -105,22 +109,69 @@
 			this.tbxAdrMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.tbxAdrMax.Visible = false;
 			// 
-			// chkOdin
+			// chkDirecMem
 			// 
-			this.chkOdin.AutoSize = true;
-			this.chkOdin.Location = new System.Drawing.Point(25, 125);
-			this.chkOdin.Name = "chkOdin";
-			this.chkOdin.Size = new System.Drawing.Size(112, 17);
-			this.chkOdin.TabIndex = 8;
-			this.chkOdin.Text = "Mode \'Experiment\'";
-			this.chkOdin.UseVisualStyleBackColor = true;
+			this.chkDirecMem.AutoSize = true;
+			this.chkDirecMem.Location = new System.Drawing.Point(25, 125);
+			this.chkDirecMem.Name = "chkDirecMem";
+			this.chkDirecMem.Size = new System.Drawing.Size(131, 17);
+			this.chkDirecMem.TabIndex = 8;
+			this.chkDirecMem.Text = "Mode \'Mémoire Direct\'";
+			this.chkDirecMem.UseVisualStyleBackColor = true;
+			// 
+			// chkDelai
+			// 
+			this.chkDelai.AutoSize = true;
+			this.chkDelai.Location = new System.Drawing.Point(25, 102);
+			this.chkDelai.Name = "chkDelai";
+			this.chkDelai.Size = new System.Drawing.Size(134, 17);
+			this.chkDelai.TabIndex = 9;
+			this.chkDelai.Text = "Ajout délai inter-images";
+			this.chkDelai.UseVisualStyleBackColor = true;
+			this.chkDelai.CheckedChanged += new System.EventHandler(this.chkDelai_CheckedChanged);
+			// 
+			// numDelai
+			// 
+			this.numDelai.Location = new System.Drawing.Point(165, 102);
+			this.numDelai.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+			this.numDelai.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.numDelai.Name = "numDelai";
+			this.numDelai.Size = new System.Drawing.Size(46, 20);
+			this.numDelai.TabIndex = 10;
+			this.numDelai.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.numDelai.Visible = false;
+			// 
+			// lblDelai
+			// 
+			this.lblDelai.AutoSize = true;
+			this.lblDelai.Location = new System.Drawing.Point(210, 106);
+			this.lblDelai.Name = "lblDelai";
+			this.lblDelai.Size = new System.Drawing.Size(56, 13);
+			this.lblDelai.TabIndex = 11;
+			this.lblDelai.Text = "/ 300 sec.";
+			this.lblDelai.Visible = false;
 			// 
 			// SaveAnim
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(495, 156);
-			this.Controls.Add(this.chkOdin);
+			this.Controls.Add(this.lblDelai);
+			this.Controls.Add(this.numDelai);
+			this.Controls.Add(this.chkDelai);
+			this.Controls.Add(this.chkDirecMem);
 			this.Controls.Add(this.tbxAdrMax);
 			this.Controls.Add(this.chkMaxMem);
 			this.Controls.Add(this.txbAdrDeb);
@@ -133,6 +184,7 @@
 			this.MinimizeBox = false;
 			this.Name = "SaveAnim";
 			this.Text = "Sauvegarde animation";
+			((System.ComponentModel.ISupportInitialize)(this.numDelai)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -147,6 +199,9 @@
 		private System.Windows.Forms.TextBox txbAdrDeb;
 		private System.Windows.Forms.CheckBox chkMaxMem;
 		private System.Windows.Forms.TextBox tbxAdrMax;
-		private System.Windows.Forms.CheckBox chkOdin;
+		private System.Windows.Forms.CheckBox chkDirecMem;
+		private System.Windows.Forms.CheckBox chkDelai;
+		private System.Windows.Forms.NumericUpDown numDelai;
+		private System.Windows.Forms.Label lblDelai;
 	}
 }
