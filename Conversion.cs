@@ -552,10 +552,12 @@ namespace ConvImgCpc {
 
 		}
 
-		static public int Convert(DirectBitmap source, ImageCpc dest, Param p) {
+		static public int Convert(DirectBitmap source, ImageCpc dest, Param p, bool noInfo = false) {
 			int nbCol = ConvertPasse1(source, dest, p);
 			Passe2(source, dest, p);
-			dest.main.SetInfo("Conversion terminée, nombre de couleurs dans l'image:" + nbCol);
+			if (!noInfo)
+				dest.main.SetInfo("Conversion terminée, nombre de couleurs dans l'image:" + nbCol);
+
 			return nbCol;
 		}
 		/*

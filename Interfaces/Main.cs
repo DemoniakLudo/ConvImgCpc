@@ -56,7 +56,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void Convert(bool doConvert) {
+		private void Convert(bool doConvert, bool noInfo = false) {
 			if (imgSrc.GetImage != null && (autoRecalc.Checked || doConvert)) {
 				bpSave.Enabled = bpConvert.Enabled = false;
 				param.sMode = radioKeepLarger.Checked ? Param.SizeMode.KeepLarger : radioKeepSmaller.Checked ? Param.SizeMode.KeepSmaller : radioFit.Checked ? Param.SizeMode.Fit : Param.SizeMode.UserSize;
@@ -103,8 +103,10 @@ namespace ConvImgCpc {
 						g.DrawImage(imgSrc.GetImage, -(posx << 1), -(posy << 1), tx << 1, ty << 1);
 						break;
 				}
-				SetInfo("Conversion en cours...");
-				Conversion.Convert(tmp, imgCpc, param);
+				if (!noInfo)
+					SetInfo("Conversion en cours...");
+
+				Conversion.Convert(tmp, imgCpc, param, noInfo);
 				bpSave.Enabled = bpConvert.Enabled = true;
 				tmp.Dispose();
 			}
@@ -181,10 +183,11 @@ namespace ConvImgCpc {
 			}
 		}
 
-		public void SelectImage(int n) {
+		public void SelectImage(int n, bool noInfo = false) {
 			selImage.SelectActiveFrame(dimension, n);
 			imgSrc.SetBitmap(new Bitmap(selImage), checkImageSource.Checked);
-			SetInfo("Image sélectionnée: " + n.ToString());
+			if (!noInfo)
+				SetInfo("Image sélectionnée: " + n.ToString());
 		}
 
 		public int GetMaxImages() {
@@ -192,7 +195,7 @@ namespace ConvImgCpc {
 		}
 
 		public void SetInfo(string txt) {
-			listInfo.Items.Add(txt);
+			listInfo.Items.Add(DateTime.Now.ToString() + " - " + txt);
 			listInfo.SelectedIndex = listInfo.Items.Count - 1;
 		}
 

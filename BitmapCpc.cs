@@ -248,6 +248,49 @@ namespace ConvImgCpc {
 			}
 		}
 
+		private int GetPenColor(DirectBitmap bmpLock, int x, int y) {
+			int pen = 0;
+			RvbColor col = bmpLock.GetPixelColor(x, y);
+			if (cpcPlus) {
+				for (pen = 0; pen < 16; pen++) {
+					if ((col.v >> 4) == (Palette[pen] >> 8) && (col.r >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.b >> 4) == (Palette[pen] & 0x0F))
+						break;
+				}
+			}
+			else {
+				for (pen = 0; pen < 16; pen++) {
+					RvbColor fixedCol = RgbCPC[Palette[pen]];
+					if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
+						break;
+				}
+			}
+			return pen;
+		}
+
+		public void CreeImgAscii(DirectBitmap bmpLock, byte[]imgAscii) {
+			int l = 0;
+			for (int y = 0; y < NbLig << 1; y += 16)
+				for (int x = 0; x < NbCol; x++) {
+					switch (modeVirtuel) {
+						case 8: // ASC0
+							imgAscii[l++] = (byte)(GetPenColor(bmpLock, x << 3, y) | (GetPenColor(bmpLock, x << 3, y + 8) << 4));
+							break;
+
+						case 9: // ASC1
+							imgAscii[l++] = (byte)(GetPenColor(bmpLock, x << 3, y) | (GetPenColor(bmpLock, (x << 3) + 4, y) << 2)
+												| (GetPenColor(bmpLock, x << 3, y + 8) << 4) | (GetPenColor(bmpLock, (x << 3) + 4, y + 8) << 6));
+							break;
+
+						case 10: // ASC2
+							imgAscii[l++] = (byte)(GetPenColor(bmpLock, x << 3, y) | (GetPenColor(bmpLock, (x << 3) + 2, y) << 2)
+												| (GetPenColor(bmpLock, (x << 3) + 4, y) << 1) | (GetPenColor(bmpLock, (x << 3) + 6, y) << 3)
+												| (GetPenColor(bmpLock, x << 3, y + 8) << 4) | (GetPenColor(bmpLock, (x << 3) + 2, y + 8) << 6)
+												| (GetPenColor(bmpLock, (x << 3) + 4, y + 8) << 5) | (GetPenColor(bmpLock, (x << 3) + 6, y + 8) << 7));
+							break;
+					}
+				}
+		}
+
 		public Bitmap CreateImageFromCpc(byte[] source) {
 			if (bmpCpc[0] == 'M' && bmpCpc[1] == 'J' && bmpCpc[2] == 'H')
 				DepactOCP();

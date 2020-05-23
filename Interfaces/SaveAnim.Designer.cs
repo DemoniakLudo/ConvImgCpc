@@ -34,12 +34,16 @@
 			this.chkDelai = new System.Windows.Forms.CheckBox();
 			this.numDelai = new System.Windows.Forms.NumericUpDown();
 			this.lblDelai = new System.Windows.Forms.Label();
+			this.rb1L = new System.Windows.Forms.RadioButton();
+			this.rb2L = new System.Windows.Forms.RadioButton();
+			this.rb4L = new System.Windows.Forms.RadioButton();
+			this.rb8L = new System.Windows.Forms.RadioButton();
 			((System.ComponentModel.ISupportInitialize)(this.numDelai)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// bpSave
 			// 
-			this.bpSave.Location = new System.Drawing.Point(409, 121);
+			this.bpSave.Location = new System.Drawing.Point(409, 197);
 			this.bpSave.Name = "bpSave";
 			this.bpSave.Size = new System.Drawing.Size(75, 23);
 			this.bpSave.TabIndex = 1;
@@ -112,17 +116,18 @@
 			// chkDirecMem
 			// 
 			this.chkDirecMem.AutoSize = true;
-			this.chkDirecMem.Location = new System.Drawing.Point(25, 125);
+			this.chkDirecMem.Location = new System.Drawing.Point(25, 201);
 			this.chkDirecMem.Name = "chkDirecMem";
 			this.chkDirecMem.Size = new System.Drawing.Size(131, 17);
 			this.chkDirecMem.TabIndex = 8;
 			this.chkDirecMem.Text = "Mode \'Mémoire Direct\'";
 			this.chkDirecMem.UseVisualStyleBackColor = true;
+			this.chkDirecMem.CheckedChanged += new System.EventHandler(this.chkDirecMem_CheckedChanged);
 			// 
 			// chkDelai
 			// 
 			this.chkDelai.AutoSize = true;
-			this.chkDelai.Location = new System.Drawing.Point(25, 102);
+			this.chkDelai.Location = new System.Drawing.Point(25, 178);
 			this.chkDelai.Name = "chkDelai";
 			this.chkDelai.Size = new System.Drawing.Size(134, 17);
 			this.chkDelai.TabIndex = 9;
@@ -132,7 +137,7 @@
 			// 
 			// numDelai
 			// 
-			this.numDelai.Location = new System.Drawing.Point(165, 102);
+			this.numDelai.Location = new System.Drawing.Point(165, 178);
 			this.numDelai.Maximum = new decimal(new int[] {
             255,
             0,
@@ -156,18 +161,65 @@
 			// lblDelai
 			// 
 			this.lblDelai.AutoSize = true;
-			this.lblDelai.Location = new System.Drawing.Point(210, 106);
+			this.lblDelai.Location = new System.Drawing.Point(210, 182);
 			this.lblDelai.Name = "lblDelai";
 			this.lblDelai.Size = new System.Drawing.Size(56, 13);
 			this.lblDelai.TabIndex = 11;
 			this.lblDelai.Text = "/ 300 sec.";
 			this.lblDelai.Visible = false;
 			// 
+			// rb1L
+			// 
+			this.rb1L.AutoSize = true;
+			this.rb1L.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
+			this.rb1L.Checked = true;
+			this.rb1L.Location = new System.Drawing.Point(25, 81);
+			this.rb1L.Name = "rb1L";
+			this.rb1L.Size = new System.Drawing.Size(141, 17);
+			this.rb1L.TabIndex = 12;
+			this.rb1L.TabStop = true;
+			this.rb1L.Text = "Générer toutes les lignes";
+			this.rb1L.UseVisualStyleBackColor = true;
+			// 
+			// rb2L
+			// 
+			this.rb2L.AutoSize = true;
+			this.rb2L.Location = new System.Drawing.Point(25, 104);
+			this.rb2L.Name = "rb2L";
+			this.rb2L.Size = new System.Drawing.Size(114, 17);
+			this.rb2L.TabIndex = 13;
+			this.rb2L.Text = "Générer 1 ligne / 2";
+			this.rb2L.UseVisualStyleBackColor = true;
+			// 
+			// rb4L
+			// 
+			this.rb4L.AutoSize = true;
+			this.rb4L.Location = new System.Drawing.Point(25, 127);
+			this.rb4L.Name = "rb4L";
+			this.rb4L.Size = new System.Drawing.Size(114, 17);
+			this.rb4L.TabIndex = 14;
+			this.rb4L.Text = "Générer 1 ligne / 4";
+			this.rb4L.UseVisualStyleBackColor = true;
+			// 
+			// rb8L
+			// 
+			this.rb8L.AutoSize = true;
+			this.rb8L.Location = new System.Drawing.Point(25, 150);
+			this.rb8L.Name = "rb8L";
+			this.rb8L.Size = new System.Drawing.Size(114, 17);
+			this.rb8L.TabIndex = 15;
+			this.rb8L.Text = "Générer 1 ligne / 8";
+			this.rb8L.UseVisualStyleBackColor = true;
+			// 
 			// SaveAnim
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(495, 156);
+			this.ClientSize = new System.Drawing.Size(495, 225);
+			this.Controls.Add(this.rb8L);
+			this.Controls.Add(this.rb4L);
+			this.Controls.Add(this.rb2L);
+			this.Controls.Add(this.rb1L);
 			this.Controls.Add(this.lblDelai);
 			this.Controls.Add(this.numDelai);
 			this.Controls.Add(this.chkDelai);
@@ -203,5 +255,9 @@
 		private System.Windows.Forms.CheckBox chkDelai;
 		private System.Windows.Forms.NumericUpDown numDelai;
 		private System.Windows.Forms.Label lblDelai;
+		private System.Windows.Forms.RadioButton rb1L;
+		private System.Windows.Forms.RadioButton rb2L;
+		private System.Windows.Forms.RadioButton rb4L;
+		private System.Windows.Forms.RadioButton rb8L;
 	}
 }

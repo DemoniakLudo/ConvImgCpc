@@ -1,0 +1,1 @@
+﻿- Mode "scanline" (1 ligne sur 2) lors de l'export anim "classique" (non ASCx)

@@ -21,7 +21,7 @@ namespace ConvImgCpc {
 		private Rendu fenetreRendu;
 		private UndoRedo undo = new UndoRedo();
 		private bool doDraw = false;
-		public delegate void ConvertDelegate(bool doConvertbook);
+		public delegate void ConvertDelegate(bool doConvert, bool noInfo = false);
 		public BitmapCpc bitmapCpc = new BitmapCpc();
 		public Main main;
 		public ConvertDelegate Convert;
