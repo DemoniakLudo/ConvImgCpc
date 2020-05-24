@@ -369,7 +369,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("Boucle:");
 			if (chkNoPtr.Checked && !gest128K) {
 				sw.WriteLine("	LD	A,(HL)");
-				sw.WriteLine("	AND	A");
+				sw.WriteLine("	INC	A");
 			}
 			else {
 				sw.WriteLine("	LD	H,(IX+1)");
@@ -637,11 +637,16 @@ namespace ConvImgCpc {
 			sw.WriteLine("	LDI				; Octet a copier");
 			sw.WriteLine("DrawImgD3:");
 			sw.WriteLine("	JP	PE,DrawImgD1");
-			sw.WriteLine("	INC	IX");
-			sw.WriteLine("	INC	IX");
-			if (gest128K)
+			if (chkNoPtr.Checked && !gest128K) {
+				sw.WriteLine("	POP	HL");
+				sw.WriteLine("	INC	HL");
+			}
+			else {
 				sw.WriteLine("	INC	IX");
-
+				sw.WriteLine("	INC	IX");
+				if (gest128K)
+					sw.WriteLine("	INC	IX");
+			}
 			sw.WriteLine("	JP	Boucle" + Environment.NewLine);
 			sw.WriteLine("DrawImgD4:");
 			sw.WriteLine("	AND	#7F");
@@ -660,13 +665,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("	DJNZ	DrawImgD6");
 			sw.WriteLine("	POP	BC");
 			sw.WriteLine("	CPI");
-			sw.WriteLine("	JP	PE,DrawImgD1");
-			sw.WriteLine("	INC	IX");
-			sw.WriteLine("	INC	IX");
-			if (gest128K)
-				sw.WriteLine("	INC	IX");
-
-			sw.WriteLine("	JP	Boucle" + Environment.NewLine);
+			sw.WriteLine("	JR	DrawImgD3" + Environment.NewLine);
 			sw.WriteLine("	Nolist");
 		}
 
@@ -921,7 +920,7 @@ namespace ConvImgCpc {
 			if (!chkNoPtr.Checked || gest128K)
 				GenerePointeurs(sw, posPack, bank, gest128K && numBank > 0xC0);
 			else {
-				sw.WriteLine("	DB	0			; Fin de l'animation");
+				sw.WriteLine("	DB	#FF			; Fin de l'animation");
 				ltot++;
 			}
 			GenereFin(sw, ltot, gest128K && endBank0 < 0x8000);
@@ -941,37 +940,6 @@ namespace ConvImgCpc {
 				img.main.SetInfo("Sauvegarde animation assembleur ok.");
 
 			GC.Collect();
-		}
-
-		private void bpSave_Click(object sender, EventArgs e) {
-			string adrTxt = txbAdrDeb.Text;
-			int adrDeb = 0, adrMax = 0;
-			try {
-				adrDeb = int.Parse(adrTxt.Substring(1), (adrTxt[0] == '#' || adrTxt[0] == '&') ? NumberStyles.HexNumber : NumberStyles.Integer);
-			}
-			catch (FormatException ex) {
-				MessageBox.Show("L'adresse saisie [" + adrTxt + "] est erronée");
-			}
-			if (chkMaxMem.Checked) {
-				adrTxt = tbxAdrMax.Text;
-				try {
-					adrMax = int.Parse(adrTxt.Substring(1), (adrTxt[0] == '#' || adrTxt[0] == '&') ? NumberStyles.HexNumber : NumberStyles.Integer);
-				}
-				catch (FormatException ex) {
-					MessageBox.Show("L'adresse saisie [" + adrTxt + "] est erronée");
-				}
-			}
-
-			bool optimSpeed = false;
-
-			int modeLigne = rb8L.Checked ? 8 : rb4L.Checked ? 4 : rb2L.Checked ? 2 : 1;
-			if (adrDeb > 0) {
-				img.WindowState = FormWindowState.Minimized;
-				img.Show();
-				img.WindowState = FormWindowState.Normal;
-				SauveDeltaPack(adrDeb, adrMax, chkDelai.Checked ? (int)numDelai.Value : 0, modeLigne, optimSpeed);
-			}
-			Close();
 		}
 
 		private void chkMaxMem_CheckedChanged(object sender, EventArgs e) {
@@ -994,6 +962,37 @@ namespace ConvImgCpc {
 
 		private void chk2Zone_CheckedChanged(object sender, EventArgs e) {
 			chkZoneVert.Visible = chk2Zone.Checked;
+		}
+
+		private void bpSave_Click(object sender, EventArgs e) {
+			string adrTxt = txbAdrDeb.Text;
+			int adrDeb = 0, adrMax = 0;
+			try {
+				adrDeb = int.Parse(adrTxt.Substring(1), (adrTxt[0] == '#' || adrTxt[0] == '&') ? NumberStyles.HexNumber : NumberStyles.Integer);
+			}
+			catch (FormatException ex) {
+				MessageBox.Show("L'adresse saisie [" + adrTxt + "] est erronée");
+			}
+			if (chkMaxMem.Checked) {
+				adrTxt = tbxAdrMax.Text;
+				try {
+					adrMax = int.Parse(adrTxt.Substring(1), (adrTxt[0] == '#' || adrTxt[0] == '&') ? NumberStyles.HexNumber : NumberStyles.Integer);
+				}
+				catch (FormatException ex) {
+					MessageBox.Show("L'adresse saisie [" + adrTxt + "] est erronée");
+				}
+			}
+
+			bool optimSpeed = true;
+
+			int modeLigne = rb8L.Checked ? 8 : rb4L.Checked ? 4 : rb2L.Checked ? 2 : 1;
+			if (adrDeb > 0) {
+				img.WindowState = FormWindowState.Minimized;
+				img.Show();
+				img.WindowState = FormWindowState.Normal;
+				SauveDeltaPack(adrDeb, adrMax, chkDelai.Checked ? (int)numDelai.Value : 0, modeLigne, optimSpeed);
+			}
+			Close();
 		}
 	}
 }
