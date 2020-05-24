@@ -22,7 +22,7 @@ namespace ConvImgCpc {
 			img = i;
 			param = p;
 			InitializeComponent();
-			chkDirecMem.Visible = rb1L.Visible = rb2L.Visible = rb4L.Visible = rb8L.Visible = img.modeVirtuel < 8;
+			chk2Zone.Visible = chkDirecMem.Visible = rb1L.Visible = rb2L.Visible = rb4L.Visible = rb8L.Visible = img.modeVirtuel < 8;
 		}
 
 		private int PackWinDC(byte[] bufOut, ref int sizeDepack, int topBottom, bool razDiff, int modeLigne, bool optimSpeed) {
@@ -30,6 +30,7 @@ namespace ConvImgCpc {
 			int xDeb = img.NbCol;
 			int yDeb = img.NbLig;
 			int yFin = 0;
+			int lStart = 0, lEnd = img.NbLig, xStart = 0, xEnd = img.NbCol;
 
 			if (razDiff)
 				Array.Clear(BufPrec, 0, BufPrec.Length);
@@ -37,17 +38,14 @@ namespace ConvImgCpc {
 			// Copier l'image cpc dans le buffer de travail
 			img.bitmapCpc.CreeBmpCpc(img.BmpLock);
 
-#if METHODE_VERT
-			int lStart = 0;
-			int lEnd = img.NbLig;
-			int xStart = topBottom < 1 ? 0 : img.NbCol >> 1;
-			int xEnd = topBottom == 0 ? img.NbCol >> 1 : img.NbCol;
-#else
-			int lStart = topBottom < 1 ? 0 : img.NbLig >> 1;
-			int lEnd = topBottom == 0 ? img.NbLig >> 1 : img.NbLig;
-			int xStart = 0;
-			int xEnd = img.NbCol;
-#endif
+			if (chkZoneVert.Checked) {
+				xStart = topBottom < 1 ? 0 : img.NbCol >> 1;
+				xEnd = topBottom == 0 ? img.NbCol >> 1 : img.NbCol;
+			}
+			else {
+				lStart = topBottom < 1 ? 0 : img.NbLig >> 1;
+				lEnd = topBottom == 0 ? img.NbLig >> 1 : img.NbLig;
+			}
 			// Recherche les "coordonnées" de l'image différente par rapport à la précédente
 			for (int l = lStart; l < lEnd; l += modeLigne) {
 				int adr = img.GetAdrCpc(l << 1);
@@ -63,27 +61,44 @@ namespace ConvImgCpc {
 			}
 
 			int tailleX = xFin > xDeb ? xFin - xDeb + 1 : 0;
-			int length = (tailleX * (yFin + 1 - yDeb)) / modeLigne;
+			int tailleY = (yFin + 1 - yDeb) / modeLigne;
+			int length = tailleX * tailleY;
 			if (length > 0) {
 				Array.Clear(bLigne, 0, bLigne.Length);
 				int pos = 0, AdrEcr;
-				bLigne[pos++] = (byte)(xFin - xDeb + 1);
-				bLigne[pos++] = (byte)((yFin - yDeb + 1) / modeLigne);
+				bLigne[pos++] = (byte)tailleX;
+				bLigne[pos++] = (byte)tailleY;
 				if (!optimSpeed) {
 					AdrEcr = 0xC000 + xDeb + (yDeb >> 3) * img.NbCol + (yDeb & 7) * 0x800;
 					bLigne[pos++] = (byte)(AdrEcr & 0xFF);
 					bLigne[pos++] = (byte)(AdrEcr >> 8);
 				}
-				// Passage en mode "ligne à ligne
-				for (int l = yDeb; l <= yFin; l += modeLigne) {
-					int offsetEcr = (l >> 3) * img.NbCol + (l & 7) * 0x800 + xDeb;
-					if (optimSpeed) {
-						AdrEcr = 0xC000 + offsetEcr;
-						bLigne[pos++] = (byte)(AdrEcr & 0xFF);
-						bLigne[pos++] = (byte)(AdrEcr >> 8);
+				if (chkCol.Checked) {
+					// passage en mode "colonne par colonne"
+					for (int x = xDeb; x <= xFin; x++) {
+						for (int l = 0; l < tailleY * modeLigne; l += modeLigne) {
+							int offsetEcr = ((l + yDeb) >> 3) * img.NbCol + ((l + yDeb) & 7) * 0x800 + x;
+							if (optimSpeed) {
+								AdrEcr = 0xC000 + offsetEcr;
+								bLigne[pos++] = (byte)(AdrEcr & 0xFF);
+								bLigne[pos++] = (byte)(AdrEcr >> 8);
+							}
+							bLigne[pos++] = BufPrec[offsetEcr];
+						}
 					}
-					Array.Copy(BufPrec, offsetEcr, bLigne, pos, tailleX);
-					pos += tailleX;
+				}
+				else {
+					// Passage en mode "ligne à ligne"
+					for (int l = yDeb; l <= yFin; l += modeLigne) {
+						int offsetEcr = (l >> 3) * img.NbCol + (l & 7) * 0x800 + xDeb;
+						if (optimSpeed) {
+							AdrEcr = 0xC000 + offsetEcr;
+							bLigne[pos++] = (byte)(AdrEcr & 0xFF);
+							bLigne[pos++] = (byte)(AdrEcr >> 8);
+						}
+						Array.Copy(BufPrec, offsetEcr, bLigne, pos, tailleX);
+						pos += tailleX;
+					}
 				}
 				int lpack = PackDepack.Pack(bLigne, pos, bufOut, 0);
 				sizeDepack = length + 4;
@@ -259,11 +274,11 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private int PackFrame(byte[] bufOut, ref int sizeDepack, bool directMem, bool razDiff, bool firstFrame, int topBottom, int modeLigne, bool optimSpeed) {
+		private int PackFrame(byte[] bufOut, ref int sizeDepack, bool razDiff, bool firstFrame, int topBottom, int modeLigne, bool optimSpeed) {
 			if (img.modeVirtuel > 7)
 				return PackAscii(bufOut, ref sizeDepack, razDiff, firstFrame);
 			else
-				if (directMem)
+				if (chkDirecMem.Checked)
 					return PackDirectMem(bufOut, ref sizeDepack, true, razDiff);
 				else
 					return PackWinDC(bufOut, ref sizeDepack, topBottom, razDiff, modeLigne, optimSpeed);
@@ -346,12 +361,22 @@ namespace ConvImgCpc {
 				sw.WriteLine("	JR	NZ,SetFonte");
 			}
 			sw.WriteLine("Debut");
-			sw.WriteLine("	LD	IX,AnimDelta");
+			if (chkNoPtr.Checked && !gest128K)
+				sw.WriteLine("	LD	HL,Delta0");
+			else
+				sw.WriteLine("	LD	IX,AnimDelta");
+
 			sw.WriteLine("Boucle:");
-			sw.WriteLine("	LD	H,(IX+1)");
-			sw.WriteLine("	LD	L,(IX+0)");
-			sw.WriteLine("	LD	A,H");
-			sw.WriteLine("	OR	H");
+			if (chkNoPtr.Checked && !gest128K) {
+				sw.WriteLine("	LD	A,(HL)");
+				sw.WriteLine("	AND	A");
+			}
+			else {
+				sw.WriteLine("	LD	H,(IX+1)");
+				sw.WriteLine("	LD	L,(IX+0)");
+				sw.WriteLine("	LD	A,H");
+				sw.WriteLine("	OR	H");
+			}
 			sw.WriteLine("	JR	Z,Debut");
 			if (gest128K) {
 				sw.WriteLine("	LD	B,#7F");
@@ -482,6 +507,9 @@ namespace ConvImgCpc {
 				sw.WriteLine("	RET");
 			}
 			sw.WriteLine("InitDraw:");
+			if (chkNoPtr.Checked && !gest128K)
+				sw.WriteLine("	PUSH	HL");
+
 			if (delai > 0) {
 				sw.WriteLine("	LD	A,0");
 				sw.WriteLine("	CP	" + delai.ToString());
@@ -491,52 +519,100 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void GenereDrawDC(StreamWriter sw, bool gest128K, int addBC26, bool optimSpeed) {
+		private void GenereDrawDC(StreamWriter sw, int delai, bool gest128K, int addBC26, bool optimSpeed) {
 			sw.WriteLine("	LD	HL,buffer");
-			sw.WriteLine("	LD	A,(HL)");
-			sw.WriteLine("	INC	HL");
-			sw.WriteLine("	LD	(Nbx+1),A		; Taille en X");
-			if (!optimSpeed) {
-				sw.WriteLine("	NEG");
-				sw.WriteLine("	LD	(NbDec+1),A		; Ajustement pour 'BC26'");
-				sw.WriteLine("	LD	A,(HL)			; Taille en Y");
+			if (chkCol.Checked) {
+				sw.WriteLine("	LD	B,(HL)		; Taille en X");
 				sw.WriteLine("	INC	HL");
+				sw.WriteLine("	LD	A,(HL)");
+				sw.WriteLine("	INC	HL");
+				sw.WriteLine("	LD	(NbLig+1),A		; Taille en Y");
 				sw.WriteLine("	LD	E,(HL)");
 				sw.WriteLine("	INC	HL");
-				sw.WriteLine("	LD	D,(HL)			; Adresse ecran");
+				sw.WriteLine("	LD	D,(HL)		; Adresse écran");
+				sw.WriteLine("	INC	HL");
+				sw.WriteLine("	EX	DE,HL");
+				if (delai > 0)
+					sw.WriteLine("	DI");
+
+				sw.WriteLine("	LD	(SauvSp+1),SP");
+				sw.WriteLine("	LD	SP,#C0" + img.NbCol.ToString("X2"));
+				sw.WriteLine("Draw1:");
+				sw.WriteLine("	LD	(RecupHL+1),HL");
+				sw.WriteLine("NbLig:");
+				sw.WriteLine("	LD	C,0");
+				sw.WriteLine("Draw2:");
+				sw.WriteLine("	LD	A,(DE)");
+				sw.WriteLine("	INC	DE");
+				sw.WriteLine("	LD	(HL),A");
+				sw.WriteLine("	LD	A,H");
+				sw.WriteLine("	ADD	A,#" + (addBC26 + 1).ToString("X2"));
+				sw.WriteLine("	LD	H,A");
+				sw.WriteLine("	JR	NC,Draw3");
+				sw.WriteLine("	ADD	HL,SP");
+				sw.WriteLine("Draw3:");
+				sw.WriteLine("	DEC	C");
+				sw.WriteLine("	JR	NZ,Draw2");
+				sw.WriteLine("RecupHL:");
+				sw.WriteLine("	LD	HL,0");
+				sw.WriteLine("	INC	HL");
+				sw.WriteLine("	DJNZ	Draw1");
+				sw.WriteLine("SauvSp:");
+				sw.WriteLine("	LD	SP,0");
+				if (delai > 0)
+					sw.WriteLine("	EI");
+			}
+			else {
+				sw.WriteLine("	LD	A,(HL)");
+				sw.WriteLine("	INC	HL");
+				sw.WriteLine("	LD	(Nbx+1),A		; Taille en X");
+				if (!optimSpeed) {
+					sw.WriteLine("	NEG");
+					sw.WriteLine("	LD	(NbDec+1),A		; Ajustement pour 'BC26'");
+					sw.WriteLine("	LD	A,(HL)			; Taille en Y");
+					sw.WriteLine("	INC	HL");
+					sw.WriteLine("	LD	E,(HL)");
+					sw.WriteLine("	INC	HL");
+					sw.WriteLine("	LD	D,(HL)			; Adresse ecran");
+					sw.WriteLine("	INC	HL");
+				}
+				else {
+					sw.WriteLine("	LD	A,(HL)			; Taille en Y");
+					sw.WriteLine("	INC	HL");
+				}
+				sw.WriteLine("Nbx:");
+				sw.WriteLine("	LD	BC,0");
+				if (optimSpeed) {
+					sw.WriteLine("	LD	E,(HL)");
+					sw.WriteLine("	INC	HL");
+					sw.WriteLine("	LD	D,(HL)			; Adresse ecran");
+					sw.WriteLine("	INC	HL");
+				}
+				sw.WriteLine("	LDIR");
+				if (!optimSpeed) {
+					sw.WriteLine("	EX	DE,HL");
+					sw.WriteLine("NbDec:");
+					sw.WriteLine("	LD	BC,#" + addBC26.ToString("X2") + "FF			; 'BC26'");
+					sw.WriteLine("	ADD	HL,BC");
+					sw.WriteLine("	JR	NC,Suite");
+					sw.WriteLine("	LD	BC,#C0" + img.NbCol.ToString("X2"));
+					sw.WriteLine("	ADD	HL,BC");
+					sw.WriteLine("Suite:");
+					sw.WriteLine("	EX	DE,HL");
+				}
+				sw.WriteLine("	DEC	A");
+				sw.WriteLine("	JR	NZ,Nbx");
+			}
+			if (chkNoPtr.Checked && !gest128K) {
+				sw.WriteLine("	POP	HL");
 				sw.WriteLine("	INC	HL");
 			}
 			else {
-				sw.WriteLine("	LD	A,(HL)			; Taille en Y");
-				sw.WriteLine("	INC	HL");
-			}
-			sw.WriteLine("Nbx:");
-			sw.WriteLine("	LD	BC,0");
-			if (optimSpeed) {
-				sw.WriteLine("	LD	E,(HL)");
-				sw.WriteLine("	INC	HL");
-				sw.WriteLine("	LD	D,(HL)			; Adresse ecran");
-				sw.WriteLine("	INC	HL");
-			}
-			sw.WriteLine("	LDIR");
-			if (!optimSpeed) {
-				sw.WriteLine("	EX	DE,HL");
-				sw.WriteLine("NbDec:");
-				sw.WriteLine("	LD	BC,#" + addBC26.ToString("X2") + "FF			; 'BC26'");
-				sw.WriteLine("	ADD	HL,BC");
-				sw.WriteLine("	JR	NC,Suite");
-				sw.WriteLine("	LD	BC,#C0" + img.NbCol.ToString("X2"));
-				sw.WriteLine("	ADD	HL,BC");
-				sw.WriteLine("Suite:");
-				sw.WriteLine("	EX	DE,HL");
-			}
-			sw.WriteLine("	DEC	A");
-			sw.WriteLine("	JR	NZ,Nbx");
-			sw.WriteLine("	INC	IX");
-			sw.WriteLine("	INC	IX");
-			if (gest128K)
 				sw.WriteLine("	INC	IX");
-
+				sw.WriteLine("	INC	IX");
+				if (gest128K)
+					sw.WriteLine("	INC	IX");
+			}
 			sw.WriteLine("	JP	Boucle" + Environment.NewLine);
 			sw.WriteLine("	Nolist");
 		}
@@ -715,7 +791,8 @@ namespace ConvImgCpc {
 			sw.WriteLine(line);
 		}
 
-		private void GenereFin(StreamWriter sw, bool force8000) {
+		private void GenereFin(StreamWriter sw, int ltot, bool force8000) {
+			sw.WriteLine("; Taille totale animation = " + ltot.ToString() + " (#" + ltot.ToString("X4") + ")");
 			sw.WriteLine("	List");
 			sw.WriteLine("buffer" + (force8000 ? "	equ	#8000" : ":"));
 		}
@@ -746,7 +823,7 @@ namespace ConvImgCpc {
 		}
 		#endregion
 
-		private void SauveDeltaPack(int adrDeb, bool reboucle, bool gest128K, bool directMem, int adrMax, int delai, int modeLigne, bool optimSpeed) {
+		private void SauveDeltaPack(int adrDeb, int adrMax, int delai, int modeLigne, bool optimSpeed) {
 			int sizeDepack = 0;
 			int nbImages = img.main.GetMaxImages();
 			byte[][] bufOut = new byte[nbImages << 1][];
@@ -758,10 +835,10 @@ namespace ConvImgCpc {
 			if (adrMax == 0)
 				adrMax = 0xBE00;
 
-			if (reboucle) {
+			if (chkBoucle.Checked) {
 				img.main.SelectImage(nbImages - 1, true);
 				img.Convert(true, true);
-				PackFrame(bufOut[0], ref sizeDepack, directMem, true, false, -1, modeLigne, optimSpeed);
+				PackFrame(bufOut[0], ref sizeDepack, true, false, -1, modeLigne, optimSpeed);
 			}
 
 			img.main.SetInfo("Début sauvegarde animation assembleur...");
@@ -772,23 +849,22 @@ namespace ConvImgCpc {
 				img.main.SelectImage(i, true);
 				img.Convert(true, true);
 				Application.DoEvents();
-#if DOUBLE_ECRAN
-				lg[posPack] = PackFrame(bufOut[posPack], ref sizeDepack, directMem, i == 0 && !reboucle, i == 0 && !reboucle, 0, modeLigne);
-				if ( lg[posPack]>0)
-					ltot += lg[posPack++];
+				if (chk2Zone.Checked) {
+					lg[posPack] = PackFrame(bufOut[posPack], ref sizeDepack, i == 0 && !chkBoucle.Checked, i == 0 && !chkBoucle.Checked, 0, modeLigne, optimSpeed);
+					if (lg[posPack] > 0)
+						ltot += lg[posPack++];
 
-				lg[posPack] = PackFrame(bufOut[posPack], ref sizeDepack, directMem, i == 0 && !reboucle, i == 0 && !reboucle, 1, modeLigne);
-				if ( lg[posPack]>0)
-					ltot += lg[posPack++];
-#else
-				lg[posPack] = PackFrame(bufOut[posPack], ref sizeDepack, directMem, i == 0 && !reboucle, i == 0 && !reboucle, -1, modeLigne, optimSpeed);
-				if (lg[posPack] > 0)
-					ltot += lg[posPack++];
-#endif
+					lg[posPack] = PackFrame(bufOut[posPack], ref sizeDepack, i == 0 && !chkBoucle.Checked, i == 0 && !chkBoucle.Checked, 1, modeLigne, optimSpeed);
+					if (lg[posPack] > 0)
+						ltot += lg[posPack++];
+				}
+				else {
+					lg[posPack] = PackFrame(bufOut[posPack], ref sizeDepack, i == 0 && !chkBoucle.Checked, i == 0 && !chkBoucle.Checked, -1, modeLigne, optimSpeed);
+					if (lg[posPack] > 0)
+						ltot += lg[posPack++];
+				}
 				maxDepack = Math.Max(maxDepack, sizeDepack);
 			}
-			if ((ltot + adrDeb < adrMax) && (ltot + adrDeb < 0xBE00 - maxDepack))
-				gest128K = false;
 
 			// Sauvegarde
 			StreamWriter sw = Save.OpenAsm(fileName, version, param);
@@ -798,14 +874,18 @@ namespace ConvImgCpc {
 			else
 				GenereInitOld(sw);
 
+			bool gest128K = chk128Ko.Checked;
+			if ((ltot + adrDeb < adrMax) && (ltot + adrDeb < 0xBE00 - maxDepack))
+				gest128K = false;
+
 			GenereAffichage(sw, delai, gest128K);
 			if (img.modeVirtuel > 7)
 				GenereDrawAscii(sw, gest128K);
 			else
-				if (directMem)
+				if (chkDirecMem.Checked)
 					GenereDrawOdin(sw, gest128K);
 				else
-					GenereDrawDC(sw, gest128K, modeLigne == 8 ? 0x3F : modeLigne == 4 ? 0x1F : modeLigne == 2 ? 0xF : 0x7, optimSpeed);
+					GenereDrawDC(sw, delai, gest128K, modeLigne == 8 ? 0x3F : modeLigne == 4 ? 0x1F : modeLigne == 2 ? 0xF : 0x7, optimSpeed);
 
 			if (img.cpcPlus)
 				GenerePalettePlus(sw, img);
@@ -838,15 +918,20 @@ namespace ConvImgCpc {
 				sw.WriteLine("Delta" + i.ToString() + ":\t\t; Taille #" + lg[i].ToString("X4"));
 				Save.SauveAssembleur(sw, bufOut[i], lg[i], param);
 			}
-			GenerePointeurs(sw, posPack, bank, gest128K && numBank > 0xC0);
-			GenereFin(sw, gest128K && endBank0 < 0x8000);
+			if (!chkNoPtr.Checked || gest128K)
+				GenerePointeurs(sw, posPack, bank, gest128K && numBank > 0xC0);
+			else {
+				sw.WriteLine("	DB	0			; Fin de l'animation");
+				ltot++;
+			}
+			GenereFin(sw, ltot, gest128K && endBank0 < 0x8000);
 			Save.CloseAsm(sw);
 			for (int i = 0; i < posPack; i++)
 				bufOut[i] = null;
 
 			img.main.SetInfo("Longueur totale données animation : " + ltot + " octets.");
-			if (numBank > 0xC7 || (!gest128K && ltot + adrDeb >= 0xBE00 - maxDepack)) {
-				MessageBox.Show("Attention ! la taille totale (animation + buffer de décompactage) dépassera " + (gest128K ? "112K" : "48Ko") + ", risque d'écrasement de la mémoire vidéo et plantage..."
+			if (numBank > 0xC7 || (!chk128Ko.Checked && ltot + adrDeb >= 0xBE00 - maxDepack)) {
+				MessageBox.Show("Attention ! la taille totale (animation + buffer de décompactage) dépassera " + (chk128Ko.Checked ? "112K" : "48Ko") + ", risque d'écrasement de la mémoire vidéo et plantage..."
 								, "Alerte"
 								, MessageBoxButtons.OK
 								, MessageBoxIcon.Warning);
@@ -877,16 +962,14 @@ namespace ConvImgCpc {
 				}
 			}
 
-
-			bool optimSpeed = true;
-
+			bool optimSpeed = false;
 
 			int modeLigne = rb8L.Checked ? 8 : rb4L.Checked ? 4 : rb2L.Checked ? 2 : 1;
 			if (adrDeb > 0) {
 				img.WindowState = FormWindowState.Minimized;
 				img.Show();
 				img.WindowState = FormWindowState.Normal;
-				SauveDeltaPack(adrDeb, chkBoucle.Checked, chk128Ko.Checked, chkDirecMem.Checked, adrMax, chkDelai.Checked ? (int)numDelai.Value : 0, modeLigne, optimSpeed);
+				SauveDeltaPack(adrDeb, adrMax, chkDelai.Checked ? (int)numDelai.Value : 0, modeLigne, optimSpeed);
 			}
 			Close();
 		}
@@ -897,6 +980,7 @@ namespace ConvImgCpc {
 
 		private void chk128Ko_CheckedChanged(object sender, EventArgs e) {
 			tbxAdrMax.Visible = chkMaxMem.Visible = chk128Ko.Checked;
+			chkNoPtr.Visible = !chk128Ko.Checked;
 		}
 
 		private void chkDelai_CheckedChanged(object sender, EventArgs e) {
@@ -904,7 +988,12 @@ namespace ConvImgCpc {
 		}
 
 		private void chkDirecMem_CheckedChanged(object sender, EventArgs e) {
-			rb1L.Visible = rb2L.Visible = rb4L.Visible = rb8L.Visible = !chkDirecMem.Checked && img.modeVirtuel < 8;
+			chk2Zone.Visible = chkZoneVert.Visible = rb1L.Visible = rb2L.Visible = rb4L.Visible = rb8L.Visible = !chkDirecMem.Checked && img.modeVirtuel < 8;
+			chkZoneVert.Visible = chk2Zone.Visible && chk2Zone.Checked;
+		}
+
+		private void chk2Zone_CheckedChanged(object sender, EventArgs e) {
+			chkZoneVert.Visible = chk2Zone.Checked;
 		}
 	}
 }

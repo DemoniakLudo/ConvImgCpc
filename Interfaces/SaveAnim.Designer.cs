@@ -38,12 +38,16 @@
 			this.rb2L = new System.Windows.Forms.RadioButton();
 			this.rb4L = new System.Windows.Forms.RadioButton();
 			this.rb8L = new System.Windows.Forms.RadioButton();
+			this.chk2Zone = new System.Windows.Forms.CheckBox();
+			this.chkZoneVert = new System.Windows.Forms.CheckBox();
+			this.chkNoPtr = new System.Windows.Forms.CheckBox();
+			this.chkCol = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.numDelai)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// bpSave
 			// 
-			this.bpSave.Location = new System.Drawing.Point(409, 197);
+			this.bpSave.Location = new System.Drawing.Point(408, 207);
 			this.bpSave.Name = "bpSave";
 			this.bpSave.Size = new System.Drawing.Size(75, 23);
 			this.bpSave.TabIndex = 1;
@@ -116,7 +120,7 @@
 			// chkDirecMem
 			// 
 			this.chkDirecMem.AutoSize = true;
-			this.chkDirecMem.Location = new System.Drawing.Point(25, 201);
+			this.chkDirecMem.Location = new System.Drawing.Point(25, 81);
 			this.chkDirecMem.Name = "chkDirecMem";
 			this.chkDirecMem.Size = new System.Drawing.Size(131, 17);
 			this.chkDirecMem.TabIndex = 8;
@@ -127,7 +131,7 @@
 			// chkDelai
 			// 
 			this.chkDelai.AutoSize = true;
-			this.chkDelai.Location = new System.Drawing.Point(25, 178);
+			this.chkDelai.Location = new System.Drawing.Point(25, 207);
 			this.chkDelai.Name = "chkDelai";
 			this.chkDelai.Size = new System.Drawing.Size(134, 17);
 			this.chkDelai.TabIndex = 9;
@@ -137,7 +141,7 @@
 			// 
 			// numDelai
 			// 
-			this.numDelai.Location = new System.Drawing.Point(165, 178);
+			this.numDelai.Location = new System.Drawing.Point(165, 207);
 			this.numDelai.Maximum = new decimal(new int[] {
             255,
             0,
@@ -161,7 +165,7 @@
 			// lblDelai
 			// 
 			this.lblDelai.AutoSize = true;
-			this.lblDelai.Location = new System.Drawing.Point(210, 182);
+			this.lblDelai.Location = new System.Drawing.Point(210, 211);
 			this.lblDelai.Name = "lblDelai";
 			this.lblDelai.Size = new System.Drawing.Size(56, 13);
 			this.lblDelai.TabIndex = 11;
@@ -173,7 +177,7 @@
 			this.rb1L.AutoSize = true;
 			this.rb1L.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
 			this.rb1L.Checked = true;
-			this.rb1L.Location = new System.Drawing.Point(25, 81);
+			this.rb1L.Location = new System.Drawing.Point(25, 110);
 			this.rb1L.Name = "rb1L";
 			this.rb1L.Size = new System.Drawing.Size(141, 17);
 			this.rb1L.TabIndex = 12;
@@ -184,7 +188,7 @@
 			// rb2L
 			// 
 			this.rb2L.AutoSize = true;
-			this.rb2L.Location = new System.Drawing.Point(25, 104);
+			this.rb2L.Location = new System.Drawing.Point(25, 133);
 			this.rb2L.Name = "rb2L";
 			this.rb2L.Size = new System.Drawing.Size(114, 17);
 			this.rb2L.TabIndex = 13;
@@ -194,7 +198,7 @@
 			// rb4L
 			// 
 			this.rb4L.AutoSize = true;
-			this.rb4L.Location = new System.Drawing.Point(25, 127);
+			this.rb4L.Location = new System.Drawing.Point(25, 156);
 			this.rb4L.Name = "rb4L";
 			this.rb4L.Size = new System.Drawing.Size(114, 17);
 			this.rb4L.TabIndex = 14;
@@ -204,18 +208,64 @@
 			// rb8L
 			// 
 			this.rb8L.AutoSize = true;
-			this.rb8L.Location = new System.Drawing.Point(25, 150);
+			this.rb8L.Location = new System.Drawing.Point(25, 179);
 			this.rb8L.Name = "rb8L";
 			this.rb8L.Size = new System.Drawing.Size(114, 17);
 			this.rb8L.TabIndex = 15;
 			this.rb8L.Text = "Générer 1 ligne / 8";
 			this.rb8L.UseVisualStyleBackColor = true;
 			// 
+			// chk2Zone
+			// 
+			this.chk2Zone.AutoSize = true;
+			this.chk2Zone.Location = new System.Drawing.Point(330, 110);
+			this.chk2Zone.Name = "chk2Zone";
+			this.chk2Zone.Size = new System.Drawing.Size(114, 17);
+			this.chk2Zone.TabIndex = 16;
+			this.chk2Zone.Text = "2 Zones par image";
+			this.chk2Zone.UseVisualStyleBackColor = true;
+			this.chk2Zone.CheckedChanged += new System.EventHandler(this.chk2Zone_CheckedChanged);
+			// 
+			// chkZoneVert
+			// 
+			this.chkZoneVert.AutoSize = true;
+			this.chkZoneVert.Location = new System.Drawing.Point(330, 133);
+			this.chkZoneVert.Name = "chkZoneVert";
+			this.chkZoneVert.Size = new System.Drawing.Size(104, 17);
+			this.chkZoneVert.TabIndex = 17;
+			this.chkZoneVert.Text = "Zones verticales";
+			this.chkZoneVert.UseVisualStyleBackColor = true;
+			this.chkZoneVert.Visible = false;
+			// 
+			// chkNoPtr
+			// 
+			this.chkNoPtr.AutoSize = true;
+			this.chkNoPtr.Location = new System.Drawing.Point(330, 156);
+			this.chkNoPtr.Name = "chkNoPtr";
+			this.chkNoPtr.Size = new System.Drawing.Size(153, 17);
+			this.chkNoPtr.TabIndex = 18;
+			this.chkNoPtr.Text = "Supprimer pointeurs frames";
+			this.chkNoPtr.UseVisualStyleBackColor = true;
+			// 
+			// chkCol
+			// 
+			this.chkCol.AutoSize = true;
+			this.chkCol.Location = new System.Drawing.Point(330, 180);
+			this.chkCol.Name = "chkCol";
+			this.chkCol.Size = new System.Drawing.Size(148, 17);
+			this.chkCol.TabIndex = 19;
+			this.chkCol.Text = "Compacter en \"colonnes\"";
+			this.chkCol.UseVisualStyleBackColor = true;
+			// 
 			// SaveAnim
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(495, 225);
+			this.ClientSize = new System.Drawing.Size(495, 242);
+			this.Controls.Add(this.chkCol);
+			this.Controls.Add(this.chkNoPtr);
+			this.Controls.Add(this.chkZoneVert);
+			this.Controls.Add(this.chk2Zone);
 			this.Controls.Add(this.rb8L);
 			this.Controls.Add(this.rb4L);
 			this.Controls.Add(this.rb2L);
@@ -259,5 +309,9 @@
 		private System.Windows.Forms.RadioButton rb2L;
 		private System.Windows.Forms.RadioButton rb4L;
 		private System.Windows.Forms.RadioButton rb8L;
+		private System.Windows.Forms.CheckBox chk2Zone;
+		private System.Windows.Forms.CheckBox chkZoneVert;
+		private System.Windows.Forms.CheckBox chkNoPtr;
+		private System.Windows.Forms.CheckBox chkCol;
 	}
 }
