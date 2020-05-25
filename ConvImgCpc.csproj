@@ -71,6 +71,12 @@
     <Compile Include="Interfaces\EditColor.Designer.cs">
       <DependentUpon>EditColor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\EditTrameAscii.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interfaces\EditTrameAscii.Designer.cs">
+      <DependentUpon>EditTrameAscii.cs</DependentUpon>
+    </Compile>
     <Compile Include="Interfaces\ImageCpc.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -112,6 +118,9 @@
     <Compile Include="XorDrawing.cs" />
     <EmbeddedResource Include="Interfaces\EditColor.resx">
       <DependentUpon>EditColor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interfaces\EditTrameAscii.resx">
+      <DependentUpon>EditTrameAscii.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Interfaces\ImageCpc.resx">
       <DependentUpon>ImageCpc.cs</DependentUpon>

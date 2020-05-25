@@ -35,6 +35,7 @@
 			this.methode = new System.Windows.Forms.ComboBox();
 			this.pctTrame = new System.Windows.Forms.NumericUpDown();
 			this.resoCPC = new System.Windows.Forms.GroupBox();
+			this.bpEditTrame = new System.Windows.Forms.Button();
 			this.trackModeX = new System.Windows.Forms.TrackBar();
 			this.bpStandard = new System.Windows.Forms.Button();
 			this.bpOverscan = new System.Windows.Forms.Button();
@@ -241,8 +242,7 @@
             "Test5",
             "Test6",
             "Test7",
-            "Test8",
-			});
+            "Test8"});
 			this.methode.Location = new System.Drawing.Point(48, 14);
 			this.methode.Name = "methode";
 			this.methode.Size = new System.Drawing.Size(117, 21);
@@ -265,6 +265,7 @@
 			// 
 			// resoCPC
 			// 
+			this.resoCPC.Controls.Add(this.bpEditTrame);
 			this.resoCPC.Controls.Add(this.trackModeX);
 			this.resoCPC.Controls.Add(this.bpStandard);
 			this.resoCPC.Controls.Add(this.bpOverscan);
@@ -280,6 +281,17 @@
 			this.resoCPC.TabIndex = 11;
 			this.resoCPC.TabStop = false;
 			this.resoCPC.Text = "Résolution CPC";
+			// 
+			// bpEditTrame
+			// 
+			this.bpEditTrame.Location = new System.Drawing.Point(53, 122);
+			this.bpEditTrame.Name = "bpEditTrame";
+			this.bpEditTrame.Size = new System.Drawing.Size(93, 23);
+			this.bpEditTrame.TabIndex = 12;
+			this.bpEditTrame.Text = "Edition trames";
+			this.bpEditTrame.UseVisualStyleBackColor = true;
+			this.bpEditTrame.Visible = false;
+			this.bpEditTrame.Click += new System.EventHandler(this.bpEditTrame_Click);
 			// 
 			// trackModeX
 			// 
@@ -980,6 +992,7 @@
 		private System.Windows.Forms.Label lblMaxImage;
 		private System.Windows.Forms.Button bpStandard;
 		private System.Windows.Forms.ListBox listInfo;
+		private System.Windows.Forms.Button bpEditTrame;
 	}
 }
 

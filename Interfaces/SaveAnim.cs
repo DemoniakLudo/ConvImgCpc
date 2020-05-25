@@ -856,7 +856,7 @@ namespace ConvImgCpc {
 				sw.WriteLine("DataFnt:");
 				sw.WriteLine("	DB	#00, #C0, #0C, #CC, #30, #F0, #3C, #FC");
 				sw.WriteLine("	DB	#03, #C3, #0F, #CF, #33, #F3, #3F, #FF");
-				sw.WriteLine("Fonte	EQU	#B000");
+				sw.WriteLine("Fonte	EQU	#B000		; Doit être un multiple de 512");
 			}
 		}
 
@@ -890,14 +890,15 @@ namespace ConvImgCpc {
 			sw.WriteLine("	List");
 			sw.WriteLine("buffer" + (force8000 ? "	equ	#8000" : ":"));
 			if (img.modeVirtuel == 7) {
-				sw.WriteLine("	ORG	#B000");
+				int[] ordreAdr = new int[4] { 0, 1, 3, 2 };
+				sw.WriteLine("	ORG	#B000		; Doit être un multiple de 1024");
 				sw.WriteLine("Fonte:");
 				for (int i = 0; i < 16; i++) {
 					string str = "	DB	";
 					for (int ym = 0; ym < 4; ym++) {
 						byte octet = 0;
 						for (int xm = 0; xm < 4; xm++)
-							octet |= (byte)(BitmapCpc.tabOctetMode[BitmapCpc.trameM1[i, xm, ym]] >> xm);
+							octet |= (byte)(BitmapCpc.tabOctetMode[BitmapCpc.trameM1[i, xm, ordreAdr[ym]]] >> xm);
 
 						str += "#" + octet.ToString("X2") + ",";
 					}

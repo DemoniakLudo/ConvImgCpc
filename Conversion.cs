@@ -384,7 +384,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		static private void SetPixTrameM1(DirectBitmap bitmap, ImageCpc dest, int maxCol, RvbColor[,] tabCol, Param p) {
+		static private void SetPixTrameM1(DirectBitmap bitmap, ImageCpc dest, int maxCol, RvbColor[,] tabCol) {
 			RvbColor pix;
 			for (int y = 0; y < dest.TailleY; y += 8) {
 				maxCol = CalcMaxCol(dest.modeVirtuel, y);
@@ -606,7 +606,7 @@ namespace ConvImgCpc {
 				}
 				else
 					if (dest.modeVirtuel == 7)
-						SetPixTrameM1(source, dest, maxCol, tabCol, p);
+						SetPixTrameM1(source, dest, maxCol, tabCol);
 					else
 						SetPixCol(source, dest, maxCol, tabCol, p);
 

@@ -25,8 +25,8 @@ namespace ConvImgCpc {
 			mode.Items.Insert(3, "Mode EGX1");
 			mode.Items.Insert(4, "Mode EGX2");
 			mode.Items.Insert(5, "Mode X");
-			mode.Items.Insert(6, "Mode Z");
-			mode.Items.Insert(7, "Mode ASCT");
+			mode.Items.Insert(6, "Mode 16");
+			mode.Items.Insert(7, "Mode ASC-UT");
 			mode.Items.Insert(8, "Mode ASC0");
 			mode.Items.Insert(9, "Mode ASC1");
 			mode.Items.Insert(10, "Mode ASC2");
@@ -238,16 +238,16 @@ namespace ConvImgCpc {
 
 		private void SaveParam(string fileName) {
 			FileStream file = File.Open(fileName, FileMode.Create);
-			try {
-				param.withCode = withCode.Checked;
-				param.withPalette = withPalette.Checked;
-				new XmlSerializer(typeof(Param)).Serialize(file, param);
-				SetInfo("Sauvegarde paramètres ok.");
-			}
-			catch (Exception ex) {
-				MessageBox.Show(ex.StackTrace, ex.Message);
-				SetInfo("Erreur sauvegarde paramètres...");
-			}
+			//try {
+			param.withCode = withCode.Checked;
+			param.withPalette = withPalette.Checked;
+			new XmlSerializer(typeof(Param)).Serialize(file, param);
+			SetInfo("Sauvegarde paramètres ok.");
+			//}
+			//catch (Exception ex) {
+			//	MessageBox.Show(ex.StackTrace, ex.Message);
+			//	SetInfo("Erreur sauvegarde paramètres...");
+			//}
 			file.Close();
 		}
 
@@ -336,6 +336,7 @@ namespace ConvImgCpc {
 			imgCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex;
 			imgCpc.Reset();
 			trackModeX.Visible = mode.SelectedIndex == 5;
+			bpEditTrame.Visible = mode.SelectedIndex == 7;
 			Convert(false);
 		}
 
@@ -487,6 +488,11 @@ namespace ConvImgCpc {
 		private void numImage_ValueChanged(object sender, EventArgs e) {
 			SelectImage((int)numImage.Value);
 			Convert(false);
+		}
+
+		private void bpEditTrame_Click(object sender, EventArgs e) {
+			EditTrameAscii dg = new EditTrameAscii(imgCpc.bitmapCpc);
+			dg.ShowDialog();
 		}
 	}
 }
