@@ -246,7 +246,7 @@ namespace ConvImgCpc {
 					DiffImage[posDiff++] = (byte)nbModif;
 					DiffImage[posDiff++] = newAsc;
 					nbModif = 0;
-					if (posDiff >= tailleMax)
+					if (posDiff >= DiffImage.Length)
 						break;
 				}
 				else
@@ -502,9 +502,9 @@ namespace ConvImgCpc {
 			if (delai > 0) {
 				sw.WriteLine("NewIrq:");
 				sw.WriteLine("	PUSH	AF");
-				sw.WriteLine("	LD	A,(InitDraw+1)");
+				sw.WriteLine("	LD	A,(SyncFrame+1)");
 				sw.WriteLine("	INC	A");
-				sw.WriteLine("	LD	(InitDraw+1),A");
+				sw.WriteLine("	LD	(SyncFrame+1),A");
 				sw.WriteLine("	POP	AF");
 				sw.WriteLine("	EI");
 				sw.WriteLine("	RET");
@@ -514,11 +514,12 @@ namespace ConvImgCpc {
 				sw.WriteLine("	PUSH	HL");
 
 			if (delai > 0) {
+				sw.WriteLine("SyncFrame:");
 				sw.WriteLine("	LD	A,0");
 				sw.WriteLine("	CP	" + delai.ToString());
-				sw.WriteLine("	JR	C,InitDraw");
+				sw.WriteLine("	JR	C,SyncFrame");
 				sw.WriteLine("	XOR	A");
-				sw.WriteLine("	LD	(InitDraw+1),A");
+				sw.WriteLine("	LD	(SyncFrame+1),A");
 			}
 		}
 
@@ -727,27 +728,31 @@ namespace ConvImgCpc {
 				sw.WriteLine("	AND	#F0");
 				sw.WriteLine("	RRCA");
 				sw.WriteLine("	RRCA");
+				sw.WriteLine("	ADD	A,3");
 				sw.WriteLine("	LD	L,A");
 			}
 			sw.WriteLine("	LD	A,(HL)");
-			sw.WriteLine("	INC	HL");
+			if (img.modeVirtuel == 7)
+				sw.WriteLine("	DEC	HL");
+			else
+				sw.WriteLine("	INC	HL");
+
 			sw.WriteLine("	LD	(BC),A");
 			sw.WriteLine("	SET	3,B");
 			if (img.modeVirtuel == 7) {
 				sw.WriteLine("	LD	A,(HL)");
-				sw.WriteLine("	INC	HL");
+				sw.WriteLine("	DEC	HL");
 			}
 			sw.WriteLine("	LD	(BC),A");
 			sw.WriteLine("	RES	4,B");
 			if (img.modeVirtuel == 7) {
 				sw.WriteLine("	LD	A,(HL)");
-				sw.WriteLine("	INC	HL");
+				sw.WriteLine("	DEC	HL");
 			}
 			sw.WriteLine("	LD	(BC),A");
 			sw.WriteLine("	RES	3,B");
 			if (img.modeVirtuel == 7) {
 				sw.WriteLine("	LD	A,(HL)");
-				sw.WriteLine("	INC	HL");
 			}
 			sw.WriteLine("	LD	(BC),A");
 			sw.WriteLine("	RES	5,B");
@@ -818,27 +823,31 @@ namespace ConvImgCpc {
 				sw.WriteLine("	AND	#F0");
 				sw.WriteLine("	RRCA");
 				sw.WriteLine("	RRCA");
+				sw.WriteLine("	ADD	A,3");
 				sw.WriteLine("	LD	L,A");
 			}
 			sw.WriteLine("	LD	A,(HL)");
-			sw.WriteLine("	INC	HL");
+			if (img.modeVirtuel == 7)
+				sw.WriteLine("	DEC	HL");
+			else
+				sw.WriteLine("	INC	HL");
+
 			sw.WriteLine("	LD	(DE),A");
 			sw.WriteLine("	SET	3,D");
 			if (img.modeVirtuel == 7) {
 				sw.WriteLine("	LD	A,(HL)");
-				sw.WriteLine("	INC	HL");
+				sw.WriteLine("	DEC HL");
 			}
 			sw.WriteLine("	LD	(DE),A");
 			sw.WriteLine("	RES	4,D");
 			if (img.modeVirtuel == 7) {
 				sw.WriteLine("	LD	A,(HL)");
-				sw.WriteLine("	INC	HL");
+				sw.WriteLine("	DEC	HL");
 			}
 			sw.WriteLine("	LD	(DE),A");
 			sw.WriteLine("	RES	3,D");
 			if (img.modeVirtuel == 7) {
 				sw.WriteLine("	LD	A,(HL)");
-				sw.WriteLine("	INC	HL");
 			}
 			sw.WriteLine("	LD	(DE),A");
 			sw.WriteLine("	RES	5,D");
