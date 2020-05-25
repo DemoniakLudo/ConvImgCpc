@@ -22,7 +22,7 @@ namespace ConvImgCpc {
 			img = i;
 			param = p;
 			InitializeComponent();
-			chk2Zone.Visible = chkDirecMem.Visible = rb1L.Visible = rb2L.Visible = rb4L.Visible = rb8L.Visible = img.modeVirtuel < 8;
+			chk2Zone.Visible = chkDirecMem.Visible = rb1L.Visible = rb2L.Visible = rb4L.Visible = rb8L.Visible = img.modeVirtuel < 7;
 		}
 
 		private int PackWinDC(byte[] bufOut, ref int sizeDepack, int topBottom, bool razDiff, int modeLigne, bool optimSpeed) {
@@ -224,7 +224,10 @@ namespace ConvImgCpc {
 			if (razDiff)
 				Array.Clear(OldImgAscii, 0, OldImgAscii.Length);
 
-			img.bitmapCpc.CreeImgAscii(img.BmpLock, imgAscii);
+			if (img.modeVirtuel == 7)
+				img.bitmapCpc.CreeImgAsciiMat(img.BmpLock, imgAscii);
+			else
+				img.bitmapCpc.CreeImgAscii(img.BmpLock, imgAscii);
 
 			if (perte) {
 				for (int i = img.NbCol; i < tailleMax - img.NbCol; i++)
@@ -275,7 +278,7 @@ namespace ConvImgCpc {
 		}
 
 		private int PackFrame(byte[] bufOut, ref int sizeDepack, bool razDiff, bool firstFrame, int topBottom, int modeLigne, bool optimSpeed) {
-			if (img.modeVirtuel > 7)
+			if (img.modeVirtuel >= 7)
 				return PackAscii(bufOut, ref sizeDepack, razDiff, firstFrame);
 			else
 				if (chkDirecMem.Checked)
@@ -676,32 +679,76 @@ namespace ConvImgCpc {
 			sw.WriteLine("	JR	Z,DrawImgD");
 			sw.WriteLine("	CP	'I'");
 			sw.WriteLine("	JR	Z,DrawImgI");
-
 			sw.WriteLine("	LD	BC,#C000");
+			if (img.modeVirtuel == 7)
+				sw.WriteLine("	LD	D,Fonte/256");
+
 			sw.WriteLine("DrawImgO:");
-			sw.WriteLine("	LD	D,Fonte/512");
-			sw.WriteLine("	INC	HL");
-			sw.WriteLine("	LD	E,(HL)			; Code ASCII");
-			sw.WriteLine("	EX	DE,HL");
-			sw.WriteLine("	ADD	HL,HL");
+			if (img.modeVirtuel > 7) {
+				sw.WriteLine("	LD	D,Fonte/512");
+				sw.WriteLine("	INC	HL");
+				sw.WriteLine("	LD	E,(HL)			; Code ASCII");
+				sw.WriteLine("	EX	DE,HL");
+				sw.WriteLine("	ADD	HL,HL");
+			}
+			else {
+				sw.WriteLine("	INC	HL");
+				sw.WriteLine("	LD	A,(HL)			; Code ASCII");
+				sw.WriteLine("	AND	#0F");
+				sw.WriteLine("	RLCA");
+				sw.WriteLine("	RLCA");
+				sw.WriteLine("	LD	E,A");
+				sw.WriteLine("	EX	DE,HL");
+			}
 			sw.WriteLine("	LD	A,(HL)");
 			sw.WriteLine("	INC	HL");
 			sw.WriteLine("	LD	(BC),A");
 			sw.WriteLine("	SET	3,B");
+			if (img.modeVirtuel == 7) {
+				sw.WriteLine("	LD	A,(HL)");
+				sw.WriteLine("	INC	HL");
+			}
 			sw.WriteLine("	LD	(BC),A");
 			sw.WriteLine("	SET	4,B");
+			if (img.modeVirtuel == 7) {
+				sw.WriteLine("	LD	A,(HL)");
+				sw.WriteLine("	INC	HL");
+			}
 			sw.WriteLine("	LD	(BC),A");
 			sw.WriteLine("	RES	3,B");
+			if (img.modeVirtuel == 7) {
+				sw.WriteLine("	LD	A,(HL)");
+				sw.WriteLine("	INC	HL");
+			}
 			sw.WriteLine("	LD	(BC),A");
 			sw.WriteLine("	SET	5,B");
+			if (img.modeVirtuel == 7) {
+				sw.WriteLine("	LD	A,(DE)			; Code ASCII");
+				sw.WriteLine("	AND	#F0");
+				sw.WriteLine("	RRCA");
+				sw.WriteLine("	RRCA");
+				sw.WriteLine("	LD	L,A");
+			}
 			sw.WriteLine("	LD	A,(HL)");
 			sw.WriteLine("	INC	HL");
 			sw.WriteLine("	LD	(BC),A");
 			sw.WriteLine("	SET	3,B");
+			if (img.modeVirtuel == 7) {
+				sw.WriteLine("	LD	A,(HL)");
+				sw.WriteLine("	INC	HL");
+			}
 			sw.WriteLine("	LD	(BC),A");
 			sw.WriteLine("	RES	4,B");
+			if (img.modeVirtuel == 7) {
+				sw.WriteLine("	LD	A,(HL)");
+				sw.WriteLine("	INC	HL");
+			}
 			sw.WriteLine("	LD	(BC),A");
 			sw.WriteLine("	RES	3,B");
+			if (img.modeVirtuel == 7) {
+				sw.WriteLine("	LD	A,(HL)");
+				sw.WriteLine("	INC	HL");
+			}
 			sw.WriteLine("	LD	(BC),A");
 			sw.WriteLine("	RES	5,B");
 			sw.WriteLine("	EX	DE,HL");
@@ -709,11 +756,16 @@ namespace ConvImgCpc {
 			sw.WriteLine("	BIT	3,B");
 			sw.WriteLine("	JR	Z,DrawImgO");
 			sw.WriteLine("DrawImgI:");
-			sw.WriteLine("	INC	IX");
-			sw.WriteLine("	INC	IX");
-			if (gest128K)
+			if (chkNoPtr.Checked && !gest128K) {
+				sw.WriteLine("	POP	HL");
+				sw.WriteLine("	INC	HL");
+			}
+			else {
 				sw.WriteLine("	INC	IX");
-
+				sw.WriteLine("	INC	IX");
+				if (gest128K)
+					sw.WriteLine("	INC	IX");
+			}
 			sw.WriteLine("	JP	Boucle");
 
 			sw.WriteLine("DrawImgD:");
@@ -726,27 +778,68 @@ namespace ConvImgCpc {
 			sw.WriteLine("	LD	L,(IY+3)			; Déplacement");
 			sw.WriteLine("	ADD	HL,DE			; Ajouter à DE");
 			sw.WriteLine("	EX	DE,HL");
-			sw.WriteLine("	LD	L,(IY+4)			; Code ASCII");
-			sw.WriteLine("	LD	H,Fonte/512");
-			sw.WriteLine("	ADD	HL,HL");
+			if (img.modeVirtuel > 7) {
+				sw.WriteLine("	LD	L,(IY+4)			; Code ASCII");
+				sw.WriteLine("	LD	H,Fonte/512");
+				sw.WriteLine("	ADD	HL,HL");
+			}
+			else {
+				sw.WriteLine("	LD	H,Fonte/256");
+				sw.WriteLine("	LD	A,(IY+4)			; Code ASCII");
+				sw.WriteLine("	AND	#0F");
+				sw.WriteLine("	RLCA");
+				sw.WriteLine("	RLCA");
+				sw.WriteLine("	LD	L,A");
+			}
 			sw.WriteLine("	LD	A,(HL)");
 			sw.WriteLine("	INC	HL");
 			sw.WriteLine("	LD	(DE),A");
 			sw.WriteLine("	SET	3,D");
+			if (img.modeVirtuel == 7) {
+				sw.WriteLine("	LD	A,(HL)");
+				sw.WriteLine("	INC	HL");
+			}
 			sw.WriteLine("	LD	(DE),A");
 			sw.WriteLine("	SET	4,D");
+			if (img.modeVirtuel == 7) {
+				sw.WriteLine("	LD	A,(HL)");
+				sw.WriteLine("	INC	HL");
+			}
 			sw.WriteLine("	LD	(DE),A");
 			sw.WriteLine("	RES	3,D");
+			if (img.modeVirtuel == 7) {
+				sw.WriteLine("	LD	A,(HL)");
+				sw.WriteLine("	INC	HL");
+			}
 			sw.WriteLine("	LD	(DE),A");
 			sw.WriteLine("	SET	5,D");
+			if (img.modeVirtuel == 7) {
+				sw.WriteLine("	LD	A,(IY+4)			; Code ASCII");
+				sw.WriteLine("	AND	#F0");
+				sw.WriteLine("	RRCA");
+				sw.WriteLine("	RRCA");
+				sw.WriteLine("	LD	L,A");
+			}
 			sw.WriteLine("	LD	A,(HL)");
 			sw.WriteLine("	INC	HL");
 			sw.WriteLine("	LD	(DE),A");
 			sw.WriteLine("	SET	3,D");
+			if (img.modeVirtuel == 7) {
+				sw.WriteLine("	LD	A,(HL)");
+				sw.WriteLine("	INC	HL");
+			}
 			sw.WriteLine("	LD	(DE),A");
 			sw.WriteLine("	RES	4,D");
+			if (img.modeVirtuel == 7) {
+				sw.WriteLine("	LD	A,(HL)");
+				sw.WriteLine("	INC	HL");
+			}
 			sw.WriteLine("	LD	(DE),A");
 			sw.WriteLine("	RES	3,D");
+			if (img.modeVirtuel == 7) {
+				sw.WriteLine("	LD	A,(HL)");
+				sw.WriteLine("	INC	HL");
+			}
 			sw.WriteLine("	LD	(DE),A");
 			sw.WriteLine("	RES	5,D");
 			sw.WriteLine("	INC	IY");
@@ -759,10 +852,12 @@ namespace ConvImgCpc {
 			sw.WriteLine("	JR	DrawImgI");
 
 			sw.WriteLine("	Nolist");
-			sw.WriteLine("DataFnt:");
-			sw.WriteLine("	DB	#00, #C0, #0C, #CC, #30, #F0, #3C, #FC");
-			sw.WriteLine("	DB	#03, #C3, #0F, #CF, #33, #F3, #3F, #FF");
-			sw.WriteLine("Fonte	EQU	#B000");
+			if (img.modeVirtuel > 7) {
+				sw.WriteLine("DataFnt:");
+				sw.WriteLine("	DB	#00, #C0, #0C, #CC, #30, #F0, #3C, #FC");
+				sw.WriteLine("	DB	#03, #C3, #0F, #CF, #33, #F3, #3F, #FF");
+				sw.WriteLine("Fonte	EQU	#B000");
+			}
 		}
 
 		private void GenerePaletteOld(StreamWriter sw, ImageCpc img) {
@@ -773,7 +868,7 @@ namespace ConvImgCpc {
 
 			// Border = couleur 0
 			line += BitmapCpc.CpcVGA[img.bitmapCpc.Palette[0]] + "\",";
-			line += "#" + ((img.modeVirtuel & 3) | 0x8C).ToString("X2");
+			line += "#" + ((img.modeVirtuel == 7 ? 1 : img.modeVirtuel & 3) | 0x8C).ToString("X2");
 			sw.WriteLine(line);
 		}
 
@@ -781,7 +876,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("UnlockAsic:");
 			sw.WriteLine("	DB	#FF, #00, #FF, #77, #B3, #51, #A8, #D4, #62, #39, #9C, #46, #2B, #15, #8A, #CD, #EE");
 			sw.WriteLine("Palette:");
-			string line = "\tDB\t#" + ((img.modeVirtuel & 3) | 0x8C).ToString("X2");
+			string line = "\tDB\t#" + ((img.modeVirtuel == 7 ? 1 : img.modeVirtuel & 3) | 0x8C).ToString("X2");
 			for (int i = 0; i < 16; i++)
 				line += ",#" + ((byte)(((img.Palette[i] >> 4) & 0x0F) | (img.Palette[i] << 4))).ToString("X2") + ",#" + ((byte)(img.Palette[i] >> 8)).ToString("X2");
 
@@ -794,6 +889,21 @@ namespace ConvImgCpc {
 			sw.WriteLine("; Taille totale animation = " + ltot.ToString() + " (#" + ltot.ToString("X4") + ")");
 			sw.WriteLine("	List");
 			sw.WriteLine("buffer" + (force8000 ? "	equ	#8000" : ":"));
+			if (img.modeVirtuel == 7) {
+				sw.WriteLine("	ORG	#B000");
+				sw.WriteLine("Fonte:");
+				for (int i = 0; i < 16; i++) {
+					string str = "	DB	";
+					for (int ym = 0; ym < 4; ym++) {
+						byte octet = 0;
+						for (int xm = 0; xm < 4; xm++)
+							octet |= (byte)(BitmapCpc.tabOctetMode[BitmapCpc.trameM1[i, xm, ym]] >> xm);
+
+						str += "#" + octet.ToString("X2") + ",";
+					}
+					sw.WriteLine(str.Substring(0, str.Length - 1));
+				}
+			}
 		}
 
 		private void GenerePointeurs(StreamWriter sw, int nbImages, int[] bank, bool gest128K) {
@@ -878,7 +988,7 @@ namespace ConvImgCpc {
 				gest128K = false;
 
 			GenereAffichage(sw, delai, gest128K);
-			if (img.modeVirtuel > 7)
+			if (img.modeVirtuel >= 7)
 				GenereDrawAscii(sw, gest128K);
 			else
 				if (chkDirecMem.Checked)
@@ -956,7 +1066,7 @@ namespace ConvImgCpc {
 		}
 
 		private void chkDirecMem_CheckedChanged(object sender, EventArgs e) {
-			chk2Zone.Visible = chkZoneVert.Visible = rb1L.Visible = rb2L.Visible = rb4L.Visible = rb8L.Visible = !chkDirecMem.Checked && img.modeVirtuel < 8;
+			chk2Zone.Visible = chkZoneVert.Visible = rb1L.Visible = rb2L.Visible = rb4L.Visible = rb8L.Visible = !chkDirecMem.Checked && img.modeVirtuel < 7;
 			chkZoneVert.Visible = chk2Zone.Visible && chk2Zone.Checked;
 		}
 

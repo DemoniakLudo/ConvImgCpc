@@ -11,7 +11,7 @@ namespace ConvImgCpc {
 
 
 		public int[] Palette = { 1, 24, 20, 6, 26, 0, 2, 7, 10, 12, 14, 16, 18, 22, 1, 14, 1 };
-		private int[] tabOctetMode = { 0x00, 0x80, 0x08, 0x88, 0x20, 0xA0, 0x28, 0xA8, 0x02, 0x82, 0x0A, 0x8A, 0x22, 0xA2, 0x2A, 0xAA };
+		static public int[] tabOctetMode = { 0x00, 0x80, 0x08, 0x88, 0x20, 0xA0, 0x28, 0xA8, 0x02, 0x82, 0x0A, 0x8A, 0x22, 0xA2, 0x2A, 0xAA };
 		public const int Lum0 = 0x00;
 		public const int Lum1 = 0x66;
 		public const int Lum2 = 0xFF;
@@ -45,6 +45,88 @@ namespace ConvImgCpc {
 							new RvbColor( Lum2, Lum2, Lum2)
 							};
 		static public string CpcVGA = "TDU\\X]LEMVFW^@_NGORBSZY[JCK";
+
+		static public int[, ,] trameM1 = {	{	{0, 0, 0, 0},		// Trame 00
+												{0, 0, 0, 0},
+												{0, 0, 0, 0},
+												{0, 0, 0, 0}},
+
+											{	{0, 0, 0, 0},		// Trame 01
+												{0, 1, 0, 0},
+												{0, 1, 1, 0},
+												{0, 0, 0, 0}},
+
+											{	{0, 1, 0, 0},		// Trame 02
+												{1, 0, 1, 0},
+												{0, 1, 0, 1},
+												{0, 0, 1, 0}},
+
+											{	{0, 1, 0, 1},		// Trame 03
+												{1, 0, 1, 0},
+												{0, 1, 1, 1},
+												{1, 0, 1, 0}},
+
+											{	{1, 0, 1, 1},		// Trame 04
+												{1, 1, 0, 1},
+												{1, 0, 1, 1},
+												{1, 1, 0, 1}},
+
+											{	{1, 1, 1, 1},		// Trame 05
+												{1, 1, 1, 1},
+												{1, 1, 1, 1},
+												{1, 1, 1, 1}},
+
+											{	{1, 1, 1, 1},		// Trame 06
+												{1, 2, 1, 1},
+												{1, 2, 2, 1},
+												{1, 1, 1, 1}},
+
+											{	{1, 2, 1, 1},		// Trame 07
+												{2, 1, 2, 1},
+												{1, 2, 1, 2},
+												{1, 1, 2, 1}},
+
+											{	{1, 2, 1, 2},		// Trame 08
+												{2, 1, 2, 1},
+												{1, 2, 2 ,2},
+												{2, 1, 2, 1}},
+
+											{	{2, 1, 2, 2},		// Trame 09
+												{2, 2, 1, 2},
+												{2, 1, 2, 2},
+												{2, 2, 1, 2}},
+
+											{	{2, 2, 2, 2},		// Trame 0A
+												{2, 2, 2, 2},
+												{2, 2, 2, 2},
+												{2, 2, 2, 2}},
+
+											{	{2, 2, 2, 2},		// Trame 0B
+												{2, 3, 2, 2},
+												{2, 3, 3, 2},
+												{2, 2, 2, 2}},
+
+											{	{2, 3, 2, 2},		// Trame 0C
+												{3, 2, 3, 2},
+												{2, 3, 2, 3},
+												{2, 2, 3, 2}},
+
+											{	{2, 3, 2, 3},		// Trame 0D
+												{3, 2, 3, 2},
+												{2, 3, 3, 3},
+												{3, 2, 3, 2}},
+
+											{	{3, 2, 3, 3},		// Trame 0E
+												{3, 3, 3, 3},
+												{3, 2, 3, 3},
+												{3, 3, 2, 3}},
+
+											{	{3, 3, 3, 3},		// Trame 0F
+												{3, 3, 3, 3},
+												{3, 3, 3, 3},
+												{3, 3, 3, 3}}
+										};
+
 
 		public int modeVirtuel = 1;
 		public bool cpcPlus = false;
@@ -267,7 +349,7 @@ namespace ConvImgCpc {
 			return pen;
 		}
 
-		public void CreeImgAscii(DirectBitmap bmpLock, byte[]imgAscii) {
+		public void CreeImgAscii(DirectBitmap bmpLock, byte[] imgAscii) {
 			int l = 0;
 			for (int y = 0; y < NbLig << 1; y += 16)
 				for (int x = 0; x < NbCol; x++) {
@@ -289,6 +371,32 @@ namespace ConvImgCpc {
 							break;
 					}
 				}
+		}
+
+		private int GetAsciiMat(DirectBitmap bmpLock, int x, int y) {
+			for (int i = 0; i < 16; i++) {
+				bool found = true;
+				for (int ym = 0; ym < 4; ym++) {
+					for (int xm = 0; xm < 4; xm++) {
+						RvbColor pix = bmpLock.GetPixelColor(x + (xm << 1), y + (ym << 1));
+						RvbColor c = RgbCPC[Palette[trameM1[i, xm, ym]]];
+						if (c.r != pix.r || c.v != pix.v || c.b != pix.b) {
+							found = false;
+							break;
+						}
+					}
+				}
+				if (found)
+					return i;
+			}
+			return 0;
+		}
+
+		public void CreeImgAsciiMat(DirectBitmap bmpLock, byte[] imgAscii) {
+			int l = 0;
+			for (int y = 0; y < NbLig << 1; y += 16)
+				for (int x = 0; x < NbCol; x++) 
+					imgAscii[l++] = (byte)(GetAsciiMat(bmpLock, x << 3, y) | (GetAsciiMat(bmpLock, x << 3, y + 8) << 4));
 		}
 
 		public Bitmap CreateImageFromCpc(byte[] source) {

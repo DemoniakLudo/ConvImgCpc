@@ -35,7 +35,7 @@ namespace ConvImgCpc {
 		}
 
 		public RvbColor GetPixelColor(int x, int y) {
-			return new RvbColor(Bits[x + (y * Width)]);
+			return new RvbColor((int)Bits[x + (y * Width)]);
 		}
 
 		public void SetHorLineDouble(int pixelX, int pixelY, int lineLength, int c) {

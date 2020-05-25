@@ -26,7 +26,7 @@ namespace ConvImgCpc {
 			mode.Items.Insert(4, "Mode EGX2");
 			mode.Items.Insert(5, "Mode X");
 			mode.Items.Insert(6, "Mode Z");
-			mode.Items.Insert(7, "------");
+			mode.Items.Insert(7, "Mode ASCT");
 			mode.Items.Insert(8, "Mode ASC0");
 			mode.Items.Insert(9, "Mode ASC1");
 			mode.Items.Insert(10, "Mode ASC2");

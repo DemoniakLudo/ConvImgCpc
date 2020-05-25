@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ConvImgCpc {
+﻿namespace ConvImgCpc {
 	public class RvbColor {
 		public byte r, v, b;
 
@@ -11,12 +9,6 @@ namespace ConvImgCpc {
 		}
 
 		public RvbColor(int value) {
-			r = (byte)value;
-			v = (byte)(value >> 8);
-			b = (byte)(value >> 16);
-		}
-
-		public RvbColor(UInt32 value) {
 			r = (byte)value;
 			v = (byte)(value >> 8);
 			b = (byte)(value >> 16);

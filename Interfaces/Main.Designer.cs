@@ -233,7 +233,16 @@
             "ZigZag1 (3x3)",
             "ZigZag2 (4x3)",
             "ZigZag3 (5x4)",
-            "Test"});
+            "Test0",
+            "Test1",
+            "Test2",
+            "Test3",
+            "Test4",
+            "Test5",
+            "Test6",
+            "Test7",
+            "Test8",
+			});
 			this.methode.Location = new System.Drawing.Point(48, 14);
 			this.methode.Name = "methode";
 			this.methode.Size = new System.Drawing.Size(117, 21);

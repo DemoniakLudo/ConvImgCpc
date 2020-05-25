@@ -48,16 +48,36 @@ namespace ConvImgCpc {
 										{0, 2 , 6 , 9 , 8 },
 										{3 , 0, 1 , 5 , 0},
 										{0, 4 , 0, 0, 0}};
-		static double[,] test3 =	{	{0, 3 },
-										{0, 5 },
-										{7 , 1 }};
-		static double[,] test2 =	{	{8 , 4 , 5 },
+
+		static double[,] test0 =	{	{ 1 },
+										{ 4 },
+										{ 2 }};
+
+		static double[,] test1 =	{	{ 1, 7 }};
+
+		static double[,] test2 =	{	{ 1, 3 }};
+
+		static double[,] test3 =	{	{8 , 4 , 5 },
 										{3 , 0, 1 },
 										{7 , 2 , 6 }};
-		static double[,] test = { { 1 }, { 4 }, { 2 } };
-		static double[,] test4 =	{	{0, 0, 7 },
-										{3 , 5 , 1 }};
-		static double[,] test1 = { { 1, 7 } };
+
+		static double[,] test4 =	{	{0, 3 },
+										{0, 5 },
+										{7 , 1 }};
+
+		static double[,] test5 =	{	{0, 0, 7 },
+										{3, 5, 1 }};
+
+		static double[,] test6 =	{	{6, 8, 4 },
+										{1, 0, 3 },
+										{5, 2, 7}};
+
+		static double[,] test7 =	{	{12, 11, 0 },
+										{13, 10, 19 },
+										{11, 13, 0}};
+
+		static double[,] test8 =	{	{ 1},
+										{ 3 }};
 
 		static double[,] matDither;
 
@@ -73,10 +93,18 @@ namespace ConvImgCpc {
 			{ "ZigZag1 (3x3)",			zigzag1},
 			{ "ZigZag2 (4x3)",			zigzag2},
 			{ "ZigZag3 (5x4)",			zigzag3},
-			{ "Test",					test},
+			{ "Test0",					test0},
+			{ "Test1",					test1},
+			{ "Test2",					test2},
+			{ "Test3",					test3},
+			{ "Test4",					test4},
+			{ "Test5",					test5},
+			{ "Test6",					test6},
+			{ "Test7",					test7},
+			{ "Test8",					test8},
 		};
 
-		static byte MinMax(int value) {
+		static byte MinMaxByte(double value) {
 			return value >= 0 ? value <= 255 ? (byte)value : (byte)255 : (byte)0;
 		}
 
@@ -94,7 +122,7 @@ namespace ConvImgCpc {
 				case 6:
 					return 16;
 				case 7:
-					return 2;
+					return 4;
 				case 8:
 					return 16;
 				case 9:
@@ -175,7 +203,7 @@ namespace ConvImgCpc {
 			System.Array.Clear(CoulTrouvee, 0, CoulTrouvee.GetLength(0) * CoulTrouvee.GetLength(1));
 			double c = prm.pctContrast / 100.0;
 			for (int i = 0; i < 256; i++)
-				tblContrast[i] = (byte)MinMax((int)(((((i / 255.0) - 0.5) * c) + 0.5) * 255));
+				tblContrast[i] = MinMaxByte(((((i / 255.0) - 0.5) * c) + 0.5) * 255);
 
 			int pct = prm.cpcPlus ? prm.pct << 2 : prm.pct;
 			if (pct > 0 && dicMat.ContainsKey(prm.methode)) {
@@ -220,9 +248,9 @@ namespace ConvImgCpc {
 						if (prm.pctLumi != 100 || prm.pctSat != 100)
 							SetLumiSat(prm.pctLumi > 100 ? (100 + (prm.pctLumi - 100) * 2) / 100.0F : prm.pctLumi / 100.0F, prm.pctSat / 100.0F, ref r, ref v, ref b);
 
-						p.r = (byte)MinMax((int)r);
-						p.v = (byte)MinMax((int)v);
-						p.b = (byte)MinMax((int)b);
+						p.r = MinMaxByte(r);
+						p.v = MinMaxByte(v);
+						p.b = MinMaxByte(b);
 					}
 
 					// Recherche le point dans la couleur cpc la plus proche
@@ -250,8 +278,8 @@ namespace ConvImgCpc {
 							int oldDist = 0x7FFFFFFF;
 							for (int i = 0; i < 27; i++) {
 								RvbColor s = BitmapCpc.RgbCPC[i];
-								//int dist = Math.Abs(s.r - p.r) * K_R + Math.Abs(s.v - p.v) * K_V + Math.Abs(s.b - p.b) * K_B;
-								int dist = (p.r - s.r) * (p.r - s.r) * K_R + (p.v - s.v) * (p.v - s.v) * K_V + (p.b - s.b) * (p.b - s.b) * K_B;
+								int dist = Math.Abs(s.r - p.r) * K_R + Math.Abs(s.v - p.v) * K_V + Math.Abs(s.b - p.b) * K_B;
+								//int dist = (p.r - s.r) * (p.r - s.r) * K_R + (p.v - s.v) * (p.v - s.v) * K_V + (p.b - s.b) * (p.b - s.b) * K_B;
 								if (dist < oldDist) {
 									oldDist = dist;
 									indexChoix = i;
@@ -269,9 +297,9 @@ namespace ConvImgCpc {
 							for (int x = 0; x < matDither.GetLength(0); x++)
 								if (xPix + Tx * x < source.Width && yPix + 2 * y < source.Height) {
 									RvbColor pix = source.GetPixelColor(xPix + Tx * x, yPix + 2 * y);
-									pix.r = (byte)MinMax((int)(pix.r + (p.r - choix.r) * matDither[x, y]));
-									pix.v = (byte)MinMax((int)(pix.v + (p.v - choix.v) * matDither[x, y]));
-									pix.b = (byte)MinMax((int)(pix.b + (p.b - choix.b) * matDither[x, y]));
+									pix.r = MinMaxByte(pix.r + (p.r - choix.r) * matDither[x, y]);
+									pix.v = MinMaxByte(pix.v + (p.v - choix.v) * matDither[x, y]);
+									pix.b = MinMaxByte(pix.b + (p.b - choix.b) * matDither[x, y]);
 									source.SetPixel(xPix + Tx * x, yPix + 2 * y, pix);
 								}
 					}
@@ -353,6 +381,35 @@ namespace ConvImgCpc {
 								CoulTrouvee[y, c1] = CoulTrouvee[y, c2];
 								CoulTrouvee[y, c2] = tmp;
 							}
+			}
+		}
+
+		static private void SetPixTrameM1(DirectBitmap bitmap, ImageCpc dest, int maxCol, RvbColor[,] tabCol, Param p) {
+			RvbColor pix;
+			for (int y = 0; y < dest.TailleY; y += 8) {
+				maxCol = CalcMaxCol(dest.modeVirtuel, y);
+				for (int x = 0; x < dest.TailleX; x += 8) {
+					int choix = 0, oldDist = 0x7FFFFFFF;
+					for (int i = 0; i < 16; i++) {
+						int dist = 0;
+						for (int ym = 0; ym < 4; ym++) {
+							for (int xm = 0; xm < 4; xm++) {
+								pix = bitmap.GetPixelColor(x + (xm << 1), y + (ym << 1));
+								RvbColor c = tabCol[BitmapCpc.trameM1[i, xm, ym], ym + (y >> 1)];
+								dist += Math.Abs(pix.r - c.r) * K_R + Math.Abs(pix.v - c.v) * K_V + Math.Abs(pix.b - c.b) * K_B;
+							}
+						}
+						if (dist < oldDist) {
+							choix = i;
+							oldDist = dist;
+							if (dist == 0)
+								i = 16;
+						}
+					}
+					for (int ym = 0; ym < 4; ym++)
+						for (int xm = 0; xm < 4; xm++)
+							dest.SetPixelCpc(x + (xm << 1), y + (ym << 1), BitmapCpc.trameM1[choix, xm, ym], 2);
+				}
 			}
 		}
 
@@ -548,7 +605,10 @@ namespace ConvImgCpc {
 						SetPixCol3(source, dest, tabCol, p);
 				}
 				else
-					SetPixCol(source, dest, maxCol, tabCol, p);
+					if (dest.modeVirtuel == 7)
+						SetPixTrameM1(source, dest, maxCol, tabCol, p);
+					else
+						SetPixCol(source, dest, maxCol, tabCol, p);
 
 		}
 
