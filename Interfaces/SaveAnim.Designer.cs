@@ -42,7 +42,14 @@
 			this.chkZoneVert = new System.Windows.Forms.CheckBox();
 			this.chkNoPtr = new System.Windows.Forms.CheckBox();
 			this.chkCol = new System.Windows.Forms.CheckBox();
+			this.grpGenereLigne = new System.Windows.Forms.GroupBox();
+			this.grpAscii = new System.Windows.Forms.GroupBox();
+			this.rbFrameO = new System.Windows.Forms.RadioButton();
+			this.rbFrameD = new System.Windows.Forms.RadioButton();
+			this.rbFrameFull = new System.Windows.Forms.RadioButton();
 			((System.ComponentModel.ISupportInitialize)(this.numDelai)).BeginInit();
+			this.grpGenereLigne.SuspendLayout();
+			this.grpAscii.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// bpSave
@@ -177,7 +184,7 @@
 			this.rb1L.AutoSize = true;
 			this.rb1L.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
 			this.rb1L.Checked = true;
-			this.rb1L.Location = new System.Drawing.Point(25, 110);
+			this.rb1L.Location = new System.Drawing.Point(6, 11);
 			this.rb1L.Name = "rb1L";
 			this.rb1L.Size = new System.Drawing.Size(141, 17);
 			this.rb1L.TabIndex = 12;
@@ -188,7 +195,7 @@
 			// rb2L
 			// 
 			this.rb2L.AutoSize = true;
-			this.rb2L.Location = new System.Drawing.Point(25, 133);
+			this.rb2L.Location = new System.Drawing.Point(6, 34);
 			this.rb2L.Name = "rb2L";
 			this.rb2L.Size = new System.Drawing.Size(114, 17);
 			this.rb2L.TabIndex = 13;
@@ -198,7 +205,7 @@
 			// rb4L
 			// 
 			this.rb4L.AutoSize = true;
-			this.rb4L.Location = new System.Drawing.Point(25, 156);
+			this.rb4L.Location = new System.Drawing.Point(6, 57);
 			this.rb4L.Name = "rb4L";
 			this.rb4L.Size = new System.Drawing.Size(114, 17);
 			this.rb4L.TabIndex = 14;
@@ -208,7 +215,7 @@
 			// rb8L
 			// 
 			this.rb8L.AutoSize = true;
-			this.rb8L.Location = new System.Drawing.Point(25, 179);
+			this.rb8L.Location = new System.Drawing.Point(6, 80);
 			this.rb8L.Name = "rb8L";
 			this.rb8L.Size = new System.Drawing.Size(114, 17);
 			this.rb8L.TabIndex = 15;
@@ -218,7 +225,7 @@
 			// chk2Zone
 			// 
 			this.chk2Zone.AutoSize = true;
-			this.chk2Zone.Location = new System.Drawing.Point(330, 110);
+			this.chk2Zone.Location = new System.Drawing.Point(330, 133);
 			this.chk2Zone.Name = "chk2Zone";
 			this.chk2Zone.Size = new System.Drawing.Size(114, 17);
 			this.chk2Zone.TabIndex = 16;
@@ -229,7 +236,7 @@
 			// chkZoneVert
 			// 
 			this.chkZoneVert.AutoSize = true;
-			this.chkZoneVert.Location = new System.Drawing.Point(330, 133);
+			this.chkZoneVert.Location = new System.Drawing.Point(330, 156);
 			this.chkZoneVert.Name = "chkZoneVert";
 			this.chkZoneVert.Size = new System.Drawing.Size(104, 17);
 			this.chkZoneVert.TabIndex = 17;
@@ -240,7 +247,7 @@
 			// chkNoPtr
 			// 
 			this.chkNoPtr.AutoSize = true;
-			this.chkNoPtr.Location = new System.Drawing.Point(330, 156);
+			this.chkNoPtr.Location = new System.Drawing.Point(330, 110);
 			this.chkNoPtr.Name = "chkNoPtr";
 			this.chkNoPtr.Size = new System.Drawing.Size(153, 17);
 			this.chkNoPtr.TabIndex = 18;
@@ -257,19 +264,73 @@
 			this.chkCol.Text = "Compacter en \"colonnes\"";
 			this.chkCol.UseVisualStyleBackColor = true;
 			// 
+			// grpGenereLigne
+			// 
+			this.grpGenereLigne.Controls.Add(this.rb1L);
+			this.grpGenereLigne.Controls.Add(this.rb2L);
+			this.grpGenereLigne.Controls.Add(this.rb4L);
+			this.grpGenereLigne.Controls.Add(this.rb8L);
+			this.grpGenereLigne.Location = new System.Drawing.Point(36, 97);
+			this.grpGenereLigne.Name = "grpGenereLigne";
+			this.grpGenereLigne.Size = new System.Drawing.Size(152, 104);
+			this.grpGenereLigne.TabIndex = 20;
+			this.grpGenereLigne.TabStop = false;
+			// 
+			// grpAscii
+			// 
+			this.grpAscii.Controls.Add(this.rbFrameFull);
+			this.grpAscii.Controls.Add(this.rbFrameD);
+			this.grpAscii.Controls.Add(this.rbFrameO);
+			this.grpAscii.Location = new System.Drawing.Point(30, 104);
+			this.grpAscii.Name = "grpAscii";
+			this.grpAscii.Size = new System.Drawing.Size(138, 89);
+			this.grpAscii.TabIndex = 21;
+			this.grpAscii.TabStop = false;
+			// 
+			// rbFrameO
+			// 
+			this.rbFrameO.AutoSize = true;
+			this.rbFrameO.Location = new System.Drawing.Point(5, 33);
+			this.rbFrameO.Name = "rbFrameO";
+			this.rbFrameO.Size = new System.Drawing.Size(99, 17);
+			this.rbFrameO.TabIndex = 0;
+			this.rbFrameO.TabStop = true;
+			this.rbFrameO.Text = "Forcer frame \'O\'";
+			this.rbFrameO.UseVisualStyleBackColor = true;
+			// 
+			// rbFrameD
+			// 
+			this.rbFrameD.AutoSize = true;
+			this.rbFrameD.Location = new System.Drawing.Point(5, 56);
+			this.rbFrameD.Name = "rbFrameD";
+			this.rbFrameD.Size = new System.Drawing.Size(99, 17);
+			this.rbFrameD.TabIndex = 0;
+			this.rbFrameD.TabStop = true;
+			this.rbFrameD.Text = "Forcer frame \'D\'";
+			this.rbFrameD.UseVisualStyleBackColor = true;
+			// 
+			// rbFrameFull
+			// 
+			this.rbFrameFull.AutoSize = true;
+			this.rbFrameFull.Location = new System.Drawing.Point(5, 10);
+			this.rbFrameFull.Name = "rbFrameFull";
+			this.rbFrameFull.Size = new System.Drawing.Size(126, 17);
+			this.rbFrameFull.TabIndex = 1;
+			this.rbFrameFull.TabStop = true;
+			this.rbFrameFull.Text = "Tous types de frames";
+			this.rbFrameFull.UseVisualStyleBackColor = true;
+			// 
 			// SaveAnim
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(495, 242);
+			this.ClientSize = new System.Drawing.Size(487, 235);
+			this.Controls.Add(this.grpAscii);
+			this.Controls.Add(this.grpGenereLigne);
 			this.Controls.Add(this.chkCol);
 			this.Controls.Add(this.chkNoPtr);
 			this.Controls.Add(this.chkZoneVert);
 			this.Controls.Add(this.chk2Zone);
-			this.Controls.Add(this.rb8L);
-			this.Controls.Add(this.rb4L);
-			this.Controls.Add(this.rb2L);
-			this.Controls.Add(this.rb1L);
 			this.Controls.Add(this.lblDelai);
 			this.Controls.Add(this.numDelai);
 			this.Controls.Add(this.chkDelai);
@@ -287,6 +348,10 @@
 			this.Name = "SaveAnim";
 			this.Text = "Sauvegarde animation";
 			((System.ComponentModel.ISupportInitialize)(this.numDelai)).EndInit();
+			this.grpGenereLigne.ResumeLayout(false);
+			this.grpGenereLigne.PerformLayout();
+			this.grpAscii.ResumeLayout(false);
+			this.grpAscii.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -313,5 +378,10 @@
 		private System.Windows.Forms.CheckBox chkZoneVert;
 		private System.Windows.Forms.CheckBox chkNoPtr;
 		private System.Windows.Forms.CheckBox chkCol;
+		private System.Windows.Forms.GroupBox grpGenereLigne;
+		private System.Windows.Forms.GroupBox grpAscii;
+		private System.Windows.Forms.RadioButton rbFrameFull;
+		private System.Windows.Forms.RadioButton rbFrameD;
+		private System.Windows.Forms.RadioButton rbFrameO;
 	}
 }

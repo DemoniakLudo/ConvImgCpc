@@ -22,7 +22,8 @@ namespace ConvImgCpc {
 			img = i;
 			param = p;
 			InitializeComponent();
-			chk2Zone.Visible = chkDirecMem.Visible = rb1L.Visible = rb2L.Visible = rb4L.Visible = rb8L.Visible = img.modeVirtuel < 7;
+			grpGenereLigne.Visible = chk2Zone.Visible = chkDirecMem.Visible = chkCol.Visible = img.modeVirtuel < 7;
+			grpAscii.Visible = img.modeVirtuel >= 7;
 		}
 
 		private int PackWinDC(byte[] bufOut, ref int sizeDepack, int topBottom, bool razDiff, int modeLigne, bool optimSpeed) {
@@ -261,14 +262,21 @@ namespace ConvImgCpc {
 			else {
 				BufTmp[0] = (byte)'O';
 				Array.Copy(imgAscii, 0, BufTmp, 1, tailleMax);
-				int lo = PackDepack.Pack(BufTmp, tailleMax + 1, BufPrec, 0);
-				BufTmp[0] = (byte)'D';
+				int lo = rbFrameO.Checked ? PackDepack.Pack(imgAscii, tailleMax, BufPrec, 0) : PackDepack.Pack(BufTmp, tailleMax + 1, BufPrec, 0);
 				posDiff = Math.Min(lastPosDiff, posDiff);
-				BufTmp[1] = (byte)(posDiff >> 1);
-				BufTmp[2] = (byte)(posDiff >> 9);
-				Array.Copy(DiffImage, 0, BufTmp, 3, posDiff);
-				int ld = PackDepack.Pack(BufTmp, posDiff + 3, bufOut, 0);
-				if (lo > ld)
+				if (rbFrameD.Checked) {
+					BufTmp[0] = (byte)(posDiff >> 1);
+					BufTmp[1] = (byte)(posDiff >> 9);
+					Array.Copy(DiffImage, 0, BufTmp, 2, posDiff);
+				}
+				else {
+					BufTmp[0] = (byte)'D';
+					BufTmp[1] = (byte)(posDiff >> 1);
+					BufTmp[2] = (byte)(posDiff >> 9);
+					Array.Copy(DiffImage, 0, BufTmp, 3, posDiff);
+				}
+				int ld = PackDepack.Pack(BufTmp, posDiff + (rbFrameD.Checked ? 2 : 3), bufOut, 0);
+				if (lo > ld && !rbFrameO.Checked || rbFrameD.Checked)
 					return ld;
 				else {
 					Array.Copy(BufPrec, bufOut, lo);
@@ -674,192 +682,227 @@ namespace ConvImgCpc {
 		}
 
 		private void GenereDrawAscii(StreamWriter sw, bool gest128K) {
-			sw.WriteLine("	LD	HL,buffer");
-			sw.WriteLine("	LD	A,(HL)");
-			sw.WriteLine("	CP	'D'");
-			sw.WriteLine("	JR	Z,DrawImgD");
-			sw.WriteLine("	CP	'I'");
-			sw.WriteLine("	JR	Z,DrawImgI");
-			sw.WriteLine("	LD	BC,#C000");
-			if (img.modeVirtuel == 7)
-				sw.WriteLine("	LD	D,Fonte/256");
-
-			sw.WriteLine("DrawImgO:");
-			if (img.modeVirtuel > 7) {
-				sw.WriteLine("	LD	D,Fonte/512");
-				sw.WriteLine("	INC	HL");
-				sw.WriteLine("	LD	E,(HL)			; Code ASCII");
-				sw.WriteLine("	EX	DE,HL");
-				sw.WriteLine("	ADD	HL,HL");
-			}
-			else {
-				sw.WriteLine("	INC	HL");
-				sw.WriteLine("	LD	A,(HL)			; Code ASCII");
-				sw.WriteLine("	AND	#0F");
-				sw.WriteLine("	RLCA");
-				sw.WriteLine("	RLCA");
-				sw.WriteLine("	LD	E,A");
-				sw.WriteLine("	EX	DE,HL");
-			}
-			sw.WriteLine("	LD	A,(HL)");
-			sw.WriteLine("	INC	HL");
-			sw.WriteLine("	LD	(BC),A");
-			sw.WriteLine("	SET	3,B");
-			if (img.modeVirtuel == 7) {
+			if (rbFrameFull.Checked) {
+				sw.WriteLine("	LD	HL,Buffer");
 				sw.WriteLine("	LD	A,(HL)");
-				sw.WriteLine("	INC	HL");
+				sw.WriteLine("	CP	'D'");
+				sw.WriteLine("	JR	Z,DrawImgD");
+				sw.WriteLine("	CP	'I'");
+				sw.WriteLine("	JR	Z,DrawImgI");
 			}
-			sw.WriteLine("	LD	(BC),A");
-			sw.WriteLine("	SET	4,B");
-			if (img.modeVirtuel == 7) {
-				sw.WriteLine("	LD	A,(HL)");
-				sw.WriteLine("	INC	HL");
-			}
-			sw.WriteLine("	LD	(BC),A");
-			sw.WriteLine("	RES	3,B");
-			if (img.modeVirtuel == 7) {
-				sw.WriteLine("	LD	A,(HL)");
-				sw.WriteLine("	INC	HL");
-			}
-			sw.WriteLine("	LD	(BC),A");
-			sw.WriteLine("	SET	5,B");
-			if (img.modeVirtuel == 7) {
-				sw.WriteLine("	LD	A,(DE)			; Code ASCII");
-				sw.WriteLine("	AND	#F0");
-				sw.WriteLine("	RRCA");
-				sw.WriteLine("	RRCA");
-				sw.WriteLine("	ADD	A,3");
-				sw.WriteLine("	LD	L,A");
-			}
-			sw.WriteLine("	LD	A,(HL)");
-			if (img.modeVirtuel == 7)
-				sw.WriteLine("	DEC	HL");
 			else
-				sw.WriteLine("	INC	HL");
+				if (rbFrameO.Checked)
+					sw.WriteLine("	LD	HL,Buffer");
 
-			sw.WriteLine("	LD	(BC),A");
-			sw.WriteLine("	SET	3,B");
-			if (img.modeVirtuel == 7) {
+			if (!rbFrameD.Checked) {
+				sw.WriteLine("	LD	BC,#C000");
+				if (img.modeVirtuel == 7)
+					sw.WriteLine("	LD	D,Fonte/256");
+
+				sw.WriteLine("DrawImgO:");
+				if (img.modeVirtuel > 7) {
+					sw.WriteLine("	LD	D,Fonte/512");
+					if (!rbFrameO.Checked)
+						sw.WriteLine("	INC	HL");
+
+					sw.WriteLine("	LD	E,(HL)			; Code ASCII");
+					sw.WriteLine("	EX	DE,HL");
+					sw.WriteLine("	ADD	HL,HL");
+				}
+				else {
+					if (!rbFrameO.Checked)
+						sw.WriteLine("	INC	HL");
+
+					sw.WriteLine("	LD	A,(HL)			; Code ASCII");
+					sw.WriteLine("	AND	#0F");
+					sw.WriteLine("	RLCA");
+					sw.WriteLine("	RLCA");
+					sw.WriteLine("	LD	E,A");
+					sw.WriteLine("	EX	DE,HL");
+				}
 				sw.WriteLine("	LD	A,(HL)");
-				sw.WriteLine("	DEC	HL");
-			}
-			sw.WriteLine("	LD	(BC),A");
-			sw.WriteLine("	RES	4,B");
-			if (img.modeVirtuel == 7) {
-				sw.WriteLine("	LD	A,(HL)");
-				sw.WriteLine("	DEC	HL");
-			}
-			sw.WriteLine("	LD	(BC),A");
-			sw.WriteLine("	RES	3,B");
-			if (img.modeVirtuel == 7) {
-				sw.WriteLine("	LD	A,(HL)");
-			}
-			sw.WriteLine("	LD	(BC),A");
-			sw.WriteLine("	RES	5,B");
-			sw.WriteLine("	EX	DE,HL");
-			sw.WriteLine("	INC	BC");
-			sw.WriteLine("	BIT	3,B");
-			sw.WriteLine("	JR	Z,DrawImgO");
-			sw.WriteLine("DrawImgI:");
-			if (chkNoPtr.Checked && !gest128K) {
-				sw.WriteLine("	POP	HL");
 				sw.WriteLine("	INC	HL");
+				sw.WriteLine("	LD	(BC),A");
+				sw.WriteLine("	SET	3,B");
+				if (img.modeVirtuel == 7) {
+					sw.WriteLine("	LD	A,(HL)");
+					sw.WriteLine("	INC	HL");
+				}
+				sw.WriteLine("	LD	(BC),A");
+				sw.WriteLine("	SET	4,B");
+				if (img.modeVirtuel == 7) {
+					sw.WriteLine("	LD	A,(HL)");
+					sw.WriteLine("	INC	HL");
+				}
+				sw.WriteLine("	LD	(BC),A");
+				sw.WriteLine("	RES	3,B");
+				if (img.modeVirtuel == 7) {
+					sw.WriteLine("	LD	A,(HL)");
+					sw.WriteLine("	INC	HL");
+				}
+				sw.WriteLine("	LD	(BC),A");
+				sw.WriteLine("	SET	5,B");
+				if (img.modeVirtuel == 7) {
+					sw.WriteLine("	LD	A,(DE)			; Code ASCII");
+					sw.WriteLine("	AND	#F0");
+					sw.WriteLine("	RRCA");
+					sw.WriteLine("	RRCA");
+					sw.WriteLine("	ADD	A,3");
+					sw.WriteLine("	LD	L,A");
+				}
+				sw.WriteLine("	LD	A,(HL)");
+				if (img.modeVirtuel == 7)
+					sw.WriteLine("	DEC	HL");
+				else
+					sw.WriteLine("	INC	HL");
+
+				sw.WriteLine("	LD	(BC),A");
+				sw.WriteLine("	SET	3,B");
+				if (img.modeVirtuel == 7) {
+					sw.WriteLine("	LD	A,(HL)");
+					sw.WriteLine("	DEC	HL");
+				}
+				sw.WriteLine("	LD	(BC),A");
+				sw.WriteLine("	RES	4,B");
+				if (img.modeVirtuel == 7) {
+					sw.WriteLine("	LD	A,(HL)");
+					sw.WriteLine("	DEC	HL");
+				}
+				sw.WriteLine("	LD	(BC),A");
+				sw.WriteLine("	RES	3,B");
+				if (img.modeVirtuel == 7) {
+					sw.WriteLine("	LD	A,(HL)");
+				}
+				sw.WriteLine("	LD	(BC),A");
+				sw.WriteLine("	RES	5,B");
+				sw.WriteLine("	EX	DE,HL");
+				if (rbFrameO.Checked)
+					sw.WriteLine("	INC	HL");
+
+				sw.WriteLine("	INC	BC");
+				sw.WriteLine("	BIT	3,B");
+				sw.WriteLine("	JR	Z,DrawImgO");
 			}
-			else {
-				sw.WriteLine("	INC	IX");
-				sw.WriteLine("	INC	IX");
-				if (gest128K)
+			if (!rbFrameD.Checked) {
+				sw.WriteLine("DrawImgI:");
+				if (chkNoPtr.Checked && !gest128K) {
+					sw.WriteLine("	POP	HL");
+					sw.WriteLine("	INC	HL");
+				}
+				else {
 					sw.WriteLine("	INC	IX");
+					sw.WriteLine("	INC	IX");
+					if (gest128K)
+						sw.WriteLine("	INC	IX");
+				}
+				sw.WriteLine("	JP	Boucle");
 			}
-			sw.WriteLine("	JP	Boucle");
+			if (!rbFrameO.Checked) {
+				sw.WriteLine("DrawImgD:");
+				sw.WriteLine("	LD	DE,#C000");
+				if (rbFrameD.Checked)
+					sw.WriteLine("	LD	IY,Buffer");
+				else
+					sw.WriteLine("	LD	IY,Buffer+1");
 
-			sw.WriteLine("DrawImgD:");
-			sw.WriteLine("	LD	DE,#C000");
-			sw.WriteLine("	LD	IY,Buffer");
-			sw.WriteLine("	LD	C,(IY+1)");
-			sw.WriteLine("	LD	B,(IY+2)");
-			sw.WriteLine("DrawImgD1:");
-			sw.WriteLine("	LD	H,0");
-			sw.WriteLine("	LD	L,(IY+3)			; Déplacement");
-			sw.WriteLine("	ADD	HL,DE			; Ajouter à DE");
-			sw.WriteLine("	EX	DE,HL");
-			if (img.modeVirtuel > 7) {
-				sw.WriteLine("	LD	L,(IY+4)			; Code ASCII");
-				sw.WriteLine("	LD	H,Fonte/512");
-				sw.WriteLine("	ADD	HL,HL");
-			}
-			else {
-				sw.WriteLine("	LD	H,Fonte/256");
-				sw.WriteLine("	LD	A,(IY+4)			; Code ASCII");
-				sw.WriteLine("	AND	#0F");
-				sw.WriteLine("	RLCA");
-				sw.WriteLine("	RLCA");
-				sw.WriteLine("	LD	L,A");
-			}
-			sw.WriteLine("	LD	A,(HL)");
-			sw.WriteLine("	INC	HL");
-			sw.WriteLine("	LD	(DE),A");
-			sw.WriteLine("	SET	3,D");
-			if (img.modeVirtuel == 7) {
+				sw.WriteLine("	LD	C,(IY+0)");
+				sw.WriteLine("	LD	B,(IY+1)");
+				sw.WriteLine("DrawImgD1:");
+				sw.WriteLine("	LD	H,0");
+				sw.WriteLine("	LD	L,(IY+2)			; Déplacement");
+				sw.WriteLine("	ADD	HL,DE			; Ajouter à DE");
+				sw.WriteLine("	EX	DE,HL");
+				if (img.modeVirtuel > 7) {
+					sw.WriteLine("	LD	L,(IY+3)			; Code ASCII");
+					sw.WriteLine("	LD	H,Fonte/512");
+					sw.WriteLine("	ADD	HL,HL");
+				}
+				else {
+					sw.WriteLine("	LD	H,Fonte/256");
+					sw.WriteLine("	LD	A,(IY+3)			; Code ASCII");
+					sw.WriteLine("	AND	#0F");
+					sw.WriteLine("	RLCA");
+					sw.WriteLine("	RLCA");
+					sw.WriteLine("	LD	L,A");
+				}
 				sw.WriteLine("	LD	A,(HL)");
 				sw.WriteLine("	INC	HL");
-			}
-			sw.WriteLine("	LD	(DE),A");
-			sw.WriteLine("	SET	4,D");
-			if (img.modeVirtuel == 7) {
+				sw.WriteLine("	LD	(DE),A");
+				sw.WriteLine("	SET	3,D");
+				if (img.modeVirtuel == 7) {
+					sw.WriteLine("	LD	A,(HL)");
+					sw.WriteLine("	INC	HL");
+				}
+				sw.WriteLine("	LD	(DE),A");
+				sw.WriteLine("	SET	4,D");
+				if (img.modeVirtuel == 7) {
+					sw.WriteLine("	LD	A,(HL)");
+					sw.WriteLine("	INC	HL");
+				}
+				sw.WriteLine("	LD	(DE),A");
+				sw.WriteLine("	RES	3,D");
+				if (img.modeVirtuel == 7) {
+					sw.WriteLine("	LD	A,(HL)");
+					sw.WriteLine("	INC	HL");
+				}
+				sw.WriteLine("	LD	(DE),A");
+				sw.WriteLine("	SET	5,D");
+				if (img.modeVirtuel == 7) {
+					sw.WriteLine("	LD	A,(IY+3)			; Code ASCII");
+					sw.WriteLine("	AND	#F0");
+					sw.WriteLine("	RRCA");
+					sw.WriteLine("	RRCA");
+					sw.WriteLine("	ADD	A,3");
+					sw.WriteLine("	LD	L,A");
+				}
 				sw.WriteLine("	LD	A,(HL)");
-				sw.WriteLine("	INC	HL");
-			}
-			sw.WriteLine("	LD	(DE),A");
-			sw.WriteLine("	RES	3,D");
-			if (img.modeVirtuel == 7) {
-				sw.WriteLine("	LD	A,(HL)");
-				sw.WriteLine("	INC	HL");
-			}
-			sw.WriteLine("	LD	(DE),A");
-			sw.WriteLine("	SET	5,D");
-			if (img.modeVirtuel == 7) {
-				sw.WriteLine("	LD	A,(IY+4)			; Code ASCII");
-				sw.WriteLine("	AND	#F0");
-				sw.WriteLine("	RRCA");
-				sw.WriteLine("	RRCA");
-				sw.WriteLine("	ADD	A,3");
-				sw.WriteLine("	LD	L,A");
-			}
-			sw.WriteLine("	LD	A,(HL)");
-			if (img.modeVirtuel == 7)
-				sw.WriteLine("	DEC	HL");
-			else
-				sw.WriteLine("	INC	HL");
+				if (img.modeVirtuel == 7)
+					sw.WriteLine("	DEC	HL");
+				else
+					sw.WriteLine("	INC	HL");
 
-			sw.WriteLine("	LD	(DE),A");
-			sw.WriteLine("	SET	3,D");
-			if (img.modeVirtuel == 7) {
-				sw.WriteLine("	LD	A,(HL)");
-				sw.WriteLine("	DEC HL");
+				sw.WriteLine("	LD	(DE),A");
+				sw.WriteLine("	SET	3,D");
+				if (img.modeVirtuel == 7) {
+					sw.WriteLine("	LD	A,(HL)");
+					sw.WriteLine("	DEC HL");
+				}
+				sw.WriteLine("	LD	(DE),A");
+				sw.WriteLine("	RES	4,D");
+				if (img.modeVirtuel == 7) {
+					sw.WriteLine("	LD	A,(HL)");
+					sw.WriteLine("	DEC	HL");
+				}
+				sw.WriteLine("	LD	(DE),A");
+				sw.WriteLine("	RES	3,D");
+				if (img.modeVirtuel == 7) {
+					sw.WriteLine("	LD	A,(HL)");
+				}
+				sw.WriteLine("	LD	(DE),A");
+				sw.WriteLine("	RES	5,D");
+				sw.WriteLine("	INC	IY");
+				sw.WriteLine("	INC	IY");
+				sw.WriteLine("	INC	DE");
+				sw.WriteLine("	DEC	BC");
+				sw.WriteLine("	LD	A,B");
+				sw.WriteLine("	OR	C");
+				sw.WriteLine("	JR	NZ,DrawImgD1");
+				if (rbFrameD.Checked) {
+					if (chkNoPtr.Checked && !gest128K) {
+						sw.WriteLine("	POP	HL");
+						sw.WriteLine("	INC	HL");
+					}
+					else {
+						sw.WriteLine("	INC	IX");
+						sw.WriteLine("	INC	IX");
+						if (gest128K)
+							sw.WriteLine("	INC	IX");
+					}
+					sw.WriteLine("	JP	Boucle");
+				}
+				else
+					sw.WriteLine("	JR	DrawImgI");
 			}
-			sw.WriteLine("	LD	(DE),A");
-			sw.WriteLine("	RES	4,D");
-			if (img.modeVirtuel == 7) {
-				sw.WriteLine("	LD	A,(HL)");
-				sw.WriteLine("	DEC	HL");
-			}
-			sw.WriteLine("	LD	(DE),A");
-			sw.WriteLine("	RES	3,D");
-			if (img.modeVirtuel == 7) {
-				sw.WriteLine("	LD	A,(HL)");
-			}
-			sw.WriteLine("	LD	(DE),A");
-			sw.WriteLine("	RES	5,D");
-			sw.WriteLine("	INC	IY");
-			sw.WriteLine("	INC	IY");
-			sw.WriteLine("	INC	DE");
-			sw.WriteLine("	DEC	BC");
-			sw.WriteLine("	LD	A,B");
-			sw.WriteLine("	OR	C");
-			sw.WriteLine("	JR	NZ,DrawImgD1");
-			sw.WriteLine("	JR	DrawImgI");
-
 			sw.WriteLine("	Nolist");
 			if (img.modeVirtuel > 7) {
 				sw.WriteLine("DataFnt:");
@@ -1076,7 +1119,7 @@ namespace ConvImgCpc {
 		}
 
 		private void chkDirecMem_CheckedChanged(object sender, EventArgs e) {
-			chk2Zone.Visible = chkZoneVert.Visible = rb1L.Visible = rb2L.Visible = rb4L.Visible = rb8L.Visible = !chkDirecMem.Checked && img.modeVirtuel < 7;
+			chk2Zone.Visible = chkZoneVert.Visible = grpGenereLigne.Visible = !chkDirecMem.Checked && img.modeVirtuel < 7;
 			chkZoneVert.Visible = chk2Zone.Visible && chk2Zone.Checked;
 		}
 

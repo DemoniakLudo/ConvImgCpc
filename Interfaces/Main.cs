@@ -191,7 +191,7 @@ namespace ConvImgCpc {
 		}
 
 		public int GetMaxImages() {
-			return selImage.GetFrameCount(dimension);
+			return selImage != null ? selImage.GetFrameCount(dimension) : 0;
 		}
 
 		public void SetInfo(string txt) {

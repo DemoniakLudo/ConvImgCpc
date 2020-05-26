@@ -1,1 +1,2 @@
-﻿- Mode "scanline" (1 ligne sur 2) lors de l'export anim "classique" (non ASCx)
+﻿- Améliorer le mode édition (palette d'outils ?)
+- Permettre l'édition image par image des animations
