@@ -300,6 +300,26 @@ namespace ConvImgCpc {
 			sw.WriteLine("	ORG	#" + adr.ToString("X4"));
 			sw.WriteLine("	RUN	$" + Environment.NewLine);
 			sw.WriteLine("	DI");
+			if (img.NbCol != 80) {
+				sw.WriteLine("	LD	BC,#BC01");
+				sw.WriteLine("	OUT	(C),C");
+				sw.WriteLine("	LD	BC,#BD" + (img.NbCol >> 1).ToString("X2"));
+				sw.WriteLine("	OUT	(C),C");
+				sw.WriteLine("	LD	BC,#BC02");
+				sw.WriteLine("	OUT	(C),C");
+				sw.WriteLine("	LD	BC,#BD" + (26+(img.NbCol >> 2)).ToString("X2"));
+				sw.WriteLine("	OUT	(C),C");
+			}
+			if (img.NbLig != 200) {
+				sw.WriteLine("	LD	BC,#BC06");
+				sw.WriteLine("	OUT	(C),C");
+				sw.WriteLine("	LD	BC,#BD" + (img.NbLig >> 3).ToString("X2"));
+				sw.WriteLine("	OUT	(C),C");
+				sw.WriteLine("	LD	BC,#BC07");
+				sw.WriteLine("	OUT	(C),C");
+				sw.WriteLine("	LD	BC,#BD" + (18 + (img.NbLig >> 4)).ToString("X2"));
+				sw.WriteLine("	OUT	(C),C");
+			}
 		}
 
 		private void GenereInitOld(StreamWriter sw) {
