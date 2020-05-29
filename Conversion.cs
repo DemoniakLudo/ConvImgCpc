@@ -281,11 +281,11 @@ namespace ConvImgCpc {
 							nb |= 0x02;
 						}
 						choix = new RvbColor((byte)(nr * 17), (byte)(nv * 17), (byte)(nb * 17));
-						indexChoix = ((choix.v << 4) & 0xF00) + ((choix.r) & 0xF0) + ((choix.b) >> 4);
+						indexChoix = ((choix.v << 4) & 0xF00) + ((choix.b) & 0xF0) + ((choix.r) >> 4);
 					}
 					else {
 						if (!prm.newMethode)
-							indexChoix = (p.r > SEUIL_LUM_2 ? 2 : p.r > SEUIL_LUM_1 ? 1 : 0) + (p.b > SEUIL_LUM_2 ? 6 : p.b > SEUIL_LUM_1 ? 3 : 0) + (p.v > SEUIL_LUM_2 ? 18 : p.v > SEUIL_LUM_1 ? 9 : 0);
+							indexChoix = (p.r > SEUIL_LUM_2 ? 6 : p.r > SEUIL_LUM_1 ? 3 : 0) + (p.b > SEUIL_LUM_2 ? 2 : p.b > SEUIL_LUM_1 ? 1 : 0) + (p.v > SEUIL_LUM_2 ? 18 : p.v > SEUIL_LUM_1 ? 9 : 0);
 						else {
 							int oldDist = 0x7FFFFFFF;
 							for (int i = 0; i < 27; i++) {
@@ -610,7 +610,7 @@ namespace ConvImgCpc {
 				// réduit l'image à MaxCol couleurs.
 				for (int y = 0; y < dest.TailleY; y += 2)
 					for (i = 0; i < maxCol; i++)
-						tabCol[i, y >> 1] = p.cpcPlus ? new RvbColor((byte)(((dest.colMode5[y >> 1, i] & 0xF0) >> 4) * 17), (byte)(((dest.colMode5[y >> 1, i] & 0xF00) >> 8) * 17), (byte)((dest.colMode5[y >> 1, i] & 0x0F) * 17))
+						tabCol[i, y >> 1] = p.cpcPlus ? new RvbColor((byte)((dest.colMode5[y >> 1, i] & 0x0F) * 17), (byte)(((dest.colMode5[y >> 1, i] & 0xF00) >> 8) * 17), (byte)(((dest.colMode5[y >> 1, i] & 0xF0) >> 4) * 17))
 							: BitmapCpc.RgbCPC[dest.colMode5[y >> 1, i] < 27 ? dest.colMode5[y >> 1, i] : 0];
 			}
 			else {
@@ -618,7 +618,7 @@ namespace ConvImgCpc {
 				// réduit l'image à MaxCol couleurs.
 				for (int y = 0; y < dest.TailleY; y += 2)
 					for (i = 0; i < maxCol; i++)
-						tabCol[i, y >> 1] = p.cpcPlus ? new RvbColor((byte)(((dest.Palette[i] & 0xF0) >> 4) * 17), (byte)(((dest.Palette[i] & 0xF00) >> 8) * 17), (byte)((dest.Palette[i] & 0x0F) * 17))
+						tabCol[i, y >> 1] = p.cpcPlus ? new RvbColor((byte)((dest.Palette[i] & 0x0F) * 17), (byte)(((dest.Palette[i] & 0xF00) >> 8) * 17), (byte)(((dest.Palette[i] & 0xF0) >> 4) * 17))
 							: BitmapCpc.RgbCPC[dest.Palette[i] < 27 ? dest.Palette[i] : 0];
 			}
 

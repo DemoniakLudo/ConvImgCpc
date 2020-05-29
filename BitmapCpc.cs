@@ -17,31 +17,31 @@ namespace ConvImgCpc {
 		public const int Lum2 = 0xFF;
 		static public RvbColor[] RgbCPC = {
 							new RvbColor( Lum0, Lum0, Lum0),
-							new RvbColor( Lum1, Lum0, Lum0),
-							new RvbColor( Lum2, Lum0, Lum0),
 							new RvbColor( Lum0, Lum0, Lum1),
-							new RvbColor( Lum1, Lum0, Lum1),
-							new RvbColor( Lum2, Lum0, Lum1),
 							new RvbColor( Lum0, Lum0, Lum2),
+							new RvbColor( Lum1, Lum0, Lum0),
+							new RvbColor( Lum1, Lum0, Lum1),
 							new RvbColor( Lum1, Lum0, Lum2),
+							new RvbColor( Lum2, Lum0, Lum0),
+							new RvbColor( Lum2, Lum0, Lum1),
 							new RvbColor( Lum2, Lum0, Lum2),
 							new RvbColor( Lum0, Lum1, Lum0),
-							new RvbColor( Lum1, Lum1, Lum0),
-							new RvbColor( Lum2, Lum1, Lum0),
 							new RvbColor( Lum0, Lum1, Lum1),
-							new RvbColor( Lum1, Lum1, Lum1),
-							new RvbColor( Lum2, Lum1, Lum1),
 							new RvbColor( Lum0, Lum1, Lum2),
+							new RvbColor( Lum1, Lum1, Lum0),
+							new RvbColor( Lum1, Lum1, Lum1),
 							new RvbColor( Lum1, Lum1, Lum2),
+							new RvbColor( Lum2, Lum1, Lum0),
+							new RvbColor( Lum2, Lum1, Lum1),
 							new RvbColor( Lum2, Lum1, Lum2),
 							new RvbColor( Lum0, Lum2, Lum0),
-							new RvbColor( Lum1, Lum2, Lum0),
-							new RvbColor( Lum2, Lum2, Lum0),
 							new RvbColor( Lum0, Lum2, Lum1),
-							new RvbColor( Lum1, Lum2, Lum1),
-							new RvbColor( Lum2, Lum2, Lum1),
 							new RvbColor( Lum0, Lum2, Lum2),
+							new RvbColor( Lum1, Lum2, Lum0),
+							new RvbColor( Lum1, Lum2, Lum1),
 							new RvbColor( Lum1, Lum2, Lum2),
+							new RvbColor( Lum2, Lum2, Lum0),
+							new RvbColor( Lum2, Lum2, Lum1),
 							new RvbColor( Lum2, Lum2, Lum2)
 							};
 		static public string CpcVGA = "TDU\\X]LEMVFW^@_NGORBSZY[JCK";
@@ -312,7 +312,7 @@ namespace ConvImgCpc {
 							RvbColor col = bmpLock.GetPixelColor(x + p, y);
 							if (cpcPlus) {
 								for (pen = 0; pen < 16; pen++) {
-									if ((col.v >> 4) == (Palette[pen] >> 8) && (col.r >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.b >> 4) == (Palette[pen] & 0x0F))
+									if ((col.v >> 4) == (Palette[pen] >> 8) && (col.b >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.r >> 4) == (Palette[pen] & 0x0F))
 										break;
 								}
 							}

@@ -312,7 +312,7 @@ namespace ConvImgCpc {
 		}
 
 		private int GetPalCPC(int c) {
-			return cpcPlus ? (((c & 0xF0) >> 4) * 17) + ((((c & 0xF00) >> 8) * 17) << 8) + (((c & 0x0F) * 17) << 16) : BitmapCpc.RgbCPC[c < 27 ? c : 0].GetColor;
+			return cpcPlus ? ((c & 0x0F) * 17) + ((((c & 0xF00) >> 8) * 17) << 8) + (((c & 0x0F) * 17) << 16) : BitmapCpc.RgbCPC[c < 27 ? c : 0].GetColor;
 		}
 
 		// Click sur un "lock"
