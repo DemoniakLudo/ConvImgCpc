@@ -213,7 +213,6 @@ namespace ConvImgCpc {
 					for (int x = 0; x < matDither.GetLength(0); x++)
 						sum += matDither[x, y];
 
-				sum *= 100.0;
 				for (int y = 0; y < matDither.GetLength(1); y++)
 					for (int x = 0; x < matDither.GetLength(0); x++)
 						matDither[x, y] = (matDither[x, y] * pct) / sum;
@@ -241,6 +240,9 @@ namespace ConvImgCpc {
 					else
 						p = source.GetPixelColor(xPix, yPix);
 
+					p.r = MinMaxByte(p.r * prm.pctRed / 100);
+					p.v = MinMaxByte(p.v * prm.pctGreen / 100);
+					p.b = MinMaxByte(p.b * prm.pctBlue / 100);
 					if (p.r != 0 || p.v != 0 || p.b != 0) {
 						float r = tblContrast[p.r];
 						float v = tblContrast[p.v];
@@ -252,6 +254,16 @@ namespace ConvImgCpc {
 						p.v = MinMaxByte(v);
 						p.b = MinMaxByte(b);
 					}
+
+					// Appliquer la matrice de tramage
+					if (pct > 0) {
+						int xm = (xPix / Tx) % matDither.GetLength(0);
+						int ym = (yPix >> 1) % matDither.GetLength(1);
+						p.r = MinMaxByte(p.r + matDither[xm, ym]);
+						p.v = MinMaxByte(p.v + matDither[xm, ym]);
+						p.b = MinMaxByte(p.b + matDither[xm, ym]);
+					}
+
 
 					// Recherche le point dans la couleur cpc la plus proche
 					if (prm.cpcPlus) {
@@ -291,18 +303,28 @@ namespace ConvImgCpc {
 						choix = BitmapCpc.RgbCPC[indexChoix];
 					}
 					CoulTrouvee[indexChoix, (dest.modeVirtuel == 5 ? yPix >> 1 : 0)]++;
-					if (pct > 0) {
-						// Applique une matrice de tramage
-						for (int y = 0; y < matDither.GetLength(1); y++)
-							for (int x = 0; x < matDither.GetLength(0); x++)
-								if (xPix + Tx * x < source.Width && yPix + 2 * y < source.Height) {
-									RvbColor pix = source.GetPixelColor(xPix + Tx * x, yPix + 2 * y);
-									pix.r = MinMaxByte(pix.r + (p.r - choix.r) * matDither[x, y]);
-									pix.v = MinMaxByte(pix.v + (p.v - choix.v) * matDither[x, y]);
-									pix.b = MinMaxByte(pix.b + (p.b - choix.b) * matDither[x, y]);
-									source.SetPixel(xPix + Tx * x, yPix + 2 * y, pix);
-								}
-					}
+					//if (pct > 0) {
+					//	// Applique une matrice de tramage
+
+
+					//	RvbColor pix = source.GetPixelColor(xPix, yPix);
+					//	pix.r = MinMaxByte(pix.r + (p.r - choix.r) * matDither[(xPix / Tx) % matDither.GetLength(0), (yPix >> 1) % matDither.GetLength(1)]);
+					//	pix.v = MinMaxByte(pix.v + (p.v - choix.v) * matDither[(xPix / Tx) % matDither.GetLength(0), (yPix >> 1) % matDither.GetLength(1)]);
+					//	pix.b = MinMaxByte(pix.b + (p.b - choix.b) * matDither[(xPix / Tx) % matDither.GetLength(0), (yPix >> 1) % matDither.GetLength(1)]);
+					//	source.SetPixel(xPix, yPix, pix);
+
+
+					//for (int y = 0; y < matDither.GetLength(1); y++)
+					//	for (int x = 0; x < matDither.GetLength(0); x++)
+					//		if (xPix + Tx * x < source.Width && yPix + 2 * y < source.Height) {
+					//			RvbColor pix = source.GetPixelColor(xPix + Tx * x, yPix + 2 * y);
+					//			pix.r = MinMaxByte(pix.r + (p.r - choix.r) * matDither[x, y]);
+					//			pix.v = MinMaxByte(pix.v + (p.v - choix.v) * matDither[x, y]);
+					//			pix.b = MinMaxByte(pix.b + (p.b - choix.b) * matDither[x, y]);
+					//			source.SetPixel(xPix + Tx * x, yPix + 2 * y, pix);
+					//		}
+					//}
+
 					source.SetPixel(xPix, yPix, prm.setPalCpc ? choix : p);
 				}
 			}

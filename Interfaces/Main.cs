@@ -36,7 +36,7 @@ namespace ConvImgCpc {
 			nbLignes.Value = imgCpc.TailleY >> 1;
 			mode.SelectedIndex = imgCpc.modeVirtuel;
 			methode.SelectedIndex = 0;
-			param.pctContrast = param.pctLumi = param.pctSat = 100;
+			param.pctContrast = param.pctLumi = param.pctSat = param.pctRed = param.pctGreen = param.pctBlue = 100;
 			param.withCode = withCode.Checked;
 			param.withPalette = withPalette.Checked;
 			imgCpc.Visible = true;
@@ -493,6 +493,63 @@ namespace ConvImgCpc {
 		private void bpEditTrame_Click(object sender, EventArgs e) {
 			EditTrameAscii dg = new EditTrameAscii(imgCpc.bitmapCpc);
 			dg.ShowDialog();
+		}
+
+		private void red_ValueChanged(object sender, EventArgs e) {
+			param.pctRed = red.Value;
+			Convert(false);
+		}
+
+		private void green_ValueChanged(object sender, EventArgs e) {
+			param.pctGreen = green.Value;
+			Convert(false);
+		}
+
+		private void blue_ValueChanged(object sender, EventArgs e) {
+			param.pctBlue = blue.Value;
+			Convert(false);
+		}
+
+		private void bpRmoins_Click(object sender, EventArgs e) {
+			if (red.Value > 0)
+				red.Value--;
+		}
+
+		private void bpVmoins_Click(object sender, EventArgs e) {
+			if (green.Value > 0)
+				green.Value--;
+		}
+
+		private void bpBmoins_Click(object sender, EventArgs e) {
+			if (blue.Value > 0)
+				blue.Value--;
+		}
+
+		private void bpRplus_Click(object sender, EventArgs e) {
+			if (red.Value < 200)
+				red.Value++;
+		}
+
+		private void bpVplus_Click(object sender, EventArgs e) {
+			if (green.Value < 200)
+				green.Value++;
+		}
+
+		private void bpBplus_Click(object sender, EventArgs e) {
+			if (blue.Value < 200)
+				blue.Value++;
+		}
+
+		private void RazR_Click(object sender, EventArgs e) {
+			red.Value = 100;
+		}
+
+		private void RazV_Click(object sender, EventArgs e) {
+			green.Value = 100;
+		}
+
+		private void RazB_Click(object sender, EventArgs e) {
+			blue.Value = 100;
 		}
 	}
 }

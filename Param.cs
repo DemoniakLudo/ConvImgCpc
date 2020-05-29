@@ -24,5 +24,6 @@
 		public bool setPalCpc;
 		public bool lissage;
 		public int trackModeX;
+		public int pctRed, pctGreen, pctBlue;
 	}
 }
