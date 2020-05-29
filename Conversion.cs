@@ -53,9 +53,9 @@ namespace ConvImgCpc {
 										{ 4 },
 										{ 2 }};
 
-		static double[,] test1 =	{	{ 1, 7 }};
+		static double[,] test1 = { { 1, 7 } };
 
-		static double[,] test2 =	{	{ 1, 3 }};
+		static double[,] test2 = { { 1, 3 } };
 
 		static double[,] test3 =	{	{8 , 4 , 5 },
 										{3 , 0, 1 },
@@ -259,14 +259,14 @@ namespace ConvImgCpc {
 						int nv = p.v >> 4;
 						int nb = p.b >> 4;
 						if (prm.reductPal1) {
-							nr &= 0x0E;
-							nv &= 0x0E;
-							nb &= 0x0E;
+							nr |= 0x01;
+							nv |= 0x01;
+							nb |= 0x01;
 						}
 						if (prm.reductPal2) {
-							nr &= 0x0D;
-							nv &= 0x0D;
-							nb &= 0x0D;
+							nr |= 0x02;
+							nv |= 0x02;
+							nb |= 0x02;
 						}
 						choix = new RvbColor((byte)(nr * 17), (byte)(nv * 17), (byte)(nb * 17));
 						indexChoix = ((choix.v << 4) & 0xF00) + ((choix.r) & 0xF0) + ((choix.b) >> 4);
@@ -385,20 +385,25 @@ namespace ConvImgCpc {
 		}
 
 		static private void SetPixTrameM1(DirectBitmap bitmap, ImageCpc dest, int maxCol, RvbColor[,] tabCol) {
-			RvbColor pix;
-			for (int y = 0; y < dest.TailleY; y += 8) {
+			for (int y = 0; y <= dest.TailleY - 8; y += 8) {
 				maxCol = CalcMaxCol(dest.modeVirtuel, y);
 				for (int x = 0; x < dest.TailleX; x += 8) {
 					int choix = 0, oldDist = 0x7FFFFFFF;
 					for (int i = 0; i < 16; i++) {
-						int dist = 0;
+						int dist = 0, r1 = 0, v1 = 0, b1 = 0, r2 = 0, v2 = 0, b2 = 0;
 						for (int ym = 0; ym < 4; ym++) {
 							for (int xm = 0; xm < 4; xm++) {
-								pix = bitmap.GetPixelColor(x + (xm << 1), y + (ym << 1));
+								RvbColor pix = bitmap.GetPixelColor(x + (xm << 1), y + (ym << 1));
 								RvbColor c = tabCol[BitmapCpc.trameM1[i, xm, ym], ym + (y >> 1)];
-								dist += Math.Abs(pix.r - c.r) * K_R + Math.Abs(pix.v - c.v) * K_V + Math.Abs(pix.b - c.b) * K_B;
+								r1 += pix.r;
+								v1 += pix.v;
+								b1 += pix.b;
+								r2 += c.r;
+								v2 += c.v;
+								b2 += c.b;
 							}
 						}
+						dist = Math.Abs(r1 - r2) * K_R + Math.Abs(v1 - v2) * K_V + Math.Abs(b1 - b2) * K_B;
 						if (dist < oldDist) {
 							choix = i;
 							oldDist = dist;

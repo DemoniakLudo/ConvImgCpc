@@ -40,7 +40,6 @@
 			this.rb8L = new System.Windows.Forms.RadioButton();
 			this.chk2Zone = new System.Windows.Forms.CheckBox();
 			this.chkZoneVert = new System.Windows.Forms.CheckBox();
-			this.chkNoPtr = new System.Windows.Forms.CheckBox();
 			this.chkCol = new System.Windows.Forms.CheckBox();
 			this.grpGenereLigne = new System.Windows.Forms.GroupBox();
 			this.grpAscii = new System.Windows.Forms.GroupBox();
@@ -244,16 +243,6 @@
 			this.chkZoneVert.UseVisualStyleBackColor = true;
 			this.chkZoneVert.Visible = false;
 			// 
-			// chkNoPtr
-			// 
-			this.chkNoPtr.AutoSize = true;
-			this.chkNoPtr.Location = new System.Drawing.Point(330, 110);
-			this.chkNoPtr.Name = "chkNoPtr";
-			this.chkNoPtr.Size = new System.Drawing.Size(179, 19);
-			this.chkNoPtr.TabIndex = 18;
-			this.chkNoPtr.Text = "Supprimer pointeurs frames";
-			this.chkNoPtr.UseVisualStyleBackColor = true;
-			// 
 			// chkCol
 			// 
 			this.chkCol.AutoSize = true;
@@ -327,7 +316,6 @@
 			this.Controls.Add(this.grpAscii);
 			this.Controls.Add(this.grpGenereLigne);
 			this.Controls.Add(this.chkCol);
-			this.Controls.Add(this.chkNoPtr);
 			this.Controls.Add(this.chkZoneVert);
 			this.Controls.Add(this.chk2Zone);
 			this.Controls.Add(this.lblDelai);
@@ -375,7 +363,6 @@
 		private System.Windows.Forms.RadioButton rb8L;
 		private System.Windows.Forms.CheckBox chk2Zone;
 		private System.Windows.Forms.CheckBox chkZoneVert;
-		private System.Windows.Forms.CheckBox chkNoPtr;
 		private System.Windows.Forms.CheckBox chkCol;
 		private System.Windows.Forms.GroupBox grpGenereLigne;
 		private System.Windows.Forms.GroupBox grpAscii;

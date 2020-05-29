@@ -1,2 +1,5 @@
 ﻿- Améliorer le mode édition (palette d'outils ?)
 - Permettre l'édition image par image des animations
+- Routine affichage images en mode X
+- Routines affichage images en mode ASCxxx
+

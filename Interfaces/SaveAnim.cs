@@ -396,13 +396,13 @@ namespace ConvImgCpc {
 				sw.WriteLine("	JR	NZ,SetFonte");
 			}
 			sw.WriteLine("Debut");
-			if (chkNoPtr.Checked && !gest128K)
+			if (!gest128K)
 				sw.WriteLine("	LD	HL,Delta0");
 			else
 				sw.WriteLine("	LD	IX,AnimDelta");
 
 			sw.WriteLine("Boucle:");
-			if (chkNoPtr.Checked && !gest128K) {
+			if (!gest128K) {
 				sw.WriteLine("	LD	A,(HL)");
 				sw.WriteLine("	INC	A");
 			}
@@ -542,7 +542,7 @@ namespace ConvImgCpc {
 				sw.WriteLine("	RET");
 			}
 			sw.WriteLine("InitDraw:");
-			if (chkNoPtr.Checked && !gest128K)
+			if (!gest128K)
 				sw.WriteLine("	PUSH	HL");
 
 			if (delai > 0) {
@@ -639,7 +639,7 @@ namespace ConvImgCpc {
 				sw.WriteLine("	DEC	A");
 				sw.WriteLine("	JR	NZ,Nbx");
 			}
-			if (chkNoPtr.Checked && !gest128K) {
+			if (!gest128K) {
 				sw.WriteLine("	POP	HL");
 				sw.WriteLine("	INC	HL");
 			}
@@ -653,7 +653,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("	Nolist");
 		}
 
-		private void GenereDrawOdin(StreamWriter sw, bool gest128K) {
+		private void GenereDrawDirect(StreamWriter sw, bool gest128K) {
 			sw.WriteLine("	LD	HL,buffer");
 			sw.WriteLine("	LD	DE,#C000");
 			sw.WriteLine("	LD	C,(HL)");
@@ -673,7 +673,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("	LDI				; Octet a copier");
 			sw.WriteLine("DrawImgD3:");
 			sw.WriteLine("	JP	PE,DrawImgD1");
-			if (chkNoPtr.Checked && !gest128K) {
+			if (!gest128K) {
 				sw.WriteLine("	POP	HL");
 				sw.WriteLine("	INC	HL");
 			}
@@ -809,7 +809,7 @@ namespace ConvImgCpc {
 			}
 			if (!rbFrameD.Checked) {
 				sw.WriteLine("DrawImgI:");
-				if (chkNoPtr.Checked && !gest128K) {
+				if (!gest128K) {
 					sw.WriteLine("	POP	HL");
 					sw.WriteLine("	INC	HL");
 				}
@@ -910,7 +910,7 @@ namespace ConvImgCpc {
 				sw.WriteLine("	CPI");
 				sw.WriteLine("	JP PE,DrawImgD1");
 				if (rbFrameD.Checked) {
-					if (chkNoPtr.Checked && !gest128K) {
+					if (!gest128K) {
 						sw.WriteLine("	POP	HL");
 						sw.WriteLine("	INC	HL");
 					}
@@ -1067,7 +1067,7 @@ namespace ConvImgCpc {
 				GenereDrawAscii(sw, gest128K);
 			else
 				if (chkDirecMem.Checked)
-					GenereDrawOdin(sw, gest128K);
+					GenereDrawDirect(sw, gest128K);
 				else
 					GenereDrawDC(sw, delai, gest128K, modeLigne == 8 ? 0x3F : modeLigne == 4 ? 0x1F : modeLigne == 2 ? 0xF : 0x7, optimSpeed);
 
@@ -1102,7 +1102,7 @@ namespace ConvImgCpc {
 				sw.WriteLine("Delta" + i.ToString() + ":\t\t; Taille #" + lg[i].ToString("X4"));
 				Save.SauveAssembleur(sw, bufOut[i], lg[i], param);
 			}
-			if (!chkNoPtr.Checked || gest128K)
+			if (gest128K)
 				GenerePointeurs(sw, posPack, bank, gest128K && numBank > 0xC0);
 			else {
 				sw.WriteLine("	DB	#FF			; Fin de l'animation");
@@ -1133,7 +1133,6 @@ namespace ConvImgCpc {
 
 		private void chk128Ko_CheckedChanged(object sender, EventArgs e) {
 			tbxAdrMax.Visible = chkMaxMem.Visible = chk128Ko.Checked;
-			chkNoPtr.Visible = !chk128Ko.Checked;
 		}
 
 		private void chkDelai_CheckedChanged(object sender, EventArgs e) {
