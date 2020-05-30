@@ -247,8 +247,8 @@
             "Bayer 3 (4X4)",
             "Ordered 1 (2x2)",
             "Ordered 2 (3x3)",
-            "Ordered 3 (3x3)",
-            "Ordered 4 (4x4)",
+            "Ordered 3 (4x4)",
+            "Ordered 4 (8x8)",
             "ZigZag1 (3x3)",
             "ZigZag2 (4x3)",
             "ZigZag3 (5x4)",
@@ -278,6 +278,11 @@
 			this.pctTrame.Name = "pctTrame";
 			this.pctTrame.Size = new System.Drawing.Size(70, 20);
 			this.pctTrame.TabIndex = 9;
+			this.pctTrame.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
 			this.pctTrame.Visible = false;
 			this.pctTrame.ValueChanged += new System.EventHandler(this.pctTrame_ValueChanged);
 			// 

@@ -31,13 +31,18 @@ namespace ConvImgCpc {
 		static double[,] ord2 =		{	{8 , 3 , 4 },
 										{6 , 1 , 2 },
 										{7 , 5 , 9 }};
-		static double[,] ord3 =		{	{1 , 7 , 4 },
-										{5 , 8 , 3 },
-										{6 , 2 , 9 }};
-		static double[,] ord4 =		{	{0 , 8 , 2 , 10 },
+		static double[,] ord3 =		{	{0 , 8 , 2 , 10 },
 										{12 , 4 , 14 , 6 },
 										{3 , 11 , 1 , 9 },
 										{15 , 7 , 13 , 5 }};
+		static double[,] ord4 =		{	{0,48,12,60, 3,51,15,63},
+										{32,16,44,28,35,19,47,31},
+										{8,56, 4,52,11,59, 7,55},
+										{40,24,36,20,43,27,39,23},
+										{2,50,14,62, 1,49,13,61},
+										{34,18,46,30,33,17,45,29},
+										{10,58, 6,54, 9,57, 5,53},
+										{42,26,38,22,41,25,37,21 }};
 		static double[,] zigzag1 = {	{0, 4 , 0},
 										{3 , 0, 1 },
 										{0, 2 , 0}};
@@ -88,8 +93,8 @@ namespace ConvImgCpc {
 			{ "Bayer 3 (4X4)",			bayer3},
 			{ "Ordered 1 (2x2)",		ord1},
 			{ "Ordered 2 (3x3)",		ord2},
-			{ "Ordered 3 (3x3)",		ord3},
-			{ "Ordered 4 (4x4)",		ord4},
+			{ "Ordered 3 (4x4)",		ord3},
+			{ "Ordered 4 (8x8)",		ord4},
 			{ "ZigZag1 (3x3)",			zigzag1},
 			{ "ZigZag2 (4x3)",			zigzag2},
 			{ "ZigZag3 (5x4)",			zigzag3},
@@ -205,7 +210,7 @@ namespace ConvImgCpc {
 			for (int i = 0; i < 256; i++)
 				tblContrast[i] = MinMaxByte(((((i / 255.0) - 0.5) * c) + 0.5) * 255);
 
-			int pct = prm.cpcPlus ? prm.pct << 2 : prm.pct;
+			int pct = prm.cpcPlus ? prm.pct << 3 : prm.pct << 1;
 			if (pct > 0 && dicMat.ContainsKey(prm.methode)) {
 				matDither = dicMat[prm.methode];
 				double sum = 0;
@@ -256,14 +261,13 @@ namespace ConvImgCpc {
 					}
 
 					// Appliquer la matrice de tramage
-					if (pct > 0) {
+					if (pct > 0 && prm.methode != "Floyd-Steinberg (2x2)") {
 						int xm = (xPix / Tx) % matDither.GetLength(0);
 						int ym = (yPix >> 1) % matDither.GetLength(1);
 						p.r = MinMaxByte(p.r + matDither[xm, ym]);
 						p.v = MinMaxByte(p.v + matDither[xm, ym]);
 						p.b = MinMaxByte(p.b + matDither[xm, ym]);
 					}
-
 
 					// Recherche le point dans la couleur cpc la plus proche
 					if (prm.cpcPlus) {
@@ -302,29 +306,20 @@ namespace ConvImgCpc {
 						}
 						choix = BitmapCpc.RgbCPC[indexChoix];
 					}
+
+					if (pct > 0 && prm.methode == "Floyd-Steinberg (2x2)") {
+						for (int y = 0; y < matDither.GetLength(1); y++)
+							for (int x = 0; x < matDither.GetLength(0); x++)
+								if (xPix + Tx * x < source.Width && yPix + 2 * y < source.Height) {
+									RvbColor pix = source.GetPixelColor(xPix + Tx * x, yPix + 2 * y);
+									pix.r = MinMaxByte(pix.r + (p.r - choix.r) * matDither[x, y] / 256);
+									pix.v = MinMaxByte(pix.v + (p.v - choix.v) * matDither[x, y] / 256);
+									pix.b = MinMaxByte(pix.b + (p.b - choix.b) * matDither[x, y] / 256);
+									source.SetPixel(xPix + Tx * x, yPix + 2 * y, pix);
+								}
+					}
+
 					CoulTrouvee[indexChoix, (dest.modeVirtuel == 5 ? yPix >> 1 : 0)]++;
-					//if (pct > 0) {
-					//	// Applique une matrice de tramage
-
-
-					//	RvbColor pix = source.GetPixelColor(xPix, yPix);
-					//	pix.r = MinMaxByte(pix.r + (p.r - choix.r) * matDither[(xPix / Tx) % matDither.GetLength(0), (yPix >> 1) % matDither.GetLength(1)]);
-					//	pix.v = MinMaxByte(pix.v + (p.v - choix.v) * matDither[(xPix / Tx) % matDither.GetLength(0), (yPix >> 1) % matDither.GetLength(1)]);
-					//	pix.b = MinMaxByte(pix.b + (p.b - choix.b) * matDither[(xPix / Tx) % matDither.GetLength(0), (yPix >> 1) % matDither.GetLength(1)]);
-					//	source.SetPixel(xPix, yPix, pix);
-
-
-					//for (int y = 0; y < matDither.GetLength(1); y++)
-					//	for (int x = 0; x < matDither.GetLength(0); x++)
-					//		if (xPix + Tx * x < source.Width && yPix + 2 * y < source.Height) {
-					//			RvbColor pix = source.GetPixelColor(xPix + Tx * x, yPix + 2 * y);
-					//			pix.r = MinMaxByte(pix.r + (p.r - choix.r) * matDither[x, y]);
-					//			pix.v = MinMaxByte(pix.v + (p.v - choix.v) * matDither[x, y]);
-					//			pix.b = MinMaxByte(pix.b + (p.b - choix.b) * matDither[x, y]);
-					//			source.SetPixel(xPix + Tx * x, yPix + 2 * y, pix);
-					//		}
-					//}
-
 					source.SetPixel(xPix, yPix, prm.setPalCpc ? choix : p);
 				}
 			}

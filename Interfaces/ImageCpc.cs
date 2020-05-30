@@ -308,11 +308,11 @@ namespace ConvImgCpc {
 
 		#region Gestion palette
 		private RvbColor GetPaletteColor(int col) {
-			return cpcPlus ? new RvbColor((byte)(((Palette[col] & 0xF0) >> 4) * 17), (byte)(((Palette[col] & 0xF00) >> 8) * 17), (byte)((Palette[col] & 0x0F) * 17)) : BitmapCpc.RgbCPC[Palette[col] < 27 ? Palette[col] : 0];
+			return cpcPlus ? new RvbColor((byte)((Palette[col] & 0x0F) * 17), (byte)(((Palette[col] & 0xF00) >> 8) * 17), (byte)(((Palette[col] & 0xF0) >> 4) * 17)) : BitmapCpc.RgbCPC[Palette[col] < 27 ? Palette[col] : 0];
 		}
 
 		private int GetPalCPC(int c) {
-			return cpcPlus ? ((c & 0x0F) * 17) + ((((c & 0xF00) >> 8) * 17) << 8) + (((c & 0x0F) * 17) << 16) : BitmapCpc.RgbCPC[c < 27 ? c : 0].GetColor;
+			return cpcPlus ? (((c & 0xF0) >> 4) * 17) + ((((c & 0xF00) >> 8) * 17) << 8) + (((c & 0x0F) * 17) << 16) : BitmapCpc.RgbCPC[c < 27 ? c : 0].GetColor;
 		}
 
 		// Click sur un "lock"
