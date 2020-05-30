@@ -1,40 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace ConvImgCpc {
 	public static class Conversion {
-		const int K_R = 299;// 9798;
-		const int K_V = 587; // 19235;
-		const int K_B = 114; // 3735;
+		const int K_R = 9798;
+		const int K_V = 19235;
+		const int K_B = 3735;
 
 		const int SEUIL_LUM_1 = 0x44;
 		const int SEUIL_LUM_2 = 0x99;
 
-		static private int[,] CoulTrouvee = new int[4096, 272];
+		static private int[,] coulTrouvee = new int[4096, 272];
 		static private byte[] tblContrast = new byte[256];
 
 		static double[,] floyd =	{	{7, 3},
 										{5, 1}};
 		static double[,] bayer1 =	{	{1, 3},
-										{4 , 2  } };
-		static double[,] bayer2 =	{	{0, 12 , 3 , 15 },
-										{8 , 4 , 11 , 7 },
-										{2 , 14 , 1 , 13 },
-										{10 , 6 , 9 , 5 }};
-		static double[,] bayer3 =	{	{1 , 9 , 3 , 11 },
-										{13 , 5 , 15 , 7 },
-										{4 , 12 , 2 , 10 },
-										{16 , 8 , 14 , 6 }};
-		static double[,] ord1 =		{	{1 , 3 },
-										{2 , 4 }};
-		static double[,] ord2 =		{	{8 , 3 , 4 },
-										{6 , 1 , 2 },
-										{7 , 5 , 9 }};
-		static double[,] ord3 =		{	{0 , 8 , 2 , 10 },
-										{12 , 4 , 14 , 6 },
-										{3 , 11 , 1 , 9 },
-										{15 , 7 , 13 , 5 }};
+										{4, 2 }};
+		static double[,] bayer2 =	{	{0, 12, 3, 15},
+										{8, 4, 11, 7},
+										{2, 14, 1, 13},
+										{10, 6, 9, 5}};
+		static double[,] bayer3 =	{	{1, 9, 3, 11 },
+										{13, 5, 15, 7},
+										{4, 12, 2, 10},
+										{16, 8, 14, 6}};
+		static double[,] ord1 =		{	{1, 3},
+										{2, 4}};
+		static double[,] ord2 =		{	{8, 3, 4},
+										{6, 1, 2},
+										{7, 5, 9}};
+		static double[,] ord3 =		{	{0, 8, 2, 10},
+										{12, 4, 14, 6},
+										{3, 11, 1, 9},
+										{15, 7, 13, 5}};
 		static double[,] ord4 =		{	{0,48,12,60, 3,51,15,63},
 										{32,16,44,28,35,19,47,31},
 										{8,56, 4,52,11,59, 7,55},
@@ -43,32 +42,33 @@ namespace ConvImgCpc {
 										{34,18,46,30,33,17,45,29},
 										{10,58, 6,54, 9,57, 5,53},
 										{42,26,38,22,41,25,37,21 }};
-		static double[,] zigzag1 = {	{0, 4 , 0},
-										{3 , 0, 1 },
-										{0, 2 , 0}};
-		static double[,] zigzag2 = {	{0, 4 , 2 , 0},
-										{6 , 0, 5 , 3 },
-										{0, 7 , 1 , 0}};
-		static double[,] zigzag3 = {	{0, 0, 0, 7 , 0},
-										{0, 2 , 6 , 9 , 8 },
-										{3 , 0, 1 , 5 , 0},
-										{0, 4 , 0, 0, 0}};
+		static double[,] zigzag1 = {	{0, 4, 0},
+										{3, 0, 1 },
+										{0, 2, 0}};
+		static double[,] zigzag2 = {	{0, 4, 2, 0},
+										{6, 0, 5, 3 },
+										{0, 7, 1, 0}};
+		static double[,] zigzag3 = {	{0, 0, 0, 7, 0},
+										{0, 2, 6, 9, 8 },
+										{3, 0, 1, 5, 0},
+										{0, 4, 0, 0, 0}};
 
-		static double[,] test0 =	{	{ 1 },
-										{ 4 },
-										{ 2 }};
+		static double[,] test0 =	{	{1},
+										{4},
+										{3}};
 
-		static double[,] test1 = { { 1, 7 } };
+		static double[,] test1 =	{	{1, 7}};
 
-		static double[,] test2 = { { 1, 3 } };
+		static double[,] test2 =	{	{1, 3 },
+										{5, 7}};
 
-		static double[,] test3 =	{	{8 , 4 , 5 },
-										{3 , 0, 1 },
-										{7 , 2 , 6 }};
+		static double[,] test3 =	{	{8, 4, 5},
+										{3, 0, 1},
+										{7, 2, 6}};
 
 		static double[,] test4 =	{	{0, 3 },
 										{0, 5 },
-										{7 , 1 }};
+										{7, 1 }};
 
 		static double[,] test5 =	{	{0, 0, 7 },
 										{3, 5, 1 }};
@@ -82,7 +82,7 @@ namespace ConvImgCpc {
 										{11, 13, 0}};
 
 		static double[,] test8 =	{	{ 1},
-										{ 3 }};
+										{ 7}};
 
 		static double[,] matDither;
 
@@ -205,7 +205,7 @@ namespace ConvImgCpc {
 		// remplit un tableau avec ces couleurs
 		//
 		static private int ConvertPasse1(DirectBitmap source, ImageCpc dest, Param prm) {
-			System.Array.Clear(CoulTrouvee, 0, CoulTrouvee.GetLength(0) * CoulTrouvee.GetLength(1));
+			System.Array.Clear(coulTrouvee, 0, coulTrouvee.GetLength(0) * coulTrouvee.GetLength(1));
 			double c = prm.pctContrast / 100.0;
 			for (int i = 0; i < 256; i++)
 				tblContrast[i] = MinMaxByte(((((i / 255.0) - 0.5) * c) + 0.5) * 255);
@@ -306,7 +306,6 @@ namespace ConvImgCpc {
 						}
 						choix = BitmapCpc.RgbCPC[indexChoix];
 					}
-
 					if (pct > 0 && prm.methode == "Floyd-Steinberg (2x2)") {
 						for (int y = 0; y < matDither.GetLength(1); y++)
 							for (int x = 0; x < matDither.GetLength(0); x++)
@@ -318,20 +317,16 @@ namespace ConvImgCpc {
 									source.SetPixel(xPix + Tx * x, yPix + 2 * y, pix);
 								}
 					}
-
-					CoulTrouvee[indexChoix, (dest.modeVirtuel == 5 ? yPix >> 1 : 0)]++;
+					coulTrouvee[indexChoix, (dest.modeVirtuel == 5 ? yPix >> 1 : 0)]++;
 					source.SetPixel(xPix, yPix, prm.setPalCpc ? choix : p);
 				}
 			}
+			int nbCol = 0;
+			for (int i = 0; i < coulTrouvee.GetLength(0); i++)
+				if (coulTrouvee[i, 0] > 0)
+					nbCol++;
 
-			//Yliluoma(source, dest, prm);
-
-			int NbCol = 0;
-			for (int i = 0; i < CoulTrouvee.GetLength(0); i++)
-				if (CoulTrouvee[i, 0] > 0)
-					NbCol++;
-
-			return NbCol;
+			return nbCol;
 		}
 
 		//
@@ -342,18 +337,18 @@ namespace ConvImgCpc {
 
 			for (x = 0; x < maxCol; x++)
 				if (lockState[x] > 0)
-					CoulTrouvee[palette[x], 0] = 0;
+					coulTrouvee[palette[x], 0] = 0;
 
 			for (x = 0; x < maxCol; x++) {
 				int valMax = 0;
 				if (lockState[x] == 0) {
 					for (int i = 0; i < FindMax; i++) {
-						if (valMax < CoulTrouvee[i, 0]) {
-							valMax = CoulTrouvee[i, 0];
+						if (valMax < coulTrouvee[i, 0]) {
+							valMax = coulTrouvee[i, 0];
 							palette[x] = i;
 						}
 					}
-					CoulTrouvee[palette[x], 0] = 0;
+					coulTrouvee[palette[x], 0] = 0;
 				}
 			}
 			if (p.sortPal)
@@ -376,27 +371,27 @@ namespace ConvImgCpc {
 			for (int y = 0; y < yMax >> 1; y++) {
 				for (c = 0; c < 4; c++)
 					if (lockState[c] > 0)
-						CoulTrouvee[palette[c], y] = 0;
+						coulTrouvee[palette[c], y] = 0;
 
 				for (c = 0; c < 4; c++) {
 					int valMax = 0;
 					if (lockState[c] == 0) {
 						for (int i = 0; i < FindMax; i++) {
-							if (valMax < CoulTrouvee[i, y]) {
-								valMax = CoulTrouvee[i, y];
+							if (valMax < coulTrouvee[i, y]) {
+								valMax = coulTrouvee[i, y];
 								colMode5[y, c] = i;
 							}
 						}
-						CoulTrouvee[colMode5[y, c], y] = 0;
+						coulTrouvee[colMode5[y, c], y] = 0;
 					}
 				}
 				if (p.sortPal)
 					for (int c1 = 0; c1 < 4 - 1; c1++)
 						for (int c2 = c1 + 1; c2 < 4; c2++)
-							if (lockState[c1] == 0 && lockState[c2] == 0 && CoulTrouvee[y, c1] > CoulTrouvee[y, c2]) {
-								int tmp = CoulTrouvee[y, c1];
-								CoulTrouvee[y, c1] = CoulTrouvee[y, c2];
-								CoulTrouvee[y, c2] = tmp;
+							if (lockState[c1] == 0 && lockState[c2] == 0 && coulTrouvee[y, c1] > coulTrouvee[y, c2]) {
+								int tmp = coulTrouvee[y, c1];
+								coulTrouvee[y, c1] = coulTrouvee[y, c2];
+								coulTrouvee[y, c2] = tmp;
 							}
 			}
 		}
@@ -631,7 +626,6 @@ namespace ConvImgCpc {
 						SetPixTrameM1(source, dest, maxCol, tabCol);
 					else
 						SetPixCol(source, dest, maxCol, tabCol, p);
-
 		}
 
 		static public int Convert(DirectBitmap source, ImageCpc dest, Param p, bool noInfo = false) {
@@ -640,112 +634,10 @@ namespace ConvImgCpc {
 			if (!noInfo)
 				dest.main.SetInfo("Conversion terminée, nombre de couleurs dans l'image:" + nbCol);
 
+			if (dest.bitmapCpc.modeVirtuel >= 7)
+				dest.bitmapCpc.ConvertAscii(dest.BmpLock);
+
 			return nbCol;
 		}
-		/*
-		static byte[,] map = new byte[8, 8] {
-												{0,48,12,60, 3,51,15,63},
-												{32,16,44,28,35,19,47,31},
-												{8,56, 4,52,11,59, 7,55},
-												{40,24,36,20,43,27,39,23},
-												{2,50,14,62, 1,49,13,61},
-												{34,18,46,30,33,17,45,29},
-												{10,58, 6,54, 9,57, 5,53},
-												{42,26,38,22,41,25,37,21 }};
-
-		static int[] luma = new int[27];
-
-		static bool PaletteCompareLuma(int index1, int index2) {
-			return luma[index1] < luma[index2];
-		}
-
-		static double ColorCompare(int r1, int g1, int b1, int r2, int g2, int b2) {
-			double luma1 = (r1 * K_R + g1 * K_V + b1 * K_B);
-			double luma2 = (r2 * K_R + g2 * K_V + b2 * K_B);
-			double lumadiff = luma1 - luma2;
-			double diffR = (r1 - r2), diffG = (g1 - g2), diffB = (b1 - b2);
-			return (diffR * diffR * K_R + diffG * diffG * K_V + diffB * diffB * K_B) * 750 + lumadiff * lumadiff;
-		}
-
-		class MixingPlan {
-			public int n_colors;
-			public int[] colors;
-
-			public MixingPlan(int m) {
-				n_colors = m;
-				colors = new int[m];
-			}
-		};
-
-		static int MySortFunct(int a, int b) {
-			return luma[a] - luma[b];
-		}
-
-		static MixingPlan DeviseBestMixingPlan(int maxCol, RvbColor color) {
-			MixingPlan result = new MixingPlan(maxCol);
-			RvbColor src = new RvbColor(color.r, color.v, color.b);
-			int proportion_total = 0;
-			int[] so_far = new int[3] { 0, 0, 0 };
-			while (proportion_total < result.n_colors) {
-				int chosen_amount = 1;
-				int chosen = 0;
-				int max_test_count = Math.Max(1, proportion_total);
-				double least_penalty = -1;
-				for (int index = 0; index < 27; ++index) {
-					color = BitmapCpc.RgbCPC[index];
-					int[] sum = new int[3] { so_far[0], so_far[1], so_far[2] };
-					int[] add = new int[3] { color.r, color.v, color.b };
-					for (int p = 1; p <= max_test_count; p *= 2) {
-						for (int c = 0; c < 3; ++c)
-							sum[c] += add[c];
-
-						for (int c = 0; c < 3; ++c)
-							add[c] += add[c];
-
-						int t = proportion_total + p;
-						int[] test = new int[3] { sum[0] / t, sum[1] / t, sum[2] / t };
-						double penalty = ColorCompare(src.r, src.v, src.b, test[0], test[1], test[2]);
-						if (penalty < least_penalty || least_penalty < 0) {
-							least_penalty = penalty;
-							chosen = index;
-							chosen_amount = p;
-						}
-					}
-				}
-				for (int p = 0; p < chosen_amount; ++p) {
-					if (proportion_total >= result.n_colors)
-						break;
-
-					result.colors[proportion_total++] = chosen;
-				}
-				color = BitmapCpc.RgbCPC[chosen];
-				int[] palcolor = new int[3] { color.r, color.v, color.b };
-				for (int c = 0; c < 3; ++c)
-					so_far[c] += palcolor[c] * chosen_amount;
-			}
-			// Sort the colors according to luminance
-			Array.Sort(result.colors, MySortFunct);
-
-			//std::sort(result.colors, result.colors+MixingPlan::n_colors, PaletteCompareLuma);
-			return result;
-		}
-
-		static public void Yliluoma(DirectBitmap source, ImageCpc dest, Param p) {
-			for (int c = 0; c < 27; c++) {
-				RvbColor col = BitmapCpc.RgbCPC[c];
-				luma[c] = col.r * K_R + col.v * K_V + col.b * K_B;
-			}
-
-			int incY = p.modeVirtuel >= 8 ? 8 : 2;
-			for (int y = 0; y < dest.TailleY; y += incY) {
-				int Tx = 8 >> (p.modeVirtuel == 8 ? 0 : p.modeVirtuel > 8 ? p.modeVirtuel - 8 : p.modeVirtuel >= 5 ? 2 : p.modeVirtuel > 2 ? ((y & 2) == 0 ? p.modeVirtuel - 1 : p.modeVirtuel - 2) : p.modeVirtuel + 1);
-				int maxCol = CalcMaxCol(dest.modeVirtuel, y);
-				for (int x = 0; x < dest.TailleX; x += Tx) {
-					MixingPlan plan = DeviseBestMixingPlan(maxCol, source.GetPixelColor(x, y));
-					source.SetPixel(x, y, BitmapCpc.RgbCPC[plan.colors[map[(x / Tx) & 7, (y / incY) & 7] * plan.n_colors / 64]].GetColor);
-				}
-			}
-		}
-		 */
 	}
 }

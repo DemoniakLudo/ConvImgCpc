@@ -8,7 +8,7 @@ namespace ConvImgCpc {
 
 		public byte[] bmpCpc = new byte[0x10000];
 		private byte[] bufTmp = new byte[0x10000];
-
+		public byte[] imgAscii=new byte[0x1000];
 
 		public int[] Palette = { 1, 24, 20, 6, 26, 0, 2, 7, 10, 12, 14, 16, 18, 22, 1, 14, 1 };
 		static public int[] tabOctetMode = { 0x00, 0x80, 0x08, 0x88, 0x20, 0xA0, 0x28, 0xA8, 0x02, 0x82, 0x0A, 0x8A, 0x22, 0xA2, 0x2A, 0xAA };
@@ -349,7 +349,7 @@ namespace ConvImgCpc {
 			return pen;
 		}
 
-		public void CreeImgAscii(DirectBitmap bmpLock, byte[] imgAscii) {
+		private void CreeImgAscii(DirectBitmap bmpLock) {
 			int l = 0;
 			for (int y = 0; y < NbLig << 1; y += 16)
 				for (int x = 0; x < NbCol; x++) {
@@ -392,11 +392,18 @@ namespace ConvImgCpc {
 			return 0;
 		}
 
-		public void CreeImgAsciiMat(DirectBitmap bmpLock, byte[] imgAscii) {
+		private void CreeImgAsciiMat(DirectBitmap bmpLock) {
 			int l = 0;
 			for (int y = 0; y < NbLig << 1; y += 16)
 				for (int x = 0; x < NbCol; x++) 
 					imgAscii[l++] = (byte)(GetAsciiMat(bmpLock, x << 3, y) | (GetAsciiMat(bmpLock, x << 3, y + 8) << 4));
+		}
+
+		public void ConvertAscii(DirectBitmap bmpLock) {
+			if (modeVirtuel == 7)
+				CreeImgAsciiMat(bmpLock);
+			else
+				CreeImgAscii(bmpLock);
 		}
 
 		public Bitmap CreateImageFromCpc(byte[] source) {

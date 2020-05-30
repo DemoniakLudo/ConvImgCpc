@@ -338,7 +338,7 @@ namespace ConvImgCpc {
 			}
 			else {
 				RvbColor col = GetPaletteColor(numCol);
-				crayonColor.BackColor = Color.FromArgb(col.b, col.v, col.r);
+				crayonColor.BackColor = Color.FromArgb(col.r, col.v, col.b);
 			}
 		}
 
@@ -506,7 +506,7 @@ namespace ConvImgCpc {
 				int mode = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (yReel & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 				int Tx = (4 >> mode);
 				RvbColor col = GetPaletteColor(numCol % (modeVirtuel == 6 ? 16 : 1 << Tx));
-				crayonColor.BackColor = Color.FromArgb(col.b, col.v, col.r);
+				crayonColor.BackColor = Color.FromArgb(col.r, col.v, col.b);
 				crayonColor.Width = 35 * Tx;
 				crayonColor.Refresh();
 				try {
