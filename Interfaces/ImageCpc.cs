@@ -183,9 +183,9 @@ namespace ConvImgCpc {
 			main.SetInfo("Sauvegarde image CPC ok.");
 		}
 
-		public void SauveCmp(string fileName, Param param) {
+		public void SauveCmp(string fileName, Param param,string version = null) {
 			bitmapCpc.CreeBmpCpc(bmpLock);
-			SauveImage.SauveScr(fileName, bitmapCpc, param, true);
+			SauveImage.SauveScr(fileName, bitmapCpc, param, true, version);
 			main.SetInfo("Sauvegarde image compactée ok.");
 		}
 
@@ -307,10 +307,6 @@ namespace ConvImgCpc {
 		#endregion
 
 		#region Gestion palette
-		private RvbColor GetPaletteColor(int col) {
-			return cpcPlus ? new RvbColor((byte)((Palette[col] & 0x0F) * 17), (byte)(((Palette[col] & 0xF00) >> 8) * 17), (byte)(((Palette[col] & 0xF0) >> 4) * 17)) : BitmapCpc.RgbCPC[Palette[col] < 27 ? Palette[col] : 0];
-		}
-
 		private int GetPalCPC(int c) {
 			return cpcPlus ? (((c & 0xF0) >> 4) * 17) + ((((c & 0xF00) >> 8) * 17) << 8) + (((c & 0x0F) * 17) << 16) : BitmapCpc.RgbCPC[c < 27 ? c : 0].GetColor;
 		}
@@ -328,7 +324,7 @@ namespace ConvImgCpc {
 			Label colorClick = sender as Label;
 			numCol = colorClick.Tag != null ? (int)colorClick.Tag : 0;
 			if (!modeEdition.Checked) {
-				EditColor ed = new EditColor(numCol, Palette[numCol], GetPaletteColor(numCol).GetColorArgb, cpcPlus);
+				EditColor ed = new EditColor(numCol, Palette[numCol], bitmapCpc.GetColorPal(numCol).GetColorArgb, cpcPlus);
 				ed.ShowDialog(this);
 				if (ed.isValide) {
 					Palette[numCol] = ed.ValColor;
@@ -337,14 +333,14 @@ namespace ConvImgCpc {
 				}
 			}
 			else {
-				RvbColor col = GetPaletteColor(numCol);
+				RvbColor col = bitmapCpc.GetColorPal(numCol);
 				crayonColor.BackColor = Color.FromArgb(col.r, col.v, col.b);
 			}
 		}
 
 		private void UpdatePalette() {
 			for (int i = 0; i < 16; i++) {
-				colors[i].BackColor = Color.FromArgb(GetPaletteColor(i).GetColorArgb);
+				colors[i].BackColor = Color.FromArgb(bitmapCpc.GetColorPal(i).GetColorArgb);
 				colors[i].Refresh();
 			}
 		}
@@ -505,7 +501,7 @@ namespace ConvImgCpc {
 				int yReel = (offsetY + (e.Y / zoom)) & 0xFFE;
 				int mode = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (yReel & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 				int Tx = (4 >> mode);
-				RvbColor col = GetPaletteColor(numCol % (modeVirtuel == 6 ? 16 : 1 << Tx));
+				RvbColor col = bitmapCpc.GetColorPal(numCol % (modeVirtuel == 6 ? 16 : 1 << Tx));
 				crayonColor.BackColor = Color.FromArgb(col.r, col.v, col.b);
 				crayonColor.Width = 35 * Tx;
 				crayonColor.Refresh();

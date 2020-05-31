@@ -23,7 +23,6 @@
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
-			this.pictureBox = new System.Windows.Forms.PictureBox();
 			this.lockAllPal = new System.Windows.Forms.CheckBox();
 			this.modeEdition = new System.Windows.Forms.CheckBox();
 			this.hScrollBar = new System.Windows.Forms.HScrollBar();
@@ -37,27 +36,19 @@
 			this.bpRedo = new System.Windows.Forms.Button();
 			this.bpUndo = new System.Windows.Forms.Button();
 			this.chkRendu = new System.Windows.Forms.CheckBox();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
+			this.pictureBox = new System.Windows.Forms.PictureBox();
+			this.rbDraw = new System.Windows.Forms.RadioButton();
+			this.rbZoom = new System.Windows.Forms.RadioButton();
 			this.grpEdition.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
 			this.SuspendLayout();
-			// 
-			// pictureBox
-			// 
-			this.pictureBox.Location = new System.Drawing.Point(0, 0);
-			this.pictureBox.Name = "pictureBox";
-			this.pictureBox.Size = new System.Drawing.Size(768, 544);
-			this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.pictureBox.TabIndex = 0;
-			this.pictureBox.TabStop = false;
-			this.pictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TrtMouseMove);
-			this.pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TrtMouseMove);
 			// 
 			// lockAllPal
 			// 
 			this.lockAllPal.AutoSize = true;
 			this.lockAllPal.Location = new System.Drawing.Point(784, 602);
 			this.lockAllPal.Name = "lockAllPal";
-			this.lockAllPal.Size = new System.Drawing.Size(93, 17);
+			this.lockAllPal.Size = new System.Drawing.Size(103, 19);
 			this.lockAllPal.TabIndex = 1;
 			this.lockAllPal.Text = "Tout vérouiller";
 			this.lockAllPal.UseVisualStyleBackColor = true;
@@ -68,7 +59,7 @@
 			this.modeEdition.AutoSize = true;
 			this.modeEdition.Location = new System.Drawing.Point(797, 12);
 			this.modeEdition.Name = "modeEdition";
-			this.modeEdition.Size = new System.Drawing.Size(84, 17);
+			this.modeEdition.Size = new System.Drawing.Size(96, 19);
 			this.modeEdition.TabIndex = 2;
 			this.modeEdition.Text = "Editer image";
 			this.modeEdition.UseVisualStyleBackColor = true;
@@ -99,7 +90,7 @@
 			// crayonColor
 			// 
 			this.crayonColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.crayonColor.Location = new System.Drawing.Point(5, 121);
+			this.crayonColor.Location = new System.Drawing.Point(6, 321);
 			this.crayonColor.Name = "crayonColor";
 			this.crayonColor.Size = new System.Drawing.Size(70, 70);
 			this.crayonColor.TabIndex = 7;
@@ -107,18 +98,18 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(16, 99);
+			this.label3.Location = new System.Drawing.Point(17, 299);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(84, 13);
+			this.label3.Size = new System.Drawing.Size(95, 15);
 			this.label3.TabIndex = 4;
 			this.label3.Text = "Couleur crayon :";
 			// 
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(6, 64);
+			this.label2.Location = new System.Drawing.Point(7, 264);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(73, 13);
+			this.label2.Size = new System.Drawing.Size(82, 15);
 			this.label2.TabIndex = 5;
 			this.label2.Text = "Taille crayon :";
 			// 
@@ -133,7 +124,7 @@
             "3",
             "4",
             "8"});
-			this.tailleCrayon.Location = new System.Drawing.Point(95, 61);
+			this.tailleCrayon.Location = new System.Drawing.Point(96, 261);
 			this.tailleCrayon.Name = "tailleCrayon";
 			this.tailleCrayon.Size = new System.Drawing.Size(31, 21);
 			this.tailleCrayon.TabIndex = 3;
@@ -141,6 +132,8 @@
 			// 
 			// grpEdition
 			// 
+			this.grpEdition.Controls.Add(this.rbZoom);
+			this.grpEdition.Controls.Add(this.rbDraw);
 			this.grpEdition.Controls.Add(this.chkDoRedo);
 			this.grpEdition.Controls.Add(this.bpRedo);
 			this.grpEdition.Controls.Add(this.bpUndo);
@@ -159,9 +152,9 @@
 			// chkDoRedo
 			// 
 			this.chkDoRedo.AutoSize = true;
-			this.chkDoRedo.Location = new System.Drawing.Point(15, 317);
+			this.chkDoRedo.Location = new System.Drawing.Point(15, 471);
 			this.chkDoRedo.Name = "chkDoRedo";
-			this.chkDoRedo.Size = new System.Drawing.Size(108, 30);
+			this.chkDoRedo.Size = new System.Drawing.Size(121, 34);
 			this.chkDoRedo.TabIndex = 11;
 			this.chkDoRedo.Text = "Garder retouches\naprès recalcul";
 			this.chkDoRedo.UseVisualStyleBackColor = true;
@@ -169,7 +162,7 @@
 			// bpRedo
 			// 
 			this.bpRedo.Enabled = false;
-			this.bpRedo.Location = new System.Drawing.Point(36, 276);
+			this.bpRedo.Location = new System.Drawing.Point(36, 430);
 			this.bpRedo.Name = "bpRedo";
 			this.bpRedo.Size = new System.Drawing.Size(75, 23);
 			this.bpRedo.TabIndex = 10;
@@ -180,7 +173,7 @@
 			// bpUndo
 			// 
 			this.bpUndo.Enabled = false;
-			this.bpUndo.Location = new System.Drawing.Point(36, 247);
+			this.bpUndo.Location = new System.Drawing.Point(36, 401);
 			this.bpUndo.Name = "bpUndo";
 			this.bpUndo.Size = new System.Drawing.Size(75, 23);
 			this.bpUndo.TabIndex = 10;
@@ -191,13 +184,43 @@
 			// chkRendu
 			// 
 			this.chkRendu.AutoSize = true;
-			this.chkRendu.Location = new System.Drawing.Point(6, 19);
+			this.chkRendu.Location = new System.Drawing.Point(7, 219);
 			this.chkRendu.Name = "chkRendu";
-			this.chkRendu.Size = new System.Drawing.Size(107, 17);
+			this.chkRendu.Size = new System.Drawing.Size(120, 19);
 			this.chkRendu.TabIndex = 9;
 			this.chkRendu.Text = "Fenêtre de rendu";
 			this.chkRendu.UseVisualStyleBackColor = true;
 			this.chkRendu.CheckedChanged += new System.EventHandler(this.chkRendu_CheckedChanged);
+			// 
+			// pictureBox
+			// 
+			this.pictureBox.Location = new System.Drawing.Point(0, 0);
+			this.pictureBox.Name = "pictureBox";
+			this.pictureBox.Size = new System.Drawing.Size(768, 544);
+			this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.pictureBox.TabIndex = 0;
+			this.pictureBox.TabStop = false;
+			this.pictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TrtMouseMove);
+			this.pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TrtMouseMove);
+			// 
+			// rbDraw
+			// 
+			this.rbDraw.Checked = true;
+			this.rbDraw.Image = global::ConvImgCpc.Properties.Resources.Draw;
+			this.rbDraw.Location = new System.Drawing.Point(10, 19);
+			this.rbDraw.Name = "rbDraw";
+			this.rbDraw.Size = new System.Drawing.Size(48, 32);
+			this.rbDraw.TabIndex = 12;
+			this.rbDraw.UseVisualStyleBackColor = true;
+			// 
+			// rbZoom
+			// 
+			this.rbZoom.Image = global::ConvImgCpc.Properties.Resources.Zoom;
+			this.rbZoom.Location = new System.Drawing.Point(10, 57);
+			this.rbZoom.Name = "rbZoom";
+			this.rbZoom.Size = new System.Drawing.Size(48, 32);
+			this.rbZoom.TabIndex = 13;
+			this.rbZoom.UseVisualStyleBackColor = true;
 			// 
 			// ImageCpc
 			// 
@@ -216,9 +239,9 @@
 			this.MinimizeBox = false;
 			this.Name = "ImageCpc";
 			this.Text = "Image CPC";
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
 			this.grpEdition.ResumeLayout(false);
 			this.grpEdition.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -240,6 +263,8 @@
 		private System.Windows.Forms.Button bpRedo;
 		private System.Windows.Forms.Button bpUndo;
 		private System.Windows.Forms.CheckBox chkDoRedo;
+		private System.Windows.Forms.RadioButton rbDraw;
+		private System.Windows.Forms.RadioButton rbZoom;
 
 	}
 }

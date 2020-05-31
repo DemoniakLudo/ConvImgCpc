@@ -53,7 +53,7 @@
 			this.label9 = new System.Windows.Forms.Label();
 			this.bpRazLumi = new System.Windows.Forms.Button();
 			this.bpRazSat = new System.Windows.Forms.Button();
-			this.reducPal2 = new System.Windows.Forms.CheckBox();
+			this.reducPal3 = new System.Windows.Forms.CheckBox();
 			this.reducPal1 = new System.Windows.Forms.CheckBox();
 			this.newMethode = new System.Windows.Forms.CheckBox();
 			this.autoRecalc = new System.Windows.Forms.CheckBox();
@@ -75,6 +75,7 @@
 			this.nb = new System.Windows.Forms.CheckBox();
 			this.sortPal = new System.Windows.Forms.CheckBox();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.reducPal4 = new System.Windows.Forms.CheckBox();
 			this.bpBmoins = new System.Windows.Forms.Button();
 			this.bpVmoins = new System.Windows.Forms.Button();
 			this.bpRmoins = new System.Windows.Forms.Button();
@@ -96,6 +97,7 @@
 			this.RazB = new System.Windows.Forms.Button();
 			this.RazV = new System.Windows.Forms.Button();
 			this.RazR = new System.Windows.Forms.Button();
+			this.reducPal2 = new System.Windows.Forms.CheckBox();
 			this.bpSave = new System.Windows.Forms.Button();
 			this.lblInfoVersion = new System.Windows.Forms.Label();
 			this.withCode = new System.Windows.Forms.CheckBox();
@@ -260,7 +262,10 @@
             "Test5",
             "Test6",
             "Test7",
-            "Test8"});
+            "Test8",
+"Test9",
+
+			});
 			this.methode.Location = new System.Drawing.Point(48, 14);
 			this.methode.Name = "methode";
 			this.methode.Size = new System.Drawing.Size(117, 21);
@@ -499,22 +504,22 @@
 			this.bpRazSat.UseVisualStyleBackColor = true;
 			this.bpRazSat.Click += new System.EventHandler(this.bpRazSat_Click);
 			// 
-			// reducPal2
+			// reducPal3
 			// 
-			this.reducPal2.AutoSize = true;
-			this.reducPal2.Location = new System.Drawing.Point(357, 37);
-			this.reducPal2.Name = "reducPal2";
-			this.reducPal2.Size = new System.Drawing.Size(92, 19);
-			this.reducPal2.TabIndex = 47;
-			this.reducPal2.Text = "Réduction 2";
-			this.reducPal2.UseVisualStyleBackColor = true;
-			this.reducPal2.Visible = false;
-			this.reducPal2.CheckedChanged += new System.EventHandler(this.reducPal2_CheckedChanged);
+			this.reducPal3.AutoSize = true;
+			this.reducPal3.Location = new System.Drawing.Point(274, 37);
+			this.reducPal3.Name = "reducPal3";
+			this.reducPal3.Size = new System.Drawing.Size(92, 19);
+			this.reducPal3.TabIndex = 47;
+			this.reducPal3.Text = "Réduction 3";
+			this.reducPal3.UseVisualStyleBackColor = true;
+			this.reducPal3.Visible = false;
+			this.reducPal3.CheckedChanged += new System.EventHandler(this.reducPal3_CheckedChanged);
 			// 
 			// reducPal1
 			// 
 			this.reducPal1.AutoSize = true;
-			this.reducPal1.Location = new System.Drawing.Point(174, 37);
+			this.reducPal1.Location = new System.Drawing.Point(72, 37);
 			this.reducPal1.Name = "reducPal1";
 			this.reducPal1.Size = new System.Drawing.Size(92, 19);
 			this.reducPal1.TabIndex = 46;
@@ -526,7 +531,7 @@
 			// newMethode
 			// 
 			this.newMethode.AutoSize = true;
-			this.newMethode.Location = new System.Drawing.Point(358, 14);
+			this.newMethode.Location = new System.Drawing.Point(375, 15);
 			this.newMethode.Name = "newMethode";
 			this.newMethode.Size = new System.Drawing.Size(93, 19);
 			this.newMethode.TabIndex = 45;
@@ -711,7 +716,7 @@
 			// nb
 			// 
 			this.nb.AutoSize = true;
-			this.nb.Location = new System.Drawing.Point(175, 14);
+			this.nb.Location = new System.Drawing.Point(173, 15);
 			this.nb.Name = "nb";
 			this.nb.Size = new System.Drawing.Size(93, 19);
 			this.nb.TabIndex = 51;
@@ -722,7 +727,7 @@
 			// sortPal
 			// 
 			this.sortPal.AutoSize = true;
-			this.sortPal.Location = new System.Drawing.Point(6, 14);
+			this.sortPal.Location = new System.Drawing.Point(6, 15);
 			this.sortPal.Name = "sortPal";
 			this.sortPal.Size = new System.Drawing.Size(51, 19);
 			this.sortPal.TabIndex = 50;
@@ -732,6 +737,7 @@
 			// 
 			// groupBox2
 			// 
+			this.groupBox2.Controls.Add(this.reducPal4);
 			this.groupBox2.Controls.Add(this.bpBmoins);
 			this.groupBox2.Controls.Add(this.bpVmoins);
 			this.groupBox2.Controls.Add(this.bpRmoins);
@@ -757,8 +763,9 @@
 			this.groupBox2.Controls.Add(this.RazV);
 			this.groupBox2.Controls.Add(this.RazR);
 			this.groupBox2.Controls.Add(this.bpRazContrast);
-			this.groupBox2.Controls.Add(this.reducPal2);
+			this.groupBox2.Controls.Add(this.reducPal3);
 			this.groupBox2.Controls.Add(this.contrast);
+			this.groupBox2.Controls.Add(this.reducPal2);
 			this.groupBox2.Controls.Add(this.reducPal1);
 			this.groupBox2.Controls.Add(this.bpRazSat);
 			this.groupBox2.Controls.Add(this.newMethode);
@@ -774,6 +781,18 @@
 			this.groupBox2.TabIndex = 52;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Effets de palette";
+			// 
+			// reducPal4
+			// 
+			this.reducPal4.AutoSize = true;
+			this.reducPal4.Location = new System.Drawing.Point(375, 37);
+			this.reducPal4.Name = "reducPal4";
+			this.reducPal4.Size = new System.Drawing.Size(92, 19);
+			this.reducPal4.TabIndex = 60;
+			this.reducPal4.Text = "Réduction 4";
+			this.reducPal4.UseVisualStyleBackColor = true;
+			this.reducPal4.Visible = false;
+			this.reducPal4.CheckedChanged += new System.EventHandler(this.reducPal4_CheckedChanged);
 			// 
 			// bpBmoins
 			// 
@@ -985,6 +1004,18 @@
 			this.RazR.UseVisualStyleBackColor = true;
 			this.RazR.Click += new System.EventHandler(this.RazR_Click);
 			// 
+			// reducPal2
+			// 
+			this.reducPal2.AutoSize = true;
+			this.reducPal2.Location = new System.Drawing.Point(173, 37);
+			this.reducPal2.Name = "reducPal2";
+			this.reducPal2.Size = new System.Drawing.Size(92, 19);
+			this.reducPal2.TabIndex = 46;
+			this.reducPal2.Text = "Réduction 2";
+			this.reducPal2.UseVisualStyleBackColor = true;
+			this.reducPal2.Visible = false;
+			this.reducPal2.CheckedChanged += new System.EventHandler(this.reducPal2_CheckedChanged);
+			// 
 			// bpSave
 			// 
 			this.bpSave.Location = new System.Drawing.Point(3, 280);
@@ -1143,7 +1174,7 @@
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.Button bpRazLumi;
 		private System.Windows.Forms.Button bpRazSat;
-		private System.Windows.Forms.CheckBox reducPal2;
+		private System.Windows.Forms.CheckBox reducPal3;
 		private System.Windows.Forms.CheckBox reducPal1;
 		private System.Windows.Forms.CheckBox newMethode;
 		private System.Windows.Forms.CheckBox autoRecalc;
@@ -1202,6 +1233,8 @@
 		private System.Windows.Forms.Button RazB;
 		private System.Windows.Forms.Button RazV;
 		private System.Windows.Forms.Button RazR;
+		private System.Windows.Forms.CheckBox reducPal2;
+		private System.Windows.Forms.CheckBox reducPal4;
 	}
 }
 

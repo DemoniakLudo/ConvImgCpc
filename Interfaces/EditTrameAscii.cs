@@ -18,10 +18,10 @@ namespace ConvImgCpc {
 			pictEditMatrice.Image = bmpTrame.Bitmap;
 			DrawMatrice();
 			DrawTrame();
-			lblPen0.BackColor = Color.FromArgb(BitmapCpc.RgbCPC[bmpCpc.Palette[0]].GetColorArgb);
-			lblPen1.BackColor = Color.FromArgb(BitmapCpc.RgbCPC[bmpCpc.Palette[1]].GetColorArgb);
-			lblPen2.BackColor = Color.FromArgb(BitmapCpc.RgbCPC[bmpCpc.Palette[2]].GetColorArgb);
-			lblPen3.BackColor = Color.FromArgb(BitmapCpc.RgbCPC[bmpCpc.Palette[3]].GetColorArgb);
+			lblPen0.BackColor = Color.FromArgb(bmpCpc.GetColorPal(0).GetColorArgb);
+			lblPen1.BackColor = Color.FromArgb(bmpCpc.GetColorPal(1).GetColorArgb);
+			lblPen2.BackColor = Color.FromArgb(bmpCpc.GetColorPal(2).GetColorArgb);
+			lblPen3.BackColor = Color.FromArgb(bmpCpc.GetColorPal(3).GetColorArgb);
 			DrawPens();
 		}
 
@@ -32,8 +32,10 @@ namespace ConvImgCpc {
 				for (int y = 0; y < 4; y++) {
 					for (int x = 0; x < 4; x++) {
 						for (int zx = 0; zx < (x == 3 ? 7 : 8); zx++)
-							for (int zy = 0; zy < 8; zy++)
-								bmp.SetPixel(zx + ((x + (i << 2)) << 3), zy + (y << 3), BitmapCpc.RgbCPC[bmpCpc.Palette[BitmapCpc.trameM1[i, x, y]]]);
+							for (int zy = 0; zy < 8; zy++) {
+								RvbColor c = bmpCpc.GetColorPal(BitmapCpc.trameM1[i, x, y]);
+								bmp.SetPixel(zx + ((x + (i << 2)) << 3), zy + (y << 3), c);
+							}
 					}
 				}
 			}
@@ -46,16 +48,18 @@ namespace ConvImgCpc {
 			for (int y = 0; y < 4; y++) {
 				for (int x = 0; x < 4; x++) {
 					for (int zx = 0; zx < 78; zx++)
-						for (int zy = 0; zy < 78; zy++)
-							bmpTrame.SetPixel(zx + (x * 80), zy + (y * 80), BitmapCpc.RgbCPC[bmpCpc.Palette[BitmapCpc.trameM1[numTrame, x, y]]]);
+						for (int zy = 0; zy < 78; zy++) {
+							RvbColor c = bmpCpc.GetColorPal(BitmapCpc.trameM1[numTrame, x, y]);
+							bmpTrame.SetPixel(zx + (x * 80), zy + (y * 80), c);
+						}
 				}
 			}
 			pictEditMatrice.Refresh();
 		}
 
 		private void DrawPens() {
-			lblPenLeft.BackColor = Color.FromArgb(BitmapCpc.RgbCPC[bmpCpc.Palette[penLeft]].GetColorArgb);
-			lblPenRight.BackColor = Color.FromArgb(BitmapCpc.RgbCPC[bmpCpc.Palette[penRight]].GetColorArgb);
+			lblPenLeft.BackColor = Color.FromArgb(bmpCpc.GetColorPal(penLeft).GetColorArgb);
+			lblPenRight.BackColor = Color.FromArgb(bmpCpc.GetColorPal(penRight).GetColorArgb);
 		}
 
 		private void pictAllMatrice_MouseDown(object sender, MouseEventArgs e) {

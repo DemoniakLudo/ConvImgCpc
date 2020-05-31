@@ -81,8 +81,13 @@ namespace ConvImgCpc {
 										{13, 10, 19 },
 										{11, 13, 0}};
 
-		static double[,] test8 =	{	{ 1},
-										{ 7}};
+		static double[,] test8 =	{	{3, 7, 6, 2},
+										{5, 4, 1, 0}};
+
+		static double[,] test9 =	{	{1, 5, 10, 14},
+										{3, 7, 8, 12},
+										{13, 9, 6, 2},
+										{15, 11, 4, 0}};
 
 		static double[,] matDither;
 
@@ -107,6 +112,7 @@ namespace ConvImgCpc {
 			{ "Test6",					test6},
 			{ "Test7",					test7},
 			{ "Test8",					test8},
+			{ "Test9",					test9},
 		};
 
 		static byte MinMaxByte(double value) {
@@ -280,9 +286,19 @@ namespace ConvImgCpc {
 							nb |= 0x01;
 						}
 						if (prm.reductPal2) {
+							nr &= 0x0E;
+							nv &= 0x0E;
+							nb &= 0x0E;
+						}
+						if (prm.reductPal3) {
 							nr |= 0x02;
 							nv |= 0x02;
 							nb |= 0x02;
+						}
+						if (prm.reductPal4) {
+							nr &= 0x0D;
+							nv &= 0x0D;
+							nb &= 0x0D;
 						}
 						choix = new RvbColor((byte)(nr * 17), (byte)(nv * 17), (byte)(nb * 17));
 						indexChoix = ((choix.v << 4) & 0xF00) + ((choix.b) & 0xF0) + ((choix.r) >> 4);
@@ -608,8 +624,7 @@ namespace ConvImgCpc {
 				// réduit l'image à MaxCol couleurs.
 				for (int y = 0; y < dest.TailleY; y += 2)
 					for (i = 0; i < maxCol; i++)
-						tabCol[i, y >> 1] = p.cpcPlus ? new RvbColor((byte)((dest.Palette[i] & 0x0F) * 17), (byte)(((dest.Palette[i] & 0xF00) >> 8) * 17), (byte)(((dest.Palette[i] & 0xF0) >> 4) * 17))
-							: BitmapCpc.RgbCPC[dest.Palette[i] < 27 ? dest.Palette[i] : 0];
+						tabCol[i, y >> 1] = dest.bitmapCpc.GetColorPal(i);
 			}
 
 			if (p.motif)

@@ -333,10 +333,10 @@ namespace ConvImgCpc {
 
 		static byte[] ModePal = new byte[48];
 
-		static public int SauveScr(string NomFic, BitmapCpc bitmapCpc, Param param, bool compact) {
+		static public int SauveScr(string fileName, BitmapCpc bitmapCpc, Param param, bool compact, string version = null) {
 			byte[] bufPack = new byte[0x8000];
 			bool Overscan = (bitmapCpc.NbLig * bitmapCpc.NbCol > 0x3F00);
-			if (param.withPalette) {
+			if (param.withPalette && version == null) {
 				if (param.cpcPlus) {
 					ModePal[0] = (byte)(bitmapCpc.modeVirtuel | 0x8C);
 					int k = 1;
@@ -355,7 +355,7 @@ namespace ConvImgCpc {
 			byte[] imgCpc = bitmapCpc.bmpCpc;
 			if (!Overscan) {
 				Buffer.BlockCopy(ModePal, 0, imgCpc, 0x17D0, ModePal.Length);
-				if (param.withCode) {
+				if (param.withCode && version == null) {
 					if (param.cpcPlus) {
 						Buffer.BlockCopy(CodeP0, 0, imgCpc, 0x07D0, CodeP0.Length);
 						Buffer.BlockCopy(CodeP1, 0, imgCpc, 0x0FD0, CodeP1.Length);
@@ -376,7 +376,7 @@ namespace ConvImgCpc {
 			else {
 				if (bitmapCpc.NbLig == 272 && bitmapCpc.NbCol == 96) {
 					Buffer.BlockCopy(ModePal, 0, imgCpc, 0x600, ModePal.Length);
-					if (param.withCode) {
+					if (param.withCode && version == null) {
 						if (param.cpcPlus)
 							Buffer.BlockCopy(CodeOvP, 0, imgCpc, 0x621, CodeOvP.Length);
 						else
@@ -407,7 +407,7 @@ namespace ConvImgCpc {
 			int lg = bitmapCpc.BitmapSize;
 			if (compact) {
 				lg = PackDepack.Pack(bitmapCpc.bmpCpc, lg, bufPack, 0) + 1; // Prendre 1 octet de marge ?
-				if (param.withCode) {
+				if (param.withCode && version == null) {
 					Buffer.BlockCopy(codeDepack, 0, bufPack, lg, codeDepack.Length);
 					bufPack[lg + 4] = (byte)(startAdr & 0xFF);
 					bufPack[lg + 5] = (byte)(startAdr >> 8);
@@ -424,11 +424,28 @@ namespace ConvImgCpc {
 					exec = 0;
 				}
 			}
-			entete = CpcSystem.CreeEntete(NomFic, startAdr, (short)lg, exec);
-			BinaryWriter fp = new BinaryWriter(new FileStream(NomFic, FileMode.Create));
-			fp.Write(CpcSystem.AmsdosToByte(entete));
-			fp.Write(compact ? bufPack : bitmapCpc.bmpCpc, 0, lg);
-			fp.Close();
+			if (version != null) {
+				StreamWriter sw = Save.OpenAsm(fileName, version, param);
+				sw.WriteLine("	ORG	#4000");
+				sw.WriteLine("	Nolist");
+				sw.WriteLine("ImageCmp:");
+				Save.SauveAssembleur(sw, bufPack, lg, param);
+				sw.WriteLine("	List");
+				if (param.withCode) {
+					sw.WriteLine("_StartDepack:");
+					sw.WriteLine("	LD	HL,ImageCmp");
+					sw.WriteLine("	LD	DE,#C000");
+					Save.GenereDepack(sw);
+				}
+				Save.CloseAsm(sw);
+			}
+			else {
+				entete = CpcSystem.CreeEntete(fileName, startAdr, (short)lg, exec);
+				BinaryWriter fp = new BinaryWriter(new FileStream(fileName, FileMode.Create));
+				fp.Write(CpcSystem.AmsdosToByte(entete));
+				fp.Write(compact ? bufPack : bitmapCpc.bmpCpc, 0, lg);
+				fp.Close();
+			}
 			return (lg);
 		}
 

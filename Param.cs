@@ -14,6 +14,8 @@
 		public bool newMethode;
 		public bool reductPal1;
 		public bool reductPal2;
+		public bool reductPal3;
+		public bool reductPal4;
 		public bool sortPal;
 		public int nbCols, nbLignes;
 		public int modeVirtuel;

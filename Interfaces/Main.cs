@@ -103,10 +103,10 @@ namespace ConvImgCpc {
 						g.DrawImage(imgSrc.GetImage, -(posx << 1), -(posy << 1), tx << 1, ty << 1);
 						break;
 				}
-				if (!noInfo)
+				if (!noInfo && doConvert)
 					SetInfo("Conversion en cours...");
 
-				Conversion.Convert(tmp, imgCpc, param, noInfo);
+				Conversion.Convert(tmp, imgCpc, param, !doConvert || noInfo);
 				bpSave.Enabled = bpConvert.Enabled = true;
 				tmp.Dispose();
 			}
@@ -214,6 +214,8 @@ namespace ConvImgCpc {
 				newMethode.Checked = param.newMethode;
 				reducPal1.Checked = param.reductPal1;
 				reducPal2.Checked = param.reductPal2;
+				reducPal3.Checked = param.reductPal3;
+				reducPal4.Checked = param.reductPal4;
 				sortPal.Checked = param.sortPal;
 				radioFit.Checked = param.sMode == Param.SizeMode.Fit;
 				radioKeepLarger.Checked = param.sMode == Param.SizeMode.KeepLarger;
@@ -278,7 +280,7 @@ namespace ConvImgCpc {
 		private void bpSave_Click(object sender, EventArgs e) {
 			SaveFileDialog dlg = new SaveFileDialog();
 			dlg.InitialDirectory = lastSavePath;
-			dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.png)|*.png|Sprite assembleur (.asm)|*.asm|Sprite assembleur compacté (.asm)|*.asm|Ecran compacté (.cmp)|*.cmp|Palette (.pal)|*.pal|Animation DeltaPack (.asm)|*.asm|Paramètres (.xml)|*.xml";
+			dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.png)|*.png|Sprite assembleur (.asm)|*.asm|Sprite assembleur compacté (.asm)|*.asm|Ecran compacté (.cmp)|*.cmp|Ecran assembleur compacté (.asm)|*.asm|Palette (.pal)|*.pal|Animation DeltaPack (.asm)|*.asm|Paramètres (.xml)|*.xml";
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
 				lastSavePath = Path.GetDirectoryName(dlg.FileName);
@@ -304,14 +306,18 @@ namespace ConvImgCpc {
 						break;
 
 					case 6:
-						imgCpc.SauvePalette(dlg.FileName, param);
+						imgCpc.SauveCmp(dlg.FileName, param, lblInfoVersion.Text);
 						break;
 
 					case 7:
-						imgCpc.SauveDeltaPack(dlg.FileName, lblInfoVersion.Text, param, true);
+						imgCpc.SauvePalette(dlg.FileName, param);
 						break;
 
 					case 8:
+						imgCpc.SauveDeltaPack(dlg.FileName, lblInfoVersion.Text, param, true);
+						break;
+
+					case 9:
 						SaveParam(dlg.FileName);
 						break;
 				}
@@ -343,7 +349,7 @@ namespace ConvImgCpc {
 		private void modePlus_CheckedChanged(object sender, EventArgs e) {
 			imgCpc.cpcPlus = modePlus.Checked;
 			newMethode.Visible = !modePlus.Checked;
-			reducPal1.Visible = reducPal2.Visible = modePlus.Checked;
+			reducPal1.Visible = reducPal2.Visible = reducPal3.Visible = reducPal4.Visible = modePlus.Checked;
 			param.cpcPlus = modePlus.Checked;
 			Convert(false);
 		}
@@ -444,6 +450,16 @@ namespace ConvImgCpc {
 			Convert(false);
 		}
 
+		private void reducPal3_CheckedChanged(object sender, EventArgs e) {
+			param.reductPal3 = reducPal3.Checked;
+			Convert(false);
+		}
+
+		private void reducPal4_CheckedChanged(object sender, EventArgs e) {
+			param.reductPal4 = reducPal4.Checked;
+			Convert(false);
+		}
+
 		private void withCode_CheckedChanged(object sender, EventArgs e) {
 			param.withCode = withCode.Checked;
 		}
@@ -493,6 +509,7 @@ namespace ConvImgCpc {
 		private void bpEditTrame_Click(object sender, EventArgs e) {
 			EditTrameAscii dg = new EditTrameAscii(imgCpc.bitmapCpc);
 			dg.ShowDialog();
+			Convert(false);
 		}
 
 		private void red_ValueChanged(object sender, EventArgs e) {

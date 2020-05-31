@@ -8,7 +8,7 @@ namespace ConvImgCpc {
 
 		public byte[] bmpCpc = new byte[0x10000];
 		private byte[] bufTmp = new byte[0x10000];
-		public byte[] imgAscii=new byte[0x1000];
+		public byte[] imgAscii = new byte[0x1000];
 
 		public int[] Palette = { 1, 24, 20, 6, 26, 0, 2, 7, 10, 12, 14, 16, 18, 22, 1, 14, 1 };
 		static public int[] tabOctetMode = { 0x00, 0x80, 0x08, 0x88, 0x20, 0xA0, 0x28, 0xA8, 0x02, 0x82, 0x0A, 0x8A, 0x22, 0xA2, 0x2A, 0xAA };
@@ -149,6 +149,11 @@ namespace ConvImgCpc {
 
 		public BitmapCpc(byte[] source) {
 			Array.Copy(source, 0x80, bmpCpc, 0, source.Length - 0x80);
+		}
+
+		public RvbColor GetColorPal(int palEntry) {
+			int col = Palette[palEntry];
+			return cpcPlus ? new RvbColor((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17)) : RgbCPC[col < 27 ? col : 0];
 		}
 
 		private void SetPalette(byte[] palStart, int startAdr, bool plus) {
@@ -379,7 +384,7 @@ namespace ConvImgCpc {
 				for (int ym = 0; ym < 4; ym++) {
 					for (int xm = 0; xm < 4; xm++) {
 						RvbColor pix = bmpLock.GetPixelColor(x + (xm << 1), y + (ym << 1));
-						RvbColor c = RgbCPC[Palette[trameM1[i, xm, ym]]];
+						RvbColor c = GetColorPal(trameM1[i, xm, ym]);
 						if (c.r != pix.r || c.v != pix.v || c.b != pix.b) {
 							found = false;
 							break;
@@ -395,7 +400,7 @@ namespace ConvImgCpc {
 		private void CreeImgAsciiMat(DirectBitmap bmpLock) {
 			int l = 0;
 			for (int y = 0; y < NbLig << 1; y += 16)
-				for (int x = 0; x < NbCol; x++) 
+				for (int x = 0; x < NbCol; x++)
 					imgAscii[l++] = (byte)(GetAsciiMat(bmpLock, x << 3, y) | (GetAsciiMat(bmpLock, x << 3, y + 8) << 4));
 		}
 
@@ -452,7 +457,8 @@ namespace ConvImgCpc {
 							loc.SetHorLineDouble(xBitmap + 2, y, 2, GetPalCPC(Palette[((octet >> 6) & 1) + ((octet >> 1) & 2)]));
 							loc.SetHorLineDouble(xBitmap + 4, y, 2, GetPalCPC(Palette[((octet >> 5) & 1) + ((octet >> 0) & 2)]));
 							loc.SetHorLineDouble(xBitmap + 6, y, 2, GetPalCPC(Palette[((octet >> 4) & 1) + ((octet << 1) & 2)]));
-							xBitmap += 8; break;
+							xBitmap += 8;
+							break;
 
 						case 2:
 							for (int i = 8; i-- > 0; ) {
