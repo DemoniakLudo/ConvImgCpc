@@ -65,6 +65,9 @@
     <Compile Include="CpcSystem.cs" />
     <Compile Include="DeltaPack.cs" />
     <Compile Include="DirectBitmap.cs" />
+    <Compile Include="Interfaces\Edition.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Interfaces\EditColor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -178,6 +181,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Icones\Copy.png" />
     <Content Include="Icones\Draw.png" />
     <Content Include="Icones\Zoom.png" />
     <Content Include="ToDoList.txt" />

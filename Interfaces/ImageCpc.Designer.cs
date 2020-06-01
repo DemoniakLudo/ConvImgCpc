@@ -27,18 +27,21 @@
 			this.modeEdition = new System.Windows.Forms.CheckBox();
 			this.hScrollBar = new System.Windows.Forms.HScrollBar();
 			this.vScrollBar = new System.Windows.Forms.VScrollBar();
-			this.crayonColor = new System.Windows.Forms.Label();
+			this.drawColor = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.tailleCrayon = new System.Windows.Forms.ComboBox();
 			this.grpEdition = new System.Windows.Forms.GroupBox();
+			this.undrawColor = new System.Windows.Forms.Label();
+			this.lblZoom = new System.Windows.Forms.Label();
 			this.chkDoRedo = new System.Windows.Forms.CheckBox();
 			this.bpRedo = new System.Windows.Forms.Button();
 			this.bpUndo = new System.Windows.Forms.Button();
 			this.chkRendu = new System.Windows.Forms.CheckBox();
-			this.pictureBox = new System.Windows.Forms.PictureBox();
-			this.rbDraw = new System.Windows.Forms.RadioButton();
 			this.rbZoom = new System.Windows.Forms.RadioButton();
+			this.rbDraw = new System.Windows.Forms.RadioButton();
+			this.pictureBox = new System.Windows.Forms.PictureBox();
+			this.rbCopy = new System.Windows.Forms.RadioButton();
 			this.grpEdition.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
 			this.SuspendLayout();
@@ -87,18 +90,18 @@
 			this.vScrollBar.Visible = false;
 			this.vScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vScrollBar_Scroll);
 			// 
-			// crayonColor
+			// drawColor
 			// 
-			this.crayonColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.crayonColor.Location = new System.Drawing.Point(6, 321);
-			this.crayonColor.Name = "crayonColor";
-			this.crayonColor.Size = new System.Drawing.Size(70, 70);
-			this.crayonColor.TabIndex = 7;
+			this.drawColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.drawColor.Location = new System.Drawing.Point(6, 291);
+			this.drawColor.Name = "drawColor";
+			this.drawColor.Size = new System.Drawing.Size(70, 70);
+			this.drawColor.TabIndex = 7;
 			// 
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(17, 299);
+			this.label3.Location = new System.Drawing.Point(17, 265);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(95, 15);
 			this.label3.TabIndex = 4;
@@ -107,7 +110,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(7, 264);
+			this.label2.Location = new System.Drawing.Point(7, 230);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(82, 15);
 			this.label2.TabIndex = 5;
@@ -124,7 +127,7 @@
             "3",
             "4",
             "8"});
-			this.tailleCrayon.Location = new System.Drawing.Point(96, 261);
+			this.tailleCrayon.Location = new System.Drawing.Point(96, 227);
 			this.tailleCrayon.Name = "tailleCrayon";
 			this.tailleCrayon.Size = new System.Drawing.Size(31, 21);
 			this.tailleCrayon.TabIndex = 3;
@@ -132,27 +135,47 @@
 			// 
 			// grpEdition
 			// 
+			this.grpEdition.Controls.Add(this.rbCopy);
+			this.grpEdition.Controls.Add(this.undrawColor);
+			this.grpEdition.Controls.Add(this.lblZoom);
 			this.grpEdition.Controls.Add(this.rbZoom);
 			this.grpEdition.Controls.Add(this.rbDraw);
 			this.grpEdition.Controls.Add(this.chkDoRedo);
 			this.grpEdition.Controls.Add(this.bpRedo);
 			this.grpEdition.Controls.Add(this.bpUndo);
 			this.grpEdition.Controls.Add(this.chkRendu);
-			this.grpEdition.Controls.Add(this.crayonColor);
+			this.grpEdition.Controls.Add(this.drawColor);
 			this.grpEdition.Controls.Add(this.label3);
 			this.grpEdition.Controls.Add(this.label2);
 			this.grpEdition.Controls.Add(this.tailleCrayon);
 			this.grpEdition.Location = new System.Drawing.Point(790, 35);
 			this.grpEdition.Name = "grpEdition";
-			this.grpEdition.Size = new System.Drawing.Size(149, 528);
+			this.grpEdition.Size = new System.Drawing.Size(149, 561);
 			this.grpEdition.TabIndex = 9;
 			this.grpEdition.TabStop = false;
 			this.grpEdition.Visible = false;
 			// 
+			// undrawColor
+			// 
+			this.undrawColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.undrawColor.Location = new System.Drawing.Point(6, 373);
+			this.undrawColor.Name = "undrawColor";
+			this.undrawColor.Size = new System.Drawing.Size(70, 70);
+			this.undrawColor.TabIndex = 15;
+			// 
+			// lblZoom
+			// 
+			this.lblZoom.AutoSize = true;
+			this.lblZoom.Location = new System.Drawing.Point(65, 76);
+			this.lblZoom.Name = "lblZoom";
+			this.lblZoom.Size = new System.Drawing.Size(24, 15);
+			this.lblZoom.TabIndex = 14;
+			this.lblZoom.Text = "1:1";
+			// 
 			// chkDoRedo
 			// 
 			this.chkDoRedo.AutoSize = true;
-			this.chkDoRedo.Location = new System.Drawing.Point(15, 471);
+			this.chkDoRedo.Location = new System.Drawing.Point(15, 520);
 			this.chkDoRedo.Name = "chkDoRedo";
 			this.chkDoRedo.Size = new System.Drawing.Size(121, 34);
 			this.chkDoRedo.TabIndex = 11;
@@ -162,7 +185,7 @@
 			// bpRedo
 			// 
 			this.bpRedo.Enabled = false;
-			this.bpRedo.Location = new System.Drawing.Point(36, 430);
+			this.bpRedo.Location = new System.Drawing.Point(36, 479);
 			this.bpRedo.Name = "bpRedo";
 			this.bpRedo.Size = new System.Drawing.Size(75, 23);
 			this.bpRedo.TabIndex = 10;
@@ -173,7 +196,7 @@
 			// bpUndo
 			// 
 			this.bpUndo.Enabled = false;
-			this.bpUndo.Location = new System.Drawing.Point(36, 401);
+			this.bpUndo.Location = new System.Drawing.Point(36, 450);
 			this.bpUndo.Name = "bpUndo";
 			this.bpUndo.Size = new System.Drawing.Size(75, 23);
 			this.bpUndo.TabIndex = 10;
@@ -184,13 +207,35 @@
 			// chkRendu
 			// 
 			this.chkRendu.AutoSize = true;
-			this.chkRendu.Location = new System.Drawing.Point(7, 219);
+			this.chkRendu.Location = new System.Drawing.Point(6, 10);
 			this.chkRendu.Name = "chkRendu";
 			this.chkRendu.Size = new System.Drawing.Size(120, 19);
 			this.chkRendu.TabIndex = 9;
 			this.chkRendu.Text = "Fenêtre de rendu";
 			this.chkRendu.UseVisualStyleBackColor = true;
 			this.chkRendu.CheckedChanged += new System.EventHandler(this.chkRendu_CheckedChanged);
+			// 
+			// rbZoom
+			// 
+			this.rbZoom.Image = global::ConvImgCpc.Properties.Resources.Zoom;
+			this.rbZoom.Location = new System.Drawing.Point(10, 69);
+			this.rbZoom.Name = "rbZoom";
+			this.rbZoom.Size = new System.Drawing.Size(48, 32);
+			this.rbZoom.TabIndex = 13;
+			this.rbZoom.UseVisualStyleBackColor = true;
+			this.rbZoom.CheckedChanged += new System.EventHandler(this.rbZoom_CheckedChanged);
+			// 
+			// rbDraw
+			// 
+			this.rbDraw.Checked = true;
+			this.rbDraw.Image = global::ConvImgCpc.Properties.Resources.Draw;
+			this.rbDraw.Location = new System.Drawing.Point(10, 35);
+			this.rbDraw.Name = "rbDraw";
+			this.rbDraw.Size = new System.Drawing.Size(48, 32);
+			this.rbDraw.TabIndex = 12;
+			this.rbDraw.TabStop = true;
+			this.rbDraw.UseVisualStyleBackColor = true;
+			this.rbDraw.CheckedChanged += new System.EventHandler(this.rbDraw_CheckedChanged);
 			// 
 			// pictureBox
 			// 
@@ -203,24 +248,15 @@
 			this.pictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TrtMouseMove);
 			this.pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TrtMouseMove);
 			// 
-			// rbDraw
+			// rbCopy
 			// 
-			this.rbDraw.Checked = true;
-			this.rbDraw.Image = global::ConvImgCpc.Properties.Resources.Draw;
-			this.rbDraw.Location = new System.Drawing.Point(10, 19);
-			this.rbDraw.Name = "rbDraw";
-			this.rbDraw.Size = new System.Drawing.Size(48, 32);
-			this.rbDraw.TabIndex = 12;
-			this.rbDraw.UseVisualStyleBackColor = true;
-			// 
-			// rbZoom
-			// 
-			this.rbZoom.Image = global::ConvImgCpc.Properties.Resources.Zoom;
-			this.rbZoom.Location = new System.Drawing.Point(10, 57);
-			this.rbZoom.Name = "rbZoom";
-			this.rbZoom.Size = new System.Drawing.Size(48, 32);
-			this.rbZoom.TabIndex = 13;
-			this.rbZoom.UseVisualStyleBackColor = true;
+			this.rbCopy.Image = global::ConvImgCpc.Properties.Resources.Copy;
+			this.rbCopy.Location = new System.Drawing.Point(10, 103);
+			this.rbCopy.Name = "rbCopy";
+			this.rbCopy.Size = new System.Drawing.Size(48, 32);
+			this.rbCopy.TabIndex = 16;
+			this.rbCopy.UseVisualStyleBackColor = true;
+			this.rbCopy.CheckedChanged += new System.EventHandler(this.rbCopy_CheckedChanged);
 			// 
 			// ImageCpc
 			// 
@@ -254,7 +290,7 @@
 		private System.Windows.Forms.CheckBox modeEdition;
 		private System.Windows.Forms.HScrollBar hScrollBar;
 		private System.Windows.Forms.VScrollBar vScrollBar;
-		private System.Windows.Forms.Label crayonColor;
+		private System.Windows.Forms.Label drawColor;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.ComboBox tailleCrayon;
@@ -265,6 +301,9 @@
 		private System.Windows.Forms.CheckBox chkDoRedo;
 		private System.Windows.Forms.RadioButton rbDraw;
 		private System.Windows.Forms.RadioButton rbZoom;
+		private System.Windows.Forms.Label lblZoom;
+		private System.Windows.Forms.Label undrawColor;
+		private System.Windows.Forms.RadioButton rbCopy;
 
 	}
 }

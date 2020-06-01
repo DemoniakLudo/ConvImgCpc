@@ -15,6 +15,19 @@ namespace ConvImgCpc {
 		protected GCHandle BitsHandle { get; private set; }
 
 		public DirectBitmap(int width, int height) {
+			CreateBitmap(width, height);
+		}
+
+		public DirectBitmap(DirectBitmap source) {
+			CreateBitmap(source.Width, source.Height);
+			CopyBits(source);
+		}
+
+		public void CopyBits(DirectBitmap source) {
+			Array.Copy(source.Bits, Bits, Bits.Length);
+		}
+
+		private void CreateBitmap(int width, int height) {
 			Width = width;
 			Height = height;
 			Bits = new uint[width * height];

@@ -6,21 +6,14 @@ using System.Windows.Forms;
 
 namespace ConvImgCpc {
 	public partial class ImageCpc : Form {
-		private DirectBitmap bmpLock, tmpLock;
+		private DirectBitmap bmpLock;
 		public DirectBitmap BmpLock { get { return bmpLock; } }
+		private DirectBitmap tmpLock;
 		private Label[] colors = new Label[16];
 		private CheckBox[] lockColors = new CheckBox[16];
 		public int[] lockState = new int[16];
-		private int offsetX = 0, offsetY = 0;
-		private int zoom = 1;
-		private bool setZoomRect = false;
-		private int zoomRectx, zoomRecty, zoomRectw, zoomRecth;
-		private int numCol = 0;
-		private int penWidth = 1;
+
 		private Image imgOrigine;
-		private Rendu fenetreRendu;
-		private UndoRedo undo = new UndoRedo();
-		private bool doDraw = false;
 		public delegate void ConvertDelegate(bool doConvert, bool noInfo = false);
 		public BitmapCpc bitmapCpc = new BitmapCpc();
 		public Main main;
@@ -72,7 +65,7 @@ namespace ConvImgCpc {
 				colors[i].Location = new Point(4 + i * 48, 568);
 				colors[i].Size = new Size(40, 32);
 				colors[i].Tag = i;
-				colors[i].Click += ClickColor;
+				colors[i].MouseDown += ClickColor;
 				Controls.Add(colors[i]);
 				// Générer les contrôles de "bloquage couleur"
 				lockColors[i] = new CheckBox();
@@ -99,6 +92,8 @@ namespace ConvImgCpc {
 			int maxCol = modeVirtuel == 6 ? 16 : 1 << tx;
 			for (int i = 0; i < 16; i++)
 				colors[i].Visible = lockColors[i].Visible = i < maxCol;
+
+			ToolModeDraw(null);
 		}
 
 		public void SetPixelCpc(int xPos, int yPos, int col, int tx) {
@@ -120,6 +115,9 @@ namespace ConvImgCpc {
 				Enabled = true;
 			}
 			if (zoom != 1) {
+				if (tmpLock == null)
+					tmpLock = new DirectBitmap(imgOrigine.Width, imgOrigine.Height);
+
 				if (forceDrawZoom) {
 					for (int y = 0; y < imgOrigine.Height; y += 2) {
 						int ySrc = Math.Min(offsetY + (y / zoom), TailleY - 1);
@@ -130,7 +128,7 @@ namespace ConvImgCpc {
 				pictureBox.Image = tmpLock.Bitmap;
 			}
 			else {
-				pictureBox.Image = bmpLock.Bitmap;
+				pictureBox.Image = imgCopy != null ? imgCopy.Bitmap : bmpLock.Bitmap;
 				tmpLock = null;
 			}
 			pictureBox.Refresh();
@@ -183,7 +181,7 @@ namespace ConvImgCpc {
 			main.SetInfo("Sauvegarde image CPC ok.");
 		}
 
-		public void SauveCmp(string fileName, Param param,string version = null) {
+		public void SauveCmp(string fileName, Param param, string version = null) {
 			bitmapCpc.CreeBmpCpc(bmpLock);
 			SauveImage.SauveScr(fileName, bitmapCpc, param, true, version);
 			main.SetInfo("Sauvegarde image compactée ok.");
@@ -312,7 +310,7 @@ namespace ConvImgCpc {
 		}
 
 		// Click sur un "lock"
-		private void ClickLock(object sender, System.EventArgs e) {
+		private void ClickLock(object sender, EventArgs e) {
 			CheckBox colorLock = sender as CheckBox;
 			int numLock = colorLock.Tag != null ? (int)colorLock.Tag : 0;
 			lockState[numLock] = colorLock.Checked ? 1 : 0;
@@ -320,21 +318,28 @@ namespace ConvImgCpc {
 		}
 
 		// Changement de la palette
-		private void ClickColor(object sender, System.EventArgs e) {
+		private void ClickColor(object sender, MouseEventArgs e) {
 			Label colorClick = sender as Label;
-			numCol = colorClick.Tag != null ? (int)colorClick.Tag : 0;
+			int pen = colorClick.Tag != null ? (int)colorClick.Tag : 0;
 			if (!modeEdition.Checked) {
-				EditColor ed = new EditColor(numCol, Palette[numCol], bitmapCpc.GetColorPal(numCol).GetColorArgb, cpcPlus);
+				EditColor ed = new EditColor(pen, Palette[pen], bitmapCpc.GetColorPal(pen).GetColorArgb, cpcPlus);
 				ed.ShowDialog(this);
 				if (ed.isValide) {
-					Palette[numCol] = ed.ValColor;
+					Palette[pen] = ed.ValColor;
 					UpdatePalette();
 					Convert(false);
 				}
 			}
 			else {
-				RvbColor col = bitmapCpc.GetColorPal(numCol);
-				crayonColor.BackColor = Color.FromArgb(col.r, col.v, col.b);
+				RvbColor col = bitmapCpc.GetColorPal(pen);
+				if (e.Button == System.Windows.Forms.MouseButtons.Left) {
+					drawCol = pen;
+					drawColor.BackColor = Color.FromArgb(col.r, col.v, col.b);
+				}
+				else {
+					undrawCol = pen;
+					undrawColor.BackColor = Color.FromArgb(col.r, col.v, col.b);
+				}
 			}
 		}
 
@@ -353,227 +358,5 @@ namespace ConvImgCpc {
 			Convert(false);
 		}
 		#endregion
-
-		#region Gestion déplacement souris
-		private void modeEdition_CheckedChanged(object sender, System.EventArgs e) {
-			zoom = 1;
-			chkRendu.Checked = false;
-			offsetX = offsetY = 0;
-			vScrollBar.Visible = hScrollBar.Visible = setZoomRect = false;
-			if (modeEdition.Checked) {
-				undo.Reset();
-				grpEdition.Visible = tailleCrayon.Enabled = true;
-				bpUndo.Enabled = bpRedo.Enabled = false;
-				tailleCrayon_SelectedIndexChanged(null, null);
-			}
-			else {
-				CloseRendu();
-				grpEdition.Visible = tailleCrayon.Enabled = false;
-				Render();
-			}
-		}
-
-		private void CloseRendu() {
-			if (fenetreRendu != null) {
-				fenetreRendu.Hide();
-				fenetreRendu.Close();
-				fenetreRendu.Dispose();
-				fenetreRendu = null;
-			}
-		}
-
-		private void GestMouseEdit(MouseEventArgs e, int yReel) {
-			if (e.Button == MouseButtons.Left) {
-				for (int y = 0; y < penWidth * 2; y += 2) {
-					int mode = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (yReel & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
-					int Tx = (4 >> mode);
-					int nbCol = modeVirtuel == 6 ? 16 : 1 << Tx;
-					int realColor = GetPalCPC(Palette[numCol % nbCol]);
-					int yStart = zoom * (yReel - offsetY);
-					for (int x = 0; x < penWidth * Tx; x += Tx) {
-						int xReel = (x + offsetX + (e.X / zoom)) & -Tx;
-						if (xReel >= 0 && yReel >= 0 && xReel < TailleX && yReel < TailleY) {
-							undo.MemoUndoRedo(xReel, yReel, bmpLock.GetPixel(xReel, yReel), realColor, doDraw);
-							doDraw = true;
-							bmpLock.SetHorLineDouble(xReel, yReel, Tx, realColor);
-							if (zoom != 1)
-								for (int yz = yStart; yz < Math.Min(tmpLock.Height, yStart + (zoom << 1)); yz += 2)
-									tmpLock.SetHorLineDouble(zoom * (xReel - offsetX), yz, zoom * Tx, realColor);
-						}
-					}
-					yReel += 2;
-				}
-				Render();
-			}
-			else
-				if (e.Button == MouseButtons.Right) {
-					if (zoom == 1) {
-						if (!setZoomRect) {
-							setZoomRect = true;
-							zoomRectx = e.X;
-							zoomRecty = e.Y;
-							zoomRecth = 0;
-							zoomRectw = 0;
-						}
-						else {
-							Graphics g = Graphics.FromImage(pictureBox.Image);
-							if (zoomRecth != 0 || zoomRectw != 0) {
-								XorDrawing.DrawXorRectangle(g, (Bitmap)pictureBox.Image, zoomRectx, zoomRecty, zoomRectx + zoomRectw, zoomRecty + zoomRecth);
-							}
-							zoomRectw = e.X - zoomRectx;
-							zoomRecth = e.Y - zoomRecty;
-							XorDrawing.DrawXorRectangle(g, (Bitmap)pictureBox.Image, zoomRectx, zoomRecty, zoomRectx + zoomRectw, zoomRecty + zoomRecth);
-							pictureBox.Refresh();
-						}
-					}
-					else {
-						zoom = 1;
-						offsetX = offsetY = 0;
-						vScrollBar.Visible = hScrollBar.Visible = false;
-						Render(true);
-					}
-				}
-				else {
-					bpUndo.Enabled = undo.CanUndo;
-					bpRedo.Enabled = undo.CanRedo;
-					if (doDraw) {
-						doDraw = false;
-						undo.EndUndoRedo();
-					}
-					if (setZoomRect) {
-						setZoomRect = false;
-						if (zoomRectw != 0 && zoomRecth != 0) {
-							Graphics g = Graphics.FromImage(pictureBox.Image);
-							XorDrawing.DrawXorRectangle(g, (Bitmap)pictureBox.Image, zoomRectx, zoomRecty, zoomRectx + zoomRectw, zoomRecty + zoomRecth);
-							zoom = Math.Max(1, Math.Min(Math.Abs(768 / zoomRectw), Math.Abs(544 / zoomRecth)) & 0x7E);
-							vScrollBar.Visible = hScrollBar.Visible = zoom > 1;
-							hScrollBar.Maximum = hScrollBar.LargeChange + TailleX - (TailleX / zoom);
-							vScrollBar.Maximum = vScrollBar.LargeChange + TailleY - (TailleY / zoom);
-							hScrollBar.Value = Math.Max(0, Math.Min(Math.Min(zoomRectx, zoomRectx + zoomRectw), TailleX - ((imgOrigine.Width + zoom) / zoom)));
-							vScrollBar.Value = Math.Max(0, Math.Min(Math.Min(zoomRecty, zoomRecty + zoomRecth), TailleY - ((imgOrigine.Height + zoom) / zoom)));
-							offsetX = (hScrollBar.Value >> 3) << 3;
-							offsetY = (vScrollBar.Value >> 1) << 1;
-							if (zoom != 1) {
-								tmpLock = new DirectBitmap(imgOrigine.Width, imgOrigine.Height);
-							}
-							Render(true);
-						}
-					}
-				}
-		}
-
-		private int posx = 0, posy = 0, sizex = 0, sizey = 0;
-		private int memoMouseX = 0, memoMouseY = 0;
-		private bool movePos = false, moveSize = false;
-
-		private void GestMouse(MouseEventArgs e) {
-			if (e.Button == MouseButtons.Left) {
-				if (!movePos) {
-					main.GetSizePos(ref posx, ref posy, ref sizex, ref sizey);
-					movePos = true;
-					memoMouseX = e.X;
-					memoMouseY = e.Y;
-				}
-				else {
-					main.SetSizePos(posx + memoMouseX - e.X, posy + memoMouseY - e.Y, sizex, sizey, true);
-				}
-			}
-			else {
-				if (e.Button == MouseButtons.Right) {
-					if (!moveSize) {
-						main.GetSizePos(ref posx, ref posy, ref sizex, ref sizey);
-						moveSize = true;
-						memoMouseX = e.X;
-						memoMouseY = e.Y;
-					}
-					else {
-						main.SetSizePos(posx, posy, sizex - memoMouseX + e.X, sizey - memoMouseY + e.Y, true);
-					}
-				}
-				else {
-					movePos = moveSize = false;
-				}
-			}
-		}
-
-		private void TrtMouseMove(object sender, MouseEventArgs e) {
-			if (modeEdition.Checked) {
-				int yReel = (offsetY + (e.Y / zoom)) & 0xFFE;
-				int mode = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (yReel & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
-				int Tx = (4 >> mode);
-				RvbColor col = bitmapCpc.GetColorPal(numCol % (modeVirtuel == 6 ? 16 : 1 << Tx));
-				crayonColor.BackColor = Color.FromArgb(col.r, col.v, col.b);
-				crayonColor.Width = 35 * Tx;
-				crayonColor.Refresh();
-				try {
-					GestMouseEdit(e, yReel);
-				}
-				catch (Exception ex) {
-					string msg = ex.StackTrace + Environment.NewLine + Environment.NewLine
-								+ "modeVirtuel=" + modeVirtuel + Environment.NewLine
-								+ "yReel=" + yReel + Environment.NewLine
-								+ "Zoom=" + zoom + Environment.NewLine
-								+ "zoomRectx=" + zoomRectx + Environment.NewLine
-								+ "zoomRecty=" + zoomRecty + Environment.NewLine
-								+ "zoomRecth=" + zoomRecth + Environment.NewLine
-								+ "zoomRectw=" + zoomRectw;
-					MessageBox.Show(msg, ex.Message);
-				}
-			}
-			else {
-				GestMouse(e);
-			}
-		}
-		#endregion
-
-		private void vScrollBar_Scroll(object sender, ScrollEventArgs e) {
-			offsetY = (vScrollBar.Value >> 1) << 1;
-			Render(true);
-		}
-
-		private void hScrollBar_Scroll(object sender, ScrollEventArgs e) {
-			offsetX = (hScrollBar.Value >> 3) << 3;
-			Render(true);
-		}
-
-		private void tailleCrayon_SelectedIndexChanged(object sender, System.EventArgs e) {
-			penWidth = int.Parse(tailleCrayon.SelectedItem.ToString());
-		}
-
-		private void chkRendu_CheckedChanged(object sender, System.EventArgs e) {
-			if (chkRendu.Checked) {
-				fenetreRendu = new Rendu();
-				fenetreRendu.Show();
-				Render();
-			}
-			else
-				CloseRendu();
-		}
-
-		private void bpUndo_Click(object sender, System.EventArgs e) {
-			Enabled = false;
-			List<MemoPoint> lst = undo.Undo();
-			foreach (MemoPoint p in lst) {
-				int Tx = 4 >> (modeVirtuel > 7 ? modeVirtuel - 8 : modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (p.posy & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
-				bmpLock.SetHorLineDouble(p.posx, p.posy, Tx, p.oldColor);
-			}
-			Render(true);
-			bpUndo.Enabled = undo.CanUndo;
-			bpRedo.Enabled = undo.CanRedo;
-			Enabled = true;
-		}
-
-		private void bpRedo_Click(object sender, System.EventArgs e) {
-			Enabled = false;
-			List<MemoPoint> lst = undo.Redo();
-			foreach (MemoPoint p in lst) {
-				int Tx = 4 >> (modeVirtuel > 7 ? modeVirtuel - 8 : modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (p.posy & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
-				bmpLock.SetHorLineDouble(p.posx, p.posy, Tx, p.newColor);
-			}
-			Render(true);
-			bpUndo.Enabled = undo.CanUndo;
-			bpRedo.Enabled = undo.CanRedo;
-			Enabled = true;
-		}
 	}
 }
