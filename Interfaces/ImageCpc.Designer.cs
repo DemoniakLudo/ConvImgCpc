@@ -32,16 +32,16 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.tailleCrayon = new System.Windows.Forms.ComboBox();
 			this.grpEdition = new System.Windows.Forms.GroupBox();
+			this.rbCopy = new System.Windows.Forms.RadioButton();
 			this.undrawColor = new System.Windows.Forms.Label();
 			this.lblZoom = new System.Windows.Forms.Label();
+			this.rbZoom = new System.Windows.Forms.RadioButton();
+			this.rbDraw = new System.Windows.Forms.RadioButton();
 			this.chkDoRedo = new System.Windows.Forms.CheckBox();
 			this.bpRedo = new System.Windows.Forms.Button();
 			this.bpUndo = new System.Windows.Forms.Button();
 			this.chkRendu = new System.Windows.Forms.CheckBox();
-			this.rbZoom = new System.Windows.Forms.RadioButton();
-			this.rbDraw = new System.Windows.Forms.RadioButton();
 			this.pictureBox = new System.Windows.Forms.PictureBox();
-			this.rbCopy = new System.Windows.Forms.RadioButton();
 			this.grpEdition.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
 			this.SuspendLayout();
@@ -155,6 +155,16 @@
 			this.grpEdition.TabStop = false;
 			this.grpEdition.Visible = false;
 			// 
+			// rbCopy
+			// 
+			this.rbCopy.Image = global::ConvImgCpc.Properties.Resources.Copy;
+			this.rbCopy.Location = new System.Drawing.Point(10, 103);
+			this.rbCopy.Name = "rbCopy";
+			this.rbCopy.Size = new System.Drawing.Size(48, 32);
+			this.rbCopy.TabIndex = 16;
+			this.rbCopy.UseVisualStyleBackColor = true;
+			this.rbCopy.CheckedChanged += new System.EventHandler(this.rbCopy_CheckedChanged);
+			// 
 			// undrawColor
 			// 
 			this.undrawColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -166,11 +176,33 @@
 			// lblZoom
 			// 
 			this.lblZoom.AutoSize = true;
-			this.lblZoom.Location = new System.Drawing.Point(65, 76);
+			this.lblZoom.Location = new System.Drawing.Point(65, 75);
 			this.lblZoom.Name = "lblZoom";
 			this.lblZoom.Size = new System.Drawing.Size(24, 15);
 			this.lblZoom.TabIndex = 14;
 			this.lblZoom.Text = "1:1";
+			// 
+			// rbZoom
+			// 
+			this.rbZoom.Image = global::ConvImgCpc.Properties.Resources.Zoom;
+			this.rbZoom.Location = new System.Drawing.Point(10, 69);
+			this.rbZoom.Name = "rbZoom";
+			this.rbZoom.Size = new System.Drawing.Size(48, 32);
+			this.rbZoom.TabIndex = 13;
+			this.rbZoom.UseVisualStyleBackColor = true;
+			this.rbZoom.CheckedChanged += new System.EventHandler(this.rbZoom_CheckedChanged);
+			// 
+			// rbDraw
+			// 
+			this.rbDraw.Checked = true;
+			this.rbDraw.Image = global::ConvImgCpc.Properties.Resources.Draw;
+			this.rbDraw.Location = new System.Drawing.Point(10, 35);
+			this.rbDraw.Name = "rbDraw";
+			this.rbDraw.Size = new System.Drawing.Size(48, 32);
+			this.rbDraw.TabIndex = 12;
+			this.rbDraw.TabStop = true;
+			this.rbDraw.UseVisualStyleBackColor = true;
+			this.rbDraw.CheckedChanged += new System.EventHandler(this.rbDraw_CheckedChanged);
 			// 
 			// chkDoRedo
 			// 
@@ -215,28 +247,6 @@
 			this.chkRendu.UseVisualStyleBackColor = true;
 			this.chkRendu.CheckedChanged += new System.EventHandler(this.chkRendu_CheckedChanged);
 			// 
-			// rbZoom
-			// 
-			this.rbZoom.Image = global::ConvImgCpc.Properties.Resources.Zoom;
-			this.rbZoom.Location = new System.Drawing.Point(10, 69);
-			this.rbZoom.Name = "rbZoom";
-			this.rbZoom.Size = new System.Drawing.Size(48, 32);
-			this.rbZoom.TabIndex = 13;
-			this.rbZoom.UseVisualStyleBackColor = true;
-			this.rbZoom.CheckedChanged += new System.EventHandler(this.rbZoom_CheckedChanged);
-			// 
-			// rbDraw
-			// 
-			this.rbDraw.Checked = true;
-			this.rbDraw.Image = global::ConvImgCpc.Properties.Resources.Draw;
-			this.rbDraw.Location = new System.Drawing.Point(10, 35);
-			this.rbDraw.Name = "rbDraw";
-			this.rbDraw.Size = new System.Drawing.Size(48, 32);
-			this.rbDraw.TabIndex = 12;
-			this.rbDraw.TabStop = true;
-			this.rbDraw.UseVisualStyleBackColor = true;
-			this.rbDraw.CheckedChanged += new System.EventHandler(this.rbDraw_CheckedChanged);
-			// 
 			// pictureBox
 			// 
 			this.pictureBox.Location = new System.Drawing.Point(0, 0);
@@ -247,16 +257,6 @@
 			this.pictureBox.TabStop = false;
 			this.pictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TrtMouseMove);
 			this.pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TrtMouseMove);
-			// 
-			// rbCopy
-			// 
-			this.rbCopy.Image = global::ConvImgCpc.Properties.Resources.Copy;
-			this.rbCopy.Location = new System.Drawing.Point(10, 103);
-			this.rbCopy.Name = "rbCopy";
-			this.rbCopy.Size = new System.Drawing.Size(48, 32);
-			this.rbCopy.TabIndex = 16;
-			this.rbCopy.UseVisualStyleBackColor = true;
-			this.rbCopy.CheckedChanged += new System.EventHandler(this.rbCopy_CheckedChanged);
 			// 
 			// ImageCpc
 			// 
