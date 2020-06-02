@@ -215,6 +215,7 @@ namespace ConvImgCpc {
 				imgMotif.Dispose();
 				imgMotif = null;
 			}
+			pictureBox.Image = tmpLock != null ? tmpLock.Bitmap : bmpLock.Bitmap;
 		}
 
 		private void TrtMouseMove(object sender, MouseEventArgs e) {

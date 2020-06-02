@@ -425,19 +425,19 @@ namespace ConvImgCpc {
 				}
 			}
 			if (version != null) {
-				StreamWriter sw = Save.OpenAsm(fileName, version, param);
+				StreamWriter sw = SaveAsm.OpenAsm(fileName, version, param);
 				sw.WriteLine("	ORG	#4000");
 				sw.WriteLine("	Nolist");
 				sw.WriteLine("ImageCmp:");
-				Save.SauveAssembleur(sw, bufPack, lg, param);
+				SaveAsm.GenereDatas(sw, bufPack, lg, param);
 				sw.WriteLine("	List");
 				if (param.withCode) {
 					sw.WriteLine("_StartDepack:");
 					sw.WriteLine("	LD	HL,ImageCmp");
 					sw.WriteLine("	LD	DE,#C000");
-					Save.GenereDepack(sw);
+					SaveAsm.GenereDepack(sw);
 				}
-				Save.CloseAsm(sw);
+				SaveAsm.CloseAsm(sw);
 			}
 			else {
 				entete = CpcSystem.CreeEntete(fileName, startAdr, (short)lg, exec);

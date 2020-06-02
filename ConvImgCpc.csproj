@@ -116,7 +116,7 @@
     </Compile>
     <Compile Include="RvbColor.cs" />
     <Compile Include="SauveImage.cs" />
-    <Compile Include="Save.cs" />
+    <Compile Include="SaveAsm.cs" />
     <Compile Include="UndoRedo.cs" />
     <Compile Include="XorDrawing.cs" />
     <EmbeddedResource Include="Interfaces\EditColor.resx">

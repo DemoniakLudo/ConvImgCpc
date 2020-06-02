@@ -222,9 +222,9 @@ namespace ConvImgCpc {
 
 		public void SauveSprite(string fileName, string version, Param param) {
 			byte[] ret = MakeSprite();
-			StreamWriter sw = Save.OpenAsm(fileName, version, param);
-			Save.SauveAssembleur(sw, ret, ret.Length, param);
-			Save.CloseAsm(sw);
+			StreamWriter sw = SaveAsm.OpenAsm(fileName, version, param);
+			SaveAsm.GenereDatas(sw, ret, ret.Length, param);
+			SaveAsm.CloseAsm(sw);
 			main.SetInfo("Sauvegarde sprite assembleur ok.");
 		}
 
@@ -232,9 +232,9 @@ namespace ConvImgCpc {
 			byte[] ret = MakeSprite();
 			byte[] sprCmp = new byte[ret.Length];
 			int l = PackDepack.Pack(ret, ret.Length, sprCmp, 0);
-			StreamWriter sw = Save.OpenAsm(fileName, version, param);
-			Save.SauveAssembleur(sw, sprCmp, l, param);
-			Save.CloseAsm(sw);
+			StreamWriter sw = SaveAsm.OpenAsm(fileName, version, param);
+			SaveAsm.GenereDatas(sw, sprCmp, l, param);
+			SaveAsm.CloseAsm(sw);
 			main.SetInfo("Sauvegarde sprite assembleur compacté ok.");
 		}
 
