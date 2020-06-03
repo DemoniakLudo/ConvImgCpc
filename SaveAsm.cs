@@ -441,7 +441,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("	Nolist");
 		}
 
-		static public void GenereDrawAscii(StreamWriter sw, int modeVirtuel,bool frameFull, bool frameO, bool frameD, bool gest128K, bool imageMode) {
+		static public void GenereDrawAscii(StreamWriter sw, int modeVirtuel, bool frameFull, bool frameO, bool frameD, bool gest128K, bool imageMode) {
 			if (frameFull) {
 				sw.WriteLine("	LD	HL,Buffer");
 				sw.WriteLine("	LD	A,(HL)");
@@ -545,7 +545,7 @@ namespace ConvImgCpc {
 			}
 			if (!frameD) {
 				sw.WriteLine("DrawImgI:");
-				if (!gest128K) {
+				if (!gest128K && !imageMode) {
 					sw.WriteLine("	POP	HL");
 					sw.WriteLine("	INC	HL");
 				}
@@ -555,7 +555,30 @@ namespace ConvImgCpc {
 					if (gest128K)
 						sw.WriteLine("	INC	IX");
 				}
-				sw.WriteLine("	JP	Boucle");
+				if (imageMode) {
+					sw.WriteLine("TstSpace:");
+					sw.WriteLine("	LD	BC,#F40E");
+					sw.WriteLine("	OUT	(C),C");
+					sw.WriteLine("	LD	BC,#F6C0");
+					sw.WriteLine("	OUT	(C),C");
+					sw.WriteLine("	XOR	A");
+					sw.WriteLine("	OUT	(C),A");
+					sw.WriteLine("	LD	BC,#F792");
+					sw.WriteLine("	OUT	(C),C");
+					sw.WriteLine("	LD	BC,#F645");
+					sw.WriteLine("	OUT	(C),C");
+					sw.WriteLine("	LD	B,#F4");
+					sw.WriteLine("	IN	A,(C)");
+					sw.WriteLine("	LD	BC,#F782");
+					sw.WriteLine("	OUT	(C),C");
+					sw.WriteLine("	LD	BC,#F600");
+					sw.WriteLine("	OUT	(C),C");
+					sw.WriteLine("	INC	A");
+					sw.WriteLine("	JR	Z,TstSpace");
+					sw.WriteLine("	RET");
+				}
+				else
+					sw.WriteLine("	JP	Boucle");
 			}
 			if (!frameO) {
 				sw.WriteLine("DrawImgD:");
@@ -644,27 +667,22 @@ namespace ConvImgCpc {
 				sw.WriteLine("	INC	IY");
 				sw.WriteLine("	INC	IY");
 				sw.WriteLine("	CPI");
-				sw.WriteLine("	JP PE,DrawImgD1");
-				if (imageMode) {
-
-				}
-				else {
-					if (frameD) {
-						if (!gest128K) {
-							sw.WriteLine("	POP	HL");
-							sw.WriteLine("	INC	HL");
-						}
-						else {
-							sw.WriteLine("	INC	IX");
-							sw.WriteLine("	INC	IX");
-							if (gest128K)
-								sw.WriteLine("	INC	IX");
-						}
-						sw.WriteLine("	JP	Boucle");
+				sw.WriteLine("	JP	PE,DrawImgD1");
+				if (frameD) {
+					if (!gest128K) {
+						sw.WriteLine("	POP	HL");
+						sw.WriteLine("	INC	HL");
 					}
-					else
-						sw.WriteLine("	JR	DrawImgI");
+					else {
+						sw.WriteLine("	INC	IX");
+						sw.WriteLine("	INC	IX");
+						if (gest128K)
+							sw.WriteLine("	INC	IX");
+					}
+					sw.WriteLine("	JP	Boucle");
 				}
+				else
+					sw.WriteLine("	JR	DrawImgI");
 			}
 			sw.WriteLine("	Nolist");
 			if (modeVirtuel > 7) {
@@ -705,7 +723,7 @@ namespace ConvImgCpc {
 			sw.WriteLine(line);
 		}
 
-		static public void GenereFin(StreamWriter sw,int modeVirtuel, int ltot, bool force8000) {
+		static public void GenereFin(StreamWriter sw, int modeVirtuel, int ltot, bool force8000) {
 			sw.WriteLine("; Taille totale animation = " + ltot.ToString() + " (#" + ltot.ToString("X4") + ")");
 			sw.WriteLine("	List");
 			if (modeVirtuel == 7) {

@@ -313,9 +313,11 @@ namespace ConvImgCpc {
 			// Calcule les animations
 			int ltot = 0, maxDepack = 0;
 			int posPack = 0;
-			for (int i = 0; i < nbImages; i++) {
-				img.main.SelectImage(i, true);
-				img.Convert(true, true);
+			for (int i = 0; i < (imageMode ? 1 : nbImages); i++) {
+				if (!imageMode) {
+					img.main.SelectImage(i, true);
+					img.Convert(true, true);
+				}
 				Application.DoEvents();
 				if (chk2Zone.Checked) {
 					lg[posPack] = PackFrame(bufOut[posPack], ref sizeDepack, i == 0 && !chkBoucle.Checked, i == 0 && !chkBoucle.Checked, 0, modeLigne, optimSpeed);
@@ -451,7 +453,10 @@ namespace ConvImgCpc {
 				}
 			}
 			bool optimSpeed = true;
-
+			if (imageMode) {
+				rbFrameFull.Checked = false;
+				rbFrameO.Checked = true;
+			}
 			int modeLigne = rb8L.Checked ? 8 : rb4L.Checked ? 4 : rb2L.Checked ? 2 : 1;
 			if (adrDeb > 0) {
 				img.WindowState = FormWindowState.Minimized;

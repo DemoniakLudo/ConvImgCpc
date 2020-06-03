@@ -183,7 +183,14 @@ namespace ConvImgCpc {
 
 		public void SauveCmp(string fileName, Param param, string version = null) {
 			bitmapCpc.CreeBmpCpc(bmpLock);
-			SauveImage.SauveScr(fileName, bitmapCpc, param, true, version);
+			if (modeVirtuel >= 7) {
+				SaveAnim sa = new SaveAnim(fileName, version, this, param);
+				sa.DoSave(true);
+				sa.Dispose();
+			}
+			else
+				SauveImage.SauveScr(fileName, bitmapCpc, param, true, version);
+
 			main.SetInfo("Sauvegarde image compactée ok.");
 		}
 
