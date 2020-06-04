@@ -248,18 +248,20 @@ namespace ConvImgCpc {
 			else
 				sw.WriteLine("	LD	IX,AnimDelta");
 
-			sw.WriteLine("Boucle:");
-			if (!gest128K) {
-				sw.WriteLine("	LD	A,(HL)");
-				sw.WriteLine("	INC	A");
+			if (!imageMode) {
+				sw.WriteLine("Boucle:");
+				if (!gest128K) {
+					sw.WriteLine("	LD	A,(HL)");
+					sw.WriteLine("	INC	A");
+				}
+				else {
+					sw.WriteLine("	LD	H,(IX+1)");
+					sw.WriteLine("	LD	L,(IX+0)");
+					sw.WriteLine("	LD	A,H");
+					sw.WriteLine("	OR	H");
+				}
+				sw.WriteLine("	JR	Z,Debut");
 			}
-			else {
-				sw.WriteLine("	LD	H,(IX+1)");
-				sw.WriteLine("	LD	L,(IX+0)");
-				sw.WriteLine("	LD	A,H");
-				sw.WriteLine("	OR	H");
-			}
-			sw.WriteLine("	JR	Z,Debut");
 			if (gest128K) {
 				sw.WriteLine("	LD	B,#7F");
 				sw.WriteLine("	LD	A,(IX+2)");
@@ -544,18 +546,21 @@ namespace ConvImgCpc {
 				sw.WriteLine("	JR	Z,DrawImgO");
 			}
 			if (!frameD) {
-				sw.WriteLine("DrawImgI:");
-				if (!gest128K && !imageMode) {
-					sw.WriteLine("	POP	HL");
-					sw.WriteLine("	INC	HL");
+				if (!imageMode) {
+					sw.WriteLine("DrawImgI:");
+					if (!gest128K && !imageMode) {
+						sw.WriteLine("	POP	HL");
+						sw.WriteLine("	INC	HL");
+					}
+					else {
+						sw.WriteLine("	INC	IX");
+						sw.WriteLine("	INC	IX");
+						if (gest128K)
+							sw.WriteLine("	INC	IX");
+					}
+					sw.WriteLine("	JP	Boucle");
 				}
 				else {
-					sw.WriteLine("	INC	IX");
-					sw.WriteLine("	INC	IX");
-					if (gest128K)
-						sw.WriteLine("	INC	IX");
-				}
-				if (imageMode) {
 					sw.WriteLine("TstSpace:");
 					sw.WriteLine("	LD	BC,#F40E");
 					sw.WriteLine("	OUT	(C),C");
@@ -577,8 +582,6 @@ namespace ConvImgCpc {
 					sw.WriteLine("	JR	Z,TstSpace");
 					sw.WriteLine("	RET");
 				}
-				else
-					sw.WriteLine("	JP	Boucle");
 			}
 			if (!frameO) {
 				sw.WriteLine("DrawImgD:");
@@ -687,14 +690,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("	Nolist");
 			if (modeVirtuel > 7) {
 				sw.WriteLine("DataFnt:");
-				sw.WriteLine("	DB	#00, #C0, #0C, #CC, #30, #F0, #3C, #FC");
-				sw.WriteLine("	DB	#03, #C3, #0F, #CF, #33, #F3, #3F, #FF");
-				if (imageMode) {
-					sw.WriteLine("	Align	512		; Doit être un multiple de 512");
-					sw.WriteLine("Fonte:");
-				}
-				else
-					sw.WriteLine("Fonte	EQU	#B000		; Doit être un multiple de 512");
+				sw.WriteLine("	DB	#00, #C0, #0C, #CC, #30, #F0, #3C, #FC, #03, #C3, #0F, #CF, #33, #F3, #3F, #FF");
 			}
 		}
 
@@ -725,22 +721,28 @@ namespace ConvImgCpc {
 
 		static public void GenereFin(StreamWriter sw, int modeVirtuel, int ltot, bool force8000) {
 			sw.WriteLine("; Taille totale animation = " + ltot.ToString() + " (#" + ltot.ToString("X4") + ")");
+			sw.WriteLine("_EndCode:");
 			sw.WriteLine("	List");
-			if (modeVirtuel == 7) {
-				int[] ordreAdr = new int[4] { 0, 1, 3, 2 };
-				sw.WriteLine("	Align 256		; Doit être un multiple de 256");
+			if (modeVirtuel >= 7) {
+				int align = modeVirtuel == 7 ? 256 : 512;
+				sw.WriteLine("	Align	" + align.ToString() + "		; Doit être un multiple de " + align.ToString());
 				sw.WriteLine("Fonte:");
-				for (int i = 0; i < 16; i++) {
-					string str = "	DB	";
-					for (int ym = 0; ym < 4; ym++) {
-						byte octet = 0;
-						for (int xm = 0; xm < 4; xm++)
-							octet |= (byte)(BitmapCpc.tabOctetMode[BitmapCpc.trameM1[i, xm, ordreAdr[ym]]] >> xm);
+				if (modeVirtuel == 7) {
+					int[] ordreAdr = new int[4] { 0, 1, 3, 2 };
+					for (int i = 0; i < 16; i++) {
+						string str = "	DB	";
+						for (int ym = 0; ym < 4; ym++) {
+							byte octet = 0;
+							for (int xm = 0; xm < 4; xm++)
+								octet |= (byte)(BitmapCpc.tabOctetMode[BitmapCpc.trameM1[i, xm, ordreAdr[ym]]] >> xm);
 
-						str += "#" + octet.ToString("X2") + ",";
+							str += "#" + octet.ToString("X2") + ",";
+						}
+						sw.WriteLine(str.Substring(0, str.Length - 1));
 					}
-					sw.WriteLine(str.Substring(0, str.Length - 1));
 				}
+				else
+					sw.WriteLine("	DS	" + align.ToString() + Environment.NewLine);
 			}
 			sw.WriteLine("buffer" + (force8000 ? "	equ	#8000" : ":"));
 		}
