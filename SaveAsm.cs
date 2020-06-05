@@ -391,6 +391,29 @@ namespace ConvImgCpc {
 			sw.WriteLine("	Nolist");
 		}
 
+		static private void GenereTspace(StreamWriter sw) {
+			sw.WriteLine("TstSpace:");
+			sw.WriteLine("	LD	BC,#F40E");
+			sw.WriteLine("	OUT	(C),C");
+			sw.WriteLine("	LD	BC,#F6C0");
+			sw.WriteLine("	OUT	(C),C");
+			sw.WriteLine("	XOR	A");
+			sw.WriteLine("	OUT	(C),A");
+			sw.WriteLine("	LD	BC,#F792");
+			sw.WriteLine("	OUT	(C),C");
+			sw.WriteLine("	LD	BC,#F645");
+			sw.WriteLine("	OUT	(C),C");
+			sw.WriteLine("	LD	B,#F4");
+			sw.WriteLine("	IN	A,(C)");
+			sw.WriteLine("	LD	BC,#F782");
+			sw.WriteLine("	OUT	(C),C");
+			sw.WriteLine("	LD	BC,#F600");
+			sw.WriteLine("	OUT	(C),C");
+			sw.WriteLine("	INC	A");
+			sw.WriteLine("	JR	Z,TstSpace");
+			sw.WriteLine("	RET");
+		}
+
 		static public void GenereDrawDirect(StreamWriter sw, bool gest128K) {
 			sw.WriteLine("	LD	HL,buffer");
 			sw.WriteLine("	LD	DE,#C000");
@@ -444,7 +467,7 @@ namespace ConvImgCpc {
 		}
 
 		static public void GenereDrawAscii(StreamWriter sw, int modeVirtuel, bool frameFull, bool frameO, bool frameD, bool gest128K, bool imageMode) {
-			if (frameFull) {
+			if (frameFull && !imageMode) {
 				sw.WriteLine("	LD	HL,Buffer");
 				sw.WriteLine("	LD	A,(HL)");
 				sw.WriteLine("	CP	'D'");
@@ -560,31 +583,13 @@ namespace ConvImgCpc {
 					}
 					sw.WriteLine("	JP	Boucle");
 				}
-				else {
-					sw.WriteLine("TstSpace:");
-					sw.WriteLine("	LD	BC,#F40E");
-					sw.WriteLine("	OUT	(C),C");
-					sw.WriteLine("	LD	BC,#F6C0");
-					sw.WriteLine("	OUT	(C),C");
-					sw.WriteLine("	XOR	A");
-					sw.WriteLine("	OUT	(C),A");
-					sw.WriteLine("	LD	BC,#F792");
-					sw.WriteLine("	OUT	(C),C");
-					sw.WriteLine("	LD	BC,#F645");
-					sw.WriteLine("	OUT	(C),C");
-					sw.WriteLine("	LD	B,#F4");
-					sw.WriteLine("	IN	A,(C)");
-					sw.WriteLine("	LD	BC,#F782");
-					sw.WriteLine("	OUT	(C),C");
-					sw.WriteLine("	LD	BC,#F600");
-					sw.WriteLine("	OUT	(C),C");
-					sw.WriteLine("	INC	A");
-					sw.WriteLine("	JR	Z,TstSpace");
-					sw.WriteLine("	RET");
-				}
+				else
+					GenereTspace(sw);
 			}
 			if (!frameO) {
-				sw.WriteLine("DrawImgD:");
+				if (!frameD)
+					sw.WriteLine("DrawImgD:");
+
 				sw.WriteLine("	LD	HL,#C000");
 				if (frameD)
 					sw.WriteLine("	LD	IY,Buffer");
@@ -672,17 +677,21 @@ namespace ConvImgCpc {
 				sw.WriteLine("	CPI");
 				sw.WriteLine("	JP	PE,DrawImgD1");
 				if (frameD) {
-					if (!gest128K) {
-						sw.WriteLine("	POP	HL");
-						sw.WriteLine("	INC	HL");
-					}
-					else {
-						sw.WriteLine("	INC	IX");
-						sw.WriteLine("	INC	IX");
-						if (gest128K)
+					if (!imageMode) {
+						if (!gest128K) {
+							sw.WriteLine("	POP	HL");
+							sw.WriteLine("	INC	HL");
+						}
+						else {
 							sw.WriteLine("	INC	IX");
+							sw.WriteLine("	INC	IX");
+							if (gest128K)
+								sw.WriteLine("	INC	IX");
+						}
+						sw.WriteLine("	JP	Boucle");
 					}
-					sw.WriteLine("	JP	Boucle");
+					else
+						GenereTspace(sw);
 				}
 				else
 					sw.WriteLine("	JR	DrawImgI");

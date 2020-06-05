@@ -10,6 +10,7 @@ namespace ConvImgCpc {
 		private static byte[] BufTmp = new byte[0x8000];
 		private static byte[] bLigne = new byte[0x8000];
 		private static byte[] OldImgAscii = new byte[0x800];
+		private char lastAscii = '\0';
 
 		private string fileName;
 		private string version;
@@ -217,7 +218,7 @@ namespace ConvImgCpc {
 					return posBufOut;
 				}
 		*/
-		private int PackAscii(byte[] bufOut, ref int sizeDepack, bool razDiff, bool firstFrame, bool perte = false) {
+		private int PackAscii(byte[] bufOut, ref int sizeDepack, bool razDiff, bool firstFrame, bool imageMode, bool perte = false) {
 			int posDiff = 0, lastPosDiff = 0, nDiff = 0;
 			byte nbModif = 0;
 			int tailleMax = (img.NbLig * img.NbCol) >> 3;
@@ -252,14 +253,15 @@ namespace ConvImgCpc {
 			sizeDepack = img.bitmapCpc.imgAscii.Length + 4;
 			if (nDiff == 0) {
 				BufTmp[0] = (byte)'I';
+				lastAscii = 'I';
 				return PackDepack.Pack(BufTmp, 1, bufOut, 0);
 			}
 			else {
 				BufTmp[0] = (byte)'O';
 				Array.Copy(img.bitmapCpc.imgAscii, 0, BufTmp, 1, tailleMax);
-				int lo = rbFrameO.Checked ? PackDepack.Pack(img.bitmapCpc.imgAscii, tailleMax, BufPrec, 0) : PackDepack.Pack(BufTmp, tailleMax + 1, BufPrec, 0);
+				int lo = rbFrameO.Checked || imageMode ? PackDepack.Pack(img.bitmapCpc.imgAscii, tailleMax, BufPrec, 0) : PackDepack.Pack(BufTmp, tailleMax + 1, BufPrec, 0);
 				posDiff = Math.Min(lastPosDiff, posDiff);
-				if (rbFrameD.Checked) {
+				if (rbFrameD.Checked || imageMode) {
 					BufTmp[0] = (byte)(posDiff >> 1);
 					BufTmp[1] = (byte)(posDiff >> 9);
 					Array.Copy(DiffImage, 0, BufTmp, 2, posDiff);
@@ -271,18 +273,29 @@ namespace ConvImgCpc {
 					Array.Copy(DiffImage, 0, BufTmp, 3, posDiff);
 				}
 				int ld = PackDepack.Pack(BufTmp, posDiff + (rbFrameD.Checked ? 2 : 3), bufOut, 0);
-				if (lo > ld && !rbFrameO.Checked || rbFrameD.Checked)
+				if (lo > ld && !rbFrameO.Checked || rbFrameD.Checked) {
+					if (imageMode) {
+						rbFrameFull.Checked = false;
+						rbFrameD.Checked = true;
+					}
+					lastAscii = 'D';
 					return ld;
+				}
 				else {
 					Array.Copy(BufPrec, bufOut, lo);
+					if (imageMode) {
+						rbFrameFull.Checked = false;
+						rbFrameO.Checked = true;
+					}
+					lastAscii = 'O';
 					return lo;
 				}
 			}
 		}
 
-		private int PackFrame(byte[] bufOut, ref int sizeDepack, bool razDiff, bool firstFrame, int topBottom, int modeLigne, bool optimSpeed) {
+		private int PackFrame(byte[] bufOut, ref int sizeDepack, bool razDiff, bool firstFrame, int topBottom, int modeLigne, bool imageMode, bool optimSpeed) {
 			if (img.modeVirtuel >= 7)
-				return PackAscii(bufOut, ref sizeDepack, razDiff, firstFrame);
+				return PackAscii(bufOut, ref sizeDepack, razDiff, firstFrame, imageMode);
 			else
 				if (chkDirecMem.Checked)
 					return PackDirectMem(bufOut, ref sizeDepack, true, razDiff);
@@ -306,7 +319,7 @@ namespace ConvImgCpc {
 			if (chkBoucle.Checked) {
 				img.main.SelectImage(nbImages - 1, true);
 				img.Convert(true, true);
-				PackFrame(bufOut[0], ref sizeDepack, true, false, -1, modeLigne, optimSpeed);
+				PackFrame(bufOut[0], ref sizeDepack, true, false, -1, modeLigne, imageMode, optimSpeed);
 			}
 
 			img.main.SetInfo("Début sauvegarde animation assembleur...");
@@ -320,16 +333,16 @@ namespace ConvImgCpc {
 				}
 				Application.DoEvents();
 				if (chk2Zone.Checked) {
-					lg[posPack] = PackFrame(bufOut[posPack], ref sizeDepack, i == 0 && !chkBoucle.Checked, i == 0 && !chkBoucle.Checked, 0, modeLigne, optimSpeed);
+					lg[posPack] = PackFrame(bufOut[posPack], ref sizeDepack, i == 0 && !chkBoucle.Checked, i == 0 && !chkBoucle.Checked, 0, modeLigne, imageMode, optimSpeed);
 					if (lg[posPack] > 0)
 						ltot += lg[posPack++];
 
-					lg[posPack] = PackFrame(bufOut[posPack], ref sizeDepack, i == 0 && !chkBoucle.Checked, i == 0 && !chkBoucle.Checked, 1, modeLigne, optimSpeed);
+					lg[posPack] = PackFrame(bufOut[posPack], ref sizeDepack, i == 0 && !chkBoucle.Checked, i == 0 && !chkBoucle.Checked, 1, modeLigne, imageMode, optimSpeed);
 					if (lg[posPack] > 0)
 						ltot += lg[posPack++];
 				}
 				else {
-					lg[posPack] = PackFrame(bufOut[posPack], ref sizeDepack, i == 0 && !chkBoucle.Checked, i == 0 && !chkBoucle.Checked, -1, modeLigne, optimSpeed);
+					lg[posPack] = PackFrame(bufOut[posPack], ref sizeDepack, i == 0 && !chkBoucle.Checked, i == 0 && !chkBoucle.Checked, -1, modeLigne, imageMode, optimSpeed);
 					if (lg[posPack] > 0)
 						ltot += lg[posPack++];
 				}
@@ -338,30 +351,33 @@ namespace ConvImgCpc {
 
 			// Sauvegarde
 			StreamWriter sw = SaveAsm.OpenAsm(fileName, version, param);
-			SaveAsm.GenereEntete(sw, adrDeb, img.NbCol, img.NbLig);
-			if (img.cpcPlus)
-				SaveAsm.GenereInitPlus(sw);
-			else
-				SaveAsm.GenereInitOld(sw);
-
+			if (param.withCode) {
+				SaveAsm.GenereEntete(sw, adrDeb, img.NbCol, img.NbLig);
+				if (img.cpcPlus)
+					SaveAsm.GenereInitPlus(sw);
+				else
+					SaveAsm.GenereInitOld(sw);
+			}
 			bool gest128K = chk128Ko.Checked;
 			if ((ltot + adrDeb < adrMax) && (ltot + adrDeb < 0xBE00 - maxDepack))
 				gest128K = false;
 
-			SaveAsm.GenereAffichage(sw, delai, img.modeVirtuel, gest128K, imageMode);
-			if (img.modeVirtuel >= 7)
-				SaveAsm.GenereDrawAscii(sw, img.modeVirtuel, rbFrameFull.Checked, rbFrameO.Checked, rbFrameD.Checked, gest128K, imageMode);
-			else
-				if (chkDirecMem.Checked)
-					SaveAsm.GenereDrawDirect(sw, gest128K);
+			if (param.withCode) {
+				SaveAsm.GenereAffichage(sw, delai, img.modeVirtuel, gest128K, imageMode);
+				if (img.modeVirtuel >= 7)
+					SaveAsm.GenereDrawAscii(sw, img.modeVirtuel, rbFrameFull.Checked, rbFrameO.Checked, rbFrameD.Checked, gest128K, imageMode);
 				else
-					SaveAsm.GenereDrawDC(sw, delai, img.NbCol, chkCol.Checked, gest128K, modeLigne == 8 ? 0x3F : modeLigne == 4 ? 0x1F : modeLigne == 2 ? 0xF : 0x7, optimSpeed);
-
-			if (img.cpcPlus)
-				SaveAsm.GenerePalettePlus(sw, img);
-			else
-				SaveAsm.GenerePaletteOld(sw, img);
-
+					if (chkDirecMem.Checked)
+						SaveAsm.GenereDrawDirect(sw, gest128K);
+					else
+						SaveAsm.GenereDrawDC(sw, delai, img.NbCol, chkCol.Checked, gest128K, modeLigne == 8 ? 0x3F : modeLigne == 4 ? 0x1F : modeLigne == 2 ? 0xF : 0x7, optimSpeed);
+			}
+			if (param.withPalette || param.withCode) {
+				if (img.cpcPlus)
+					SaveAsm.GenerePalettePlus(sw, img);
+				else
+					SaveAsm.GenerePaletteOld(sw, img);
+			}
 			int endBank0 = 0;
 			int lbank = 0, numBank = 0xC0;
 			for (int i = 0; i < posPack; i++) {
@@ -385,15 +401,19 @@ namespace ConvImgCpc {
 					sw.WriteLine("	Write Direct -1,-1,#" + numBank.ToString("X2"));
 				}
 				bank[i] = numBank;
+				if (imageMode && lastAscii != '\0')
+					sw.WriteLine("; Type Frame ='" + lastAscii + "'");
+
 				sw.WriteLine("Delta" + i.ToString() + ":\t\t; Taille #" + lg[i].ToString("X4"));
 				SaveAsm.GenereDatas(sw, bufOut[i], lg[i], param);
 			}
 			if (gest128K)
 				SaveAsm.GenerePointeurs(sw, img.NbCol, posPack, bank, gest128K && numBank > 0xC0);
-			else {
-				sw.WriteLine("	DB	#FF			; Fin de l'animation");
-				ltot++;
-			}
+			else
+				if (!imageMode) {
+					sw.WriteLine("	DB	#FF			; Fin de l'animation");
+					ltot++;
+				}
 			SaveAsm.GenereFin(sw, img.modeVirtuel, ltot, gest128K && endBank0 < 0x8000);
 			SaveAsm.CloseAsm(sw);
 			for (int i = 0; i < posPack; i++)
@@ -453,10 +473,6 @@ namespace ConvImgCpc {
 				}
 			}
 			bool optimSpeed = true;
-			if (imageMode) {
-				rbFrameFull.Checked = false;
-				rbFrameO.Checked = true;
-			}
 			int modeLigne = rb8L.Checked ? 8 : rb4L.Checked ? 4 : rb2L.Checked ? 2 : 1;
 			if (adrDeb > 0) {
 				img.WindowState = FormWindowState.Minimized;
