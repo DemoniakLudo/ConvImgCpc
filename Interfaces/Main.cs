@@ -255,7 +255,7 @@ namespace ConvImgCpc {
 
 		private void bpLoad_Click(object sender, EventArgs e) {
 			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.Filter = "Images (*.bmp, *.gif, *.png, *.jpg,*.jpeg, *.scr)|*.bmp;*.gif;*.png;*.jpg;*.jpeg;*.scr|Palette (*.pal)|*.pal|Paramètres ConvImagesCpc (*.xml)|*.xml|Tous fichiers|*.*";
+			dlg.Filter = "Images (*.bmp, *.gif, *.png, *.jpg,*.jpeg, *.scr)|*.bmp;*.gif;*.png;*.jpg;*.jpeg;*.scr|Palette (*.pal)|*.pal|Paramètres ConvImgCpc (*.xml)|*.xml|Tous fichiers|*.*";
 			dlg.InitialDirectory = lastReadPath;
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
@@ -462,6 +462,8 @@ namespace ConvImgCpc {
 
 		private void withCode_CheckedChanged(object sender, EventArgs e) {
 			param.withCode = withCode.Checked;
+			if (withCode.Checked)
+				withPalette.Checked = true;
 		}
 
 		private void radioUserSize_CheckedChanged(object sender, EventArgs e) {
