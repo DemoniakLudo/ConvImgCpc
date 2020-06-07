@@ -6,11 +6,11 @@ namespace ConvImgCpc {
 		private const int maxColsCpc = 96;
 		private const int maxLignesCpc = 272;
 
+		static private byte[] bufTmp = new byte[0x10000];
 		public byte[] bmpCpc = new byte[0x10000];
-		private byte[] bufTmp = new byte[0x10000];
 		public byte[] imgAscii = new byte[0x1000];
 
-		public int[] Palette = { 1, 24, 20, 6, 26, 0, 2, 7, 10, 12, 14, 16, 18, 22, 1, 14, 1 };
+		static public int[] Palette = { 1, 24, 20, 6, 26, 0, 2, 7, 10, 12, 14, 16, 18, 22, 1, 14, 1 };
 		static public int[] tabOctetMode = { 0x00, 0x80, 0x08, 0x88, 0x20, 0xA0, 0x28, 0xA8, 0x02, 0x82, 0x0A, 0x8A, 0x22, 0xA2, 0x2A, 0xAA };
 		public const int Lum0 = 0x00;
 		public const int Lum1 = 0x66;
@@ -128,21 +128,23 @@ namespace ConvImgCpc {
 										};
 
 
-		public int modeVirtuel = 1;
-		public bool cpcPlus = false;
-		private int nbCol = 80;
-		public int NbCol { get { return nbCol; } }
-		public int TailleX {
+		static public int modeVirtuel = 1;
+		static public bool cpcPlus = false;
+		static private int nbCol = 80;
+		static public int NbCol { get { return nbCol; } }
+		static public int TailleX {
 			get { return nbCol << 3; }
 			set { nbCol = value >> 3; }
 		}
-		private int nbLig = 200;
-		public int NbLig { get { return nbLig; } }
-		public int TailleY {
+		static private int nbLig = 200;
+		static public int NbLig { get { return nbLig; } }
+		static public int TailleY {
 			get { return nbLig << 1; }
 			set { nbLig = value >> 1; }
 		}
-		public int BitmapSize { get { return nbCol + GetAdrCpc(TailleY - 2); } }
+		static public int BitmapSize { get { return nbCol + GetAdrCpc(TailleY - 2); } }
+
+		public bool isCalc = false;
 
 		public BitmapCpc() {
 		}
@@ -241,12 +243,41 @@ namespace ConvImgCpc {
 			}
 		}
 
-		public int GetAdrCpc(int y) {
+		static public int GetAdrCpc(int y) {
 			int adrCPC = (y >> 4) * nbCol + (y & 14) * 0x400;
 			if (y > 255 && (nbCol * nbLig > 0x4000))
 				adrCPC += 0x3800;
 
 			return adrCPC;
+		}
+
+		static public int DecalTx(int y = 0) {
+			return (modeVirtuel == 8 ? 0 : modeVirtuel > 8 ? modeVirtuel - 8 : modeVirtuel >= 5 ? 2 : modeVirtuel > 2 ? ((y & 2) == 0 ? modeVirtuel - 1 : modeVirtuel - 2) : modeVirtuel + 1);
+		}
+
+		static public int MaxCol(int y = 0) {
+			switch (modeVirtuel) {
+				case 0:
+				case 1:
+				case 2:
+					return 1 << (4 >> modeVirtuel);
+				case 3:
+				case 4:
+					return 1 << (4 >> ((y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3));
+				case 5:
+					return 4;
+				case 6:
+					return 16;
+				case 7:
+					return 4;
+				case 8:
+					return 16;
+				case 9:
+					return 4;
+				case 10:
+					return 2;
+			}
+			return 16;
 		}
 
 		private void DepactPK() {
@@ -328,7 +359,7 @@ namespace ConvImgCpc {
 										break;
 								}
 							}
-							octet |= (byte)(tabOctetMode[pen] >> (p / tx));
+							octet |= (byte)(tabOctetMode[pen % 16] >> (p / tx));
 						}
 					bmpCpc[adrCPC + (x >> 3)] = octet;
 				}

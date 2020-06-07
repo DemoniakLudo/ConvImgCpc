@@ -26,11 +26,10 @@ namespace ConvImgCpc {
 
 		private void ToolModeDraw(MouseEventArgs e) {
 			int yReel = e != null ? (offsetY + (e.Y / zoom)) & 0xFFE : 0;
-			int mode = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (yReel & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
-			int Tx = (4 >> mode);
-			drawColor.BackColor = Color.FromArgb(bitmapCpc.GetColorPal(drawCol % (modeVirtuel == 6 ? 16 : 1 << Tx)).GetColorArgb);
-			undrawColor.BackColor = Color.FromArgb(bitmapCpc.GetColorPal(undrawCol % (modeVirtuel == 6 ? 16 : 1 << Tx)).GetColorArgb);
-			drawColor.Width = undrawColor.Width = 35 * Tx;
+			int tx = 8 >> BitmapCpc.DecalTx(yReel);
+			drawColor.BackColor = Color.FromArgb(bitmapCpc.GetColorPal(drawCol % (BitmapCpc.modeVirtuel == 6 ? 16 : 1 << tx)).GetColorArgb);
+			undrawColor.BackColor = Color.FromArgb(bitmapCpc.GetColorPal(undrawCol % (BitmapCpc.modeVirtuel == 6 ? 16 : 1 << tx)).GetColorArgb);
+			drawColor.Width = undrawColor.Width = 35 * tx;
 			drawColor.Refresh();
 			undrawColor.Refresh();
 			if (e == null || e.Button == MouseButtons.None) {
@@ -42,20 +41,19 @@ namespace ConvImgCpc {
 			else {
 				int pen = e.Button == MouseButtons.Left ? drawCol : undrawCol;
 				for (int y = 0; y < penWidth * 2; y += 2) {
-					mode = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (yReel & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
-					Tx = (4 >> mode);
-					int nbCol = modeVirtuel == 6 ? 16 : 1 << Tx;
-					int realColor = GetPalCPC(Palette[pen % nbCol]);
+					tx = 8 >> BitmapCpc.DecalTx(yReel);
+					int nbCol = BitmapCpc.modeVirtuel == 6 ? 16 : 1 << tx;
+					int realColor = GetPalCPC(BitmapCpc.Palette[pen % nbCol]);
 					int yStart = zoom * (yReel - offsetY);
-					for (int x = 0; x < penWidth * Tx; x += Tx) {
-						int xReel = (x + offsetX + (e.X / zoom)) & -Tx;
-						if (xReel >= 0 && yReel >= 0 && xReel < TailleX && yReel < TailleY) {
-							undo.MemoUndoRedo(xReel, yReel, bmpLock.GetPixel(xReel, yReel), realColor, doDraw);
+					for (int x = 0; x < penWidth * tx; x += tx) {
+						int xReel = (x + offsetX + (e.X / zoom)) & -tx;
+						if (xReel >= 0 && yReel >= 0 && xReel < BitmapCpc.TailleX && yReel < BitmapCpc.TailleY) {
+							undo.MemoUndoRedo(xReel, yReel, BmpLock.GetPixel(xReel, yReel), realColor, doDraw);
 							doDraw = true;
-							bmpLock.SetHorLineDouble(xReel, yReel, Tx, realColor);
+							BmpLock.SetHorLineDouble(xReel, yReel, tx, realColor);
 							if (zoom != 1)
 								for (int yz = yStart; yz < Math.Min(tmpLock.Height, yStart + (zoom << 1)); yz += 2)
-									tmpLock.SetHorLineDouble(zoom * (xReel - offsetX), yz, zoom * Tx, realColor);
+									tmpLock.SetHorLineDouble(zoom * (xReel - offsetX), yz, zoom * tx, realColor);
 						}
 					}
 					yReel += 2;
@@ -66,10 +64,10 @@ namespace ConvImgCpc {
 
 		private void DoZoom() {
 			vScrollBar.Visible = hScrollBar.Visible = zoom > 1;
-			hScrollBar.Maximum = hScrollBar.LargeChange + TailleX - (TailleX / zoom);
-			vScrollBar.Maximum = vScrollBar.LargeChange + TailleY - (TailleY / zoom);
-			hScrollBar.Value = Math.Max(0, Math.Min(Math.Min(zoomRectx, zoomRectx + zoomRectw), TailleX - ((imgOrigine.Width + zoom) / zoom)));
-			vScrollBar.Value = Math.Max(0, Math.Min(Math.Min(zoomRecty, zoomRecty + zoomRecth), TailleY - ((imgOrigine.Height + zoom) / zoom)));
+			hScrollBar.Maximum = hScrollBar.LargeChange + BitmapCpc.TailleX - (BitmapCpc.TailleX / zoom);
+			vScrollBar.Maximum = vScrollBar.LargeChange + BitmapCpc.TailleY - (BitmapCpc.TailleY / zoom);
+			hScrollBar.Value = Math.Max(0, Math.Min(Math.Min(zoomRectx, zoomRectx + zoomRectw), BitmapCpc.TailleX - ((imgOrigine.Width + zoom) / zoom)));
+			vScrollBar.Value = Math.Max(0, Math.Min(Math.Min(zoomRecty, zoomRecty + zoomRecth), BitmapCpc.TailleY - ((imgOrigine.Height + zoom) / zoom)));
 			offsetX = (hScrollBar.Value >> 3) << 3;
 			offsetY = (vScrollBar.Value >> 1) << 1;
 			lblZoom.Text = zoom.ToString() + ":1";
@@ -124,12 +122,11 @@ namespace ConvImgCpc {
 
 		private void DrawCopy(MouseEventArgs e) {
 			if (imgMotif != null && imgCopy != null) {
-				imgCopy.CopyBits(bmpLock);
+				imgCopy.CopyBits(BmpLock);
 				int yReel = ((e.Y / zoom) & 0xFFE) * zoom;
-				int mode = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (yReel & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
-				int Tx = (4 >> mode);
-				int xReel = ((e.X / zoom) & -Tx) * zoom;
-				if (xReel < bitmapCpc.NbCol << 3 && yReel < bitmapCpc.NbLig << 1) {
+				int tx = 8 >> BitmapCpc.DecalTx(yReel);
+				int xReel = ((e.X / zoom) & -tx) * zoom;
+				if (xReel < BitmapCpc.NbCol << 3 && yReel < BitmapCpc.NbLig << 1) {
 					Graphics g = Graphics.FromImage(pictureBox.Image);
 					g.DrawImage(imgMotif.Bitmap, xReel, yReel);
 					pictureBox.Refresh();
@@ -139,24 +136,22 @@ namespace ConvImgCpc {
 
 		private void ToolModeCopy(MouseEventArgs e) {
 			int yReel = ((e.Y / zoom) & 0xFFE) * zoom;
-			int mode = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (yReel & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
-			int Tx = (4 >> mode);
-			int xReel = ((e.X / zoom) & -Tx) * zoom;
+			int tx = 8 >> BitmapCpc.DecalTx(yReel);
+			int xReel = ((e.X / zoom) & -tx) * zoom;
 			if (e.Button == MouseButtons.Left) {
 				if (imgMotif != null) {
 					for (int y = 0; y < imgMotif.Height; y += 2) {
-						mode = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? ((y + yReel) & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
-						Tx = (4 >> mode);
-						for (int x = 0; x < imgMotif.Width; x += Tx) {
-							if (x + xReel < bitmapCpc.NbCol << 3 && y + yReel < bitmapCpc.NbLig << 1) {
+						tx = 8 >> BitmapCpc.DecalTx(y+yReel);
+						for (int x = 0; x < imgMotif.Width; x += tx) {
+							if (x + xReel < BitmapCpc.NbCol << 3 && y + yReel < BitmapCpc.NbLig << 1) {
 								int c = imgMotif.GetPixel(x, y);
-								undo.MemoUndoRedo(x + xReel, y + yReel, bmpLock.GetPixel(x + xReel, y + yReel), c, doDraw);
-								bmpLock.SetHorLineDouble(x + xReel, y + yReel, Tx, c);
+								undo.MemoUndoRedo(x + xReel, y + yReel, BmpLock.GetPixel(x + xReel, y + yReel), c, doDraw);
+								BmpLock.SetHorLineDouble(x + xReel, y + yReel, tx, c);
 								doDraw = true;
 							}
 						}
 					}
-					imgCopy.CopyBits(bmpLock);
+					imgCopy.CopyBits(BmpLock);
 					Render();
 				}
 				else {
@@ -187,13 +182,13 @@ namespace ConvImgCpc {
 						imgMotif = new DirectBitmap(Math.Abs(copyRectw / zoom), Math.Abs(copyRecth / zoom));
 						for (int x = 0; x < imgMotif.Width; x++)
 							for (int y = 0; y < imgMotif.Height; y++)
-								imgMotif.SetPixel(x, y, bmpLock.GetPixel(offsetX + x + copyRectx / zoom, offsetY + y + copyRecty / zoom));
+								imgMotif.SetPixel(x, y, BmpLock.GetPixel(offsetX + x + copyRectx / zoom, offsetY + y + copyRecty / zoom));
 
 						if (zoom != 1) {
 							zoom = 1;
 							DoZoom();
 						}
-						imgCopy = new DirectBitmap(bmpLock.Width, bmpLock.Height);
+						imgCopy = new DirectBitmap(BmpLock.Width, BmpLock.Height);
 						pictureBox.Image = imgCopy.Bitmap;
 					}
 				}
@@ -215,7 +210,7 @@ namespace ConvImgCpc {
 				imgMotif.Dispose();
 				imgMotif = null;
 			}
-			pictureBox.Image = tmpLock != null ? tmpLock.Bitmap : bmpLock.Bitmap;
+			pictureBox.Image = tmpLock != null ? tmpLock.Bitmap : BmpLock.Bitmap;
 		}
 
 		private void TrtMouseMove(object sender, MouseEventArgs e) {
@@ -339,11 +334,11 @@ namespace ConvImgCpc {
 			Enabled = false;
 			List<MemoPoint> lst = undo.Undo();
 			foreach (MemoPoint p in lst) {
-				int Tx = 4 >> (modeVirtuel > 7 ? modeVirtuel - 8 : modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (p.posy & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
-				bmpLock.SetHorLineDouble(p.posx, p.posy, Tx, p.oldColor);
+				int tx = 8 >> BitmapCpc.DecalTx(p.posy);
+				BmpLock.SetHorLineDouble(p.posx, p.posy, tx, p.oldColor);
 			}
 			if (imgCopy != null)
-				imgCopy.CopyBits(bmpLock);
+				imgCopy.CopyBits(BmpLock);
 
 			Render(true);
 			bpUndo.Enabled = undo.CanUndo;
@@ -355,11 +350,11 @@ namespace ConvImgCpc {
 			Enabled = false;
 			List<MemoPoint> lst = undo.Redo();
 			foreach (MemoPoint p in lst) {
-				int Tx = 4 >> (modeVirtuel > 7 ? modeVirtuel - 8 : modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (p.posy & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
-				bmpLock.SetHorLineDouble(p.posx, p.posy, Tx, p.newColor);
+				int tx = 8 >> BitmapCpc.DecalTx(p.posy);
+				BmpLock.SetHorLineDouble(p.posx, p.posy, tx, p.newColor);
 			}
 			if (imgCopy != null)
-				imgCopy.CopyBits(bmpLock);
+				imgCopy.CopyBits(BmpLock);
 
 			Render(true);
 			bpUndo.Enabled = undo.CanUndo;

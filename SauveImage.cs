@@ -335,20 +335,20 @@ namespace ConvImgCpc {
 
 		static public int SauveScr(string fileName, BitmapCpc bitmapCpc, Param param, bool compact, string version = null) {
 			byte[] bufPack = new byte[0x8000];
-			bool Overscan = (bitmapCpc.NbLig * bitmapCpc.NbCol > 0x3F00);
+			bool Overscan = (BitmapCpc.NbLig * BitmapCpc.NbCol > 0x3F00);
 			if (param.withPalette && version == null) {
 				if (param.cpcPlus) {
-					ModePal[0] = (byte)(bitmapCpc.modeVirtuel | 0x8C);
+					ModePal[0] = (byte)(BitmapCpc.modeVirtuel | 0x8C);
 					int k = 1;
 					for (int i = 0; i < 16; i++) {
-						ModePal[k++] = (byte)(((bitmapCpc.Palette[i] >> 4) & 0x0F) | (bitmapCpc.Palette[i] << 4));
-						ModePal[k++] = (byte)(bitmapCpc.Palette[i] >> 8);
+						ModePal[k++] = (byte)(((BitmapCpc.Palette[i] >> 4) & 0x0F) | (BitmapCpc.Palette[i] << 4));
+						ModePal[k++] = (byte)(BitmapCpc.Palette[i] >> 8);
 					}
 				}
 				else {
-					ModePal[0] = (byte)bitmapCpc.modeVirtuel;
+					ModePal[0] = (byte)BitmapCpc.modeVirtuel;
 					for (int i = 0; i < 16; i++)
-						ModePal[1 + i] = (byte)bitmapCpc.Palette[i];
+						ModePal[1 + i] = (byte)BitmapCpc.Palette[i];
 				}
 			}
 
@@ -364,7 +364,7 @@ namespace ConvImgCpc {
 					else
 						Buffer.BlockCopy(CodeStd, 0, imgCpc, 0x07D0, CodeStd.Length);
 
-					if (bitmapCpc.modeVirtuel > 2) {
+					if (BitmapCpc.modeVirtuel > 2) {
 						Buffer.BlockCopy(codeEgx0, 0, imgCpc, 0x37D0, codeEgx0.Length);
 						Buffer.BlockCopy(codeEgx1, 0, imgCpc, 0x3FD0, codeEgx1.Length);
 						imgCpc[0x07F2] = 0xD0;
@@ -374,7 +374,7 @@ namespace ConvImgCpc {
 				}
 			}
 			else {
-				if (bitmapCpc.NbLig == 272 && bitmapCpc.NbCol == 96) {
+				if (BitmapCpc.NbLig == 272 && BitmapCpc.NbCol == 96) {
 					Buffer.BlockCopy(ModePal, 0, imgCpc, 0x600, ModePal.Length);
 					if (param.withCode && version == null) {
 						if (param.cpcPlus)
@@ -382,7 +382,7 @@ namespace ConvImgCpc {
 						else
 							Buffer.BlockCopy(CodeOv, 0, imgCpc, 0x611, CodeOv.Length);
 
-						if (bitmapCpc.modeVirtuel > 2) {
+						if (BitmapCpc.modeVirtuel > 2) {
 							Buffer.BlockCopy(codeEgx0, 0, imgCpc, 0x1600, codeEgx0.Length);
 							Buffer.BlockCopy(codeEgx1, 0, imgCpc, 0x1640, codeEgx1.Length);
 							if (param.cpcPlus) {
@@ -404,7 +404,7 @@ namespace ConvImgCpc {
 			short startAdr = (short)(Overscan ? 0x200 : 0xC000);
 			short exec = (short)(Overscan ? param.cpcPlus ? 0x821 : 0x811 : 0xC7D0);
 			CpcAmsdos entete;
-			int lg = bitmapCpc.BitmapSize;
+			int lg = BitmapCpc.BitmapSize;
 			if (compact) {
 				lg = PackDepack.Pack(bitmapCpc.bmpCpc, lg, bufPack, 0) + 1; // Prendre 1 octet de marge ?
 				if (param.withCode && version == null) {
@@ -425,11 +425,11 @@ namespace ConvImgCpc {
 				}
 			}
 			if (version != null) {
-				StreamWriter sw = SaveAsm.OpenAsm(fileName, version, param);
+				StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
 				sw.WriteLine("	ORG	#4000");
 				sw.WriteLine("	Nolist");
 				sw.WriteLine("ImageCmp:");
-				SaveAsm.GenereDatas(sw, bufPack, lg, param);
+				SaveAsm.GenereDatas(sw, bufPack, lg);
 				sw.WriteLine("	List");
 				if (param.withCode) {
 					sw.WriteLine("_StartDepack:");
@@ -457,9 +457,9 @@ namespace ConvImgCpc {
 			int indexPal = 3;
 			if (param.cpcPlus) {
 				for (i = 0; i < 16; i++) {
-					pal[indexPal++] = (byte)BitmapCpc.CpcVGA[26 - ((bitmapCpc.Palette[i] >> 4) & 0x0F)];
-					pal[indexPal++] = (byte)BitmapCpc.CpcVGA[26 - (bitmapCpc.Palette[i] & 0x0F)];
-					pal[indexPal++] = (byte)BitmapCpc.CpcVGA[26 - ((bitmapCpc.Palette[i] >> 8) & 0x0F)];
+					pal[indexPal++] = (byte)BitmapCpc.CpcVGA[26 - ((BitmapCpc.Palette[i] >> 4) & 0x0F)];
+					pal[indexPal++] = (byte)BitmapCpc.CpcVGA[26 - (BitmapCpc.Palette[i] & 0x0F)];
+					pal[indexPal++] = (byte)BitmapCpc.CpcVGA[26 - ((BitmapCpc.Palette[i] >> 8) & 0x0F)];
 				}
 				pal[195] = pal[3];
 				pal[196] = pal[4];
@@ -468,7 +468,7 @@ namespace ConvImgCpc {
 			else {
 				for (i = 0; i < 16; i++)
 					for (int j = 0; j < 12; j++)
-						pal[indexPal++] = (byte)BitmapCpc.CpcVGA[bitmapCpc.Palette[i]];
+						pal[indexPal++] = (byte)BitmapCpc.CpcVGA[BitmapCpc.Palette[i]];
 
 				for (i = 0; i < 12; i++)
 					pal[indexPal++] = pal[i + 3];
@@ -503,14 +503,14 @@ namespace ConvImgCpc {
 								if (pal[5 + i * 12] == (byte)BitmapCpc.CpcVGA[k])
 									v = (26 - k) << 8;
 							}
-							bitmapCpc.Palette[i] = r + v + b;
+							BitmapCpc.Palette[i] = r + v + b;
 						}
 					}
 					else {
 						for (int i = 0; i < 16; i++)
 							for (int j = 0; j < 27; j++)
 								if (pal[3 + i * 12] == (byte)BitmapCpc.CpcVGA[j])
-									bitmapCpc.Palette[i] = j;
+									BitmapCpc.Palette[i] = j;
 					}
 					return (true);
 				}

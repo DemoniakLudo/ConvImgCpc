@@ -32,9 +32,9 @@ namespace ConvImgCpc {
 			mode.Items.Insert(10, "Mode ASC2");
 			imgSrc = new ImageSource();
 			imgCpc = new ImageCpc(this, Convert);
-			nbCols.Value = imgCpc.TailleX >> 3;
-			nbLignes.Value = imgCpc.TailleY >> 1;
-			mode.SelectedIndex = imgCpc.modeVirtuel;
+			nbCols.Value = BitmapCpc.TailleX >> 3;
+			nbLignes.Value = BitmapCpc.TailleY >> 1;
+			mode.SelectedIndex = BitmapCpc.modeVirtuel;
 			methode.SelectedIndex = 0;
 			param.pctContrast = param.pctLumi = param.pctSat = param.pctRed = param.pctGreen = param.pctBlue = 100;
 			param.withCode = withCode.Checked;
@@ -57,58 +57,65 @@ namespace ConvImgCpc {
 		}
 
 		private void Convert(bool doConvert, bool noInfo = false) {
-			if (imgSrc.GetImage != null && (autoRecalc.Checked || doConvert)) {
-				bpSave.Enabled = bpConvert.Enabled = false;
-				param.sMode = radioKeepLarger.Checked ? Param.SizeMode.KeepLarger : radioKeepSmaller.Checked ? Param.SizeMode.KeepSmaller : radioFit.Checked ? Param.SizeMode.Fit : Param.SizeMode.UserSize;
-				param.methode = methode.SelectedItem.ToString();
-				param.pct = (int)pctTrame.Value;
-				param.lockState = imgCpc.lockState;
-				param.motif = chkMotif.Checked;
-				param.motif2 = chkMotif2.Checked;
-				param.setPalCpc = chkPalCpc.Checked;
-				DirectBitmap tmp = new DirectBitmap(imgCpc.TailleX, imgCpc.TailleY);
-				Graphics g = Graphics.FromImage(tmp.Bitmap);
-				double ratio = imgSrc.GetImage.Width * imgCpc.TailleY / (double)(imgSrc.GetImage.Height * imgCpc.TailleX);
-				switch (param.sMode) {
-					case Param.SizeMode.KeepSmaller:
-						if (ratio < 1) {
-							int newW = (int)(imgCpc.TailleX * ratio);
-							g.DrawImage(imgSrc.GetImage, (imgCpc.TailleX - newW) >> 1, 0, newW, imgCpc.TailleY);
-						}
-						else {
-							int newH = (int)(imgCpc.TailleY / ratio);
-							g.DrawImage(imgSrc.GetImage, 0, (imgCpc.TailleY - newH) >> 1, imgCpc.TailleX, newH);
-						}
-						break;
+			if (imgSrc.GetImage != null && (autoRecalc.Checked || doConvert) && !noInfo) {
+				int imgSel = (int)numImage.Value;
+				int startImg = chkAllPics.Checked ? 0 : (int)numImage.Value;
+				int endImg = chkAllPics.Checked ? (int)numImage.Maximum : (int)numImage.Value;
+				for (int i = startImg; i <= endImg; i++) {
+					SelectImage(i, true);
+					bpSave.Enabled = bpConvert.Enabled = false;
+					param.sMode = radioKeepLarger.Checked ? Param.SizeMode.KeepLarger : radioKeepSmaller.Checked ? Param.SizeMode.KeepSmaller : radioFit.Checked ? Param.SizeMode.Fit : Param.SizeMode.UserSize;
+					param.methode = methode.SelectedItem.ToString();
+					param.pct = (int)pctTrame.Value;
+					param.lockState = imgCpc.lockState;
+					param.motif = chkMotif.Checked;
+					param.motif2 = chkMotif2.Checked;
+					param.setPalCpc = chkPalCpc.Checked;
+					DirectBitmap tmp = new DirectBitmap(BitmapCpc.TailleX, BitmapCpc.TailleY);
+					Graphics g = Graphics.FromImage(tmp.Bitmap);
+					double ratio = imgSrc.GetImage.Width * BitmapCpc.TailleY / (double)(imgSrc.GetImage.Height * BitmapCpc.TailleX);
+					switch (param.sMode) {
+						case Param.SizeMode.KeepSmaller:
+							if (ratio < 1) {
+								int newW = (int)(BitmapCpc.TailleX * ratio);
+								g.DrawImage(imgSrc.GetImage, (BitmapCpc.TailleX - newW) >> 1, 0, newW, BitmapCpc.TailleY);
+							}
+							else {
+								int newH = (int)(BitmapCpc.TailleY / ratio);
+								g.DrawImage(imgSrc.GetImage, 0, (BitmapCpc.TailleY - newH) >> 1, BitmapCpc.TailleX, newH);
+							}
+							break;
 
-					case Param.SizeMode.KeepLarger:
-						if (ratio < 1) {
-							int newY = (int)(imgCpc.TailleY / ratio);
-							g.DrawImage(imgSrc.GetImage, 0, (imgCpc.TailleY - newY) >> 1, imgCpc.TailleX, newY);
-						}
-						else {
-							int newX = (int)(imgCpc.TailleX * ratio);
-							g.DrawImage(imgSrc.GetImage, (imgCpc.TailleX - newX) >> 1, 0, newX, imgCpc.TailleY);
-						}
-						break;
+						case Param.SizeMode.KeepLarger:
+							if (ratio < 1) {
+								int newY = (int)(BitmapCpc.TailleY / ratio);
+								g.DrawImage(imgSrc.GetImage, 0, (BitmapCpc.TailleY - newY) >> 1, BitmapCpc.TailleX, newY);
+							}
+							else {
+								int newX = (int)(BitmapCpc.TailleX * ratio);
+								g.DrawImage(imgSrc.GetImage, (BitmapCpc.TailleX - newX) >> 1, 0, newX, BitmapCpc.TailleY);
+							}
+							break;
 
-					case Param.SizeMode.Fit:
-						g.DrawImage(imgSrc.GetImage, 0, 0, imgCpc.TailleX, imgCpc.TailleY);
-						break;
+						case Param.SizeMode.Fit:
+							g.DrawImage(imgSrc.GetImage, 0, 0, BitmapCpc.TailleX, BitmapCpc.TailleY);
+							break;
 
-					case Param.SizeMode.UserSize:
-					case Param.SizeMode.Origin:
-						int posx = 0, posy = 0, tx = imgCpc.TailleX, ty = imgCpc.TailleY;
-						GetSizePos(ref posx, ref posy, ref tx, ref ty);
-						g.DrawImage(imgSrc.GetImage, -(posx << 1), -(posy << 1), tx << 1, ty << 1);
-						break;
+						case Param.SizeMode.UserSize:
+						case Param.SizeMode.Origin:
+							int posx = 0, posy = 0, tx = BitmapCpc.TailleX, ty = BitmapCpc.TailleY;
+							GetSizePos(ref posx, ref posy, ref tx, ref ty);
+							g.DrawImage(imgSrc.GetImage, -(posx << 1), -(posy << 1), tx << 1, ty << 1);
+							break;
+					}
+					if (!noInfo && doConvert)
+						SetInfo("Conversion en cours...");
+
+					Conversion.Convert(tmp, imgCpc, param, !doConvert || noInfo);
+					bpSave.Enabled = bpConvert.Enabled = true;
+					tmp.Dispose();
 				}
-				if (!noInfo && doConvert)
-					SetInfo("Conversion en cours...");
-
-				Conversion.Convert(tmp, imgCpc, param, !doConvert || noInfo);
-				bpSave.Enabled = bpConvert.Enabled = true;
-				tmp.Dispose();
+				SelectImage(imgSel);
 			}
 			imgCpc.Render();
 		}
@@ -139,15 +146,16 @@ namespace ConvImgCpc {
 			fileScr.Read(tabBytes, 0, tabBytes.Length);
 			fileScr.Close();
 			bool bitmapOk = false;
+			int nbImg = 0;
 			try {
 				if (CpcSystem.CheckAmsdos(tabBytes)) {
 					BitmapCpc bmp = new BitmapCpc(tabBytes);
 					imgSrc.SetBitmap(bmp.CreateImageFromCpc(tabBytes), checkImageSource.Checked);
-					nbCols.Value = param.nbCols = bmp.NbCol;
-					imgCpc.TailleX = param.nbCols << 3;
-					nbLignes.Value = param.nbLignes = bmp.NbLig;
-					imgCpc.TailleY = param.nbLignes << 1;
-					imgCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = bmp.modeVirtuel;
+					nbCols.Value = param.nbCols = BitmapCpc.NbCol;
+					BitmapCpc.TailleX = param.nbCols << 3;
+					nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
+					BitmapCpc.TailleY = param.nbLignes << 1;
+					param.modeVirtuel = mode.SelectedIndex = BitmapCpc.modeVirtuel;
 					SetInfo("Lecture image de type CPC");
 				}
 				else {
@@ -155,21 +163,14 @@ namespace ConvImgCpc {
 					imageStream.Position = 0;
 					selImage = new Bitmap(imageStream);
 					dimension = new FrameDimension(selImage.FrameDimensionsList[0]);
-					int nbImg = GetMaxImages();
+					nbImg = GetMaxImages();
 					numImage.Maximum = nbImg - 1;
 					lblMaxImage.Text = "Nbre images:" + nbImg;
-					lblMaxImage.Visible = lblNumImage.Visible = numImage.Visible = nbImg > 1;
+					lblMaxImage.Visible = lblNumImage.Visible = numImage.Visible = chkAllPics.Visible = nbImg > 1;
 					numImage.Value = 0;
 					SetInfo("Lecture image PC" + (nbImg > 0 ? (" de type animation avec " + nbImg + " images.") : "."));
 					SelectImage(0);
 				}
-				bitmapOk = true;
-			}
-			catch (Exception ex) {
-				MessageBox.Show("Impossible de lire l'image (format inconnu ???)");
-				SetInfo("Impossible de lire l'image (format inconnu ???)");
-			}
-			if (bitmapOk) {
 				radioUserSize.Enabled = radioOrigin.Enabled = true;
 				Text = "ConvImgCPC - " + Path.GetFileName(fileName);
 				if (radioOrigin.Checked) {
@@ -178,14 +179,21 @@ namespace ConvImgCpc {
 					tbxPosX.Text = "0";
 					tbxPosY.Text = "0";
 				}
-				imgCpc.Reset();
+				imgCpc.InitBitmapCpc(nbImg);
+				imgCpc.Reset(true);
 				Convert(false);
+			}
+			catch (Exception ex) {
+				MessageBox.Show("Impossible de lire l'image (format inconnu ???)");
+				SetInfo("Impossible de lire l'image (format inconnu ???)");
 			}
 		}
 
 		public void SelectImage(int n, bool noInfo = false) {
 			selImage.SelectActiveFrame(dimension, n);
 			imgSrc.SetBitmap(new Bitmap(selImage), checkImageSource.Checked);
+			imgCpc.selImage = n;
+			imgCpc.Reset();
 			if (!noInfo)
 				SetInfo("Image sélectionnée: " + n.ToString());
 		}
@@ -294,11 +302,11 @@ namespace ConvImgCpc {
 						break;
 
 					case 3:
-						imgCpc.SauveSprite(dlg.FileName, lblInfoVersion.Text, param);
+						imgCpc.SauveSprite(dlg.FileName, lblInfoVersion.Text);
 						break;
 
 					case 4:
-						imgCpc.SauveSpriteCmp(dlg.FileName, lblInfoVersion.Text, param);
+						imgCpc.SauveSpriteCmp(dlg.FileName, lblInfoVersion.Text);
 						break;
 
 					case 5:
@@ -326,28 +334,28 @@ namespace ConvImgCpc {
 
 		private void nbCols_ValueChanged(object sender, EventArgs e) {
 			param.nbCols = (int)nbCols.Value;
-			imgCpc.TailleX = param.nbCols << 3;
-			imgCpc.Reset();
+			BitmapCpc.TailleX = param.nbCols << 3;
+			imgCpc.Reset(true);
 			Convert(false);
 		}
 
 		private void nbLignes_ValueChanged(object sender, EventArgs e) {
 			param.nbLignes = (int)nbLignes.Value;
-			imgCpc.TailleY = param.nbLignes << 1;
-			imgCpc.Reset();
+			BitmapCpc.TailleY = param.nbLignes << 1;
+			imgCpc.Reset(true);
 			Convert(false);
 		}
 
 		private void mode_SelectedIndexChanged(object sender, EventArgs e) {
-			imgCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex;
-			imgCpc.Reset();
+			BitmapCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex;
+			imgCpc.Reset(true);
 			trackModeX.Visible = mode.SelectedIndex == 5;
 			bpEditTrame.Visible = mode.SelectedIndex == 7;
 			Convert(false);
 		}
 
 		private void modePlus_CheckedChanged(object sender, EventArgs e) {
-			imgCpc.cpcPlus = modePlus.Checked;
+			BitmapCpc.cpcPlus = modePlus.Checked;
 			newMethode.Visible = !modePlus.Checked;
 			reducPal1.Visible = reducPal2.Visible = reducPal3.Visible = reducPal4.Visible = modePlus.Checked;
 			param.cpcPlus = modePlus.Checked;
@@ -355,6 +363,7 @@ namespace ConvImgCpc {
 		}
 
 		private void InterfaceChange(object sender, EventArgs e) {
+			bpSave.Enabled = !autoRecalc.Checked;
 			lblPct.Visible = pctTrame.Visible = methode.SelectedItem.ToString() != "Aucun";
 			param.methode = methode.SelectedItem.ToString();
 			param.lissage = chkLissage.Checked;

@@ -149,6 +149,7 @@
     <EmbeddedResource Include="Interfaces\Rendu.resx">
       <DependentUpon>Rendu.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Docs\ConvImgCpc.docx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -183,7 +184,7 @@
     <Content Include="Icones\Copy.png" />
     <Content Include="Icones\Draw.png" />
     <Content Include="Icones\Zoom.png" />
-    <Content Include="ToDoList.txt" />
+    <Content Include="Docs\ToDoList.txt" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

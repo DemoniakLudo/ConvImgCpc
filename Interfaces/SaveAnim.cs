@@ -8,7 +8,7 @@ namespace ConvImgCpc {
 		private static byte[] BufPrec = new byte[0x8000];
 		private static byte[] DiffImage = new byte[0x8000];
 		private static byte[] BufTmp = new byte[0x8000];
-		private static byte[] bLigne = new byte[0x8000];
+		private static byte[] bLigne = new byte[0x10000];
 		private static byte[] OldImgAscii = new byte[0x800];
 		private char lastAscii = '\0';
 
@@ -23,17 +23,17 @@ namespace ConvImgCpc {
 			img = i;
 			param = p;
 			InitializeComponent();
-			grpGenereLigne.Visible = chk2Zone.Visible = chkDirecMem.Visible = chkCol.Visible = img.modeVirtuel < 7;
-			grpAscii.Visible = img.modeVirtuel >= 7;
+			grpGenereLigne.Visible = chk2Zone.Visible = chkDirecMem.Visible = chkCol.Visible = BitmapCpc.modeVirtuel < 7;
+			grpAscii.Visible = BitmapCpc.modeVirtuel >= 7;
 		}
 
 		#region Méthodes de compactage
 		private int PackWinDC(byte[] bufOut, ref int sizeDepack, int topBottom, bool razDiff, int modeLigne, bool optimSpeed) {
 			int xFin = 0;
-			int xDeb = img.NbCol;
-			int yDeb = img.NbLig;
+			int xDeb = BitmapCpc.NbCol;
+			int yDeb = BitmapCpc.NbLig;
 			int yFin = 0;
-			int lStart = 0, lEnd = img.NbLig, xStart = 0, xEnd = img.NbCol;
+			int lStart = 0, lEnd = BitmapCpc.NbLig, xStart = 0, xEnd = BitmapCpc.NbCol;
 
 			if (razDiff)
 				Array.Clear(BufPrec, 0, BufPrec.Length);
@@ -42,16 +42,16 @@ namespace ConvImgCpc {
 			img.bitmapCpc.CreeBmpCpc(img.BmpLock);
 
 			if (chkZoneVert.Checked) {
-				xStart = topBottom < 1 ? 0 : img.NbCol >> 1;
-				xEnd = topBottom == 0 ? img.NbCol >> 1 : img.NbCol;
+				xStart = topBottom < 1 ? 0 : BitmapCpc.NbCol >> 1;
+				xEnd = topBottom == 0 ? BitmapCpc.NbCol >> 1 : BitmapCpc.NbCol;
 			}
 			else {
-				lStart = topBottom < 1 ? 0 : img.NbLig >> 1;
-				lEnd = topBottom == 0 ? img.NbLig >> 1 : img.NbLig;
+				lStart = topBottom < 1 ? 0 : BitmapCpc.NbLig >> 1;
+				lEnd = topBottom == 0 ? BitmapCpc.NbLig >> 1 : BitmapCpc.NbLig;
 			}
 			// Recherche les "coordonnées" de l'image différente par rapport à la précédente
 			for (int l = lStart; l < lEnd; l += modeLigne) {
-				int adr = img.GetAdrCpc(l << 1);
+				int adr = BitmapCpc.GetAdrCpc(l << 1);
 				for (int oct = xStart; oct < xEnd; oct++) {
 					if (img.bitmapCpc.bmpCpc[adr + oct] != BufPrec[adr + oct]) {
 						xDeb = Math.Min(xDeb, oct);
@@ -72,7 +72,7 @@ namespace ConvImgCpc {
 				bLigne[pos++] = (byte)tailleX;
 				bLigne[pos++] = (byte)tailleY;
 				if (!optimSpeed) {
-					AdrEcr = 0xC000 + xDeb + (yDeb >> 3) * img.NbCol + (yDeb & 7) * 0x800;
+					AdrEcr = 0xC000 + xDeb + (yDeb >> 3) * BitmapCpc.NbCol + (yDeb & 7) * 0x800;
 					bLigne[pos++] = (byte)(AdrEcr & 0xFF);
 					bLigne[pos++] = (byte)(AdrEcr >> 8);
 				}
@@ -80,7 +80,7 @@ namespace ConvImgCpc {
 					// passage en mode "colonne par colonne"
 					for (int x = xDeb; x <= xFin; x++) {
 						for (int l = 0; l < tailleY * modeLigne; l += modeLigne) {
-							int offsetEcr = ((l + yDeb) >> 3) * img.NbCol + ((l + yDeb) & 7) * 0x800 + x;
+							int offsetEcr = ((l + yDeb) >> 3) * BitmapCpc.NbCol + ((l + yDeb) & 7) * 0x800 + x;
 							if (optimSpeed) {
 								AdrEcr = 0xC000 + offsetEcr;
 								bLigne[pos++] = (byte)(AdrEcr & 0xFF);
@@ -93,7 +93,7 @@ namespace ConvImgCpc {
 				else {
 					// Passage en mode "ligne à ligne"
 					for (int l = yDeb; l <= yFin; l += modeLigne) {
-						int offsetEcr = (l >> 3) * img.NbCol + (l & 7) * 0x800 + xDeb;
+						int offsetEcr = (l >> 3) * BitmapCpc.NbCol + (l & 7) * 0x800 + xDeb;
 						if (optimSpeed) {
 							AdrEcr = 0xC000 + offsetEcr;
 							bLigne[pos++] = (byte)(AdrEcr & 0xFF);
@@ -119,7 +119,7 @@ namespace ConvImgCpc {
 			img.bitmapCpc.CreeBmpCpc(img.BmpLock);
 			byte[] src = img.bitmapCpc.bmpCpc;
 
-			int maxSize = (img.NbCol) + ((img.NbLig - 1) >> 3) * (img.NbCol) + ((img.NbLig - 1) & 7) * 0x800;
+			int maxSize = (BitmapCpc.NbCol) + ((BitmapCpc.NbLig - 1) >> 3) * (BitmapCpc.NbCol) + ((BitmapCpc.NbLig - 1) & 7) * 0x800;
 			if (maxSize >= 0x4000)
 				maxSize += 0x3800;
 
@@ -221,15 +221,15 @@ namespace ConvImgCpc {
 		private int PackAscii(byte[] bufOut, ref int sizeDepack, bool razDiff, bool firstFrame, bool imageMode, bool perte = false) {
 			int posDiff = 0, lastPosDiff = 0, nDiff = 0;
 			byte nbModif = 0;
-			int tailleMax = (img.NbLig * img.NbCol) >> 3;
+			int tailleMax = (BitmapCpc.NbLig * BitmapCpc.NbCol) >> 3;
 
 			if (razDiff)
 				Array.Clear(OldImgAscii, 0, OldImgAscii.Length);
 
 			if (perte) {
-				for (int i = img.NbCol; i < tailleMax - img.NbCol; i++)
+				for (int i = BitmapCpc.NbCol; i < tailleMax - BitmapCpc.NbCol; i++)
 					if (OldImgAscii[i - 1] == img.bitmapCpc.imgAscii[i - 1] && OldImgAscii[i + 1] == img.bitmapCpc.imgAscii[i + 1]
-						&& OldImgAscii[i - img.NbCol] == img.bitmapCpc.imgAscii[i - img.NbCol] && OldImgAscii[i + img.NbCol] == img.bitmapCpc.imgAscii[i + img.NbCol])
+						&& OldImgAscii[i - BitmapCpc.NbCol] == img.bitmapCpc.imgAscii[i - BitmapCpc.NbCol] && OldImgAscii[i + BitmapCpc.NbCol] == img.bitmapCpc.imgAscii[i + BitmapCpc.NbCol])
 						img.bitmapCpc.imgAscii[i] = OldImgAscii[i];
 			}
 			for (int i = 0; i < tailleMax; i++) {
@@ -294,7 +294,7 @@ namespace ConvImgCpc {
 		}
 
 		private int PackFrame(byte[] bufOut, ref int sizeDepack, bool razDiff, bool firstFrame, int topBottom, int modeLigne, bool imageMode, bool optimSpeed) {
-			if (img.modeVirtuel >= 7)
+			if (BitmapCpc.modeVirtuel >= 7)
 				return PackAscii(bufOut, ref sizeDepack, razDiff, firstFrame, imageMode);
 			else
 				if (chkDirecMem.Checked)
@@ -316,20 +316,23 @@ namespace ConvImgCpc {
 			if (adrMax == 0)
 				adrMax = 0xBE00;
 
-			if (chkBoucle.Checked) {
-				img.main.SelectImage(nbImages - 1, true);
-				img.Convert(true, true);
-				PackFrame(bufOut[0], ref sizeDepack, true, false, -1, modeLigne, imageMode, optimSpeed);
-			}
-
-			img.main.SetInfo("Début sauvegarde animation assembleur...");
 			// Calcule les animations
 			int ltot = 0, maxDepack = 0;
 			int posPack = 0;
+
+			if (chkBoucle.Checked) {
+				img.main.SelectImage(nbImages - 1, true);
+				img.Convert(!img.bitmapCpc.isCalc, true);
+				lg[posPack] = PackFrame(bufOut[0], ref sizeDepack, true, false, -1, modeLigne, imageMode, optimSpeed);
+				if (lg[posPack] > 0)
+					ltot += lg[posPack++];
+			}
+
+			img.main.SetInfo("Début sauvegarde animation assembleur...");
 			for (int i = 0; i < (imageMode ? 1 : nbImages); i++) {
 				if (!imageMode) {
 					img.main.SelectImage(i, true);
-					img.Convert(true, true);
+					img.Convert(!img.bitmapCpc.isCalc, true);
 				}
 				Application.DoEvents();
 				if (chk2Zone.Checked) {
@@ -350,10 +353,10 @@ namespace ConvImgCpc {
 			}
 
 			// Sauvegarde
-			StreamWriter sw = SaveAsm.OpenAsm(fileName, version, param);
+			StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
 			if (param.withCode) {
-				SaveAsm.GenereEntete(sw, adrDeb, img.NbCol, img.NbLig);
-				if (img.cpcPlus)
+				SaveAsm.GenereEntete(sw, adrDeb);
+				if (BitmapCpc.cpcPlus)
 					SaveAsm.GenereInitPlus(sw);
 				else
 					SaveAsm.GenereInitOld(sw);
@@ -363,17 +366,17 @@ namespace ConvImgCpc {
 				gest128K = false;
 
 			if (param.withCode) {
-				SaveAsm.GenereAffichage(sw, delai, img.modeVirtuel, gest128K, imageMode);
-				if (img.modeVirtuel >= 7)
-					SaveAsm.GenereDrawAscii(sw, img.modeVirtuel, rbFrameFull.Checked, rbFrameO.Checked, rbFrameD.Checked, gest128K, imageMode);
+				SaveAsm.GenereAffichage(sw, delai,chkBoucle.Checked, gest128K, imageMode);
+				if (BitmapCpc.modeVirtuel >= 7)
+					SaveAsm.GenereDrawAscii(sw, rbFrameFull.Checked, rbFrameO.Checked, rbFrameD.Checked, gest128K, imageMode);
 				else
 					if (chkDirecMem.Checked)
 						SaveAsm.GenereDrawDirect(sw, gest128K);
 					else
-						SaveAsm.GenereDrawDC(sw, delai, img.NbCol, chkCol.Checked, gest128K, modeLigne == 8 ? 0x3F : modeLigne == 4 ? 0x1F : modeLigne == 2 ? 0xF : 0x7, optimSpeed);
+						SaveAsm.GenereDrawDC(sw, delai, chkCol.Checked, gest128K, modeLigne == 8 ? 0x3F : modeLigne == 4 ? 0x1F : modeLigne == 2 ? 0xF : 0x7, optimSpeed);
 			}
 			if (param.withPalette || param.withCode) {
-				if (img.cpcPlus)
+				if (BitmapCpc.cpcPlus)
 					SaveAsm.GenerePalettePlus(sw, img);
 				else
 					SaveAsm.GenerePaletteOld(sw, img);
@@ -405,16 +408,16 @@ namespace ConvImgCpc {
 					sw.WriteLine("; Type Frame ='" + lastAscii + "'");
 
 				sw.WriteLine("Delta" + i.ToString() + ":\t\t; Taille #" + lg[i].ToString("X4"));
-				SaveAsm.GenereDatas(sw, bufOut[i], lg[i], param);
+				SaveAsm.GenereDatas(sw, bufOut[i], lg[i]);
 			}
 			if (gest128K)
-				SaveAsm.GenerePointeurs(sw, img.NbCol, posPack, bank, gest128K && numBank > 0xC0);
+				SaveAsm.GenerePointeurs(sw, posPack, bank, gest128K && numBank > 0xC0);
 			else
 				if (!imageMode) {
 					sw.WriteLine("	DB	#FF			; Fin de l'animation");
 					ltot++;
 				}
-			SaveAsm.GenereFin(sw, img.modeVirtuel, ltot, gest128K && endBank0 < 0x8000);
+			SaveAsm.GenereFin(sw, ltot, gest128K && endBank0 < 0x8000);
 			SaveAsm.CloseAsm(sw);
 			for (int i = 0; i < posPack; i++)
 				bufOut[i] = null;
@@ -446,7 +449,7 @@ namespace ConvImgCpc {
 		}
 
 		private void chkDirecMem_CheckedChanged(object sender, EventArgs e) {
-			chk2Zone.Visible = chkZoneVert.Visible = grpGenereLigne.Visible = !chkDirecMem.Checked && img.modeVirtuel < 7;
+			chk2Zone.Visible = chkZoneVert.Visible = grpGenereLigne.Visible = !chkDirecMem.Checked && BitmapCpc.modeVirtuel < 7;
 			chkZoneVert.Visible = chk2Zone.Visible && chk2Zone.Checked;
 		}
 
@@ -472,7 +475,7 @@ namespace ConvImgCpc {
 					MessageBox.Show("L'adresse saisie [" + adrTxt + "] est erronée");
 				}
 			}
-			bool optimSpeed = true;
+			bool optimSpeed = false;
 			int modeLigne = rb8L.Checked ? 8 : rb4L.Checked ? 4 : rb2L.Checked ? 2 : 1;
 			if (adrDeb > 0) {
 				img.WindowState = FormWindowState.Minimized;
