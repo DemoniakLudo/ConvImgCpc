@@ -25,11 +25,12 @@ namespace ConvImgCpc {
 		private DirectBitmap imgCopy;
 
 		private void ToolModeDraw(MouseEventArgs e) {
-			int yReel = e != null ? (offsetY + (e.Y / zoom)) & 0xFFE : 0;
+			int incY = BitmapCpc.modeVirtuel >= 8 ? 8 : 2;
+			int yReel = e != null ? (offsetY + (e.Y / zoom)) & -incY : 0;
 			int tx = 8 >> BitmapCpc.DecalTx(yReel);
 			drawColor.BackColor = Color.FromArgb(bitmapCpc.GetColorPal(drawCol % (BitmapCpc.modeVirtuel == 6 ? 16 : 1 << tx)).GetColorArgb);
 			undrawColor.BackColor = Color.FromArgb(bitmapCpc.GetColorPal(undrawCol % (BitmapCpc.modeVirtuel == 6 ? 16 : 1 << tx)).GetColorArgb);
-			drawColor.Width = undrawColor.Width = 35 * tx;
+			drawColor.Width = undrawColor.Width = 35 * Math.Min(tx, 4);
 			drawColor.Refresh();
 			undrawColor.Refresh();
 			if (e == null || e.Button == MouseButtons.None) {
@@ -40,7 +41,7 @@ namespace ConvImgCpc {
 			}
 			else {
 				int pen = e.Button == MouseButtons.Left ? drawCol : undrawCol;
-				for (int y = 0; y < penWidth * 2; y += 2) {
+				for (int y = 0; y < penWidth * incY; y += 2) {
 					tx = 8 >> BitmapCpc.DecalTx(yReel);
 					int nbCol = BitmapCpc.modeVirtuel == 6 ? 16 : 1 << tx;
 					int realColor = GetPalCPC(BitmapCpc.Palette[pen % nbCol]);
@@ -141,7 +142,7 @@ namespace ConvImgCpc {
 			if (e.Button == MouseButtons.Left) {
 				if (imgMotif != null) {
 					for (int y = 0; y < imgMotif.Height; y += 2) {
-						tx = 8 >> BitmapCpc.DecalTx(y+yReel);
+						tx = 8 >> BitmapCpc.DecalTx(y + yReel);
 						for (int x = 0; x < imgMotif.Width; x += tx) {
 							if (x + xReel < BitmapCpc.NbCol << 3 && y + yReel < BitmapCpc.NbLig << 1) {
 								int c = imgMotif.GetPixel(x, y);

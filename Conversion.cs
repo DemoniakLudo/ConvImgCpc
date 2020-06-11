@@ -624,9 +624,6 @@ namespace ConvImgCpc {
 			if (!noInfo)
 				dest.main.SetInfo("Conversion terminée, nombre de couleurs dans l'image:" + nbCol);
 
-			if (BitmapCpc.modeVirtuel >= 7)
-				dest.bitmapCpc.ConvertAscii(dest.BmpLock);
-
 			dest.bitmapCpc.isCalc = true;
 			return nbCol;
 		}

@@ -79,7 +79,7 @@ namespace ConvImgCpc {
 				}
 			}
 			int tx = 8 >> BitmapCpc.DecalTx();
-			int maxCol = BitmapCpc.modeVirtuel == 6 || BitmapCpc.modeVirtuel == 3 ? 16 : BitmapCpc.modeVirtuel == 4 ? 4 : 1 << tx;
+			int maxCol = BitmapCpc.MaxCol(0);
 			for (int i = 0; i < 16; i++)
 				colors[i].Visible = lockColors[i].Visible = i < maxCol;
 

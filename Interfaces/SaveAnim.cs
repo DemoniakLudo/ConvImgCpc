@@ -294,8 +294,10 @@ namespace ConvImgCpc {
 		}
 
 		private int PackFrame(byte[] bufOut, ref int sizeDepack, bool razDiff, bool firstFrame, int topBottom, int modeLigne, bool imageMode, bool optimSpeed) {
-			if (BitmapCpc.modeVirtuel >= 7)
+			if (BitmapCpc.modeVirtuel >= 7) {
+				img.bitmapCpc.ConvertAscii(img.BmpLock);
 				return PackAscii(bufOut, ref sizeDepack, razDiff, firstFrame, imageMode);
+			}
 			else
 				if (chkDirecMem.Checked)
 					return PackDirectMem(bufOut, ref sizeDepack, true, razDiff);
