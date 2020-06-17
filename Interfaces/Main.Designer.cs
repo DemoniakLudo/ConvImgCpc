@@ -107,6 +107,8 @@
 			this.lblMaxImage = new System.Windows.Forms.Label();
 			this.listInfo = new System.Windows.Forms.ListBox();
 			this.chkAllPics = new System.Windows.Forms.CheckBox();
+			this.bpImport = new System.Windows.Forms.Button();
+			this.bpCreate = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -147,7 +149,7 @@
 			// 
 			// bpConvert
 			// 
-			this.bpConvert.Location = new System.Drawing.Point(3, 125);
+			this.bpConvert.Location = new System.Drawing.Point(3, 141);
 			this.bpConvert.Name = "bpConvert";
 			this.bpConvert.Size = new System.Drawing.Size(108, 23);
 			this.bpConvert.TabIndex = 3;
@@ -326,7 +328,7 @@
 			this.trackModeX.Maximum = 32;
 			this.trackModeX.Minimum = 1;
 			this.trackModeX.Name = "trackModeX";
-			this.trackModeX.Size = new System.Drawing.Size(145, 42);
+			this.trackModeX.Size = new System.Drawing.Size(145, 45);
 			this.trackModeX.TabIndex = 11;
 			this.trackModeX.Value = 1;
 			this.trackModeX.Visible = false;
@@ -541,7 +543,7 @@
 			// autoRecalc
 			// 
 			this.autoRecalc.AutoSize = true;
-			this.autoRecalc.Location = new System.Drawing.Point(3, 154);
+			this.autoRecalc.Location = new System.Drawing.Point(3, 170);
 			this.autoRecalc.Name = "autoRecalc";
 			this.autoRecalc.Size = new System.Drawing.Size(162, 17);
 			this.autoRecalc.TabIndex = 44;
@@ -1027,10 +1029,12 @@
 			// 
 			// lblInfoVersion
 			// 
+			this.lblInfoVersion.AutoSize = true;
 			this.lblInfoVersion.Location = new System.Drawing.Point(0, 400);
 			this.lblInfoVersion.Name = "lblInfoVersion";
-			this.lblInfoVersion.Size = new System.Drawing.Size(116, 47);
+			this.lblInfoVersion.Size = new System.Drawing.Size(42, 13);
 			this.lblInfoVersion.TabIndex = 52;
+			this.lblInfoVersion.Text = "Version";
 			// 
 			// withCode
 			// 
@@ -1085,10 +1089,11 @@
 			// lblMaxImage
 			// 
 			this.lblMaxImage.AutoSize = true;
-			this.lblMaxImage.Location = new System.Drawing.Point(0, 82);
+			this.lblMaxImage.Location = new System.Drawing.Point(122, 61);
 			this.lblMaxImage.Name = "lblMaxImage";
-			this.lblMaxImage.Size = new System.Drawing.Size(0, 13);
+			this.lblMaxImage.Size = new System.Drawing.Size(60, 13);
 			this.lblMaxImage.TabIndex = 53;
+			this.lblMaxImage.Text = "maxImages";
 			this.lblMaxImage.Visible = false;
 			// 
 			// listInfo
@@ -1102,7 +1107,7 @@
 			// chkAllPics
 			// 
 			this.chkAllPics.AutoSize = true;
-			this.chkAllPics.Location = new System.Drawing.Point(117, 129);
+			this.chkAllPics.Location = new System.Drawing.Point(117, 145);
 			this.chkAllPics.Name = "chkAllPics";
 			this.chkAllPics.Size = new System.Drawing.Size(111, 17);
 			this.chkAllPics.TabIndex = 57;
@@ -1110,11 +1115,34 @@
 			this.chkAllPics.UseVisualStyleBackColor = true;
 			this.chkAllPics.Visible = false;
 			// 
+			// bpImport
+			// 
+			this.bpImport.Location = new System.Drawing.Point(3, 84);
+			this.bpImport.Name = "bpImport";
+			this.bpImport.Size = new System.Drawing.Size(108, 23);
+			this.bpImport.TabIndex = 58;
+			this.bpImport.Text = "Import";
+			this.bpImport.UseVisualStyleBackColor = true;
+			this.bpImport.Visible = false;
+			this.bpImport.Click += new System.EventHandler(this.bpImport_Click);
+			// 
+			// bpCreate
+			// 
+			this.bpCreate.Location = new System.Drawing.Point(153, 7);
+			this.bpCreate.Name = "bpCreate";
+			this.bpCreate.Size = new System.Drawing.Size(108, 23);
+			this.bpCreate.TabIndex = 59;
+			this.bpCreate.Text = "Création";
+			this.bpCreate.UseVisualStyleBackColor = true;
+			this.bpCreate.Click += new System.EventHandler(this.bpCreate_Click);
+			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(760, 607);
+			this.Controls.Add(this.bpCreate);
+			this.Controls.Add(this.bpImport);
 			this.Controls.Add(this.chkAllPics);
 			this.Controls.Add(this.listInfo);
 			this.Controls.Add(this.numImage);
@@ -1247,6 +1275,8 @@
 		private System.Windows.Forms.CheckBox reducPal2;
 		private System.Windows.Forms.CheckBox reducPal4;
 		private System.Windows.Forms.CheckBox chkAllPics;
+		private System.Windows.Forms.Button bpImport;
+		private System.Windows.Forms.Button bpCreate;
 	}
 }
 

@@ -40,7 +40,7 @@ namespace ConvImgCpc {
 			param.withCode = withCode.Checked;
 			param.withPalette = withPalette.Checked;
 			imgCpc.Visible = true;
-			lblInfoVersion.Text = "Version Béta\n" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+			lblInfoVersion.Text = "Version Béta - " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
 			radioUserSize_CheckedChanged(null, null);
 			string configDetault = "ConvImgCpc.xml";
 			if (File.Exists(configDetault))
@@ -163,7 +163,7 @@ namespace ConvImgCpc {
 					imageStream.Position = 0;
 					selImage = new Bitmap(imageStream);
 					dimension = new FrameDimension(selImage.FrameDimensionsList[0]);
-					nbImg = GetMaxImages();
+					nbImg = selImage.GetFrameCount(dimension);
 					numImage.Maximum = nbImg - 1;
 					lblMaxImage.Text = "Nbre images:" + nbImg;
 					lblMaxImage.Visible = lblNumImage.Visible = numImage.Visible = chkAllPics.Visible = nbImg > 1;
@@ -190,16 +190,18 @@ namespace ConvImgCpc {
 		}
 
 		public void SelectImage(int n, bool noInfo = false) {
-			selImage.SelectActiveFrame(dimension, n);
-			imgSrc.SetBitmap(new Bitmap(selImage), checkImageSource.Checked);
-			imgCpc.selImage = n;
-			imgCpc.Reset();
-			if (!noInfo)
-				SetInfo("Image sélectionnée: " + n.ToString());
+			if (selImage != null) {
+				selImage.SelectActiveFrame(dimension, n);
+				imgSrc.SetBitmap(new Bitmap(selImage), checkImageSource.Checked);
+				imgCpc.selImage = n;
+				imgCpc.Reset();
+				if (!noInfo)
+					SetInfo("Image sélectionnée: " + n.ToString());
+			}
 		}
 
 		public int GetMaxImages() {
-			return selImage != null ? selImage.GetFrameCount(dimension) : 0;
+			return 1 + (int)numImage.Maximum;
 		}
 
 		public void SetInfo(string txt) {
@@ -259,6 +261,52 @@ namespace ConvImgCpc {
 			//	SetInfo("Erreur sauvegarde paramètres...");
 			//}
 			file.Close();
+		}
+
+		private void bpCreate_Click(object sender, EventArgs e) {
+			CreationImages dlg = new CreationImages();
+			dlg.ShowDialog();
+			int nbImages = dlg.NbImages;
+			if (nbImages == 1) {
+				BitmapCpc bmp = new BitmapCpc();
+				nbCols.Value = param.nbCols = BitmapCpc.NbCol;
+				BitmapCpc.TailleX = param.nbCols << 3;
+				nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
+				BitmapCpc.TailleY = param.nbLignes << 1;
+				param.modeVirtuel = mode.SelectedIndex = BitmapCpc.modeVirtuel;
+				SetInfo("Création image vierge");
+			}
+			else
+				if (nbImages > 1) {
+					ImageCodecInfo info = null;
+					foreach (ImageCodecInfo i in ImageCodecInfo.GetImageEncoders()) {
+						if (i.MimeType == "image/tiff") {
+							info = i;
+							break;
+						}
+					}
+					EncoderParameters encoderParams = new EncoderParameters(1);
+					selImage = new Bitmap(1, 1, PixelFormat.Format32bppArgb);
+					encoderParams.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.SaveFlag, (long)EncoderValue.MultiFrame);
+					MemoryStream byteStream = new MemoryStream();
+					selImage.Save(byteStream, info, encoderParams);
+					for (int page = 1; page < nbImages; page++) {
+						encoderParams.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.SaveFlag, (long)EncoderValue.FrameDimensionPage);
+						selImage.SaveAdd(new Bitmap(1, 1, PixelFormat.Format32bppArgb), encoderParams);
+					}
+					dimension = new FrameDimension(selImage.FrameDimensionsList[0]);
+					numImage.Maximum = nbImages - 1;
+					lblMaxImage.Text = "Nbre images:" + nbImages;
+					lblMaxImage.Visible = lblNumImage.Visible = numImage.Visible = chkAllPics.Visible = nbImages > 1;
+					numImage.Value = 0;
+					SetInfo("Création animation avec " + nbImages + " images.");
+					SelectImage(0);
+					imgCpc.InitBitmapCpc(nbImages);
+					imgCpc.Reset(true);
+				}
+		}
+
+		private void bpImport_Click(object sender, EventArgs e) {
 		}
 
 		private void bpLoad_Click(object sender, EventArgs e) {

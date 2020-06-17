@@ -576,7 +576,7 @@ namespace ConvImgCpc {
 			int[] MemoLockState = new int[16];
 			int i;
 			int Tx = 8 >> BitmapCpc.DecalTx();
-			int maxCol = BitmapCpc.MaxCol(2);
+			int maxCol = BitmapCpc.MaxCol(0);
 			for (i = 0; i < 16; i++)
 				MemoLockState[i] = p.lockState[i];
 

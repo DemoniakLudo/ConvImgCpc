@@ -263,7 +263,7 @@ namespace ConvImgCpc {
 					return 1 << (4 >> modeVirtuel);
 				case 3:
 				case 4:
-					return 1 << (4 >> ((y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3));
+					return 1 << (4 >> ((y & 2) == 0 ? modeVirtuel - 3 : modeVirtuel - 2));
 				case 5:
 					return 4;
 				case 6:

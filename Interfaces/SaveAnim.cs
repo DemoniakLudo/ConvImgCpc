@@ -272,7 +272,11 @@ namespace ConvImgCpc {
 					BufTmp[2] = (byte)(posDiff >> 9);
 					Array.Copy(DiffImage, 0, BufTmp, 3, posDiff);
 				}
-				int ld = PackDepack.Pack(BufTmp, posDiff + (rbFrameD.Checked ? 2 : 3), bufOut, 0);
+				int ldRaw = posDiff + (rbFrameD.Checked ? 2 : 3);
+				int ld = PackDepack.Pack(BufTmp, ldRaw, bufOut, 0);
+				if (ld > ldRaw)
+					img.main.SetInfo("Perte de " + (ld - ldRaw).ToString() + " octets...");
+
 				if (lo > ld && !rbFrameO.Checked || rbFrameD.Checked) {
 					if (imageMode) {
 						rbFrameFull.Checked = false;
@@ -368,7 +372,7 @@ namespace ConvImgCpc {
 				gest128K = false;
 
 			if (param.withCode) {
-				SaveAsm.GenereAffichage(sw, delai,chkBoucle.Checked, gest128K, imageMode);
+				SaveAsm.GenereAffichage(sw, delai, chkBoucle.Checked, gest128K, imageMode);
 				if (BitmapCpc.modeVirtuel >= 7)
 					SaveAsm.GenereDrawAscii(sw, rbFrameFull.Checked, rbFrameO.Checked, rbFrameD.Checked, gest128K, imageMode);
 				else
