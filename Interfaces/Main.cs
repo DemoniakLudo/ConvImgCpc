@@ -562,6 +562,7 @@ namespace ConvImgCpc {
 
 		private void numImage_ValueChanged(object sender, EventArgs e) {
 			SelectImage((int)numImage.Value);
+			imgCpc.SetImgCopy();
 			Convert(false);
 		}
 

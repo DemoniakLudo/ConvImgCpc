@@ -86,6 +86,11 @@ namespace ConvImgCpc {
 			ToolModeDraw(null);
 		}
 
+		public void SetImgCopy() {
+			if (imgMotif != null && imgCopy != null)
+				imgCopy.CopyBits(BmpLock);
+		}
+
 		public void SetPixelCpc(int xPos, int yPos, int col, int tx) {
 			BmpLock.SetHorLineDouble(xPos, yPos, tx, GetPalCPC(BitmapCpc.modeVirtuel == 5 ? colMode5[yPos >> 1, col] : BitmapCpc.Palette[col]));
 		}
