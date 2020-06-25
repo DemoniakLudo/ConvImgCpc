@@ -78,7 +78,7 @@ namespace ConvImgCpc {
 					}
 				}
 			}
-			int tx = 8 >> BitmapCpc.DecalTx();
+			int tx = BitmapCpc.CalcTx();
 			int maxCol = BitmapCpc.MaxCol(0);
 			for (int i = 0; i < 16; i++)
 				colors[i].Visible = lockColors[i].Visible = i < maxCol;
@@ -101,7 +101,7 @@ namespace ConvImgCpc {
 				Enabled = false;
 				List<MemoPoint> lst = undo.lstUndoRedo;
 				foreach (MemoPoint p in lst) {
-					int Tx = 8 >> BitmapCpc.DecalTx(p.posy);
+					int Tx = BitmapCpc.CalcTx(p.posy);
 					BmpLock.SetHorLineDouble(p.posx, p.posy, Tx, p.newColor);
 				}
 				forceDrawZoom = true;
@@ -194,7 +194,7 @@ namespace ConvImgCpc {
 			Array.Clear(ret, 0, ret.Length);
 			int posRet = 0;
 			for (int y = 0; y < BitmapCpc.TailleY; y += 2) {
-				int tx = 8 >> BitmapCpc.DecalTx(y);
+				int tx = BitmapCpc.CalcTx(y);
 				for (int x = 0; x < BitmapCpc.TailleX; x += 8) {
 					byte pen = 0, octet = 0;
 					for (int p = 0; p < 8; p++)
@@ -252,7 +252,7 @@ namespace ConvImgCpc {
 			int posRet = 0;
 			for (int y = 0; y < BitmapCpc.TailleY; y += 2) {
 				int adrCPC = BitmapCpc.GetAdrCpc(y);
-				int tx = 8 >> BitmapCpc.DecalTx(y);
+				int tx = BitmapCpc.CalcTx(y);
 				for (int x = 0; x < BitmapCpc.TailleX; x += 8) {
 					byte pen = 0, octet = 0;
 					for (int p = 0; p < 8; p++)

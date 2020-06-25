@@ -27,7 +27,7 @@ namespace ConvImgCpc {
 		private void ToolModeDraw(MouseEventArgs e) {
 			int incY = BitmapCpc.modeVirtuel >= 8 ? 8 : 2;
 			int yReel = e != null ? (offsetY + (e.Y / zoom)) & -incY : 0;
-			int tx = 8 >> BitmapCpc.DecalTx(yReel);
+			int tx = BitmapCpc.CalcTx(yReel);
 			drawColor.BackColor = Color.FromArgb(bitmapCpc.GetColorPal(drawCol % (BitmapCpc.modeVirtuel == 6 ? 16 : 1 << tx)).GetColorArgb);
 			undrawColor.BackColor = Color.FromArgb(bitmapCpc.GetColorPal(undrawCol % (BitmapCpc.modeVirtuel == 6 ? 16 : 1 << tx)).GetColorArgb);
 			drawColor.Width = undrawColor.Width = 35 * Math.Min(tx, 4);
@@ -42,7 +42,7 @@ namespace ConvImgCpc {
 			else {
 				int pen = e.Button == MouseButtons.Left ? drawCol : undrawCol;
 				for (int y = 0; y < penWidth * incY; y += 2) {
-					tx = 8 >> BitmapCpc.DecalTx(yReel);
+					tx = BitmapCpc.CalcTx(yReel);
 					int nbCol = BitmapCpc.modeVirtuel == 6 ? 16 : 1 << tx;
 					int realColor = GetPalCPC(BitmapCpc.Palette[pen % nbCol]);
 					int yStart = zoom * (yReel - offsetY);
@@ -125,7 +125,7 @@ namespace ConvImgCpc {
 			if (imgMotif != null && imgCopy != null) {
 				imgCopy.CopyBits(BmpLock);
 				int yReel = ((e.Y / zoom) & 0xFFE) * zoom;
-				int tx = 8 >> BitmapCpc.DecalTx(yReel);
+				int tx = BitmapCpc.CalcTx(yReel);
 				int xReel = ((e.X / zoom) & -tx) * zoom;
 				if (xReel < BitmapCpc.NbCol << 3 && yReel < BitmapCpc.NbLig << 1) {
 					Graphics g = Graphics.FromImage(pictureBox.Image);
@@ -137,12 +137,12 @@ namespace ConvImgCpc {
 
 		private void ToolModeCopy(MouseEventArgs e) {
 			int yReel = ((e.Y / zoom) & 0xFFE) * zoom;
-			int tx = 8 >> BitmapCpc.DecalTx(yReel);
+			int tx = BitmapCpc.CalcTx(yReel);
 			int xReel = ((e.X / zoom) & -tx) * zoom;
 			if (e.Button == MouseButtons.Left) {
 				if (imgMotif != null) {
 					for (int y = 0; y < imgMotif.Height; y += 2) {
-						tx = 8 >> BitmapCpc.DecalTx(y + yReel);
+						tx = BitmapCpc.CalcTx(y + yReel);
 						for (int x = 0; x < imgMotif.Width; x += tx) {
 							if (x + xReel < BitmapCpc.NbCol << 3 && y + yReel < BitmapCpc.NbLig << 1) {
 								int c = imgMotif.GetPixel(x, y);
@@ -335,7 +335,7 @@ namespace ConvImgCpc {
 			Enabled = false;
 			List<MemoPoint> lst = undo.Undo();
 			foreach (MemoPoint p in lst) {
-				int tx = 8 >> BitmapCpc.DecalTx(p.posy);
+				int tx = BitmapCpc.CalcTx(p.posy);
 				BmpLock.SetHorLineDouble(p.posx, p.posy, tx, p.oldColor);
 			}
 			if (imgCopy != null)
@@ -351,7 +351,7 @@ namespace ConvImgCpc {
 			Enabled = false;
 			List<MemoPoint> lst = undo.Redo();
 			foreach (MemoPoint p in lst) {
-				int tx = 8 >> BitmapCpc.DecalTx(p.posy);
+				int tx = BitmapCpc.CalcTx(p.posy);
 				BmpLock.SetHorLineDouble(p.posx, p.posy, tx, p.newColor);
 			}
 			if (imgCopy != null)

@@ -251,8 +251,8 @@ namespace ConvImgCpc {
 			return adrCPC;
 		}
 
-		static public int DecalTx(int y = 0) {
-			return (modeVirtuel == 8 ? 0 : modeVirtuel > 8 ? modeVirtuel - 8 : modeVirtuel >= 5 ? 2 : modeVirtuel > 2 ? ((y & 2) == 0 ? modeVirtuel - 1 : modeVirtuel - 2) : modeVirtuel + 1);
+		static public int CalcTx(int y = 0) {
+			return 8 >> (modeVirtuel == 8 ? 0 : modeVirtuel > 8 ? modeVirtuel - 8 : modeVirtuel >= 5 ? 2 : modeVirtuel > 2 ? ((y & 2) == 0 ? modeVirtuel - 1 : modeVirtuel - 2) : modeVirtuel + 1);
 		}
 
 		static public int MaxCol(int y = 0) {
@@ -263,7 +263,7 @@ namespace ConvImgCpc {
 					return 1 << (4 >> modeVirtuel);
 				case 3:
 				case 4:
-					return 1 << (4 >> ((y & 2) == 0 ? modeVirtuel - 3 : modeVirtuel - 2));
+					return 1 << (4 >> ((y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3));
 				case 5:
 					return 4;
 				case 6:
@@ -338,29 +338,26 @@ namespace ConvImgCpc {
 		public void CreeBmpCpc(DirectBitmap bmpLock) {
 			System.Array.Clear(bmpCpc, 0, bmpCpc.Length);
 			for (int y = 0; y < TailleY; y += 2) {
-				int modeCPC = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 				int adrCPC = GetAdrCpc(y);
-				int tx = 4 >> modeCPC;
+				int tx = CalcTx(y);
+				int maxCol = MaxCol(y);
 				for (int x = 0; x < TailleX; x += 8) {
-					byte pen = 0, octet = 0;
-					for (int p = 0; p < 8; p++)
-						if ((p % tx) == 0) {
-							RvbColor col = bmpLock.GetPixelColor(x + p, y);
+					byte pen = 0, octet = 0, decal = 0;
+					for (int p = 0; p < 8; p += tx) {
+						RvbColor col = bmpLock.GetPixelColor(x + p, y);
+						for (pen = 0; pen < maxCol; pen++) {
 							if (cpcPlus) {
-								for (pen = 0; pen < 16; pen++) {
-									if ((col.v >> 4) == (Palette[pen] >> 8) && (col.b >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.r >> 4) == (Palette[pen] & 0x0F))
-										break;
-								}
+								if ((col.v >> 4) == (Palette[pen] >> 8) && (col.b >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.r >> 4) == (Palette[pen] & 0x0F))
+									break;
 							}
 							else {
-								for (pen = 0; pen < 16; pen++) {
-									RvbColor fixedCol = RgbCPC[Palette[pen]];
-									if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
-										break;
-								}
+								RvbColor fixedCol = RgbCPC[Palette[pen]];
+								if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
+									break;
 							}
-							octet |= (byte)(tabOctetMode[pen % 16] >> (p / tx));
 						}
+						octet |= (byte)(tabOctetMode[pen % 16] >> (decal++));
+					}
 					bmpCpc[adrCPC + (x >> 3)] = octet;
 				}
 			}

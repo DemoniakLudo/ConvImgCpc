@@ -328,7 +328,7 @@
 			this.trackModeX.Maximum = 32;
 			this.trackModeX.Minimum = 1;
 			this.trackModeX.Name = "trackModeX";
-			this.trackModeX.Size = new System.Drawing.Size(145, 45);
+			this.trackModeX.Size = new System.Drawing.Size(145, 42);
 			this.trackModeX.TabIndex = 11;
 			this.trackModeX.Value = 1;
 			this.trackModeX.Visible = false;
@@ -1123,7 +1123,6 @@
 			this.bpImport.TabIndex = 58;
 			this.bpImport.Text = "Import";
 			this.bpImport.UseVisualStyleBackColor = true;
-			this.bpImport.Visible = false;
 			this.bpImport.Click += new System.EventHandler(this.bpImport_Click);
 			// 
 			// bpCreate

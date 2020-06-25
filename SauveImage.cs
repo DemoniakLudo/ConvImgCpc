@@ -374,10 +374,10 @@ namespace ConvImgCpc {
 
 					if (BitmapCpc.modeVirtuel > 2) {
 						Buffer.BlockCopy(codeEgx0, 0, imgCpc, 0x37D0, codeEgx0.Length);
-						Buffer.BlockCopy(codeEgx1, 0, imgCpc, 0x3FD0, codeEgx1.Length);
+						Buffer.BlockCopy(codeEgx1, 0, imgCpc, 0x2FD0, codeEgx1.Length);
 						imgCpc[0x07F2] = 0xD0;
 						imgCpc[0x07F3] = 0xF7;	//	CALL 0xF7D0
-						imgCpc[0x37FA] = 0xFF;	//	Call 0xFFD0
+						imgCpc[0x37FA] = 0xEF;	//	Call 0xEFD0
 					}
 				}
 			}
@@ -412,7 +412,7 @@ namespace ConvImgCpc {
 			short startAdr = (short)(Overscan ? 0x200 : 0xC000);
 			short exec = (short)(Overscan ? param.cpcPlus ? 0x821 : 0x811 : 0xC7D0);
 			CpcAmsdos entete;
-			int lg = BitmapCpc.BitmapSize + (param.withCode && BitmapCpc.modeVirtuel > 2 ? codeEgx1.Length : 0);
+			int lg = BitmapCpc.BitmapSize;
 			if (compact) {
 				lg = PackDepack.Pack(bitmapCpc.bmpCpc, lg, bufPack, 0) + 1; // Prendre 1 octet de marge ?
 				if (param.withCode && version == null) {

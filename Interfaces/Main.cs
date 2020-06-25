@@ -140,27 +140,27 @@ namespace ConvImgCpc {
 			Convert(true);
 		}
 
-		private void ReadScreen(string fileName) {
+		private void ReadScreen(string fileName, bool singlePicture = false) {
 			FileStream fileScr = new FileStream(fileName, FileMode.Open, FileAccess.Read);
 			byte[] tabBytes = new byte[fileScr.Length];
 			fileScr.Read(tabBytes, 0, tabBytes.Length);
 			fileScr.Close();
-			bool bitmapOk = false;
 			int nbImg = 0;
-			try {
-				if (CpcSystem.CheckAmsdos(tabBytes)) {
-					BitmapCpc bmp = new BitmapCpc(tabBytes);
-					imgSrc.SetBitmap(bmp.CreateImageFromCpc(tabBytes), checkImageSource.Checked);
-					nbCols.Value = param.nbCols = BitmapCpc.NbCol;
-					BitmapCpc.TailleX = param.nbCols << 3;
-					nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
-					BitmapCpc.TailleY = param.nbLignes << 1;
-					param.modeVirtuel = mode.SelectedIndex = BitmapCpc.modeVirtuel;
-					SetInfo("Lecture image de type CPC");
-				}
-				else {
-					imageStream = new MemoryStream(tabBytes);
-					imageStream.Position = 0;
+			//try {
+			if (CpcSystem.CheckAmsdos(tabBytes)) {
+				BitmapCpc bmp = new BitmapCpc(tabBytes);
+				imgSrc.SetBitmap(bmp.CreateImageFromCpc(tabBytes), checkImageSource.Checked);
+				nbCols.Value = param.nbCols = BitmapCpc.NbCol;
+				BitmapCpc.TailleX = param.nbCols << 3;
+				nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
+				BitmapCpc.TailleY = param.nbLignes << 1;
+				param.modeVirtuel = mode.SelectedIndex = BitmapCpc.modeVirtuel;
+				SetInfo("Lecture image de type CPC");
+			}
+			else {
+				imageStream = new MemoryStream(tabBytes);
+				imageStream.Position = 0;
+				if (!singlePicture) {
 					selImage = new Bitmap(imageStream);
 					dimension = new FrameDimension(selImage.FrameDimensionsList[0]);
 					nbImg = selImage.GetFrameCount(dimension);
@@ -171,22 +171,33 @@ namespace ConvImgCpc {
 					SetInfo("Lecture image PC" + (nbImg > 0 ? (" de type animation avec " + nbImg + " images.") : "."));
 					SelectImage(0);
 				}
-				radioUserSize.Enabled = radioOrigin.Enabled = true;
-				Text = "ConvImgCPC - " + Path.GetFileName(fileName);
-				if (radioOrigin.Checked) {
-					tbxSizeX.Text = imgSrc.GetImage.Width.ToString();
-					tbxSizeY.Text = imgSrc.GetImage.Height.ToString();
-					tbxPosX.Text = "0";
-					tbxPosY.Text = "0";
+				else {
+					//Bitmap bmpNew = new Bitmap(imageStream);
+					for (int i = 0; i < 100; i++) {
+						((Bitmap)(selImage)).SetPixel(i, i, Color.White);
+						((Bitmap)(selImage)).SetPixel(i + 1, i, Color.White);
+						((Bitmap)(selImage)).SetPixel(i + 1, i + 1, Color.White);
+						((Bitmap)(selImage)).SetPixel(i, i + 1, Color.White);
+					}
+
 				}
-				imgCpc.InitBitmapCpc(nbImg);
-				imgCpc.Reset(true);
-				Convert(false);
 			}
-			catch (Exception ex) {
-				MessageBox.Show("Impossible de lire l'image (format inconnu ???)");
-				SetInfo("Impossible de lire l'image (format inconnu ???)");
+			radioUserSize.Enabled = radioOrigin.Enabled = true;
+			Text = "ConvImgCPC - " + Path.GetFileName(fileName);
+			if (radioOrigin.Checked) {
+				tbxSizeX.Text = imgSrc.GetImage.Width.ToString();
+				tbxSizeY.Text = imgSrc.GetImage.Height.ToString();
+				tbxPosX.Text = "0";
+				tbxPosY.Text = "0";
 			}
+			imgCpc.InitBitmapCpc(nbImg);
+			imgCpc.Reset(true);
+			Convert(false);
+			//}
+			//catch (Exception ex) {
+			//	MessageBox.Show("Impossible de lire l'image (format inconnu ???)");
+			//	SetInfo("Impossible de lire l'image (format inconnu ???)");
+			//}
 		}
 
 		public void SelectImage(int n, bool noInfo = false) {
@@ -286,13 +297,13 @@ namespace ConvImgCpc {
 						}
 					}
 					EncoderParameters encoderParams = new EncoderParameters(1);
-					selImage = new Bitmap(1, 1, PixelFormat.Format32bppArgb);
-					encoderParams.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.SaveFlag, (long)EncoderValue.MultiFrame);
+					selImage = new Bitmap(768, 544, PixelFormat.Format32bppArgb);
+					encoderParams.Param[0] = new EncoderParameter(Encoder.SaveFlag, (long)EncoderValue.MultiFrame);
 					MemoryStream byteStream = new MemoryStream();
 					selImage.Save(byteStream, info, encoderParams);
 					for (int page = 1; page < nbImages; page++) {
-						encoderParams.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.SaveFlag, (long)EncoderValue.FrameDimensionPage);
-						selImage.SaveAdd(new Bitmap(1, 1, PixelFormat.Format32bppArgb), encoderParams);
+						encoderParams.Param[0] = new EncoderParameter(Encoder.SaveFlag, (long)EncoderValue.FrameDimensionPage);
+						selImage.SaveAdd(new Bitmap(768, 544, PixelFormat.Format32bppArgb), encoderParams);
 					}
 					dimension = new FrameDimension(selImage.FrameDimensionsList[0]);
 					numImage.Maximum = nbImages - 1;
@@ -307,6 +318,14 @@ namespace ConvImgCpc {
 		}
 
 		private void bpImport_Click(object sender, EventArgs e) {
+			OpenFileDialog dlg = new OpenFileDialog();
+			dlg.Filter = "Images (*.bmp, *.gif, *.png, *.jpg,*.jpeg, *.scr)|*.bmp;*.gif;*.png;*.jpg;*.jpeg;*.scr|Tous fichiers|*.*";
+			dlg.InitialDirectory = lastReadPath;
+			DialogResult result = dlg.ShowDialog();
+			if (result == DialogResult.OK) {
+				lastReadPath = Path.GetDirectoryName(dlg.FileName);
+				ReadScreen(dlg.FileName, true);
+			}
 		}
 
 		private void bpLoad_Click(object sender, EventArgs e) {

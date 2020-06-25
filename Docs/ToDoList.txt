@@ -1,6 +1,10 @@
 ﻿- Améliorer le mode édition (palette d'outils ?)
-- Permettre l'édition image par image des animations
+OK Permettre l'édition image par image des animations
 - Routine affichage images en mode X
 - Pouvoir relire des images en mode EGX
-- Anim: prévoir rebouclage 1ere image avec image 0 calculée 2 fois pour rebouclage avec 'D'
+OK Anim: prévoir rebouclage 1ere image avec image 0 calculée 2 fois pour rebouclage avec 'D'
 - Routine Affichage images ASCII en overscan
+
+- Ajouter import/export format .IMP : http://impdraw.wikidot.com/le-format-imp
+- Import animation image par image
+- Edition palette animation image par image
