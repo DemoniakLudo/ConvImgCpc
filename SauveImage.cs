@@ -212,21 +212,29 @@ namespace ConvImgCpc {
 		};
 
 		static byte[] codeEgx1 = {	
-			0x01, 0x0E, 0xF4,			//				LD		BC,#F40E
+			0x16, 0x45,					//				LD		D,#45
+			0x01, 0x0E, 0xF4,			//	WaitKey1:	LD		BC,#F40E
 			0xED, 0x49,					//				OUT		(C),C
 			0x01, 0xC0, 0xF6,			//				LD		BC,#F6C0
 			0xED, 0x49,					//				OUT		(C),C
-			0xED, 0x71,					//				OUT		(0),A
+			0xAF,						//				XOR		A
+			0xED, 0x79,					//				OUT		(C),A
 			0x01, 0x92, 0xF7,			//				LD		BC,#F792
 			0xED, 0x49,					//				OUT		(C),C
-			0x01, 0x45, 0xF6,			//				LD		BC,#F645
-			0xED, 0x49,					//				OUT		(C),C
+			0x06, 0xF6,					//				LD		B,#F6
+			0xED, 0x51,					//				OUT		(C),D
 			0x06, 0xF4,					//				LD		B,#F4
 			0xED, 0x78,					//				IN		A,(C)
 			0x01, 0x82, 0xF7,			//				LD		BC,#F782
 			0xED, 0x49,					//				OUT		(C),C
 			0x3C,						//				INC		A
-			0xC9						//				RET
+			0x20, 0x07,					//				JR		NZ,WaitKey2
+			0x7A,						//				LD		A,D
+			0x3C,						//				INC		A
+			0x57,						//				LD		D,A
+			0xFE, 0x4A,					//				CP		#4A
+			0x38, 0xD7,					//				JR		C,WaitKey1
+			0xC9						//	WaitKey2:	RET
 		};
 
 		static byte[] codeDepack = {
@@ -404,7 +412,7 @@ namespace ConvImgCpc {
 			short startAdr = (short)(Overscan ? 0x200 : 0xC000);
 			short exec = (short)(Overscan ? param.cpcPlus ? 0x821 : 0x811 : 0xC7D0);
 			CpcAmsdos entete;
-			int lg = BitmapCpc.BitmapSize;
+			int lg = BitmapCpc.BitmapSize + (param.withCode && BitmapCpc.modeVirtuel > 2 ? codeEgx1.Length : 0);
 			if (compact) {
 				lg = PackDepack.Pack(bitmapCpc.bmpCpc, lg, bufPack, 0) + 1; // Prendre 1 octet de marge ?
 				if (param.withCode && version == null) {
