@@ -576,12 +576,12 @@ namespace ConvImgCpc {
 			int[] MemoLockState = new int[16];
 			int i;
 			int Tx = BitmapCpc.CalcTx();
-			int maxCol = BitmapCpc.MaxCol(0);
+			int maxCol = BitmapCpc.MaxCol(2);
 			for (i = 0; i < 16; i++)
 				MemoLockState[i] = p.lockState[i];
 
 			if (BitmapCpc.modeVirtuel == 3 || BitmapCpc.modeVirtuel == 4) {
-				int newMax = 4 >> (BitmapCpc.modeVirtuel - 3);
+				int newMax = BitmapCpc.MaxCol(0);
 				RechercheCMax(newMax, MemoLockState, p);
 				for (i = 0; i < newMax; i++)
 					MemoLockState[i] = 1;

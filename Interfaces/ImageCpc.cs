@@ -79,7 +79,7 @@ namespace ConvImgCpc {
 				}
 			}
 			int tx = BitmapCpc.CalcTx();
-			int maxCol = BitmapCpc.MaxCol(0);
+			int maxCol = BitmapCpc.MaxCol(2);
 			for (int i = 0; i < 16; i++)
 				colors[i].Visible = lockColors[i].Visible = i < maxCol;
 
