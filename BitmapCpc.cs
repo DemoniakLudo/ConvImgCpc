@@ -142,7 +142,7 @@ namespace ConvImgCpc {
 			get { return nbLig << 1; }
 			set { nbLig = value >> 1; }
 		}
-		static public int BitmapSize { get { return nbCol + GetAdrCpc(TailleY - 2); } }
+		static public int BitmapSize { get { return nbCol + GetAdrCpc((TailleY & 0x3F8) - 2); } }
 
 		public bool isCalc = false;
 
