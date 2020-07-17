@@ -510,24 +510,24 @@ namespace ConvImgCpc {
 					sw.WriteLine("	EX	DE,HL");
 				}
 				sw.WriteLine("	LD	A,(HL)");
-				sw.WriteLine("	INC	HL");
+				sw.WriteLine("	INC	L");
 				sw.WriteLine("	LD	(BC),A");
 				sw.WriteLine("	SET	3,B");
 				if (BitmapCpc.modeVirtuel == 7) {
 					sw.WriteLine("	LD	A,(HL)");
-					sw.WriteLine("	INC	HL");
+					sw.WriteLine("	INC	L");
 				}
 				sw.WriteLine("	LD	(BC),A");
 				sw.WriteLine("	SET	4,B");
 				if (BitmapCpc.modeVirtuel == 7) {
 					sw.WriteLine("	LD	A,(HL)");
-					sw.WriteLine("	INC	HL");
+					sw.WriteLine("	INC	L");
 				}
 				sw.WriteLine("	LD	(BC),A");
 				sw.WriteLine("	RES	3,B");
 				if (BitmapCpc.modeVirtuel == 7) {
 					sw.WriteLine("	LD	A,(HL)");
-					sw.WriteLine("	INC	HL");
+					sw.WriteLine("	INC	L");
 				}
 				sw.WriteLine("	LD	(BC),A");
 				sw.WriteLine("	SET	5,B");
@@ -541,7 +541,7 @@ namespace ConvImgCpc {
 				}
 				sw.WriteLine("	LD	A,(HL)");
 				if (BitmapCpc.modeVirtuel == 7)
-					sw.WriteLine("	DEC	HL");
+					sw.WriteLine("	DEC	L");
 				else
 					sw.WriteLine("	INC	HL");
 
@@ -549,13 +549,13 @@ namespace ConvImgCpc {
 				sw.WriteLine("	SET	3,B");
 				if (BitmapCpc.modeVirtuel == 7) {
 					sw.WriteLine("	LD	A,(HL)");
-					sw.WriteLine("	DEC	HL");
+					sw.WriteLine("	DEC	L");
 				}
 				sw.WriteLine("	LD	(BC),A");
 				sw.WriteLine("	RES	4,B");
 				if (BitmapCpc.modeVirtuel == 7) {
 					sw.WriteLine("	LD	A,(HL)");
-					sw.WriteLine("	DEC	HL");
+					sw.WriteLine("	DEC	L");
 				}
 				sw.WriteLine("	LD	(BC),A");
 				sw.WriteLine("	RES	3,B");
@@ -622,24 +622,24 @@ namespace ConvImgCpc {
 				}
 				sw.WriteLine("	EX	DE,HL");
 				sw.WriteLine("	LD	A,(DE)");
-				sw.WriteLine("	INC	DE");
+				sw.WriteLine("	INC	E");
 				sw.WriteLine("	LD	(HL),A");
 				sw.WriteLine("	SET	3,H");
 				if (BitmapCpc.modeVirtuel == 7) {
 					sw.WriteLine("	LD	A,(DE)");
-					sw.WriteLine("	INC	DE");
+					sw.WriteLine("	INC	E");
 				}
 				sw.WriteLine("	LD	(HL),A");
 				sw.WriteLine("	SET	4,H");
 				if (BitmapCpc.modeVirtuel == 7) {
 					sw.WriteLine("	LD	A,(DE)");
-					sw.WriteLine("	INC	DE");
+					sw.WriteLine("	INC	E");
 				}
 				sw.WriteLine("	LD	(HL),A");
 				sw.WriteLine("	RES	3,H");
 				if (BitmapCpc.modeVirtuel == 7) {
 					sw.WriteLine("	LD	A,(DE)");
-					sw.WriteLine("	INC	DE");
+					sw.WriteLine("	INC	E");
 				}
 				sw.WriteLine("	LD	(HL),A");
 				sw.WriteLine("	SET	5,H");
@@ -653,7 +653,7 @@ namespace ConvImgCpc {
 				}
 				sw.WriteLine("	LD	A,(DE)");
 				if (BitmapCpc.modeVirtuel == 7)
-					sw.WriteLine("	DEC	DE");
+					sw.WriteLine("	DEC	E");
 				else
 					sw.WriteLine("	INC	DE");
 
@@ -661,13 +661,13 @@ namespace ConvImgCpc {
 				sw.WriteLine("	SET	3,H");
 				if (BitmapCpc.modeVirtuel == 7) {
 					sw.WriteLine("	LD	A,(DE)");
-					sw.WriteLine("	DEC DE");
+					sw.WriteLine("	DEC E");
 				}
 				sw.WriteLine("	LD	(HL),A");
 				sw.WriteLine("	RES	4,H");
 				if (BitmapCpc.modeVirtuel == 7) {
 					sw.WriteLine("	LD	A,(DE)");
-					sw.WriteLine("	DEC	DE");
+					sw.WriteLine("	DEC	E");
 				}
 				sw.WriteLine("	LD	(HL),A");
 				sw.WriteLine("	RES	3,H");
