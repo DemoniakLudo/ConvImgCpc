@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -10,9 +11,17 @@ namespace ConvImgCpc {
 		private int numTrame = 0;
 		private int penLeft = 1, penRight = 0;
 		private DirectBitmap bmpTrame;
+		private ImageCpc imgCpc;
+		private ImageSource imgSrc;
+		private Param param;
+		private Main main;
 
-		public EditTrameAscii(BitmapCpc b) {
-			bmpCpc = b;
+		public EditTrameAscii(Main m, ImageSource s, ImageCpc i, Param p) {
+			main = m;
+			imgSrc = s;
+			imgCpc = i;
+			bmpCpc = i.bitmapCpc;
+			param = p;
 			InitializeComponent();
 			bmpTrame = new DirectBitmap(pictEditMatrice.Width, pictEditMatrice.Height);
 			pictEditMatrice.Image = bmpTrame.Bitmap;
@@ -176,6 +185,52 @@ namespace ConvImgCpc {
 				}
 				file.Close();
 			}
+		}
+
+		private void bpAutoGene_Click(object sender, EventArgs e) {
+			DirectBitmap tmp = main.GetResizeBitmap();
+			List<TrameM1> lstTrame = new List<TrameM1>();
+			Conversion.CnvTrame(tmp, imgCpc, lstTrame, param);
+			tmp.Dispose();
+			lstTrame.Sort((x, y) => y.nbFound - x.nbFound);
+			int maxTrame = Math.Min(16, lstTrame.Count);
+			for (int i = 0; i < maxTrame; i++)
+				for (int y = 0; y < 4; y++)
+					for (int x = 0; x < 4; x++)
+						BitmapCpc.trameM1[i, x, y] = lstTrame[i].GetPix(x, y);
+
+			DrawMatrice();
+			DrawTrame();
+		}
+	}
+
+	public class TrameM1 {
+		int[,] trame = new int[4, 4];
+		public int nbFound = 0;
+
+		public void SetPix(int x, int y, int p) {
+			trame[x, y] = p;
+		}
+
+		public int GetPix(int x, int y) {
+			return trame[x, y];
+		}
+
+		public int GetNbFound() {
+			return nbFound;
+		}
+
+		public bool IsSame(TrameM1 t) {
+			bool same = true;
+			for (int y = 0; y < 4; y++)
+				for (int x = 0; x < 4; x++)
+					if (trame[x, y] != t.GetPix(x, y))
+						same = false;
+
+			if (same)
+				nbFound++;
+
+			return same;
 		}
 	}
 }

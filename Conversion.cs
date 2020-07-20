@@ -321,7 +321,7 @@ namespace ConvImgCpc {
 		}
 
 		//
-		// Recherche les x couleurs les plus utilisées parmis les n possibles (remplit le tableau CChoix)
+		// Recherche les x couleurs les plus utilisées parmis les n possibles (remplit le tableau BitmapCpc.Palette)
 		//
 		static void RechercheCMax(int maxCol, int[] lockState, Param p) {
 			int x, FindMax = BitmapCpc.cpcPlus ? 4096 : 27;
@@ -628,6 +628,45 @@ namespace ConvImgCpc {
 
 			dest.bitmapCpc.isCalc = true;
 			return nbCol;
+		}
+
+		// Calcul automatique matrice 4x4 en mode 1
+		static public void CnvTrame(DirectBitmap source, ImageCpc dest, List<TrameM1> lstTrame, Param p) {
+			p.modeVirtuel = 1;
+			ConvertPasse1(source, dest, p);
+			RechercheCMax(4, p.lockState, p);
+			for (int y = 0; y < BitmapCpc.TailleY; y += 8) {
+				for (int x = 0; x < BitmapCpc.TailleX; x += 8) {
+					TrameM1 locTrame = new TrameM1();
+					for (int maty = 0; maty < 4; maty++) {
+						for (int matx = 0; matx < 4; matx++) {
+							RvbColor pix = source.GetPixelColor(x + (matx << 1), y + (maty << 1));
+							int oldDist = 0x7FFFFFFF;
+							int choix = 0;
+							for (int i = 0; i < 4; i++) {
+								RvbColor c = dest.bitmapCpc.GetColorPal(i);
+								int dist = Math.Abs(pix.r - c.r) * K_R + Math.Abs(pix.v - c.v) * K_V + Math.Abs(pix.b - c.b) * K_B;
+								if (dist < oldDist) {
+									choix = i;
+									oldDist = dist;
+									if (dist == 0)
+										i = 4;
+								}
+							}
+							locTrame.SetPix(matx, maty, choix);
+						}
+					}
+					bool found = false;
+					foreach (TrameM1 t in lstTrame) {
+						if (t.IsSame(locTrame)) {
+							found = true;
+							break;
+						}
+					}
+					if (!found)
+						lstTrame.Add(locTrame);
+				}
+			}
 		}
 	}
 }

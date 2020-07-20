@@ -37,6 +37,7 @@
 			this.lblPenRight = new System.Windows.Forms.Label();
 			this.bpRead = new System.Windows.Forms.Button();
 			this.bpSave = new System.Windows.Forms.Button();
+			this.bpAutoGene = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.pictEditMatrice)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictAllMatrice)).BeginInit();
 			this.SuspendLayout();
@@ -171,11 +172,22 @@
 			this.bpSave.UseVisualStyleBackColor = true;
 			this.bpSave.Click += new System.EventHandler(this.bpSave_Click);
 			// 
+			// bpAutoGene
+			// 
+			this.bpAutoGene.Location = new System.Drawing.Point(501, 396);
+			this.bpAutoGene.Name = "bpAutoGene";
+			this.bpAutoGene.Size = new System.Drawing.Size(119, 45);
+			this.bpAutoGene.TabIndex = 7;
+			this.bpAutoGene.Text = "Génération Automatique";
+			this.bpAutoGene.UseVisualStyleBackColor = true;
+			this.bpAutoGene.Click += new System.EventHandler(this.bpAutoGene_Click);
+			// 
 			// EditTrameAscii
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(632, 453);
+			this.Controls.Add(this.bpAutoGene);
 			this.Controls.Add(this.bpSave);
 			this.Controls.Add(this.bpRead);
 			this.Controls.Add(this.lblPenRight);
@@ -219,5 +231,6 @@
 		private System.Windows.Forms.Label lblPenRight;
 		private System.Windows.Forms.Button bpRead;
 		private System.Windows.Forms.Button bpSave;
+		private System.Windows.Forms.Button bpAutoGene;
 	}
 }

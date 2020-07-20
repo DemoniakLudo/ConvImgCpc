@@ -53,6 +53,47 @@ namespace ConvImgCpc {
 			}
 		}
 
+		public DirectBitmap GetResizeBitmap() {
+			DirectBitmap tmp = new DirectBitmap(BitmapCpc.TailleX, BitmapCpc.TailleY);
+			Graphics g = Graphics.FromImage(tmp.Bitmap);
+			double ratio = imgSrc.GetImage.Width * BitmapCpc.TailleY / (double)(imgSrc.GetImage.Height * BitmapCpc.TailleX);
+			switch (param.sMode) {
+				case Param.SizeMode.KeepSmaller:
+					if (ratio < 1) {
+						int newW = (int)(BitmapCpc.TailleX * ratio);
+						g.DrawImage(imgSrc.GetImage, (BitmapCpc.TailleX - newW) >> 1, 0, newW, BitmapCpc.TailleY);
+					}
+					else {
+						int newH = (int)(BitmapCpc.TailleY / ratio);
+						g.DrawImage(imgSrc.GetImage, 0, (BitmapCpc.TailleY - newH) >> 1, BitmapCpc.TailleX, newH);
+					}
+					break;
+
+				case Param.SizeMode.KeepLarger:
+					if (ratio < 1) {
+						int newY = (int)(BitmapCpc.TailleY / ratio);
+						g.DrawImage(imgSrc.GetImage, 0, (BitmapCpc.TailleY - newY) >> 1, BitmapCpc.TailleX, newY);
+					}
+					else {
+						int newX = (int)(BitmapCpc.TailleX * ratio);
+						g.DrawImage(imgSrc.GetImage, (BitmapCpc.TailleX - newX) >> 1, 0, newX, BitmapCpc.TailleY);
+					}
+					break;
+
+				case Param.SizeMode.Fit:
+					g.DrawImage(imgSrc.GetImage, 0, 0, BitmapCpc.TailleX, BitmapCpc.TailleY);
+					break;
+
+				case Param.SizeMode.UserSize:
+				case Param.SizeMode.Origin:
+					int posx = 0, posy = 0, tx = BitmapCpc.TailleX, ty = BitmapCpc.TailleY;
+					GetSizePos(ref posx, ref posy, ref tx, ref ty);
+					g.DrawImage(imgSrc.GetImage, -(posx << 1), -(posy << 1), tx << 1, ty << 1);
+					break;
+			}
+			return tmp;
+		}
+		
 		private void Convert(bool doConvert, bool noInfo = false) {
 			if (imgSrc.GetImage != null && (autoRecalc.Checked || doConvert) && !noInfo) {
 				int imgSel = (int)numImage.Value;
@@ -68,43 +109,7 @@ namespace ConvImgCpc {
 					param.motif = chkMotif.Checked;
 					param.motif2 = chkMotif2.Checked;
 					param.setPalCpc = chkPalCpc.Checked;
-					DirectBitmap tmp = new DirectBitmap(BitmapCpc.TailleX, BitmapCpc.TailleY);
-					Graphics g = Graphics.FromImage(tmp.Bitmap);
-					double ratio = imgSrc.GetImage.Width * BitmapCpc.TailleY / (double)(imgSrc.GetImage.Height * BitmapCpc.TailleX);
-					switch (param.sMode) {
-						case Param.SizeMode.KeepSmaller:
-							if (ratio < 1) {
-								int newW = (int)(BitmapCpc.TailleX * ratio);
-								g.DrawImage(imgSrc.GetImage, (BitmapCpc.TailleX - newW) >> 1, 0, newW, BitmapCpc.TailleY);
-							}
-							else {
-								int newH = (int)(BitmapCpc.TailleY / ratio);
-								g.DrawImage(imgSrc.GetImage, 0, (BitmapCpc.TailleY - newH) >> 1, BitmapCpc.TailleX, newH);
-							}
-							break;
-
-						case Param.SizeMode.KeepLarger:
-							if (ratio < 1) {
-								int newY = (int)(BitmapCpc.TailleY / ratio);
-								g.DrawImage(imgSrc.GetImage, 0, (BitmapCpc.TailleY - newY) >> 1, BitmapCpc.TailleX, newY);
-							}
-							else {
-								int newX = (int)(BitmapCpc.TailleX * ratio);
-								g.DrawImage(imgSrc.GetImage, (BitmapCpc.TailleX - newX) >> 1, 0, newX, BitmapCpc.TailleY);
-							}
-							break;
-
-						case Param.SizeMode.Fit:
-							g.DrawImage(imgSrc.GetImage, 0, 0, BitmapCpc.TailleX, BitmapCpc.TailleY);
-							break;
-
-						case Param.SizeMode.UserSize:
-						case Param.SizeMode.Origin:
-							int posx = 0, posy = 0, tx = BitmapCpc.TailleX, ty = BitmapCpc.TailleY;
-							GetSizePos(ref posx, ref posy, ref tx, ref ty);
-							g.DrawImage(imgSrc.GetImage, -(posx << 1), -(posy << 1), tx << 1, ty << 1);
-							break;
-					}
+					DirectBitmap tmp = GetResizeBitmap();
 					if (!noInfo && doConvert)
 						SetInfo("Conversion en cours...");
 
@@ -271,20 +276,22 @@ namespace ConvImgCpc {
 			CreationImages dlg = new CreationImages();
 			dlg.ShowDialog();
 			int nbImages = dlg.NbImages;
-			imgSrc.InitBitmap(nbImages);
-			if (nbImages == 1)
-				SetInfo("Création image vierge");
-			else {
-				numImage.Maximum = nbImages - 1;
-				lblMaxImage.Text = "Nbre images:" + nbImages;
-				lblMaxImage.Visible = lblNumImage.Visible = numImage.Visible = chkAllPics.Visible = nbImages > 1;
-				numImage.Value = 0;
-				SetInfo("Création animation avec " + nbImages + " images.");
+			if (nbImages != -1) {
+				imgSrc.InitBitmap(nbImages);
+				if (nbImages == 1)
+					SetInfo("Création image vierge");
+				else {
+					numImage.Maximum = nbImages - 1;
+					lblMaxImage.Text = "Nbre images:" + nbImages;
+					lblMaxImage.Visible = lblNumImage.Visible = numImage.Visible = chkAllPics.Visible = nbImages > 1;
+					numImage.Value = 0;
+					SetInfo("Création animation avec " + nbImages + " images.");
+				}
+				SelectImage(0);
+				imgCpc.InitBitmapCpc(nbImages);
+				imgCpc.Reset(true);
+				Convert(false);
 			}
-			SelectImage(0);
-			imgCpc.InitBitmapCpc(nbImages);
-			imgCpc.Reset(true);
-			Convert(false);
 		}
 
 		private void bpImport_Click(object sender, EventArgs e) {
@@ -556,7 +563,7 @@ namespace ConvImgCpc {
 		}
 
 		private void bpEditTrame_Click(object sender, EventArgs e) {
-			EditTrameAscii dg = new EditTrameAscii(imgCpc.bitmapCpc);
+			EditTrameAscii dg = new EditTrameAscii(this, imgSrc, imgCpc, param);
 			dg.ShowDialog();
 			Convert(false);
 		}
