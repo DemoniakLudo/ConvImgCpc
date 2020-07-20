@@ -188,11 +188,16 @@ namespace ConvImgCpc {
 		}
 
 		private void bpAutoGene_Click(object sender, EventArgs e) {
-			DirectBitmap tmp = main.GetResizeBitmap();
+			Enabled = false;
+			int nbImages = main.GetMaxImages();
 			List<TrameM1> lstTrame = new List<TrameM1>();
-			Conversion.CnvTrame(tmp, imgCpc, lstTrame, param);
-			tmp.Dispose();
-			lstTrame.Sort((x, y) => y.nbFound - x.nbFound);
+			for (int i = 0; i < nbImages; i++) {
+				main.SelectImage(i, true);
+				DirectBitmap tmp = main.GetResizeBitmap();
+				Conversion.CnvTrame(tmp, imgCpc, lstTrame, param);
+				tmp.Dispose();
+				lstTrame.Sort((x, y) => y.nbFound - x.nbFound);
+			}
 			int maxTrame = Math.Min(16, lstTrame.Count);
 			for (int i = 0; i < maxTrame; i++)
 				for (int y = 0; y < 4; y++)
@@ -201,6 +206,7 @@ namespace ConvImgCpc {
 
 			DrawMatrice();
 			DrawTrame();
+			Enabled = true;
 		}
 	}
 
@@ -225,7 +231,7 @@ namespace ConvImgCpc {
 			for (int y = 0; y < 4; y++)
 				for (int x = 0; x < 4; x++)
 					if (trame[x, y] != t.GetPix(x, y))
-						same = false;
+						return false;
 
 			if (same)
 				nbFound++;
