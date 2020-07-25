@@ -11,12 +11,12 @@ namespace ConvImgCpc {
 			return sw;
 		}
 
-		static public void GenereDatas(StreamWriter sw, byte[] tabByte, int length) {
+		static public void GenereDatas(StreamWriter sw, byte[] tabByte, int length, int nbOctetsLigne) {
 			string line = "\tDB\t";
 			int nbOctets = 0;
 			for (int i = 0; i < length; i++) {
 				line += "#" + tabByte[i].ToString("X2") + ",";
-				if (++nbOctets >= Math.Min(16, BitmapCpc.NbCol)) {
+				if (++nbOctets >= Math.Min(nbOctetsLigne, BitmapCpc.NbCol)) {
 					sw.WriteLine(line.Substring(0, line.Length - 1));
 					line = "\tDB\t";
 					nbOctets = 0;

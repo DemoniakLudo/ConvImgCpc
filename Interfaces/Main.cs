@@ -7,14 +7,17 @@ using System.Xml.Serialization;
 
 namespace ConvImgCpc {
 	public partial class Main : Form {
-		private ImageSource imgSrc;
-		private ImageCpc imgCpc;
+		public ImageSource imgSrc;
+		public ImageCpc imgCpc;
 		private Param param = new Param();
 		private string lastReadPath = null;
 		private string lastSavePath = null;
 		private MemoryStream imageStream;
+		private Informations info = new Informations();
+		private Animation anim;
 
 		public Main() {
+			anim = new Animation(this);
 			InitializeComponent();
 			mode.Items.Insert(0, "Mode 0");
 			mode.Items.Insert(1, "Mode 1");
@@ -42,15 +45,6 @@ namespace ConvImgCpc {
 			string configDetault = "ConvImgCpc.xml";
 			if (File.Exists(configDetault))
 				ReadParam(configDetault);
-		}
-
-		private void checkImageSource_CheckedChanged(object sender, EventArgs e) {
-			try {
-				imgSrc.Visible = checkImageSource.Checked;
-			}
-			catch (Exception ex) {
-				MessageBox.Show(ex.StackTrace, ex.Message);
-			}
 		}
 
 		public DirectBitmap GetResizeBitmap() {
@@ -93,12 +87,12 @@ namespace ConvImgCpc {
 			}
 			return tmp;
 		}
-		
-		private void Convert(bool doConvert, bool noInfo = false) {
+
+		public void Convert(bool doConvert, bool noInfo = false) {
 			if (imgSrc.GetImage != null && (autoRecalc.Checked || doConvert) && !noInfo) {
-				int imgSel = (int)numImage.Value;
-				int startImg = chkAllPics.Checked ? 0 : (int)numImage.Value;
-				int endImg = chkAllPics.Checked ? (int)numImage.Maximum : (int)numImage.Value;
+				int imgSel = anim.SelImage;
+				int startImg = chkAllPics.Checked ? 0 : imgSel;
+				int endImg = chkAllPics.Checked ? anim.MaxImage: imgSel;
 				for (int i = startImg; i <= endImg; i++) {
 					SelectImage(i, true);
 					bpSave.Enabled = bpConvert.Enabled = false;
@@ -169,10 +163,8 @@ namespace ConvImgCpc {
 				if (!singlePicture) {
 					imgSrc.InitBitmap(imageStream);
 					nbImg = imgSrc.NbImg;
-					numImage.Maximum = nbImg - 1;
-					lblMaxImage.Text = "Nbre images:" + nbImg;
-					lblMaxImage.Visible = lblNumImage.Visible = numImage.Visible = chkAllPics.Visible = nbImg > 1;
-					numImage.Value = 0;
+					anim.SetNbImgs(nbImg);
+					chkAllPics.Visible = nbImg > 1;
 					SetInfo("Lecture image PC" + (nbImg > 0 ? (" de type animation avec " + nbImg + " images.") : "."));
 				}
 				else {
@@ -202,20 +194,22 @@ namespace ConvImgCpc {
 		}
 
 		public void SelectImage(int n, bool noInfo = false) {
-			imgSrc.SelectBitmap(n, checkImageSource.Checked);
-			imgCpc.selImage = n;
-			imgCpc.Reset();
-			if (!noInfo)
-				SetInfo("Image sélectionnée: " + n.ToString());
+			if (n > -1) {
+				imgSrc.SelectBitmap(n);
+				imgCpc.selImage = n;
+				imgCpc.Reset();
+				anim.DrawImages(n);
+				if (!noInfo)
+					SetInfo("Image sélectionnée: " + n.ToString());
+			}
 		}
 
 		public int GetMaxImages() {
-			return 1 + (int)numImage.Maximum;
+			return 1 + anim.MaxImage;
 		}
 
 		public void SetInfo(string txt) {
-			listInfo.Items.Add(DateTime.Now.ToString() + " - " + txt);
-			listInfo.SelectedIndex = listInfo.Items.Count - 1;
+			info.SetInfos(txt);
 		}
 
 		private void ReadParam(string fileName) {
@@ -281,10 +275,7 @@ namespace ConvImgCpc {
 				if (nbImages == 1)
 					SetInfo("Création image vierge");
 				else {
-					numImage.Maximum = nbImages - 1;
-					lblMaxImage.Text = "Nbre images:" + nbImages;
-					lblMaxImage.Visible = lblNumImage.Visible = numImage.Visible = chkAllPics.Visible = nbImages > 1;
-					numImage.Value = 0;
+					anim.SetNbImgs(nbImages);
 					SetInfo("Création animation avec " + nbImages + " images.");
 				}
 				SelectImage(0);
@@ -556,12 +547,6 @@ namespace ConvImgCpc {
 			Convert(false);
 		}
 
-		private void numImage_ValueChanged(object sender, EventArgs e) {
-			SelectImage((int)numImage.Value);
-			imgCpc.SetImgCopy();
-			Convert(false);
-		}
-
 		private void bpEditTrame_Click(object sender, EventArgs e) {
 			EditTrameAscii dg = new EditTrameAscii(this, imgSrc, imgCpc, param);
 			dg.ShowDialog();
@@ -623,6 +608,13 @@ namespace ConvImgCpc {
 
 		private void RazB_Click(object sender, EventArgs e) {
 			blue.Value = 100;
+		}
+
+		private void chkInfo_CheckedChanged(object sender, EventArgs e) {
+			if (chkInfo.Checked)
+				info.Show();
+			else
+				info.Hide();
 		}
 	}
 }

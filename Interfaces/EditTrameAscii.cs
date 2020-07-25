@@ -192,7 +192,7 @@ namespace ConvImgCpc {
 			int nbImages = main.GetMaxImages();
 			List<TrameM1> lstTrame = new List<TrameM1>();
 			for (int i = 0; i < nbImages; i++) {
-				main.SelectImage(i, true);
+				main.SelectImage(i);
 				DirectBitmap tmp = main.GetResizeBitmap();
 				Conversion.CnvTrame(tmp, imgCpc, lstTrame, param);
 				tmp.Dispose();

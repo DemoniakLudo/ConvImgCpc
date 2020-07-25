@@ -23,7 +23,6 @@
 		/// le contenu de cette méthode avec l'éditeur de code.
 		/// </summary>
 		private void InitializeComponent() {
-			this.checkImageSource = new System.Windows.Forms.CheckBox();
 			this.bpLoad = new System.Windows.Forms.Button();
 			this.bpConvert = new System.Windows.Forms.Button();
 			this.nbCols = new System.Windows.Forms.NumericUpDown();
@@ -102,13 +101,10 @@
 			this.lblInfoVersion = new System.Windows.Forms.Label();
 			this.withCode = new System.Windows.Forms.CheckBox();
 			this.withPalette = new System.Windows.Forms.CheckBox();
-			this.lblNumImage = new System.Windows.Forms.Label();
-			this.numImage = new System.Windows.Forms.NumericUpDown();
-			this.lblMaxImage = new System.Windows.Forms.Label();
-			this.listInfo = new System.Windows.Forms.ListBox();
 			this.chkAllPics = new System.Windows.Forms.CheckBox();
 			this.bpImport = new System.Windows.Forms.Button();
 			this.bpCreate = new System.Windows.Forms.Button();
+			this.chkInfo = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -123,23 +119,11 @@
 			((System.ComponentModel.ISupportInitialize)(this.blue)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.green)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.red)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.numImage)).BeginInit();
 			this.SuspendLayout();
-			// 
-			// checkImageSource
-			// 
-			this.checkImageSource.AutoSize = true;
-			this.checkImageSource.Location = new System.Drawing.Point(3, 36);
-			this.checkImageSource.Name = "checkImageSource";
-			this.checkImageSource.Size = new System.Drawing.Size(128, 17);
-			this.checkImageSource.TabIndex = 0;
-			this.checkImageSource.Text = "Afficher image source";
-			this.checkImageSource.UseVisualStyleBackColor = true;
-			this.checkImageSource.CheckedChanged += new System.EventHandler(this.checkImageSource_CheckedChanged);
 			// 
 			// bpLoad
 			// 
-			this.bpLoad.Location = new System.Drawing.Point(3, 7);
+			this.bpLoad.Location = new System.Drawing.Point(2, 2);
 			this.bpLoad.Name = "bpLoad";
 			this.bpLoad.Size = new System.Drawing.Size(108, 23);
 			this.bpLoad.TabIndex = 2;
@@ -149,7 +133,7 @@
 			// 
 			// bpConvert
 			// 
-			this.bpConvert.Location = new System.Drawing.Point(3, 141);
+			this.bpConvert.Location = new System.Drawing.Point(3, 136);
 			this.bpConvert.Name = "bpConvert";
 			this.bpConvert.Size = new System.Drawing.Size(108, 23);
 			this.bpConvert.TabIndex = 3;
@@ -304,7 +288,7 @@
 			this.resoCPC.Controls.Add(this.label2);
 			this.resoCPC.Controls.Add(this.label3);
 			this.resoCPC.Controls.Add(this.mode);
-			this.resoCPC.Location = new System.Drawing.Point(279, 7);
+			this.resoCPC.Location = new System.Drawing.Point(237, 2);
 			this.resoCPC.Name = "resoCPC";
 			this.resoCPC.Size = new System.Drawing.Size(152, 172);
 			this.resoCPC.TabIndex = 11;
@@ -375,7 +359,7 @@
 			this.tramage.Controls.Add(this.methode);
 			this.tramage.Controls.Add(this.pctTrame);
 			this.tramage.Controls.Add(this.label4);
-			this.tramage.Location = new System.Drawing.Point(583, 7);
+			this.tramage.Location = new System.Drawing.Point(541, 2);
 			this.tramage.Name = "tramage";
 			this.tramage.Size = new System.Drawing.Size(172, 172);
 			this.tramage.TabIndex = 11;
@@ -448,7 +432,7 @@
 			// lumi
 			// 
 			this.lumi.AutoSize = false;
-			this.lumi.Location = new System.Drawing.Point(53, 61);
+			this.lumi.Location = new System.Drawing.Point(50, 61);
 			this.lumi.Maximum = 200;
 			this.lumi.Name = "lumi";
 			this.lumi.Size = new System.Drawing.Size(362, 24);
@@ -459,7 +443,7 @@
 			// sat
 			// 
 			this.sat.AutoSize = false;
-			this.sat.Location = new System.Drawing.Point(53, 95);
+			this.sat.Location = new System.Drawing.Point(50, 95);
 			this.sat.Maximum = 200;
 			this.sat.Name = "sat";
 			this.sat.Size = new System.Drawing.Size(362, 24);
@@ -470,7 +454,7 @@
 			// label8
 			// 
 			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(5, 71);
+			this.label8.Location = new System.Drawing.Point(3, 71);
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(30, 13);
 			this.label8.TabIndex = 13;
@@ -479,7 +463,7 @@
 			// label9
 			// 
 			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(5, 105);
+			this.label9.Location = new System.Drawing.Point(3, 105);
 			this.label9.Name = "label9";
 			this.label9.Size = new System.Drawing.Size(26, 13);
 			this.label9.TabIndex = 13;
@@ -487,7 +471,7 @@
 			// 
 			// bpRazLumi
 			// 
-			this.bpRazLumi.Location = new System.Drawing.Point(438, 66);
+			this.bpRazLumi.Location = new System.Drawing.Point(437, 66);
 			this.bpRazLumi.Name = "bpRazLumi";
 			this.bpRazLumi.Size = new System.Drawing.Size(35, 23);
 			this.bpRazLumi.TabIndex = 14;
@@ -497,7 +481,7 @@
 			// 
 			// bpRazSat
 			// 
-			this.bpRazSat.Location = new System.Drawing.Point(438, 99);
+			this.bpRazSat.Location = new System.Drawing.Point(437, 99);
 			this.bpRazSat.Name = "bpRazSat";
 			this.bpRazSat.Size = new System.Drawing.Size(35, 23);
 			this.bpRazSat.TabIndex = 14;
@@ -543,7 +527,7 @@
 			// autoRecalc
 			// 
 			this.autoRecalc.AutoSize = true;
-			this.autoRecalc.Location = new System.Drawing.Point(3, 170);
+			this.autoRecalc.Location = new System.Drawing.Point(3, 165);
 			this.autoRecalc.Name = "autoRecalc";
 			this.autoRecalc.Size = new System.Drawing.Size(162, 17);
 			this.autoRecalc.TabIndex = 44;
@@ -553,7 +537,7 @@
 			// 
 			// bpRazContrast
 			// 
-			this.bpRazContrast.Location = new System.Drawing.Point(438, 132);
+			this.bpRazContrast.Location = new System.Drawing.Point(437, 134);
 			this.bpRazContrast.Name = "bpRazContrast";
 			this.bpRazContrast.Size = new System.Drawing.Size(35, 23);
 			this.bpRazContrast.TabIndex = 43;
@@ -564,7 +548,7 @@
 			// contrast
 			// 
 			this.contrast.AutoSize = false;
-			this.contrast.Location = new System.Drawing.Point(53, 129);
+			this.contrast.Location = new System.Drawing.Point(50, 129);
 			this.contrast.Maximum = 200;
 			this.contrast.Name = "contrast";
 			this.contrast.Size = new System.Drawing.Size(362, 24);
@@ -620,7 +604,7 @@
 			this.groupBox1.Controls.Add(this.radioFit);
 			this.groupBox1.Controls.Add(this.radioKeepSmaller);
 			this.groupBox1.Controls.Add(this.radioKeepLarger);
-			this.groupBox1.Location = new System.Drawing.Point(437, 7);
+			this.groupBox1.Location = new System.Drawing.Point(395, 2);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Size = new System.Drawing.Size(140, 172);
 			this.groupBox1.TabIndex = 49;
@@ -708,7 +692,7 @@
 			// label10
 			// 
 			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(5, 139);
+			this.label10.Location = new System.Drawing.Point(3, 139);
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(31, 13);
 			this.label10.TabIndex = 13;
@@ -776,7 +760,7 @@
 			this.groupBox2.Controls.Add(this.label9);
 			this.groupBox2.Controls.Add(this.sat);
 			this.groupBox2.Controls.Add(this.label8);
-			this.groupBox2.Location = new System.Drawing.Point(279, 185);
+			this.groupBox2.Location = new System.Drawing.Point(237, 180);
 			this.groupBox2.Name = "groupBox2";
 			this.groupBox2.Size = new System.Drawing.Size(476, 267);
 			this.groupBox2.TabIndex = 52;
@@ -797,7 +781,7 @@
 			// 
 			// bpBmoins
 			// 
-			this.bpBmoins.Location = new System.Drawing.Point(35, 236);
+			this.bpBmoins.Location = new System.Drawing.Point(31, 236);
 			this.bpBmoins.Name = "bpBmoins";
 			this.bpBmoins.Size = new System.Drawing.Size(23, 23);
 			this.bpBmoins.TabIndex = 59;
@@ -807,7 +791,7 @@
 			// 
 			// bpVmoins
 			// 
-			this.bpVmoins.Location = new System.Drawing.Point(35, 202);
+			this.bpVmoins.Location = new System.Drawing.Point(31, 202);
 			this.bpVmoins.Name = "bpVmoins";
 			this.bpVmoins.Size = new System.Drawing.Size(23, 23);
 			this.bpVmoins.TabIndex = 59;
@@ -817,7 +801,7 @@
 			// 
 			// bpRmoins
 			// 
-			this.bpRmoins.Location = new System.Drawing.Point(35, 168);
+			this.bpRmoins.Location = new System.Drawing.Point(31, 168);
 			this.bpRmoins.Name = "bpRmoins";
 			this.bpRmoins.Size = new System.Drawing.Size(23, 23);
 			this.bpRmoins.TabIndex = 59;
@@ -828,7 +812,7 @@
 			// label12
 			// 
 			this.label12.AutoSize = true;
-			this.label12.Location = new System.Drawing.Point(5, 241);
+			this.label12.Location = new System.Drawing.Point(3, 241);
 			this.label12.Name = "label12";
 			this.label12.Size = new System.Drawing.Size(14, 13);
 			this.label12.TabIndex = 58;
@@ -837,7 +821,7 @@
 			// label11
 			// 
 			this.label11.AutoSize = true;
-			this.label11.Location = new System.Drawing.Point(5, 207);
+			this.label11.Location = new System.Drawing.Point(3, 207);
 			this.label11.Name = "label11";
 			this.label11.Size = new System.Drawing.Size(14, 13);
 			this.label11.TabIndex = 58;
@@ -846,7 +830,7 @@
 			// label6
 			// 
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(5, 173);
+			this.label6.Location = new System.Drawing.Point(3, 173);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(15, 13);
 			this.label6.TabIndex = 58;
@@ -855,7 +839,7 @@
 			// blue
 			// 
 			this.blue.AutoSize = false;
-			this.blue.Location = new System.Drawing.Point(53, 231);
+			this.blue.Location = new System.Drawing.Point(50, 231);
 			this.blue.Maximum = 200;
 			this.blue.Name = "blue";
 			this.blue.Size = new System.Drawing.Size(362, 24);
@@ -866,7 +850,7 @@
 			// green
 			// 
 			this.green.AutoSize = false;
-			this.green.Location = new System.Drawing.Point(53, 197);
+			this.green.Location = new System.Drawing.Point(50, 197);
 			this.green.Maximum = 200;
 			this.green.Name = "green";
 			this.green.Size = new System.Drawing.Size(362, 24);
@@ -877,7 +861,7 @@
 			// red
 			// 
 			this.red.AutoSize = false;
-			this.red.Location = new System.Drawing.Point(53, 163);
+			this.red.Location = new System.Drawing.Point(50, 163);
 			this.red.Maximum = 200;
 			this.red.Name = "red";
 			this.red.Size = new System.Drawing.Size(362, 24);
@@ -887,7 +871,7 @@
 			// 
 			// bpCtrstMoins
 			// 
-			this.bpCtrstMoins.Location = new System.Drawing.Point(35, 134);
+			this.bpCtrstMoins.Location = new System.Drawing.Point(31, 134);
 			this.bpCtrstMoins.Name = "bpCtrstMoins";
 			this.bpCtrstMoins.Size = new System.Drawing.Size(23, 23);
 			this.bpCtrstMoins.TabIndex = 55;
@@ -897,7 +881,7 @@
 			// 
 			// bpBplus
 			// 
-			this.bpBplus.Location = new System.Drawing.Point(414, 231);
+			this.bpBplus.Location = new System.Drawing.Point(412, 236);
 			this.bpBplus.Name = "bpBplus";
 			this.bpBplus.Size = new System.Drawing.Size(23, 23);
 			this.bpBplus.TabIndex = 56;
@@ -907,7 +891,7 @@
 			// 
 			// bpVplus
 			// 
-			this.bpVplus.Location = new System.Drawing.Point(414, 198);
+			this.bpVplus.Location = new System.Drawing.Point(412, 202);
 			this.bpVplus.Name = "bpVplus";
 			this.bpVplus.Size = new System.Drawing.Size(23, 23);
 			this.bpVplus.TabIndex = 56;
@@ -917,7 +901,7 @@
 			// 
 			// bpRplus
 			// 
-			this.bpRplus.Location = new System.Drawing.Point(414, 165);
+			this.bpRplus.Location = new System.Drawing.Point(412, 168);
 			this.bpRplus.Name = "bpRplus";
 			this.bpRplus.Size = new System.Drawing.Size(23, 23);
 			this.bpRplus.TabIndex = 56;
@@ -927,7 +911,7 @@
 			// 
 			// bpCtrstPlus
 			// 
-			this.bpCtrstPlus.Location = new System.Drawing.Point(414, 132);
+			this.bpCtrstPlus.Location = new System.Drawing.Point(412, 134);
 			this.bpCtrstPlus.Name = "bpCtrstPlus";
 			this.bpCtrstPlus.Size = new System.Drawing.Size(23, 23);
 			this.bpCtrstPlus.TabIndex = 56;
@@ -937,7 +921,7 @@
 			// 
 			// bpSatMoins
 			// 
-			this.bpSatMoins.Location = new System.Drawing.Point(35, 100);
+			this.bpSatMoins.Location = new System.Drawing.Point(31, 99);
 			this.bpSatMoins.Name = "bpSatMoins";
 			this.bpSatMoins.Size = new System.Drawing.Size(23, 23);
 			this.bpSatMoins.TabIndex = 53;
@@ -947,7 +931,7 @@
 			// 
 			// bpSatPlus
 			// 
-			this.bpSatPlus.Location = new System.Drawing.Point(414, 99);
+			this.bpSatPlus.Location = new System.Drawing.Point(412, 99);
 			this.bpSatPlus.Name = "bpSatPlus";
 			this.bpSatPlus.Size = new System.Drawing.Size(23, 23);
 			this.bpSatPlus.TabIndex = 54;
@@ -957,7 +941,7 @@
 			// 
 			// bpLumMoins
 			// 
-			this.bpLumMoins.Location = new System.Drawing.Point(35, 66);
+			this.bpLumMoins.Location = new System.Drawing.Point(31, 66);
 			this.bpLumMoins.Name = "bpLumMoins";
 			this.bpLumMoins.Size = new System.Drawing.Size(23, 23);
 			this.bpLumMoins.TabIndex = 52;
@@ -967,7 +951,7 @@
 			// 
 			// bpLumPlus
 			// 
-			this.bpLumPlus.Location = new System.Drawing.Point(414, 66);
+			this.bpLumPlus.Location = new System.Drawing.Point(412, 66);
 			this.bpLumPlus.Name = "bpLumPlus";
 			this.bpLumPlus.Size = new System.Drawing.Size(23, 23);
 			this.bpLumPlus.TabIndex = 52;
@@ -977,7 +961,7 @@
 			// 
 			// RazB
 			// 
-			this.RazB.Location = new System.Drawing.Point(438, 231);
+			this.RazB.Location = new System.Drawing.Point(437, 236);
 			this.RazB.Name = "RazB";
 			this.RazB.Size = new System.Drawing.Size(35, 23);
 			this.RazB.TabIndex = 43;
@@ -987,7 +971,7 @@
 			// 
 			// RazV
 			// 
-			this.RazV.Location = new System.Drawing.Point(438, 198);
+			this.RazV.Location = new System.Drawing.Point(437, 202);
 			this.RazV.Name = "RazV";
 			this.RazV.Size = new System.Drawing.Size(35, 23);
 			this.RazV.TabIndex = 43;
@@ -997,7 +981,7 @@
 			// 
 			// RazR
 			// 
-			this.RazR.Location = new System.Drawing.Point(438, 165);
+			this.RazR.Location = new System.Drawing.Point(437, 168);
 			this.RazR.Name = "RazR";
 			this.RazR.Size = new System.Drawing.Size(35, 23);
 			this.RazR.TabIndex = 43;
@@ -1019,7 +1003,7 @@
 			// 
 			// bpSave
 			// 
-			this.bpSave.Location = new System.Drawing.Point(3, 280);
+			this.bpSave.Location = new System.Drawing.Point(3, 275);
 			this.bpSave.Name = "bpSave";
 			this.bpSave.Size = new System.Drawing.Size(108, 23);
 			this.bpSave.TabIndex = 52;
@@ -1030,7 +1014,7 @@
 			// lblInfoVersion
 			// 
 			this.lblInfoVersion.AutoSize = true;
-			this.lblInfoVersion.Location = new System.Drawing.Point(0, 400);
+			this.lblInfoVersion.Location = new System.Drawing.Point(0, 395);
 			this.lblInfoVersion.Name = "lblInfoVersion";
 			this.lblInfoVersion.Size = new System.Drawing.Size(42, 13);
 			this.lblInfoVersion.TabIndex = 52;
@@ -1041,7 +1025,7 @@
 			this.withCode.AutoSize = true;
 			this.withCode.Checked = true;
 			this.withCode.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.withCode.Location = new System.Drawing.Point(3, 305);
+			this.withCode.Location = new System.Drawing.Point(3, 300);
 			this.withCode.Name = "withCode";
 			this.withCode.Size = new System.Drawing.Size(212, 17);
 			this.withCode.TabIndex = 52;
@@ -1054,7 +1038,7 @@
 			this.withPalette.AutoSize = true;
 			this.withPalette.Checked = true;
 			this.withPalette.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.withPalette.Location = new System.Drawing.Point(3, 328);
+			this.withPalette.Location = new System.Drawing.Point(3, 323);
 			this.withPalette.Name = "withPalette";
 			this.withPalette.Size = new System.Drawing.Size(165, 17);
 			this.withPalette.TabIndex = 52;
@@ -1062,52 +1046,10 @@
 			this.withPalette.UseVisualStyleBackColor = true;
 			this.withPalette.CheckedChanged += new System.EventHandler(this.withPalette_CheckedChanged);
 			// 
-			// lblNumImage
-			// 
-			this.lblNumImage.AutoSize = true;
-			this.lblNumImage.Location = new System.Drawing.Point(0, 62);
-			this.lblNumImage.Name = "lblNumImage";
-			this.lblNumImage.Size = new System.Drawing.Size(51, 13);
-			this.lblNumImage.TabIndex = 53;
-			this.lblNumImage.Text = "N° Image";
-			this.lblNumImage.Visible = false;
-			// 
-			// numImage
-			// 
-			this.numImage.Location = new System.Drawing.Point(57, 58);
-			this.numImage.Maximum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-			this.numImage.Name = "numImage";
-			this.numImage.Size = new System.Drawing.Size(59, 20);
-			this.numImage.TabIndex = 54;
-			this.numImage.Visible = false;
-			this.numImage.ValueChanged += new System.EventHandler(this.numImage_ValueChanged);
-			// 
-			// lblMaxImage
-			// 
-			this.lblMaxImage.AutoSize = true;
-			this.lblMaxImage.Location = new System.Drawing.Point(122, 61);
-			this.lblMaxImage.Name = "lblMaxImage";
-			this.lblMaxImage.Size = new System.Drawing.Size(60, 13);
-			this.lblMaxImage.TabIndex = 53;
-			this.lblMaxImage.Text = "maxImages";
-			this.lblMaxImage.Visible = false;
-			// 
-			// listInfo
-			// 
-			this.listInfo.FormattingEnabled = true;
-			this.listInfo.Location = new System.Drawing.Point(3, 458);
-			this.listInfo.Name = "listInfo";
-			this.listInfo.Size = new System.Drawing.Size(754, 147);
-			this.listInfo.TabIndex = 56;
-			// 
 			// chkAllPics
 			// 
 			this.chkAllPics.AutoSize = true;
-			this.chkAllPics.Location = new System.Drawing.Point(117, 145);
+			this.chkAllPics.Location = new System.Drawing.Point(117, 140);
 			this.chkAllPics.Name = "chkAllPics";
 			this.chkAllPics.Size = new System.Drawing.Size(111, 17);
 			this.chkAllPics.TabIndex = 57;
@@ -1117,7 +1059,7 @@
 			// 
 			// bpImport
 			// 
-			this.bpImport.Location = new System.Drawing.Point(3, 84);
+			this.bpImport.Location = new System.Drawing.Point(3, 65);
 			this.bpImport.Name = "bpImport";
 			this.bpImport.Size = new System.Drawing.Size(108, 23);
 			this.bpImport.TabIndex = 58;
@@ -1127,7 +1069,7 @@
 			// 
 			// bpCreate
 			// 
-			this.bpCreate.Location = new System.Drawing.Point(153, 7);
+			this.bpCreate.Location = new System.Drawing.Point(125, 2);
 			this.bpCreate.Name = "bpCreate";
 			this.bpCreate.Size = new System.Drawing.Size(108, 23);
 			this.bpCreate.TabIndex = 59;
@@ -1135,18 +1077,26 @@
 			this.bpCreate.UseVisualStyleBackColor = true;
 			this.bpCreate.Click += new System.EventHandler(this.bpCreate_Click);
 			// 
+			// chkInfo
+			// 
+			this.chkInfo.AutoSize = true;
+			this.chkInfo.Location = new System.Drawing.Point(3, 102);
+			this.chkInfo.Name = "chkInfo";
+			this.chkInfo.Size = new System.Drawing.Size(129, 17);
+			this.chkInfo.TabIndex = 61;
+			this.chkInfo.Text = "Fenêtre d\'informations";
+			this.chkInfo.UseVisualStyleBackColor = true;
+			this.chkInfo.CheckedChanged += new System.EventHandler(this.chkInfo_CheckedChanged);
+			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(760, 607);
+			this.ClientSize = new System.Drawing.Size(714, 449);
+			this.Controls.Add(this.chkInfo);
 			this.Controls.Add(this.bpCreate);
 			this.Controls.Add(this.bpImport);
 			this.Controls.Add(this.chkAllPics);
-			this.Controls.Add(this.listInfo);
-			this.Controls.Add(this.numImage);
-			this.Controls.Add(this.lblMaxImage);
-			this.Controls.Add(this.lblNumImage);
 			this.Controls.Add(this.withPalette);
 			this.Controls.Add(this.withCode);
 			this.Controls.Add(this.lblInfoVersion);
@@ -1158,7 +1108,6 @@
 			this.Controls.Add(this.resoCPC);
 			this.Controls.Add(this.bpConvert);
 			this.Controls.Add(this.bpLoad);
-			this.Controls.Add(this.checkImageSource);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
@@ -1182,7 +1131,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.blue)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.green)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.red)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.numImage)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -1190,7 +1138,6 @@
 
 		#endregion
 
-		private System.Windows.Forms.CheckBox checkImageSource;
 		private System.Windows.Forms.Button bpLoad;
 		private System.Windows.Forms.Button bpConvert;
 		private System.Windows.Forms.NumericUpDown nbCols;
@@ -1250,11 +1197,7 @@
 		private System.Windows.Forms.Button bpSatPlus;
 		private System.Windows.Forms.Button bpLumMoins;
 		private System.Windows.Forms.Button bpLumPlus;
-		private System.Windows.Forms.Label lblNumImage;
-		private System.Windows.Forms.NumericUpDown numImage;
-		private System.Windows.Forms.Label lblMaxImage;
 		private System.Windows.Forms.Button bpStandard;
-		private System.Windows.Forms.ListBox listInfo;
 		private System.Windows.Forms.Button bpEditTrame;
 		private System.Windows.Forms.TrackBar blue;
 		private System.Windows.Forms.TrackBar green;
@@ -1276,6 +1219,7 @@
 		private System.Windows.Forms.CheckBox chkAllPics;
 		private System.Windows.Forms.Button bpImport;
 		private System.Windows.Forms.Button bpCreate;
+		private System.Windows.Forms.CheckBox chkInfo;
 	}
 }
 

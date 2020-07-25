@@ -163,6 +163,23 @@ namespace ConvImgCpc {
 			sizeDepack = posDiff + 2;
 			return lPack;
 		}
+
+		private int PackDataBrut(byte[] bufOut, ref int sizeDepack) {
+			// Copier l'image cpc dans le buffer de travail
+			img.bitmapCpc.CreeBmpCpc(img.BmpLock);
+			int maxSize = (BitmapCpc.NbCol) + ((BitmapCpc.NbLig - 1) >> 3) * (BitmapCpc.NbCol) + ((BitmapCpc.NbLig - 1) & 7) * 0x800;
+			if (maxSize >= 0x4000)
+				maxSize += 0x3800;
+
+			int k = 0;
+			for (int i = 0; i < maxSize; i++) {
+				bufOut[k++] = (byte)(i & 0xFF);
+				bufOut[k++] = (byte)(i >> 8);
+				bufOut[k++] = img.bitmapCpc.bmpCpc[i];
+			}
+			return k;
+		}
+
 		/*
 				private int PackWinDC4(byte[] bufOut, bool razDiff = false) {
 					int[] xFin = { 0, 0, 0, 0 };
@@ -298,6 +315,9 @@ namespace ConvImgCpc {
 		}
 
 		private int PackFrame(byte[] bufOut, ref int sizeDepack, bool razDiff, bool firstFrame, int topBottom, int modeLigne, bool imageMode, bool optimSpeed) {
+			if (chkDataBrut.Checked)
+				return PackDataBrut(bufOut, ref sizeDepack);
+
 			if (BitmapCpc.modeVirtuel >= 7) {
 				img.bitmapCpc.ConvertAscii(img.BmpLock);
 				return PackAscii(bufOut, ref sizeDepack, razDiff, firstFrame, imageMode);
@@ -317,7 +337,7 @@ namespace ConvImgCpc {
 			int[] lg = new int[nbImages << 1];
 			int[] bank = new int[nbImages << 1];
 			for (int i = 0; i < nbImages << 1; i++)
-				bufOut[i] = new byte[0x8000];
+				bufOut[i] = new byte[0x18000];
 
 			if (adrMax == 0)
 				adrMax = 0xBE00;
@@ -360,7 +380,7 @@ namespace ConvImgCpc {
 
 			// Sauvegarde
 			StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
-			if (param.withCode) {
+			if (param.withCode && !chkDataBrut.Checked) {
 				SaveAsm.GenereEntete(sw, adrDeb);
 				if (BitmapCpc.cpcPlus)
 					SaveAsm.GenereInitPlus(sw);
@@ -371,7 +391,7 @@ namespace ConvImgCpc {
 			if ((ltot + adrDeb < adrMax) && (ltot + adrDeb < 0xBE00 - maxDepack))
 				gest128K = false;
 
-			if (param.withCode) {
+			if (param.withCode && !chkDataBrut.Checked) {
 				SaveAsm.GenereAffichage(sw, delai, chkBoucle.Checked, gest128K, imageMode);
 				if (BitmapCpc.modeVirtuel >= 7)
 					SaveAsm.GenereDrawAscii(sw, rbFrameFull.Checked, rbFrameO.Checked, rbFrameD.Checked, gest128K, imageMode);
@@ -381,7 +401,7 @@ namespace ConvImgCpc {
 					else
 						SaveAsm.GenereDrawDC(sw, delai, chkCol.Checked, gest128K, modeLigne == 8 ? 0x3F : modeLigne == 4 ? 0x1F : modeLigne == 2 ? 0xF : 0x7, optimSpeed);
 			}
-			if (param.withPalette || param.withCode) {
+			if ((param.withPalette || param.withCode) && !chkDataBrut.Checked) {
 				if (BitmapCpc.cpcPlus)
 					SaveAsm.GenerePalettePlus(sw, img);
 				else
@@ -391,7 +411,7 @@ namespace ConvImgCpc {
 			int lbank = 0, numBank = 0xC0;
 			for (int i = 0; i < posPack; i++) {
 				lbank += lg[i];
-				if (gest128K && lbank > (numBank == 0xC0 ? Math.Min((0xBE00 - maxDepack - adrDeb), adrMax - adrDeb) : 0x4000) && (numBank > 0xC0 || lbank + adrDeb - lg[i] > 0x4000)) {
+				if (!chkDataBrut.Checked && gest128K && lbank > (numBank == 0xC0 ? Math.Min((0xBE00 - maxDepack - adrDeb), adrMax - adrDeb) : 0x4000) && (numBank > 0xC0 || lbank + adrDeb - lg[i] > 0x4000)) {
 					if (numBank == 0xC0) {
 						endBank0 = lbank + adrDeb - lg[i];
 						sw.WriteLine("EndBank0:");
@@ -414,12 +434,12 @@ namespace ConvImgCpc {
 					sw.WriteLine("; Type Frame ='" + lastAscii + "'");
 
 				sw.WriteLine("Delta" + i.ToString() + ":\t\t; Taille #" + lg[i].ToString("X4"));
-				SaveAsm.GenereDatas(sw, bufOut[i], lg[i]);
+				SaveAsm.GenereDatas(sw, bufOut[i], lg[i], chkDataBrut.Checked ? 3 : 16);
 			}
 			if (gest128K)
 				SaveAsm.GenerePointeurs(sw, posPack, bank, gest128K && numBank > 0xC0);
 			else
-				if (!imageMode) {
+				if (!imageMode && !chkDataBrut.Checked) {
 					sw.WriteLine("	DB	#FF			; Fin de l'animation");
 					ltot++;
 				}
@@ -428,8 +448,8 @@ namespace ConvImgCpc {
 			for (int i = 0; i < posPack; i++)
 				bufOut[i] = null;
 
-			img.main.SetInfo("Longueur totale données animation : " + ltot + " octets.");
-			if (numBank > 0xC7 || (!chk128Ko.Checked && ltot + adrDeb >= 0xBE00 - maxDepack)) {
+			img.main.SetInfo("Longueur totale données animation : " + ltot + " octets."); 
+			if (!chkDataBrut.Checked && (numBank > 0xC7 || (!chk128Ko.Checked && ltot + adrDeb >= 0xBE00 - maxDepack))) {
 				MessageBox.Show("Attention ! la taille totale (animation + buffer de décompactage) dépassera " + (chk128Ko.Checked ? "112K" : "48Ko") + ", risque d'écrasement de la mémoire vidéo et plantage..."
 								, "Alerte"
 								, MessageBoxButtons.OK
@@ -457,6 +477,10 @@ namespace ConvImgCpc {
 		private void chkDirecMem_CheckedChanged(object sender, EventArgs e) {
 			chk2Zone.Visible = chkZoneVert.Visible = grpGenereLigne.Visible = !chkDirecMem.Checked && BitmapCpc.modeVirtuel < 7;
 			chkZoneVert.Visible = chk2Zone.Visible && chk2Zone.Checked;
+		}
+
+		private void chkDataBrut_CheckedChanged(object sender, EventArgs e) {
+			chk128Ko.Enabled = chk2Zone.Enabled = chkBoucle.Enabled = chkCol.Enabled = chkDelai.Enabled = chkDirecMem.Enabled = chkMaxMem.Enabled = !chkDataBrut.Checked;
 		}
 
 		private void chk2Zone_CheckedChanged(object sender, EventArgs e) {

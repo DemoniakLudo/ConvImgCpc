@@ -437,7 +437,7 @@ namespace ConvImgCpc {
 				sw.WriteLine("	ORG	#4000");
 				sw.WriteLine("	Nolist");
 				sw.WriteLine("ImageCmp:");
-				SaveAsm.GenereDatas(sw, bufPack, lg);
+				SaveAsm.GenereDatas(sw, bufPack, lg, 16);
 				sw.WriteLine("	List");
 				if (param.withCode) {
 					sw.WriteLine("_StartDepack:");
