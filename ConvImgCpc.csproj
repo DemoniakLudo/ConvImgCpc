@@ -60,6 +60,12 @@
     <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\EffetsPalette.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interfaces\EffetsPalette.Designer.cs">
+      <DependentUpon>EffetsPalette.cs</DependentUpon>
+    </Compile>
     <Compile Include="Interfaces\Animation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -131,6 +137,9 @@
     <Compile Include="SaveAsm.cs" />
     <Compile Include="UndoRedo.cs" />
     <Compile Include="XorDrawing.cs" />
+    <EmbeddedResource Include="Interfaces\EffetsPalette.resx">
+      <DependentUpon>EffetsPalette.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Interfaces\Animation.resx">
       <DependentUpon>Animation.cs</DependentUpon>
     </EmbeddedResource>

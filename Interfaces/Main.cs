@@ -9,15 +9,18 @@ namespace ConvImgCpc {
 	public partial class Main : Form {
 		public ImageSource imgSrc;
 		public ImageCpc imgCpc;
-		private Param param = new Param();
+		public Param param = new Param();
 		private string lastReadPath = null;
 		private string lastSavePath = null;
 		private MemoryStream imageStream;
 		private Informations info = new Informations();
 		private Animation anim;
+		private EffetsPalette efPalette;
 
 		public Main() {
 			anim = new Animation(this);
+			efPalette = new EffetsPalette(this);
+			efPalette.Show();
 			InitializeComponent();
 			mode.Items.Insert(0, "Mode 0");
 			mode.Items.Insert(1, "Mode 1");
@@ -220,6 +223,7 @@ namespace ConvImgCpc {
 				methode.SelectedItem = param.methode;
 				pctTrame.Value = param.pct;
 				imgCpc.lockState = param.lockState;
+				/*
 				lumi.Value = param.pctLumi;
 				sat.Value = param.pctSat;
 				contrast.Value = param.pctContrast;
@@ -230,6 +234,7 @@ namespace ConvImgCpc {
 				reducPal3.Checked = param.reductPal3;
 				reducPal4.Checked = param.reductPal4;
 				sortPal.Checked = param.sortPal;
+				*/
 				radioFit.Checked = param.sMode == Param.SizeMode.Fit;
 				radioKeepLarger.Checked = param.sMode == Param.SizeMode.KeepLarger;
 				radioKeepSmaller.Checked = param.sMode == Param.SizeMode.KeepSmaller;
@@ -389,14 +394,6 @@ namespace ConvImgCpc {
 			Convert(false);
 		}
 
-		private void modePlus_CheckedChanged(object sender, EventArgs e) {
-			BitmapCpc.cpcPlus = modePlus.Checked;
-			newMethode.Visible = !modePlus.Checked;
-			reducPal1.Visible = reducPal2.Visible = reducPal3.Visible = reducPal4.Visible = modePlus.Checked;
-			param.cpcPlus = modePlus.Checked;
-			Convert(false);
-		}
-
 		private void InterfaceChange(object sender, EventArgs e) {
 			bpSave.Enabled = !autoRecalc.Checked;
 			lblPct.Visible = pctTrame.Visible = methode.SelectedItem.ToString() != "Aucun";
@@ -408,99 +405,6 @@ namespace ConvImgCpc {
 
 		private void pctTrame_ValueChanged(object sender, EventArgs e) {
 			param.pct = (int)pctTrame.Value;
-			Convert(false);
-		}
-
-		private void lumi_ValueChanged(object sender, EventArgs e) {
-			param.pctLumi = (int)lumi.Value;
-			Convert(false);
-		}
-
-		private void sat_ValueChanged(object sender, EventArgs e) {
-			param.pctSat = nb.Checked ? 0 : (int)sat.Value;
-			Convert(false);
-		}
-
-		private void contrast_ValueChanged(object sender, EventArgs e) {
-			param.pctContrast = (int)contrast.Value;
-			Convert(false);
-		}
-
-		private void bpLumMoins_Click(object sender, EventArgs e) {
-			if (lumi.Value > lumi.Minimum)
-				lumi.Value = lumi.Value - 1;
-		}
-
-		private void bpLumPlus_Click(object sender, EventArgs e) {
-			if (lumi.Value < lumi.Maximum)
-				lumi.Value = lumi.Value + 1;
-		}
-
-		private void bpSatMoins_Click(object sender, EventArgs e) {
-			if (sat.Value > sat.Minimum)
-				sat.Value = sat.Value - 1;
-		}
-
-		private void bpSatPlus_Click(object sender, EventArgs e) {
-			if (sat.Value < sat.Maximum)
-				sat.Value = sat.Value + 1;
-		}
-
-		private void bpCtrstMoins_Click(object sender, EventArgs e) {
-			if (contrast.Value > contrast.Minimum)
-				contrast.Value = contrast.Value - 1;
-		}
-
-		private void bpCtrstPlus_Click(object sender, EventArgs e) {
-			if (contrast.Value < contrast.Maximum)
-				contrast.Value = contrast.Value + 1;
-		}
-
-		private void bpRazLumi_Click(object sender, EventArgs e) {
-			lumi.Value = 100;
-		}
-
-		private void bpRazSat_Click(object sender, EventArgs e) {
-			sat.Value = 100;
-		}
-
-		private void bpRazContrast_Click(object sender, EventArgs e) {
-			contrast.Value = 100;
-		}
-
-		private void sortPal_CheckedChanged(object sender, EventArgs e) {
-			param.sortPal = sortPal.Checked;
-			Convert(false);
-		}
-
-		private void newMethode_CheckedChanged(object sender, EventArgs e) {
-			param.newMethode = newMethode.Checked;
-			Convert(false);
-		}
-
-		private void nb_CheckedChanged(object sender, EventArgs e) {
-			bpSatMoins.Enabled = bpSatPlus.Enabled = bpRazSat.Enabled = sat.Enabled = !nb.Checked;
-			param.pctSat = nb.Checked ? 0 : (int)sat.Value;
-			Convert(false);
-		}
-
-		private void reducPal1_CheckedChanged(object sender, EventArgs e) {
-			param.reductPal1 = reducPal1.Checked;
-			Convert(false);
-		}
-
-		private void reducPal2_CheckedChanged(object sender, EventArgs e) {
-			param.reductPal2 = reducPal2.Checked;
-			Convert(false);
-		}
-
-		private void reducPal3_CheckedChanged(object sender, EventArgs e) {
-			param.reductPal3 = reducPal3.Checked;
-			Convert(false);
-		}
-
-		private void reducPal4_CheckedChanged(object sender, EventArgs e) {
-			param.reductPal4 = reducPal4.Checked;
 			Convert(false);
 		}
 
@@ -551,63 +455,6 @@ namespace ConvImgCpc {
 			EditTrameAscii dg = new EditTrameAscii(this, imgSrc, imgCpc, param);
 			dg.ShowDialog();
 			Convert(false);
-		}
-
-		private void red_ValueChanged(object sender, EventArgs e) {
-			param.pctRed = red.Value;
-			Convert(false);
-		}
-
-		private void green_ValueChanged(object sender, EventArgs e) {
-			param.pctGreen = green.Value;
-			Convert(false);
-		}
-
-		private void blue_ValueChanged(object sender, EventArgs e) {
-			param.pctBlue = blue.Value;
-			Convert(false);
-		}
-
-		private void bpRmoins_Click(object sender, EventArgs e) {
-			if (red.Value > 0)
-				red.Value--;
-		}
-
-		private void bpVmoins_Click(object sender, EventArgs e) {
-			if (green.Value > 0)
-				green.Value--;
-		}
-
-		private void bpBmoins_Click(object sender, EventArgs e) {
-			if (blue.Value > 0)
-				blue.Value--;
-		}
-
-		private void bpRplus_Click(object sender, EventArgs e) {
-			if (red.Value < 200)
-				red.Value++;
-		}
-
-		private void bpVplus_Click(object sender, EventArgs e) {
-			if (green.Value < 200)
-				green.Value++;
-		}
-
-		private void bpBplus_Click(object sender, EventArgs e) {
-			if (blue.Value < 200)
-				blue.Value++;
-		}
-
-		private void RazR_Click(object sender, EventArgs e) {
-			red.Value = 100;
-		}
-
-		private void RazV_Click(object sender, EventArgs e) {
-			green.Value = 100;
-		}
-
-		private void RazB_Click(object sender, EventArgs e) {
-			blue.Value = 100;
 		}
 
 		private void chkInfo_CheckedChanged(object sender, EventArgs e) {

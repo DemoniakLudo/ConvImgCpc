@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace ConvImgCpc {
 	public partial class ImageCpc : Form {
-		private DirectBitmap[] bmpLock;
+		public DirectBitmap[] bmpLock;
 		public DirectBitmap BmpLock { get { return bmpLock[selImage]; } }
 		private DirectBitmap tmpLock;
 		private Label[] colors = new Label[16];

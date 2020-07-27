@@ -37,6 +37,9 @@
 			this.bpSup4 = new System.Windows.Forms.Button();
 			this.bpSup5 = new System.Windows.Forms.Button();
 			this.numImage = new System.Windows.Forms.NumericUpDown();
+			this.rbSource = new System.Windows.Forms.RadioButton();
+			this.rvCalculee = new System.Windows.Forms.RadioButton();
+			this.bpSaveGif = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -73,6 +76,8 @@
 			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.pictureBox1.TabIndex = 60;
 			this.pictureBox1.TabStop = false;
+			this.pictureBox1.Tag = "0";
+			this.pictureBox1.Click += new System.EventHandler(this.pictureBox_Click);
 			// 
 			// pictureBox2
 			// 
@@ -82,6 +87,8 @@
 			this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.pictureBox2.TabIndex = 61;
 			this.pictureBox2.TabStop = false;
+			this.pictureBox2.Tag = "1";
+			this.pictureBox2.Click += new System.EventHandler(this.pictureBox_Click);
 			// 
 			// pictureBox3
 			// 
@@ -91,6 +98,8 @@
 			this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.pictureBox3.TabIndex = 62;
 			this.pictureBox3.TabStop = false;
+			this.pictureBox3.Tag = "2";
+			this.pictureBox3.Click += new System.EventHandler(this.pictureBox_Click);
 			// 
 			// pictureBox4
 			// 
@@ -100,6 +109,8 @@
 			this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.pictureBox4.TabIndex = 63;
 			this.pictureBox4.TabStop = false;
+			this.pictureBox4.Tag = "3";
+			this.pictureBox4.Click += new System.EventHandler(this.pictureBox_Click);
 			// 
 			// pictureBox5
 			// 
@@ -109,6 +120,8 @@
 			this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.pictureBox5.TabIndex = 64;
 			this.pictureBox5.TabStop = false;
+			this.pictureBox5.Tag = "4";
+			this.pictureBox5.Click += new System.EventHandler(this.pictureBox_Click);
 			// 
 			// hScrollBar1
 			// 
@@ -195,12 +208,49 @@
 			this.numImage.Visible = false;
 			this.numImage.ValueChanged += new System.EventHandler(this.numImage_ValueChanged);
 			// 
+			// rbSource
+			// 
+			this.rbSource.AutoSize = true;
+			this.rbSource.Checked = true;
+			this.rbSource.Location = new System.Drawing.Point(277, 3);
+			this.rbSource.Name = "rbSource";
+			this.rbSource.Size = new System.Drawing.Size(132, 17);
+			this.rbSource.TabIndex = 67;
+			this.rbSource.TabStop = true;
+			this.rbSource.Text = "Afficher images source";
+			this.rbSource.UseVisualStyleBackColor = true;
+			this.rbSource.CheckedChanged += new System.EventHandler(this.rbSource_CheckedChanged);
+			// 
+			// rvCalculee
+			// 
+			this.rvCalculee.AutoSize = true;
+			this.rvCalculee.Location = new System.Drawing.Point(420, 4);
+			this.rvCalculee.Name = "rvCalculee";
+			this.rvCalculee.Size = new System.Drawing.Size(145, 17);
+			this.rvCalculee.TabIndex = 68;
+			this.rvCalculee.Text = "Afficher images calculées";
+			this.rvCalculee.UseVisualStyleBackColor = true;
+			this.rvCalculee.CheckedChanged += new System.EventHandler(this.rvCalculee_CheckedChanged);
+			// 
+			// bpSaveGif
+			// 
+			this.bpSaveGif.Location = new System.Drawing.Point(596, 3);
+			this.bpSaveGif.Name = "bpSaveGif";
+			this.bpSaveGif.Size = new System.Drawing.Size(120, 23);
+			this.bpSaveGif.TabIndex = 69;
+			this.bpSaveGif.Text = "Sauvegarde GIF Anim";
+			this.bpSaveGif.UseVisualStyleBackColor = true;
+			this.bpSaveGif.Click += new System.EventHandler(this.bpSaveGif_Click);
+			// 
 			// Animation
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(718, 184);
 			this.ControlBox = false;
+			this.Controls.Add(this.bpSaveGif);
+			this.Controls.Add(this.rvCalculee);
+			this.Controls.Add(this.rbSource);
 			this.Controls.Add(this.lblNumImage);
 			this.Controls.Add(this.numImage);
 			this.Controls.Add(this.lblMaxImage);
@@ -247,5 +297,8 @@
 		private System.Windows.Forms.Button bpSup3;
 		private System.Windows.Forms.Button bpSup4;
 		private System.Windows.Forms.Button bpSup5;
+		private System.Windows.Forms.RadioButton rbSource;
+		private System.Windows.Forms.RadioButton rvCalculee;
+		private System.Windows.Forms.Button bpSaveGif;
 	}
 }
