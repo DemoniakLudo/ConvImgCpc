@@ -253,6 +253,8 @@ namespace ConvImgCpc {
 					sw.WriteLine("	INC	A");
 				}
 				else {
+					sw.WriteLine("	LD	BC,#7FC0");
+					sw.WriteLine("	OUT	(C),C");
 					sw.WriteLine("	LD	H,(IX+1)");
 					sw.WriteLine("	LD	L,(IX+0)");
 					sw.WriteLine("	LD	A,H");
@@ -260,7 +262,12 @@ namespace ConvImgCpc {
 				}
 				if (reboucle) {
 					sw.WriteLine("	JR	NZ,Boucle2");
-					sw.WriteLine("	LD	HL,Delta1");
+					if (!gest128K)
+						sw.WriteLine("	LD	HL,Delta1");
+					else {
+						sw.WriteLine("	LD	IX,AnimDelta+3");
+						sw.WriteLine("	JR	Boucle");
+					}
 					sw.WriteLine("Boucle2:");
 				}
 				else
