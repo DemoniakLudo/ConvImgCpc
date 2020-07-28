@@ -658,7 +658,7 @@ namespace ConvImgCpc {
 					}
 					bool found = false;
 					foreach (TrameM1 t in lstTrame) {
-						if (t.IsSame(locTrame)) {
+						if (t.IsSame(locTrame, 3)) {
 							found = true;
 							break;
 						}

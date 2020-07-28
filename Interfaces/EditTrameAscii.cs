@@ -226,17 +226,17 @@ namespace ConvImgCpc {
 			return nbFound;
 		}
 
-		public bool IsSame(TrameM1 t) {
-			bool same = true;
+		public bool IsSame(TrameM1 t, int deltaErr = 0) {
+			int nbErr = 0;
+
 			for (int y = 0; y < 4; y++)
 				for (int x = 0; x < 4; x++)
-					if (trame[x, y] != t.GetPix(x, y))
-						return false;
-
-			if (same)
-				nbFound++;
-
-			return same;
+					if (trame[x, y] != t.GetPix(x, y)) {
+						if (++nbErr > deltaErr)
+							return false;
+					}
+			nbFound++;
+			return true;
 		}
 	}
 }
