@@ -139,7 +139,7 @@ namespace ConvImgCpc {
 			int yReel = ((e.Y / zoom) & 0xFFE) * zoom;
 			int tx = BitmapCpc.CalcTx(yReel);
 			int xReel = ((e.X / zoom) & -tx) * zoom;
-			if (e.Button == MouseButtons.Left) {
+			if (e.Button == MouseButtons.Left && xReel >= 0 && yReel >= 0) {
 				if (imgMotif != null) {
 					for (int y = 0; y < imgMotif.Height; y += 2) {
 						tx = BitmapCpc.CalcTx(y + yReel);

@@ -240,6 +240,7 @@
 			this.bpSaveGif.TabIndex = 69;
 			this.bpSaveGif.Text = "Sauvegarde GIF Anim";
 			this.bpSaveGif.UseVisualStyleBackColor = true;
+			this.bpSaveGif.Visible = false;
 			this.bpSaveGif.Click += new System.EventHandler(this.bpSaveGif_Click);
 			// 
 			// Animation
