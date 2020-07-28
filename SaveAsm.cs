@@ -11,12 +11,12 @@ namespace ConvImgCpc {
 			return sw;
 		}
 
-		static public void GenereDatas(StreamWriter sw, byte[] tabByte, int length) {
+		static public void GenereDatas(StreamWriter sw, byte[] tabByte, int length, int nbOctetsLigne) {
 			string line = "\tDB\t";
 			int nbOctets = 0;
 			for (int i = 0; i < length; i++) {
 				line += "#" + tabByte[i].ToString("X2") + ",";
-				if (++nbOctets >= Math.Min(16, BitmapCpc.NbCol)) {
+				if (++nbOctets >= Math.Min(nbOctetsLigne, BitmapCpc.NbCol)) {
 					sw.WriteLine(line.Substring(0, line.Length - 1));
 					line = "\tDB\t";
 					nbOctets = 0;
@@ -253,6 +253,8 @@ namespace ConvImgCpc {
 					sw.WriteLine("	INC	A");
 				}
 				else {
+					sw.WriteLine("	LD	BC,#7FC0");
+					sw.WriteLine("	OUT	(C),C");
 					sw.WriteLine("	LD	H,(IX+1)");
 					sw.WriteLine("	LD	L,(IX+0)");
 					sw.WriteLine("	LD	A,H");
@@ -260,7 +262,12 @@ namespace ConvImgCpc {
 				}
 				if (reboucle) {
 					sw.WriteLine("	JR	NZ,Boucle2");
-					sw.WriteLine("	LD	HL,Delta1");
+					if (!gest128K)
+						sw.WriteLine("	LD	HL,Delta1");
+					else {
+						sw.WriteLine("	LD	IX,AnimDelta+3");
+						sw.WriteLine("	JR	Boucle");
+					}
 					sw.WriteLine("Boucle2:");
 				}
 				else

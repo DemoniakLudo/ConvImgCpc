@@ -7,14 +7,20 @@ using System.Xml.Serialization;
 
 namespace ConvImgCpc {
 	public partial class Main : Form {
-		private ImageSource imgSrc;
-		private ImageCpc imgCpc;
-		private Param param = new Param();
+		public ImageSource imgSrc;
+		public ImageCpc imgCpc;
+		public Param param = new Param();
 		private string lastReadPath = null;
 		private string lastSavePath = null;
 		private MemoryStream imageStream;
+		private Informations info = new Informations();
+		private Animation anim;
+		private EffetsPalette efPalette;
 
 		public Main() {
+			anim = new Animation(this);
+			efPalette = new EffetsPalette(this);
+			efPalette.Show();
 			InitializeComponent();
 			mode.Items.Insert(0, "Mode 0");
 			mode.Items.Insert(1, "Mode 1");
@@ -42,15 +48,6 @@ namespace ConvImgCpc {
 			string configDetault = "ConvImgCpc.xml";
 			if (File.Exists(configDetault))
 				ReadParam(configDetault);
-		}
-
-		private void checkImageSource_CheckedChanged(object sender, EventArgs e) {
-			try {
-				imgSrc.Visible = checkImageSource.Checked;
-			}
-			catch (Exception ex) {
-				MessageBox.Show(ex.StackTrace, ex.Message);
-			}
 		}
 
 		public DirectBitmap GetResizeBitmap() {
@@ -93,12 +90,12 @@ namespace ConvImgCpc {
 			}
 			return tmp;
 		}
-		
-		private void Convert(bool doConvert, bool noInfo = false) {
+
+		public void Convert(bool doConvert, bool noInfo = false) {
 			if (imgSrc.GetImage != null && (autoRecalc.Checked || doConvert) && !noInfo) {
-				int imgSel = (int)numImage.Value;
-				int startImg = chkAllPics.Checked ? 0 : (int)numImage.Value;
-				int endImg = chkAllPics.Checked ? (int)numImage.Maximum : (int)numImage.Value;
+				int imgSel = anim.SelImage;
+				int startImg = chkAllPics.Checked ? 0 : imgSel;
+				int endImg = chkAllPics.Checked ? anim.MaxImage: imgSel;
 				for (int i = startImg; i <= endImg; i++) {
 					SelectImage(i, true);
 					bpSave.Enabled = bpConvert.Enabled = false;
@@ -169,10 +166,8 @@ namespace ConvImgCpc {
 				if (!singlePicture) {
 					imgSrc.InitBitmap(imageStream);
 					nbImg = imgSrc.NbImg;
-					numImage.Maximum = nbImg - 1;
-					lblMaxImage.Text = "Nbre images:" + nbImg;
-					lblMaxImage.Visible = lblNumImage.Visible = numImage.Visible = chkAllPics.Visible = nbImg > 1;
-					numImage.Value = 0;
+					anim.SetNbImgs(nbImg);
+					chkAllPics.Visible = nbImg > 1;
 					SetInfo("Lecture image PC" + (nbImg > 0 ? (" de type animation avec " + nbImg + " images.") : "."));
 				}
 				else {
@@ -202,20 +197,22 @@ namespace ConvImgCpc {
 		}
 
 		public void SelectImage(int n, bool noInfo = false) {
-			imgSrc.SelectBitmap(n, checkImageSource.Checked);
-			imgCpc.selImage = n;
-			imgCpc.Reset();
-			if (!noInfo)
-				SetInfo("Image sélectionnée: " + n.ToString());
+			if (n > -1) {
+				imgSrc.SelectBitmap(n);
+				imgCpc.selImage = n;
+				imgCpc.Reset();
+				anim.DrawImages(n);
+				if (!noInfo)
+					SetInfo("Image sélectionnée: " + n.ToString());
+			}
 		}
 
 		public int GetMaxImages() {
-			return 1 + (int)numImage.Maximum;
+			return 1 + anim.MaxImage;
 		}
 
 		public void SetInfo(string txt) {
-			listInfo.Items.Add(DateTime.Now.ToString() + " - " + txt);
-			listInfo.SelectedIndex = listInfo.Items.Count - 1;
+			info.SetInfos(txt);
 		}
 
 		private void ReadParam(string fileName) {
@@ -226,6 +223,7 @@ namespace ConvImgCpc {
 				methode.SelectedItem = param.methode;
 				pctTrame.Value = param.pct;
 				imgCpc.lockState = param.lockState;
+				/*
 				lumi.Value = param.pctLumi;
 				sat.Value = param.pctSat;
 				contrast.Value = param.pctContrast;
@@ -236,6 +234,7 @@ namespace ConvImgCpc {
 				reducPal3.Checked = param.reductPal3;
 				reducPal4.Checked = param.reductPal4;
 				sortPal.Checked = param.sortPal;
+				*/
 				radioFit.Checked = param.sMode == Param.SizeMode.Fit;
 				radioKeepLarger.Checked = param.sMode == Param.SizeMode.KeepLarger;
 				radioKeepSmaller.Checked = param.sMode == Param.SizeMode.KeepSmaller;
@@ -281,10 +280,7 @@ namespace ConvImgCpc {
 				if (nbImages == 1)
 					SetInfo("Création image vierge");
 				else {
-					numImage.Maximum = nbImages - 1;
-					lblMaxImage.Text = "Nbre images:" + nbImages;
-					lblMaxImage.Visible = lblNumImage.Visible = numImage.Visible = chkAllPics.Visible = nbImages > 1;
-					numImage.Value = 0;
+					anim.SetNbImgs(nbImages);
 					SetInfo("Création animation avec " + nbImages + " images.");
 				}
 				SelectImage(0);
@@ -398,14 +394,6 @@ namespace ConvImgCpc {
 			Convert(false);
 		}
 
-		private void modePlus_CheckedChanged(object sender, EventArgs e) {
-			BitmapCpc.cpcPlus = modePlus.Checked;
-			newMethode.Visible = !modePlus.Checked;
-			reducPal1.Visible = reducPal2.Visible = reducPal3.Visible = reducPal4.Visible = modePlus.Checked;
-			param.cpcPlus = modePlus.Checked;
-			Convert(false);
-		}
-
 		private void InterfaceChange(object sender, EventArgs e) {
 			bpSave.Enabled = !autoRecalc.Checked;
 			lblPct.Visible = pctTrame.Visible = methode.SelectedItem.ToString() != "Aucun";
@@ -417,99 +405,6 @@ namespace ConvImgCpc {
 
 		private void pctTrame_ValueChanged(object sender, EventArgs e) {
 			param.pct = (int)pctTrame.Value;
-			Convert(false);
-		}
-
-		private void lumi_ValueChanged(object sender, EventArgs e) {
-			param.pctLumi = (int)lumi.Value;
-			Convert(false);
-		}
-
-		private void sat_ValueChanged(object sender, EventArgs e) {
-			param.pctSat = nb.Checked ? 0 : (int)sat.Value;
-			Convert(false);
-		}
-
-		private void contrast_ValueChanged(object sender, EventArgs e) {
-			param.pctContrast = (int)contrast.Value;
-			Convert(false);
-		}
-
-		private void bpLumMoins_Click(object sender, EventArgs e) {
-			if (lumi.Value > lumi.Minimum)
-				lumi.Value = lumi.Value - 1;
-		}
-
-		private void bpLumPlus_Click(object sender, EventArgs e) {
-			if (lumi.Value < lumi.Maximum)
-				lumi.Value = lumi.Value + 1;
-		}
-
-		private void bpSatMoins_Click(object sender, EventArgs e) {
-			if (sat.Value > sat.Minimum)
-				sat.Value = sat.Value - 1;
-		}
-
-		private void bpSatPlus_Click(object sender, EventArgs e) {
-			if (sat.Value < sat.Maximum)
-				sat.Value = sat.Value + 1;
-		}
-
-		private void bpCtrstMoins_Click(object sender, EventArgs e) {
-			if (contrast.Value > contrast.Minimum)
-				contrast.Value = contrast.Value - 1;
-		}
-
-		private void bpCtrstPlus_Click(object sender, EventArgs e) {
-			if (contrast.Value < contrast.Maximum)
-				contrast.Value = contrast.Value + 1;
-		}
-
-		private void bpRazLumi_Click(object sender, EventArgs e) {
-			lumi.Value = 100;
-		}
-
-		private void bpRazSat_Click(object sender, EventArgs e) {
-			sat.Value = 100;
-		}
-
-		private void bpRazContrast_Click(object sender, EventArgs e) {
-			contrast.Value = 100;
-		}
-
-		private void sortPal_CheckedChanged(object sender, EventArgs e) {
-			param.sortPal = sortPal.Checked;
-			Convert(false);
-		}
-
-		private void newMethode_CheckedChanged(object sender, EventArgs e) {
-			param.newMethode = newMethode.Checked;
-			Convert(false);
-		}
-
-		private void nb_CheckedChanged(object sender, EventArgs e) {
-			bpSatMoins.Enabled = bpSatPlus.Enabled = bpRazSat.Enabled = sat.Enabled = !nb.Checked;
-			param.pctSat = nb.Checked ? 0 : (int)sat.Value;
-			Convert(false);
-		}
-
-		private void reducPal1_CheckedChanged(object sender, EventArgs e) {
-			param.reductPal1 = reducPal1.Checked;
-			Convert(false);
-		}
-
-		private void reducPal2_CheckedChanged(object sender, EventArgs e) {
-			param.reductPal2 = reducPal2.Checked;
-			Convert(false);
-		}
-
-		private void reducPal3_CheckedChanged(object sender, EventArgs e) {
-			param.reductPal3 = reducPal3.Checked;
-			Convert(false);
-		}
-
-		private void reducPal4_CheckedChanged(object sender, EventArgs e) {
-			param.reductPal4 = reducPal4.Checked;
 			Convert(false);
 		}
 
@@ -556,73 +451,17 @@ namespace ConvImgCpc {
 			Convert(false);
 		}
 
-		private void numImage_ValueChanged(object sender, EventArgs e) {
-			SelectImage((int)numImage.Value);
-			imgCpc.SetImgCopy();
-			Convert(false);
-		}
-
 		private void bpEditTrame_Click(object sender, EventArgs e) {
 			EditTrameAscii dg = new EditTrameAscii(this, imgSrc, imgCpc, param);
 			dg.ShowDialog();
 			Convert(false);
 		}
 
-		private void red_ValueChanged(object sender, EventArgs e) {
-			param.pctRed = red.Value;
-			Convert(false);
-		}
-
-		private void green_ValueChanged(object sender, EventArgs e) {
-			param.pctGreen = green.Value;
-			Convert(false);
-		}
-
-		private void blue_ValueChanged(object sender, EventArgs e) {
-			param.pctBlue = blue.Value;
-			Convert(false);
-		}
-
-		private void bpRmoins_Click(object sender, EventArgs e) {
-			if (red.Value > 0)
-				red.Value--;
-		}
-
-		private void bpVmoins_Click(object sender, EventArgs e) {
-			if (green.Value > 0)
-				green.Value--;
-		}
-
-		private void bpBmoins_Click(object sender, EventArgs e) {
-			if (blue.Value > 0)
-				blue.Value--;
-		}
-
-		private void bpRplus_Click(object sender, EventArgs e) {
-			if (red.Value < 200)
-				red.Value++;
-		}
-
-		private void bpVplus_Click(object sender, EventArgs e) {
-			if (green.Value < 200)
-				green.Value++;
-		}
-
-		private void bpBplus_Click(object sender, EventArgs e) {
-			if (blue.Value < 200)
-				blue.Value++;
-		}
-
-		private void RazR_Click(object sender, EventArgs e) {
-			red.Value = 100;
-		}
-
-		private void RazV_Click(object sender, EventArgs e) {
-			green.Value = 100;
-		}
-
-		private void RazB_Click(object sender, EventArgs e) {
-			blue.Value = 100;
+		private void chkInfo_CheckedChanged(object sender, EventArgs e) {
+			if (chkInfo.Checked)
+				info.Show();
+			else
+				info.Hide();
 		}
 	}
 }

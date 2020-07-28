@@ -183,7 +183,7 @@ namespace ConvImgCpc {
 		// Passe 1 : Réduit la palette aux x couleurs de la palette du CPC.
 		// Effectue également un traitement de l'erreur (tramage) si demandé.
 		// Calcule le nombre de couleurs utilisées dans l'image, et
-		// remplit un tableau avec ces couleurs
+		// remplit le tableau coulTrouvee avec ces couleurs
 		//
 		static private int ConvertPasse1(DirectBitmap source, ImageCpc dest, Param prm) {
 			System.Array.Clear(coulTrouvee, 0, coulTrouvee.GetLength(0) * coulTrouvee.GetLength(1));
@@ -301,11 +301,11 @@ namespace ConvImgCpc {
 						for (int y = 0; y < matDither.GetLength(1); y++)
 							for (int x = 0; x < matDither.GetLength(0); x++)
 								if (xPix + Tx * x < source.Width && yPix + 2 * y < source.Height) {
-									RvbColor pix = source.GetPixelColor(xPix + Tx * x, yPix + 2 * y);
+									RvbColor pix = source.GetPixelColor(xPix + Tx * x, yPix + (y << 1));
 									pix.r = MinMaxByte(pix.r + (p.r - choix.r) * matDither[x, y] / 256);
 									pix.v = MinMaxByte(pix.v + (p.v - choix.v) * matDither[x, y] / 256);
 									pix.b = MinMaxByte(pix.b + (p.b - choix.b) * matDither[x, y] / 256);
-									source.SetPixel(xPix + Tx * x, yPix + 2 * y, pix);
+									source.SetPixel(xPix + Tx * x, yPix + (y << 1), pix);
 								}
 					}
 					coulTrouvee[indexChoix, (BitmapCpc.modeVirtuel == 5 ? yPix >> 1 : 0)]++;
@@ -344,11 +344,11 @@ namespace ConvImgCpc {
 			}
 			if (p.sortPal)
 				for (x = 0; x < maxCol - 1; x++)
-					for (int y = x + 1; y < maxCol; y++)
-						if (lockState[x] == 0 && lockState[y] == 0 && BitmapCpc.Palette[x] > BitmapCpc.Palette[y]) {
+					for (int c = x + 1; c < maxCol; c++)
+						if (lockState[x] == 0 && lockState[c] == 0 && BitmapCpc.Palette[x] > BitmapCpc.Palette[c]) {
 							int tmp = BitmapCpc.Palette[x];
-							BitmapCpc.Palette[x] = BitmapCpc.Palette[y];
-							BitmapCpc.Palette[y] = tmp;
+							BitmapCpc.Palette[x] = BitmapCpc.Palette[c];
+							BitmapCpc.Palette[c] = tmp;
 						}
 		}
 
@@ -379,10 +379,10 @@ namespace ConvImgCpc {
 				if (p.sortPal)
 					for (int c1 = 0; c1 < 4 - 1; c1++)
 						for (int c2 = c1 + 1; c2 < 4; c2++)
-							if (lockState[c1] == 0 && lockState[c2] == 0 && coulTrouvee[y, c1] > coulTrouvee[y, c2]) {
-								int tmp = coulTrouvee[y, c1];
-								coulTrouvee[y, c1] = coulTrouvee[y, c2];
-								coulTrouvee[y, c2] = tmp;
+							if (lockState[c1] == 0 && lockState[c2] == 0 && coulTrouvee[c1, y] > coulTrouvee[c2, y]) {
+								int tmp = coulTrouvee[c1, y];
+								coulTrouvee[c1, y] = coulTrouvee[c2, y];
+								coulTrouvee[c2, y] = tmp;
 							}
 			}
 		}
@@ -589,10 +589,10 @@ namespace ConvImgCpc {
 			if (BitmapCpc.modeVirtuel == 5) {
 				RechercheCMaxModeX(dest.colMode5, MemoLockState, BitmapCpc.TailleY, p);
 				// réduit l'image à MaxCol couleurs.
-				for (int y = 0; y < BitmapCpc.TailleY; y += 2)
+				for (int y = 0; y < BitmapCpc.TailleY >> 1; y++)
 					for (i = 0; i < maxCol; i++)
-						tabCol[i, y >> 1] = p.cpcPlus ? new RvbColor((byte)((dest.colMode5[y >> 1, i] & 0x0F) * 17), (byte)(((dest.colMode5[y >> 1, i] & 0xF00) >> 8) * 17), (byte)(((dest.colMode5[y >> 1, i] & 0xF0) >> 4) * 17))
-							: BitmapCpc.RgbCPC[dest.colMode5[y >> 1, i] < 27 ? dest.colMode5[y >> 1, i] : 0];
+						tabCol[i, y] = p.cpcPlus ? new RvbColor((byte)((dest.colMode5[y, i] & 0x0F) * 17), (byte)(((dest.colMode5[y, i] & 0xF00) >> 8) * 17), (byte)(((dest.colMode5[y, i] & 0xF0) >> 4) * 17))
+							: BitmapCpc.RgbCPC[dest.colMode5[y, i] < 27 ? dest.colMode5[y, i] : 0];
 			}
 			else {
 				RechercheCMax(maxCol, MemoLockState, p);
