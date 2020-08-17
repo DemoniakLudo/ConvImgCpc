@@ -22,9 +22,10 @@ namespace ConvImgCpc {
 			numImage.Maximum = nbImg - 1;
 			numImage.Value = hScrollBar1.Value = 0;
 			if (nbImg > 1)
-				Show();
+				this.Text = "Animation";
 			else
-				Hide();
+				this.Text = "Image";
+
 		}
 
 		public void DrawImages(int startImg) {
@@ -81,7 +82,7 @@ namespace ConvImgCpc {
 		}
 
 		private void rvCalculee_CheckedChanged(object sender, EventArgs e) {
-			bpSaveGif.Visible = true;
+			bpSaveGif.Visible = numImage.Maximum > 0;
 			displaySrc = false;
 			DrawImages(main.imgCpc.selImage);
 		}
@@ -119,9 +120,9 @@ namespace ConvImgCpc {
 
 		private Bitmap GetBitmap(Bitmap image) {
 			Bitmap bitmap = new Bitmap(BitmapCpc.TailleX, BitmapCpc.TailleY, PixelFormat.Format24bppRgb);
-				using (Graphics g = Graphics.FromImage(bitmap)) {
-					g.DrawImage(image, new Rectangle(0, 0, bitmap.Width, bitmap.Height), new Rectangle(0,0,bitmap.Width,bitmap.Height),GraphicsUnit.Pixel);
-				}
+			using (Graphics g = Graphics.FromImage(bitmap)) {
+				g.DrawImage(image, new Rectangle(0, 0, bitmap.Width, bitmap.Height), new Rectangle(0, 0, bitmap.Width, bitmap.Height), GraphicsUnit.Pixel);
+			}
 			return bitmap;
 		}
 

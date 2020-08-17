@@ -5,8 +5,8 @@ namespace ConvImgCpc {
 	public class SaveAsm {
 		static public StreamWriter OpenAsm(string fileName, string version) {
 			StreamWriter sw = File.CreateText(fileName);
-			sw.WriteLine("; Généré par ConvImgCpc" + version.Replace('\n', ' '));
-			sw.WriteLine("; mode écran " + BitmapCpc.modeVirtuel);
+			sw.WriteLine("; Généré par ConvImgCpc" + version.Replace('\n', ' ') + " - le " + DateTime.Now.ToString("dd/MM/yyyy à HH:mm:ss"));
+			sw.WriteLine("; Mode écran - " + BitmapCpc.modesVirtuels[BitmapCpc.modeVirtuel]);
 			sw.WriteLine("; Taille (nbColsxNbLignes) " + BitmapCpc.NbCol.ToString() + "x" + BitmapCpc.NbLig.ToString());
 			return sw;
 		}

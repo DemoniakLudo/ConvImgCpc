@@ -53,7 +53,7 @@
 			this.lblNumImage.AutoSize = true;
 			this.lblNumImage.Location = new System.Drawing.Point(5, 6);
 			this.lblNumImage.Name = "lblNumImage";
-			this.lblNumImage.Size = new System.Drawing.Size(51, 13);
+			this.lblNumImage.Size = new System.Drawing.Size(59, 15);
 			this.lblNumImage.TabIndex = 53;
 			this.lblNumImage.Text = "N° Image";
 			this.lblNumImage.Visible = false;
@@ -63,7 +63,7 @@
 			this.lblMaxImage.AutoSize = true;
 			this.lblMaxImage.Location = new System.Drawing.Point(127, 5);
 			this.lblMaxImage.Name = "lblMaxImage";
-			this.lblMaxImage.Size = new System.Drawing.Size(60, 13);
+			this.lblMaxImage.Size = new System.Drawing.Size(72, 15);
 			this.lblMaxImage.TabIndex = 53;
 			this.lblMaxImage.Text = "maxImages";
 			this.lblMaxImage.Visible = false;
@@ -214,7 +214,7 @@
 			this.rbSource.Checked = true;
 			this.rbSource.Location = new System.Drawing.Point(277, 3);
 			this.rbSource.Name = "rbSource";
-			this.rbSource.Size = new System.Drawing.Size(132, 17);
+			this.rbSource.Size = new System.Drawing.Size(149, 19);
 			this.rbSource.TabIndex = 67;
 			this.rbSource.TabStop = true;
 			this.rbSource.Text = "Afficher images source";
@@ -226,7 +226,7 @@
 			this.rvCalculee.AutoSize = true;
 			this.rvCalculee.Location = new System.Drawing.Point(420, 4);
 			this.rvCalculee.Name = "rvCalculee";
-			this.rvCalculee.Size = new System.Drawing.Size(145, 17);
+			this.rvCalculee.Size = new System.Drawing.Size(164, 19);
 			this.rvCalculee.TabIndex = 68;
 			this.rvCalculee.Text = "Afficher images calculées";
 			this.rvCalculee.UseVisualStyleBackColor = true;
@@ -270,7 +270,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "Animation";
-			this.Text = "Animation";
+			this.Text = "Image";
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();

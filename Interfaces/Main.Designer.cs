@@ -34,6 +34,7 @@
 			this.methode = new System.Windows.Forms.ComboBox();
 			this.pctTrame = new System.Windows.Forms.NumericUpDown();
 			this.resoCPC = new System.Windows.Forms.GroupBox();
+			this.bpCalcSprite = new System.Windows.Forms.Button();
 			this.bpEditTrame = new System.Windows.Forms.Button();
 			this.trackModeX = new System.Windows.Forms.TrackBar();
 			this.bpStandard = new System.Windows.Forms.Button();
@@ -146,7 +147,7 @@
 			this.label1.AutoSize = true;
 			this.label1.Location = new System.Drawing.Point(5, 18);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(68, 13);
+			this.label1.Size = new System.Drawing.Size(78, 15);
 			this.label1.TabIndex = 6;
 			this.label1.Text = "Nb Colonnes";
 			// 
@@ -155,7 +156,7 @@
 			this.label2.AutoSize = true;
 			this.label2.Location = new System.Drawing.Point(5, 44);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(55, 13);
+			this.label2.Size = new System.Drawing.Size(63, 15);
 			this.label2.TabIndex = 6;
 			this.label2.Text = "Nb Lignes";
 			// 
@@ -163,7 +164,7 @@
 			// 
 			this.mode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.mode.FormattingEnabled = true;
-			this.mode.Location = new System.Drawing.Point(65, 95);
+			this.mode.Location = new System.Drawing.Point(65, 121);
 			this.mode.Name = "mode";
 			this.mode.Size = new System.Drawing.Size(82, 21);
 			this.mode.TabIndex = 7;
@@ -172,9 +173,9 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(3, 98);
+			this.label3.Location = new System.Drawing.Point(3, 124);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(34, 13);
+			this.label3.Size = new System.Drawing.Size(39, 15);
 			this.label3.TabIndex = 6;
 			this.label3.Text = "Mode";
 			// 
@@ -232,6 +233,7 @@
 			// 
 			// resoCPC
 			// 
+			this.resoCPC.Controls.Add(this.bpCalcSprite);
 			this.resoCPC.Controls.Add(this.bpEditTrame);
 			this.resoCPC.Controls.Add(this.trackModeX);
 			this.resoCPC.Controls.Add(this.bpStandard);
@@ -244,14 +246,25 @@
 			this.resoCPC.Controls.Add(this.mode);
 			this.resoCPC.Location = new System.Drawing.Point(237, 2);
 			this.resoCPC.Name = "resoCPC";
-			this.resoCPC.Size = new System.Drawing.Size(152, 172);
+			this.resoCPC.Size = new System.Drawing.Size(152, 203);
 			this.resoCPC.TabIndex = 11;
 			this.resoCPC.TabStop = false;
 			this.resoCPC.Text = "Résolution CPC";
 			// 
+			// bpCalcSprite
+			// 
+			this.bpCalcSprite.Location = new System.Drawing.Point(8, 92);
+			this.bpCalcSprite.Name = "bpCalcSprite";
+			this.bpCalcSprite.Size = new System.Drawing.Size(138, 23);
+			this.bpCalcSprite.TabIndex = 13;
+			this.bpCalcSprite.Text = "Calcul auto. sprite";
+			this.bpCalcSprite.UseVisualStyleBackColor = true;
+			this.bpCalcSprite.Visible = false;
+			this.bpCalcSprite.Click += new System.EventHandler(this.bpCalcSprite_Click);
+			// 
 			// bpEditTrame
 			// 
-			this.bpEditTrame.Location = new System.Drawing.Point(53, 122);
+			this.bpEditTrame.Location = new System.Drawing.Point(53, 148);
 			this.bpEditTrame.Name = "bpEditTrame";
 			this.bpEditTrame.Size = new System.Drawing.Size(93, 23);
 			this.bpEditTrame.TabIndex = 12;
@@ -262,11 +275,11 @@
 			// 
 			// trackModeX
 			// 
-			this.trackModeX.Location = new System.Drawing.Point(3, 122);
+			this.trackModeX.Location = new System.Drawing.Point(3, 148);
 			this.trackModeX.Maximum = 32;
 			this.trackModeX.Minimum = 1;
 			this.trackModeX.Name = "trackModeX";
-			this.trackModeX.Size = new System.Drawing.Size(145, 42);
+			this.trackModeX.Size = new System.Drawing.Size(145, 50);
 			this.trackModeX.TabIndex = 11;
 			this.trackModeX.Value = 1;
 			this.trackModeX.Visible = false;
@@ -304,7 +317,7 @@
 			this.tramage.Controls.Add(this.label4);
 			this.tramage.Location = new System.Drawing.Point(541, 2);
 			this.tramage.Name = "tramage";
-			this.tramage.Size = new System.Drawing.Size(172, 172);
+			this.tramage.Size = new System.Drawing.Size(172, 203);
 			this.tramage.TabIndex = 11;
 			this.tramage.TabStop = false;
 			this.tramage.Text = "Tramage et rendu";
@@ -314,7 +327,7 @@
 			this.chkLissage.AutoSize = true;
 			this.chkLissage.Location = new System.Drawing.Point(48, 100);
 			this.chkLissage.Name = "chkLissage";
-			this.chkLissage.Size = new System.Drawing.Size(62, 17);
+			this.chkLissage.Size = new System.Drawing.Size(69, 19);
 			this.chkLissage.TabIndex = 15;
 			this.chkLissage.Text = "Lissage";
 			this.chkLissage.UseVisualStyleBackColor = true;
@@ -325,7 +338,7 @@
 			this.chkPalCpc.AutoSize = true;
 			this.chkPalCpc.Location = new System.Drawing.Point(48, 65);
 			this.chkPalCpc.Name = "chkPalCpc";
-			this.chkPalCpc.Size = new System.Drawing.Size(110, 30);
+			this.chkPalCpc.Size = new System.Drawing.Size(122, 34);
 			this.chkPalCpc.TabIndex = 14;
 			this.chkPalCpc.Text = "Réduction palette\nimage source";
 			this.chkPalCpc.UseVisualStyleBackColor = true;
@@ -336,7 +349,7 @@
 			this.chkMotif2.AutoSize = true;
 			this.chkMotif2.Location = new System.Drawing.Point(48, 144);
 			this.chkMotif2.Name = "chkMotif2";
-			this.chkMotif2.Size = new System.Drawing.Size(102, 17);
+			this.chkMotif2.Size = new System.Drawing.Size(113, 19);
 			this.chkMotif2.TabIndex = 13;
 			this.chkMotif2.Text = "Trames \"motif2\"";
 			this.chkMotif2.UseVisualStyleBackColor = true;
@@ -347,7 +360,7 @@
 			this.chkMotif.AutoSize = true;
 			this.chkMotif.Location = new System.Drawing.Point(48, 122);
 			this.chkMotif.Name = "chkMotif";
-			this.chkMotif.Size = new System.Drawing.Size(96, 17);
+			this.chkMotif.Size = new System.Drawing.Size(106, 19);
 			this.chkMotif.TabIndex = 13;
 			this.chkMotif.Text = "Trames \"motif\"";
 			this.chkMotif.UseVisualStyleBackColor = true;
@@ -358,7 +371,7 @@
 			this.lblPct.AutoSize = true;
 			this.lblPct.Location = new System.Drawing.Point(124, 43);
 			this.lblPct.Name = "lblPct";
-			this.lblPct.Size = new System.Drawing.Size(15, 13);
+			this.lblPct.Size = new System.Drawing.Size(18, 15);
 			this.lblPct.TabIndex = 12;
 			this.lblPct.Text = "%";
 			this.lblPct.Visible = false;
@@ -368,7 +381,7 @@
 			this.label4.AutoSize = true;
 			this.label4.Location = new System.Drawing.Point(6, 17);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(31, 13);
+			this.label4.Size = new System.Drawing.Size(33, 15);
 			this.label4.TabIndex = 12;
 			this.label4.Text = "Type";
 			// 
@@ -377,7 +390,7 @@
 			this.autoRecalc.AutoSize = true;
 			this.autoRecalc.Location = new System.Drawing.Point(3, 88);
 			this.autoRecalc.Name = "autoRecalc";
-			this.autoRecalc.Size = new System.Drawing.Size(162, 17);
+			this.autoRecalc.Size = new System.Drawing.Size(185, 19);
 			this.autoRecalc.TabIndex = 44;
 			this.autoRecalc.Text = "Recalculer Automatiquement";
 			this.autoRecalc.UseVisualStyleBackColor = true;
@@ -388,7 +401,7 @@
 			this.radioKeepLarger.AutoSize = true;
 			this.radioKeepLarger.Location = new System.Drawing.Point(6, 54);
 			this.radioKeepLarger.Name = "radioKeepLarger";
-			this.radioKeepLarger.Size = new System.Drawing.Size(80, 17);
+			this.radioKeepLarger.Size = new System.Drawing.Size(90, 19);
 			this.radioKeepLarger.TabIndex = 41;
 			this.radioKeepLarger.Text = "KeepLarger";
 			this.radioKeepLarger.UseVisualStyleBackColor = true;
@@ -399,7 +412,7 @@
 			this.radioKeepSmaller.AutoSize = true;
 			this.radioKeepSmaller.Location = new System.Drawing.Point(6, 34);
 			this.radioKeepSmaller.Name = "radioKeepSmaller";
-			this.radioKeepSmaller.Size = new System.Drawing.Size(84, 17);
+			this.radioKeepSmaller.Size = new System.Drawing.Size(97, 19);
 			this.radioKeepSmaller.TabIndex = 40;
 			this.radioKeepSmaller.Text = "KeepSmaller";
 			this.radioKeepSmaller.UseVisualStyleBackColor = true;
@@ -411,7 +424,7 @@
 			this.radioFit.Checked = true;
 			this.radioFit.Location = new System.Drawing.Point(6, 14);
 			this.radioFit.Name = "radioFit";
-			this.radioFit.Size = new System.Drawing.Size(36, 17);
+			this.radioFit.Size = new System.Drawing.Size(38, 19);
 			this.radioFit.TabIndex = 39;
 			this.radioFit.TabStop = true;
 			this.radioFit.Text = "Fit";
@@ -433,7 +446,7 @@
 			this.groupBox1.Controls.Add(this.radioKeepLarger);
 			this.groupBox1.Location = new System.Drawing.Point(395, 2);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(140, 172);
+			this.groupBox1.Size = new System.Drawing.Size(140, 203);
 			this.groupBox1.TabIndex = 49;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Taille image source";
@@ -444,7 +457,7 @@
 			this.radioOrigin.Enabled = false;
 			this.radioOrigin.Location = new System.Drawing.Point(6, 94);
 			this.radioOrigin.Name = "radioOrigin";
-			this.radioOrigin.Size = new System.Drawing.Size(92, 17);
+			this.radioOrigin.Size = new System.Drawing.Size(106, 19);
 			this.radioOrigin.TabIndex = 46;
 			this.radioOrigin.TabStop = true;
 			this.radioOrigin.Text = "Taille d\'origine";
@@ -456,7 +469,7 @@
 			this.label7.AutoSize = true;
 			this.label7.Location = new System.Drawing.Point(3, 144);
 			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(50, 13);
+			this.label7.Size = new System.Drawing.Size(57, 15);
 			this.label7.TabIndex = 45;
 			this.label7.Text = "Position :";
 			// 
@@ -465,7 +478,7 @@
 			this.label5.AutoSize = true;
 			this.label5.Location = new System.Drawing.Point(3, 120);
 			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(38, 13);
+			this.label5.Size = new System.Drawing.Size(43, 15);
 			this.label5.TabIndex = 45;
 			this.label5.Text = "Taille :";
 			// 
@@ -509,7 +522,7 @@
 			this.radioUserSize.Enabled = false;
 			this.radioUserSize.Location = new System.Drawing.Point(6, 74);
 			this.radioUserSize.Name = "radioUserSize";
-			this.radioUserSize.Size = new System.Drawing.Size(97, 17);
+			this.radioUserSize.Size = new System.Drawing.Size(111, 19);
 			this.radioUserSize.TabIndex = 42;
 			this.radioUserSize.TabStop = true;
 			this.radioUserSize.Text = "Taille utilisateur";
@@ -529,9 +542,9 @@
 			// lblInfoVersion
 			// 
 			this.lblInfoVersion.AutoSize = true;
-			this.lblInfoVersion.Location = new System.Drawing.Point(0, 188);
+			this.lblInfoVersion.Location = new System.Drawing.Point(0, 211);
 			this.lblInfoVersion.Name = "lblInfoVersion";
-			this.lblInfoVersion.Size = new System.Drawing.Size(42, 13);
+			this.lblInfoVersion.Size = new System.Drawing.Size(48, 15);
 			this.lblInfoVersion.TabIndex = 52;
 			this.lblInfoVersion.Text = "Version";
 			// 
@@ -542,7 +555,7 @@
 			this.withCode.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.withCode.Location = new System.Drawing.Point(2, 136);
 			this.withCode.Name = "withCode";
-			this.withCode.Size = new System.Drawing.Size(212, 17);
+			this.withCode.Size = new System.Drawing.Size(243, 19);
 			this.withCode.TabIndex = 52;
 			this.withCode.Text = "Inclure le code d\'affichage dans l\'image";
 			this.withCode.UseVisualStyleBackColor = true;
@@ -555,7 +568,7 @@
 			this.withPalette.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.withPalette.Location = new System.Drawing.Point(2, 159);
 			this.withPalette.Name = "withPalette";
-			this.withPalette.Size = new System.Drawing.Size(165, 17);
+			this.withPalette.Size = new System.Drawing.Size(190, 19);
 			this.withPalette.TabIndex = 52;
 			this.withPalette.Text = "Inclure la palette dans l\'image";
 			this.withPalette.UseVisualStyleBackColor = true;
@@ -566,7 +579,7 @@
 			this.chkAllPics.AutoSize = true;
 			this.chkAllPics.Location = new System.Drawing.Point(117, 63);
 			this.chkAllPics.Name = "chkAllPics";
-			this.chkAllPics.Size = new System.Drawing.Size(111, 17);
+			this.chkAllPics.Size = new System.Drawing.Size(126, 19);
 			this.chkAllPics.TabIndex = 57;
 			this.chkAllPics.Text = "Toutes les images";
 			this.chkAllPics.UseVisualStyleBackColor = true;
@@ -595,9 +608,9 @@
 			// chkInfo
 			// 
 			this.chkInfo.AutoSize = true;
-			this.chkInfo.Location = new System.Drawing.Point(302, 188);
+			this.chkInfo.Location = new System.Drawing.Point(302, 211);
 			this.chkInfo.Name = "chkInfo";
-			this.chkInfo.Size = new System.Drawing.Size(129, 17);
+			this.chkInfo.Size = new System.Drawing.Size(149, 19);
 			this.chkInfo.TabIndex = 61;
 			this.chkInfo.Text = "Fenêtre d\'informations";
 			this.chkInfo.UseVisualStyleBackColor = true;
@@ -605,9 +618,10 @@
 			// 
 			// Main
 			// 
+			this.AllowDrop = true;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(714, 212);
+			this.ClientSize = new System.Drawing.Size(714, 243);
 			this.Controls.Add(this.chkInfo);
 			this.Controls.Add(this.bpCreate);
 			this.Controls.Add(this.bpImport);
@@ -627,6 +641,8 @@
 			this.MinimizeBox = false;
 			this.Name = "Main";
 			this.Text = "ConvImgCPC";
+			this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Main_DragDrop);
+			this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Main_DragEnter);
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).EndInit();
@@ -687,6 +703,7 @@
 		private System.Windows.Forms.Button bpImport;
 		private System.Windows.Forms.Button bpCreate;
 		private System.Windows.Forms.CheckBox chkInfo;
+		private System.Windows.Forms.Button bpCalcSprite;
 	}
 }
 

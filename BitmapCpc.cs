@@ -44,6 +44,19 @@ namespace ConvImgCpc {
 							new RvbColor( Lum2, Lum2, Lum1),
 							new RvbColor( Lum2, Lum2, Lum2)
 							};
+		static public string[] modesVirtuels = {
+										"Mode 0",
+										"Mode 1",
+										"Mode 2",
+										"Mode EGX1",
+										"Mode EGX2",
+										"Mode X",
+										"Mode 16",
+										"Mode ASC-UT",
+										"Mode ASC0",
+										"Mode ASC1",
+										"Mode ASC2"
+										};
 		static public string CpcVGA = "TDU\\X]LEMVFW^@_NGORBSZY[JCK";
 
 		static public int[, ,] trameM1 = {	{	{0, 0, 0, 0},		// Trame 00

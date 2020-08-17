@@ -215,6 +215,12 @@ namespace ConvImgCpc {
 							}
 							octet |= (byte)(tabOctetMode[pen] >> (p / tx));
 						}
+
+					//if ((y & 2 )== 0)
+					//	octet &= 0xAA;
+					//else
+					//	octet &= 0x55;
+
 					ret[posRet++] = octet;
 				}
 			}
@@ -224,7 +230,7 @@ namespace ConvImgCpc {
 		public void SauveSprite(string fileName, string version) {
 			byte[] ret = MakeSprite();
 			StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
-			SaveAsm.GenereDatas(sw, ret, ret.Length, 16);
+			SaveAsm.GenereDatas(sw, ret, ret.Length, BitmapCpc.TailleX);
 			SaveAsm.CloseAsm(sw);
 			main.SetInfo("Sauvegarde sprite assembleur ok.");
 		}

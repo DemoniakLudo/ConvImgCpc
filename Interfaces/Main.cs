@@ -19,20 +19,14 @@ namespace ConvImgCpc {
 
 		public Main() {
 			anim = new Animation(this);
+			anim.Show();
 			efPalette = new EffetsPalette(this);
 			efPalette.Show();
 			InitializeComponent();
-			mode.Items.Insert(0, "Mode 0");
-			mode.Items.Insert(1, "Mode 1");
-			mode.Items.Insert(2, "Mode 2");
-			mode.Items.Insert(3, "Mode EGX1");
-			mode.Items.Insert(4, "Mode EGX2");
-			mode.Items.Insert(5, "Mode X");
-			mode.Items.Insert(6, "Mode 16");
-			mode.Items.Insert(7, "Mode ASC-UT");
-			mode.Items.Insert(8, "Mode ASC0");
-			mode.Items.Insert(9, "Mode ASC1");
-			mode.Items.Insert(10, "Mode ASC2");
+
+			for (int i = 0; i < BitmapCpc.modesVirtuels.Length; i++)
+				mode.Items.Insert(i, BitmapCpc.modesVirtuels[i]);
+
 			imgSrc = new ImageSource();
 			imgCpc = new ImageCpc(this, Convert);
 			nbCols.Value = BitmapCpc.TailleX >> 3;
@@ -95,7 +89,7 @@ namespace ConvImgCpc {
 			if (imgSrc.GetImage != null && (autoRecalc.Checked || doConvert) && !noInfo) {
 				int imgSel = anim.SelImage;
 				int startImg = chkAllPics.Checked ? 0 : imgSel;
-				int endImg = chkAllPics.Checked ? anim.MaxImage: imgSel;
+				int endImg = chkAllPics.Checked ? anim.MaxImage : imgSel;
 				for (int i = startImg; i <= endImg; i++) {
 					SelectImage(i, true);
 					bpSave.Enabled = bpConvert.Enabled = false;
@@ -145,55 +139,55 @@ namespace ConvImgCpc {
 			fileScr.Read(tabBytes, 0, tabBytes.Length);
 			fileScr.Close();
 			int nbImg = 0;
-			//try {
-			if (CpcSystem.CheckAmsdos(tabBytes)) {
-				BitmapCpc bmp = new BitmapCpc(tabBytes);
-				if (singlePicture)
-					imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes), imgCpc.selImage);
-				else {
-					imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes));
-					nbCols.Value = param.nbCols = BitmapCpc.NbCol;
-					BitmapCpc.TailleX = param.nbCols << 3;
-					nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
-					BitmapCpc.TailleY = param.nbLignes << 1;
-					param.modeVirtuel = mode.SelectedIndex = BitmapCpc.modeVirtuel;
-				}
-				SetInfo("Lecture image de type CPC.");
-			}
-			else {
-				imageStream = new MemoryStream(tabBytes);
-				imageStream.Position = 0;
-				if (!singlePicture) {
-					imgSrc.InitBitmap(imageStream);
-					nbImg = imgSrc.NbImg;
-					anim.SetNbImgs(nbImg);
-					chkAllPics.Visible = nbImg > 1;
-					SetInfo("Lecture image PC" + (nbImg > 0 ? (" de type animation avec " + nbImg + " images.") : "."));
+			try {
+				if (CpcSystem.CheckAmsdos(tabBytes)) {
+					BitmapCpc bmp = new BitmapCpc(tabBytes);
+					if (singlePicture)
+						imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes), imgCpc.selImage);
+					else {
+						imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes));
+						nbCols.Value = param.nbCols = BitmapCpc.NbCol;
+						BitmapCpc.TailleX = param.nbCols << 3;
+						nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
+						BitmapCpc.TailleY = param.nbLignes << 1;
+						param.modeVirtuel = mode.SelectedIndex = BitmapCpc.modeVirtuel;
+					}
+					SetInfo("Lecture image de type CPC.");
 				}
 				else {
-					imgSrc.ImportBitmap(new Bitmap(imageStream), imgCpc.selImage);
-					SetInfo("Lecture image PC.");
+					imageStream = new MemoryStream(tabBytes);
+					imageStream.Position = 0;
+					if (!singlePicture) {
+						imgSrc.InitBitmap(imageStream);
+						nbImg = imgSrc.NbImg;
+						anim.SetNbImgs(nbImg);
+						chkAllPics.Visible = nbImg > 1;
+						SetInfo("Lecture image PC" + (nbImg > 0 ? (" de type animation avec " + nbImg + " images.") : "."));
+					}
+					else {
+						imgSrc.ImportBitmap(new Bitmap(imageStream), imgCpc.selImage);
+						SetInfo("Lecture image PC.");
+					}
 				}
-			}
-			SelectImage(0);
-			radioUserSize.Enabled = radioOrigin.Enabled = true;
-			Text = "ConvImgCPC - " + Path.GetFileName(fileName);
-			if (radioOrigin.Checked) {
-				tbxSizeX.Text = imgSrc.GetImage.Width.ToString();
-				tbxSizeY.Text = imgSrc.GetImage.Height.ToString();
-				tbxPosX.Text = "0";
-				tbxPosY.Text = "0";
-			}
-			if (!singlePicture)
-				imgCpc.InitBitmapCpc(nbImg);
+				radioUserSize.Enabled = radioOrigin.Enabled = true;
+				Text = "ConvImgCPC - " + Path.GetFileName(fileName);
+				if (radioOrigin.Checked) {
+					tbxSizeX.Text = imgSrc.GetImage.Width.ToString();
+					tbxSizeY.Text = imgSrc.GetImage.Height.ToString();
+					tbxPosX.Text = "0";
+					tbxPosY.Text = "0";
+				}
+				if (!singlePicture)
+					imgCpc.InitBitmapCpc(nbImg);
 
-			imgCpc.Reset(true);
-			Convert(false);
-			//}
-			//catch (Exception ex) {
-			//	MessageBox.Show("Impossible de lire l'image (format inconnu ???)");
-			//	SetInfo("Impossible de lire l'image (format inconnu ???)");
-			//}
+				SelectImage(0);
+				imgCpc.Reset(true);
+				Convert(false);
+			}
+			catch (Exception ex) {
+				MessageBox.Show("Impossible de lire l'image (format inconnu ???)");
+				SetInfo("Impossible de lire l'image (format inconnu ???)");
+			}
 		}
 
 		public void SelectImage(int n, bool noInfo = false) {
@@ -420,6 +414,7 @@ namespace ConvImgCpc {
 				SetSizePos(0, 0, imgSrc.GetImage.Width, imgSrc.GetImage.Height);
 
 			tbxSizeX.Enabled = tbxSizeY.Enabled = tbxPosX.Enabled = tbxPosY.Enabled = !radioOrigin.Checked;
+			//bpCalcSprite.Visible = radioUserSize.Checked;
 			Convert(false);
 		}
 
@@ -431,6 +426,63 @@ namespace ConvImgCpc {
 		private void bpStandard_Click(object sender, EventArgs e) {
 			nbLignes.Value = 200;
 			nbCols.Value = 80;
+		}
+
+		private void bpCalcSprite_Click(object sender, EventArgs e) {
+			Bitmap bmp = imgSrc.GetImage;
+			if (bmp != null) {
+
+
+				int xmin = 0, ymin = 0, xmax = 0, ymax = 0;
+				// Calcule xMin;
+				for (int x = 0; x < bmp.Width; x++) {
+					for (int y = 0; y < bmp.Height; y++) {
+						if ((bmp.GetPixel(x, y).ToArgb() & 0xFFFFFF) > 0) {
+							y = bmp.Height;
+							x = bmp.Width;
+						}
+					}
+					if (x < bmp.Width)
+						xmin = x;
+				}
+				// Calcule yMin;
+				for (int y = 0; y < bmp.Height; y++) {
+					for (int x = 0; x < bmp.Width; x++) {
+						if ((bmp.GetPixel(x, y).ToArgb() & 0xFFFFFF) > 0) {
+							y = bmp.Height;
+							x = bmp.Width;
+						}
+					}
+					if (y < bmp.Height)
+						ymin = y;
+				}
+				// Calcule xMax
+				for (int x = bmp.Width; --x > 0; ) {
+					for (int y = 0; y < bmp.Height; y++) {
+						if ((bmp.GetPixel(x, y).ToArgb() & 0xFFFFFF) > 0) {
+							y = bmp.Height;
+							x = 0;
+						}
+					}
+					if (x > 0)
+						xmax = x;
+				}
+				// Calcule yMax;
+				for (int y = bmp.Height; --y > 0; ) {
+					for (int x = 0; x < bmp.Width; x++) {
+						if ((bmp.GetPixel(x, y).ToArgb() & 0xFFFFFF) > 0) {
+							y = 0;
+							x = bmp.Width;
+						}
+					}
+					if (y > 0)
+						ymax = y;
+				}
+				SetSizePos(xmin, ymin, bmp.Width, bmp.Height);
+				BitmapCpc.TailleX = xmax - xmin;
+				BitmapCpc.TailleY = ymax - ymin;
+				Convert(false);
+			}
 		}
 
 		private void withPalette_CheckedChanged(object sender, EventArgs e) {
@@ -462,6 +514,28 @@ namespace ConvImgCpc {
 				info.Show();
 			else
 				info.Hide();
+		}
+
+		private void Main_DragEnter(object sender, DragEventArgs e) {
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+				e.Effect = DragDropEffects.Copy;
+		}
+
+		private void Main_DragDrop(object sender, DragEventArgs e) {
+			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+			switch (Path.GetExtension(files[0]).ToLower()) {
+				case ".pal":
+					imgCpc.LirePalette(files[0], param);
+					break;
+
+				case ".xml":
+					ReadParam(files[0]);
+					break;
+
+				default:
+					ReadScreen(files[0]);
+					break;
+			}
 		}
 	}
 }
