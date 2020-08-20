@@ -268,10 +268,16 @@ namespace ConvImgCpc {
 			}
 			Array.Copy(img.bitmapCpc.imgAscii, OldImgAscii, OldImgAscii.Length);
 			sizeDepack = img.bitmapCpc.imgAscii.Length + 4;
-			if (nDiff == 0) {
-				BufTmp[0] = (byte)'I';
-				lastAscii = 'I';
-				return PackDepack.Pack(BufTmp, 1, bufOut, 0);
+			if (nDiff == 0 && rbFrameFull.Checked) {
+				if (rbFrameFull.Checked) {
+					BufTmp[0] = (byte)'I';
+					lastAscii = 'I';
+					return PackDepack.Pack(BufTmp, 1, bufOut, 0);
+				}
+				else {
+					img.main.SetInfo("Impossible d'ajouter image identique...");
+					return 0;
+				}
 			}
 			else {
 				BufTmp[0] = (byte)'O';
@@ -448,7 +454,7 @@ namespace ConvImgCpc {
 			for (int i = 0; i < posPack; i++)
 				bufOut[i] = null;
 
-			img.main.SetInfo("Longueur totale données animation : " + ltot + " octets."); 
+			img.main.SetInfo("Longueur totale données animation : " + ltot + " octets.");
 			if (!chkDataBrut.Checked && (numBank > 0xC7 || (!chk128Ko.Checked && ltot + adrDeb >= 0xBE00 - maxDepack))) {
 				MessageBox.Show("Attention ! la taille totale (animation + buffer de décompactage) dépassera " + (chk128Ko.Checked ? "112K" : "48Ko") + ", risque d'écrasement de la mémoire vidéo et plantage..."
 								, "Alerte"

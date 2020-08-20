@@ -245,6 +245,28 @@ namespace ConvImgCpc {
 			main.SetInfo("Sauvegarde sprite assembleur compacté ok.");
 		}
 
+		public void SauveImp(string fileName) {
+			int nbImages = main.GetMaxImages();
+			int l = 0;
+			for (int i = 0; i < nbImages; i++) {
+				main.SelectImage(i, true);
+				Convert(!bitmapCpc.isCalc, true);
+				l += MakeSprite().Length;
+			}
+			l += 3; // 3 octets de fin de fichier
+			byte[] endData = { (byte)nbImages, (byte)(BitmapCpc.TailleX >> 3), (byte)(BitmapCpc.TailleY >> 1) };
+			CpcAmsdos entete = CpcSystem.CreeEntete(fileName, 0x4000, (short)l, -13622);
+			BinaryWriter fp = new BinaryWriter(new FileStream(fileName, FileMode.Create));
+			fp.Write(CpcSystem.AmsdosToByte(entete));
+			for (int i = 0; i < nbImages; i++) {
+				main.SelectImage(i, true);
+				byte[] sprite = MakeSprite();
+				fp.Write(sprite, 0, sprite.Length);
+			}
+			fp.Write(endData, 0, endData.Length);
+			fp.Close();
+		}
+
 		public byte[] GetCpcScr(Param param, bool spriteMode = false) {
 			int maxSize = (BitmapCpc.TailleX >> 3) + ((BitmapCpc.TailleY - 2) >> 4) * (BitmapCpc.TailleX >> 3) + ((BitmapCpc.TailleY - 2) & 14) * 0x400;
 			if (spriteMode)

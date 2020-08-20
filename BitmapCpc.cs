@@ -166,6 +166,12 @@ namespace ConvImgCpc {
 			Array.Copy(source, 0x80, bmpCpc, 0, source.Length - 0x80);
 		}
 
+		public BitmapCpc(byte[] source, int tx, int ty) {
+			Array.Copy(source, bmpCpc, source.Length);
+			TailleX = tx;
+			TailleY = ty;
+		}
+
 		public RvbColor GetColorPal(int palEntry) {
 			int col = Palette[palEntry];
 			return cpcPlus ? new RvbColor((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17)) : RgbCPC[col < 27 ? col : 0];
@@ -452,37 +458,39 @@ namespace ConvImgCpc {
 				CreeImgAscii(bmpLock);
 		}
 
-		public Bitmap CreateImageFromCpc(byte[] source) {
-			if (bmpCpc[0] == 'M' && bmpCpc[1] == 'J' && bmpCpc[2] == 'H')
-				DepactOCP();
-			else
-				if (bmpCpc[0] == 'P' && bmpCpc[1] == 'K' && (bmpCpc[2] == 'O' || bmpCpc[2] == 'V' || bmpCpc[2] == 'S'))
-					DepactPK();
-				else {
-					if (!InitDatas()) {
-						if (source.Length < 32000) {
-							int l = PackDepack.Depack(bmpCpc, 0, bufTmp);
-							Array.Copy(bufTmp, bmpCpc, l);
-							if (!InitDatas()) {
-								cpcPlus = false;
-								nbCol = maxColsCpc;
-								nbLig = maxLignesCpc;
-								SetPalette(bmpCpc, 0x600, cpcPlus);
+		public Bitmap CreateImageFromCpc(byte[] source, bool isSprite = false) {
+			if (!isSprite) {
+				if (bmpCpc[0] == 'M' && bmpCpc[1] == 'J' && bmpCpc[2] == 'H')
+					DepactOCP();
+				else
+					if (bmpCpc[0] == 'P' && bmpCpc[1] == 'K' && (bmpCpc[2] == 'O' || bmpCpc[2] == 'V' || bmpCpc[2] == 'S'))
+						DepactPK();
+					else {
+						if (!InitDatas()) {
+							if (source.Length < 32000) {
+								int l = PackDepack.Depack(bmpCpc, 0, bufTmp);
+								Array.Copy(bufTmp, bmpCpc, l);
+								if (!InitDatas()) {
+									cpcPlus = false;
+									nbCol = maxColsCpc;
+									nbLig = maxLignesCpc;
+									SetPalette(bmpCpc, 0x600, cpcPlus);
+								}
 							}
-						}
-						else {
-							if (source.Length > 0x4000) {
-								nbCol = maxColsCpc;
-								nbLig = maxLignesCpc;
+							else {
+								if (source.Length > 0x4000) {
+									nbCol = maxColsCpc;
+									nbLig = maxLignesCpc;
+								}
 							}
 						}
 					}
-				}
+			}
 			// Rendu dans un bitmap PC
 			DirectBitmap loc = new DirectBitmap(nbCol << 3, nbLig * 2);
 			for (int y = 0; y < nbLig << 1; y += 2) {
 				int mode = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
-				int adrCPC = GetAdrCpc(y);
+				int adrCPC = isSprite ? nbCol * (y >> 1) : GetAdrCpc(y);
 				int xBitmap = 0;
 				for (int x = 0; x < nbCol; x++) {
 					byte octet = bmpCpc[adrCPC + x];

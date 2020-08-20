@@ -139,20 +139,53 @@ namespace ConvImgCpc {
 			fileScr.Read(tabBytes, 0, tabBytes.Length);
 			fileScr.Close();
 			int nbImg = 0;
-			try {
+			//try {
+				bool isImp = false;
 				if (CpcSystem.CheckAmsdos(tabBytes)) {
-					BitmapCpc bmp = new BitmapCpc(tabBytes);
-					if (singlePicture)
-						imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes), imgCpc.selImage);
-					else {
-						imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes));
-						nbCols.Value = param.nbCols = BitmapCpc.NbCol;
-						BitmapCpc.TailleX = param.nbCols << 3;
-						nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
-						BitmapCpc.TailleY = param.nbLignes << 1;
-						param.modeVirtuel = mode.SelectedIndex = BitmapCpc.modeVirtuel;
+					// Vérifier si type imp
+					int nbImages = 1, width = 1, height = 1;
+					CpcAmsdos enteteAms = CpcSystem.GetAmsdos(tabBytes);
+					if (enteteAms.FileName.EndsWith("IMP")) {
+						int l = tabBytes.Length;
+						nbImages = tabBytes[l - 3];
+						width = tabBytes[l - 2];
+						height = tabBytes[l - 1];
+						int animSize = nbImages * width * height;
+						isImp = l - 131 == animSize; // 131 + 128 (Amsdos) + 3 (imp)
 					}
-					SetInfo("Lecture image de type CPC.");
+					if (isImp) {
+						imgCpc.InitBitmapCpc(nbImages);
+						imgSrc.InitBitmap(nbImages);
+						anim.SetNbImgs(nbImages);
+						SetInfo("Création animation (IMP) avec " + nbImages + " images.");
+						BitmapCpc.TailleX = width << 3;
+						BitmapCpc.TailleY = height << 1;
+						int x = BitmapCpc.NbCol;
+						int y = BitmapCpc.NbLig;
+						int posData = 128; // Entête Amsdos
+						for (int i = 0; i < nbImages; i++) {
+							SelectImage(i, true);
+							byte[] tempData = new byte[width * height];
+							Array.Copy(tabBytes, posData, tempData, 0, tempData.Length);
+							posData += tempData.Length;
+							BitmapCpc bmp = new BitmapCpc(tempData, width << 3, height << 1);
+							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes, true), i);
+						}
+					}
+					else {
+						BitmapCpc bmp = new BitmapCpc(tabBytes);
+						if (singlePicture)
+							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes), imgCpc.selImage);
+						else {
+							imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes));
+							nbCols.Value = param.nbCols = BitmapCpc.NbCol;
+							BitmapCpc.TailleX = param.nbCols << 3;
+							nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
+							BitmapCpc.TailleY = param.nbLignes << 1;
+							param.modeVirtuel = mode.SelectedIndex = BitmapCpc.modeVirtuel;
+						}
+						SetInfo("Lecture image de type CPC.");
+					}
 				}
 				else {
 					imageStream = new MemoryStream(tabBytes);
@@ -177,17 +210,17 @@ namespace ConvImgCpc {
 					tbxPosX.Text = "0";
 					tbxPosY.Text = "0";
 				}
-				if (!singlePicture)
+				if (!singlePicture&&!isImp)
 					imgCpc.InitBitmapCpc(nbImg);
 
 				SelectImage(0);
 				imgCpc.Reset(true);
 				Convert(false);
-			}
-			catch (Exception ex) {
-				MessageBox.Show("Impossible de lire l'image (format inconnu ???)");
-				SetInfo("Impossible de lire l'image (format inconnu ???)");
-			}
+			//}
+			//catch (Exception ex) {
+			//	MessageBox.Show("Impossible de lire l'image (format inconnu ???)");
+			//	SetInfo("Impossible de lire l'image (format inconnu ???)");
+			//}
 		}
 
 		public void SelectImage(int n, bool noInfo = false) {
@@ -297,7 +330,7 @@ namespace ConvImgCpc {
 
 		private void bpLoad_Click(object sender, EventArgs e) {
 			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.Filter = "Images (*.bmp, *.gif, *.png, *.jpg,*.jpeg, *.scr)|*.bmp;*.gif;*.png;*.jpg;*.jpeg;*.scr|Palette (*.pal)|*.pal|Paramètres ConvImgCpc (*.xml)|*.xml|Tous fichiers|*.*";
+			dlg.Filter = "Images (*.bmp, *.gif, *.png, *.jpg,*.jpeg, *.scr, *.imp)|*.bmp;*.gif;*.png;*.jpg;*.jpeg;*.scr;*.imp|Palette (*.pal)|*.pal|Paramètres ConvImgCpc (*.xml)|*.xml|Tous fichiers|*.*";
 			dlg.InitialDirectory = lastReadPath;
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
@@ -322,7 +355,7 @@ namespace ConvImgCpc {
 		private void bpSave_Click(object sender, EventArgs e) {
 			SaveFileDialog dlg = new SaveFileDialog();
 			dlg.InitialDirectory = lastSavePath;
-			dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.png)|*.png|Sprite assembleur (.asm)|*.asm|Sprite assembleur compacté (.asm)|*.asm|Ecran compacté (.cmp)|*.cmp|Ecran assembleur compacté (.asm)|*.asm|Palette (.pal)|*.pal|Animation DeltaPack (.asm)|*.asm|Paramètres (.xml)|*.xml";
+			dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.png)|*.png|Sprite assembleur (.asm)|*.asm|Sprite assembleur compacté (.asm)|*.asm|Ecran compacté (.cmp)|*.cmp|Ecran assembleur compacté (.asm)|*.asm|Palette (.pal)|*.pal|Animation DeltaPack (.asm)|*.asm|Animation imp (*.imp)|*.imp|Paramètres (.xml)|*.xml";
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
 				lastSavePath = Path.GetDirectoryName(dlg.FileName);
@@ -360,6 +393,10 @@ namespace ConvImgCpc {
 						break;
 
 					case 9:
+						imgCpc.SauveImp(dlg.FileName);
+						break;
+
+					case 10:
 						SaveParam(dlg.FileName);
 						break;
 				}
