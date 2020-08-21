@@ -138,18 +138,22 @@ namespace ConvImgCpc {
 			fileScr.Close();
 			int nbImg = 0;
 			//try {
-			bool isImp = false;
+			bool isImp = false, isScrImp = false;
 			if (CpcSystem.CheckAmsdos(tabBytes)) {
-				// Vérifier si type imp
 				int nbImages = 1, width = 1, height = 1;
 				CpcAmsdos enteteAms = CpcSystem.GetAmsdos(tabBytes);
-				if (enteteAms.FileName.EndsWith("IMP")) {
-					int l = tabBytes.Length;
-					nbImages = tabBytes[l - 3];
-					width = tabBytes[l - 2];
-					height = tabBytes[l - 1];
-					int animSize = nbImages * width * height;
-					isImp = l - 131 == animSize; // 131 + 128 (Amsdos) + 3 (imp)
+				// Vérifier si type scr imp
+				isScrImp = (enteteAms.FileName.EndsWith("SCR") && enteteAms.FileType == 0 && enteteAms.Adress == 0x170);
+				if (!isScrImp) {
+					// Vérifier si type imp
+					if (enteteAms.FileName.EndsWith("IMP")) {
+						int l = tabBytes.Length;
+						nbImages = tabBytes[l - 3];
+						width = tabBytes[l - 2];
+						height = tabBytes[l - 1];
+						int animSize = nbImages * width * height;
+						isImp = l - 131 == animSize; // 131 + 128 (Amsdos) + 3 (imp)
+					}
 				}
 				if (isImp) {
 					imgCpc.InitBitmapCpc(nbImages);
@@ -167,23 +171,41 @@ namespace ConvImgCpc {
 						Array.Copy(tabBytes, posData, tempData, 0, tempData.Length);
 						posData += tempData.Length;
 						BitmapCpc bmp = new BitmapCpc(tempData, width << 3, height << 1);
-						imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes, true), i);
+						imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, true), i);
 					}
 				}
-				else {
-					BitmapCpc bmp = new BitmapCpc(tabBytes);
-					if (singlePicture)
-						imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes), imgCpc.selImage);
+				else
+					if (isScrImp) {
+						BitmapCpc bmp = new BitmapCpc(tabBytes, 0x110);
+						if (singlePicture)
+							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80), imgCpc.selImage);
+						else {
+							BitmapCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = tabBytes[0x94] - 0x0E;
+							BitmapCpc.TailleX = 768;
+							nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
+							BitmapCpc.TailleY = 544;
+							nbCols.Value = param.nbCols = BitmapCpc.NbCol;
+							// Palette en 0x7E10
+							for (int i = 0; i < 16; i++)
+								BitmapCpc.Palette[i] = BitmapCpc.CpcVGA.IndexOf((char)tabBytes[0x7E10 + i]);
+
+							imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80));
+						}
+					}
 					else {
-						imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes));
-						nbCols.Value = param.nbCols = BitmapCpc.NbCol;
-						BitmapCpc.TailleX = param.nbCols << 3;
-						nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
-						BitmapCpc.TailleY = param.nbLignes << 1;
-						param.modeVirtuel = mode.SelectedIndex = BitmapCpc.modeVirtuel;
+						BitmapCpc bmp = new BitmapCpc(tabBytes, 0x80);
+						if (singlePicture)
+							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80), imgCpc.selImage);
+						else {
+							imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80));
+							nbCols.Value = param.nbCols = BitmapCpc.NbCol;
+							BitmapCpc.TailleX = param.nbCols << 3;
+							nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
+							BitmapCpc.TailleY = param.nbLignes << 1;
+							param.modeVirtuel = mode.SelectedIndex = BitmapCpc.modeVirtuel;
+						}
+						SetInfo("Lecture image de type CPC.");
 					}
-					SetInfo("Lecture image de type CPC.");
-				}
 			}
 			else {
 				imageStream = new MemoryStream(tabBytes);
@@ -469,8 +491,6 @@ namespace ConvImgCpc {
 		private void bpCalcSprite_Click(object sender, EventArgs e) {
 			Bitmap bmp = imgSrc.GetImage;
 			if (bmp != null) {
-
-
 				int xmin = 0, ymin = 0, xmax = 0, ymax = 0;
 				// Calcule xMin;
 				for (int x = 0; x < bmp.Width; x++) {
@@ -517,8 +537,12 @@ namespace ConvImgCpc {
 						ymax = y;
 				}
 				SetSizePos(xmin, ymin, bmp.Width, bmp.Height);
-				BitmapCpc.TailleX = xmax - xmin;
-				BitmapCpc.TailleY = ymax - ymin;
+				if (xmax > xmin)
+					BitmapCpc.TailleX = xmax - xmin;
+
+				if (ymax > ymin)
+					BitmapCpc.TailleY = ymax - ymin;
+
 				Convert(false);
 			}
 		}

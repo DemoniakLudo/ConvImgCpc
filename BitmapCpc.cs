@@ -162,8 +162,8 @@ namespace ConvImgCpc {
 		public BitmapCpc() {
 		}
 
-		public BitmapCpc(byte[] source) {
-			Array.Copy(source, 0x80, bmpCpc, 0, source.Length - 0x80);
+		public BitmapCpc(byte[] source, int offset) {
+			Array.Copy(source, offset, bmpCpc, 0, source.Length - offset);
 		}
 
 		public BitmapCpc(byte[] source, int tx, int ty) {
@@ -458,7 +458,7 @@ namespace ConvImgCpc {
 				CreeImgAscii(bmpLock);
 		}
 
-		public Bitmap CreateImageFromCpc(byte[] source, bool isSprite = false) {
+		public Bitmap CreateImageFromCpc(int length, bool isSprite = false) {
 			if (!isSprite) {
 				if (bmpCpc[0] == 'M' && bmpCpc[1] == 'J' && bmpCpc[2] == 'H')
 					DepactOCP();
@@ -467,7 +467,7 @@ namespace ConvImgCpc {
 						DepactPK();
 					else {
 						if (!InitDatas()) {
-							if (source.Length < 32000) {
+							if (length < 32000) {
 								int l = PackDepack.Depack(bmpCpc, 0, bufTmp);
 								Array.Copy(bufTmp, bmpCpc, l);
 								if (!InitDatas()) {
@@ -478,7 +478,7 @@ namespace ConvImgCpc {
 								}
 							}
 							else {
-								if (source.Length > 0x4000) {
+								if (length > 0x4000) {
 									nbCol = maxColsCpc;
 									nbLig = maxLignesCpc;
 								}

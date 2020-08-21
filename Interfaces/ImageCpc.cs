@@ -192,7 +192,6 @@ namespace ConvImgCpc {
 		private byte[] MakeSprite() {
 			byte[] ret = new byte[(BitmapCpc.TailleX * BitmapCpc.TailleY) >> 4];
 			Array.Clear(ret, 0, ret.Length);
-			int posRet = 0;
 			for (int y = 0; y < BitmapCpc.TailleY; y += 2) {
 				int tx = BitmapCpc.CalcTx(y);
 				for (int x = 0; x < BitmapCpc.TailleX; x += 8) {
@@ -215,13 +214,7 @@ namespace ConvImgCpc {
 							}
 							octet |= (byte)(tabOctetMode[pen] >> (p / tx));
 						}
-
-					//if ((y & 2 )== 0)
-					//	octet &= 0xAA;
-					//else
-					//	octet &= 0x55;
-
-					ret[posRet++] = octet;
+					ret[(x >> 3) + (y >> 1) * (BitmapCpc.TailleX >> 3)] = octet;
 				}
 			}
 			return ret;
@@ -230,7 +223,7 @@ namespace ConvImgCpc {
 		public void SauveSprite(string fileName, string version) {
 			byte[] ret = MakeSprite();
 			StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
-			SaveAsm.GenereDatas(sw, ret, ret.Length, BitmapCpc.TailleX);
+			SaveAsm.GenereDatas(sw, ret, ret.Length, BitmapCpc.TailleX >> (BitmapCpc.TailleX <= 320 ? 3 : 4));
 			SaveAsm.CloseAsm(sw);
 			main.SetInfo("Sauvegarde sprite assembleur ok.");
 		}
