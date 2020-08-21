@@ -6,6 +6,6 @@ OK Anim: prévoir rebouclage 1ere image avec image 0 calculée 2 fois pour rebou
 - Routine Affichage images ASCII en overscan
 
 OK Ajouter import/export format .IMP : http://impdraw.wikidot.com/le-format-imp
-- Import animation image par image
+OK Import animation image par image
 - Edition palette animation image par image
-- Affichage images sources/calculées dans la fenêtre d'animation
+OK Affichage images sources/calculées dans la fenêtre d'animation

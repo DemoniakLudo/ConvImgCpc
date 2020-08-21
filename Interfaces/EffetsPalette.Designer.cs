@@ -509,7 +509,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "EffetsPalette";
-			this.Text = "Effets de palette";
+			this.Text = "Gestion des couleurs";
 			((System.ComponentModel.ISupportInitialize)(this.blue)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.green)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.red)).EndInit();

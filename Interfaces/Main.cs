@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace ConvImgCpc {
 	public partial class Main : Form {
-		public ImageSource imgSrc;
+		public ImageSource imgSrc = new ImageSource();
 		public ImageCpc imgCpc;
 		public Param param = new Param();
 		private string lastReadPath = null;
@@ -18,16 +18,14 @@ namespace ConvImgCpc {
 		private EffetsPalette efPalette;
 
 		public Main() {
+			efPalette = new EffetsPalette(this);
 			anim = new Animation(this);
 			anim.Show();
-			efPalette = new EffetsPalette(this);
-			efPalette.Show();
 			InitializeComponent();
 
 			for (int i = 0; i < BitmapCpc.modesVirtuels.Length; i++)
 				mode.Items.Insert(i, BitmapCpc.modesVirtuels[i]);
 
-			imgSrc = new ImageSource();
 			imgCpc = new ImageCpc(this, Convert);
 			nbCols.Value = BitmapCpc.TailleX >> 3;
 			nbLignes.Value = BitmapCpc.TailleY >> 1;
@@ -140,82 +138,82 @@ namespace ConvImgCpc {
 			fileScr.Close();
 			int nbImg = 0;
 			//try {
-				bool isImp = false;
-				if (CpcSystem.CheckAmsdos(tabBytes)) {
-					// Vérifier si type imp
-					int nbImages = 1, width = 1, height = 1;
-					CpcAmsdos enteteAms = CpcSystem.GetAmsdos(tabBytes);
-					if (enteteAms.FileName.EndsWith("IMP")) {
-						int l = tabBytes.Length;
-						nbImages = tabBytes[l - 3];
-						width = tabBytes[l - 2];
-						height = tabBytes[l - 1];
-						int animSize = nbImages * width * height;
-						isImp = l - 131 == animSize; // 131 + 128 (Amsdos) + 3 (imp)
-					}
-					if (isImp) {
-						imgCpc.InitBitmapCpc(nbImages);
-						imgSrc.InitBitmap(nbImages);
-						anim.SetNbImgs(nbImages);
-						SetInfo("Création animation (IMP) avec " + nbImages + " images.");
-						BitmapCpc.TailleX = width << 3;
-						BitmapCpc.TailleY = height << 1;
-						int x = BitmapCpc.NbCol;
-						int y = BitmapCpc.NbLig;
-						int posData = 128; // Entête Amsdos
-						for (int i = 0; i < nbImages; i++) {
-							SelectImage(i, true);
-							byte[] tempData = new byte[width * height];
-							Array.Copy(tabBytes, posData, tempData, 0, tempData.Length);
-							posData += tempData.Length;
-							BitmapCpc bmp = new BitmapCpc(tempData, width << 3, height << 1);
-							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes, true), i);
-						}
-					}
-					else {
-						BitmapCpc bmp = new BitmapCpc(tabBytes);
-						if (singlePicture)
-							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes), imgCpc.selImage);
-						else {
-							imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes));
-							nbCols.Value = param.nbCols = BitmapCpc.NbCol;
-							BitmapCpc.TailleX = param.nbCols << 3;
-							nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
-							BitmapCpc.TailleY = param.nbLignes << 1;
-							param.modeVirtuel = mode.SelectedIndex = BitmapCpc.modeVirtuel;
-						}
-						SetInfo("Lecture image de type CPC.");
+			bool isImp = false;
+			if (CpcSystem.CheckAmsdos(tabBytes)) {
+				// Vérifier si type imp
+				int nbImages = 1, width = 1, height = 1;
+				CpcAmsdos enteteAms = CpcSystem.GetAmsdos(tabBytes);
+				if (enteteAms.FileName.EndsWith("IMP")) {
+					int l = tabBytes.Length;
+					nbImages = tabBytes[l - 3];
+					width = tabBytes[l - 2];
+					height = tabBytes[l - 1];
+					int animSize = nbImages * width * height;
+					isImp = l - 131 == animSize; // 131 + 128 (Amsdos) + 3 (imp)
+				}
+				if (isImp) {
+					imgCpc.InitBitmapCpc(nbImages);
+					imgSrc.InitBitmap(nbImages);
+					anim.SetNbImgs(nbImages);
+					SetInfo("Création animation (IMP) avec " + nbImages + " images.");
+					BitmapCpc.TailleX = width << 3;
+					BitmapCpc.TailleY = height << 1;
+					int x = BitmapCpc.NbCol;
+					int y = BitmapCpc.NbLig;
+					int posData = 128; // Entête Amsdos
+					for (int i = 0; i < nbImages; i++) {
+						SelectImage(i, true);
+						byte[] tempData = new byte[width * height];
+						Array.Copy(tabBytes, posData, tempData, 0, tempData.Length);
+						posData += tempData.Length;
+						BitmapCpc bmp = new BitmapCpc(tempData, width << 3, height << 1);
+						imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes, true), i);
 					}
 				}
 				else {
-					imageStream = new MemoryStream(tabBytes);
-					imageStream.Position = 0;
-					if (!singlePicture) {
-						imgSrc.InitBitmap(imageStream);
-						nbImg = imgSrc.NbImg;
-						anim.SetNbImgs(nbImg);
-						chkAllPics.Visible = nbImg > 1;
-						SetInfo("Lecture image PC" + (nbImg > 0 ? (" de type animation avec " + nbImg + " images.") : "."));
-					}
+					BitmapCpc bmp = new BitmapCpc(tabBytes);
+					if (singlePicture)
+						imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes), imgCpc.selImage);
 					else {
-						imgSrc.ImportBitmap(new Bitmap(imageStream), imgCpc.selImage);
-						SetInfo("Lecture image PC.");
+						imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes));
+						nbCols.Value = param.nbCols = BitmapCpc.NbCol;
+						BitmapCpc.TailleX = param.nbCols << 3;
+						nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
+						BitmapCpc.TailleY = param.nbLignes << 1;
+						param.modeVirtuel = mode.SelectedIndex = BitmapCpc.modeVirtuel;
 					}
+					SetInfo("Lecture image de type CPC.");
 				}
-				radioUserSize.Enabled = radioOrigin.Enabled = true;
-				Text = "ConvImgCPC - " + Path.GetFileName(fileName);
-				if (radioOrigin.Checked) {
-					tbxSizeX.Text = imgSrc.GetImage.Width.ToString();
-					tbxSizeY.Text = imgSrc.GetImage.Height.ToString();
-					tbxPosX.Text = "0";
-					tbxPosY.Text = "0";
+			}
+			else {
+				imageStream = new MemoryStream(tabBytes);
+				imageStream.Position = 0;
+				if (!singlePicture) {
+					imgSrc.InitBitmap(imageStream);
+					nbImg = imgSrc.NbImg;
+					anim.SetNbImgs(nbImg);
+					chkAllPics.Visible = nbImg > 1;
+					SetInfo("Lecture image PC" + (nbImg > 0 ? (" de type animation avec " + nbImg + " images.") : "."));
 				}
-				if (!singlePicture&&!isImp)
-					imgCpc.InitBitmapCpc(nbImg);
+				else {
+					imgSrc.ImportBitmap(new Bitmap(imageStream), imgCpc.selImage);
+					SetInfo("Lecture image PC.");
+				}
+			}
+			radioUserSize.Enabled = radioOrigin.Enabled = true;
+			Text = "ConvImgCPC - " + Path.GetFileName(fileName);
+			if (radioOrigin.Checked) {
+				tbxSizeX.Text = imgSrc.GetImage.Width.ToString();
+				tbxSizeY.Text = imgSrc.GetImage.Height.ToString();
+				tbxPosX.Text = "0";
+				tbxPosY.Text = "0";
+			}
+			if (!singlePicture && !isImp)
+				imgCpc.InitBitmapCpc(nbImg);
 
-				SelectImage(0);
-				imgCpc.Reset(true);
-				Convert(false);
+			SelectImage(0);
+			imgCpc.Reset(true);
+			Convert(false);
 			//}
 			//catch (Exception ex) {
 			//	MessageBox.Show("Impossible de lire l'image (format inconnu ???)");
@@ -426,6 +424,9 @@ namespace ConvImgCpc {
 		}
 
 		private void InterfaceChange(object sender, EventArgs e) {
+			if (autoRecalc.Checked)
+				chkAllPics.Checked = false;
+
 			bpSave.Enabled = !autoRecalc.Checked;
 			lblPct.Visible = pctTrame.Visible = methode.SelectedItem.ToString() != "Aucun";
 			param.methode = methode.SelectedItem.ToString();
@@ -573,6 +574,18 @@ namespace ConvImgCpc {
 					ReadScreen(files[0]);
 					break;
 			}
+		}
+
+		private void chkCouleur_CheckedChanged(object sender, EventArgs e) {
+			if (chkCouleur.Checked)
+				efPalette.Show();
+			else
+				efPalette.Hide();
+		}
+
+		private void chkAllPics_CheckedChanged(object sender, EventArgs e) {
+			if (chkAllPics.Checked)
+				autoRecalc.Checked = false;
 		}
 	}
 }
