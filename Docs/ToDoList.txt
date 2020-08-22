@@ -1,11 +1,11 @@
-﻿- Améliorer le mode édition (palette d'outils ?)
-OK Permettre l'édition image par image des animations
-- Routine affichage images en mode X
+﻿OK Permettre l'édition image par image des animations
 OK - Pouvoir relire des images en mode EGX
 OK Anim: prévoir rebouclage 1ere image avec image 0 calculée 2 fois pour rebouclage avec 'D'
-- Routine Affichage images ASCII en overscan
-
 OK Ajouter import/export format .IMP : http://impdraw.wikidot.com/le-format-imp
 OK Import animation image par image
-- Edition palette animation image par image
 OK Affichage images sources/calculées dans la fenêtre d'animation
+- Améliorer le mode édition (palette d'outils ?)
+- Ajuster sauvegarde source assembleur compacté (pb dimensions écran)
+- Routine affichage images en mode X
+- Routine Affichage images ASCII en overscan
+- Edition palette animation image par image

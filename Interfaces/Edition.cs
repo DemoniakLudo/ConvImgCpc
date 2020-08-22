@@ -54,7 +54,8 @@ namespace ConvImgCpc {
 							BmpLock.SetHorLineDouble(xReel, yReel, tx, realColor);
 							if (zoom != 1)
 								for (int yz = yStart; yz < Math.Min(tmpLock.Height, yStart + (zoom << 1)); yz += 2)
-									tmpLock.SetHorLineDouble(zoom * (xReel - offsetX), yz, zoom * tx, realColor);
+									if (yz >= 0)
+										tmpLock.SetHorLineDouble(zoom * (xReel - offsetX), yz, zoom * tx, realColor);
 						}
 					}
 					yReel += 2;

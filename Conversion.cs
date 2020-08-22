@@ -531,8 +531,8 @@ namespace ConvImgCpc {
 				for (int x = 0; x < BitmapCpc.TailleX; x += (Tx << 1)) {
 					RvbColor pix0 = bitmap.GetPixelColor(x, y);
 					RvbColor pix1 = bitmap.GetPixelColor(x + Tx, y);
-					RvbColor pix2 = bitmap.GetPixelColor(x + Tx, y + 2);
-					RvbColor pix3 = bitmap.GetPixelColor(x, y + 2);
+					RvbColor pix2 = bitmap.GetPixelColor(x + Tx, y < BitmapCpc.TailleY - 2 ? y + 2 : y);
+					RvbColor pix3 = bitmap.GetPixelColor(x, y < BitmapCpc.TailleY - 2 ? y + 2 : y);
 					int tR = pix0.r + pix1.r + pix2.r + pix3.r;
 					int tV = pix0.v + pix1.v + pix2.v + pix3.v;
 					int tB = pix0.b + pix1.b + pix2.b + pix3.b;

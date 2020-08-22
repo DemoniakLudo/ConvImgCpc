@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace ConvImgCpc {
 	public partial class CreationImages : Form {
-		private int ret = 0;
+		private int ret = -1;
 		public int NbImages { get { return ret; } }
 
 		public CreationImages() {
