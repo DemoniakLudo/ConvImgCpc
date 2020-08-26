@@ -39,7 +39,7 @@ namespace ConvImgCpc {
 				Array.Clear(BufPrec, 0, BufPrec.Length);
 
 			// Copier l'image cpc dans le buffer de travail
-			img.bitmapCpc.CreeBmpCpc(img.BmpLock);
+			img.bitmapCpc.CreeBmpCpc(img.BmpLock, null);
 
 			if (chkZoneVert.Checked) {
 				xStart = topBottom < 1 ? 0 : BitmapCpc.NbCol >> 1;
@@ -116,7 +116,7 @@ namespace ConvImgCpc {
 				Array.Clear(BufPrec, 0, BufPrec.Length);
 
 			// Copier l'image cpc dans le buffer de travail
-			img.bitmapCpc.CreeBmpCpc(img.BmpLock);
+			img.bitmapCpc.CreeBmpCpc(img.BmpLock, null);
 			byte[] src = img.bitmapCpc.bmpCpc;
 
 			int maxSize = (BitmapCpc.NbCol) + ((BitmapCpc.NbLig - 1) >> 3) * (BitmapCpc.NbCol) + ((BitmapCpc.NbLig - 1) & 7) * 0x800;
@@ -166,7 +166,7 @@ namespace ConvImgCpc {
 
 		private int PackDataBrut(byte[] bufOut, ref int sizeDepack) {
 			// Copier l'image cpc dans le buffer de travail
-			img.bitmapCpc.CreeBmpCpc(img.BmpLock);
+			img.bitmapCpc.CreeBmpCpc(img.BmpLock, null);
 			int maxSize = (BitmapCpc.NbCol) + ((BitmapCpc.NbLig - 1) >> 3) * (BitmapCpc.NbCol) + ((BitmapCpc.NbLig - 1) & 7) * 0x800;
 			if (maxSize >= 0x4000)
 				maxSize += 0x3800;

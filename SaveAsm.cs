@@ -141,10 +141,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("	JR	CopyBytes2" + Environment.NewLine);
 		}
 
-		static public void GenereEntete(StreamWriter sw, int adr) {
-			sw.WriteLine("	ORG	#" + adr.ToString("X4"));
-			sw.WriteLine("	RUN	$" + Environment.NewLine);
-			sw.WriteLine("	DI");
+		static public void GenereFormatEcran(StreamWriter sw) {
 			if (BitmapCpc.NbCol != 80) {
 				sw.WriteLine("	LD	HL,#" + ((BitmapCpc.NbCol + 1) >> 1).ToString("X2") + (26 + (BitmapCpc.NbCol >> 2)).ToString("X2"));
 				sw.WriteLine("	LD	BC,#BC01");
@@ -169,6 +166,13 @@ namespace ConvImgCpc {
 				sw.WriteLine("	INC	B");
 				sw.WriteLine("	OUT	(C),L");
 			}
+		}
+
+		static public void GenereEntete(StreamWriter sw, int adr) {
+			sw.WriteLine("	ORG	#" + adr.ToString("X4"));
+			sw.WriteLine("	RUN	$" + Environment.NewLine);
+			sw.WriteLine("	DI");
+			GenereFormatEcran(sw);
 		}
 
 		static public void GenereInitOld(StreamWriter sw) {
@@ -787,6 +791,96 @@ namespace ConvImgCpc {
 				}
 			}
 			sw.WriteLine(line + "0");
+		}
+
+		static public void GenereAfficheModeX(StreamWriter sw, int[,] colMode5, bool isOverscan) {
+			sw.WriteLine("	CALL	DepkLzw");
+			sw.WriteLine("	DI");
+			sw.WriteLine("	LD	HL,#C9FB");
+			sw.WriteLine("	LD	(#38),HL");
+			sw.WriteLine("	EI");
+			sw.WriteLine("WaitVbl:");
+			sw.WriteLine("	LD	B,#F5");
+			sw.WriteLine("	IN	A,(C)");
+			sw.WriteLine("	RRA");
+			sw.WriteLine("	JR	NC,WaitVbl");
+			sw.WriteLine("WaitEnd:");
+			sw.WriteLine("	IN	A,(C)");
+			sw.WriteLine("	RRA");
+			sw.WriteLine("	JR	C,WaitEnd");
+			sw.WriteLine("	LD	HL,Color01");
+			sw.WriteLine("	LD	BC,#7F00");
+			sw.WriteLine("	OUT	(C),C");
+			sw.WriteLine("	OUTI");
+			sw.WriteLine("	INC	C");
+			sw.WriteLine("	OUT	(C),C");
+			sw.WriteLine("	OUTI");
+			if (isOverscan) {
+				sw.WriteLine("	LD	BC,#BC0C");
+				sw.WriteLine("	OUT	(C),C");
+				sw.WriteLine("	INC	B");
+				sw.WriteLine("	INC	C");
+				sw.WriteLine("	OUT	(C),C");
+			}
+			sw.WriteLine("	HALT");
+			sw.WriteLine("	HALT");
+			sw.WriteLine("	HALT");
+			sw.WriteLine("	HALT");
+			sw.WriteLine("	HALT");
+			sw.WriteLine("	HALT");
+			sw.WriteLine("	DI");
+			sw.WriteLine("	LD	BC," + (BitmapCpc.NbLig == 200 ? 634 : 268).ToString());
+			sw.WriteLine("	DEC	BC");
+			sw.WriteLine("	LD	A,B");
+			sw.WriteLine("	OR	C");
+			sw.WriteLine("	JR	NZ,$-3");
+			sw.WriteLine("Boucle:");
+			sw.WriteLine("	LD	HL,ColorModeX");
+			sw.WriteLine("	LD	DE," + BitmapCpc.NbLig);
+			sw.WriteLine("LoopLineX:");
+			sw.WriteLine("	LD	BC,#7F02");
+			sw.WriteLine("	OUT	(C),C");
+			sw.WriteLine("	OUTI");
+			sw.WriteLine("	INC C");
+			sw.WriteLine("	OUT	(C),C");
+			sw.WriteLine("	OUTI");
+			sw.WriteLine("	LD	B,8");
+			sw.WriteLine("	NEG");
+			sw.WriteLine("	DJNZ	$");
+			sw.WriteLine("	DEC	DE");
+			sw.WriteLine("	LD	A,D");
+			sw.WriteLine("	OR	E");
+			sw.WriteLine("	JR	NZ,LoopLineX");
+
+			sw.WriteLine("	LD	BC," + (BitmapCpc.NbLig == 200 ? 1022 : 364).ToString());
+			sw.WriteLine("	DEC	BC");
+			sw.WriteLine("	LD	A,B");
+			sw.WriteLine("	OR	C");
+			sw.WriteLine("	JR	NZ,$-3");
+			sw.WriteLine("	CP	(HL)");
+			if (BitmapCpc.NbLig == 200)
+				sw.WriteLine("	CP	(HL)");
+
+			sw.WriteLine("	JR	Boucle");
+
+			// Code du décompacteur avant les datas
+			GenereDepack(sw);
+
+			sw.WriteLine("Color01:");
+			sw.WriteLine("	DB	'" + BitmapCpc.CpcVGA[colMode5[0, 0]].ToString() + BitmapCpc.CpcVGA[colMode5[0, 1]].ToString() + "'");
+			sw.WriteLine("ColorModeX:");
+			string line = "\tDB\t'";
+			int nbOctets = 0;
+			for (int y = 0; y < 272; y++) {
+				line += BitmapCpc.CpcVGA[colMode5[y, 2]].ToString() + BitmapCpc.CpcVGA[colMode5[y, 3]].ToString();
+				if (++nbOctets >= 16) {
+					sw.WriteLine(line + "'");
+					line = "\tDB\t'";
+					nbOctets = 0;
+				}
+			}
+			if (nbOctets > 0)
+				sw.WriteLine(line + "'");
 		}
 
 		static public void CloseAsm(StreamWriter sw) {
