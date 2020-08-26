@@ -44,7 +44,6 @@ namespace ConvImgCpc {
 			}
 			hScrollBar1.Visible = numImage.Maximum > 5;
 			hScrollBar1.Maximum = (int)(numImage.Maximum);
-			Application.DoEvents();
 		}
 
 		private void numImage_ValueChanged(object sender, EventArgs e) {
