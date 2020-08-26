@@ -27,5 +27,6 @@
 		public bool lissage;
 		public int trackModeX;
 		public int pctRed, pctGreen, pctBlue;
+		public bool trameTc;
 	}
 }

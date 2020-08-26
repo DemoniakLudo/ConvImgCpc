@@ -51,7 +51,7 @@ namespace ConvImgCpc {
 										"Mode EGX1",
 										"Mode EGX2",
 										"Mode X",
-										"Mode 16",
+										"Mode <Split>",
 										"Mode ASC-UT",
 										"Mode ASC0",
 										"Mode ASC1",
@@ -354,7 +354,35 @@ namespace ConvImgCpc {
 			return BitmapCpc.RgbCPC[c < 27 ? c : 0].GetColor;
 		}
 
-		public void CreeBmpCpc(DirectBitmap bmpLock) {
+		public void CreeBmpCpc(DirectBitmap bmpLock, int[,] colMode5) {
+			System.Array.Clear(bmpCpc, 0, bmpCpc.Length);
+			for (int y = 0; y < TailleY; y += 2) {
+				int adrCPC = GetAdrCpc(y);
+				int tx = CalcTx(y);
+				int maxCol = MaxCol(y);
+				for (int x = 0; x < TailleX; x += 8) {
+					byte pen = 0, octet = 0, decal = 0;
+					for (int p = 0; p < 8; p += tx) {
+						RvbColor col = bmpLock.GetPixelColor(x + p, y);
+						for (pen = 0; pen < maxCol; pen++) {
+							if (cpcPlus) {
+								if ((col.v >> 4) == (Palette[pen] >> 8) && (col.b >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.r >> 4) == (Palette[pen] & 0x0F))
+									break;
+							}
+							else {
+								RvbColor fixedCol = RgbCPC[modeVirtuel == 5 || modeVirtuel == 6 ? colMode5[y >> 1, pen] : Palette[pen]];
+								if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
+									break;
+							}
+						}
+						octet |= (byte)(tabOctetMode[pen % 16] >> (decal++));
+					}
+					bmpCpc[adrCPC + (x >> 3)] = octet;
+				}
+			}
+		}
+
+		public void CreeBmpCpcForceMode1(DirectBitmap bmpLock) {
 			System.Array.Clear(bmpCpc, 0, bmpCpc.Length);
 			for (int y = 0; y < TailleY; y += 2) {
 				int adrCPC = GetAdrCpc(y);
@@ -375,7 +403,7 @@ namespace ConvImgCpc {
 									break;
 							}
 						}
-						octet |= (byte)(tabOctetMode[pen % 16] >> (decal++));
+						octet |= (byte)(tabOctetMode[Math.Min(3, (int)pen)] >> (decal++));
 					}
 					bmpCpc[adrCPC + (x >> 3)] = octet;
 				}

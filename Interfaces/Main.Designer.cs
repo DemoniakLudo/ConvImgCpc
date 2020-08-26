@@ -40,6 +40,7 @@
 			this.bpStandard = new System.Windows.Forms.Button();
 			this.bpOverscan = new System.Windows.Forms.Button();
 			this.tramage = new System.Windows.Forms.GroupBox();
+			this.chkTrameTC = new System.Windows.Forms.CheckBox();
 			this.chkLissage = new System.Windows.Forms.CheckBox();
 			this.chkPalCpc = new System.Windows.Forms.CheckBox();
 			this.chkMotif2 = new System.Windows.Forms.CheckBox();
@@ -308,6 +309,7 @@
 			// 
 			// tramage
 			// 
+			this.tramage.Controls.Add(this.chkTrameTC);
 			this.tramage.Controls.Add(this.chkLissage);
 			this.tramage.Controls.Add(this.chkPalCpc);
 			this.tramage.Controls.Add(this.chkMotif2);
@@ -322,6 +324,17 @@
 			this.tramage.TabIndex = 11;
 			this.tramage.TabStop = false;
 			this.tramage.Text = "Tramage et rendu";
+			// 
+			// chkTrameTC
+			// 
+			this.chkTrameTC.AutoSize = true;
+			this.chkTrameTC.Location = new System.Drawing.Point(48, 167);
+			this.chkTrameTC.Name = "chkTrameTC";
+			this.chkTrameTC.Size = new System.Drawing.Size(88, 17);
+			this.chkTrameTC.TabIndex = 16;
+			this.chkTrameTC.Text = "Trames \"TC\"";
+			this.chkTrameTC.UseVisualStyleBackColor = true;
+			this.chkTrameTC.CheckedChanged += new System.EventHandler(this.InterfaceChange);
 			// 
 			// chkLissage
 			// 
@@ -719,6 +732,7 @@
 		private System.Windows.Forms.CheckBox chkInfo;
 		private System.Windows.Forms.Button bpCalcSprite;
 		private System.Windows.Forms.CheckBox chkCouleur;
+		private System.Windows.Forms.CheckBox chkTrameTC;
 	}
 }
 

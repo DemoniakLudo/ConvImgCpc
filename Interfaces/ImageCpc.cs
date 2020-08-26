@@ -20,7 +20,7 @@ namespace ConvImgCpc {
 		public Main main;
 		public ConvertDelegate Convert;
 		private int[] tabOctetMode = { 0x00, 0x80, 0x08, 0x88, 0x20, 0xA0, 0x28, 0xA8, 0x02, 0x82, 0x0A, 0x8A, 0x22, 0xA2, 0x2A, 0xAA };
-		public int[,] colMode5 = new int[272, 4];
+		public int[,] colMode5 = new int[272, 16];
 
 		public ImageCpc(Main m, ConvertDelegate fctConvert) {
 			InitializeComponent();
@@ -92,7 +92,7 @@ namespace ConvImgCpc {
 		}
 
 		public void SetPixelCpc(int xPos, int yPos, int col, int tx) {
-			BmpLock.SetHorLineDouble(xPos, yPos, tx, GetPalCPC(BitmapCpc.modeVirtuel == 5 ? colMode5[yPos >> 1, col] : BitmapCpc.Palette[col]));
+			BmpLock.SetHorLineDouble(xPos, yPos, tx, GetPalCPC(BitmapCpc.modeVirtuel == 5 || BitmapCpc.modeVirtuel == 6 ? colMode5[yPos >> 1, col] : BitmapCpc.Palette[col]));
 		}
 
 		public void Render(bool forceDrawZoom = false) {
@@ -134,57 +134,63 @@ namespace ConvImgCpc {
 		}
 
 		#region Lecture/Sauvegarde
-		public void SauvePng(string fileName) {
+		public void SauvePng(string fileName, Param param) {
 			if (BitmapCpc.modeVirtuel == 6) {
+				string singleName = Path.GetDirectoryName(fileName) + "\\" + Path.GetFileNameWithoutExtension(fileName);
 				DirectBitmap bmpRaster = new DirectBitmap(BmpLock.Bitmap.Width >> 1, BmpLock.Bitmap.Height >> 1);
-				DirectBitmap bmp4Cols = new DirectBitmap(BmpLock.Bitmap.Width >> 1, BmpLock.Bitmap.Height >> 1);
+				//DirectBitmap bmp4Cols = new DirectBitmap(BmpLock.Bitmap.Width >> 1, BmpLock.Bitmap.Height >> 1);
 				RvbColor c2 = new RvbColor(0);
 				int posx = 0;
 				for (int y = 0; y < bmpRaster.Height; y++) {
+					bool memoC = false;
 					for (int x = 0; x < bmpRaster.Width; x++) {
 						RvbColor c = BmpLock.GetPixelColor(x << 1, y << 1);
 						for (int i = 0; i < 16; i++) {
-							RvbColor p = BitmapCpc.RgbCPC[BitmapCpc.Palette[i]];
+							RvbColor p = BitmapCpc.RgbCPC[colMode5[y, i]];
 							if (p.r == c.r && p.v == c.v && p.b == c.b) {
 								if (i > 2) {
-									c = BitmapCpc.RgbCPC[BitmapCpc.Palette[3]];
+									//c = BitmapCpc.RgbCPC[colMode5[y, 3]];
 									c2 = p;
-
-									for (int r = x & 0xFF8; r < x; r++)
+									int start = memoC ? x & 0xFF8 : 0;
+									memoC = true;
+									for (int r = start; r < x; r++)
 										bmpRaster.SetPixel(r, y, c2);
 
-									posx = 0;
+//									posx = 0;
 								}
 								break;
 							}
 						}
-						bmp4Cols.SetPixel(x, y, c);
+						//bmp4Cols.SetPixel(x, y, c);
 						bmpRaster.SetPixel(x, y, c2);
 						posx++;
 					}
 				}
-				bmp4Cols.Bitmap.Save(fileName + ".1", System.Drawing.Imaging.ImageFormat.Png);
-				bmpRaster.Bitmap.Save(fileName + ".2", System.Drawing.Imaging.ImageFormat.Png);
+				bmpRaster.Bitmap.Save(singleName + "_Rasters" + ".png", System.Drawing.Imaging.ImageFormat.Png);
+				bitmapCpc.CreeBmpCpcForceMode1(BmpLock);
+				SauveImage.SauveScr(singleName + ".scr", bitmapCpc, param, false);
 			}
-			BmpLock.Bitmap.Save(fileName, System.Drawing.Imaging.ImageFormat.Png);
+			else
+				BmpLock.Bitmap.Save(fileName, System.Drawing.Imaging.ImageFormat.Png);
+
 			main.SetInfo("Sauvegarde image PNG ok.");
 		}
 
 		public void SauveScr(string fileName, Param param) {
-			bitmapCpc.CreeBmpCpc(BmpLock);
+			bitmapCpc.CreeBmpCpc(BmpLock, colMode5);
 			SauveImage.SauveScr(fileName, bitmapCpc, param, false);
 			main.SetInfo("Sauvegarde image CPC ok.");
 		}
 
 		public void SauveCmp(string fileName, Param param, string version = null) {
-			bitmapCpc.CreeBmpCpc(BmpLock);
+			bitmapCpc.CreeBmpCpc(BmpLock, colMode5);
 			if (BitmapCpc.modeVirtuel >= 7) {
 				SaveAnim sa = new SaveAnim(fileName, version, this, param);
 				sa.DoSave(true);
 				sa.Dispose();
 			}
 			else
-				SauveImage.SauveScr(fileName, bitmapCpc, param, true, version);
+				SauveImage.SauveScr(fileName, bitmapCpc, param, true, version, colMode5);
 
 			main.SetInfo("Sauvegarde image compactée ok.");
 		}

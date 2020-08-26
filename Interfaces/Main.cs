@@ -98,6 +98,7 @@ namespace ConvImgCpc {
 					param.motif = chkMotif.Checked;
 					param.motif2 = chkMotif2.Checked;
 					param.setPalCpc = chkPalCpc.Checked;
+					param.trameTc = chkTrameTC.Checked;
 					DirectBitmap tmp = GetResizeBitmap();
 					if (!noInfo && doConvert)
 						SetInfo("Conversion en cours...");
@@ -385,7 +386,7 @@ namespace ConvImgCpc {
 						break;
 
 					case 2:
-						imgCpc.SauvePng(dlg.FileName);
+						imgCpc.SauvePng(dlg.FileName, param);
 						break;
 
 					case 3:
@@ -440,7 +441,7 @@ namespace ConvImgCpc {
 		private void mode_SelectedIndexChanged(object sender, EventArgs e) {
 			BitmapCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex;
 			imgCpc.Reset(true);
-			trackModeX.Visible = mode.SelectedIndex == 5;
+			trackModeX.Visible = mode.SelectedIndex == 5 || mode.SelectedIndex == 6;
 			bpEditTrame.Visible = mode.SelectedIndex == 7;
 			Convert(false);
 		}
