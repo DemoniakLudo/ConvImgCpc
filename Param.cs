@@ -28,5 +28,12 @@
 		public int trackModeX;
 		public int pctRed, pctGreen, pctBlue;
 		public bool trameTc;
+		public byte seuilLum1;
+		public byte seuilLum2;
+
+		public Param() {
+			seuilLum1 = 0x66; // 0x44;
+			seuilLum2 = 0xBB; // 0x99;
+		}
 	}
 }

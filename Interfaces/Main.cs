@@ -18,15 +18,15 @@ namespace ConvImgCpc {
 		private EffetsPalette efPalette;
 
 		public Main() {
+			InitializeComponent();
+			imgCpc = new ImageCpc(this, Convert);
 			efPalette = new EffetsPalette(this);
 			anim = new Animation(this);
 			anim.Show();
-			InitializeComponent();
 
 			for (int i = 0; i < BitmapCpc.modesVirtuels.Length; i++)
 				mode.Items.Insert(i, BitmapCpc.modesVirtuels[i]);
 
-			imgCpc = new ImageCpc(this, Convert);
 			nbCols.Value = BitmapCpc.TailleX >> 3;
 			nbLignes.Value = BitmapCpc.TailleY >> 1;
 			mode.SelectedIndex = BitmapCpc.modeVirtuel;
@@ -602,8 +602,10 @@ namespace ConvImgCpc {
 		}
 
 		private void chkCouleur_CheckedChanged(object sender, EventArgs e) {
-			if (chkCouleur.Checked)
+			if (chkCouleur.Checked) {
+				efPalette.InitValues();
 				efPalette.Show();
+			}
 			else
 				efPalette.Hide();
 		}

@@ -25,7 +25,6 @@ namespace ConvImgCpc {
 				this.Text = "Animation";
 			else
 				this.Text = "Image";
-
 		}
 
 		public void DrawImages(int startImg) {
@@ -35,7 +34,7 @@ namespace ConvImgCpc {
 			for (int i = startImg; i <= endImg; i++) {
 				tabPb[i - startImg].Image = displaySrc ? main.imgSrc.GetBitmap(i) : main.imgCpc.bmpLock[i].Bitmap;
 				tabPb[i - startImg].Refresh();
-				tabButton[i - startImg].Visible = startImg + i > 0;
+				tabButton[i - startImg].Visible = startImg + i > 0 || endImg - startImg > 2;
 			}
 			for (int i = endImg - startImg + 1; i < 5; i++) {
 				tabPb[i].Image = null;

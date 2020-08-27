@@ -10,6 +10,22 @@ namespace ConvImgCpc {
 			main = m;
 		}
 
+		public void InitValues() {
+			lumi.Value = main.param.pctLumi;
+			sat.Value = main.param.pctSat;
+			contrast.Value = main.param.pctContrast;
+			red.Value = main.param.pctRed;
+			green.Value = main.param.pctGreen;
+			blue.Value = main.param.pctBlue;
+			modePlus.Checked = main.param.cpcPlus;
+			newMethode.Visible = !modePlus.Checked;
+			reducPal1.Visible = reducPal2.Visible = reducPal3.Visible = reducPal4.Visible = modePlus.Checked;
+			reducPal1.Checked = main.param.reductPal1;
+			reducPal2.Checked = main.param.reductPal2;
+			reducPal3.Checked = main.param.reductPal3;
+			reducPal4.Checked = main.param.reductPal4;
+		}
+
 		private void red_ValueChanged(object sender, EventArgs e) {
 			main.param.pctRed = red.Value;
 			main.Convert(false);
@@ -56,15 +72,18 @@ namespace ConvImgCpc {
 		}
 
 		private void RazR_Click(object sender, EventArgs e) {
-			red.Value = 100;
+			main.param.pctRed = red.Value = 100;
+			main.Convert(false);
 		}
 
 		private void RazV_Click(object sender, EventArgs e) {
-			green.Value = 100;
+			main.param.pctGreen = green.Value = 100;
+			main.Convert(false);
 		}
 
 		private void RazB_Click(object sender, EventArgs e) {
-			blue.Value = 100;
+			main.param.pctBlue = blue.Value = 100;
+			main.Convert(false);
 		}
 
 		private void lumi_ValueChanged(object sender, EventArgs e) {
@@ -113,15 +132,18 @@ namespace ConvImgCpc {
 		}
 
 		private void bpRazLumi_Click(object sender, EventArgs e) {
-			lumi.Value = 100;
+			main.param.pctLumi = lumi.Value = 100;
+			main.Convert(false);
 		}
 
 		private void bpRazSat_Click(object sender, EventArgs e) {
-			sat.Value = 100;
+			main.param.pctSat = sat.Value = 100;
+			main.Convert(false);
 		}
 
 		private void bpRazContrast_Click(object sender, EventArgs e) {
-			contrast.Value = 100;
+			main.param.pctContrast = contrast.Value = 100;
+			main.Convert(false);
 		}
 
 		private void sortPal_CheckedChanged(object sender, EventArgs e) {

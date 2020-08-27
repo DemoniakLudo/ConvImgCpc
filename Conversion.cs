@@ -7,9 +7,6 @@ namespace ConvImgCpc {
 		const int K_V = 19235;
 		const int K_B = 3735;
 
-		const int SEUIL_LUM_1 = 0x44;
-		const int SEUIL_LUM_2 = 0x99;
-
 		static private int[,] coulTrouvee = new int[4096, 272];
 		static private byte[] tblContrast = new byte[256];
 
@@ -201,7 +198,7 @@ namespace ConvImgCpc {
 			int indexChoix = 0;
 
 			if (!prm.newMethode)
-				indexChoix = (p.r > SEUIL_LUM_2 ? 6 : p.r > SEUIL_LUM_1 ? 3 : 0) + (p.b > SEUIL_LUM_2 ? 2 : p.b > SEUIL_LUM_1 ? 1 : 0) + (p.v > SEUIL_LUM_2 ? 18 : p.v > SEUIL_LUM_1 ? 9 : 0);
+				indexChoix = (p.r > prm.seuilLum2 ? 6 : p.r > prm.seuilLum1 ? 3 : 0) + (p.b > prm.seuilLum2 ? 2 : p.b > prm.seuilLum1 ? 1 : 0) + (p.v > prm.seuilLum2 ? 18 : p.v > prm.seuilLum1 ? 9 : 0);
 			else {
 				int oldDist = 0x7FFFFFFF;
 				for (int i = 0; i < 27; i++) {
@@ -293,12 +290,12 @@ namespace ConvImgCpc {
 					int totr = (p0.r + p1.r);
 					int totv = (p0.v + p1.v);
 					int totb = (p0.b + p1.b);
-					RvbColor n1 = BitmapCpc.RgbCPC[(totr > SEUIL_LUM_1 + SEUIL_LUM_2 ? 6 : totr > SEUIL_LUM_1 ? 3 : 0)
-												+ (totv > SEUIL_LUM_1 + SEUIL_LUM_2 ? 18 : totv > SEUIL_LUM_1 ? 9 : 0)
-												+ (totb > SEUIL_LUM_1 + SEUIL_LUM_2 ? 2 : totb > SEUIL_LUM_1 ? 1 : 0)];
-					RvbColor n2 = BitmapCpc.RgbCPC[(totr > SEUIL_LUM_2 * 2 ? 6 : totr > SEUIL_LUM_2 ? 3 : 0)
-												+ (totv > SEUIL_LUM_2 * 2 ? 18 : totv > SEUIL_LUM_2 ? 9 : 0)
-												+ (totb > SEUIL_LUM_2 * 2 ? 2 : totb > SEUIL_LUM_2 ? 1 : 0)];
+					RvbColor n1 = BitmapCpc.RgbCPC[(totr > prm.seuilLum1 + prm.seuilLum2 ? 6 : totr > prm.seuilLum1 ? 3 : 0)
+												+ (totv > prm.seuilLum1 + prm.seuilLum2 ? 18 : totv > prm.seuilLum1 ? 9 : 0)
+												+ (totb > prm.seuilLum1 + prm.seuilLum2 ? 2 : totb > prm.seuilLum1 ? 1 : 0)];
+					RvbColor n2 = BitmapCpc.RgbCPC[(totr > prm.seuilLum2 * 2 ? 6 : totr > prm.seuilLum2 ? 3 : 0)
+												+ (totv > prm.seuilLum2 * 2 ? 18 : totv > prm.seuilLum2 ? 9 : 0)
+												+ (totb > prm.seuilLum2 * 2 ? 2 : totb > prm.seuilLum2 ? 1 : 0)];
 					int dist1 = Math.Abs(p0.r - n1.r) * K_R + Math.Abs(p0.v - n1.v) * K_V + Math.Abs(p0.b - n1.b) * K_B
 								+ Math.Abs(p1.r - n2.r) * K_R + Math.Abs(p1.v - n2.v) * K_V + Math.Abs(p1.b - n2.b) * K_B;
 					int dist2 = Math.Abs(p0.r - n2.r) * K_R + Math.Abs(p0.v - n2.v) * K_V + Math.Abs(p0.b - n2.b) * K_B
