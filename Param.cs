@@ -30,10 +30,16 @@
 		public bool trameTc;
 		public byte seuilLum1;
 		public byte seuilLum2;
+		public int coefR;
+		public int coefV;
+		public int coefB;
 
 		public Param() {
-			seuilLum1 = 0x66; // 0x44;
-			seuilLum2 = 0xBB; // 0x99;
+			seuilLum1 = 0x66;
+			seuilLum2 = 0xBB;
+			coefR = 9798;
+			coefV = 19235;
+			coefB = 3735;
 		}
 	}
 }
