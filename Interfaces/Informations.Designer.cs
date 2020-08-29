@@ -43,7 +43,6 @@
 			this.Controls.Add(this.listInfo);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.MaximizeBox = false;
-			this.MinimizeBox = false;
 			this.Name = "Informations";
 			this.Text = "Informations";
 			this.ResumeLayout(false);

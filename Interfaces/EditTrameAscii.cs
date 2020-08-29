@@ -160,7 +160,8 @@ namespace ConvImgCpc {
 					DrawMatrice();
 					DrawTrame();
 				}
-				catch (Exception) {
+				catch {
+					main.DisplayErreur("Impossible de lire la trame.");
 				}
 				fileParam.Close();
 			}
@@ -181,7 +182,8 @@ namespace ConvImgCpc {
 				try {
 					new XmlSerializer(typeof(int[])).Serialize(file, trame);
 				}
-				catch (Exception) {
+				catch {
+					main.DisplayErreur("Impossible de sauver la trame.");
 				}
 				file.Close();
 			}

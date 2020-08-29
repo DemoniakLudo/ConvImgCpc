@@ -639,7 +639,6 @@
 			this.Controls.Add(this.bpLoad);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
-			this.MinimizeBox = false;
 			this.Name = "Main";
 			this.Text = "ConvImgCPC";
 			this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Main_DragDrop);

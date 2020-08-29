@@ -507,7 +507,6 @@
 			this.Controls.Add(this.label8);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.MaximizeBox = false;
-			this.MinimizeBox = false;
 			this.Name = "EffetsPalette";
 			this.Text = "Gestion des couleurs";
 			((System.ComponentModel.ISupportInitialize)(this.blue)).EndInit();

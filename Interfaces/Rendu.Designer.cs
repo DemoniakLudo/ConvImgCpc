@@ -44,7 +44,6 @@
 			this.Controls.Add(this.pictureBox);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.MaximizeBox = false;
-			this.MinimizeBox = false;
 			this.Name = "Rendu";
 			this.ShowIcon = false;
 			this.ShowInTaskbar = false;

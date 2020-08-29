@@ -51,7 +51,7 @@
 			this.lockAllPal.AutoSize = true;
 			this.lockAllPal.Location = new System.Drawing.Point(784, 602);
 			this.lockAllPal.Name = "lockAllPal";
-			this.lockAllPal.Size = new System.Drawing.Size(103, 19);
+			this.lockAllPal.Size = new System.Drawing.Size(93, 17);
 			this.lockAllPal.TabIndex = 1;
 			this.lockAllPal.Text = "Tout vérouiller";
 			this.lockAllPal.UseVisualStyleBackColor = true;
@@ -62,7 +62,7 @@
 			this.modeEdition.AutoSize = true;
 			this.modeEdition.Location = new System.Drawing.Point(797, 12);
 			this.modeEdition.Name = "modeEdition";
-			this.modeEdition.Size = new System.Drawing.Size(96, 19);
+			this.modeEdition.Size = new System.Drawing.Size(84, 17);
 			this.modeEdition.TabIndex = 2;
 			this.modeEdition.Text = "Editer image";
 			this.modeEdition.UseVisualStyleBackColor = true;
@@ -103,7 +103,7 @@
 			this.label3.AutoSize = true;
 			this.label3.Location = new System.Drawing.Point(17, 265);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(95, 15);
+			this.label3.Size = new System.Drawing.Size(84, 13);
 			this.label3.TabIndex = 4;
 			this.label3.Text = "Couleur crayon :";
 			// 
@@ -112,7 +112,7 @@
 			this.label2.AutoSize = true;
 			this.label2.Location = new System.Drawing.Point(7, 230);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(82, 15);
+			this.label2.Size = new System.Drawing.Size(73, 13);
 			this.label2.TabIndex = 5;
 			this.label2.Text = "Taille crayon :";
 			// 
@@ -178,7 +178,7 @@
 			this.lblZoom.AutoSize = true;
 			this.lblZoom.Location = new System.Drawing.Point(65, 75);
 			this.lblZoom.Name = "lblZoom";
-			this.lblZoom.Size = new System.Drawing.Size(24, 15);
+			this.lblZoom.Size = new System.Drawing.Size(22, 13);
 			this.lblZoom.TabIndex = 14;
 			this.lblZoom.Text = "1:1";
 			// 
@@ -209,7 +209,7 @@
 			this.chkDoRedo.AutoSize = true;
 			this.chkDoRedo.Location = new System.Drawing.Point(15, 520);
 			this.chkDoRedo.Name = "chkDoRedo";
-			this.chkDoRedo.Size = new System.Drawing.Size(121, 34);
+			this.chkDoRedo.Size = new System.Drawing.Size(108, 30);
 			this.chkDoRedo.TabIndex = 11;
 			this.chkDoRedo.Text = "Garder retouches\naprès recalcul";
 			this.chkDoRedo.UseVisualStyleBackColor = true;
@@ -241,7 +241,7 @@
 			this.chkRendu.AutoSize = true;
 			this.chkRendu.Location = new System.Drawing.Point(6, 10);
 			this.chkRendu.Name = "chkRendu";
-			this.chkRendu.Size = new System.Drawing.Size(120, 19);
+			this.chkRendu.Size = new System.Drawing.Size(107, 17);
 			this.chkRendu.TabIndex = 9;
 			this.chkRendu.Text = "Fenêtre de rendu";
 			this.chkRendu.UseVisualStyleBackColor = true;
@@ -272,7 +272,6 @@
 			this.Controls.Add(this.pictureBox);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.MaximizeBox = false;
-			this.MinimizeBox = false;
 			this.Name = "ImageCpc";
 			this.Text = "Image CPC";
 			this.grpEdition.ResumeLayout(false);

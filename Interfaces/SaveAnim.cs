@@ -499,16 +499,16 @@ namespace ConvImgCpc {
 			try {
 				adrDeb = int.Parse(adrTxt.Substring(1), (adrTxt[0] == '#' || adrTxt[0] == '&') ? NumberStyles.HexNumber : NumberStyles.Integer);
 			}
-			catch (FormatException ex) {
-				MessageBox.Show("L'adresse saisie [" + adrTxt + "] est erronée");
+			catch {
+				img.main.DisplayErreur("L'adresse saisie [" + adrTxt + "] est erronée.");
 			}
 			if (chkMaxMem.Checked) {
 				adrTxt = tbxAdrMax.Text;
 				try {
 					adrMax = int.Parse(adrTxt.Substring(1), (adrTxt[0] == '#' || adrTxt[0] == '&') ? NumberStyles.HexNumber : NumberStyles.Integer);
 				}
-				catch (FormatException ex) {
-					MessageBox.Show("L'adresse saisie [" + adrTxt + "] est erronée");
+				catch {
+					img.main.DisplayErreur("L'adresse saisie [" + adrTxt + "] est erronée.");
 				}
 			}
 			bool optimSpeed = false;

@@ -27,7 +27,7 @@
 		public int pctRed, pctGreen, pctBlue;
 		public bool trameTc;
 		public byte seuilLumR1 = 43;
-		public byte seuilLumR2 = 141;
+		public byte seuilLumR2 = 161;
 		public byte seuilLumV1 = 38;
 		public byte seuilLumV2 = 167;
 		public byte seuilLumB1 = 26;
