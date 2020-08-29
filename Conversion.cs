@@ -473,7 +473,7 @@ namespace ConvImgCpc {
 					coulTrouvee[colMode5[y, c], y] = 0;
 				}
 			}
-			int[] cFound = new int[27];
+			int[] cFound = new int[4096];
 
 			int nbCol = 0;
 			for (int i = 0; i < 16; i++) {
@@ -535,7 +535,7 @@ namespace ConvImgCpc {
 					coulTrouvee[colMode5[y, c], y] = 0;
 				}
 			}
-			int[] cFound = new int[27];
+			int[] cFound = new int[4096];
 
 			int nbCol = 0;
 			for (int i = 0; i < 16; i++) {
