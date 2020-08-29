@@ -297,7 +297,7 @@ namespace ConvImgCpc {
 					int dist2 = Math.Abs(p0.r - n2.r) * prm.coefR + Math.Abs(p0.v - n2.v) * prm.coefV + Math.Abs(p0.b - n2.b) * prm.coefB
 								+ Math.Abs(p1.r - n1.r) * prm.coefR + Math.Abs(p1.v - n1.v) * prm.coefV + Math.Abs(p1.b - n1.b) * prm.coefB;
 					if ((xPix & Tx) == 0) {
-					//		if (dist1 < dist2) {
+						//		if (dist1 < dist2) {
 						source.SetPixel(xPix, yPix, n1);
 						source.SetPixel(xPix, yPix + 2, n2);
 					}
@@ -308,10 +308,14 @@ namespace ConvImgCpc {
 				}
 			}
 			int nbCol = 0;
-			for (int i = 0; i < coulTrouvee.GetLength(0); i++)
-				if (coulTrouvee[i, 0] > 0)
-					nbCol++;
-
+			for (int i = 0; i < coulTrouvee.GetLength(0); i++) {
+				bool memoCol = false;
+				for (int y = 0; y < 272; y++)
+					if (!memoCol && coulTrouvee[i, y] > 0) {
+						nbCol++;
+						memoCol = true;
+					}
+			}
 			return nbCol;
 		}
 
@@ -377,10 +381,14 @@ namespace ConvImgCpc {
 				}
 			}
 			int nbCol = 0;
-			for (int i = 0; i < coulTrouvee.GetLength(0); i++)
-				if (coulTrouvee[i, 0] > 0)
-					nbCol++;
-
+			for (int i = 0; i < coulTrouvee.GetLength(0); i++) {
+				bool memoCol = false;
+				for (int y = 0; y < 272; y++)
+					if (!memoCol && coulTrouvee[i, y] > 0) {
+						nbCol++;
+						memoCol = true;
+					}
+			}
 			return nbCol;
 		}
 
@@ -420,7 +428,7 @@ namespace ConvImgCpc {
 		//
 		// Recherche les couleurs pour le mode "split"
 		//
-		static void RechercheCMaxModeSplit(int[,] colMode5, int[] lockState, int yMax, Param p) {
+		static int RechercheCMaxModeSplit(int[,] colMode5, int[] lockState, int yMax, Param p) {
 			int c, FindMax = BitmapCpc.cpcPlus ? 4096 : 27;
 
 			// Les trois premières couleurs sont "fixes"
@@ -465,12 +473,24 @@ namespace ConvImgCpc {
 					coulTrouvee[colMode5[y, c], y] = 0;
 				}
 			}
+			int[] cFound = new int[27];
+
+			int nbCol = 0;
+			for (int i = 0; i < 16; i++) {
+				for (int y = 0; y < 272; y++) {
+					if (cFound[colMode5[y, i]] == 0) {
+						cFound[colMode5[y, i]] = 1;
+						nbCol++;
+					}
+				}
+			}
+			return nbCol;
 		}
 
 		//
 		// Recherche les couleurs pour le mode "X"
 		//
-		static void RechercheCMaxModeX(int[,] colMode5, int[] lockState, int yMax, Param p) {
+		static int RechercheCMaxModeX(int[,] colMode5, int[] lockState, int yMax, Param p) {
 			int c, FindMax = BitmapCpc.cpcPlus ? 4096 : 27;
 
 			// Les deux premières couleurs sont "fixes"
@@ -515,6 +535,18 @@ namespace ConvImgCpc {
 					coulTrouvee[colMode5[y, c], y] = 0;
 				}
 			}
+			int[] cFound = new int[27];
+
+			int nbCol = 0;
+			for (int i = 0; i < 16; i++) {
+				for (int y = 0; y < 272; y++) {
+					if (cFound[colMode5[y, i]] == 0) {
+						cFound[colMode5[y, i]] = 1;
+						nbCol++;
+					}
+				}
+			}
+			return nbCol;
 		}
 
 		static private void SetPixTrameM1(DirectBitmap bitmap, Param prm, ImageCpc dest, int maxCol, RvbColor[,] tabCol) {
@@ -627,7 +659,7 @@ namespace ConvImgCpc {
 		//
 		// Passe 2 : réduit l'image à MaxCol couleurs.
 		//
-		static private void Passe2(DirectBitmap source, ImageCpc dest, Param p) {
+		static private void Passe2(DirectBitmap source, ImageCpc dest, Param p, ref int colSplit) {
 			RvbColor[,] tabCol = new RvbColor[16, 272];
 			int[] MemoLockState = new int[16];
 			int i;
@@ -644,9 +676,9 @@ namespace ConvImgCpc {
 			}
 			if (BitmapCpc.modeVirtuel == 5 || BitmapCpc.modeVirtuel == 6) {
 				if (BitmapCpc.modeVirtuel == 5)
-					RechercheCMaxModeX(dest.colMode5, MemoLockState, BitmapCpc.TailleY, p);
+					colSplit = RechercheCMaxModeX(dest.colMode5, MemoLockState, BitmapCpc.TailleY, p);
 				else {
-					RechercheCMaxModeSplit(dest.colMode5, MemoLockState, BitmapCpc.TailleY, p);
+					colSplit = RechercheCMaxModeSplit(dest.colMode5, MemoLockState, BitmapCpc.TailleY, p);
 					maxCol = 9;
 				}
 				// réduit l'image à MaxCol couleurs.
@@ -680,9 +712,13 @@ namespace ConvImgCpc {
 				tblContrast[i] = MinMaxByte(((((i / 255.0) - 0.5) * c) + 0.5) * 255);
 
 			int nbCol = p.trameTc ? ConvertTrameTc(source, dest, p) : ConvertPasse1(source, dest, p);
-			Passe2(source, dest, p);
-			if (!noInfo)
+			int colSplit = 0;
+			Passe2(source, dest, p, ref colSplit);
+			if (!noInfo) {
 				dest.main.SetInfo("Conversion terminée, nombre de couleurs dans l'image:" + nbCol);
+				if (colSplit > 0)
+					dest.main.SetInfo("Couleurs générées avec split : " + colSplit);
+			}
 
 			dest.bitmapCpc.isCalc = true;
 			return nbCol;

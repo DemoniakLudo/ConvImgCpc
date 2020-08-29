@@ -128,6 +128,11 @@ namespace ConvImgCpc {
 			Convert(true);
 		}
 
+		public void DisplayErreur(string msg) {
+			MessageBox.Show(msg, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			SetInfo("Erreur - " + msg);
+		}
+
 		private void ReadScreen(string fileName, bool singlePicture = false) {
 			FileStream fileScr = new FileStream(fileName, FileMode.Open, FileAccess.Read);
 			byte[] tabBytes = new byte[fileScr.Length];
@@ -234,9 +239,8 @@ namespace ConvImgCpc {
 				imgCpc.Reset(true);
 				Convert(false);
 			}
-			catch (Exception ex) {
-				MessageBox.Show("Impossible de lire l'image (format inconnu ???)");
-				SetInfo("Impossible de lire l'image (format inconnu ???)");
+			catch {
+				DisplayErreur("Impossible de lire l'image (format inconnu ???).");
 			}
 		}
 
@@ -246,7 +250,7 @@ namespace ConvImgCpc {
 				imgCpc.selImage = n;
 				imgCpc.Reset();
 				anim.DrawImages(n);
-				if (!noInfo)
+				if (!noInfo && imgSrc.NbImg > 1)
 					SetInfo("Image sélectionnée: " + n.ToString());
 			}
 		}
@@ -279,9 +283,8 @@ namespace ConvImgCpc {
 				chkLissage.Checked = param.lissage;
 				SetInfo("Lecture paramètres ok.");
 			}
-			catch (Exception ex) {
-				MessageBox.Show(ex.StackTrace, ex.Message);
-				SetInfo("Erreur lecture paramètres...");
+			catch {
+				DisplayErreur("Ce fichier de paramètres ne peut pas être décodé.");
 			}
 			fileParam.Close();
 		}
@@ -294,9 +297,8 @@ namespace ConvImgCpc {
 				new XmlSerializer(typeof(Param)).Serialize(file, param);
 				SetInfo("Sauvegarde paramètres ok.");
 			}
-			catch (Exception ex) {
-				MessageBox.Show(ex.StackTrace, ex.Message);
-				SetInfo("Erreur sauvegarde paramètres...");
+			catch {
+				DisplayErreur("Impossible de sauvegarder le fichier de paramètres.");
 			}
 			file.Close();
 		}
