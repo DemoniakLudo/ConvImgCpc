@@ -495,22 +495,27 @@ namespace ConvImgCpc {
 						DepactPK();
 					else {
 						if (!InitDatas()) {
-							if (length < 32000) {
-								int l = PackDepack.Depack(bmpCpc, 0, bufTmp);
-								Array.Copy(bufTmp, bmpCpc, l);
-								if (!InitDatas()) {
-									cpcPlus = false;
-									nbCol = maxColsCpc;
-									nbLig = maxLignesCpc;
-									SetPalette(bmpCpc, 0x600, cpcPlus);
-								}
+							if (length == 16384) {
+								nbCol = 80;
+								nbLig = 200;
 							}
-							else {
-								if (length > 0x4000) {
-									nbCol = maxColsCpc;
-									nbLig = maxLignesCpc;
+							else
+								if (length < 32000) {
+									int l = PackDepack.Depack(bmpCpc, 0, bufTmp);
+									Array.Copy(bufTmp, bmpCpc, l);
+									if (!InitDatas()) {
+										cpcPlus = false;
+										nbCol = maxColsCpc;
+										nbLig = maxLignesCpc;
+										SetPalette(bmpCpc, 0x600, cpcPlus);
+									}
 								}
-							}
+								else {
+									if (length > 0x4000) {
+										nbCol = maxColsCpc;
+										nbLig = maxLignesCpc;
+									}
+								}
 						}
 					}
 			}
