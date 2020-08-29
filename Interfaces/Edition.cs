@@ -310,7 +310,7 @@ namespace ConvImgCpc {
 
 		private void chkRendu_CheckedChanged(object sender, System.EventArgs e) {
 			if (chkRendu.Checked) {
-				fenetreRendu = new Rendu();
+				fenetreRendu = new Rendu(BmpLock.Bitmap);
 				fenetreRendu.Show();
 				Render();
 			}

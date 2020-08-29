@@ -32,7 +32,7 @@ namespace ConvImgCpc {
 			Button[] tabButton = new Button[] { bpSup1, bpSup2, bpSup3, bpSup4, bpSup5 };
 			int endImg = Math.Min(startImg + 4, (int)numImage.Maximum);
 			for (int i = startImg; i <= endImg; i++) {
-				tabPb[i - startImg].Image = displaySrc ? main.imgSrc.GetBitmap(i) : main.imgCpc.bmpLock[i].Bitmap;
+				tabPb[i - startImg].Image = displaySrc ? main.imgSrc.GetBitmap(i) : main.imgCpc.tabBmpLock[i].Bitmap;
 				tabPb[i - startImg].Refresh();
 				tabButton[i - startImg].Visible = startImg + i > 0 || endImg - startImg > 2;
 			}
@@ -93,7 +93,7 @@ namespace ConvImgCpc {
 				byte[] GifAnimation = { 33, 255, 11, 78, 69, 84, 83, 67, 65, 80, 69, 50, 46, 48, 3, 1, 0, 0, 0 };
 				MemoryStream ms = new MemoryStream();
 				BinaryWriter bWr = new BinaryWriter(new FileStream(dlg.FileName, FileMode.Create));
-				Bitmap b = GetBitmap(main.imgCpc.bmpLock[0].Bitmap);
+				Bitmap b = GetBitmap(main.imgCpc.tabBmpLock[0].Bitmap);
 				b.Save(ms, ImageFormat.Gif);
 				b.Dispose();
 				byte[] tabByte = ms.ToArray();
@@ -103,7 +103,7 @@ namespace ConvImgCpc {
 				WriteGifImg(tabByte, bWr);
 				for (int i = 1; i <= numImage.Maximum; i++) {
 					ms.SetLength(0);
-					b = GetBitmap(main.imgCpc.bmpLock[i].Bitmap);
+					b = GetBitmap(main.imgCpc.tabBmpLock[i].Bitmap);
 					b.Save(ms, ImageFormat.Gif);
 					tabByte = ms.ToArray();
 					WriteGifImg(tabByte, bWr);

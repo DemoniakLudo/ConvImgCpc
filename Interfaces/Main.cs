@@ -10,8 +10,6 @@ namespace ConvImgCpc {
 		public ImageSource imgSrc = new ImageSource();
 		public ImageCpc imgCpc;
 		public Param param = new Param();
-		private string lastReadPath = null;
-		private string lastSavePath = null;
 		private MemoryStream imageStream;
 		private Informations info = new Informations();
 		private Animation anim;
@@ -95,8 +93,6 @@ namespace ConvImgCpc {
 					param.methode = methode.SelectedItem.ToString();
 					param.pct = (int)pctTrame.Value;
 					param.lockState = imgCpc.lockState;
-					param.motif = chkMotif.Checked;
-					param.motif2 = chkMotif2.Checked;
 					param.setPalCpc = chkPalCpc.Checked;
 					param.trameTc = chkTrameTC.Checked;
 					DirectBitmap tmp = GetResizeBitmap();
@@ -271,18 +267,6 @@ namespace ConvImgCpc {
 				methode.SelectedItem = param.methode;
 				pctTrame.Value = param.pct;
 				imgCpc.lockState = param.lockState;
-				/*
-				lumi.Value = param.pctLumi;
-				sat.Value = param.pctSat;
-				contrast.Value = param.pctContrast;
-				modePlus.Checked = param.cpcPlus;
-				newMethode.Checked = param.newMethode;
-				reducPal1.Checked = param.reductPal1;
-				reducPal2.Checked = param.reductPal2;
-				reducPal3.Checked = param.reductPal3;
-				reducPal4.Checked = param.reductPal4;
-				sortPal.Checked = param.sortPal;
-				*/
 				radioFit.Checked = param.sMode == Param.SizeMode.Fit;
 				radioKeepLarger.Checked = param.sMode == Param.SizeMode.KeepLarger;
 				radioKeepSmaller.Checked = param.sMode == Param.SizeMode.KeepSmaller;
@@ -291,8 +275,6 @@ namespace ConvImgCpc {
 				mode.SelectedIndex = param.modeVirtuel;
 				withCode.Checked = param.withCode;
 				withPalette.Checked = param.withPalette;
-				chkMotif.Checked = param.motif;
-				chkMotif2.Checked = param.motif2;
 				chkPalCpc.Checked = param.setPalCpc;
 				chkLissage.Checked = param.lissage;
 				SetInfo("Lecture paramètres ok.");
@@ -341,21 +323,20 @@ namespace ConvImgCpc {
 		private void bpImport_Click(object sender, EventArgs e) {
 			OpenFileDialog dlg = new OpenFileDialog();
 			dlg.Filter = "Images (*.bmp, *.gif, *.png, *.jpg,*.jpeg, *.scr)|*.bmp;*.gif;*.png;*.jpg;*.jpeg;*.scr|Tous fichiers|*.*";
-			dlg.InitialDirectory = lastReadPath;
+			dlg.InitialDirectory = param.lastReadPath;
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
-				lastReadPath = Path.GetDirectoryName(dlg.FileName);
 				ReadScreen(dlg.FileName, true);
+				param.lastReadPath = Path.GetDirectoryName(dlg.FileName);
 			}
 		}
 
 		private void bpLoad_Click(object sender, EventArgs e) {
 			OpenFileDialog dlg = new OpenFileDialog();
 			dlg.Filter = "Images (*.bmp, *.gif, *.png, *.jpg,*.jpeg, *.scr, *.imp)|*.bmp;*.gif;*.png;*.jpg;*.jpeg;*.scr;*.imp|Palette (*.pal)|*.pal|Paramètres ConvImgCpc (*.xml)|*.xml|Tous fichiers|*.*";
-			dlg.InitialDirectory = lastReadPath;
+			dlg.InitialDirectory = param.lastReadPath;
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
-				lastReadPath = Path.GetDirectoryName(dlg.FileName);
 				switch (dlg.FilterIndex) {
 					case 1:
 					case 4:
@@ -370,16 +351,16 @@ namespace ConvImgCpc {
 						ReadParam(dlg.FileName);
 						break;
 				}
+				param.lastReadPath = Path.GetDirectoryName(dlg.FileName);
 			}
 		}
 
 		private void bpSave_Click(object sender, EventArgs e) {
 			SaveFileDialog dlg = new SaveFileDialog();
-			dlg.InitialDirectory = lastSavePath;
+			dlg.InitialDirectory = param.lastSavePath;
 			dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.png)|*.png|Sprite assembleur (.asm)|*.asm|Sprite assembleur compacté (.asm)|*.asm|Ecran compacté (.cmp)|*.cmp|Ecran assembleur compacté (.asm)|*.asm|Palette (.pal)|*.pal|Animation DeltaPack (.asm)|*.asm|Animation imp (*.imp)|*.imp|Paramètres (.xml)|*.xml";
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
-				lastSavePath = Path.GetDirectoryName(dlg.FileName);
 				switch (dlg.FilterIndex) {
 					case 1:
 						imgCpc.SauveScr(dlg.FileName, param);
@@ -421,6 +402,7 @@ namespace ConvImgCpc {
 						SaveParam(dlg.FileName);
 						break;
 				}
+				param.lastSavePath = Path.GetDirectoryName(dlg.FileName);
 			}
 		}
 
@@ -550,20 +532,6 @@ namespace ConvImgCpc {
 
 		private void withPalette_CheckedChanged(object sender, EventArgs e) {
 			param.withPalette = withPalette.Checked;
-		}
-
-		private void chkMotif_CheckedChanged(object sender, EventArgs e) {
-			if (chkMotif.Checked)
-				chkMotif2.Checked = false;
-
-			Convert(false);
-		}
-
-		private void chkMotif2_CheckedChanged(object sender, EventArgs e) {
-			if (chkMotif2.Checked)
-				chkMotif.Checked = false;
-
-			Convert(false);
 		}
 
 		private void bpEditTrame_Click(object sender, EventArgs e) {

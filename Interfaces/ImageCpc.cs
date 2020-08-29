@@ -6,8 +6,8 @@ using System.Windows.Forms;
 
 namespace ConvImgCpc {
 	public partial class ImageCpc : Form {
-		public DirectBitmap[] bmpLock;
-		public DirectBitmap BmpLock { get { return bmpLock[selImage]; } }
+		public DirectBitmap[] tabBmpLock;
+		public DirectBitmap BmpLock { get { return tabBmpLock[selImage]; } }
 		private DirectBitmap tmpLock;
 		private Label[] colors = new Label[16];
 		private CheckBox[] lockColors = new CheckBox[16];
@@ -57,10 +57,10 @@ namespace ConvImgCpc {
 			selImage = 0;
 			maxImage = nbImage;
 			TabBitmapCpc = new BitmapCpc[nbImage];
-			bmpLock = new DirectBitmap[nbImage];
+			tabBmpLock = new DirectBitmap[nbImage];
 			for (int i = 0; i < nbImage; i++) {
 				TabBitmapCpc[i] = new BitmapCpc();
-				bmpLock[i] = new DirectBitmap(pictureBox.Width, pictureBox.Height);
+				tabBmpLock[i] = new DirectBitmap(pictureBox.Width, pictureBox.Height);
 			}
 		}
 
@@ -71,10 +71,10 @@ namespace ConvImgCpc {
 				for (int i = startImg; i < endImg; i++) {
 					selImage = i;
 					int col = System.Drawing.SystemColors.Control.ToArgb();
-					for (int y = 0; y < bmpLock[i].Height; y += 2) {
+					for (int y = 0; y < tabBmpLock[i].Height; y += 2) {
 						int startX = y < BitmapCpc.TailleY ? BitmapCpc.TailleX : 0;
-						bmpLock[i].SetHorLineDouble(0, y, startX, GetPalCPC(BitmapCpc.Palette[0]));
-						bmpLock[i].SetHorLineDouble(startX, y, bmpLock[i].Width - startX, col);
+						tabBmpLock[i].SetHorLineDouble(0, y, startX, GetPalCPC(BitmapCpc.Palette[0]));
+						tabBmpLock[i].SetHorLineDouble(startX, y, tabBmpLock[i].Width - startX, col);
 					}
 				}
 			}
@@ -127,10 +127,8 @@ namespace ConvImgCpc {
 				tmpLock = null;
 			}
 			pictureBox.Refresh();
-			if (fenetreRendu != null) {
-				fenetreRendu.Picture.Image = imgOrigine;
+			if (fenetreRendu != null)
 				fenetreRendu.Picture.Refresh();
-			}
 		}
 
 		#region Lecture/Sauvegarde
@@ -156,7 +154,7 @@ namespace ConvImgCpc {
 									for (int r = start; r < x; r++)
 										bmpRaster.SetPixel(r, y, c2);
 
-//									posx = 0;
+									//									posx = 0;
 								}
 								break;
 							}

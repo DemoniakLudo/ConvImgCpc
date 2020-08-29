@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 namespace ConvImgCpc {
 	public class DirectBitmap : IDisposable {
 		public Bitmap Bitmap { get; private set; }
-		public uint[] Bits { get; private set; }
+		public uint[] tabBits { get; private set; }
 		public bool Disposed { get; private set; }
 		public int Height { get; private set; }
 		public int Width { get; private set; }
@@ -24,40 +24,40 @@ namespace ConvImgCpc {
 		}
 
 		public void CopyBits(DirectBitmap source) {
-			Array.Copy(source.Bits, Bits, Bits.Length);
+			Array.Copy(source.tabBits, tabBits, tabBits.Length);
 		}
 
 		private void CreateBitmap(int width, int height) {
 			Width = width;
 			Height = height;
-			Bits = new uint[width * height];
-			BitsHandle = GCHandle.Alloc(Bits, GCHandleType.Pinned);
+			tabBits = new uint[width * height];
+			BitsHandle = GCHandle.Alloc(tabBits, GCHandleType.Pinned);
 			Bitmap = new Bitmap(width, height, width * 4, PixelFormat.Format32bppRgb, BitsHandle.AddrOfPinnedObject());
 		}
 
 		public void SetPixel(int x, int y, int c) {
-			Bits[x + (y * Width)] = (uint)c | 0xFF000000;
+			tabBits[x + (y * Width)] = (uint)c | 0xFF000000;
 		}
 
 		public void SetPixel(int x, int y, RvbColor color) {
-			Bits[x + (y * Width)] = (uint)color.GetColorArgb | 0xFF000000;
+			tabBits[x + (y * Width)] = (uint)color.GetColorArgb | 0xFF000000;
 		}
 
 		public int GetPixel(int x, int y) {
-			return (int)(Bits[x + (y * Width)] & 0xFFFFFF);
+			return (int)(tabBits[x + (y * Width)] & 0xFFFFFF);
 		}
 
 		public RvbColor GetPixelColor(int x, int y) {
-			return new RvbColor((int)Bits[x + (y * Width)]);
+			return new RvbColor((int)tabBits[x + (y * Width)]);
 		}
 
 		public void SetHorLineDouble(int pixelX, int pixelY, int lineLength, int c) {
 			uint color = (uint)c | 0xFF000000;
 			int index = pixelX + (pixelY * Width);
 			for (; lineLength-- > 0; ) {
-				Bits[index] = color;
+				tabBits[index] = color;
 				if (index + Width < Length)
-					Bits[index + Width] = color;
+					tabBits[index + Width] = color;
 
 				index++;
 			}

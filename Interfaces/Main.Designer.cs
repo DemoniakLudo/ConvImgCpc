@@ -43,8 +43,6 @@
 			this.chkTrameTC = new System.Windows.Forms.CheckBox();
 			this.chkLissage = new System.Windows.Forms.CheckBox();
 			this.chkPalCpc = new System.Windows.Forms.CheckBox();
-			this.chkMotif2 = new System.Windows.Forms.CheckBox();
-			this.chkMotif = new System.Windows.Forms.CheckBox();
 			this.lblPct = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
 			this.autoRecalc = new System.Windows.Forms.CheckBox();
@@ -312,8 +310,6 @@
 			this.tramage.Controls.Add(this.chkTrameTC);
 			this.tramage.Controls.Add(this.chkLissage);
 			this.tramage.Controls.Add(this.chkPalCpc);
-			this.tramage.Controls.Add(this.chkMotif2);
-			this.tramage.Controls.Add(this.chkMotif);
 			this.tramage.Controls.Add(this.lblPct);
 			this.tramage.Controls.Add(this.methode);
 			this.tramage.Controls.Add(this.pctTrame);
@@ -328,7 +324,7 @@
 			// chkTrameTC
 			// 
 			this.chkTrameTC.AutoSize = true;
-			this.chkTrameTC.Location = new System.Drawing.Point(48, 167);
+			this.chkTrameTC.Location = new System.Drawing.Point(48, 125);
 			this.chkTrameTC.Name = "chkTrameTC";
 			this.chkTrameTC.Size = new System.Drawing.Size(88, 17);
 			this.chkTrameTC.TabIndex = 16;
@@ -357,28 +353,6 @@
 			this.chkPalCpc.Text = "Réduction palette\nimage source";
 			this.chkPalCpc.UseVisualStyleBackColor = true;
 			this.chkPalCpc.CheckedChanged += new System.EventHandler(this.InterfaceChange);
-			// 
-			// chkMotif2
-			// 
-			this.chkMotif2.AutoSize = true;
-			this.chkMotif2.Location = new System.Drawing.Point(48, 144);
-			this.chkMotif2.Name = "chkMotif2";
-			this.chkMotif2.Size = new System.Drawing.Size(102, 17);
-			this.chkMotif2.TabIndex = 13;
-			this.chkMotif2.Text = "Trames \"motif2\"";
-			this.chkMotif2.UseVisualStyleBackColor = true;
-			this.chkMotif2.CheckedChanged += new System.EventHandler(this.chkMotif2_CheckedChanged);
-			// 
-			// chkMotif
-			// 
-			this.chkMotif.AutoSize = true;
-			this.chkMotif.Location = new System.Drawing.Point(48, 122);
-			this.chkMotif.Name = "chkMotif";
-			this.chkMotif.Size = new System.Drawing.Size(96, 17);
-			this.chkMotif.TabIndex = 13;
-			this.chkMotif.Text = "Trames \"motif\"";
-			this.chkMotif.UseVisualStyleBackColor = true;
-			this.chkMotif.CheckedChanged += new System.EventHandler(this.chkMotif_CheckedChanged);
 			// 
 			// lblPct
 			// 
@@ -718,10 +692,8 @@
         private System.Windows.Forms.CheckBox withCode;
 		private System.Windows.Forms.Button bpOverscan;
 		private System.Windows.Forms.CheckBox withPalette;
-		private System.Windows.Forms.CheckBox chkMotif;
 		private System.Windows.Forms.CheckBox chkPalCpc;
 		private System.Windows.Forms.CheckBox chkLissage;
-		private System.Windows.Forms.CheckBox chkMotif2;
 		private System.Windows.Forms.RadioButton radioOrigin;
 		private System.Windows.Forms.TrackBar trackModeX;
 		private System.Windows.Forms.Button bpStandard;

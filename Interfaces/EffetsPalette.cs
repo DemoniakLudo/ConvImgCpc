@@ -19,11 +19,13 @@ namespace ConvImgCpc {
 			blue.Value = main.param.pctBlue;
 			modePlus.Checked = main.param.cpcPlus;
 			newMethode.Visible = !modePlus.Checked;
+			newMethode.Checked = main.param.newMethode;
 			reducPal1.Visible = reducPal2.Visible = reducPal3.Visible = reducPal4.Visible = modePlus.Checked;
 			reducPal1.Checked = main.param.reductPal1;
 			reducPal2.Checked = main.param.reductPal2;
 			reducPal3.Checked = main.param.reductPal3;
 			reducPal4.Checked = main.param.reductPal4;
+			sortPal.Checked = main.param.sortPal;
 		}
 
 		private void red_ValueChanged(object sender, EventArgs e) {
