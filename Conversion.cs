@@ -190,17 +190,28 @@ namespace ConvImgCpc {
 			return pct;
 		}
 
+		static private void DoFloydStenbeirg(DirectBitmap source, int xPix, int Tx, int yPix, RvbColor p, RvbColor choix) {
+			for (int y = 0; y < matDither.GetLength(1); y++)
+				for (int x = 0; x < matDither.GetLength(0); x++)
+					if (xPix + Tx * x < source.Width && yPix + 2 * y < source.Height) {
+						RvbColor pix = source.GetPixelColor(xPix + Tx * x, yPix + (y << 1));
+						pix.r = MinMaxByte(pix.r + (p.r - choix.r) * matDither[x, y] / 256);
+						pix.v = MinMaxByte(pix.v + (p.v - choix.v) * matDither[x, y] / 256);
+						pix.b = MinMaxByte(pix.b + (p.b - choix.b) * matDither[x, y] / 256);
+						source.SetPixel(xPix + Tx * x, yPix + (y << 1), pix);
+					}
+		}
+
 		static private int GetNumColorPixelCpc(Param prm, RvbColor p) {
 			int indexChoix = 0;
 
 			if (!prm.newMethode)
-				indexChoix = (p.r > prm.seuilLumR2 ? 6 : p.r > prm.seuilLumR1 ? 3 : 0) + (p.b > prm.seuilLumB2 ? 2 : p.b > prm.seuilLumB1 ? 1 : 0) + (p.v > prm.seuilLumV2 ? 18 : p.v > prm.seuilLumV1 ? 9 : 0);
+				indexChoix = (p.r > prm.seuilR2 ? 6 : p.r > prm.seuilR1 ? 3 : 0) + (p.b > prm.seuilB2 ? 2 : p.b > prm.seuilB1 ? 1 : 0) + (p.v > prm.seuilV2 ? 18 : p.v > prm.seuilV1 ? 9 : 0);
 			else {
 				int oldDist = 0x7FFFFFFF;
 				for (int i = 0; i < 27; i++) {
 					RvbColor s = BitmapCpc.RgbCPC[i];
 					int dist = Math.Abs(s.r - p.r) * prm.coefR + Math.Abs(s.v - p.v) * prm.coefV + Math.Abs(s.b - p.b) * prm.coefB;
-					//int dist = (p.r - s.r) * (p.r - s.r) * prm.coefR + (p.v - s.v) * (p.v - s.v) * prm.coefV + (p.b - s.b) * (p.b - s.b) * prm.coefB;
 					if (dist < oldDist) {
 						oldDist = dist;
 						indexChoix = i;
@@ -254,31 +265,22 @@ namespace ConvImgCpc {
 			return p;
 		}
 
-		static private int ConvertTrameTc(DirectBitmap source, ImageCpc dest, Param prm) {
-			int pct = SetMatDither(prm);
-			RvbColor p = new RvbColor(0);
+		static private int ConvertTrameTc(DirectBitmap source, ImageCpc dest, Param p) {
+			int pct = SetMatDither(p);
+			RvbColor curPix = new RvbColor(0);
 			int indexChoix = 0;
 			for (int yPix = 0; yPix < BitmapCpc.TailleY; yPix += 4) {
 				int Tx = BitmapCpc.CalcTx(yPix);
 				for (int xPix = 0; xPix < BitmapCpc.TailleX; xPix += Tx) {
 					for (int yy = 0; yy < 4; yy += 2) {
-						p = TraitePixel(source, xPix, yy + yPix, Tx, prm, pct);
-						indexChoix = GetNumColorPixelCpc(prm, p);
+						curPix = TraitePixel(source, xPix, yy + yPix, Tx, p, pct);
+						indexChoix = GetNumColorPixelCpc(p, curPix);
 						RvbColor choix = BitmapCpc.RgbCPC[indexChoix];
-						if (pct > 0 && prm.methode == "Floyd-Steinberg (2x2)") {
-							for (int y = 0; y < matDither.GetLength(1); y++)
-								for (int x = 0; x < matDither.GetLength(0); x++)
-									if (xPix + Tx * x < source.Width && yPix + 2 * y < source.Height) {
-										RvbColor pix = source.GetPixelColor(xPix + Tx * x, yPix + (y << 1));
-										pix.r = MinMaxByte(pix.r + (p.r - choix.r) * matDither[x, y] / 256);
-										pix.v = MinMaxByte(pix.v + (p.v - choix.v) * matDither[x, y] / 256);
-										pix.b = MinMaxByte(pix.b + (p.b - choix.b) * matDither[x, y] / 256);
-										source.SetPixel(xPix + Tx * x, yPix + (y << 1), pix);
-									}
-						}
+						if (pct > 0 && p.methode == "Floyd-Steinberg (2x2)")
+							DoFloydStenbeirg(source, xPix, Tx, yPix, curPix, choix);
 
 						coulTrouvee[indexChoix, (BitmapCpc.modeVirtuel == 5 || BitmapCpc.modeVirtuel == 6 ? yPix >> 1 : 0)]++;
-						source.SetPixel(xPix, yy + yPix, prm.setPalCpc ? choix : p);
+						source.SetPixel(xPix, yy + yPix, p.setPalCpc ? choix : curPix);
 					}
 					// Moyenne des 2 pixels
 					RvbColor p0 = source.GetPixelColor(xPix, yPix);
@@ -286,25 +288,14 @@ namespace ConvImgCpc {
 					int totr = (p0.r + p1.r);
 					int totv = (p0.v + p1.v);
 					int totb = (p0.b + p1.b);
-					RvbColor n1 = BitmapCpc.RgbCPC[(totr > prm.seuilLumR1 + prm.seuilLumR2 ? 6 : totr > prm.seuilLumR1 ? 3 : 0)
-												+ (totv > prm.seuilLumV1 + prm.seuilLumV2 ? 18 : totv > prm.seuilLumV1 ? 9 : 0)
-												+ (totb > prm.seuilLumB1 + prm.seuilLumB2 ? 2 : totb > prm.seuilLumB1 ? 1 : 0)];
-					RvbColor n2 = BitmapCpc.RgbCPC[(totr > prm.seuilLumR2 * 2 ? 6 : totr > prm.seuilLumR2 ? 3 : 0)
-												+ (totv > prm.seuilLumV2 * 2 ? 18 : totv > prm.seuilLumV2 ? 9 : 0)
-												+ (totb > prm.seuilLumB2 * 2 ? 2 : totb > prm.seuilLumB2 ? 1 : 0)];
-					int dist1 = Math.Abs(p0.r - n1.r) * prm.coefR + Math.Abs(p0.v - n1.v) * prm.coefV + Math.Abs(p0.b - n1.b) * prm.coefB
-								+ Math.Abs(p1.r - n2.r) * prm.coefR + Math.Abs(p1.v - n2.v) * prm.coefV + Math.Abs(p1.b - n2.b) * prm.coefB;
-					int dist2 = Math.Abs(p0.r - n2.r) * prm.coefR + Math.Abs(p0.v - n2.v) * prm.coefV + Math.Abs(p0.b - n2.b) * prm.coefB
-								+ Math.Abs(p1.r - n1.r) * prm.coefR + Math.Abs(p1.v - n1.v) * prm.coefV + Math.Abs(p1.b - n1.b) * prm.coefB;
-					if ((xPix & Tx) == 0) {
-						//		if (dist1 < dist2) {
-						source.SetPixel(xPix, yPix, n1);
-						source.SetPixel(xPix, yPix + 2, n2);
-					}
-					else {
-						source.SetPixel(xPix, yPix, n2);
-						source.SetPixel(xPix, yPix + 2, n1);
-					}
+					RvbColor n1 = BitmapCpc.RgbCPC[(totr > p.seuilR1 + p.seuilR2 ? 6 : totr > p.seuilR1 ? 3 : 0)
+												+ (totv > p.seuilV1 + p.seuilV2 ? 18 : totv > p.seuilV1 ? 9 : 0)
+												+ (totb > p.seuilB1 + p.seuilB2 ? 2 : totb > p.seuilB1 ? 1 : 0)];
+					RvbColor n2 = BitmapCpc.RgbCPC[(totr > p.seuilR2 * 2 ? 6 : totr > p.seuilR2 ? 3 : 0)
+												+ (totv > p.seuilV2 * 2 ? 18 : totv > p.seuilV2 ? 9 : 0)
+												+ (totb > p.seuilB2 * 2 ? 2 : totb > p.seuilB2 ? 1 : 0)];
+					source.SetPixel(xPix, yPix, (xPix & Tx) == 0 ? n1 : n2);
+					source.SetPixel(xPix, yPix + 2, (xPix & Tx) == 0 ? n2 : n1);
 				}
 			}
 			int nbCol = 0;
@@ -365,17 +356,9 @@ namespace ConvImgCpc {
 						indexChoix = GetNumColorPixelCpc(prm, p);
 						choix = BitmapCpc.RgbCPC[indexChoix];
 					}
-					if (pct > 0 && prm.methode == "Floyd-Steinberg (2x2)") {
-						for (int y = 0; y < matDither.GetLength(1); y++)
-							for (int x = 0; x < matDither.GetLength(0); x++)
-								if (xPix + Tx * x < source.Width && yPix + 2 * y < source.Height) {
-									RvbColor pix = source.GetPixelColor(xPix + Tx * x, yPix + (y << 1));
-									pix.r = MinMaxByte(pix.r + (p.r - choix.r) * matDither[x, y] / 256);
-									pix.v = MinMaxByte(pix.v + (p.v - choix.v) * matDither[x, y] / 256);
-									pix.b = MinMaxByte(pix.b + (p.b - choix.b) * matDither[x, y] / 256);
-									source.SetPixel(xPix + Tx * x, yPix + (y << 1), pix);
-								}
-					}
+					if (pct > 0 && prm.methode == "Floyd-Steinberg (2x2)")
+						DoFloydStenbeirg(source, xPix, Tx, yPix, p, choix);
+
 					coulTrouvee[indexChoix, (BitmapCpc.modeVirtuel == 5 || BitmapCpc.modeVirtuel == 6 ? yPix >> 1 : 0)]++;
 					source.SetPixel(xPix, yPix, prm.setPalCpc ? choix : p);
 				}

@@ -26,12 +26,12 @@
 		public int trackModeX;
 		public int pctRed, pctGreen, pctBlue;
 		public bool trameTc;
-		public byte seuilLumR1 = 43;
-		public byte seuilLumR2 = 161;
-		public byte seuilLumV1 = 38;
-		public byte seuilLumV2 = 167;
-		public byte seuilLumB1 = 26;
-		public byte seuilLumB2 = 125;
+		public byte seuilR1 = 43;
+		public byte seuilR2 = 168;
+		public byte seuilV1 = 38;
+		public byte seuilV2 = 175;
+		public byte seuilB1 = 26;
+		public byte seuilB2 = 125;
 		public int coefR = 9798;
 		public int coefV = 19235;
 		public int coefB = 3735;

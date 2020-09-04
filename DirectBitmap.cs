@@ -36,19 +36,21 @@ namespace ConvImgCpc {
 		}
 
 		public void SetPixel(int x, int y, int c) {
-			tabBits[x + (y * Width)] = (uint)c | 0xFF000000;
+			if (y < Height)
+				tabBits[x + (y * Width)] = (uint)c | 0xFF000000;
 		}
 
 		public void SetPixel(int x, int y, RvbColor color) {
-			tabBits[x + (y * Width)] = (uint)color.GetColorArgb | 0xFF000000;
+			if (y < Height)
+				tabBits[x + (y * Width)] = (uint)color.GetColorArgb | 0xFF000000;
 		}
 
 		public int GetPixel(int x, int y) {
-			return (int)(tabBits[x + (y * Width)] & 0xFFFFFF);
+			return (int)(tabBits[y < Height ? (x + (y * Width)) : 0] & 0xFFFFFF);
 		}
 
 		public RvbColor GetPixelColor(int x, int y) {
-			return new RvbColor((int)tabBits[x + (y * Width)]);
+			return new RvbColor((int)tabBits[y < Height ? (x + (y * Width)) : 0]);
 		}
 
 		public void SetHorLineDouble(int pixelX, int pixelY, int lineLength, int c) {

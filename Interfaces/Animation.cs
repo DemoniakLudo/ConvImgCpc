@@ -30,7 +30,7 @@ namespace ConvImgCpc {
 		public void DrawImages(int startImg) {
 			PictureBox[] tabPb = new PictureBox[] { pictureBox1, pictureBox2, pictureBox3, pictureBox4, pictureBox5 };
 			Button[] tabButton = new Button[] { bpSup1, bpSup2, bpSup3, bpSup4, bpSup5 };
-			int endImg = Math.Min(startImg + 4, (int)numImage.Maximum);
+			int endImg = Math.Min(startImg + 4, main.imgSrc.NbImg - 1);
 			for (int i = startImg; i <= endImg; i++) {
 				tabPb[i - startImg].Image = displaySrc ? main.imgSrc.GetBitmap(i) : main.imgCpc.tabBmpLock[i].Bitmap;
 				tabPb[i - startImg].Refresh();
