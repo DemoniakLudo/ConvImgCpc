@@ -79,9 +79,9 @@ namespace ConvImgCpc {
 				}
 			}
 			int tx = BitmapCpc.CalcTx();
-			int maxCol = BitmapCpc.MaxCol(2);
+			int maxPen = BitmapCpc.MaxPen(2);
 			for (int i = 0; i < 16; i++)
-				colors[i].Visible = lockColors[i].Visible = i < maxCol;
+				colors[i].Visible = lockColors[i].Visible = i < maxPen;
 
 			ToolModeDraw(null);
 		}

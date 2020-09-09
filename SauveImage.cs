@@ -443,13 +443,17 @@ namespace ConvImgCpc {
 				if (param.withCode) {
 					sw.WriteLine("	RUN	$");
 					sw.WriteLine("_StartDepack:");
-					SaveAsm.GenereFormatEcran(sw);
-					sw.WriteLine("	LD	HL,ImageCmp");
-					sw.WriteLine("	LD	DE,#" + (overscan ? "0200" : "C000"));
-					if (BitmapCpc.modeVirtuel == 5)
-						SaveAsm.GenereAfficheModeX(sw, colMode5, overscan);
-					else
-						SaveAsm.GenereDepack(sw);
+					if (BitmapCpc.modeVirtuel == 3 || BitmapCpc.modeVirtuel == 4)
+						SaveAsm.GenereAfficheModeEgx(sw, BitmapCpc.Palette, overscan);
+					else {
+						SaveAsm.GenereFormatEcran(sw);
+						sw.WriteLine("	LD	HL,ImageCmp");
+						sw.WriteLine("	LD	DE,#" + (overscan ? "0200" : "C000"));
+						if (BitmapCpc.modeVirtuel == 5)
+							SaveAsm.GenereAfficheModeX(sw, colMode5, overscan);
+						else
+							SaveAsm.GenereDepack(sw);
+					}
 				}
 				SaveAsm.CloseAsm(sw);
 			}
