@@ -274,7 +274,7 @@ namespace ConvImgCpc {
 			return 8 >> (modeVirtuel == 8 ? 0 : modeVirtuel > 8 ? modeVirtuel - 8 : modeVirtuel >= 5 ? 2 : modeVirtuel > 2 ? ((y & 2) == 0 ? modeVirtuel - 1 : modeVirtuel - 2) : modeVirtuel + 1);
 		}
 
-		static public int MaxCol(int y = 0) {
+		static public int MaxPen(int y = 0) {
 			switch (modeVirtuel) {
 				case 0:
 				case 1:
@@ -359,12 +359,12 @@ namespace ConvImgCpc {
 			for (int y = 0; y < TailleY; y += 2) {
 				int adrCPC = GetAdrCpc(y);
 				int tx = CalcTx(y);
-				int maxCol = MaxCol(y);
+				int maxPen = MaxPen(y);
 				for (int x = 0; x < TailleX; x += 8) {
 					byte pen = 0, octet = 0, decal = 0;
 					for (int p = 0; p < 8; p += tx) {
 						RvbColor col = bmpLock.GetPixelColor(x + p, y);
-						for (pen = 0; pen < maxCol; pen++) {
+						for (pen = 0; pen < maxPen; pen++) {
 							if (cpcPlus) {
 								if ((col.v >> 4) == (Palette[pen] >> 8) && (col.b >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.r >> 4) == (Palette[pen] & 0x0F))
 									break;
@@ -387,12 +387,12 @@ namespace ConvImgCpc {
 			for (int y = 0; y < TailleY; y += 2) {
 				int adrCPC = GetAdrCpc(y);
 				int tx = CalcTx(y);
-				int maxCol = MaxCol(y);
+				int maxPen = MaxPen(y);
 				for (int x = 0; x < TailleX; x += 8) {
 					byte pen = 0, octet = 0, decal = 0;
 					for (int p = 0; p < 8; p += tx) {
 						RvbColor col = bmpLock.GetPixelColor(x + p, y);
-						for (pen = 0; pen < maxCol; pen++) {
+						for (pen = 0; pen < maxPen; pen++) {
 							if (cpcPlus) {
 								if ((col.v >> 4) == (Palette[pen] >> 8) && (col.b >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.r >> 4) == (Palette[pen] & 0x0F))
 									break;

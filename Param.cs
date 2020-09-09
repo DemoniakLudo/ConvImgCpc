@@ -26,16 +26,25 @@
 		public int trackModeX;
 		public int pctRed, pctGreen, pctBlue;
 		public bool trameTc;
-		public byte seuilR1 = 43;
-		public byte seuilR2 = 168;
-		public byte seuilV1 = 38;
-		public byte seuilV2 = 175;
-		public byte seuilB1 = 26;
-		public byte seuilB2 = 125;
+		// Chemins de lecture et sauvegardes
+		public string lastReadPath = null;
+		public string lastSavePath = null;
+		// Constantes pour conversion RVB CPC
 		public int coefR = 9798;
 		public int coefV = 19235;
 		public int coefB = 3735;
-		public string lastReadPath = null;
-		public string lastSavePath = null;
+		// Seuils pour conversion sur 3 niveaux RVB (palette 3^3=27 couleurs)
+		public int cstR1 = 85;
+		public int cstR2 = 170;
+		public int cstR3 = 255;
+		public int cstR4 = 340;
+		public int cstV1 = 85;
+		public int cstV2 = 170;
+		public int cstV3 = 255;
+		public int cstV4 = 340;
+		public int cstB1 = 85;
+		public int cstB2 = 170;
+		public int cstB3 = 255;
+		public int cstB4 = 340;
 	}
 }

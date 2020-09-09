@@ -166,6 +166,13 @@ namespace ConvImgCpc {
 				sw.WriteLine("	INC	B");
 				sw.WriteLine("	OUT	(C),L");
 			}
+			if (BitmapCpc.NbLig * BitmapCpc.NbCol > 0x4000) {
+				sw.WriteLine("	LD	BC,#BC0C");
+				sw.WriteLine("	OUT	(C),C");
+				sw.WriteLine("	INC	B");
+				sw.WriteLine("	INC	C");
+				sw.WriteLine("	OUT	(C),C");
+			}
 		}
 
 		static public void GenereEntete(StreamWriter sw, int adr) {
@@ -406,7 +413,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("	Nolist");
 		}
 
-		static private void GenereTspace(StreamWriter sw) {
+		static private void GenereTspace(StreamWriter sw, bool wait) {
 			sw.WriteLine("TstSpace:");
 			sw.WriteLine("	LD	BC,#F40E");
 			sw.WriteLine("	OUT	(C),C");
@@ -425,7 +432,9 @@ namespace ConvImgCpc {
 			sw.WriteLine("	LD	BC,#F600");
 			sw.WriteLine("	OUT	(C),C");
 			sw.WriteLine("	INC	A");
-			sw.WriteLine("	JR	Z,TstSpace");
+			if (wait)
+				sw.WriteLine("	JR	Z,TstSpace");
+
 			sw.WriteLine("	RET");
 		}
 
@@ -599,7 +608,7 @@ namespace ConvImgCpc {
 					sw.WriteLine("	JP	Boucle");
 				}
 				else
-					GenereTspace(sw);
+					GenereTspace(sw, true);
 			}
 			if (!frameO) {
 				if (!frameD)
@@ -706,7 +715,7 @@ namespace ConvImgCpc {
 						sw.WriteLine("	JP	Boucle");
 					}
 					else
-						GenereTspace(sw);
+						GenereTspace(sw, true);
 				}
 				else
 					sw.WriteLine("	JR	DrawImgI");
@@ -722,7 +731,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("Palette:");
 			string line = "\tDB\t";
 			for (int i = 0; i < 17; i++)
-				line += "#" + ((int)BitmapCpc.CpcVGA[BitmapCpc.Palette[i < BitmapCpc.MaxCol() ? i : 0]]).ToString("X2") + ",";
+				line += "#" + ((int)BitmapCpc.CpcVGA[BitmapCpc.Palette[i < BitmapCpc.MaxPen() ? i : 0]]).ToString("X2") + ",";
 
 			line += "#" + ((BitmapCpc.modeVirtuel == 7 ? 1 : BitmapCpc.modeVirtuel & 3) | 0x8C).ToString("X2");
 			sw.WriteLine(line);
@@ -734,7 +743,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("Palette:");
 			string line = "\tDB\t#" + ((BitmapCpc.modeVirtuel == 7 ? 1 : BitmapCpc.modeVirtuel & 3) | 0x8C).ToString("X2");
 			for (int i = 0; i < 17; i++) {
-				int c = BitmapCpc.Palette[i < BitmapCpc.MaxCol() ? i : 0];
+				int c = BitmapCpc.Palette[i < BitmapCpc.MaxPen() ? i : 0];
 				line += ",#" + ((byte)(((c >> 4) & 0x0F) | (c << 4))).ToString("X2") + ",#" + ((byte)(c >> 8)).ToString("X2");
 			}
 			sw.WriteLine(line);
@@ -881,6 +890,79 @@ namespace ConvImgCpc {
 			}
 			if (nbOctets > 0)
 				sw.WriteLine(line + "'");
+		}
+
+		static public void GenereAfficheModeEgx(StreamWriter sw, int[] palette, bool overscan) {
+			sw.WriteLine("	LD	HL,Palette");
+			sw.WriteLine("	LD	B,(HL)");
+			sw.WriteLine("	LD	C,B");
+			sw.WriteLine("	CALL	#BC38");
+			sw.WriteLine("	XOR	A");
+			sw.WriteLine("	LD	HL,Palette");
+			sw.WriteLine("SetPalette:");
+			sw.WriteLine("	LD	B,(HL)");
+			sw.WriteLine("	LD	C,B");
+			sw.WriteLine("	PUSH	AF");
+			sw.WriteLine("	PUSH	HL");
+			sw.WriteLine("	CALL	#BC32");
+			sw.WriteLine("	POP	HL");
+			sw.WriteLine("	POP	AF");
+			sw.WriteLine("	INC	HL");
+			sw.WriteLine("	INC	A");
+			sw.WriteLine("	CP	#10");
+			sw.WriteLine("	JR	NZ,SetPalette");
+
+			GenereFormatEcran(sw);
+			sw.WriteLine("	LD	HL,ImageCmp");
+			sw.WriteLine("	LD	DE,#" + (overscan ? "0200" : "C000"));
+			sw.WriteLine("	CALL	DepkLzw");
+
+			sw.WriteLine("	DI");
+			sw.WriteLine("WaitVbl:");
+			sw.WriteLine("	LD	B,#F5");
+			sw.WriteLine("	IN	A,(C)");
+			sw.WriteLine("	RRA");
+			sw.WriteLine("	JR	NC,WaitVbl");
+			sw.WriteLine("WaitEnd:");
+			sw.WriteLine("	IN	A,(C)");
+			sw.WriteLine("	RRA");
+			sw.WriteLine("	JR	C,WaitEnd");
+			sw.WriteLine("	LD	HL,#012F");
+			sw.WriteLine("	LD	DE,#8C01");
+			sw.WriteLine("SetMode:");
+			sw.WriteLine("	LD	B,#7F");
+			sw.WriteLine("	OUT	(C),D			; Premier mode pour les lignes paires");
+			sw.WriteLine("	LD	A,D");
+			sw.WriteLine("	XOR	E				; Inversion du mode pour la prochaine ligne");
+			sw.WriteLine("	LD	D,A");
+			sw.WriteLine("	LD	B,11");
+			sw.WriteLine("WaitNextLine:");
+			sw.WriteLine("	DJNZ	WaitNextLine");
+			sw.WriteLine("	BIT	0,(HL)			; + 4 Nops");
+			sw.WriteLine("	DEC	HL");
+			sw.WriteLine("	LD	A,H");
+			sw.WriteLine("	OR	L");
+			sw.WriteLine("	JR	NZ,SetMode");
+			sw.WriteLine("	CALL	TstSpace");
+			sw.WriteLine("	JR	Z,WaitVbl");
+
+			sw.WriteLine("	LD	BC,#BC0C");
+			sw.WriteLine("	LD	A,#30");
+			sw.WriteLine("	OUT	(C),C");
+			sw.WriteLine("	INC	B");
+			sw.WriteLine("	OUT	(C),A");
+			sw.WriteLine("	EI");
+			sw.WriteLine("	RET");
+
+			GenereTspace(sw, false);
+			GenereDepack(sw);
+
+			string line = "\tDB\t";
+			for (int y = 0; y < 16; y++)
+				line += palette[y].ToString() + ",";
+
+			sw.WriteLine("Palette:");
+			sw.WriteLine(line.Substring(0, line.Length - 1));
 		}
 
 		static public void CloseAsm(StreamWriter sw) {
