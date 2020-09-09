@@ -9,7 +9,7 @@ namespace ConvImgCpc {
 		private static byte[] DiffImage = new byte[0x8000];
 		private static byte[] BufTmp = new byte[0x8000];
 		private static byte[] bLigne = new byte[0x10000];
-		private static byte[] OldImgAscii = new byte[0x800];
+		private static byte[] OldImgAscii = new byte[0x1000];
 		private char lastAscii = '\0';
 
 		private string fileName;

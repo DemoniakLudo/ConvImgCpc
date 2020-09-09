@@ -52,12 +52,11 @@ namespace ConvImgCpc {
 		static double[,] test1 =	{	{1, 4 },
 										{4, 1}};
 
-		static double[,] test2 =	{	{4, 3 },
-										{2, 1}};
+		static double[,] test2 =	{	{8, 1},
+										{1, 8}};
 
-		static double[,] test3 =	{	{8, 4, 5},
-										{3, 0, 1},
-										{7, 2, 6}};
+		static double[,] test3 =	{	{7, 1},
+										{3, 5}};
 
 		static double[,] test4 =	{	{0, 3 },
 										{0, 5 },
@@ -320,36 +319,15 @@ namespace ConvImgCpc {
 			int pct = SetMatDither(prm);
 			RvbColor choix, p = new RvbColor(0);
 			int indexChoix = 0;
+			int m1 = (prm.reductPal1 ? 1 : 0) | (prm.reductPal3 ? 2 : 0);
+			int m2 = (prm.reductPal2 ? 14 : 15) & (prm.reductPal4 ? 13 : 15);
 			for (int yPix = 0; yPix < BitmapCpc.TailleY; yPix += 2) {
 				int Tx = BitmapCpc.CalcTx(yPix);
 				for (int xPix = 0; xPix < BitmapCpc.TailleX; xPix += Tx) {
 					p = TraitePixel(source, xPix, yPix, Tx, prm, pct);
 					// Recherche le point dans la couleur cpc la plus proche
 					if (prm.cpcPlus) {
-						int nr = p.r >> 4;
-						int nv = p.v >> 4;
-						int nb = p.b >> 4;
-						if (prm.reductPal1) {
-							nr |= 0x01;
-							nv |= 0x01;
-							nb |= 0x01;
-						}
-						if (prm.reductPal2) {
-							nr &= 0x0E;
-							nv &= 0x0E;
-							nb &= 0x0E;
-						}
-						if (prm.reductPal3) {
-							nr |= 0x02;
-							nv |= 0x02;
-							nb |= 0x02;
-						}
-						if (prm.reductPal4) {
-							nr &= 0x0D;
-							nv &= 0x0D;
-							nb &= 0x0D;
-						}
-						choix = new RvbColor((byte)(nr * 17), (byte)(nv * 17), (byte)(nb * 17));
+						choix = new RvbColor((byte)((((p.r >> 4) | m1) & m2) * 17), (byte)((((p.v >> 4) | m1) & m2) * 17), (byte)((((p.b >> 4) | m1) & m2) * 17));
 						indexChoix = ((choix.v << 4) & 0xF00) + ((choix.b) & 0xF0) + ((choix.r) >> 4);
 					}
 					else {
