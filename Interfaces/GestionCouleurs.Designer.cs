@@ -1,5 +1,5 @@
 ﻿namespace ConvImgCpc {
-	partial class EffetsPalette {
+	partial class GestionCouleurs {
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>

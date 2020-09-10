@@ -59,11 +59,11 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\EffetsPalette.cs">
+    <Compile Include="Interfaces\GestionCouleurs.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Interfaces\EffetsPalette.Designer.cs">
-      <DependentUpon>EffetsPalette.cs</DependentUpon>
+    <Compile Include="Interfaces\GestionCouleurs.Designer.cs">
+      <DependentUpon>GestionCouleurs.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\Animation.cs">
       <SubType>Form</SubType>
@@ -136,8 +136,8 @@
     <Compile Include="SaveAsm.cs" />
     <Compile Include="UndoRedo.cs" />
     <Compile Include="XorDrawing.cs" />
-    <EmbeddedResource Include="Interfaces\EffetsPalette.resx">
-      <DependentUpon>EffetsPalette.cs</DependentUpon>
+    <EmbeddedResource Include="Interfaces\GestionCouleurs.resx">
+      <DependentUpon>GestionCouleurs.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Interfaces\Animation.resx">
       <DependentUpon>Animation.cs</DependentUpon>

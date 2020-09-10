@@ -2,10 +2,10 @@
 using System.Windows.Forms;
 
 namespace ConvImgCpc {
-	public partial class EffetsPalette : Form {
+	public partial class GestionCouleurs : Form {
 		private Main main;
 
-		public EffetsPalette(Main m) {
+		public GestionCouleurs(Main m) {
 			InitializeComponent();
 			main = m;
 		}

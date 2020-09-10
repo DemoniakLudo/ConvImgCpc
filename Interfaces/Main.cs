@@ -13,12 +13,12 @@ namespace ConvImgCpc {
 		private MemoryStream imageStream;
 		private Informations info = new Informations();
 		private Animation anim;
-		private EffetsPalette efPalette;
+		private GestionCouleurs efPalette;
 
 		public Main() {
 			InitializeComponent();
 			imgCpc = new ImageCpc(this, Convert);
-			efPalette = new EffetsPalette(this);
+			efPalette = new GestionCouleurs(this);
 			anim = new Animation(this);
 			anim.Show();
 
@@ -281,6 +281,7 @@ namespace ConvImgCpc {
 				withPalette.Checked = param.withPalette;
 				chkPalCpc.Checked = param.setPalCpc;
 				chkLissage.Checked = param.lissage;
+				efPalette.InitValues();
 				SetInfo("Lecture paramètres ok.");
 			}
 			catch {
@@ -572,10 +573,8 @@ namespace ConvImgCpc {
 		}
 
 		private void chkCouleur_CheckedChanged(object sender, EventArgs e) {
-			if (chkCouleur.Checked) {
-				efPalette.InitValues();
+			if (chkCouleur.Checked)
 				efPalette.Show();
-			}
 			else
 				efPalette.Hide();
 		}

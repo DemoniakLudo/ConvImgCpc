@@ -279,7 +279,7 @@
 			this.trackModeX.Maximum = 32;
 			this.trackModeX.Minimum = 1;
 			this.trackModeX.Name = "trackModeX";
-			this.trackModeX.Size = new System.Drawing.Size(145, 42);
+			this.trackModeX.Size = new System.Drawing.Size(145, 45);
 			this.trackModeX.TabIndex = 11;
 			this.trackModeX.Value = 1;
 			this.trackModeX.Visible = false;
@@ -599,20 +599,20 @@
 			this.chkInfo.AutoSize = true;
 			this.chkInfo.Location = new System.Drawing.Point(237, 210);
 			this.chkInfo.Name = "chkInfo";
-			this.chkInfo.Size = new System.Drawing.Size(129, 17);
+			this.chkInfo.Size = new System.Drawing.Size(83, 17);
 			this.chkInfo.TabIndex = 61;
-			this.chkInfo.Text = "Fenêtre d\'informations";
+			this.chkInfo.Text = "Informations";
 			this.chkInfo.UseVisualStyleBackColor = true;
 			this.chkInfo.CheckedChanged += new System.EventHandler(this.chkInfo_CheckedChanged);
 			// 
 			// chkCouleur
 			// 
 			this.chkCouleur.AutoSize = true;
-			this.chkCouleur.Location = new System.Drawing.Point(455, 211);
+			this.chkCouleur.Location = new System.Drawing.Point(541, 210);
 			this.chkCouleur.Name = "chkCouleur";
-			this.chkCouleur.Size = new System.Drawing.Size(105, 17);
+			this.chkCouleur.Size = new System.Drawing.Size(125, 17);
 			this.chkCouleur.TabIndex = 62;
-			this.chkCouleur.Text = "Fenêtre couleurs";
+			this.chkCouleur.Text = "Gestion des couleurs";
 			this.chkCouleur.UseVisualStyleBackColor = true;
 			this.chkCouleur.CheckedChanged += new System.EventHandler(this.chkCouleur_CheckedChanged);
 			// 
