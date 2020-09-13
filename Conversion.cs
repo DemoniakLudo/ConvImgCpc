@@ -309,6 +309,52 @@ namespace ConvImgCpc {
 			return nbCol;
 		}
 
+		static private int ConvertTrameTcPlus(DirectBitmap source, ImageCpc dest, Param prm) {
+			int pct = SetMatDither(prm);
+			RvbColor choix, p = new RvbColor(0);
+			int indexChoix = 0;
+			int m1 = (prm.reductPal1 ? 1 : 0) | (prm.reductPal3 ? 2 : 0);
+			int m2 = (prm.reductPal2 ? 14 : 15) & (prm.reductPal4 ? 13 : 15);
+			for (int yPix = 0; yPix < BitmapCpc.TailleY; yPix += 4) {
+				int Tx = BitmapCpc.CalcTx(yPix);
+				for (int xPix = 0; xPix < BitmapCpc.TailleX; xPix += Tx) {
+					for (int yy = 0; yy < 4; yy += 2) {
+						p = TraitePixel(source, xPix, yy + yPix, Tx, prm, pct);
+						choix = new RvbColor((byte)((((p.r >> 4) | m1) & m2) * 17), (byte)((((p.v >> 4) | m1) & m2) * 17), (byte)((((p.b >> 4) | m1) & m2) * 17));
+						indexChoix = ((choix.v << 4) & 0xF00) + ((choix.b) & 0xF0) + ((choix.r) >> 4);
+						if (pct > 0 && prm.methode == "Floyd-Steinberg (2x2)")
+							DoFloydStenbeirg(source, xPix, Tx, yPix, p, choix);
+
+						coulTrouvee[indexChoix, (BitmapCpc.modeVirtuel == 5 || BitmapCpc.modeVirtuel == 6 ? yPix >> 1 : 0)]++;
+						source.SetPixel(xPix, yy + yPix, prm.setPalCpc ? choix : p);
+					}
+					// Moyenne des 2 pixels
+					RvbColor p0 = source.GetPixelColor(xPix, yPix);
+					RvbColor p1 = source.GetPixelColor(xPix, yPix + 2);
+					int r1 = (p0.r & 0xAA) | (p1.r & 0x55);
+					int r2 = (p1.r & 0xAA) | (p0.r & 0x55);
+					int v1 = (p0.v & 0xAA) | (p1.v & 0x55);
+					int v2 = (p1.v & 0xAA) | (p0.v & 0x55);
+					int b1 = (p0.b & 0xAA) | (p1.b & 0x55);
+					int b2 = (p1.b & 0xAA) | (p0.b & 0x55);
+					RvbColor n1 = new RvbColor((byte)((((r1 >> 4) | m1) & m2) * 17), (byte)((((v1 >> 4) | m1) & m2) * 17), (byte)((((b2 >> 4) | m1) & m2) * 17));
+					RvbColor n2 = new RvbColor((byte)((((r2 >> 4) | m1) & m2) * 17), (byte)((((v2 >> 4) | m1) & m2) * 17), (byte)((((b1 >> 4) | m1) & m2) * 17));
+					source.SetPixel(xPix, yPix, (xPix & Tx) == 0 ? n1 : n2);
+					source.SetPixel(xPix, yPix + 2, (xPix & Tx) == 0 ? n2 : n1);
+				}
+			}
+			int nbCol = 0;
+			for (int i = 0; i < coulTrouvee.GetLength(0); i++) {
+				bool memoCol = false;
+				for (int y = 0; y < 272; y++)
+					if (!memoCol && coulTrouvee[i, y] > 0) {
+						nbCol++;
+						memoCol = true;
+					}
+			}
+			return nbCol;
+		}
+
 		//
 		// Passe 1 : Réduit la palette aux x couleurs de la palette du CPC.
 		// Effectue également un traitement de l'erreur (tramage) si demandé.
@@ -743,7 +789,7 @@ namespace ConvImgCpc {
 			for (int i = 0; i < 256; i++)
 				tblContrast[i] = MinMaxByte(((((i / 255.0) - 0.5) * c) + 0.5) * 255);
 
-			int nbCol = p.trameTc ? ConvertTrameTc(source, dest, p) : ConvertPasse1(source, dest, p);
+			int nbCol = p.trameTc ? p.cpcPlus ? ConvertTrameTcPlus(source, dest, p) : ConvertTrameTc(source, dest, p) : ConvertPasse1(source, dest, p);
 			int colSplit = 0;
 			Passe2(source, dest, p, ref colSplit);
 			if (!noInfo) {
