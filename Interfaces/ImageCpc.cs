@@ -351,6 +351,8 @@ namespace ConvImgCpc {
 				ed.ShowDialog(this);
 				if (ed.isValide) {
 					BitmapCpc.Palette[pen] = ed.ValColor;
+					lockColors[pen].Checked = true;
+					lockState[pen] = 1;
 					UpdatePalette();
 					Convert(false);
 				}
