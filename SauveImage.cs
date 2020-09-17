@@ -382,7 +382,7 @@ namespace ConvImgCpc {
 				}
 			}
 			else {
-				if (BitmapCpc.NbLig == 272 && BitmapCpc.NbCol == 96) {
+				if (BitmapCpc.NbLig * BitmapCpc.NbCol > 0x4000) {
 					Buffer.BlockCopy(ModePal, 0, imgCpc, 0x600, ModePal.Length);
 					if (param.withCode && version == null) {
 						if (param.cpcPlus)
