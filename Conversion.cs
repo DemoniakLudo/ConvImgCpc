@@ -337,8 +337,8 @@ namespace ConvImgCpc {
 					int v2 = (p1.v & 0xAA) | (p0.v & 0x55);
 					int b1 = (p0.b & 0xAA) | (p1.b & 0x55);
 					int b2 = (p1.b & 0xAA) | (p0.b & 0x55);
-					RvbColor n1 = new RvbColor((byte)((((r1 >> 4) | m1) & m2) * 17), (byte)((((v1 >> 4) | m1) & m2) * 17), (byte)((((b2 >> 4) | m1) & m2) * 17));
-					RvbColor n2 = new RvbColor((byte)((((r2 >> 4) | m1) & m2) * 17), (byte)((((v2 >> 4) | m1) & m2) * 17), (byte)((((b1 >> 4) | m1) & m2) * 17));
+					RvbColor n1 = new RvbColor((byte)((((r1 >> 4) | m1) & m2) * 17), (byte)((((v1 >> 4) | m1) & m2) * 17), (byte)((((b1 >> 4) | m1) & m2) * 17));
+					RvbColor n2 = new RvbColor((byte)((((r2 >> 4) | m1) & m2) * 17), (byte)((((v2 >> 4) | m1) & m2) * 17), (byte)((((b2 >> 4) | m1) & m2) * 17));
 					source.SetPixel(xPix, yPix, (xPix & Tx) == 0 ? n1 : n2);
 					source.SetPixel(xPix, yPix + 2, (xPix & Tx) == 0 ? n2 : n1);
 				}
