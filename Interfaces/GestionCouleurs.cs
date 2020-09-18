@@ -187,7 +187,6 @@ namespace ConvImgCpc {
 		private void modePlus_CheckedChanged(object sender, EventArgs e) {
 			BitmapCpc.cpcPlus = modePlus.Checked;
 			newMethode.Visible = !modePlus.Checked;
-			reducPal1.Visible = reducPal2.Visible = reducPal3.Visible = reducPal4.Visible = modePlus.Checked;
 			main.param.cpcPlus = modePlus.Checked;
 			main.Convert(false);
 		}

@@ -239,6 +239,27 @@ namespace ConvImgCpc {
 			else
 				p = source.GetPixelColor(xPix, yPix);
 
+			if (prm.reductPal1) {
+				p.r = (byte)((p.r & 0xE0) * 255 / 0xE0);
+				p.v = (byte)((p.v & 0xE0) * 255 / 0xE0);
+				p.b = (byte)((p.b & 0xE0) * 255 / 0xE0);
+			}
+			if (prm.reductPal2) {
+				p.r = (byte)((p.r & 0xD0) * 255 / 0xD0);
+				p.v = (byte)((p.v & 0xD0) * 255 / 0xD0);
+				p.b = (byte)((p.b & 0xD0) * 255 / 0xD0);
+			}
+			if (prm.reductPal3) {
+				p.r = (byte)((p.r & 0xC0) * 255 / 0xC0);
+				p.v = (byte)((p.v & 0xC0) * 255 / 0xC0);
+				p.b = (byte)((p.b & 0xC0) * 255 / 0xC0);
+			}
+			if (prm.reductPal4) {
+				p.r = (byte)((p.r & 0x80) * 255 / 0x80);
+				p.v = (byte)((p.v & 0x80) * 255 / 0x80);
+				p.b = (byte)((p.b & 0x80) * 255 / 0x80);
+			}
+
 			p.r = MinMaxByte(p.r * prm.pctRed / 100);
 			p.v = MinMaxByte(p.v * prm.pctGreen / 100);
 			p.b = MinMaxByte(p.b * prm.pctBlue / 100);
@@ -313,14 +334,12 @@ namespace ConvImgCpc {
 			int pct = SetMatDither(prm);
 			RvbColor choix, p = new RvbColor(0);
 			int indexChoix = 0;
-			int m1 = (prm.reductPal1 ? 1 : 0) | (prm.reductPal3 ? 2 : 0);
-			int m2 = (prm.reductPal2 ? 14 : 15) & (prm.reductPal4 ? 13 : 15);
 			for (int yPix = 0; yPix < BitmapCpc.TailleY; yPix += 4) {
 				int Tx = BitmapCpc.CalcTx(yPix);
 				for (int xPix = 0; xPix < BitmapCpc.TailleX; xPix += Tx) {
 					for (int yy = 0; yy < 4; yy += 2) {
 						p = GetPixel(source, xPix, yy + yPix, Tx, prm, pct);
-						choix = new RvbColor((byte)((((p.r >> 4) | m1) & m2) * 17), (byte)((((p.v >> 4) | m1) & m2) * 17), (byte)((((p.b >> 4) | m1) & m2) * 17));
+						choix = new RvbColor((byte)((p.r >> 4) * 17), (byte)((p.v >> 4) * 17), (byte)((p.b >> 4) * 17));
 						indexChoix = ((choix.v << 4) & 0xF00) + ((choix.b) & 0xF0) + ((choix.r) >> 4);
 						if (pct > 0 && prm.methode == "Floyd-Steinberg (2x2)")
 							DoFloydStenbeirg(source, xPix, Tx, yPix, p, choix);
@@ -337,8 +356,8 @@ namespace ConvImgCpc {
 					int r1 = (p1.r & 0xA0) | (p0.r & 0x50);
 					int v1 = (p1.v & 0xA0) | (p0.v & 0x50);
 					int b1 = (p1.b & 0xA0) | (p0.b & 0x50);
-					RvbColor n1 = new RvbColor((byte)((((r0 >> 4) | m1) & m2) * 17), (byte)((((v0 >> 4) | m1) & m2) * 17), (byte)((((b0 >> 4) | m1) & m2) * 17));
-					RvbColor n2 = new RvbColor((byte)((((r1 >> 4) | m1) & m2) * 17), (byte)((((v1 >> 4) | m1) & m2) * 17), (byte)((((b1 >> 4) | m1) & m2) * 17));
+					RvbColor n1 = new RvbColor((byte)((r0 >> 4) * 17), (byte)((v0 >> 4) * 17), (byte)((b0 >> 4) * 17));
+					RvbColor n2 = new RvbColor((byte)((r1 >> 4) * 17), (byte)((v1 >> 4) * 17), (byte)((b1 >> 4) * 17));
 					source.SetPixel(xPix, yPix, (xPix & Tx) == 0 ? n1 : n2);
 					source.SetPixel(xPix, yPix + 2, (xPix & Tx) == 0 ? n2 : n1);
 				}
@@ -365,15 +384,13 @@ namespace ConvImgCpc {
 			int pct = SetMatDither(prm);
 			RvbColor choix, p = new RvbColor(0);
 			int indexChoix = 0;
-			int m1 = (prm.reductPal1 ? 1 : 0) | (prm.reductPal3 ? 2 : 0);
-			int m2 = (prm.reductPal2 ? 14 : 15) & (prm.reductPal4 ? 13 : 15);
 			for (int yPix = 0; yPix < BitmapCpc.TailleY; yPix += 2) {
 				int Tx = BitmapCpc.CalcTx(yPix);
 				for (int xPix = 0; xPix < BitmapCpc.TailleX; xPix += Tx) {
 					p = GetPixel(source, xPix, yPix, Tx, prm, pct);
 					// Recherche le point dans la couleur cpc la plus proche
 					if (prm.cpcPlus) {
-						choix = new RvbColor((byte)((((p.r >> 4) | m1) & m2) * 17), (byte)((((p.v >> 4) | m1) & m2) * 17), (byte)((((p.b >> 4) | m1) & m2) * 17));
+						choix = new RvbColor((byte)((p.r >> 4) * 17), (byte)((p.v >> 4) * 17), (byte)((p.b >> 4) * 17));
 						indexChoix = ((choix.v << 4) & 0xF00) + ((choix.b) & 0xF0) + ((choix.r) >> 4);
 					}
 					else {
@@ -748,7 +765,7 @@ namespace ConvImgCpc {
 
 			if (BitmapCpc.modeVirtuel == 3 || BitmapCpc.modeVirtuel == 4) {
 				int newMax = BitmapCpc.MaxPen(0);
-				RechercheCMax2(newMax, MemoLockState, p);
+				RechercheCMax(newMax, MemoLockState, p);
 				for (i = 0; i < newMax; i++)
 					MemoLockState[i] = 1;
 			}
@@ -766,7 +783,7 @@ namespace ConvImgCpc {
 							: BitmapCpc.RgbCPC[dest.colMode5[y, i] < 27 ? dest.colMode5[y, i] : 0];
 			}
 			else {
-				RechercheCMax2(maxPen, MemoLockState, p);
+				RechercheCMax(maxPen, MemoLockState, p);
 				// réduit l'image à MaxPen couleurs.
 				for (int y = 0; y < BitmapCpc.TailleY; y += 2) {
 					maxPen = BitmapCpc.MaxPen(y);

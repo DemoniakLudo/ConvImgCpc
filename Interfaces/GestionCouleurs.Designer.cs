@@ -78,7 +78,6 @@
 			this.reducPal4.TabIndex = 60;
 			this.reducPal4.Text = "Réduction 4";
 			this.reducPal4.UseVisualStyleBackColor = true;
-			this.reducPal4.Visible = false;
 			this.reducPal4.CheckedChanged += new System.EventHandler(this.reducPal4_CheckedChanged);
 			// 
 			// bpBmoins
@@ -343,7 +342,6 @@
 			this.reducPal3.TabIndex = 47;
 			this.reducPal3.Text = "Réduction 3";
 			this.reducPal3.UseVisualStyleBackColor = true;
-			this.reducPal3.Visible = false;
 			this.reducPal3.CheckedChanged += new System.EventHandler(this.reducPal3_CheckedChanged);
 			// 
 			// contrast
@@ -366,7 +364,6 @@
 			this.reducPal2.TabIndex = 46;
 			this.reducPal2.Text = "Réduction 2";
 			this.reducPal2.UseVisualStyleBackColor = true;
-			this.reducPal2.Visible = false;
 			this.reducPal2.CheckedChanged += new System.EventHandler(this.reducPal2_CheckedChanged);
 			// 
 			// reducPal1
@@ -378,7 +375,6 @@
 			this.reducPal1.TabIndex = 46;
 			this.reducPal1.Text = "Réduction 1";
 			this.reducPal1.UseVisualStyleBackColor = true;
-			this.reducPal1.Visible = false;
 			this.reducPal1.CheckedChanged += new System.EventHandler(this.reducPal1_CheckedChanged);
 			// 
 			// bpRazSat
@@ -461,7 +457,7 @@
 			this.label8.TabIndex = 13;
 			this.label8.Text = "Lum.";
 			// 
-			// EffetsPalette
+			// GestionCouleurs
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -507,7 +503,7 @@
 			this.Controls.Add(this.label8);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.MaximizeBox = false;
-			this.Name = "EffetsPalette";
+			this.Name = "GestionCouleurs";
 			this.Text = "Gestion des couleurs";
 			((System.ComponentModel.ISupportInitialize)(this.blue)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.green)).EndInit();
