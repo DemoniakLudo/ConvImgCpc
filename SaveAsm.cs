@@ -802,6 +802,53 @@ namespace ConvImgCpc {
 			sw.WriteLine(line + "0");
 		}
 
+		static public void GenereAfficheStd(StreamWriter sw, int mode, int[] palette, bool overscan) {
+			sw.WriteLine("	LD	A," + mode.ToString());
+			sw.WriteLine("	CALL	#BC0E");
+			sw.WriteLine("	LD	HL,Palette");
+			sw.WriteLine("	LD	B,(HL)");
+			sw.WriteLine("	LD	C,B");
+			sw.WriteLine("	CALL	#BC38");
+			sw.WriteLine("	XOR	A");
+			sw.WriteLine("	LD	HL,Palette");
+			sw.WriteLine("SetPalette:");
+			sw.WriteLine("	LD	B,(HL)");
+			sw.WriteLine("	LD	C,B");
+			sw.WriteLine("	PUSH	AF");
+			sw.WriteLine("	PUSH	HL");
+			sw.WriteLine("	CALL	#BC32");
+			sw.WriteLine("	POP	HL");
+			sw.WriteLine("	POP	AF");
+			sw.WriteLine("	INC	HL");
+			sw.WriteLine("	INC	A");
+			sw.WriteLine("	CP	#10");
+			sw.WriteLine("	JR	NZ,SetPalette");
+
+			GenereFormatEcran(sw);
+			sw.WriteLine("	LD	HL,ImageCmp");
+			sw.WriteLine("	LD	DE,#" + (overscan ? "0200" : "C000"));
+			sw.WriteLine("	CALL	DepkLzw");
+			sw.WriteLine("	CALL	#BB18");
+
+			sw.WriteLine("	LD	BC,#BC0C");
+			sw.WriteLine("	LD	A,#30");
+			sw.WriteLine("	OUT	(C),C");
+			sw.WriteLine("	INC	B");
+			sw.WriteLine("	OUT	(C),A");
+			sw.WriteLine("	EI");
+			sw.WriteLine("	RET");
+
+			GenereTspace(sw, false);
+			GenereDepack(sw);
+
+			string line = "\tDB\t";
+			for (int y = 0; y < 16; y++)
+				line += palette[y].ToString() + ",";
+
+			sw.WriteLine("Palette:");
+			sw.WriteLine(line.Substring(0, line.Length - 1));
+		}
+
 		static public void GenereAfficheModeX(StreamWriter sw, int[,] colMode5, bool isOverscan) {
 			sw.WriteLine("	CALL	DepkLzw");
 			sw.WriteLine("	DI");

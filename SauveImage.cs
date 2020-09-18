@@ -433,6 +433,7 @@ namespace ConvImgCpc {
 				}
 			}
 			if (version != null) {
+				// Sauvegarde source assembleur
 				StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
 				int org = 0xA500 - lg - (BitmapCpc.modeVirtuel == 5 ? 600 : 0);
 				sw.WriteLine("	ORG	#" + org.ToString("X4"));
@@ -452,7 +453,7 @@ namespace ConvImgCpc {
 						if (BitmapCpc.modeVirtuel == 5)
 							SaveAsm.GenereAfficheModeX(sw, colMode5, overscan);
 						else
-							SaveAsm.GenereDepack(sw);
+							SaveAsm.GenereAfficheStd(sw, BitmapCpc.modeVirtuel, BitmapCpc.Palette, overscan);
 					}
 				}
 				SaveAsm.CloseAsm(sw);

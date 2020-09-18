@@ -14,12 +14,15 @@ namespace ConvImgCpc {
 		private Informations info = new Informations();
 		private Animation anim;
 		private GestionCouleurs efPalette;
+		private ParamInterne paramIntere;
 
 		public Main() {
 			InitializeComponent();
 			imgCpc = new ImageCpc(this, Convert);
 			efPalette = new GestionCouleurs(this);
 			anim = new Animation(this);
+			paramIntere = new ParamInterne(this);
+			paramIntere.InitValues();
 			anim.Show();
 
 			for (int i = 0; i < BitmapCpc.modesVirtuels.Length; i++)
@@ -271,9 +274,17 @@ namespace ConvImgCpc {
 				methode.SelectedItem = param.methode;
 				pctTrame.Value = param.pct;
 				imgCpc.lockState = param.lockState;
+				if (param.sMode == Param.SizeMode.UserSize) {
+					tbxPosX.Text = param.posx.ToString();
+					tbxPosY.Text = param.posy.ToString();
+					tbxSizeX.Text = param.sizex.ToString();
+					tbxSizeY.Text = param.sizey.ToString();
+				}
 				radioFit.Checked = param.sMode == Param.SizeMode.Fit;
 				radioKeepLarger.Checked = param.sMode == Param.SizeMode.KeepLarger;
 				radioKeepSmaller.Checked = param.sMode == Param.SizeMode.KeepSmaller;
+				radioOrigin.Checked = param.sMode == Param.SizeMode.Origin;
+				radioUserSize.Checked = param.sMode == Param.SizeMode.UserSize;
 				nbCols.Value = param.nbCols;
 				nbLignes.Value = param.nbLignes;
 				mode.SelectedIndex = param.modeVirtuel;
@@ -282,6 +293,7 @@ namespace ConvImgCpc {
 				chkPalCpc.Checked = param.setPalCpc;
 				chkLissage.Checked = param.lissage;
 				efPalette.InitValues();
+				paramIntere.InitValues();
 				SetInfo("Lecture paramètres ok.");
 			}
 			catch {
@@ -295,6 +307,9 @@ namespace ConvImgCpc {
 			try {
 				param.withCode = withCode.Checked;
 				param.withPalette = withPalette.Checked;
+				if (param.sMode == Param.SizeMode.UserSize)
+					GetSizePos(ref param.posx, ref param.posy, ref param.sizex, ref param.sizey);
+
 				new XmlSerializer(typeof(Param)).Serialize(file, param);
 				SetInfo("Sauvegarde paramètres ok.");
 			}
@@ -582,6 +597,13 @@ namespace ConvImgCpc {
 		private void chkAllPics_CheckedChanged(object sender, EventArgs e) {
 			if (chkAllPics.Checked)
 				autoRecalc.Checked = false;
+		}
+
+		private void chkParamInterne_CheckedChanged(object sender, EventArgs e) {
+			if (chkParamInterne.Checked)
+				paramIntere.Show();
+			else
+				paramIntere.Hide();
 		}
 	}
 }

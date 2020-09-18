@@ -67,6 +67,7 @@
 			this.bpCreate = new System.Windows.Forms.Button();
 			this.chkInfo = new System.Windows.Forms.CheckBox();
 			this.chkCouleur = new System.Windows.Forms.CheckBox();
+			this.chkParamInterne = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -616,12 +617,24 @@
 			this.chkCouleur.UseVisualStyleBackColor = true;
 			this.chkCouleur.CheckedChanged += new System.EventHandler(this.chkCouleur_CheckedChanged);
 			// 
+			// chkParamInterne
+			// 
+			this.chkParamInterne.AutoSize = true;
+			this.chkParamInterne.Location = new System.Drawing.Point(368, 210);
+			this.chkParamInterne.Name = "chkParamInterne";
+			this.chkParamInterne.Size = new System.Drawing.Size(119, 17);
+			this.chkParamInterne.TabIndex = 63;
+			this.chkParamInterne.Text = "Paramètres internes";
+			this.chkParamInterne.UseVisualStyleBackColor = true;
+			this.chkParamInterne.CheckedChanged += new System.EventHandler(this.chkParamInterne_CheckedChanged);
+			// 
 			// Main
 			// 
 			this.AllowDrop = true;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(714, 243);
+			this.Controls.Add(this.chkParamInterne);
 			this.Controls.Add(this.chkCouleur);
 			this.Controls.Add(this.chkInfo);
 			this.Controls.Add(this.bpCreate);
@@ -704,6 +717,7 @@
 		private System.Windows.Forms.Button bpCalcSprite;
 		private System.Windows.Forms.CheckBox chkCouleur;
 		private System.Windows.Forms.CheckBox chkTrameTC;
+		private System.Windows.Forms.CheckBox chkParamInterne;
 	}
 }
 

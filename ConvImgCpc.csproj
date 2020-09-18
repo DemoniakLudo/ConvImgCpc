@@ -115,6 +115,12 @@
     <Compile Include="Interfaces\Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\ParamInterne.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interfaces\ParamInterne.Designer.cs">
+      <DependentUpon>ParamInterne.cs</DependentUpon>
+    </Compile>
     <Compile Include="Interfaces\SaveAnim.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -159,6 +165,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Interfaces\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interfaces\ParamInterne.resx">
+      <DependentUpon>ParamInterne.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Interfaces\SaveAnim.resx">
       <DependentUpon>SaveAnim.cs</DependentUpon>

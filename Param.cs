@@ -4,6 +4,7 @@
 		public enum SizeMode { Fit, KeepSmaller, KeepLarger, UserSize, Origin };
 
 		public SizeMode sMode;
+		public int sizex, sizey, posx, posy; // Taille et position en mode 'UserSize'
 		public string methode;
 		public int pct;
 		public int[] lockState = new int[16];
