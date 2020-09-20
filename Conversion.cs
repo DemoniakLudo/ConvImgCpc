@@ -239,30 +239,11 @@ namespace ConvImgCpc {
 			else
 				p = source.GetPixelColor(xPix, yPix);
 
-			if (prm.reductPal1) {
-				p.r = (byte)((p.r & 0xE0) * 255 / 0xE0);
-				p.v = (byte)((p.v & 0xE0) * 255 / 0xE0);
-				p.b = (byte)((p.b & 0xE0) * 255 / 0xE0);
-			}
-			if (prm.reductPal2) {
-				p.r = (byte)((p.r & 0xD0) * 255 / 0xD0);
-				p.v = (byte)((p.v & 0xD0) * 255 / 0xD0);
-				p.b = (byte)((p.b & 0xD0) * 255 / 0xD0);
-			}
-			if (prm.reductPal3) {
-				p.r = (byte)((p.r & 0xC0) * 255 / 0xC0);
-				p.v = (byte)((p.v & 0xC0) * 255 / 0xC0);
-				p.b = (byte)((p.b & 0xC0) * 255 / 0xC0);
-			}
-			if (prm.reductPal4) {
-				p.r = (byte)((p.r & 0x80) * 255 / 0x80);
-				p.v = (byte)((p.v & 0x80) * 255 / 0x80);
-				p.b = (byte)((p.b & 0x80) * 255 / 0x80);
-			}
-
-			p.r = MinMaxByte(p.r * prm.pctRed / 100);
-			p.v = MinMaxByte(p.v * prm.pctGreen / 100);
-			p.b = MinMaxByte(p.b * prm.pctBlue / 100);
+			int m1 = (prm.reductPal1 ? 0x10 : 0x00) | (prm.reductPal3 ? 0x20 : 0x00);
+			int m2 = (prm.reductPal2 ? 0xE0 : 0xFF) & (prm.reductPal4 ? 0xD0 : 0xFF);
+			p.r = MinMaxByte(((p.r | m1) & m2) * prm.pctRed / 100);
+			p.v = MinMaxByte(((p.v | m1) & m2) * prm.pctGreen / 100);
+			p.b = MinMaxByte(((p.b | m1) & m2) * prm.pctBlue / 100);
 			if (p.r != 0 || p.v != 0 || p.b != 0) {
 				float r = tblContrast[p.r];
 				float v = tblContrast[p.v];
