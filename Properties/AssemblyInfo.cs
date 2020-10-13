@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // l'ensemble d'attributs suivant. Changez les valeurs de ces attributs pour modifier les informations
 // associées à un assembly.
 [assembly: AssemblyTitle("ConvImgCpc")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Convversion d'images vers le format CPC")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Demoniak")]
 [assembly: AssemblyProduct("ConvImgCPC")]
-[assembly: AssemblyCopyright("Copyright © Demoniak 2013")]
+[assembly: AssemblyCopyright("Copyright © Demoniak 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

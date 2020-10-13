@@ -179,7 +179,7 @@ namespace ConvImgCpc {
 		private void SetPalette(byte[] palStart, int startAdr, bool plus) {
 			modeVirtuel = palStart[startAdr] & 0x03;
 			for (int i = 0; i < 16; i++)
-				Palette[i] = plus ? palStart[startAdr + 1 + (i << 1)] + (palStart[startAdr + 2 + (i << 1)] << 8) : palStart[startAdr + i + 1];
+				Palette[i] = plus ? ((palStart[startAdr + 1 + (i << 1)] << 4) & 0xF0) + (palStart[startAdr + 1 + (i << 1)] >> 4) + (palStart[startAdr + 2 + (i << 1)] << 8) : palStart[startAdr + i + 1];
 		}
 
 		private bool InitDatas() {
@@ -485,7 +485,7 @@ namespace ConvImgCpc {
 				CreeImgAscii(bmpLock);
 		}
 
-		public Bitmap CreateImageFromCpc(int length, bool isSprite = false) {
+		public Bitmap CreateImageFromCpc(int length, Param par,bool isSprite = false) {
 			if (!isSprite) {
 				if (bmpCpc[0] == 'M' && bmpCpc[1] == 'J' && bmpCpc[2] == 'H')
 					DepactOCP();
@@ -518,6 +518,7 @@ namespace ConvImgCpc {
 						}
 					}
 			}
+			par.cpcPlus = cpcPlus;
 			// Rendu dans un bitmap PC
 			DirectBitmap loc = new DirectBitmap(nbCol << 3, nbLig * 2);
 			for (int y = 0; y < nbLig << 1; y += 2) {

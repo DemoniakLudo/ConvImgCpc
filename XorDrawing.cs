@@ -155,12 +155,13 @@ namespace ConvImgCpc {
 			graphics.DrawImage(outBmp, 0, 0); //draw the xored image on the bitmap
 			graphics.Transform = transform;
 
-			if (dash) DeleteObject(SelectObject(hdc, oldpen)); //delete new pen (switch to oldpen)
+			if (dash)
+				DeleteObject(SelectObject(hdc, oldpen)); //delete new pen (switch to oldpen)
 			DeleteObject(img); // Delete the GDI bitmap (important).
 			DeleteObject(hdc);
 		}
 
-		public static void DrawXorLine(this Graphics graphics, Bitmap bmp, int x1, int y1, int x2, int y2, bool dash = true) {
+		public static void DrawXorLine(Graphics graphics, Bitmap bmp, int x1, int y1, int x2, int y2, bool dash = true) {
 			int oldRop;
 			IntPtr oldpen, img;
 			var hdc = BeginDraw(bmp, graphics, x1, y1, x2, y2, dash, out oldRop, out img, out oldpen);
@@ -171,7 +172,7 @@ namespace ConvImgCpc {
 			FinishDraw(bmp, graphics, hdc, oldpen, oldRop, img, dash);
 		}
 
-		public static void DrawXorRectangle(this Graphics graphics, Bitmap bmp, int x1, int y1, int x2, int y2, bool dash = true) {
+		public static void DrawXorRectangle(Graphics graphics, Bitmap bmp, int x1, int y1, int x2, int y2, bool dash = true) {
 			int oldRop;
 			IntPtr oldpen, img;
 			var hdc = BeginDraw(bmp, graphics, x1, y1, x2, y2, dash, out oldRop, out img, out oldpen);
