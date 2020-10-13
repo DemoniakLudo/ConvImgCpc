@@ -42,6 +42,7 @@
 			this.bpUndo = new System.Windows.Forms.Button();
 			this.chkRendu = new System.Windows.Forms.CheckBox();
 			this.pictureBox = new System.Windows.Forms.PictureBox();
+			this.lblInfoPos = new System.Windows.Forms.Label();
 			this.grpEdition.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
 			this.SuspendLayout();
@@ -93,7 +94,7 @@
 			// drawColor
 			// 
 			this.drawColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.drawColor.Location = new System.Drawing.Point(6, 291);
+			this.drawColor.Location = new System.Drawing.Point(6, 243);
 			this.drawColor.Name = "drawColor";
 			this.drawColor.Size = new System.Drawing.Size(70, 70);
 			this.drawColor.TabIndex = 7;
@@ -101,7 +102,7 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(17, 265);
+			this.label3.Location = new System.Drawing.Point(17, 217);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(84, 13);
 			this.label3.TabIndex = 4;
@@ -110,7 +111,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(7, 230);
+			this.label2.Location = new System.Drawing.Point(7, 182);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(73, 13);
 			this.label2.TabIndex = 5;
@@ -127,7 +128,7 @@
             "3",
             "4",
             "8"});
-			this.tailleCrayon.Location = new System.Drawing.Point(96, 227);
+			this.tailleCrayon.Location = new System.Drawing.Point(96, 179);
 			this.tailleCrayon.Name = "tailleCrayon";
 			this.tailleCrayon.Size = new System.Drawing.Size(31, 21);
 			this.tailleCrayon.TabIndex = 3;
@@ -135,6 +136,7 @@
 			// 
 			// grpEdition
 			// 
+			this.grpEdition.Controls.Add(this.lblInfoPos);
 			this.grpEdition.Controls.Add(this.rbCopy);
 			this.grpEdition.Controls.Add(this.undrawColor);
 			this.grpEdition.Controls.Add(this.lblZoom);
@@ -168,7 +170,7 @@
 			// undrawColor
 			// 
 			this.undrawColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.undrawColor.Location = new System.Drawing.Point(6, 373);
+			this.undrawColor.Location = new System.Drawing.Point(6, 325);
 			this.undrawColor.Name = "undrawColor";
 			this.undrawColor.Size = new System.Drawing.Size(70, 70);
 			this.undrawColor.TabIndex = 15;
@@ -217,7 +219,7 @@
 			// bpRedo
 			// 
 			this.bpRedo.Enabled = false;
-			this.bpRedo.Location = new System.Drawing.Point(36, 479);
+			this.bpRedo.Location = new System.Drawing.Point(36, 431);
 			this.bpRedo.Name = "bpRedo";
 			this.bpRedo.Size = new System.Drawing.Size(75, 23);
 			this.bpRedo.TabIndex = 10;
@@ -228,7 +230,7 @@
 			// bpUndo
 			// 
 			this.bpUndo.Enabled = false;
-			this.bpUndo.Location = new System.Drawing.Point(36, 450);
+			this.bpUndo.Location = new System.Drawing.Point(36, 402);
 			this.bpUndo.Name = "bpUndo";
 			this.bpUndo.Size = new System.Drawing.Size(75, 23);
 			this.bpUndo.TabIndex = 10;
@@ -257,6 +259,14 @@
 			this.pictureBox.TabStop = false;
 			this.pictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TrtMouseMove);
 			this.pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TrtMouseMove);
+			// 
+			// lblInfoPos
+			// 
+			this.lblInfoPos.AutoSize = true;
+			this.lblInfoPos.Location = new System.Drawing.Point(7, 151);
+			this.lblInfoPos.Name = "lblInfoPos";
+			this.lblInfoPos.Size = new System.Drawing.Size(0, 13);
+			this.lblInfoPos.TabIndex = 17;
 			// 
 			// ImageCpc
 			// 
@@ -303,6 +313,7 @@
 		private System.Windows.Forms.Label lblZoom;
 		private System.Windows.Forms.Label undrawColor;
 		private System.Windows.Forms.RadioButton rbCopy;
+		private System.Windows.Forms.Label lblInfoPos;
 
 	}
 }

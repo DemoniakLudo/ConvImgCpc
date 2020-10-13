@@ -215,8 +215,14 @@ namespace ConvImgCpc {
 			pictureBox.Image = tmpLock != null ? tmpLock.Bitmap : BmpLock.Bitmap;
 		}
 
+		// Sur déplacement de la souris...
 		private void TrtMouseMove(object sender, MouseEventArgs e) {
 			if (modeEdition.Checked) {
+				int incY = BitmapCpc.modeVirtuel >= 8 ? 8 : 2;
+				int yReel = ((offsetY + (e.Y / zoom)) & -incY) >> 1;
+				int tx = BitmapCpc.CalcTx(yReel);
+				int xReel = (offsetX + (e.X / zoom)) & -tx;
+				lblInfoPos.Text = "x:" + xReel.ToString("000") + " y:" + yReel.ToString("000");
 				switch (editToolMode) {
 					case EditTool.Draw:
 						ToolModeDraw(e);
