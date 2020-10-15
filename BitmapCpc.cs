@@ -485,7 +485,7 @@ namespace ConvImgCpc {
 				CreeImgAscii(bmpLock);
 		}
 
-		public Bitmap CreateImageFromCpc(int length, Param par,bool isSprite = false) {
+		public Bitmap CreateImageFromCpc(int length, Param par, bool isSprite = false) {
 			if (!isSprite) {
 				if (bmpCpc[0] == 'M' && bmpCpc[1] == 'J' && bmpCpc[2] == 'H')
 					DepactOCP();

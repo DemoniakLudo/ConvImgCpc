@@ -190,10 +190,17 @@ namespace ConvImgCpc {
 								nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
 								BitmapCpc.TailleY = 544;
 								nbCols.Value = param.nbCols = BitmapCpc.NbCol;
-								// Palette en 0x7E10
-								for (int i = 0; i < 16; i++)
-									BitmapCpc.Palette[i] = BitmapCpc.CpcVGA.IndexOf((char)tabBytes[0x7E10 + i]);
-
+								BitmapCpc.cpcPlus = tabBytes[0xBC] != 0;
+								if (BitmapCpc.cpcPlus) {
+									// Palette en 0x0711;
+									for (int i = 0; i < 16; i++)
+										BitmapCpc.Palette[i] = ((tabBytes[0x0711 + (i << 1)] << 4) & 0xF0) + (tabBytes[0x0711 + (i << 1)] >> 4) + (tabBytes[0x0712 + (i << 1)] << 8);
+								}
+								else {
+									// Palette en 0x7E10
+									for (int i = 0; i < 16; i++)
+										BitmapCpc.Palette[i] = BitmapCpc.CpcVGA.IndexOf((char)tabBytes[0x7E10 + i]);
+								}
 								imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param));
 							}
 						}
