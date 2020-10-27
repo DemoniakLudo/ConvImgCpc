@@ -98,6 +98,7 @@ namespace ConvImgCpc {
 					param.lockState = imgCpc.lockState;
 					param.setPalCpc = chkPalCpc.Checked;
 					param.trameTc = chkTrameTC.Checked;
+					param.newReduc = chkNewReduc.Checked;
 					DirectBitmap tmp = GetResizeBitmap();
 					if (!noInfo && doConvert)
 						SetInfo("Conversion en cours...");

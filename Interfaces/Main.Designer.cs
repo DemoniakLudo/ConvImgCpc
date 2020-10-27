@@ -40,6 +40,7 @@
 			this.bpStandard = new System.Windows.Forms.Button();
 			this.bpOverscan = new System.Windows.Forms.Button();
 			this.tramage = new System.Windows.Forms.GroupBox();
+			this.chkNewReduc = new System.Windows.Forms.CheckBox();
 			this.chkTrameTC = new System.Windows.Forms.CheckBox();
 			this.chkLissage = new System.Windows.Forms.CheckBox();
 			this.chkPalCpc = new System.Windows.Forms.CheckBox();
@@ -308,6 +309,7 @@
 			// 
 			// tramage
 			// 
+			this.tramage.Controls.Add(this.chkNewReduc);
 			this.tramage.Controls.Add(this.chkTrameTC);
 			this.tramage.Controls.Add(this.chkLissage);
 			this.tramage.Controls.Add(this.chkPalCpc);
@@ -321,6 +323,17 @@
 			this.tramage.TabIndex = 11;
 			this.tramage.TabStop = false;
 			this.tramage.Text = "Tramage et rendu";
+			// 
+			// chkNewReduc
+			// 
+			this.chkNewReduc.AutoSize = true;
+			this.chkNewReduc.Location = new System.Drawing.Point(46, 176);
+			this.chkNewReduc.Name = "chkNewReduc";
+			this.chkNewReduc.Size = new System.Drawing.Size(120, 17);
+			this.chkNewReduc.TabIndex = 17;
+			this.chkNewReduc.Text = "Méthode alternative";
+			this.chkNewReduc.UseVisualStyleBackColor = true;
+			this.chkNewReduc.CheckedChanged += new System.EventHandler(this.InterfaceChange);
 			// 
 			// chkTrameTC
 			// 
@@ -718,6 +731,7 @@
 		private System.Windows.Forms.CheckBox chkCouleur;
 		private System.Windows.Forms.CheckBox chkTrameTC;
 		private System.Windows.Forms.CheckBox chkParamInterne;
+		private System.Windows.Forms.CheckBox chkNewReduc;
 	}
 }
 

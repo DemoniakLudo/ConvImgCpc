@@ -47,5 +47,6 @@
 		public int cstB2 = 170;
 		public int cstB3 = 255;
 		public int cstB4 = 340;
+		public bool newReduc;
 	}
 }
