@@ -46,17 +46,23 @@ namespace ConvImgCpc {
 										{3, 0, 1, 5, 0},
 										{0, 4, 0, 0, 0}};
 
-		static double[,] test0 =	{	{1, 16 },
-										{16, 1}};
+		static double[,] test0 =	{	{1.0, 16.0, 1.0, 16.0},
+										{16.0, 1.0, 16.0, 1.0},
+										{1, 16, 1, 16},
+										{16, 1, 16, 1}};
 
-		static double[,] test1 =	{	{1, 4 },
-										{4, 1}};
+		static double[,] test1 =	{	{1, 4, 1, 4},
+										{4, 1, 4, 1},
+										{1, 4, 1, 4},
+										{4, 1, 4, 1}};
 
-		static double[,] test2 =	{	{8, 1},
-										{1, 8}};
+		static double[,] test2 =	{	{8, 1, 8, 1},
+										{1, 8, 1, 8},
+										{8, 1, 8, 1},
+										{1, 8, 1, 8}};
 
-		static double[,] test3 =	{	{7, 1},
-										{3, 5}};
+		static double[,] test3 =	{	{8, 16, 16, 8},
+										{16, 8, 8, 16}};
 
 		static double[,] test4 =	{	{0, 3 },
 										{0, 5 },
@@ -65,9 +71,10 @@ namespace ConvImgCpc {
 		static double[,] test5 =	{	{0, 0, 7 },
 										{3, 5, 1 }};
 
-		static double[,] test6 =	{	{6, 8, 4 },
-										{1, 0, 3 },
-										{5, 2, 7}};
+		static double[,] test6 =	{	{1, 9, 4, 7 },
+										{4, 7, 1, 9 },
+										{1, 9, 4, 7 },
+										{4, 7, 1, 9}};
 
 		static double[,] test7 =	{	{12, 11, 0 },
 										{13, 10, 19 },
@@ -239,6 +246,29 @@ namespace ConvImgCpc {
 			else
 				p = source.GetPixelColor(xPix, yPix);
 
+			switch (prm.bitsRVB) {
+				//12 bits (4 bits par composantes)
+				case 12:
+					p.r = (byte)((p.r >> 4) * 17);
+					p.v = (byte)((p.v >> 4) * 17);
+					p.b = (byte)((p.b >> 4) * 17);
+					break;
+
+				// 9 bits (3 bits par composantes)
+				case 9:
+					p.r = (byte)((p.r >> 5) * 36);
+					p.v = (byte)((p.v >> 5) * 36);
+					p.b = (byte)((p.b >> 5) * 36);
+					break;
+
+				// 6 bits (2 bits par composantes)
+				case 6:
+					p.r = (byte)((p.r >> 6) * 85);
+					p.v = (byte)((p.v >> 6) * 85);
+					p.b = (byte)((p.b >> 6) * 85);
+					break;
+			}
+
 			int m1 = (prm.reductPal1 ? 0x10 : 0x00) | (prm.reductPal3 ? 0x20 : 0x00);
 			int m2 = (prm.reductPal2 ? 0xE0 : 0xFF) & (prm.reductPal4 ? 0xD0 : 0xFF);
 			p.r = MinMaxByte(((p.r | m1) & m2) * prm.pctRed / 100.0);
@@ -259,9 +289,9 @@ namespace ConvImgCpc {
 			if (pct > 0 && prm.methode != "Floyd-Steinberg (2x2)") {
 				int xm = (xPix / Tx) % matDither.GetLength(0);
 				int ym = ((yPix) >> 1) % matDither.GetLength(1);
-				p.r = MinMaxByte(p.r + matDither[xm, ym]);
-				p.v = MinMaxByte(p.v + matDither[xm, ym]);
-				p.b = MinMaxByte(p.b + matDither[xm, ym]);
+				p.r = MinMaxByte((double)p.r + matDither[xm, ym]);
+				p.v = MinMaxByte((double)p.v + matDither[xm, ym]);
+				p.b = MinMaxByte((double)p.b + matDither[xm, ym]);
 			}
 			return p;
 		}

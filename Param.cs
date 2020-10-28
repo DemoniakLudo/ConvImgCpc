@@ -48,5 +48,6 @@
 		public int cstB3 = 255;
 		public int cstB4 = 340;
 		public bool newReduc;
+		public int bitsRVB = 24;
 	}
 }

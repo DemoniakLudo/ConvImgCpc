@@ -30,17 +30,20 @@ namespace ConvImgCpc {
 
 		private void red_ValueChanged(object sender, EventArgs e) {
 			main.param.pctRed = red.Value;
-			main.Convert(false);
+			if (Enabled)
+				main.Convert(false);
 		}
 
 		private void green_ValueChanged(object sender, EventArgs e) {
 			main.param.pctGreen = green.Value;
-			main.Convert(false);
+			if (Enabled)
+				main.Convert(false);
 		}
 
 		private void blue_ValueChanged(object sender, EventArgs e) {
 			main.param.pctBlue = blue.Value;
-			main.Convert(false);
+			if (Enabled)
+				main.Convert(false);
 		}
 
 		private void bpRmoins_Click(object sender, EventArgs e) {
@@ -90,17 +93,20 @@ namespace ConvImgCpc {
 
 		private void lumi_ValueChanged(object sender, EventArgs e) {
 			main.param.pctLumi = (int)lumi.Value;
-			main.Convert(false);
+			if (Enabled)
+				main.Convert(false);
 		}
 
 		private void sat_ValueChanged(object sender, EventArgs e) {
 			main.param.pctSat = nb.Checked ? 0 : (int)sat.Value;
-			main.Convert(false);
+			if (Enabled)
+				main.Convert(false);
 		}
 
 		private void contrast_ValueChanged(object sender, EventArgs e) {
 			main.param.pctContrast = (int)contrast.Value;
-			main.Convert(false);
+			if (Enabled)
+				main.Convert(false);
 		}
 
 		private void bpLumMoins_Click(object sender, EventArgs e) {
@@ -155,39 +161,88 @@ namespace ConvImgCpc {
 
 		private void newMethode_CheckedChanged(object sender, EventArgs e) {
 			main.param.newMethode = newMethode.Checked;
-			main.Convert(false);
+			if (Enabled)
+				main.Convert(false);
 		}
 
 		private void nb_CheckedChanged(object sender, EventArgs e) {
 			bpSatMoins.Enabled = bpSatPlus.Enabled = bpRazSat.Enabled = sat.Enabled = !nb.Checked;
 			main.param.pctSat = nb.Checked ? 0 : (int)sat.Value;
-			main.Convert(false);
+			if (Enabled)
+				main.Convert(false);
 		}
 
 		private void reducPal1_CheckedChanged(object sender, EventArgs e) {
 			main.param.reductPal1 = reducPal1.Checked;
-			main.Convert(false);
+			if (Enabled)
+				main.Convert(false);
 		}
 
 		private void reducPal2_CheckedChanged(object sender, EventArgs e) {
 			main.param.reductPal2 = reducPal2.Checked;
-			main.Convert(false);
+			if (Enabled)
+				main.Convert(false);
 		}
 
 		private void reducPal3_CheckedChanged(object sender, EventArgs e) {
 			main.param.reductPal3 = reducPal3.Checked;
-			main.Convert(false);
+			if (Enabled)
+				main.Convert(false);
 		}
 
 		private void reducPal4_CheckedChanged(object sender, EventArgs e) {
 			main.param.reductPal4 = reducPal4.Checked;
-			main.Convert(false);
+			if (Enabled)
+				main.Convert(false);
 		}
 
 		private void modePlus_CheckedChanged(object sender, EventArgs e) {
 			BitmapCpc.cpcPlus = modePlus.Checked;
 			newMethode.Visible = !modePlus.Checked;
 			main.param.cpcPlus = modePlus.Checked;
+			main.Convert(false);
+		}
+
+		private void rb24bits_CheckedChanged(object sender, EventArgs e) {
+			main.param.bitsRVB = 24;
+			if (Enabled)
+				main.Convert(false);
+		}
+
+		private void rb12bits_CheckedChanged(object sender, EventArgs e) {
+			main.param.bitsRVB = 12;
+			main.Convert(false);
+		}
+
+		private void rb9bits_CheckedChanged(object sender, EventArgs e) {
+			main.param.bitsRVB = 9;
+			main.Convert(false);
+		}
+
+		private void rb6bits_CheckedChanged(object sender, EventArgs e) {
+			main.param.bitsRVB = 6;
+			main.Convert(false);
+		}
+
+		private void bpRaz_Click(object sender, EventArgs e) {
+			Enabled = false;
+			main.param.pctRed = red.Value = 100;
+			main.param.pctGreen = green.Value = 100;
+			main.param.pctBlue = blue.Value = 100;
+			main.param.pctLumi = lumi.Value = 100;
+			main.param.pctSat = sat.Value = 100;
+			main.param.pctContrast = contrast.Value = 100;
+			main.param.newMethode = newMethode.Checked = false;
+			bpSatMoins.Enabled = bpSatPlus.Enabled = bpRazSat.Enabled = sat.Enabled = true;
+			nb.Checked = false;
+			main.param.reductPal1 = reducPal1.Checked = false;
+			main.param.reductPal2 = reducPal2.Checked = false;
+			main.param.reductPal3 = reducPal3.Checked = false;
+			main.param.reductPal4 = reducPal4.Checked = false;
+			newMethode.Visible = !modePlus.Checked;
+			main.param.cpcPlus = modePlus.Checked;
+			main.param.bitsRVB = 24;
+			Enabled = true;
 			main.Convert(false);
 		}
 	}

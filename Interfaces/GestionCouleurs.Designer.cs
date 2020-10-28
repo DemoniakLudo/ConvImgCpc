@@ -61,6 +61,11 @@
 			this.label9 = new System.Windows.Forms.Label();
 			this.sat = new System.Windows.Forms.TrackBar();
 			this.label8 = new System.Windows.Forms.Label();
+			this.rb24bits = new System.Windows.Forms.RadioButton();
+			this.rb12bits = new System.Windows.Forms.RadioButton();
+			this.rb9bits = new System.Windows.Forms.RadioButton();
+			this.rb6bits = new System.Windows.Forms.RadioButton();
+			this.bpRaz = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.blue)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.green)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.red)).BeginInit();
@@ -72,7 +77,7 @@
 			// reducPal4
 			// 
 			this.reducPal4.AutoSize = true;
-			this.reducPal4.Location = new System.Drawing.Point(375, 24);
+			this.reducPal4.Location = new System.Drawing.Point(374, 24);
 			this.reducPal4.Name = "reducPal4";
 			this.reducPal4.Size = new System.Drawing.Size(84, 17);
 			this.reducPal4.TabIndex = 60;
@@ -82,7 +87,7 @@
 			// 
 			// bpBmoins
 			// 
-			this.bpBmoins.Location = new System.Drawing.Point(31, 223);
+			this.bpBmoins.Location = new System.Drawing.Point(31, 247);
 			this.bpBmoins.Name = "bpBmoins";
 			this.bpBmoins.Size = new System.Drawing.Size(23, 23);
 			this.bpBmoins.TabIndex = 59;
@@ -92,7 +97,7 @@
 			// 
 			// bpVmoins
 			// 
-			this.bpVmoins.Location = new System.Drawing.Point(31, 189);
+			this.bpVmoins.Location = new System.Drawing.Point(31, 213);
 			this.bpVmoins.Name = "bpVmoins";
 			this.bpVmoins.Size = new System.Drawing.Size(23, 23);
 			this.bpVmoins.TabIndex = 59;
@@ -102,7 +107,7 @@
 			// 
 			// bpRmoins
 			// 
-			this.bpRmoins.Location = new System.Drawing.Point(31, 155);
+			this.bpRmoins.Location = new System.Drawing.Point(31, 179);
 			this.bpRmoins.Name = "bpRmoins";
 			this.bpRmoins.Size = new System.Drawing.Size(23, 23);
 			this.bpRmoins.TabIndex = 59;
@@ -113,7 +118,7 @@
 			// label12
 			// 
 			this.label12.AutoSize = true;
-			this.label12.Location = new System.Drawing.Point(3, 228);
+			this.label12.Location = new System.Drawing.Point(3, 252);
 			this.label12.Name = "label12";
 			this.label12.Size = new System.Drawing.Size(14, 13);
 			this.label12.TabIndex = 58;
@@ -122,7 +127,7 @@
 			// label11
 			// 
 			this.label11.AutoSize = true;
-			this.label11.Location = new System.Drawing.Point(3, 194);
+			this.label11.Location = new System.Drawing.Point(3, 218);
 			this.label11.Name = "label11";
 			this.label11.Size = new System.Drawing.Size(14, 13);
 			this.label11.TabIndex = 58;
@@ -131,7 +136,7 @@
 			// label6
 			// 
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(3, 160);
+			this.label6.Location = new System.Drawing.Point(3, 184);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(15, 13);
 			this.label6.TabIndex = 58;
@@ -140,7 +145,7 @@
 			// blue
 			// 
 			this.blue.AutoSize = false;
-			this.blue.Location = new System.Drawing.Point(50, 218);
+			this.blue.Location = new System.Drawing.Point(50, 242);
 			this.blue.Maximum = 200;
 			this.blue.Name = "blue";
 			this.blue.Size = new System.Drawing.Size(362, 24);
@@ -151,7 +156,7 @@
 			// green
 			// 
 			this.green.AutoSize = false;
-			this.green.Location = new System.Drawing.Point(50, 182);
+			this.green.Location = new System.Drawing.Point(50, 206);
 			this.green.Maximum = 200;
 			this.green.Name = "green";
 			this.green.Size = new System.Drawing.Size(362, 24);
@@ -162,7 +167,7 @@
 			// red
 			// 
 			this.red.AutoSize = false;
-			this.red.Location = new System.Drawing.Point(50, 150);
+			this.red.Location = new System.Drawing.Point(50, 174);
 			this.red.Maximum = 200;
 			this.red.Name = "red";
 			this.red.Size = new System.Drawing.Size(362, 24);
@@ -172,7 +177,7 @@
 			// 
 			// bpCtrstMoins
 			// 
-			this.bpCtrstMoins.Location = new System.Drawing.Point(31, 121);
+			this.bpCtrstMoins.Location = new System.Drawing.Point(31, 145);
 			this.bpCtrstMoins.Name = "bpCtrstMoins";
 			this.bpCtrstMoins.Size = new System.Drawing.Size(23, 23);
 			this.bpCtrstMoins.TabIndex = 55;
@@ -182,7 +187,7 @@
 			// 
 			// bpBplus
 			// 
-			this.bpBplus.Location = new System.Drawing.Point(412, 223);
+			this.bpBplus.Location = new System.Drawing.Point(412, 247);
 			this.bpBplus.Name = "bpBplus";
 			this.bpBplus.Size = new System.Drawing.Size(23, 23);
 			this.bpBplus.TabIndex = 56;
@@ -192,7 +197,7 @@
 			// 
 			// bpVplus
 			// 
-			this.bpVplus.Location = new System.Drawing.Point(412, 189);
+			this.bpVplus.Location = new System.Drawing.Point(412, 213);
 			this.bpVplus.Name = "bpVplus";
 			this.bpVplus.Size = new System.Drawing.Size(23, 23);
 			this.bpVplus.TabIndex = 56;
@@ -202,7 +207,7 @@
 			// 
 			// bpRplus
 			// 
-			this.bpRplus.Location = new System.Drawing.Point(412, 155);
+			this.bpRplus.Location = new System.Drawing.Point(412, 179);
 			this.bpRplus.Name = "bpRplus";
 			this.bpRplus.Size = new System.Drawing.Size(23, 23);
 			this.bpRplus.TabIndex = 56;
@@ -212,7 +217,7 @@
 			// 
 			// bpCtrstPlus
 			// 
-			this.bpCtrstPlus.Location = new System.Drawing.Point(412, 121);
+			this.bpCtrstPlus.Location = new System.Drawing.Point(412, 145);
 			this.bpCtrstPlus.Name = "bpCtrstPlus";
 			this.bpCtrstPlus.Size = new System.Drawing.Size(23, 23);
 			this.bpCtrstPlus.TabIndex = 56;
@@ -222,7 +227,7 @@
 			// 
 			// bpSatMoins
 			// 
-			this.bpSatMoins.Location = new System.Drawing.Point(31, 86);
+			this.bpSatMoins.Location = new System.Drawing.Point(31, 110);
 			this.bpSatMoins.Name = "bpSatMoins";
 			this.bpSatMoins.Size = new System.Drawing.Size(23, 23);
 			this.bpSatMoins.TabIndex = 53;
@@ -232,7 +237,7 @@
 			// 
 			// bpSatPlus
 			// 
-			this.bpSatPlus.Location = new System.Drawing.Point(412, 86);
+			this.bpSatPlus.Location = new System.Drawing.Point(412, 110);
 			this.bpSatPlus.Name = "bpSatPlus";
 			this.bpSatPlus.Size = new System.Drawing.Size(23, 23);
 			this.bpSatPlus.TabIndex = 54;
@@ -242,7 +247,7 @@
 			// 
 			// bpLumMoins
 			// 
-			this.bpLumMoins.Location = new System.Drawing.Point(31, 53);
+			this.bpLumMoins.Location = new System.Drawing.Point(31, 77);
 			this.bpLumMoins.Name = "bpLumMoins";
 			this.bpLumMoins.Size = new System.Drawing.Size(23, 23);
 			this.bpLumMoins.TabIndex = 52;
@@ -252,7 +257,7 @@
 			// 
 			// bpLumPlus
 			// 
-			this.bpLumPlus.Location = new System.Drawing.Point(412, 53);
+			this.bpLumPlus.Location = new System.Drawing.Point(412, 77);
 			this.bpLumPlus.Name = "bpLumPlus";
 			this.bpLumPlus.Size = new System.Drawing.Size(23, 23);
 			this.bpLumPlus.TabIndex = 52;
@@ -274,7 +279,7 @@
 			// nb
 			// 
 			this.nb.AutoSize = true;
-			this.nb.Location = new System.Drawing.Point(173, 2);
+			this.nb.Location = new System.Drawing.Point(166, 2);
 			this.nb.Name = "nb";
 			this.nb.Size = new System.Drawing.Size(83, 17);
 			this.nb.TabIndex = 51;
@@ -295,7 +300,7 @@
 			// 
 			// RazB
 			// 
-			this.RazB.Location = new System.Drawing.Point(437, 223);
+			this.RazB.Location = new System.Drawing.Point(437, 247);
 			this.RazB.Name = "RazB";
 			this.RazB.Size = new System.Drawing.Size(35, 23);
 			this.RazB.TabIndex = 43;
@@ -305,7 +310,7 @@
 			// 
 			// RazV
 			// 
-			this.RazV.Location = new System.Drawing.Point(437, 189);
+			this.RazV.Location = new System.Drawing.Point(437, 213);
 			this.RazV.Name = "RazV";
 			this.RazV.Size = new System.Drawing.Size(35, 23);
 			this.RazV.TabIndex = 43;
@@ -315,7 +320,7 @@
 			// 
 			// RazR
 			// 
-			this.RazR.Location = new System.Drawing.Point(437, 155);
+			this.RazR.Location = new System.Drawing.Point(437, 179);
 			this.RazR.Name = "RazR";
 			this.RazR.Size = new System.Drawing.Size(35, 23);
 			this.RazR.TabIndex = 43;
@@ -325,7 +330,7 @@
 			// 
 			// bpRazContrast
 			// 
-			this.bpRazContrast.Location = new System.Drawing.Point(437, 121);
+			this.bpRazContrast.Location = new System.Drawing.Point(437, 145);
 			this.bpRazContrast.Name = "bpRazContrast";
 			this.bpRazContrast.Size = new System.Drawing.Size(35, 23);
 			this.bpRazContrast.TabIndex = 43;
@@ -336,7 +341,7 @@
 			// reducPal3
 			// 
 			this.reducPal3.AutoSize = true;
-			this.reducPal3.Location = new System.Drawing.Point(274, 24);
+			this.reducPal3.Location = new System.Drawing.Point(273, 24);
 			this.reducPal3.Name = "reducPal3";
 			this.reducPal3.Size = new System.Drawing.Size(84, 17);
 			this.reducPal3.TabIndex = 47;
@@ -347,7 +352,7 @@
 			// contrast
 			// 
 			this.contrast.AutoSize = false;
-			this.contrast.Location = new System.Drawing.Point(50, 116);
+			this.contrast.Location = new System.Drawing.Point(50, 140);
 			this.contrast.Maximum = 200;
 			this.contrast.Name = "contrast";
 			this.contrast.Size = new System.Drawing.Size(362, 24);
@@ -358,7 +363,7 @@
 			// reducPal2
 			// 
 			this.reducPal2.AutoSize = true;
-			this.reducPal2.Location = new System.Drawing.Point(173, 24);
+			this.reducPal2.Location = new System.Drawing.Point(166, 24);
 			this.reducPal2.Name = "reducPal2";
 			this.reducPal2.Size = new System.Drawing.Size(84, 17);
 			this.reducPal2.TabIndex = 46;
@@ -369,7 +374,7 @@
 			// reducPal1
 			// 
 			this.reducPal1.AutoSize = true;
-			this.reducPal1.Location = new System.Drawing.Point(72, 24);
+			this.reducPal1.Location = new System.Drawing.Point(59, 24);
 			this.reducPal1.Name = "reducPal1";
 			this.reducPal1.Size = new System.Drawing.Size(84, 17);
 			this.reducPal1.TabIndex = 46;
@@ -379,7 +384,7 @@
 			// 
 			// bpRazSat
 			// 
-			this.bpRazSat.Location = new System.Drawing.Point(437, 86);
+			this.bpRazSat.Location = new System.Drawing.Point(437, 110);
 			this.bpRazSat.Name = "bpRazSat";
 			this.bpRazSat.Size = new System.Drawing.Size(35, 23);
 			this.bpRazSat.TabIndex = 14;
@@ -390,7 +395,7 @@
 			// newMethode
 			// 
 			this.newMethode.AutoSize = true;
-			this.newMethode.Location = new System.Drawing.Point(375, 2);
+			this.newMethode.Location = new System.Drawing.Point(374, 2);
 			this.newMethode.Name = "newMethode";
 			this.newMethode.Size = new System.Drawing.Size(83, 17);
 			this.newMethode.TabIndex = 45;
@@ -400,7 +405,7 @@
 			// 
 			// bpRazLumi
 			// 
-			this.bpRazLumi.Location = new System.Drawing.Point(437, 53);
+			this.bpRazLumi.Location = new System.Drawing.Point(437, 77);
 			this.bpRazLumi.Name = "bpRazLumi";
 			this.bpRazLumi.Size = new System.Drawing.Size(35, 23);
 			this.bpRazLumi.TabIndex = 14;
@@ -411,7 +416,7 @@
 			// label10
 			// 
 			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(3, 126);
+			this.label10.Location = new System.Drawing.Point(3, 150);
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(31, 13);
 			this.label10.TabIndex = 13;
@@ -420,7 +425,7 @@
 			// lumi
 			// 
 			this.lumi.AutoSize = false;
-			this.lumi.Location = new System.Drawing.Point(50, 48);
+			this.lumi.Location = new System.Drawing.Point(50, 72);
 			this.lumi.Maximum = 200;
 			this.lumi.Name = "lumi";
 			this.lumi.Size = new System.Drawing.Size(362, 24);
@@ -431,7 +436,7 @@
 			// label9
 			// 
 			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(3, 92);
+			this.label9.Location = new System.Drawing.Point(3, 116);
 			this.label9.Name = "label9";
 			this.label9.Size = new System.Drawing.Size(26, 13);
 			this.label9.TabIndex = 13;
@@ -440,7 +445,7 @@
 			// sat
 			// 
 			this.sat.AutoSize = false;
-			this.sat.Location = new System.Drawing.Point(50, 82);
+			this.sat.Location = new System.Drawing.Point(50, 106);
 			this.sat.Maximum = 200;
 			this.sat.Name = "sat";
 			this.sat.Size = new System.Drawing.Size(362, 24);
@@ -451,18 +456,79 @@
 			// label8
 			// 
 			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(3, 58);
+			this.label8.Location = new System.Drawing.Point(3, 82);
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(30, 13);
 			this.label8.TabIndex = 13;
 			this.label8.Text = "Lum.";
 			// 
+			// rb24bits
+			// 
+			this.rb24bits.AutoSize = true;
+			this.rb24bits.Checked = true;
+			this.rb24bits.Location = new System.Drawing.Point(59, 47);
+			this.rb24bits.Name = "rb24bits";
+			this.rb24bits.Size = new System.Drawing.Size(97, 17);
+			this.rb24bits.TabIndex = 61;
+			this.rb24bits.TabStop = true;
+			this.rb24bits.Text = "Couleurs 24bits";
+			this.rb24bits.UseVisualStyleBackColor = true;
+			this.rb24bits.CheckedChanged += new System.EventHandler(this.rb24bits_CheckedChanged);
+			// 
+			// rb12bits
+			// 
+			this.rb12bits.AutoSize = true;
+			this.rb12bits.Location = new System.Drawing.Point(166, 47);
+			this.rb12bits.Name = "rb12bits";
+			this.rb12bits.Size = new System.Drawing.Size(97, 17);
+			this.rb12bits.TabIndex = 62;
+			this.rb12bits.Text = "Couleurs 12bits";
+			this.rb12bits.UseVisualStyleBackColor = true;
+			this.rb12bits.CheckedChanged += new System.EventHandler(this.rb12bits_CheckedChanged);
+			// 
+			// rb9bits
+			// 
+			this.rb9bits.AutoSize = true;
+			this.rb9bits.Location = new System.Drawing.Point(273, 47);
+			this.rb9bits.Name = "rb9bits";
+			this.rb9bits.Size = new System.Drawing.Size(91, 17);
+			this.rb9bits.TabIndex = 63;
+			this.rb9bits.Text = "Couleurs 9bits";
+			this.rb9bits.UseVisualStyleBackColor = true;
+			this.rb9bits.CheckedChanged += new System.EventHandler(this.rb9bits_CheckedChanged);
+			// 
+			// rb6bits
+			// 
+			this.rb6bits.AutoSize = true;
+			this.rb6bits.Location = new System.Drawing.Point(374, 47);
+			this.rb6bits.Name = "rb6bits";
+			this.rb6bits.Size = new System.Drawing.Size(91, 17);
+			this.rb6bits.TabIndex = 64;
+			this.rb6bits.Text = "Couleurs 6bits";
+			this.rb6bits.UseVisualStyleBackColor = true;
+			this.rb6bits.CheckedChanged += new System.EventHandler(this.rb6bits_CheckedChanged);
+			// 
+			// bpRaz
+			// 
+			this.bpRaz.Location = new System.Drawing.Point(156, 289);
+			this.bpRaz.Name = "bpRaz";
+			this.bpRaz.Size = new System.Drawing.Size(162, 23);
+			this.bpRaz.TabIndex = 65;
+			this.bpRaz.Text = "Raz paramètres couleurs";
+			this.bpRaz.UseVisualStyleBackColor = true;
+			this.bpRaz.Click += new System.EventHandler(this.bpRaz_Click);
+			// 
 			// GestionCouleurs
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(474, 248);
+			this.ClientSize = new System.Drawing.Size(474, 324);
 			this.ControlBox = false;
+			this.Controls.Add(this.bpRaz);
+			this.Controls.Add(this.rb6bits);
+			this.Controls.Add(this.rb9bits);
+			this.Controls.Add(this.rb12bits);
+			this.Controls.Add(this.rb24bits);
 			this.Controls.Add(this.reducPal4);
 			this.Controls.Add(this.bpBmoins);
 			this.Controls.Add(this.bpVmoins);
@@ -556,5 +622,10 @@
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.TrackBar sat;
 		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.RadioButton rb24bits;
+		private System.Windows.Forms.RadioButton rb12bits;
+		private System.Windows.Forms.RadioButton rb9bits;
+		private System.Windows.Forms.RadioButton rb6bits;
+		private System.Windows.Forms.Button bpRaz;
 	}
 }
