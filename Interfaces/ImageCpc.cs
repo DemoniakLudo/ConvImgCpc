@@ -216,7 +216,11 @@ namespace ConvImgCpc {
 										break;
 								}
 							}
-							octet |= (byte)(tabOctetMode[pen] >> (p / tx));
+							if (pen > 15) {
+								pen = 0; // Pb peut survenir si la palette n'est pas la même pour chaque image d'une animation...
+							}
+
+							octet |= (byte)(tabOctetMode[pen % 16] >> (p / tx));
 						}
 					ret[(x >> 3) + (y >> 1) * (BitmapCpc.TailleX >> 3)] = octet;
 				}
@@ -326,6 +330,23 @@ namespace ConvImgCpc {
 		public void SauvePalette(string fileName, Param param) {
 			SauveImage.SauvePalette(fileName, this, param);
 			main.SetInfo("Sauvegarde palette ok.");
+		}
+
+		public void SauveEgx(string fileName, Param param) {
+			int mode = BitmapCpc.modeVirtuel;
+			int model1 = mode == 3 ? 1 : 2;
+			int model2 = mode == 3 ? 0 : 1;
+			BitmapCpc.modeVirtuel = model1;
+			if (fileName.ToUpper().EndsWith(".SCR"))
+				fileName = fileName.Substring(0, fileName.Length - 4);
+
+			bitmapCpc.CreeBmpCpc(BmpLock, colMode5, true, 0);
+			SauveImage.SauveScr(fileName + "0.SCR", bitmapCpc, param, false);
+			BitmapCpc.modeVirtuel = model2;
+			bitmapCpc.CreeBmpCpc(BmpLock, colMode5, true, 1);
+			SauveImage.SauveScr(fileName + "1.SCR", bitmapCpc, param, false);
+			main.SetInfo("Sauvegarde des deux images CPC ok.");
+			BitmapCpc.modeVirtuel = mode;
 		}
 		#endregion
 

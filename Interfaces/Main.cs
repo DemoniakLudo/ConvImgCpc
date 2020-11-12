@@ -385,6 +385,9 @@ namespace ConvImgCpc {
 			SaveFileDialog dlg = new SaveFileDialog();
 			dlg.InitialDirectory = param.lastSavePath;
 			dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.png)|*.png|Sprite assembleur (.asm)|*.asm|Sprite assembleur compacté (.asm)|*.asm|Ecran compacté (.cmp)|*.cmp|Ecran assembleur compacté (.asm)|*.asm|Palette (.pal)|*.pal|Animation DeltaPack (.asm)|*.asm|Animation imp (*.imp)|*.imp|Paramètres (.xml)|*.xml";
+			if (BitmapCpc.modeVirtuel == 3 || BitmapCpc.modeVirtuel == 4)
+				dlg.Filter += "|2 images séparées (.scr)|*.scr";
+
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
 				switch (dlg.FilterIndex) {
@@ -426,6 +429,10 @@ namespace ConvImgCpc {
 
 					case 10:
 						SaveParam(dlg.FileName);
+						break;
+
+					case 11:
+						imgCpc.SauveEgx(dlg.FileName, param);
 						break;
 				}
 				param.lastSavePath = Path.GetDirectoryName(dlg.FileName);

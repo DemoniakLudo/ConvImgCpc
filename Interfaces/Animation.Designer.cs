@@ -268,7 +268,10 @@
 			this.Controls.Add(this.pictureBox1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.MaximizeBox = false;
+			this.MinimizeBox = false;
 			this.Name = "Animation";
+			this.ShowIcon = false;
+			this.ShowInTaskbar = false;
 			this.Text = "Image";
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();

@@ -32,6 +32,7 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.tailleCrayon = new System.Windows.Forms.ComboBox();
 			this.grpEdition = new System.Windows.Forms.GroupBox();
+			this.lblInfoPos = new System.Windows.Forms.Label();
 			this.rbCopy = new System.Windows.Forms.RadioButton();
 			this.undrawColor = new System.Windows.Forms.Label();
 			this.lblZoom = new System.Windows.Forms.Label();
@@ -42,7 +43,6 @@
 			this.bpUndo = new System.Windows.Forms.Button();
 			this.chkRendu = new System.Windows.Forms.CheckBox();
 			this.pictureBox = new System.Windows.Forms.PictureBox();
-			this.lblInfoPos = new System.Windows.Forms.Label();
 			this.grpEdition.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
 			this.SuspendLayout();
@@ -157,6 +157,14 @@
 			this.grpEdition.TabStop = false;
 			this.grpEdition.Visible = false;
 			// 
+			// lblInfoPos
+			// 
+			this.lblInfoPos.AutoSize = true;
+			this.lblInfoPos.Location = new System.Drawing.Point(7, 151);
+			this.lblInfoPos.Name = "lblInfoPos";
+			this.lblInfoPos.Size = new System.Drawing.Size(0, 13);
+			this.lblInfoPos.TabIndex = 17;
+			// 
 			// rbCopy
 			// 
 			this.rbCopy.Image = global::ConvImgCpc.Properties.Resources.Copy;
@@ -260,14 +268,6 @@
 			this.pictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TrtMouseMove);
 			this.pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TrtMouseMove);
 			// 
-			// lblInfoPos
-			// 
-			this.lblInfoPos.AutoSize = true;
-			this.lblInfoPos.Location = new System.Drawing.Point(7, 151);
-			this.lblInfoPos.Name = "lblInfoPos";
-			this.lblInfoPos.Size = new System.Drawing.Size(0, 13);
-			this.lblInfoPos.TabIndex = 17;
-			// 
 			// ImageCpc
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -283,6 +283,8 @@
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.MaximizeBox = false;
 			this.Name = "ImageCpc";
+			this.ShowIcon = false;
+			this.ShowInTaskbar = false;
 			this.Text = "Image CPC";
 			this.grpEdition.ResumeLayout(false);
 			this.grpEdition.PerformLayout();
