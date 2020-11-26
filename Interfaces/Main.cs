@@ -95,6 +95,7 @@ namespace ConvImgCpc {
 					param.sMode = radioKeepLarger.Checked ? Param.SizeMode.KeepLarger : radioKeepSmaller.Checked ? Param.SizeMode.KeepSmaller : radioFit.Checked ? Param.SizeMode.Fit : Param.SizeMode.UserSize;
 					param.methode = methode.SelectedItem.ToString();
 					param.pct = (int)pctTrame.Value;
+					param.diffErr = chkDiffErr.Checked;
 					param.lockState = imgCpc.lockState;
 					param.setPalCpc = chkPalCpc.Checked;
 					param.trameTc = chkTrameTC.Checked;
@@ -465,8 +466,11 @@ namespace ConvImgCpc {
 			if (autoRecalc.Checked)
 				chkAllPics.Checked = false;
 
+			if (!chkDiffErr.Visible)
+				chkDiffErr.Checked = methode.SelectedItem.ToString() == "Floyd-Steinberg (2x2)";
+
 			bpSave.Enabled = !autoRecalc.Checked;
-			lblPct.Visible = pctTrame.Visible = methode.SelectedItem.ToString() != "Aucun";
+			lblPct.Visible = pctTrame.Visible = chkDiffErr.Visible = methode.SelectedItem.ToString() != "Aucun";
 			param.methode = methode.SelectedItem.ToString();
 			param.lissage = chkLissage.Checked;
 			param.trackModeX = trackModeX.Value;

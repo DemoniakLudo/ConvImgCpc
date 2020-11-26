@@ -59,6 +59,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dither.cs" />
     <Compile Include="Interfaces\GestionCouleurs.cs">
       <SubType>Form</SubType>
     </Compile>

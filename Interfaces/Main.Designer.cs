@@ -40,6 +40,7 @@
 			this.bpStandard = new System.Windows.Forms.Button();
 			this.bpOverscan = new System.Windows.Forms.Button();
 			this.tramage = new System.Windows.Forms.GroupBox();
+			this.chkDiffErr = new System.Windows.Forms.CheckBox();
 			this.chkNewReduc = new System.Windows.Forms.CheckBox();
 			this.chkTrameTC = new System.Windows.Forms.CheckBox();
 			this.chkLissage = new System.Windows.Forms.CheckBox();
@@ -309,6 +310,7 @@
 			// 
 			// tramage
 			// 
+			this.tramage.Controls.Add(this.chkDiffErr);
 			this.tramage.Controls.Add(this.chkNewReduc);
 			this.tramage.Controls.Add(this.chkTrameTC);
 			this.tramage.Controls.Add(this.chkLissage);
@@ -324,10 +326,22 @@
 			this.tramage.TabStop = false;
 			this.tramage.Text = "Tramage et rendu";
 			// 
+			// chkDiffErr
+			// 
+			this.chkDiffErr.AutoSize = true;
+			this.chkDiffErr.Location = new System.Drawing.Point(46, 70);
+			this.chkDiffErr.Name = "chkDiffErr";
+			this.chkDiffErr.Size = new System.Drawing.Size(67, 17);
+			this.chkDiffErr.TabIndex = 18;
+			this.chkDiffErr.Text = "Diffusion";
+			this.chkDiffErr.UseVisualStyleBackColor = true;
+			this.chkDiffErr.Visible = false;
+			this.chkDiffErr.CheckedChanged += new System.EventHandler(this.InterfaceChange);
+			// 
 			// chkNewReduc
 			// 
 			this.chkNewReduc.AutoSize = true;
-			this.chkNewReduc.Location = new System.Drawing.Point(46, 176);
+			this.chkNewReduc.Location = new System.Drawing.Point(46, 175);
 			this.chkNewReduc.Name = "chkNewReduc";
 			this.chkNewReduc.Size = new System.Drawing.Size(120, 17);
 			this.chkNewReduc.TabIndex = 17;
@@ -338,7 +352,7 @@
 			// chkTrameTC
 			// 
 			this.chkTrameTC.AutoSize = true;
-			this.chkTrameTC.Location = new System.Drawing.Point(48, 125);
+			this.chkTrameTC.Location = new System.Drawing.Point(46, 152);
 			this.chkTrameTC.Name = "chkTrameTC";
 			this.chkTrameTC.Size = new System.Drawing.Size(88, 17);
 			this.chkTrameTC.TabIndex = 16;
@@ -349,7 +363,7 @@
 			// chkLissage
 			// 
 			this.chkLissage.AutoSize = true;
-			this.chkLissage.Location = new System.Drawing.Point(48, 100);
+			this.chkLissage.Location = new System.Drawing.Point(46, 129);
 			this.chkLissage.Name = "chkLissage";
 			this.chkLissage.Size = new System.Drawing.Size(62, 17);
 			this.chkLissage.TabIndex = 15;
@@ -360,7 +374,7 @@
 			// chkPalCpc
 			// 
 			this.chkPalCpc.AutoSize = true;
-			this.chkPalCpc.Location = new System.Drawing.Point(48, 65);
+			this.chkPalCpc.Location = new System.Drawing.Point(46, 93);
 			this.chkPalCpc.Name = "chkPalCpc";
 			this.chkPalCpc.Size = new System.Drawing.Size(110, 30);
 			this.chkPalCpc.TabIndex = 14;
@@ -732,6 +746,7 @@
 		private System.Windows.Forms.CheckBox chkTrameTC;
 		private System.Windows.Forms.CheckBox chkParamInterne;
 		private System.Windows.Forms.CheckBox chkNewReduc;
+		private System.Windows.Forms.CheckBox chkDiffErr;
 	}
 }
 
