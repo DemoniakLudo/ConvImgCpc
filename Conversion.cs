@@ -131,8 +131,8 @@ namespace ConvImgCpc {
 					break;
 			}
 
-			int m1 = (prm.reductPal1 ? 0x10 : 0x00) | (prm.reductPal3 ? 0x20 : 0x00);
-			int m2 = (prm.reductPal2 ? 0xE0 : 0xFF) & (prm.reductPal4 ? 0xD0 : 0xFF);
+			int m1 = (prm.reductPal1 ? 0x11 : 0x00) | (prm.reductPal3 ? 0x22 : 0x00);
+			int m2 = (prm.reductPal2 ? 0xEE : 0xFF) & (prm.reductPal4 ? 0xDD : 0xFF);
 			p.r = MinMaxByte(((p.r | m1) & m2) * prm.pctRed / 100.0);
 			p.v = MinMaxByte(((p.v | m1) & m2) * prm.pctGreen / 100.0);
 			p.b = MinMaxByte(((p.b | m1) & m2) * prm.pctBlue / 100.0);
@@ -156,126 +156,55 @@ namespace ConvImgCpc {
 			return p;
 		}
 
-		static private int ConvertTrameTc(DirectBitmap source, ImageCpc dest, Param prm) {
-			int pct = Dither.SetMatDither(prm);
-			RvbColor p = new RvbColor(0);
-			int indexChoix = 0;
-			for (int yPix = 0; yPix < BitmapCpc.TailleY; yPix += 4) {
-				int Tx = BitmapCpc.CalcTx(yPix);
-				for (int xPix = 0; xPix < BitmapCpc.TailleX; xPix += Tx) {
-					for (int yy = 0; yy < 4; yy += 2) {
-						p = GetPixel(source, xPix, yy + yPix, Tx, prm, pct);
-						indexChoix = GetNumColorPixelCpc(prm, p);
-						RvbColor choix = BitmapCpc.RgbCPC[indexChoix];
-						coulTrouvee[indexChoix, (BitmapCpc.modeVirtuel == 5 || BitmapCpc.modeVirtuel == 6 ? yPix >> 1 : 0)]++;
-						source.SetPixel(xPix, yy + yPix, prm.setPalCpc ? choix : p);
-					}
-					// Moyenne des 2 pixels
-					RvbColor p0 = source.GetPixelColor(xPix, yPix);
-					RvbColor p1 = source.GetPixelColor(xPix, yPix + 2);
-					int totr = (p0.r + p1.r);
-					int totv = (p0.v + p1.v);
-					int totb = (p0.b + p1.b);
-					RvbColor n1 = BitmapCpc.RgbCPC[(totr > prm.cstR3 ? 6 : totr > prm.cstR1 ? 3 : 0)
-												+ (totv > prm.cstV3 ? 18 : totv > prm.cstV1 ? 9 : 0)
-												+ (totb > prm.cstB3 ? 2 : totb > prm.cstB1 ? 1 : 0)];
-					RvbColor n2 = BitmapCpc.RgbCPC[(totr > prm.cstR4 ? 6 : totr > prm.cstR2 ? 3 : 0)
-												+ (totv > prm.cstV4 ? 18 : totv > prm.cstV2 ? 9 : 0)
-												+ (totb > prm.cstB4 ? 2 : totb > prm.cstB2 ? 1 : 0)];
-					source.SetPixel(xPix, yPix, (xPix & Tx) == 0 ? n1 : n2);
-					source.SetPixel(xPix, yPix + 2, (xPix & Tx) == 0 ? n2 : n1);
-				}
-			}
-			int nbCol = 0;
-			for (int i = 0; i < coulTrouvee.GetLength(0); i++) {
-				bool memoCol = false;
-				for (int y = 0; y < 272; y++)
-					if (!memoCol && coulTrouvee[i, y] > 0) {
-						nbCol++;
-						memoCol = true;
-					}
-			}
-			return nbCol;
-		}
-
-		static private int ConvertTrameTcPlus(DirectBitmap source, ImageCpc dest, Param prm) {
-			int pct = Dither.SetMatDither(prm);
-			RvbColor choix, p = new RvbColor(0);
-			int indexChoix = 0;
-			for (int yPix = 0; yPix < BitmapCpc.TailleY; yPix += 4) {
-				int Tx = BitmapCpc.CalcTx(yPix);
-				for (int xPix = 0; xPix < BitmapCpc.TailleX; xPix += Tx) {
-					for (int yy = 0; yy < 4; yy += 2) {
-						p = GetPixel(source, xPix, yy + yPix, Tx, prm, pct);
-						choix = new RvbColor((byte)((p.r >> 4) * 17), (byte)((p.v >> 4) * 17), (byte)((p.b >> 4) * 17));
-						indexChoix = ((choix.v << 4) & 0xF00) + ((choix.b) & 0xF0) + ((choix.r) >> 4);
-						coulTrouvee[indexChoix, (BitmapCpc.modeVirtuel == 5 || BitmapCpc.modeVirtuel == 6 ? yPix >> 1 : 0)]++;
-						source.SetPixel(xPix, yy + yPix, prm.setPalCpc ? choix : p);
-					}
-					// Moyenne des 2 pixels
-					RvbColor p0 = source.GetPixelColor(xPix, yPix);
-					RvbColor p1 = source.GetPixelColor(xPix, yPix + 2);
-					int r0 = (p0.r & 0xA0) | (p1.r & 0x50);
-					int v0 = (p0.v & 0xA0) | (p1.v & 0x50);
-					int b0 = (p0.b & 0xA0) | (p1.b & 0x50);
-					int r1 = (p1.r & 0xA0) | (p0.r & 0x50);
-					int v1 = (p1.v & 0xA0) | (p0.v & 0x50);
-					int b1 = (p1.b & 0xA0) | (p0.b & 0x50);
-					RvbColor n1 = new RvbColor((byte)((r0 >> 4) * 17), (byte)((v0 >> 4) * 17), (byte)((b0 >> 4) * 17));
-					RvbColor n2 = new RvbColor((byte)((r1 >> 4) * 17), (byte)((v1 >> 4) * 17), (byte)((b1 >> 4) * 17));
-					source.SetPixel(xPix, yPix, (xPix & Tx) == 0 ? n1 : n2);
-					source.SetPixel(xPix, yPix + 2, (xPix & Tx) == 0 ? n2 : n1);
-				}
-			}
-			int nbCol = 0;
-			for (int i = 0; i < coulTrouvee.GetLength(0); i++) {
-				bool memoCol = false;
-				for (int y = 0; y < 272; y++)
-					if (!memoCol && coulTrouvee[i, y] > 0) {
-						nbCol++;
-						memoCol = true;
-					}
-			}
-			return nbCol;
-		}
-
 		//
 		// Passe 1 : Réduit la palette aux x couleurs de la palette du CPC.
 		// Effectue également un traitement de l'erreur (tramage) si demandé.
 		// Calcule le nombre de couleurs utilisées dans l'image, et
 		// remplit le tableau coulTrouvee avec ces couleurs
 		//
-		static private int ConvertPasse1(DirectBitmap source, ImageCpc dest, Param prm) {
+		static private void ConvertPasse1(DirectBitmap source, ImageCpc dest, Param prm) {
 			int pct = Dither.SetMatDither(prm);
-			RvbColor choix, p = new RvbColor(0);
+			RvbColor p = new RvbColor(0), choix, n1, n2;
 			int indexChoix = 0;
-			for (int yPix = 0; yPix < BitmapCpc.TailleY; yPix += 2) {
+			int incY = prm.trameTc ? 4 : 2;
+			for (int yPix = 0; yPix < BitmapCpc.TailleY; yPix += incY) {
 				int Tx = BitmapCpc.CalcTx(yPix);
 				for (int xPix = 0; xPix < BitmapCpc.TailleX; xPix += Tx) {
-					p = GetPixel(source, xPix, yPix, Tx, prm, pct);
-					// Recherche le point dans la couleur cpc la plus proche
-					if (prm.cpcPlus) {
-						choix = new RvbColor((byte)((p.r >> 4) * 17), (byte)((p.v >> 4) * 17), (byte)((p.b >> 4) * 17));
-						indexChoix = ((choix.v << 4) & 0xF00) + ((choix.b) & 0xF0) + ((choix.r) >> 4);
+					for (int yy = 0; yy < incY; yy += 2) {
+						p = GetPixel(source, xPix, yy + yPix, Tx, prm, pct);
+						// Recherche le point dans la couleur cpc la plus proche
+						if (prm.cpcPlus) {
+							choix = new RvbColor((byte)((p.r >> 4) * 17), (byte)((p.v >> 4) * 17), (byte)((p.b >> 4) * 17));
+							indexChoix = ((choix.v << 4) & 0xF00) + ((choix.b) & 0xF0) + ((choix.r) >> 4);
+						}
+						else {
+							indexChoix = GetNumColorPixelCpc(prm, p);
+							choix = BitmapCpc.RgbCPC[indexChoix];
+						}
+						coulTrouvee[indexChoix, yPix >> 1]++;
+						if (!prm.trameTc)
+							source.SetPixel(xPix, yy + yPix, prm.setPalCpc ? choix : p);
 					}
-					else {
-						indexChoix = GetNumColorPixelCpc(prm, p);
-						choix = BitmapCpc.RgbCPC[indexChoix];
+					if (prm.trameTc) {
+						// Moyenne des 2 pixels
+						RvbColor p0 = source.GetPixelColor(xPix, yPix);
+						RvbColor p1 = source.GetPixelColor(xPix, yPix + 2);
+						int r = (p0.r + p1.r);
+						int v = (p0.v + p1.v);
+						int b = (p0.b + p1.b);
+						if (prm.cpcPlus) {
+							n1 = new RvbColor((byte)((r >> 4) * 8), (byte)((v >> 4) * 8), (byte)((b >> 4) * 8));
+							n2 = new RvbColor((byte)((r >> 5) * 17), (byte)((v >> 5) * 17), (byte)((b >> 5) * 17));
+						}
+						else {
+							n1 = BitmapCpc.RgbCPC[(r > prm.cstR3 ? 6 : r > prm.cstR1 ? 3 : 0) + (v > prm.cstV3 ? 18 : v > prm.cstV1 ? 9 : 0) + (b > prm.cstB3 ? 2 : b > prm.cstB1 ? 1 : 0)];
+							n2 = BitmapCpc.RgbCPC[(r > prm.cstR4 ? 6 : r > prm.cstR2 ? 3 : 0) + (v > prm.cstV4 ? 18 : v > prm.cstV2 ? 9 : 0) + (b > prm.cstB4 ? 2 : b > prm.cstB2 ? 1 : 0)];
+						}
+						source.SetPixel(xPix, yPix, (xPix & Tx) == 0 ? n1 : n2);
+						source.SetPixel(xPix, yPix + 2, (xPix & Tx) == 0 ? n2 : n1);
 					}
-					coulTrouvee[indexChoix, (BitmapCpc.modeVirtuel == 5 || BitmapCpc.modeVirtuel == 6 ? yPix >> 1 : 0)]++;
-					source.SetPixel(xPix, yPix, prm.setPalCpc ? choix : p);
 				}
 			}
-			int nbCol = 0;
-			for (int i = 0; i < coulTrouvee.GetLength(0); i++) {
-				bool memoCol = false;
-				for (int y = 0; y < 272; y++)
-					if (!memoCol && coulTrouvee[i, y] > 0) {
-						nbCol++;
-						memoCol = true;
-					}
-			}
-			return nbCol;
 		}
 
 		//
@@ -285,14 +214,19 @@ namespace ConvImgCpc {
 			int x, FindMax = BitmapCpc.cpcPlus ? 4096 : 27;
 			for (x = 0; x < maxPen; x++)
 				if (lockState[x] > 0)
-					coulTrouvee[BitmapCpc.Palette[x], 0] = 0;
+					for (int y = 0; y < 272; y++)
+						coulTrouvee[BitmapCpc.Palette[x], y] = 0;
 
 			for (x = 0; x < maxPen; x++) {
 				int valMax = 0;
 				if (lockState[x] == 0) {
 					for (int i = 0; i < FindMax; i++) {
-						if (valMax < coulTrouvee[i, 0]) {
-							valMax = coulTrouvee[i, 0];
+						int nbc = 0;
+						for (int y = 0; y < 272; y++)
+							nbc += coulTrouvee[i, y];
+
+						if (valMax < nbc) {
+							valMax = nbc;
 							BitmapCpc.Palette[x] = i;
 						}
 					}
@@ -324,8 +258,12 @@ namespace ConvImgCpc {
 				int valMax = 0;
 				if (lockState[firstCol] == 0) {
 					for (int i = 0; i < FindMax; i++) {
-						if (valMax < coulTrouvee[i, 0]) {
-							valMax = coulTrouvee[i, 0];
+						int nbc = 0;
+						for (int y = 0; y < 272; y++)
+							nbc += coulTrouvee[i, y];
+
+						if (valMax < nbc) {
+							valMax = nbc;
 							BitmapCpc.Palette[firstCol] = i;
 						}
 					}
@@ -344,8 +282,12 @@ namespace ConvImgCpc {
 					int valMax = 0;
 					if (lockState[x] == 0) {
 						for (int i = 0; i < FindMax; i++) {
-							if (valMax < coulTrouvee[i, 0]) {
-								valMax = coulTrouvee[i, 0];
+							int nbc = 0;
+							for (int y = 0; y < 272; y++)
+								nbc += coulTrouvee[i, y];
+
+							if (valMax < nbc) {
+								valMax = nbc;
 								BitmapCpc.Palette[x] = i;
 							}
 						}
@@ -355,9 +297,14 @@ namespace ConvImgCpc {
 					if (lockState[x] == 0 && x != firstCol) {
 						int dist, oldDist = 0;
 						for (int i = 0; i < FindMax; i++) {
+							int nbc = 0;
+							for (int y = 0; y < 272; y++)
+								nbc += coulTrouvee[i, y];
+
+
 							RvbColor c = BitmapCpc.cpcPlus ? new RvbColor((byte)((i & 0x0F) * 17), (byte)(((i & 0xF00) >> 8) * 17), (byte)(((i & 0xF0) >> 4) * 17)) : BitmapCpc.RgbCPC[i];
 							dist = (c.r - colFirst.r) * (c.r - colFirst.r) * p.coefR + (c.v - colFirst.v) * (c.v - colFirst.v) * p.coefV + (c.b - colFirst.b) * (c.b - colFirst.b) * p.coefB;
-							if (dist > oldDist && coulTrouvee[i, 0] > 0) {
+							if (dist > oldDist && nbc > 0) {
 								oldDist = dist;
 								BitmapCpc.Palette[x] = i;
 							}
@@ -664,9 +611,9 @@ namespace ConvImgCpc {
 				SetPixTrameM1(source, p, dest, maxPen, tabCol);
 			else
 				if (BitmapCpc.modeVirtuel == 6)
-					SetPixColSplit(source, p, dest, tabCol);
-				else
-					SetPixCol(source, p, dest, maxPen, tabCol);
+				SetPixColSplit(source, p, dest, tabCol);
+			else
+				SetPixCol(source, p, dest, maxPen, tabCol);
 		}
 
 		static public int Convert(DirectBitmap source, ImageCpc dest, Param p, bool noInfo = false) {
@@ -675,7 +622,21 @@ namespace ConvImgCpc {
 			for (int i = 0; i < 256; i++)
 				tblContrast[i] = MinMaxByte(((((i / 255.0) - 0.5) * c) + 0.5) * 255.0);
 
-			int nbCol = p.trameTc ? p.cpcPlus ? ConvertTrameTcPlus(source, dest, p) : ConvertTrameTc(source, dest, p) : ConvertPasse1(source, dest, p);
+			//if (p.trameTc)
+			ConvertPasse1(source, dest, p);
+			//else
+			//				ConvertPasse1(source, dest, p);
+
+			int nbCol = 0;
+			for (int i = 0; i < coulTrouvee.GetLength(0); i++) {
+				bool memoCol = false;
+				for (int y = 0; y < 272; y++)
+					if (!memoCol && coulTrouvee[i, y] > 0) {
+						nbCol++;
+						memoCol = true;
+					}
+			}
+
 			int colSplit = 0;
 			Passe2(source, dest, p, ref colSplit);
 			if (!noInfo) {

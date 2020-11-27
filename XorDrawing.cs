@@ -95,8 +95,8 @@ namespace ConvImgCpc {
 			PS_DASHDOTDOT = 4, //The pen has alternating dashes and double dots.
 			PS_NULL = 5, //The pen is invisible.
 			PS_INSIDEFRAME = 6,// Normally when the edge is drawn, it’s centred on the outer edge meaning that half the width of the pen is drawn
-			// outside the shape’s edge, half is inside the shape’s edge. When PS_INSIDEFRAME is specified the edge is drawn 
-			//completely inside the outer edge of the shape.
+							   // outside the shape’s edge, half is inside the shape’s edge. When PS_INSIDEFRAME is specified the edge is drawn 
+							   //completely inside the outer edge of the shape.
 			PS_USERSTYLE = 7,
 			PS_ALTERNATE = 8,
 			PS_STYLE_MASK = 0x0000000F,
@@ -122,67 +122,55 @@ namespace ConvImgCpc {
 		}
 
 		private static IntPtr BeginDraw(Bitmap bmp, Graphics graphics, int x1, int y1, int x2, int y2, bool dash, out int oldRop, out IntPtr img, out IntPtr oldpen) {
-			var gHdc = graphics.GetHdc();
-			var hdc = CreateCompatibleDC(gHdc);
+			IntPtr gHdc = graphics.GetHdc();
+			IntPtr hdc = CreateCompatibleDC(gHdc);
 			graphics.ReleaseHdc(hdc);
-
 			img = bmp.GetHbitmap();
 			SelectObject(hdc, img);
-
 			oldpen = IntPtr.Zero;
 			if (dash) {
-				var pen = CreatePen(PenStyle.PS_DASH, 1, 0);
+				IntPtr pen = CreatePen(PenStyle.PS_DASH, 1, 0);
 				oldpen = SelectObject(hdc, pen);
 			}
 			oldRop = SetROP2(hdc, (int)BinaryRasterOperations.R2_NOTXORPEN); // Switch to inverted mode. (XOR)
-
 			SetGraphicsMode(hdc, (int)GraphicsMode.GM_ADVANCED);
 			XFORM transform = graphics.Transform;
 			SetWorldTransform(hdc, ref transform);
-
 			return hdc;
 		}
 
 
 		private static void FinishDraw(Bitmap bmp, Graphics graphics, IntPtr hdc, IntPtr oldpen, int oldRop, IntPtr img, bool dash) {
 			SetROP2(hdc, oldRop);
-
-			var transform = graphics.Transform;
+			System.Drawing.Drawing2D.Matrix transform = graphics.Transform;
 			graphics.ResetTransform(); //in case there is transform
-			var outBmp = Image.FromHbitmap(img);
-			//CopyChannel(bmp, outBmp, ChannelARGB.Alpha, ChannelARGB.Alpha);
+			Bitmap outBmp = Image.FromHbitmap(img);
 			graphics.Clear(Color.Transparent);
 			graphics.DrawImage(outBmp, 0, 0); //draw the xored image on the bitmap
 			graphics.Transform = transform;
-
 			if (dash)
 				DeleteObject(SelectObject(hdc, oldpen)); //delete new pen (switch to oldpen)
+
 			DeleteObject(img); // Delete the GDI bitmap (important).
 			DeleteObject(hdc);
 		}
 
 		public static void DrawXorLine(Graphics graphics, Bitmap bmp, int x1, int y1, int x2, int y2, bool dash = true) {
 			int oldRop;
-			IntPtr oldpen, img;
-			var hdc = BeginDraw(bmp, graphics, x1, y1, x2, y2, dash, out oldRop, out img, out oldpen);
-
+			IntPtr oldpen, img, hdc = BeginDraw(bmp, graphics, x1, y1, x2, y2, dash, out oldRop, out img, out oldpen);
 			MoveToEx(hdc, x1, y1, IntPtr.Zero);
 			LineTo(hdc, x2, y2);
-
 			FinishDraw(bmp, graphics, hdc, oldpen, oldRop, img, dash);
 		}
 
 		public static void DrawXorRectangle(Graphics graphics, Bitmap bmp, int x1, int y1, int x2, int y2, bool dash = true) {
 			int oldRop;
-			IntPtr oldpen, img;
-			var hdc = BeginDraw(bmp, graphics, x1, y1, x2, y2, dash, out oldRop, out img, out oldpen);
-
+			IntPtr oldpen, img, hdc = BeginDraw(bmp, graphics, x1, y1, x2, y2, dash, out oldRop, out img, out oldpen);
 			MoveToEx(hdc, x1, y1, IntPtr.Zero); //clockwise
 			LineTo(hdc, x2, y1);
 			LineTo(hdc, x2, y2);
 			LineTo(hdc, x1, y2);
 			LineTo(hdc, x1, y1);
-
 			FinishDraw(bmp, graphics, hdc, oldpen, oldRop, img, dash);
 		}
 	}

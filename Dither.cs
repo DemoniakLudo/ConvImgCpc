@@ -132,27 +132,15 @@ namespace ConvImgCpc {
 			return pct;
 		}
 
-		static public void DoFloydStenbeirg(DirectBitmap source, int xPix, int Tx, int yPix, RvbColor p, RvbColor choix) {
-			for (int y = 0; y < matDither.GetLength(1); y++)
-				for (int x = 0; x < matDither.GetLength(0); x++)
-					if (xPix + Tx * x < source.Width && yPix + 2 * y < source.Height) {
-						RvbColor pix = source.GetPixelColor(xPix + Tx * x, yPix + (y << 1));
-						pix.r = MinMaxByte(pix.r + (p.r - choix.r) * matDither[x, y] / 256);
-						pix.v = MinMaxByte(pix.v + (p.v - choix.v) * matDither[x, y] / 256);
-						pix.b = MinMaxByte(pix.b + (p.b - choix.b) * matDither[x, y] / 256);
-						source.SetPixel(xPix + Tx * x, yPix + (y << 1), pix);
-					}
-		}
-
 		static public void DoDitherFull(DirectBitmap source, int xPix, int yPix, int Tx, RvbColor p, RvbColor choix, bool diffErr) {
 			if (diffErr) {
 				for (int y = 0; y < matDither.GetLength(1); y++)
 					for (int x = 0; x < matDither.GetLength(0); x++)
 						if (xPix + Tx * x < source.Width && yPix + 2 * y < source.Height) {
 							RvbColor pix = source.GetPixelColor(xPix + Tx * x, yPix + (y << 1));
-							pix.r = MinMaxByte(pix.r + (p.r - choix.r) * matDither[x, y] / 256);
-							pix.v = MinMaxByte(pix.v + (p.v - choix.v) * matDither[x, y] / 256);
-							pix.b = MinMaxByte(pix.b + (p.b - choix.b) * matDither[x, y] / 256);
+							pix.r = MinMaxByte((double)pix.r + (p.r - choix.r) * matDither[x, y] / 256.0);
+							pix.v = MinMaxByte((double)pix.v + (p.v - choix.v) * matDither[x, y] / 256.0);
+							pix.b = MinMaxByte((double)pix.b + (p.b - choix.b) * matDither[x, y] / 256.0);
 							source.SetPixel(xPix + Tx * x, yPix + (y << 1), pix);
 						}
 			}
