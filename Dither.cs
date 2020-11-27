@@ -86,14 +86,14 @@ namespace ConvImgCpc {
 
 		static double[,] matDither;
 
-		static private Dictionary<string, double[,]> dicMat = new Dictionary<string, double[,]>() {
+		static public Dictionary<string, double[,]> dicMat = new Dictionary<string, double[,]>() {
 			{"Floyd-Steinberg (2x2)",	floyd},
 			{ "Bayer 1 (2X2)",			bayer1},
 			{ "Bayer 2 (4x4)",			bayer2},
 			{ "Bayer 3 (4X4)",			bayer3},
 			{ "Ordered 1 (2x2)",		ord1},
-			{ "Ordered 2 (4x4)",		ord3},
-			{ "Ordered 3 (8x8)",		ord4},
+			{ "Ordered 2 (3x3)",		ord3},
+			{ "Ordered 3 (4x4)",		ord4},
 			{ "ZigZag1 (3x3)",			zigzag1},
 			{ "ZigZag2 (4x3)",			zigzag2},
 			{ "ZigZag3 (5x4)",			zigzag3},

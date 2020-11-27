@@ -187,28 +187,7 @@
 			this.methode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.methode.FormattingEnabled = true;
 			this.methode.Items.AddRange(new object[] {
-            "Aucun",
-            "Floyd-Steinberg (2x2)",
-            "Bayer 1 (2X2)",
-            "Bayer 2 (4x4)",
-            "Bayer 3 (4X4)",
-            "Ordered 1 (2x2)",
-            "Ordered 2 (3x3)",
-            "Ordered 3 (4x4)",
-            "Ordered 4 (8x8)",
-            "ZigZag1 (3x3)",
-            "ZigZag2 (4x3)",
-            "ZigZag3 (5x4)",
-            "Test0",
-            "Test1",
-            "Test2",
-            "Test3",
-            "Test4",
-            "Test5",
-            "Test6",
-            "Test7",
-            "Test8",
-            "Test9"});
+            "Aucun"});
 			this.methode.Location = new System.Drawing.Point(48, 14);
 			this.methode.Name = "methode";
 			this.methode.Size = new System.Drawing.Size(117, 21);
