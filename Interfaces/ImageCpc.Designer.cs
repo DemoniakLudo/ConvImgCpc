@@ -282,10 +282,11 @@
 			this.Controls.Add(this.pictureBox);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.MaximizeBox = false;
+			this.MinimizeBox = false;
 			this.Name = "ImageCpc";
 			this.ShowIcon = false;
-			this.ShowInTaskbar = false;
 			this.Text = "Image CPC";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ImageCpc_FormClosing);
 			this.grpEdition.ResumeLayout(false);
 			this.grpEdition.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();

@@ -41,12 +41,12 @@
 			this.bpOverscan = new System.Windows.Forms.Button();
 			this.tramage = new System.Windows.Forms.GroupBox();
 			this.chkDiffErr = new System.Windows.Forms.CheckBox();
-			this.chkNewReduc = new System.Windows.Forms.CheckBox();
 			this.chkTrameTC = new System.Windows.Forms.CheckBox();
 			this.chkLissage = new System.Windows.Forms.CheckBox();
-			this.chkPalCpc = new System.Windows.Forms.CheckBox();
 			this.lblPct = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
+			this.chkNewReduc = new System.Windows.Forms.CheckBox();
+			this.chkPalCpc = new System.Windows.Forms.CheckBox();
 			this.autoRecalc = new System.Windows.Forms.CheckBox();
 			this.radioKeepLarger = new System.Windows.Forms.RadioButton();
 			this.radioKeepSmaller = new System.Windows.Forms.RadioButton();
@@ -68,8 +68,51 @@
 			this.bpImport = new System.Windows.Forms.Button();
 			this.bpCreate = new System.Windows.Forms.Button();
 			this.chkInfo = new System.Windows.Forms.CheckBox();
-			this.chkCouleur = new System.Windows.Forms.CheckBox();
 			this.chkParamInterne = new System.Windows.Forms.CheckBox();
+			this.reducPal4 = new System.Windows.Forms.CheckBox();
+			this.bpBmoins = new System.Windows.Forms.Button();
+			this.bpVmoins = new System.Windows.Forms.Button();
+			this.bpRmoins = new System.Windows.Forms.Button();
+			this.label12 = new System.Windows.Forms.Label();
+			this.label11 = new System.Windows.Forms.Label();
+			this.label6 = new System.Windows.Forms.Label();
+			this.blue = new System.Windows.Forms.TrackBar();
+			this.green = new System.Windows.Forms.TrackBar();
+			this.red = new System.Windows.Forms.TrackBar();
+			this.bpCtrstMoins = new System.Windows.Forms.Button();
+			this.bpBplus = new System.Windows.Forms.Button();
+			this.bpVplus = new System.Windows.Forms.Button();
+			this.bpRplus = new System.Windows.Forms.Button();
+			this.bpCtrstPlus = new System.Windows.Forms.Button();
+			this.bpSatMoins = new System.Windows.Forms.Button();
+			this.bpSatPlus = new System.Windows.Forms.Button();
+			this.bpLumMoins = new System.Windows.Forms.Button();
+			this.bpLumPlus = new System.Windows.Forms.Button();
+			this.modePlus = new System.Windows.Forms.CheckBox();
+			this.nb = new System.Windows.Forms.CheckBox();
+			this.sortPal = new System.Windows.Forms.CheckBox();
+			this.RazB = new System.Windows.Forms.Button();
+			this.RazV = new System.Windows.Forms.Button();
+			this.RazR = new System.Windows.Forms.Button();
+			this.bpRazContrast = new System.Windows.Forms.Button();
+			this.reducPal3 = new System.Windows.Forms.CheckBox();
+			this.contrast = new System.Windows.Forms.TrackBar();
+			this.reducPal2 = new System.Windows.Forms.CheckBox();
+			this.reducPal1 = new System.Windows.Forms.CheckBox();
+			this.bpRazSat = new System.Windows.Forms.Button();
+			this.newMethode = new System.Windows.Forms.CheckBox();
+			this.bpRazLumi = new System.Windows.Forms.Button();
+			this.label10 = new System.Windows.Forms.Label();
+			this.lumi = new System.Windows.Forms.TrackBar();
+			this.label9 = new System.Windows.Forms.Label();
+			this.sat = new System.Windows.Forms.TrackBar();
+			this.label8 = new System.Windows.Forms.Label();
+			this.rb24bits = new System.Windows.Forms.RadioButton();
+			this.rb12bits = new System.Windows.Forms.RadioButton();
+			this.rb9bits = new System.Windows.Forms.RadioButton();
+			this.rb6bits = new System.Windows.Forms.RadioButton();
+			this.bpRaz = new System.Windows.Forms.Button();
+			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -77,11 +120,18 @@
 			((System.ComponentModel.ISupportInitialize)(this.trackModeX)).BeginInit();
 			this.tramage.SuspendLayout();
 			this.groupBox1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.blue)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.green)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.red)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.contrast)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.lumi)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.sat)).BeginInit();
+			this.groupBox2.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// bpLoad
 			// 
-			this.bpLoad.Location = new System.Drawing.Point(2, 2);
+			this.bpLoad.Location = new System.Drawing.Point(6, 8);
 			this.bpLoad.Name = "bpLoad";
 			this.bpLoad.Size = new System.Drawing.Size(108, 23);
 			this.bpLoad.TabIndex = 2;
@@ -91,7 +141,7 @@
 			// 
 			// bpConvert
 			// 
-			this.bpConvert.Location = new System.Drawing.Point(3, 59);
+			this.bpConvert.Location = new System.Drawing.Point(7, 65);
 			this.bpConvert.Name = "bpConvert";
 			this.bpConvert.Size = new System.Drawing.Size(108, 23);
 			this.bpConvert.TabIndex = 3;
@@ -226,9 +276,9 @@
 			this.resoCPC.Controls.Add(this.label2);
 			this.resoCPC.Controls.Add(this.label3);
 			this.resoCPC.Controls.Add(this.mode);
-			this.resoCPC.Location = new System.Drawing.Point(237, 2);
+			this.resoCPC.Location = new System.Drawing.Point(241, 8);
 			this.resoCPC.Name = "resoCPC";
-			this.resoCPC.Size = new System.Drawing.Size(152, 203);
+			this.resoCPC.Size = new System.Drawing.Size(152, 174);
 			this.resoCPC.TabIndex = 11;
 			this.resoCPC.TabStop = false;
 			this.resoCPC.Text = "Résolution CPC";
@@ -290,17 +340,15 @@
 			// tramage
 			// 
 			this.tramage.Controls.Add(this.chkDiffErr);
-			this.tramage.Controls.Add(this.chkNewReduc);
 			this.tramage.Controls.Add(this.chkTrameTC);
 			this.tramage.Controls.Add(this.chkLissage);
-			this.tramage.Controls.Add(this.chkPalCpc);
 			this.tramage.Controls.Add(this.lblPct);
 			this.tramage.Controls.Add(this.methode);
 			this.tramage.Controls.Add(this.pctTrame);
 			this.tramage.Controls.Add(this.label4);
-			this.tramage.Location = new System.Drawing.Point(541, 2);
+			this.tramage.Location = new System.Drawing.Point(545, 8);
 			this.tramage.Name = "tramage";
-			this.tramage.Size = new System.Drawing.Size(172, 203);
+			this.tramage.Size = new System.Drawing.Size(172, 174);
 			this.tramage.TabIndex = 11;
 			this.tramage.TabStop = false;
 			this.tramage.Text = "Tramage et rendu";
@@ -317,21 +365,10 @@
 			this.chkDiffErr.Visible = false;
 			this.chkDiffErr.CheckedChanged += new System.EventHandler(this.InterfaceChange);
 			// 
-			// chkNewReduc
-			// 
-			this.chkNewReduc.AutoSize = true;
-			this.chkNewReduc.Location = new System.Drawing.Point(46, 175);
-			this.chkNewReduc.Name = "chkNewReduc";
-			this.chkNewReduc.Size = new System.Drawing.Size(120, 17);
-			this.chkNewReduc.TabIndex = 17;
-			this.chkNewReduc.Text = "Méthode alternative";
-			this.chkNewReduc.UseVisualStyleBackColor = true;
-			this.chkNewReduc.CheckedChanged += new System.EventHandler(this.InterfaceChange);
-			// 
 			// chkTrameTC
 			// 
 			this.chkTrameTC.AutoSize = true;
-			this.chkTrameTC.Location = new System.Drawing.Point(46, 152);
+			this.chkTrameTC.Location = new System.Drawing.Point(46, 125);
 			this.chkTrameTC.Name = "chkTrameTC";
 			this.chkTrameTC.Size = new System.Drawing.Size(88, 17);
 			this.chkTrameTC.TabIndex = 16;
@@ -342,24 +379,13 @@
 			// chkLissage
 			// 
 			this.chkLissage.AutoSize = true;
-			this.chkLissage.Location = new System.Drawing.Point(46, 129);
+			this.chkLissage.Location = new System.Drawing.Point(46, 98);
 			this.chkLissage.Name = "chkLissage";
 			this.chkLissage.Size = new System.Drawing.Size(62, 17);
 			this.chkLissage.TabIndex = 15;
 			this.chkLissage.Text = "Lissage";
 			this.chkLissage.UseVisualStyleBackColor = true;
 			this.chkLissage.CheckedChanged += new System.EventHandler(this.InterfaceChange);
-			// 
-			// chkPalCpc
-			// 
-			this.chkPalCpc.AutoSize = true;
-			this.chkPalCpc.Location = new System.Drawing.Point(46, 93);
-			this.chkPalCpc.Name = "chkPalCpc";
-			this.chkPalCpc.Size = new System.Drawing.Size(110, 30);
-			this.chkPalCpc.TabIndex = 14;
-			this.chkPalCpc.Text = "Réduction palette\nimage source";
-			this.chkPalCpc.UseVisualStyleBackColor = true;
-			this.chkPalCpc.CheckedChanged += new System.EventHandler(this.InterfaceChange);
 			// 
 			// lblPct
 			// 
@@ -380,10 +406,32 @@
 			this.label4.TabIndex = 12;
 			this.label4.Text = "Type";
 			// 
+			// chkNewReduc
+			// 
+			this.chkNewReduc.AutoSize = true;
+			this.chkNewReduc.Location = new System.Drawing.Point(574, 19);
+			this.chkNewReduc.Name = "chkNewReduc";
+			this.chkNewReduc.Size = new System.Drawing.Size(120, 17);
+			this.chkNewReduc.TabIndex = 17;
+			this.chkNewReduc.Text = "Méthode alternative";
+			this.chkNewReduc.UseVisualStyleBackColor = true;
+			this.chkNewReduc.CheckedChanged += new System.EventHandler(this.InterfaceChange);
+			// 
+			// chkPalCpc
+			// 
+			this.chkPalCpc.AutoSize = true;
+			this.chkPalCpc.Location = new System.Drawing.Point(574, 42);
+			this.chkPalCpc.Name = "chkPalCpc";
+			this.chkPalCpc.Size = new System.Drawing.Size(110, 30);
+			this.chkPalCpc.TabIndex = 14;
+			this.chkPalCpc.Text = "Réduction palette\nimage source";
+			this.chkPalCpc.UseVisualStyleBackColor = true;
+			this.chkPalCpc.CheckedChanged += new System.EventHandler(this.InterfaceChange);
+			// 
 			// autoRecalc
 			// 
 			this.autoRecalc.AutoSize = true;
-			this.autoRecalc.Location = new System.Drawing.Point(3, 88);
+			this.autoRecalc.Location = new System.Drawing.Point(7, 94);
 			this.autoRecalc.Name = "autoRecalc";
 			this.autoRecalc.Size = new System.Drawing.Size(162, 17);
 			this.autoRecalc.TabIndex = 44;
@@ -439,9 +487,9 @@
 			this.groupBox1.Controls.Add(this.radioFit);
 			this.groupBox1.Controls.Add(this.radioKeepSmaller);
 			this.groupBox1.Controls.Add(this.radioKeepLarger);
-			this.groupBox1.Location = new System.Drawing.Point(395, 2);
+			this.groupBox1.Location = new System.Drawing.Point(399, 8);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(140, 203);
+			this.groupBox1.Size = new System.Drawing.Size(140, 174);
 			this.groupBox1.TabIndex = 49;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Taille image source";
@@ -526,7 +574,7 @@
 			// 
 			// bpSave
 			// 
-			this.bpSave.Location = new System.Drawing.Point(2, 111);
+			this.bpSave.Location = new System.Drawing.Point(6, 117);
 			this.bpSave.Name = "bpSave";
 			this.bpSave.Size = new System.Drawing.Size(108, 23);
 			this.bpSave.TabIndex = 52;
@@ -537,7 +585,7 @@
 			// lblInfoVersion
 			// 
 			this.lblInfoVersion.AutoSize = true;
-			this.lblInfoVersion.Location = new System.Drawing.Point(0, 211);
+			this.lblInfoVersion.Location = new System.Drawing.Point(7, 512);
 			this.lblInfoVersion.Name = "lblInfoVersion";
 			this.lblInfoVersion.Size = new System.Drawing.Size(42, 13);
 			this.lblInfoVersion.TabIndex = 52;
@@ -548,7 +596,7 @@
 			this.withCode.AutoSize = true;
 			this.withCode.Checked = true;
 			this.withCode.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.withCode.Location = new System.Drawing.Point(2, 136);
+			this.withCode.Location = new System.Drawing.Point(6, 142);
 			this.withCode.Name = "withCode";
 			this.withCode.Size = new System.Drawing.Size(212, 17);
 			this.withCode.TabIndex = 52;
@@ -561,7 +609,7 @@
 			this.withPalette.AutoSize = true;
 			this.withPalette.Checked = true;
 			this.withPalette.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.withPalette.Location = new System.Drawing.Point(2, 159);
+			this.withPalette.Location = new System.Drawing.Point(6, 165);
 			this.withPalette.Name = "withPalette";
 			this.withPalette.Size = new System.Drawing.Size(165, 17);
 			this.withPalette.TabIndex = 52;
@@ -572,7 +620,7 @@
 			// chkAllPics
 			// 
 			this.chkAllPics.AutoSize = true;
-			this.chkAllPics.Location = new System.Drawing.Point(117, 63);
+			this.chkAllPics.Location = new System.Drawing.Point(121, 69);
 			this.chkAllPics.Name = "chkAllPics";
 			this.chkAllPics.Size = new System.Drawing.Size(111, 17);
 			this.chkAllPics.TabIndex = 57;
@@ -583,7 +631,7 @@
 			// 
 			// bpImport
 			// 
-			this.bpImport.Location = new System.Drawing.Point(3, 30);
+			this.bpImport.Location = new System.Drawing.Point(7, 36);
 			this.bpImport.Name = "bpImport";
 			this.bpImport.Size = new System.Drawing.Size(108, 23);
 			this.bpImport.TabIndex = 58;
@@ -593,7 +641,7 @@
 			// 
 			// bpCreate
 			// 
-			this.bpCreate.Location = new System.Drawing.Point(125, 2);
+			this.bpCreate.Location = new System.Drawing.Point(129, 8);
 			this.bpCreate.Name = "bpCreate";
 			this.bpCreate.Size = new System.Drawing.Size(108, 23);
 			this.bpCreate.TabIndex = 59;
@@ -604,7 +652,7 @@
 			// chkInfo
 			// 
 			this.chkInfo.AutoSize = true;
-			this.chkInfo.Location = new System.Drawing.Point(237, 210);
+			this.chkInfo.Location = new System.Drawing.Point(165, 508);
 			this.chkInfo.Name = "chkInfo";
 			this.chkInfo.Size = new System.Drawing.Size(83, 17);
 			this.chkInfo.TabIndex = 61;
@@ -612,21 +660,10 @@
 			this.chkInfo.UseVisualStyleBackColor = true;
 			this.chkInfo.CheckedChanged += new System.EventHandler(this.chkInfo_CheckedChanged);
 			// 
-			// chkCouleur
-			// 
-			this.chkCouleur.AutoSize = true;
-			this.chkCouleur.Location = new System.Drawing.Point(541, 210);
-			this.chkCouleur.Name = "chkCouleur";
-			this.chkCouleur.Size = new System.Drawing.Size(125, 17);
-			this.chkCouleur.TabIndex = 62;
-			this.chkCouleur.Text = "Gestion des couleurs";
-			this.chkCouleur.UseVisualStyleBackColor = true;
-			this.chkCouleur.CheckedChanged += new System.EventHandler(this.chkCouleur_CheckedChanged);
-			// 
 			// chkParamInterne
 			// 
 			this.chkParamInterne.AutoSize = true;
-			this.chkParamInterne.Location = new System.Drawing.Point(368, 210);
+			this.chkParamInterne.Location = new System.Drawing.Point(593, 512);
 			this.chkParamInterne.Name = "chkParamInterne";
 			this.chkParamInterne.Size = new System.Drawing.Size(119, 17);
 			this.chkParamInterne.TabIndex = 63;
@@ -634,14 +671,512 @@
 			this.chkParamInterne.UseVisualStyleBackColor = true;
 			this.chkParamInterne.CheckedChanged += new System.EventHandler(this.chkParamInterne_CheckedChanged);
 			// 
+			// reducPal4
+			// 
+			this.reducPal4.AutoSize = true;
+			this.reducPal4.Location = new System.Drawing.Point(374, 41);
+			this.reducPal4.Name = "reducPal4";
+			this.reducPal4.Size = new System.Drawing.Size(84, 17);
+			this.reducPal4.TabIndex = 60;
+			this.reducPal4.Text = "Réduction 4";
+			this.reducPal4.UseVisualStyleBackColor = true;
+			this.reducPal4.CheckedChanged += new System.EventHandler(this.reducPal4_CheckedChanged);
+			// 
+			// bpBmoins
+			// 
+			this.bpBmoins.Location = new System.Drawing.Point(31, 264);
+			this.bpBmoins.Name = "bpBmoins";
+			this.bpBmoins.Size = new System.Drawing.Size(23, 23);
+			this.bpBmoins.TabIndex = 59;
+			this.bpBmoins.Text = "-";
+			this.bpBmoins.UseVisualStyleBackColor = true;
+			this.bpBmoins.Click += new System.EventHandler(this.bpBmoins_Click);
+			// 
+			// bpVmoins
+			// 
+			this.bpVmoins.Location = new System.Drawing.Point(31, 230);
+			this.bpVmoins.Name = "bpVmoins";
+			this.bpVmoins.Size = new System.Drawing.Size(23, 23);
+			this.bpVmoins.TabIndex = 59;
+			this.bpVmoins.Text = "-";
+			this.bpVmoins.UseVisualStyleBackColor = true;
+			this.bpVmoins.Click += new System.EventHandler(this.bpVmoins_Click);
+			// 
+			// bpRmoins
+			// 
+			this.bpRmoins.Location = new System.Drawing.Point(31, 196);
+			this.bpRmoins.Name = "bpRmoins";
+			this.bpRmoins.Size = new System.Drawing.Size(23, 23);
+			this.bpRmoins.TabIndex = 59;
+			this.bpRmoins.Text = "-";
+			this.bpRmoins.UseVisualStyleBackColor = true;
+			this.bpRmoins.Click += new System.EventHandler(this.bpRmoins_Click);
+			// 
+			// label12
+			// 
+			this.label12.AutoSize = true;
+			this.label12.Location = new System.Drawing.Point(3, 269);
+			this.label12.Name = "label12";
+			this.label12.Size = new System.Drawing.Size(14, 13);
+			this.label12.TabIndex = 58;
+			this.label12.Text = "B";
+			// 
+			// label11
+			// 
+			this.label11.AutoSize = true;
+			this.label11.Location = new System.Drawing.Point(3, 235);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(14, 13);
+			this.label11.TabIndex = 58;
+			this.label11.Text = "V";
+			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Location = new System.Drawing.Point(3, 201);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(15, 13);
+			this.label6.TabIndex = 58;
+			this.label6.Text = "R";
+			// 
+			// blue
+			// 
+			this.blue.AutoSize = false;
+			this.blue.Location = new System.Drawing.Point(54, 259);
+			this.blue.Maximum = 200;
+			this.blue.Name = "blue";
+			this.blue.Size = new System.Drawing.Size(575, 24);
+			this.blue.TabIndex = 57;
+			this.blue.Value = 100;
+			this.blue.ValueChanged += new System.EventHandler(this.blue_ValueChanged);
+			// 
+			// green
+			// 
+			this.green.AutoSize = false;
+			this.green.Location = new System.Drawing.Point(54, 223);
+			this.green.Maximum = 200;
+			this.green.Name = "green";
+			this.green.Size = new System.Drawing.Size(575, 24);
+			this.green.TabIndex = 57;
+			this.green.Value = 100;
+			this.green.ValueChanged += new System.EventHandler(this.green_ValueChanged);
+			// 
+			// red
+			// 
+			this.red.AutoSize = false;
+			this.red.Location = new System.Drawing.Point(54, 191);
+			this.red.Maximum = 200;
+			this.red.Name = "red";
+			this.red.Size = new System.Drawing.Size(575, 24);
+			this.red.TabIndex = 57;
+			this.red.Value = 100;
+			this.red.ValueChanged += new System.EventHandler(this.red_ValueChanged);
+			// 
+			// bpCtrstMoins
+			// 
+			this.bpCtrstMoins.Location = new System.Drawing.Point(31, 162);
+			this.bpCtrstMoins.Name = "bpCtrstMoins";
+			this.bpCtrstMoins.Size = new System.Drawing.Size(23, 23);
+			this.bpCtrstMoins.TabIndex = 55;
+			this.bpCtrstMoins.Text = "-";
+			this.bpCtrstMoins.UseVisualStyleBackColor = true;
+			this.bpCtrstMoins.Click += new System.EventHandler(this.bpCtrstMoins_Click);
+			// 
+			// bpBplus
+			// 
+			this.bpBplus.Location = new System.Drawing.Point(634, 264);
+			this.bpBplus.Name = "bpBplus";
+			this.bpBplus.Size = new System.Drawing.Size(23, 23);
+			this.bpBplus.TabIndex = 56;
+			this.bpBplus.Text = "+";
+			this.bpBplus.UseVisualStyleBackColor = true;
+			this.bpBplus.Click += new System.EventHandler(this.bpBplus_Click);
+			// 
+			// bpVplus
+			// 
+			this.bpVplus.Location = new System.Drawing.Point(634, 230);
+			this.bpVplus.Name = "bpVplus";
+			this.bpVplus.Size = new System.Drawing.Size(23, 23);
+			this.bpVplus.TabIndex = 56;
+			this.bpVplus.Text = "+";
+			this.bpVplus.UseVisualStyleBackColor = true;
+			this.bpVplus.Click += new System.EventHandler(this.bpVplus_Click);
+			// 
+			// bpRplus
+			// 
+			this.bpRplus.Location = new System.Drawing.Point(634, 196);
+			this.bpRplus.Name = "bpRplus";
+			this.bpRplus.Size = new System.Drawing.Size(23, 23);
+			this.bpRplus.TabIndex = 56;
+			this.bpRplus.Text = "+";
+			this.bpRplus.UseVisualStyleBackColor = true;
+			this.bpRplus.Click += new System.EventHandler(this.bpRplus_Click);
+			// 
+			// bpCtrstPlus
+			// 
+			this.bpCtrstPlus.Location = new System.Drawing.Point(634, 162);
+			this.bpCtrstPlus.Name = "bpCtrstPlus";
+			this.bpCtrstPlus.Size = new System.Drawing.Size(23, 23);
+			this.bpCtrstPlus.TabIndex = 56;
+			this.bpCtrstPlus.Text = "+";
+			this.bpCtrstPlus.UseVisualStyleBackColor = true;
+			this.bpCtrstPlus.Click += new System.EventHandler(this.bpCtrstPlus_Click);
+			// 
+			// bpSatMoins
+			// 
+			this.bpSatMoins.Location = new System.Drawing.Point(31, 127);
+			this.bpSatMoins.Name = "bpSatMoins";
+			this.bpSatMoins.Size = new System.Drawing.Size(23, 23);
+			this.bpSatMoins.TabIndex = 53;
+			this.bpSatMoins.Text = "-";
+			this.bpSatMoins.UseVisualStyleBackColor = true;
+			this.bpSatMoins.Click += new System.EventHandler(this.bpSatMoins_Click);
+			// 
+			// bpSatPlus
+			// 
+			this.bpSatPlus.Location = new System.Drawing.Point(634, 127);
+			this.bpSatPlus.Name = "bpSatPlus";
+			this.bpSatPlus.Size = new System.Drawing.Size(23, 23);
+			this.bpSatPlus.TabIndex = 54;
+			this.bpSatPlus.Text = "+";
+			this.bpSatPlus.UseVisualStyleBackColor = true;
+			this.bpSatPlus.Click += new System.EventHandler(this.bpSatPlus_Click);
+			// 
+			// bpLumMoins
+			// 
+			this.bpLumMoins.Location = new System.Drawing.Point(31, 94);
+			this.bpLumMoins.Name = "bpLumMoins";
+			this.bpLumMoins.Size = new System.Drawing.Size(23, 23);
+			this.bpLumMoins.TabIndex = 52;
+			this.bpLumMoins.Text = "-";
+			this.bpLumMoins.UseVisualStyleBackColor = true;
+			this.bpLumMoins.Click += new System.EventHandler(this.bpLumMoins_Click);
+			// 
+			// bpLumPlus
+			// 
+			this.bpLumPlus.Location = new System.Drawing.Point(634, 94);
+			this.bpLumPlus.Name = "bpLumPlus";
+			this.bpLumPlus.Size = new System.Drawing.Size(23, 23);
+			this.bpLumPlus.TabIndex = 52;
+			this.bpLumPlus.Text = "+";
+			this.bpLumPlus.UseVisualStyleBackColor = true;
+			this.bpLumPlus.Click += new System.EventHandler(this.bpLumPlus_Click);
+			// 
+			// modePlus
+			// 
+			this.modePlus.AutoSize = true;
+			this.modePlus.Location = new System.Drawing.Point(6, 41);
+			this.modePlus.Name = "modePlus";
+			this.modePlus.Size = new System.Drawing.Size(53, 17);
+			this.modePlus.TabIndex = 8;
+			this.modePlus.Text = "CPC+";
+			this.modePlus.UseVisualStyleBackColor = true;
+			this.modePlus.CheckedChanged += new System.EventHandler(this.modePlus_CheckedChanged);
+			// 
+			// nb
+			// 
+			this.nb.AutoSize = true;
+			this.nb.Location = new System.Drawing.Point(166, 19);
+			this.nb.Name = "nb";
+			this.nb.Size = new System.Drawing.Size(83, 17);
+			this.nb.TabIndex = 51;
+			this.nb.Text = "Noir && blanc";
+			this.nb.UseVisualStyleBackColor = true;
+			this.nb.CheckedChanged += new System.EventHandler(this.nb_CheckedChanged);
+			// 
+			// sortPal
+			// 
+			this.sortPal.AutoSize = true;
+			this.sortPal.Location = new System.Drawing.Point(6, 19);
+			this.sortPal.Name = "sortPal";
+			this.sortPal.Size = new System.Drawing.Size(47, 17);
+			this.sortPal.TabIndex = 50;
+			this.sortPal.Text = "Trier";
+			this.sortPal.UseVisualStyleBackColor = true;
+			this.sortPal.CheckedChanged += new System.EventHandler(this.sortPal_CheckedChanged);
+			// 
+			// RazB
+			// 
+			this.RazB.Location = new System.Drawing.Point(659, 264);
+			this.RazB.Name = "RazB";
+			this.RazB.Size = new System.Drawing.Size(35, 23);
+			this.RazB.TabIndex = 43;
+			this.RazB.Text = "Raz";
+			this.RazB.UseVisualStyleBackColor = true;
+			this.RazB.Click += new System.EventHandler(this.RazB_Click);
+			// 
+			// RazV
+			// 
+			this.RazV.Location = new System.Drawing.Point(659, 230);
+			this.RazV.Name = "RazV";
+			this.RazV.Size = new System.Drawing.Size(35, 23);
+			this.RazV.TabIndex = 43;
+			this.RazV.Text = "Raz";
+			this.RazV.UseVisualStyleBackColor = true;
+			this.RazV.Click += new System.EventHandler(this.RazV_Click);
+			// 
+			// RazR
+			// 
+			this.RazR.Location = new System.Drawing.Point(659, 196);
+			this.RazR.Name = "RazR";
+			this.RazR.Size = new System.Drawing.Size(35, 23);
+			this.RazR.TabIndex = 43;
+			this.RazR.Text = "Raz";
+			this.RazR.UseVisualStyleBackColor = true;
+			this.RazR.Click += new System.EventHandler(this.RazR_Click);
+			// 
+			// bpRazContrast
+			// 
+			this.bpRazContrast.Location = new System.Drawing.Point(659, 162);
+			this.bpRazContrast.Name = "bpRazContrast";
+			this.bpRazContrast.Size = new System.Drawing.Size(35, 23);
+			this.bpRazContrast.TabIndex = 43;
+			this.bpRazContrast.Text = "Raz";
+			this.bpRazContrast.UseVisualStyleBackColor = true;
+			this.bpRazContrast.Click += new System.EventHandler(this.bpRazContrast_Click);
+			// 
+			// reducPal3
+			// 
+			this.reducPal3.AutoSize = true;
+			this.reducPal3.Location = new System.Drawing.Point(273, 41);
+			this.reducPal3.Name = "reducPal3";
+			this.reducPal3.Size = new System.Drawing.Size(84, 17);
+			this.reducPal3.TabIndex = 47;
+			this.reducPal3.Text = "Réduction 3";
+			this.reducPal3.UseVisualStyleBackColor = true;
+			this.reducPal3.CheckedChanged += new System.EventHandler(this.reducPal3_CheckedChanged);
+			// 
+			// contrast
+			// 
+			this.contrast.AutoSize = false;
+			this.contrast.Location = new System.Drawing.Point(54, 157);
+			this.contrast.Maximum = 200;
+			this.contrast.Name = "contrast";
+			this.contrast.Size = new System.Drawing.Size(575, 24);
+			this.contrast.TabIndex = 42;
+			this.contrast.Value = 100;
+			this.contrast.ValueChanged += new System.EventHandler(this.contrast_ValueChanged);
+			// 
+			// reducPal2
+			// 
+			this.reducPal2.AutoSize = true;
+			this.reducPal2.Location = new System.Drawing.Point(166, 41);
+			this.reducPal2.Name = "reducPal2";
+			this.reducPal2.Size = new System.Drawing.Size(84, 17);
+			this.reducPal2.TabIndex = 46;
+			this.reducPal2.Text = "Réduction 2";
+			this.reducPal2.UseVisualStyleBackColor = true;
+			this.reducPal2.CheckedChanged += new System.EventHandler(this.reducPal2_CheckedChanged);
+			// 
+			// reducPal1
+			// 
+			this.reducPal1.AutoSize = true;
+			this.reducPal1.Location = new System.Drawing.Point(59, 41);
+			this.reducPal1.Name = "reducPal1";
+			this.reducPal1.Size = new System.Drawing.Size(84, 17);
+			this.reducPal1.TabIndex = 46;
+			this.reducPal1.Text = "Réduction 1";
+			this.reducPal1.UseVisualStyleBackColor = true;
+			this.reducPal1.CheckedChanged += new System.EventHandler(this.reducPal1_CheckedChanged);
+			// 
+			// bpRazSat
+			// 
+			this.bpRazSat.Location = new System.Drawing.Point(659, 127);
+			this.bpRazSat.Name = "bpRazSat";
+			this.bpRazSat.Size = new System.Drawing.Size(35, 23);
+			this.bpRazSat.TabIndex = 14;
+			this.bpRazSat.Text = "Raz";
+			this.bpRazSat.UseVisualStyleBackColor = true;
+			this.bpRazSat.Click += new System.EventHandler(this.bpRazSat_Click);
+			// 
+			// newMethode
+			// 
+			this.newMethode.AutoSize = true;
+			this.newMethode.Location = new System.Drawing.Point(374, 19);
+			this.newMethode.Name = "newMethode";
+			this.newMethode.Size = new System.Drawing.Size(83, 17);
+			this.newMethode.TabIndex = 45;
+			this.newMethode.Text = "Plus précise";
+			this.newMethode.UseVisualStyleBackColor = true;
+			this.newMethode.CheckedChanged += new System.EventHandler(this.newMethode_CheckedChanged);
+			// 
+			// bpRazLumi
+			// 
+			this.bpRazLumi.Location = new System.Drawing.Point(659, 94);
+			this.bpRazLumi.Name = "bpRazLumi";
+			this.bpRazLumi.Size = new System.Drawing.Size(35, 23);
+			this.bpRazLumi.TabIndex = 14;
+			this.bpRazLumi.Text = "Raz";
+			this.bpRazLumi.UseVisualStyleBackColor = true;
+			this.bpRazLumi.Click += new System.EventHandler(this.bpRazLumi_Click);
+			// 
+			// label10
+			// 
+			this.label10.AutoSize = true;
+			this.label10.Location = new System.Drawing.Point(1, 167);
+			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(31, 13);
+			this.label10.TabIndex = 13;
+			this.label10.Text = "Ctrst.";
+			// 
+			// lumi
+			// 
+			this.lumi.AutoSize = false;
+			this.lumi.Location = new System.Drawing.Point(54, 89);
+			this.lumi.Maximum = 200;
+			this.lumi.Name = "lumi";
+			this.lumi.Size = new System.Drawing.Size(575, 24);
+			this.lumi.TabIndex = 12;
+			this.lumi.Value = 100;
+			this.lumi.ValueChanged += new System.EventHandler(this.lumi_ValueChanged);
+			// 
+			// label9
+			// 
+			this.label9.AutoSize = true;
+			this.label9.Location = new System.Drawing.Point(1, 133);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(26, 13);
+			this.label9.TabIndex = 13;
+			this.label9.Text = "Sat.";
+			// 
+			// sat
+			// 
+			this.sat.AutoSize = false;
+			this.sat.Location = new System.Drawing.Point(54, 123);
+			this.sat.Maximum = 200;
+			this.sat.Name = "sat";
+			this.sat.Size = new System.Drawing.Size(575, 24);
+			this.sat.TabIndex = 12;
+			this.sat.Value = 100;
+			this.sat.ValueChanged += new System.EventHandler(this.sat_ValueChanged);
+			// 
+			// label8
+			// 
+			this.label8.AutoSize = true;
+			this.label8.Location = new System.Drawing.Point(1, 99);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(30, 13);
+			this.label8.TabIndex = 13;
+			this.label8.Text = "Lum.";
+			// 
+			// rb24bits
+			// 
+			this.rb24bits.AutoSize = true;
+			this.rb24bits.Checked = true;
+			this.rb24bits.Location = new System.Drawing.Point(59, 64);
+			this.rb24bits.Name = "rb24bits";
+			this.rb24bits.Size = new System.Drawing.Size(97, 17);
+			this.rb24bits.TabIndex = 61;
+			this.rb24bits.TabStop = true;
+			this.rb24bits.Text = "Couleurs 24bits";
+			this.rb24bits.UseVisualStyleBackColor = true;
+			this.rb24bits.CheckedChanged += new System.EventHandler(this.rb24bits_CheckedChanged);
+			// 
+			// rb12bits
+			// 
+			this.rb12bits.AutoSize = true;
+			this.rb12bits.Location = new System.Drawing.Point(166, 64);
+			this.rb12bits.Name = "rb12bits";
+			this.rb12bits.Size = new System.Drawing.Size(97, 17);
+			this.rb12bits.TabIndex = 62;
+			this.rb12bits.Text = "Couleurs 12bits";
+			this.rb12bits.UseVisualStyleBackColor = true;
+			this.rb12bits.CheckedChanged += new System.EventHandler(this.rb12bits_CheckedChanged);
+			// 
+			// rb9bits
+			// 
+			this.rb9bits.AutoSize = true;
+			this.rb9bits.Location = new System.Drawing.Point(273, 64);
+			this.rb9bits.Name = "rb9bits";
+			this.rb9bits.Size = new System.Drawing.Size(91, 17);
+			this.rb9bits.TabIndex = 63;
+			this.rb9bits.Text = "Couleurs 9bits";
+			this.rb9bits.UseVisualStyleBackColor = true;
+			this.rb9bits.CheckedChanged += new System.EventHandler(this.rb9bits_CheckedChanged);
+			// 
+			// rb6bits
+			// 
+			this.rb6bits.AutoSize = true;
+			this.rb6bits.Location = new System.Drawing.Point(374, 64);
+			this.rb6bits.Name = "rb6bits";
+			this.rb6bits.Size = new System.Drawing.Size(91, 17);
+			this.rb6bits.TabIndex = 64;
+			this.rb6bits.Text = "Couleurs 6bits";
+			this.rb6bits.UseVisualStyleBackColor = true;
+			this.rb6bits.CheckedChanged += new System.EventHandler(this.rb6bits_CheckedChanged);
+			// 
+			// bpRaz
+			// 
+			this.bpRaz.Location = new System.Drawing.Point(259, 289);
+			this.bpRaz.Name = "bpRaz";
+			this.bpRaz.Size = new System.Drawing.Size(162, 23);
+			this.bpRaz.TabIndex = 65;
+			this.bpRaz.Text = "Raz paramètres couleurs";
+			this.bpRaz.UseVisualStyleBackColor = true;
+			this.bpRaz.Click += new System.EventHandler(this.bpRaz_Click);
+			// 
+			// groupBox2
+			// 
+			this.groupBox2.Controls.Add(this.sortPal);
+			this.groupBox2.Controls.Add(this.chkNewReduc);
+			this.groupBox2.Controls.Add(this.label8);
+			this.groupBox2.Controls.Add(this.chkPalCpc);
+			this.groupBox2.Controls.Add(this.sat);
+			this.groupBox2.Controls.Add(this.label9);
+			this.groupBox2.Controls.Add(this.lumi);
+			this.groupBox2.Controls.Add(this.label10);
+			this.groupBox2.Controls.Add(this.bpRazLumi);
+			this.groupBox2.Controls.Add(this.newMethode);
+			this.groupBox2.Controls.Add(this.bpRazSat);
+			this.groupBox2.Controls.Add(this.reducPal1);
+			this.groupBox2.Controls.Add(this.reducPal2);
+			this.groupBox2.Controls.Add(this.contrast);
+			this.groupBox2.Controls.Add(this.reducPal3);
+			this.groupBox2.Controls.Add(this.bpRazContrast);
+			this.groupBox2.Controls.Add(this.RazR);
+			this.groupBox2.Controls.Add(this.RazV);
+			this.groupBox2.Controls.Add(this.bpRaz);
+			this.groupBox2.Controls.Add(this.RazB);
+			this.groupBox2.Controls.Add(this.rb6bits);
+			this.groupBox2.Controls.Add(this.nb);
+			this.groupBox2.Controls.Add(this.rb9bits);
+			this.groupBox2.Controls.Add(this.modePlus);
+			this.groupBox2.Controls.Add(this.rb12bits);
+			this.groupBox2.Controls.Add(this.bpLumPlus);
+			this.groupBox2.Controls.Add(this.rb24bits);
+			this.groupBox2.Controls.Add(this.bpLumMoins);
+			this.groupBox2.Controls.Add(this.reducPal4);
+			this.groupBox2.Controls.Add(this.bpSatPlus);
+			this.groupBox2.Controls.Add(this.bpBmoins);
+			this.groupBox2.Controls.Add(this.bpSatMoins);
+			this.groupBox2.Controls.Add(this.bpVmoins);
+			this.groupBox2.Controls.Add(this.bpCtrstPlus);
+			this.groupBox2.Controls.Add(this.bpRmoins);
+			this.groupBox2.Controls.Add(this.bpRplus);
+			this.groupBox2.Controls.Add(this.label12);
+			this.groupBox2.Controls.Add(this.bpVplus);
+			this.groupBox2.Controls.Add(this.label11);
+			this.groupBox2.Controls.Add(this.bpBplus);
+			this.groupBox2.Controls.Add(this.label6);
+			this.groupBox2.Controls.Add(this.bpCtrstMoins);
+			this.groupBox2.Controls.Add(this.blue);
+			this.groupBox2.Controls.Add(this.red);
+			this.groupBox2.Controls.Add(this.green);
+			this.groupBox2.Location = new System.Drawing.Point(8, 188);
+			this.groupBox2.Name = "groupBox2";
+			this.groupBox2.Size = new System.Drawing.Size(709, 317);
+			this.groupBox2.TabIndex = 66;
+			this.groupBox2.TabStop = false;
+			this.groupBox2.Text = "Gestion des couleurs";
+			// 
 			// Main
 			// 
 			this.AllowDrop = true;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(714, 243);
+			this.ClientSize = new System.Drawing.Size(723, 528);
+			this.Controls.Add(this.groupBox2);
 			this.Controls.Add(this.chkParamInterne);
-			this.Controls.Add(this.chkCouleur);
 			this.Controls.Add(this.chkInfo);
 			this.Controls.Add(this.bpCreate);
 			this.Controls.Add(this.bpImport);
@@ -660,6 +1195,8 @@
 			this.MaximizeBox = false;
 			this.Name = "Main";
 			this.Text = "ConvImgCPC";
+			this.Activated += new System.EventHandler(this.Main_Activated);
+			this.Click += new System.EventHandler(this.Main_Click);
 			this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Main_DragDrop);
 			this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Main_DragEnter);
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).EndInit();
@@ -672,12 +1209,66 @@
 			this.tramage.PerformLayout();
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.blue)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.green)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.red)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.contrast)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.lumi)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.sat)).EndInit();
+			this.groupBox2.ResumeLayout(false);
+			this.groupBox2.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
 		}
 
 		#endregion
+
+		private System.Windows.Forms.CheckBox reducPal4;
+		private System.Windows.Forms.Button bpBmoins;
+		private System.Windows.Forms.Button bpVmoins;
+		private System.Windows.Forms.Button bpRmoins;
+		private System.Windows.Forms.Label label12;
+		private System.Windows.Forms.Label label11;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.TrackBar blue;
+		private System.Windows.Forms.TrackBar green;
+		private System.Windows.Forms.TrackBar red;
+		private System.Windows.Forms.Button bpCtrstMoins;
+		private System.Windows.Forms.Button bpBplus;
+		private System.Windows.Forms.Button bpVplus;
+		private System.Windows.Forms.Button bpRplus;
+		private System.Windows.Forms.Button bpCtrstPlus;
+		private System.Windows.Forms.Button bpSatMoins;
+		private System.Windows.Forms.Button bpSatPlus;
+		private System.Windows.Forms.Button bpLumMoins;
+		private System.Windows.Forms.Button bpLumPlus;
+		private System.Windows.Forms.CheckBox modePlus;
+		private System.Windows.Forms.CheckBox nb;
+		private System.Windows.Forms.CheckBox sortPal;
+		private System.Windows.Forms.Button RazB;
+		private System.Windows.Forms.Button RazV;
+		private System.Windows.Forms.Button RazR;
+		private System.Windows.Forms.Button bpRazContrast;
+		private System.Windows.Forms.CheckBox reducPal3;
+		private System.Windows.Forms.TrackBar contrast;
+		private System.Windows.Forms.CheckBox reducPal2;
+		private System.Windows.Forms.CheckBox reducPal1;
+		private System.Windows.Forms.Button bpRazSat;
+		private System.Windows.Forms.CheckBox newMethode;
+		private System.Windows.Forms.Button bpRazLumi;
+		private System.Windows.Forms.Label label10;
+		private System.Windows.Forms.TrackBar lumi;
+		private System.Windows.Forms.Label label9;
+		private System.Windows.Forms.TrackBar sat;
+		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.RadioButton rb24bits;
+		private System.Windows.Forms.RadioButton rb12bits;
+		private System.Windows.Forms.RadioButton rb9bits;
+		private System.Windows.Forms.RadioButton rb6bits;
+		private System.Windows.Forms.Button bpRaz;
+
+
 
 		private System.Windows.Forms.Button bpLoad;
 		private System.Windows.Forms.Button bpConvert;
@@ -707,7 +1298,7 @@
 		private System.Windows.Forms.TextBox tbxPosY;
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.CheckBox withCode;
+		private System.Windows.Forms.CheckBox withCode;
 		private System.Windows.Forms.Button bpOverscan;
 		private System.Windows.Forms.CheckBox withPalette;
 		private System.Windows.Forms.CheckBox chkPalCpc;
@@ -721,11 +1312,12 @@
 		private System.Windows.Forms.Button bpCreate;
 		private System.Windows.Forms.CheckBox chkInfo;
 		private System.Windows.Forms.Button bpCalcSprite;
-		private System.Windows.Forms.CheckBox chkCouleur;
 		private System.Windows.Forms.CheckBox chkTrameTC;
 		private System.Windows.Forms.CheckBox chkParamInterne;
 		private System.Windows.Forms.CheckBox chkNewReduc;
 		private System.Windows.Forms.CheckBox chkDiffErr;
+		private System.Windows.Forms.GroupBox groupBox2;
+
 	}
 }
 

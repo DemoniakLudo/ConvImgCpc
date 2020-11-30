@@ -60,12 +60,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dither.cs" />
-    <Compile Include="Interfaces\GestionCouleurs.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Interfaces\GestionCouleurs.Designer.cs">
-      <DependentUpon>GestionCouleurs.cs</DependentUpon>
-    </Compile>
     <Compile Include="Interfaces\Animation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,9 +137,6 @@
     <Compile Include="SaveAsm.cs" />
     <Compile Include="UndoRedo.cs" />
     <Compile Include="XorDrawing.cs" />
-    <EmbeddedResource Include="Interfaces\GestionCouleurs.resx">
-      <DependentUpon>GestionCouleurs.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Interfaces\Animation.resx">
       <DependentUpon>Animation.cs</DependentUpon>
     </EmbeddedResource>

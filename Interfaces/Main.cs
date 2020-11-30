@@ -14,13 +14,11 @@ namespace ConvImgCpc {
 		private MemoryStream imageStream;
 		private Informations info = new Informations();
 		private Animation anim;
-		private GestionCouleurs efPalette;
 		private ParamInterne paramIntere;
 
 		public Main() {
 			InitializeComponent();
 			imgCpc = new ImageCpc(this, Convert);
-			efPalette = new GestionCouleurs(this);
 			anim = new Animation(this);
 			paramIntere = new ParamInterne(this);
 			paramIntere.InitValues();
@@ -41,12 +39,13 @@ namespace ConvImgCpc {
 			param.pctContrast = param.pctLumi = param.pctSat = param.pctRed = param.pctGreen = param.pctBlue = 100;
 			param.withCode = withCode.Checked;
 			param.withPalette = withPalette.Checked;
-			imgCpc.Visible = true;
 			lblInfoVersion.Text = "Version Béta - " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
 			radioUserSize_CheckedChanged(null, null);
 			string configDetault = "ConvImgCpc.xml";
 			if (File.Exists(configDetault))
 				ReadParam(configDetault);
+
+			imgCpc.Visible = true;
 		}
 
 		public DirectBitmap GetResizeBitmap() {
@@ -189,43 +188,43 @@ namespace ConvImgCpc {
 					}
 					else
 						if (isScrImp) {
-						BitmapCpc bmp = new BitmapCpc(tabBytes, 0x110);
-						if (singlePicture)
-							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param), imgCpc.selImage);
-						else {
-							BitmapCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = tabBytes[0x94] - 0x0E;
-							BitmapCpc.TailleX = 768;
-							nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
-							BitmapCpc.TailleY = 544;
-							nbCols.Value = param.nbCols = BitmapCpc.NbCol;
-							BitmapCpc.cpcPlus = tabBytes[0xBC] != 0;
-							if (BitmapCpc.cpcPlus) {
-								// Palette en 0x0711;
-								for (int i = 0; i < 16; i++)
-									BitmapCpc.Palette[i] = ((tabBytes[0x0711 + (i << 1)] << 4) & 0xF0) + (tabBytes[0x0711 + (i << 1)] >> 4) + (tabBytes[0x0712 + (i << 1)] << 8);
-							}
+							BitmapCpc bmp = new BitmapCpc(tabBytes, 0x110);
+							if (singlePicture)
+								imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param), imgCpc.selImage);
 							else {
-								// Palette en 0x7E10
-								for (int i = 0; i < 16; i++)
-									BitmapCpc.Palette[i] = BitmapCpc.CpcVGA.IndexOf((char)tabBytes[0x7E10 + i]);
+								BitmapCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = tabBytes[0x94] - 0x0E;
+								BitmapCpc.TailleX = 768;
+								nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
+								BitmapCpc.TailleY = 544;
+								nbCols.Value = param.nbCols = BitmapCpc.NbCol;
+								BitmapCpc.cpcPlus = tabBytes[0xBC] != 0;
+								if (BitmapCpc.cpcPlus) {
+									// Palette en 0x0711;
+									for (int i = 0; i < 16; i++)
+										BitmapCpc.Palette[i] = ((tabBytes[0x0711 + (i << 1)] << 4) & 0xF0) + (tabBytes[0x0711 + (i << 1)] >> 4) + (tabBytes[0x0712 + (i << 1)] << 8);
+								}
+								else {
+									// Palette en 0x7E10
+									for (int i = 0; i < 16; i++)
+										BitmapCpc.Palette[i] = BitmapCpc.CpcVGA.IndexOf((char)tabBytes[0x7E10 + i]);
+								}
+								imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param));
 							}
-							imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param));
 						}
-					}
-					else {
-						BitmapCpc bmp = new BitmapCpc(tabBytes, 0x80);
-						if (singlePicture)
-							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param), imgCpc.selImage);
 						else {
-							imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param));
-							nbCols.Value = param.nbCols = BitmapCpc.NbCol;
-							BitmapCpc.TailleX = param.nbCols << 3;
-							nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
-							BitmapCpc.TailleY = param.nbLignes << 1;
-							param.modeVirtuel = mode.SelectedIndex = BitmapCpc.modeVirtuel;
+							BitmapCpc bmp = new BitmapCpc(tabBytes, 0x80);
+							if (singlePicture)
+								imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param), imgCpc.selImage);
+							else {
+								imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param));
+								nbCols.Value = param.nbCols = BitmapCpc.NbCol;
+								BitmapCpc.TailleX = param.nbCols << 3;
+								nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
+								BitmapCpc.TailleY = param.nbLignes << 1;
+								param.modeVirtuel = mode.SelectedIndex = BitmapCpc.modeVirtuel;
+							}
+							SetInfo("Lecture image de type CPC.");
 						}
-						SetInfo("Lecture image de type CPC.");
-					}
 				}
 				else {
 					imageStream = new MemoryStream(tabBytes);
@@ -307,7 +306,6 @@ namespace ConvImgCpc {
 				withPalette.Checked = param.withPalette;
 				chkPalCpc.Checked = param.setPalCpc;
 				chkLissage.Checked = param.lissage;
-				efPalette.InitValues();
 				paramIntere.InitValues();
 				SetInfo("Lecture paramètres ok.");
 			}
@@ -541,7 +539,7 @@ namespace ConvImgCpc {
 						ymin = y;
 				}
 				// Calcule xMax
-				for (int x = bmp.Width; --x > 0;) {
+				for (int x = bmp.Width; --x > 0; ) {
 					for (int y = 0; y < bmp.Height; y++) {
 						if ((bmp.GetPixel(x, y).ToArgb() & 0xFFFFFF) > 0) {
 							y = bmp.Height;
@@ -552,7 +550,7 @@ namespace ConvImgCpc {
 						xmax = x;
 				}
 				// Calcule yMax;
-				for (int y = bmp.Height; --y > 0;) {
+				for (int y = bmp.Height; --y > 0; ) {
 					for (int x = 0; x < bmp.Width; x++) {
 						if ((bmp.GetPixel(x, y).ToArgb() & 0xFFFFFF) > 0) {
 							y = 0;
@@ -612,13 +610,6 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void chkCouleur_CheckedChanged(object sender, EventArgs e) {
-			if (chkCouleur.Checked)
-				efPalette.Show();
-			else
-				efPalette.Hide();
-		}
-
 		private void chkAllPics_CheckedChanged(object sender, EventArgs e) {
 			if (chkAllPics.Checked)
 				autoRecalc.Checked = false;
@@ -629,6 +620,234 @@ namespace ConvImgCpc {
 				paramIntere.Show();
 			else
 				paramIntere.Hide();
+		}
+
+		#region Gestion des couleurs
+
+		private void red_ValueChanged(object sender, EventArgs e) {
+			param.pctRed = red.Value;
+			if (Enabled)
+				Convert(false);
+		}
+
+		private void green_ValueChanged(object sender, EventArgs e) {
+			param.pctGreen = green.Value;
+			if (Enabled)
+				Convert(false);
+		}
+
+		private void blue_ValueChanged(object sender, EventArgs e) {
+			param.pctBlue = blue.Value;
+			if (Enabled)
+				Convert(false);
+		}
+
+		private void bpRmoins_Click(object sender, EventArgs e) {
+			if (red.Value > 0)
+				red.Value--;
+		}
+
+		private void bpVmoins_Click(object sender, EventArgs e) {
+			if (green.Value > 0)
+				green.Value--;
+		}
+
+		private void bpBmoins_Click(object sender, EventArgs e) {
+			if (blue.Value > 0)
+				blue.Value--;
+		}
+
+		private void bpRplus_Click(object sender, EventArgs e) {
+			if (red.Value < 200)
+				red.Value++;
+		}
+
+		private void bpVplus_Click(object sender, EventArgs e) {
+			if (green.Value < 200)
+				green.Value++;
+		}
+
+		private void bpBplus_Click(object sender, EventArgs e) {
+			if (blue.Value < 200)
+				blue.Value++;
+		}
+
+		private void RazR_Click(object sender, EventArgs e) {
+			param.pctRed = red.Value = 100;
+			Convert(false);
+		}
+
+		private void RazV_Click(object sender, EventArgs e) {
+			param.pctGreen = green.Value = 100;
+			Convert(false);
+		}
+
+		private void RazB_Click(object sender, EventArgs e) {
+			param.pctBlue = blue.Value = 100;
+			Convert(false);
+		}
+
+		private void lumi_ValueChanged(object sender, EventArgs e) {
+			param.pctLumi = (int)lumi.Value;
+			if (Enabled)
+				Convert(false);
+		}
+
+		private void sat_ValueChanged(object sender, EventArgs e) {
+			param.pctSat = nb.Checked ? 0 : (int)sat.Value;
+			if (Enabled)
+				Convert(false);
+		}
+
+		private void contrast_ValueChanged(object sender, EventArgs e) {
+			param.pctContrast = (int)contrast.Value;
+			if (Enabled)
+				Convert(false);
+		}
+
+		private void bpLumMoins_Click(object sender, EventArgs e) {
+			if (lumi.Value > lumi.Minimum)
+				lumi.Value = lumi.Value - 1;
+		}
+
+		private void bpLumPlus_Click(object sender, EventArgs e) {
+			if (lumi.Value < lumi.Maximum)
+				lumi.Value = lumi.Value + 1;
+		}
+
+		private void bpSatMoins_Click(object sender, EventArgs e) {
+			if (sat.Value > sat.Minimum)
+				sat.Value = sat.Value - 1;
+		}
+
+		private void bpSatPlus_Click(object sender, EventArgs e) {
+			if (sat.Value < sat.Maximum)
+				sat.Value = sat.Value + 1;
+		}
+
+		private void bpCtrstMoins_Click(object sender, EventArgs e) {
+			if (contrast.Value > contrast.Minimum)
+				contrast.Value = contrast.Value - 1;
+		}
+
+		private void bpCtrstPlus_Click(object sender, EventArgs e) {
+			if (contrast.Value < contrast.Maximum)
+				contrast.Value = contrast.Value + 1;
+		}
+
+		private void bpRazLumi_Click(object sender, EventArgs e) {
+			param.pctLumi = lumi.Value = 100;
+			Convert(false);
+		}
+
+		private void bpRazSat_Click(object sender, EventArgs e) {
+			param.pctSat = sat.Value = 100;
+			Convert(false);
+		}
+
+		private void bpRazContrast_Click(object sender, EventArgs e) {
+			param.pctContrast = contrast.Value = 100;
+			Convert(false);
+		}
+
+		private void sortPal_CheckedChanged(object sender, EventArgs e) {
+			param.sortPal = sortPal.Checked;
+			Convert(false);
+		}
+
+		private void newMethode_CheckedChanged(object sender, EventArgs e) {
+			param.newMethode = newMethode.Checked;
+			if (Enabled)
+				Convert(false);
+		}
+
+		private void nb_CheckedChanged(object sender, EventArgs e) {
+			bpSatMoins.Enabled = bpSatPlus.Enabled = bpRazSat.Enabled = sat.Enabled = !nb.Checked;
+			param.pctSat = nb.Checked ? 0 : (int)sat.Value;
+			if (Enabled)
+				Convert(false);
+		}
+
+		private void reducPal1_CheckedChanged(object sender, EventArgs e) {
+			param.reductPal1 = reducPal1.Checked;
+			if (Enabled)
+				Convert(false);
+		}
+
+		private void reducPal2_CheckedChanged(object sender, EventArgs e) {
+			param.reductPal2 = reducPal2.Checked;
+			if (Enabled)
+				Convert(false);
+		}
+
+		private void reducPal3_CheckedChanged(object sender, EventArgs e) {
+			param.reductPal3 = reducPal3.Checked;
+			if (Enabled)
+				Convert(false);
+		}
+
+		private void reducPal4_CheckedChanged(object sender, EventArgs e) {
+			param.reductPal4 = reducPal4.Checked;
+			if (Enabled)
+				Convert(false);
+		}
+
+		private void modePlus_CheckedChanged(object sender, EventArgs e) {
+			BitmapCpc.cpcPlus = modePlus.Checked;
+			newMethode.Visible = !modePlus.Checked;
+			param.cpcPlus = modePlus.Checked;
+			Convert(false);
+		}
+
+		private void rb24bits_CheckedChanged(object sender, EventArgs e) {
+			param.bitsRVB = 24;
+			if (Enabled)
+				Convert(false);
+		}
+
+		private void rb12bits_CheckedChanged(object sender, EventArgs e) {
+			param.bitsRVB = 12;
+			Convert(false);
+		}
+
+		private void rb9bits_CheckedChanged(object sender, EventArgs e) {
+			param.bitsRVB = 9;
+			Convert(false);
+		}
+
+		private void rb6bits_CheckedChanged(object sender, EventArgs e) {
+			param.bitsRVB = 6;
+			Convert(false);
+		}
+
+		private void bpRaz_Click(object sender, EventArgs e) {
+			Enabled = false;
+			param.pctRed = red.Value = 100;
+			param.pctGreen = green.Value = 100;
+			param.pctBlue = blue.Value = 100;
+			param.pctLumi = lumi.Value = 100;
+			param.pctSat = sat.Value = 100;
+			param.pctContrast = contrast.Value = 100;
+			param.newMethode = newMethode.Checked = false;
+			bpSatMoins.Enabled = bpSatPlus.Enabled = bpRazSat.Enabled = sat.Enabled = true;
+			nb.Checked = false;
+			param.reductPal1 = reducPal1.Checked = false;
+			param.reductPal2 = reducPal2.Checked = false;
+			param.reductPal3 = reducPal3.Checked = false;
+			param.reductPal4 = reducPal4.Checked = false;
+			newMethode.Visible = !modePlus.Checked;
+			param.cpcPlus = modePlus.Checked;
+			param.bitsRVB = 24;
+			Enabled = true;
+			Convert(false);
+		}
+		#endregion
+
+		private void Main_Activated(object sender, EventArgs e) {
+		}
+
+		private void Main_Click(object sender, EventArgs e) {
+			imgCpc.BringToFront();
 		}
 	}
 }

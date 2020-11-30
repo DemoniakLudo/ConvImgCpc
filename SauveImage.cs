@@ -341,7 +341,7 @@ namespace ConvImgCpc {
 
 		static byte[] ModePal = new byte[48];
 
-		static public int SauveScr(string fileName, BitmapCpc bitmapCpc, Param param, bool compact, string version = null, int[,] colMode5 = null) {
+		static public int SauveScr(string fileName, BitmapCpc bitmapCpc, ImageCpc img, Param param, bool compact, string version = null, int[,] colMode5 = null) {
 			byte[] bufPack = new byte[0x8000];
 			bool overscan = (BitmapCpc.NbLig * BitmapCpc.NbCol > 0x3F00);
 			if (param.withPalette && version == null) {
@@ -448,12 +448,10 @@ namespace ConvImgCpc {
 						SaveAsm.GenereAfficheModeEgx(sw, BitmapCpc.Palette, overscan);
 					else {
 						SaveAsm.GenereFormatEcran(sw);
-						sw.WriteLine("	LD	HL,ImageCmp");
-						sw.WriteLine("	LD	DE,#" + (overscan ? "0200" : "C000"));
 						if (BitmapCpc.modeVirtuel == 5)
 							SaveAsm.GenereAfficheModeX(sw, colMode5, overscan);
 						else
-							SaveAsm.GenereAfficheStd(sw, BitmapCpc.modeVirtuel, BitmapCpc.Palette, overscan);
+							SaveAsm.GenereAfficheStd(sw, img, BitmapCpc.modeVirtuel, BitmapCpc.Palette, overscan);
 					}
 				}
 				SaveAsm.CloseAsm(sw);
