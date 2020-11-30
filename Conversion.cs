@@ -37,36 +37,36 @@ namespace ConvImgCpc {
 				}
 				else
 					if (h < 120f) {
-						r = -(h - 120f) * dif / 60f + min;
-						v = max;
-						b = min;
-					}
-					else
+					r = -(h - 120f) * dif / 60f + min;
+					v = max;
+					b = min;
+				}
+				else
 						if (h < 180f) {
-							r = min;
-							v = max;
-							b = (h - 120f) * dif / 60f + min;
-						}
-						else
+					r = min;
+					v = max;
+					b = (h - 120f) * dif / 60f + min;
+				}
+				else
 							if (h < 240f) {
-								r = min;
-								v = -(h - 240f) * dif / 60f + min;
-								b = max;
-							}
-							else
+					r = min;
+					v = -(h - 240f) * dif / 60f + min;
+					b = max;
+				}
+				else
 								if (h < 300f) {
-									r = (h - 240f) * dif / 60f + min;
-									v = min;
-									b = max;
-								}
-								else
+					r = (h - 240f) * dif / 60f + min;
+					v = min;
+					b = max;
+				}
+				else
 									if (h <= 360f) {
-										r = max;
-										v = min;
-										b = -(h - 360f) * dif / 60 + min;
-									}
-									else
-										r = v = b = 0;
+					r = max;
+					v = min;
+					b = -(h - 360f) * dif / 60 + min;
+				}
+				else
+					r = v = b = 0;
 			}
 		}
 
@@ -208,55 +208,19 @@ namespace ConvImgCpc {
 		}
 
 		//
-		// Recherche les x couleurs les plus utilisées parmis les n possibles (remplit le tableau BitmapCpc.Palette)
-		//
-		static void RechercheCMax1(int maxPen, int[] lockState, Param p) {
-			int x, FindMax = BitmapCpc.cpcPlus ? 4096 : 27;
-			for (x = 0; x < maxPen; x++)
-				if (lockState[x] > 0)
-					for (int y = 0; y < 272; y++)
-						coulTrouvee[BitmapCpc.Palette[x], y] = 0;
-
-			for (x = 0; x < maxPen; x++) {
-				int valMax = 0;
-				if (lockState[x] == 0) {
-					for (int i = 0; i < FindMax; i++) {
-						int nbc = 0;
-						for (int y = 0; y < 272; y++)
-							nbc += coulTrouvee[i, y];
-
-						if (valMax < nbc) {
-							valMax = nbc;
-							BitmapCpc.Palette[x] = i;
-						}
-					}
-					for (int y = 0; y < 272; y++)
-						coulTrouvee[BitmapCpc.Palette[x], y] = 0;
-				}
-			}
-			if (p.sortPal)
-				for (x = 0; x < maxPen - 1; x++)
-					for (int c = x + 1; c < maxPen; c++)
-						if (lockState[x] == 0 && lockState[c] == 0 && BitmapCpc.Palette[x] > BitmapCpc.Palette[c]) {
-							int tmp = BitmapCpc.Palette[x];
-							BitmapCpc.Palette[x] = BitmapCpc.Palette[c];
-							BitmapCpc.Palette[c] = tmp;
-						}
-		}
-
-		//
 		// Recherche les x meilleurs couleurs parmis les n possibles (remplit le tableau BitmapCpc.Palette)
 		//
-		static void RechercheCMax2(int maxPen, int[] lockState, Param p) {
-			int firstCol, x, FindMax = BitmapCpc.cpcPlus ? 4096 : 27;
+		static void RechercheCMax(int maxPen, int[] lockState, Param p) {
+			int cUtil, x, FindMax = BitmapCpc.cpcPlus ? 4096 : 27, valMax = 0;
 			for (x = 0; x < maxPen; x++)
 				if (lockState[x] > 0)
-					coulTrouvee[BitmapCpc.Palette[x], 0] = 0;
+					for (int y = 0; y < 272; y++)
+						coulTrouvee[BitmapCpc.Palette[x], y] = 0;
 
 			// Recherche la couleur la plus utilisée
-			for (firstCol = 0; firstCol < maxPen; firstCol++) {
-				int valMax = 0;
-				if (lockState[firstCol] == 0) {
+			for (cUtil = 0; cUtil < maxPen; cUtil++) {
+				valMax = 0;
+				if (lockState[cUtil] == 0) {
 					for (int i = 0; i < FindMax; i++) {
 						int nbc = 0;
 						for (int y = 0; y < 272; y++)
@@ -264,60 +228,66 @@ namespace ConvImgCpc {
 
 						if (valMax < nbc) {
 							valMax = nbc;
-							BitmapCpc.Palette[firstCol] = i;
+							BitmapCpc.Palette[cUtil] = i;
 						}
 					}
 					for (int y = 0; y < 272; y++)
-						coulTrouvee[BitmapCpc.Palette[firstCol], y] = 0;
+						coulTrouvee[BitmapCpc.Palette[cUtil], y] = 0;
 
-					break; // Première couleur trouvée => sortie
+					if (p.newReduc)
+						break; // Première couleur trouvée => sortie
 				}
 			}
+			if (p.newReduc) {   // Méthode altenative recherche de couleurs : les plus différentes parmis les plus utilisées
+				RvbColor colFirst = BitmapCpc.cpcPlus ? new RvbColor((byte)((BitmapCpc.Palette[cUtil] & 0x0F) * 17), (byte)(((BitmapCpc.Palette[cUtil] & 0xF00) >> 8) * 17), (byte)(((BitmapCpc.Palette[cUtil] & 0xF0) >> 4) * 17)) : BitmapCpc.RgbCPC[BitmapCpc.Palette[cUtil]];
+				bool takeDist = false;
+				for (x = 0; x < maxPen; x++) {
+					if (takeDist) {
+						valMax = 0;
+						if (lockState[x] == 0) {
+							for (int i = 0; i < FindMax; i++) {
+								int nbc = 0;
+								for (int y = 0; y < 272; y++)
+									nbc += coulTrouvee[i, y];
 
-			// Recherche les autres couleurs ayant la plus grande différence avec la première couleur trouvée
-			RvbColor colFirst = BitmapCpc.cpcPlus ? new RvbColor((byte)((BitmapCpc.Palette[firstCol] & 0x0F) * 17), (byte)(((BitmapCpc.Palette[firstCol] & 0xF00) >> 8) * 17), (byte)(((BitmapCpc.Palette[firstCol] & 0xF0) >> 4) * 17)) : BitmapCpc.RgbCPC[BitmapCpc.Palette[firstCol]];
-			bool takeDist = false;
-			for (x = 0; x < maxPen; x++) {
-				if (takeDist) {
-					int valMax = 0;
-					if (lockState[x] == 0) {
-						for (int i = 0; i < FindMax; i++) {
-							int nbc = 0;
-							for (int y = 0; y < 272; y++)
-								nbc += coulTrouvee[i, y];
-
-							if (valMax < nbc) {
-								valMax = nbc;
-								BitmapCpc.Palette[x] = i;
+								if (valMax < nbc) {
+									valMax = nbc;
+									BitmapCpc.Palette[x] = i;
+								}
 							}
 						}
 					}
-				}
-				else {
-					if (lockState[x] == 0 && x != firstCol) {
-						int dist, oldDist = 0;
-						for (int i = 0; i < FindMax; i++) {
-							int nbc = 0;
-							for (int y = 0; y < 272; y++)
-								nbc += coulTrouvee[i, y];
+					else {
+						if (lockState[x] == 0 && x != cUtil) {
+							int dist, oldDist = 0;
+							for (int rech = 4; rech-- > 0;) {
+								for (int i = 0; i < FindMax; i++) {
+									int nbc = 0;
+									for (int y = 0; y < 272; y++)
+										nbc += coulTrouvee[i, y];
 
-
-							RvbColor c = BitmapCpc.cpcPlus ? new RvbColor((byte)((i & 0x0F) * 17), (byte)(((i & 0xF00) >> 8) * 17), (byte)(((i & 0xF0) >> 4) * 17)) : BitmapCpc.RgbCPC[i];
-							dist = (c.r - colFirst.r) * (c.r - colFirst.r) * p.coefR + (c.v - colFirst.v) * (c.v - colFirst.v) * p.coefV + (c.b - colFirst.b) * (c.b - colFirst.b) * p.coefB;
-							if (dist > oldDist && nbc > 0) {
-								oldDist = dist;
-								BitmapCpc.Palette[x] = i;
+									if (nbc > valMax >> rech) {
+										RvbColor c = BitmapCpc.cpcPlus ? new RvbColor((byte)((i & 0x0F) * 17), (byte)(((i & 0xF00) >> 8) * 17), (byte)(((i & 0xF0) >> 4) * 17)) : BitmapCpc.RgbCPC[i];
+										dist = (c.r - colFirst.r) * (c.r - colFirst.r) * p.coefR + (c.v - colFirst.v) * (c.v - colFirst.v) * p.coefV + (c.b - colFirst.b) * (c.b - colFirst.b) * p.coefB;
+										if (dist > oldDist) {
+											oldDist = dist;
+											BitmapCpc.Palette[x] = i;
+										}
+									}
+								}
+							}
+							if (oldDist == 0) {
+								x--;
 							}
 						}
-						firstCol = x;
 					}
+					for (int y = 0; y < 272; y++)
+						coulTrouvee[BitmapCpc.Palette[x], y] = 0;
+
+					takeDist = !takeDist;
+					cUtil = x;
 				}
-				for (int y = 0; y < 272; y++)
-					coulTrouvee[BitmapCpc.Palette[x], y] = 0;
-
-				takeDist = !takeDist;
 			}
-
 			if (p.sortPal)
 				for (x = 0; x < maxPen - 1; x++)
 					for (int c = x + 1; c < maxPen; c++)
@@ -326,13 +296,6 @@ namespace ConvImgCpc {
 							BitmapCpc.Palette[x] = BitmapCpc.Palette[c];
 							BitmapCpc.Palette[c] = tmp;
 						}
-		}
-
-		static void RechercheCMax(int maxPen, int[] lockState, Param p) {
-			if (p.newReduc)
-				RechercheCMax2(maxPen, lockState, p);
-			else
-				RechercheCMax1(maxPen, lockState, p);
 		}
 
 		//
