@@ -271,8 +271,8 @@
 			this.MinimizeBox = false;
 			this.Name = "Animation";
 			this.ShowIcon = false;
-			this.ShowInTaskbar = false;
-			this.Text = "Image";
+			this.Text = "Images";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Animation_FormClosing);
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();

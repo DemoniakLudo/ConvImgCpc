@@ -652,7 +652,7 @@
 			// chkInfo
 			// 
 			this.chkInfo.AutoSize = true;
-			this.chkInfo.Location = new System.Drawing.Point(165, 508);
+			this.chkInfo.Location = new System.Drawing.Point(304, 508);
 			this.chkInfo.Name = "chkInfo";
 			this.chkInfo.Size = new System.Drawing.Size(83, 17);
 			this.chkInfo.TabIndex = 61;
@@ -663,7 +663,7 @@
 			// chkParamInterne
 			// 
 			this.chkParamInterne.AutoSize = true;
-			this.chkParamInterne.Location = new System.Drawing.Point(593, 512);
+			this.chkParamInterne.Location = new System.Drawing.Point(593, 508);
 			this.chkParamInterne.Name = "chkParamInterne";
 			this.chkParamInterne.Size = new System.Drawing.Size(119, 17);
 			this.chkParamInterne.TabIndex = 63;

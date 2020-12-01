@@ -132,5 +132,9 @@ namespace ConvImgCpc {
 			bWr.Write(tabByte, 13, 768);
 			bWr.Write(tabByte, 799, tabByte.Length - 800);
 		}
+
+		private void Animation_FormClosing(object sender, FormClosingEventArgs e) {
+			e.Cancel = true;
+		}
 	}
 }

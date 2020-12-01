@@ -39,7 +39,8 @@ namespace ConvImgCpc {
 			param.pctContrast = param.pctLumi = param.pctSat = param.pctRed = param.pctGreen = param.pctBlue = 100;
 			param.withCode = withCode.Checked;
 			param.withPalette = withPalette.Checked;
-			lblInfoVersion.Text = "Version Béta - " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+			Version version = Assembly.GetExecutingAssembly().GetName().Version;
+			lblInfoVersion.Text = "V " + version.ToString() + " du " + new DateTime(2000, 1, 1).AddDays(version.Build).ToShortDateString();
 			radioUserSize_CheckedChanged(null, null);
 			string configDetault = "ConvImgCpc.xml";
 			if (File.Exists(configDetault))
