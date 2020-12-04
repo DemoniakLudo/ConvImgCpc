@@ -22,7 +22,6 @@ namespace ConvImgCpc {
 			anim = new Animation(this);
 			paramIntere = new ParamInterne(this);
 			paramIntere.InitValues();
-			anim.Show();
 
 			int i = 1;
 			foreach (KeyValuePair<string, double[,]> dith in Dither.dicMat)
@@ -30,7 +29,6 @@ namespace ConvImgCpc {
 
 			for (i = 0; i < BitmapCpc.modesVirtuels.Length; i++)
 				mode.Items.Insert(i, BitmapCpc.modesVirtuels[i]);
-
 
 			nbCols.Value = BitmapCpc.TailleX >> 3;
 			nbLignes.Value = BitmapCpc.TailleY >> 1;
@@ -46,7 +44,8 @@ namespace ConvImgCpc {
 			if (File.Exists(configDetault))
 				ReadParam(configDetault);
 
-			imgCpc.Visible = true;
+			anim.Show();
+			imgCpc.Show();
 		}
 
 		public DirectBitmap GetResizeBitmap() {
@@ -171,7 +170,7 @@ namespace ConvImgCpc {
 					if (isImp) {
 						imgCpc.InitBitmapCpc(nbImages);
 						imgSrc.InitBitmap(nbImages);
-						anim.SetNbImgs(nbImages);
+						anim.SetNbImgs(nbImages, imgSrc.tpsFrame);
 						SetInfo("Création animation (IMP) avec " + nbImages + " images.");
 						BitmapCpc.TailleX = width << 3;
 						BitmapCpc.TailleY = height << 1;
@@ -233,7 +232,7 @@ namespace ConvImgCpc {
 					if (!singlePicture) {
 						imgSrc.InitBitmap(imageStream);
 						nbImg = imgSrc.NbImg;
-						anim.SetNbImgs(nbImg);
+						anim.SetNbImgs(nbImg, imgSrc.tpsFrame);
 						chkAllPics.Visible = nbImg > 1;
 						SetInfo("Lecture image PC" + (nbImg > 0 ? (" de type animation avec " + nbImg + " images.") : "."));
 					}
@@ -342,7 +341,7 @@ namespace ConvImgCpc {
 				if (nbImages == 1)
 					SetInfo("Création image vierge");
 				else {
-					anim.SetNbImgs(nbImages);
+					anim.SetNbImgs(nbImages, 100);
 					SetInfo("Création animation avec " + nbImages + " images.");
 				}
 				SelectImage(0);

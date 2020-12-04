@@ -40,6 +40,11 @@
 			this.rbSource = new System.Windows.Forms.RadioButton();
 			this.rvCalculee = new System.Windows.Forms.RadioButton();
 			this.bpSaveGif = new System.Windows.Forms.Button();
+			this.txbTps1 = new System.Windows.Forms.TextBox();
+			this.txbTps2 = new System.Windows.Forms.TextBox();
+			this.txbTps3 = new System.Windows.Forms.TextBox();
+			this.txbTps4 = new System.Windows.Forms.TextBox();
+			this.txbTps5 = new System.Windows.Forms.TextBox();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -126,7 +131,7 @@
 			// hScrollBar1
 			// 
 			this.hScrollBar1.LargeChange = 1;
-			this.hScrollBar1.Location = new System.Drawing.Point(2, 160);
+			this.hScrollBar1.Location = new System.Drawing.Point(2, 201);
 			this.hScrollBar1.Maximum = 5;
 			this.hScrollBar1.Name = "hScrollBar1";
 			this.hScrollBar1.Size = new System.Drawing.Size(714, 20);
@@ -136,7 +141,7 @@
 			// 
 			// bpSup1
 			// 
-			this.bpSup1.Location = new System.Drawing.Point(36, 135);
+			this.bpSup1.Location = new System.Drawing.Point(36, 176);
 			this.bpSup1.Name = "bpSup1";
 			this.bpSup1.Size = new System.Drawing.Size(75, 22);
 			this.bpSup1.TabIndex = 66;
@@ -148,7 +153,7 @@
 			// 
 			// bpSup2
 			// 
-			this.bpSup2.Location = new System.Drawing.Point(179, 135);
+			this.bpSup2.Location = new System.Drawing.Point(179, 176);
 			this.bpSup2.Name = "bpSup2";
 			this.bpSup2.Size = new System.Drawing.Size(75, 22);
 			this.bpSup2.TabIndex = 66;
@@ -160,7 +165,7 @@
 			// 
 			// bpSup3
 			// 
-			this.bpSup3.Location = new System.Drawing.Point(322, 135);
+			this.bpSup3.Location = new System.Drawing.Point(322, 176);
 			this.bpSup3.Name = "bpSup3";
 			this.bpSup3.Size = new System.Drawing.Size(75, 22);
 			this.bpSup3.TabIndex = 66;
@@ -172,7 +177,7 @@
 			// 
 			// bpSup4
 			// 
-			this.bpSup4.Location = new System.Drawing.Point(465, 135);
+			this.bpSup4.Location = new System.Drawing.Point(465, 176);
 			this.bpSup4.Name = "bpSup4";
 			this.bpSup4.Size = new System.Drawing.Size(75, 22);
 			this.bpSup4.TabIndex = 66;
@@ -184,7 +189,7 @@
 			// 
 			// bpSup5
 			// 
-			this.bpSup5.Location = new System.Drawing.Point(608, 135);
+			this.bpSup5.Location = new System.Drawing.Point(608, 176);
 			this.bpSup5.Name = "bpSup5";
 			this.bpSup5.Size = new System.Drawing.Size(75, 22);
 			this.bpSup5.TabIndex = 66;
@@ -243,12 +248,67 @@
 			this.bpSaveGif.Visible = false;
 			this.bpSaveGif.Click += new System.EventHandler(this.bpSaveGif_Click);
 			// 
+			// txbTps1
+			// 
+			this.txbTps1.Location = new System.Drawing.Point(36, 135);
+			this.txbTps1.Name = "txbTps1";
+			this.txbTps1.Size = new System.Drawing.Size(75, 20);
+			this.txbTps1.TabIndex = 70;
+			this.txbTps1.Visible = false;
+			this.txbTps1.Tag = "0";
+			this.txbTps1.TextChanged += new System.EventHandler(this.txbTps_TextChanged);
+			// 
+			// txbTps2
+			// 
+			this.txbTps2.Location = new System.Drawing.Point(179, 135);
+			this.txbTps2.Name = "txbTps2";
+			this.txbTps2.Size = new System.Drawing.Size(75, 20);
+			this.txbTps2.TabIndex = 70;
+			this.txbTps2.Visible = false;
+			this.txbTps2.Tag = "1";
+			this.txbTps2.TextChanged += new System.EventHandler(this.txbTps_TextChanged);
+			// 
+			// txbTps3
+			// 
+			this.txbTps3.Location = new System.Drawing.Point(322, 135);
+			this.txbTps3.Name = "txbTps3";
+			this.txbTps3.Size = new System.Drawing.Size(75, 20);
+			this.txbTps3.TabIndex = 70;
+			this.txbTps3.Visible = false;
+			this.txbTps3.Tag = "2";
+			this.txbTps3.TextChanged += new System.EventHandler(this.txbTps_TextChanged);
+			// 
+			// txbTps4
+			// 
+			this.txbTps4.Location = new System.Drawing.Point(465, 135);
+			this.txbTps4.Name = "txbTps4";
+			this.txbTps4.Size = new System.Drawing.Size(75, 20);
+			this.txbTps4.TabIndex = 70;
+			this.txbTps4.Visible = false;
+			this.txbTps4.Tag = "3";
+			this.txbTps4.TextChanged += new System.EventHandler(this.txbTps_TextChanged);
+			// 
+			// txbTps5
+			// 
+			this.txbTps5.Location = new System.Drawing.Point(608, 135);
+			this.txbTps5.Name = "txbTps5";
+			this.txbTps5.Size = new System.Drawing.Size(75, 20);
+			this.txbTps5.TabIndex = 70;
+			this.txbTps5.Visible = false;
+			this.txbTps5.Tag = "4";
+			this.txbTps5.TextChanged += new System.EventHandler(this.txbTps_TextChanged);
+			// 
 			// Animation
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(718, 184);
+			this.ClientSize = new System.Drawing.Size(718, 225);
 			this.ControlBox = false;
+			this.Controls.Add(this.txbTps5);
+			this.Controls.Add(this.txbTps4);
+			this.Controls.Add(this.txbTps3);
+			this.Controls.Add(this.txbTps2);
+			this.Controls.Add(this.txbTps1);
 			this.Controls.Add(this.bpSaveGif);
 			this.Controls.Add(this.rvCalculee);
 			this.Controls.Add(this.rbSource);
@@ -271,7 +331,7 @@
 			this.MinimizeBox = false;
 			this.Name = "Animation";
 			this.ShowIcon = false;
-			this.Text = "Images";
+			this.Text = "Image ou animation";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Animation_FormClosing);
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
@@ -303,5 +363,10 @@
 		private System.Windows.Forms.RadioButton rbSource;
 		private System.Windows.Forms.RadioButton rvCalculee;
 		private System.Windows.Forms.Button bpSaveGif;
+		private System.Windows.Forms.TextBox txbTps1;
+		private System.Windows.Forms.TextBox txbTps2;
+		private System.Windows.Forms.TextBox txbTps3;
+		private System.Windows.Forms.TextBox txbTps4;
+		private System.Windows.Forms.TextBox txbTps5;
 	}
 }

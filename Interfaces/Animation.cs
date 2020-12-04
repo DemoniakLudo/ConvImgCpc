@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -10,13 +11,14 @@ namespace ConvImgCpc {
 		private bool displaySrc = true;
 		public int SelImage { get { return (int)numImage.Value; } }
 		public int MaxImage { get { return (int)numImage.Maximum; } }
+		private int[] tempsAffiche;
 
 		public Animation(Main m) {
 			main = m;
 			InitializeComponent();
 		}
 
-		public void SetNbImgs(int nbImg) {
+		public void SetNbImgs(int nbImg, int tps) {
 			lblMaxImage.Text = "Nbre images:" + nbImg;
 			lblMaxImage.Visible = lblNumImage.Visible = numImage.Visible = nbImg > 1;
 			numImage.Maximum = nbImg - 1;
@@ -25,23 +27,32 @@ namespace ConvImgCpc {
 				this.Text = "Animation";
 			else
 				this.Text = "Image";
+
+			List<int> lst = new List<int>();
+			for (int i = 0; i < nbImg; i++)
+				lst.Add(tps);
+
+			tempsAffiche = lst.ToArray();
 		}
 
 		public void DrawImages(int startImg) {
 			PictureBox[] tabPb = new PictureBox[] { pictureBox1, pictureBox2, pictureBox3, pictureBox4, pictureBox5 };
 			Button[] tabButton = new Button[] { bpSup1, bpSup2, bpSup3, bpSup4, bpSup5 };
+			TextBox[] tabTxt = new TextBox[] { txbTps1, txbTps2, txbTps3, txbTps4, txbTps5 };
 			int endImg = Math.Min(startImg + 4, main.imgSrc.NbImg - 1);
 			for (int i = startImg; i <= endImg; i++) {
 				tabPb[i - startImg].Image = displaySrc ? main.imgSrc.GetBitmap(i) : main.imgCpc.tabBmpLock[i].Bitmap;
 				tabPb[i - startImg].Refresh();
-				tabButton[i - startImg].Visible = startImg + i > 0 || endImg - startImg > 2;
+				tabButton[i - startImg].Visible = tabTxt[i - startImg].Visible = startImg + i > 0 || endImg - startImg > 2;
+				tabTxt[i - startImg].Text = tempsAffiche[i].ToString();
 			}
 			for (int i = endImg - startImg + 1; i < 5; i++) {
 				tabPb[i].Image = null;
 				tabPb[i].Refresh();
 				tabButton[i].Visible = false;
+				tabTxt[i].Visible = false;
 			}
-			hScrollBar1.Visible = numImage.Maximum > 5;
+			hScrollBar1.Visible = numImage.Maximum >= 5;
 			hScrollBar1.Maximum = (int)(numImage.Maximum);
 		}
 
@@ -135,6 +146,16 @@ namespace ConvImgCpc {
 
 		private void Animation_FormClosing(object sender, FormClosingEventArgs e) {
 			e.Cancel = true;
+		}
+
+		private void txbTps_TextChanged(object sender, EventArgs e) {
+			int v = 0;
+			TextBox t = (TextBox)sender;
+			if (int.TryParse(t.Text, out v) && v > 0 && v <= 5000) {
+				int num = (int)numImage.Value;
+				int index = System.Convert.ToInt32(t.Tag) + num;
+				tempsAffiche[index] = v;
+			}
 		}
 	}
 }

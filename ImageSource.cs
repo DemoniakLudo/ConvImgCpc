@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Windows.Forms;
 
 namespace ConvImgCpc {
 	public partial class ImageSource {
@@ -10,6 +10,7 @@ namespace ConvImgCpc {
 		public Bitmap GetImage { get { return tabImage[imageSel]; } }
 		public int NbImg { get { return tabImage.Count; } }
 		private int imageSel = 0;
+		public int tpsFrame = 0;
 
 		public ImageSource() {
 			tabImage.Add(new Bitmap(768, 544));
@@ -32,6 +33,7 @@ namespace ConvImgCpc {
 			Image selImage = new Bitmap(imageStream);
 			FrameDimension dimension = new FrameDimension(selImage.FrameDimensionsList[0]);
 			int nbImg = selImage.GetFrameCount(dimension);
+			tpsFrame = nbImg > 1 ? BitConverter.ToInt32(selImage.GetPropertyItem(20736).Value, 0) * 10 : 0;
 			for (int n = 0; n < nbImg; n++) {
 				selImage.SelectActiveFrame(dimension, n);
 				tabImage.Add(new Bitmap(selImage));
