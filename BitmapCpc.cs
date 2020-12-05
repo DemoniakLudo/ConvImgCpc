@@ -139,7 +139,6 @@ namespace ConvImgCpc {
 												{2, 2, 2, 3}}
 										};
 
-
 		static public int modeVirtuel = 1;
 		static public bool cpcPlus = false;
 		static private int nbCol = 80;

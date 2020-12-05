@@ -113,6 +113,7 @@
 			this.rb6bits = new System.Windows.Forms.RadioButton();
 			this.bpRaz = new System.Windows.Forms.Button();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.bpEditSprites = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -585,7 +586,7 @@
 			// lblInfoVersion
 			// 
 			this.lblInfoVersion.AutoSize = true;
-			this.lblInfoVersion.Location = new System.Drawing.Point(7, 512);
+			this.lblInfoVersion.Location = new System.Drawing.Point(7, 552);
 			this.lblInfoVersion.Name = "lblInfoVersion";
 			this.lblInfoVersion.Size = new System.Drawing.Size(42, 13);
 			this.lblInfoVersion.TabIndex = 52;
@@ -652,7 +653,7 @@
 			// chkInfo
 			// 
 			this.chkInfo.AutoSize = true;
-			this.chkInfo.Location = new System.Drawing.Point(304, 508);
+			this.chkInfo.Location = new System.Drawing.Point(304, 548);
 			this.chkInfo.Name = "chkInfo";
 			this.chkInfo.Size = new System.Drawing.Size(83, 17);
 			this.chkInfo.TabIndex = 61;
@@ -663,7 +664,7 @@
 			// chkParamInterne
 			// 
 			this.chkParamInterne.AutoSize = true;
-			this.chkParamInterne.Location = new System.Drawing.Point(593, 508);
+			this.chkParamInterne.Location = new System.Drawing.Point(593, 548);
 			this.chkParamInterne.Name = "chkParamInterne";
 			this.chkParamInterne.Size = new System.Drawing.Size(119, 17);
 			this.chkParamInterne.TabIndex = 63;
@@ -1169,12 +1170,23 @@
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Gestion des couleurs";
 			// 
+			// bpEditSprites
+			// 
+			this.bpEditSprites.Location = new System.Drawing.Point(10, 511);
+			this.bpEditSprites.Name = "bpEditSprites";
+			this.bpEditSprites.Size = new System.Drawing.Size(117, 23);
+			this.bpEditSprites.TabIndex = 67;
+			this.bpEditSprites.Text = "Edition Sprites Hard";
+			this.bpEditSprites.UseVisualStyleBackColor = true;
+			this.bpEditSprites.Click += new System.EventHandler(this.bpEditSprites_Click);
+			// 
 			// Main
 			// 
 			this.AllowDrop = true;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(723, 528);
+			this.ClientSize = new System.Drawing.Size(723, 571);
+			this.Controls.Add(this.bpEditSprites);
 			this.Controls.Add(this.groupBox2);
 			this.Controls.Add(this.chkParamInterne);
 			this.Controls.Add(this.chkInfo);
@@ -1195,7 +1207,6 @@
 			this.MaximizeBox = false;
 			this.Name = "Main";
 			this.Text = "ConvImgCPC";
-			this.Activated += new System.EventHandler(this.Main_Activated);
 			this.Click += new System.EventHandler(this.Main_Click);
 			this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Main_DragDrop);
 			this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Main_DragEnter);
@@ -1317,6 +1328,7 @@
 		private System.Windows.Forms.CheckBox chkNewReduc;
 		private System.Windows.Forms.CheckBox chkDiffErr;
 		private System.Windows.Forms.GroupBox groupBox2;
+		private System.Windows.Forms.Button bpEditSprites;
 
 	}
 }

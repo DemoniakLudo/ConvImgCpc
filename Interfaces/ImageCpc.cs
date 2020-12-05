@@ -379,6 +379,9 @@ namespace ConvImgCpc {
 				}
 			}
 			else {
+				if (editToolMode != EditTool.Draw)
+					rbDraw.Checked = true;
+
 				RvbColor col = bitmapCpc.GetColorPal(pen);
 				if (e.Button == System.Windows.Forms.MouseButtons.Left) {
 					drawCol = pen;

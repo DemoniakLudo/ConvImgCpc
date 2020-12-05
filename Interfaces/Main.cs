@@ -581,6 +581,12 @@ namespace ConvImgCpc {
 			Convert(false);
 		}
 
+
+		private void bpEditSprites_Click(object sender, EventArgs e) {
+			EditSprites dg = new EditSprites(this);
+			dg.ShowDialog();
+		}
+
 		private void chkInfo_CheckedChanged(object sender, EventArgs e) {
 			if (chkInfo.Checked)
 				info.Show();
@@ -842,9 +848,6 @@ namespace ConvImgCpc {
 			Convert(false);
 		}
 		#endregion
-
-		private void Main_Activated(object sender, EventArgs e) {
-		}
 
 		private void Main_Click(object sender, EventArgs e) {
 			imgCpc.BringToFront();

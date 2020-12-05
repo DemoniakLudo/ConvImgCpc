@@ -60,6 +60,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dither.cs" />
+    <Compile Include="Interfaces\EditSprites.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interfaces\EditSprites.Designer.cs">
+      <DependentUpon>EditSprites.cs</DependentUpon>
+    </Compile>
     <Compile Include="Interfaces\Animation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -139,6 +145,9 @@
     <Compile Include="XorDrawing.cs" />
     <EmbeddedResource Include="Interfaces\Animation.resx">
       <DependentUpon>Animation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interfaces\EditSprites.resx">
+      <DependentUpon>EditSprites.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Interfaces\Informations.resx">
       <DependentUpon>Informations.cs</DependentUpon>
