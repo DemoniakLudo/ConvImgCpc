@@ -139,6 +139,9 @@ namespace ConvImgCpc {
 												{2, 2, 2, 3}}
 										};
 
+		static public byte[, , ,] spritesHard = new byte[4, 16, 16, 16];
+		static public int[] paletteSprite = new int[16];
+
 		static public int modeVirtuel = 1;
 		static public bool cpcPlus = false;
 		static private int nbCol = 80;

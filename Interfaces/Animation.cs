@@ -44,7 +44,7 @@ namespace ConvImgCpc {
 				tabPb[i - startImg].Image = displaySrc ? main.imgSrc.GetBitmap(i) : main.imgCpc.tabBmpLock[i].Bitmap;
 				tabPb[i - startImg].Refresh();
 				tabButton[i - startImg].Visible = tabTxt[i - startImg].Visible = startImg + i > 0 || endImg - startImg > 2;
-				tabTxt[i - startImg].Text = tempsAffiche[i].ToString();
+				tabTxt[i - startImg].Text = tempsAffiche != null ? tempsAffiche[i].ToString() : "";
 			}
 			for (int i = endImg - startImg + 1; i < 5; i++) {
 				tabPb[i].Image = null;

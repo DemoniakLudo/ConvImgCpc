@@ -43,6 +43,8 @@
 			this.zoomY = new System.Windows.Forms.NumericUpDown();
 			this.label3 = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
+			this.comboBanque = new System.Windows.Forms.ComboBox();
+			this.bpSaveAll = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.pictEditMatrice)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictAllSprites)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictTest)).BeginInit();
@@ -52,7 +54,7 @@
 			// 
 			// pictEditMatrice
 			// 
-			this.pictEditMatrice.Location = new System.Drawing.Point(160, 71);
+			this.pictEditMatrice.Location = new System.Drawing.Point(84, 71);
 			this.pictEditMatrice.Name = "pictEditMatrice";
 			this.pictEditMatrice.Size = new System.Drawing.Size(640, 640);
 			this.pictEditMatrice.TabIndex = 0;
@@ -84,25 +86,25 @@
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(12, 174);
+			this.label1.Location = new System.Drawing.Point(8, 174);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(62, 13);
+			this.label1.Size = new System.Drawing.Size(59, 13);
 			this.label1.TabIndex = 4;
-			this.label1.Text = "Bp gauche:";
+			this.label1.Text = "Bp gauche";
 			// 
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(12, 239);
+			this.label2.Location = new System.Drawing.Point(12, 309);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(52, 13);
+			this.label2.Size = new System.Drawing.Size(49, 13);
 			this.label2.TabIndex = 4;
-			this.label2.Text = "Bp droite:";
+			this.label2.Text = "Bp droite";
 			// 
 			// lblPenLeft
 			// 
 			this.lblPenLeft.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.lblPenLeft.Location = new System.Drawing.Point(91, 158);
+			this.lblPenLeft.Location = new System.Drawing.Point(11, 187);
 			this.lblPenLeft.Name = "lblPenLeft";
 			this.lblPenLeft.Size = new System.Drawing.Size(48, 48);
 			this.lblPenLeft.TabIndex = 5;
@@ -110,31 +112,29 @@
 			// lblPenRight
 			// 
 			this.lblPenRight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.lblPenRight.Location = new System.Drawing.Point(91, 222);
+			this.lblPenRight.Location = new System.Drawing.Point(11, 322);
 			this.lblPenRight.Name = "lblPenRight";
 			this.lblPenRight.Size = new System.Drawing.Size(48, 48);
 			this.lblPenRight.TabIndex = 5;
 			// 
 			// bpRead
 			// 
-			this.bpRead.Location = new System.Drawing.Point(15, 656);
+			this.bpRead.Location = new System.Drawing.Point(3, 467);
 			this.bpRead.Name = "bpRead";
-			this.bpRead.Size = new System.Drawing.Size(85, 23);
+			this.bpRead.Size = new System.Drawing.Size(75, 48);
 			this.bpRead.TabIndex = 6;
 			this.bpRead.Text = "Lire sprites";
 			this.bpRead.UseVisualStyleBackColor = true;
-			this.bpRead.Visible = false;
 			this.bpRead.Click += new System.EventHandler(this.bpRead_Click);
 			// 
 			// bpSave
 			// 
-			this.bpSave.Location = new System.Drawing.Point(15, 685);
+			this.bpSave.Location = new System.Drawing.Point(3, 535);
 			this.bpSave.Name = "bpSave";
-			this.bpSave.Size = new System.Drawing.Size(85, 23);
+			this.bpSave.Size = new System.Drawing.Size(75, 63);
 			this.bpSave.TabIndex = 6;
-			this.bpSave.Text = "Sauver sprites";
+			this.bpSave.Text = "Sauver sprites (banque courante)";
 			this.bpSave.UseVisualStyleBackColor = true;
-			this.bpSave.Visible = false;
 			this.bpSave.Click += new System.EventHandler(this.bpSave_Click);
 			// 
 			// pictAllSprites
@@ -157,7 +157,7 @@
 			// 
 			// pictTest
 			// 
-			this.pictTest.Location = new System.Drawing.Point(899, 199);
+			this.pictTest.Location = new System.Drawing.Point(792, 199);
 			this.pictTest.Name = "pictTest";
 			this.pictTest.Size = new System.Drawing.Size(512, 512);
 			this.pictTest.TabIndex = 8;
@@ -167,7 +167,7 @@
 			// 
 			this.rb1Sprite.AutoSize = true;
 			this.rb1Sprite.Checked = true;
-			this.rb1Sprite.Location = new System.Drawing.Point(910, 170);
+			this.rb1Sprite.Location = new System.Drawing.Point(803, 170);
 			this.rb1Sprite.Name = "rb1Sprite";
 			this.rb1Sprite.Size = new System.Drawing.Size(61, 17);
 			this.rb1Sprite.TabIndex = 9;
@@ -178,7 +178,7 @@
 			// rb2Sprite
 			// 
 			this.rb2Sprite.AutoSize = true;
-			this.rb2Sprite.Location = new System.Drawing.Point(1001, 170);
+			this.rb2Sprite.Location = new System.Drawing.Point(894, 170);
 			this.rb2Sprite.Name = "rb2Sprite";
 			this.rb2Sprite.Size = new System.Drawing.Size(75, 17);
 			this.rb2Sprite.TabIndex = 9;
@@ -188,7 +188,7 @@
 			// rb4Sprite
 			// 
 			this.rb4Sprite.AutoSize = true;
-			this.rb4Sprite.Location = new System.Drawing.Point(1092, 172);
+			this.rb4Sprite.Location = new System.Drawing.Point(985, 172);
 			this.rb4Sprite.Name = "rb4Sprite";
 			this.rb4Sprite.Size = new System.Drawing.Size(75, 17);
 			this.rb4Sprite.TabIndex = 9;
@@ -197,7 +197,7 @@
 			// 
 			// bpTest
 			// 
-			this.bpTest.Location = new System.Drawing.Point(1255, 164);
+			this.bpTest.Location = new System.Drawing.Point(1148, 164);
 			this.bpTest.Name = "bpTest";
 			this.bpTest.Size = new System.Drawing.Size(75, 23);
 			this.bpTest.TabIndex = 10;
@@ -207,7 +207,7 @@
 			// 
 			// zoomX
 			// 
-			this.zoomX.Location = new System.Drawing.Point(952, 141);
+			this.zoomX.Location = new System.Drawing.Point(845, 141);
 			this.zoomX.Maximum = new decimal(new int[] {
             3,
             0,
@@ -229,7 +229,7 @@
 			// 
 			// zoomY
 			// 
-			this.zoomY.Location = new System.Drawing.Point(1082, 141);
+			this.zoomY.Location = new System.Drawing.Point(975, 141);
 			this.zoomY.Maximum = new decimal(new int[] {
             3,
             0,
@@ -252,7 +252,7 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(896, 145);
+			this.label3.Location = new System.Drawing.Point(789, 145);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(44, 13);
 			this.label3.TabIndex = 12;
@@ -261,17 +261,42 @@
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(1032, 145);
+			this.label4.Location = new System.Drawing.Point(925, 145);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(44, 13);
 			this.label4.TabIndex = 12;
 			this.label4.Text = "Zoom Y";
 			// 
+			// comboBanque
+			// 
+			this.comboBanque.FormattingEnabled = true;
+			this.comboBanque.Items.AddRange(new object[] {
+            "Banque 1",
+            "Banque 2",
+            "Banque 3",
+            "Banque 4"});
+			this.comboBanque.Location = new System.Drawing.Point(1052, 12);
+			this.comboBanque.Name = "comboBanque";
+			this.comboBanque.Size = new System.Drawing.Size(89, 21);
+			this.comboBanque.TabIndex = 13;
+			this.comboBanque.SelectedIndexChanged += new System.EventHandler(this.comboBanque_SelectedIndexChanged);
+			// 
+			// bpSaveAll
+			// 
+			this.bpSaveAll.Location = new System.Drawing.Point(3, 620);
+			this.bpSaveAll.Name = "bpSaveAll";
+			this.bpSaveAll.Size = new System.Drawing.Size(75, 61);
+			this.bpSaveAll.TabIndex = 6;
+			this.bpSaveAll.Text = "Sauver sprites (toutes les banques)";
+			this.bpSaveAll.UseVisualStyleBackColor = true;
+			this.bpSaveAll.Click += new System.EventHandler(this.bpSaveAll_Click);
+			// 
 			// EditSprites
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1414, 715);
+			this.ClientSize = new System.Drawing.Size(1310, 715);
+			this.Controls.Add(this.comboBanque);
 			this.Controls.Add(this.label4);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.zoomY);
@@ -282,6 +307,7 @@
 			this.Controls.Add(this.rb1Sprite);
 			this.Controls.Add(this.pictTest);
 			this.Controls.Add(this.lblSelSprite);
+			this.Controls.Add(this.bpSaveAll);
 			this.Controls.Add(this.bpSave);
 			this.Controls.Add(this.bpRead);
 			this.Controls.Add(this.lblPenRight);
@@ -330,5 +356,7 @@
 		private System.Windows.Forms.NumericUpDown zoomY;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.ComboBox comboBanque;
+		private System.Windows.Forms.Button bpSaveAll;
 	}
 }
