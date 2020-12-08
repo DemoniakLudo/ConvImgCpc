@@ -23,7 +23,7 @@
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
-			this.pictEditMatrice = new System.Windows.Forms.PictureBox();
+			this.pictEditSprite = new System.Windows.Forms.PictureBox();
 			this.bpPrev = new System.Windows.Forms.Button();
 			this.bpSuiv = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
@@ -45,7 +45,7 @@
 			this.label4 = new System.Windows.Forms.Label();
 			this.comboBanque = new System.Windows.Forms.ComboBox();
 			this.bpSaveAll = new System.Windows.Forms.Button();
-			((System.ComponentModel.ISupportInitialize)(this.pictEditMatrice)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictEditSprite)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictAllSprites)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictTest)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.zoomX)).BeginInit();
@@ -54,13 +54,13 @@
 			// 
 			// pictEditMatrice
 			// 
-			this.pictEditMatrice.Location = new System.Drawing.Point(84, 71);
-			this.pictEditMatrice.Name = "pictEditMatrice";
-			this.pictEditMatrice.Size = new System.Drawing.Size(640, 640);
-			this.pictEditMatrice.TabIndex = 0;
-			this.pictEditMatrice.TabStop = false;
-			this.pictEditMatrice.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictEditMatrice_MouseMove);
-			this.pictEditMatrice.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictEditMatrice_MouseMove);
+			this.pictEditSprite.Location = new System.Drawing.Point(84, 71);
+			this.pictEditSprite.Name = "pictEditMatrice";
+			this.pictEditSprite.Size = new System.Drawing.Size(640, 640);
+			this.pictEditSprite.TabIndex = 0;
+			this.pictEditSprite.TabStop = false;
+			this.pictEditSprite.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictEditMatrice_MouseMove);
+			this.pictEditSprite.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictEditMatrice_MouseMove);
 			// 
 			// bpPrev
 			// 
@@ -317,14 +317,14 @@
 			this.Controls.Add(this.bpSuiv);
 			this.Controls.Add(this.bpPrev);
 			this.Controls.Add(this.pictAllSprites);
-			this.Controls.Add(this.pictEditMatrice);
+			this.Controls.Add(this.pictEditSprite);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "EditSprites";
 			this.ShowIcon = false;
 			this.Text = "Edition Sprites Hard";
-			((System.ComponentModel.ISupportInitialize)(this.pictEditMatrice)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictEditSprite)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictAllSprites)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictTest)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.zoomX)).EndInit();
@@ -336,7 +336,7 @@
 
 		#endregion
 
-		private System.Windows.Forms.PictureBox pictEditMatrice;
+		private System.Windows.Forms.PictureBox pictEditSprite;
 		private System.Windows.Forms.Button bpPrev;
 		private System.Windows.Forms.Button bpSuiv;
 		private System.Windows.Forms.Label label1;

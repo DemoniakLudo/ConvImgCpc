@@ -6,9 +6,9 @@ using System.Xml.Serialization;
 
 namespace ConvImgCpc {
 	public partial class EditSprites : Form {
-		private int numSprite = 0, numBank = 0;
+		private int numSprite = 0, numBank = 0, selSprite = -1;
 		private byte penLeft = 1;
-		private DirectBitmap bmpSprite;
+		private DirectBitmap bmpSprite, bmpAllSprites, bmpTest;
 		private Main main;
 		private Label[] colors = new Label[16];
 
@@ -30,8 +30,12 @@ namespace ConvImgCpc {
 				colors[c].BackColor = Color.FromArgb((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17));
 				Controls.Add(colors[c]);
 			}
-			bmpSprite = new DirectBitmap(pictEditMatrice.Width, pictEditMatrice.Height);
-			pictEditMatrice.Image = bmpSprite.Bitmap;
+			bmpSprite = new DirectBitmap(pictEditSprite.Width, pictEditSprite.Height);
+			pictEditSprite.Image = bmpSprite.Bitmap;
+			bmpAllSprites = new DirectBitmap(pictAllSprites.Width, pictAllSprites.Height);
+			pictAllSprites.Image = bmpAllSprites.Bitmap;
+			bmpTest = new DirectBitmap(pictTest.Width, pictTest.Height);
+			pictTest.Image = bmpTest.Bitmap;
 			comboBanque.SelectedIndex = 0;
 			DrawPens();
 		}
@@ -51,7 +55,6 @@ namespace ConvImgCpc {
 					colors[pen].BackColor = Color.FromArgb((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17));
 					colors[pen].Refresh();
 					DrawMatrice();
-					DrawSprite();
 				}
 			}
 			else {
@@ -61,21 +64,24 @@ namespace ConvImgCpc {
 		}
 
 		private void DrawMatrice() {
-			DirectBitmap bmp = new DirectBitmap(pictAllSprites.Width, pictAllSprites.Height);
-			pictAllSprites.Image = bmp.Bitmap;
 			for (int spr = 0; spr < 16; spr++) {
 				for (int y = 0; y < 16; y++) {
 					for (int x = 0; x < 16; x++) {
+						int col = BitmapCpc.paletteSprite[BitmapCpc.spritesHard[numBank, spr, x, y]];
+						RvbColor c = new RvbColor((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17));
 						for (int zx = 0; zx < (x == 15 ? 3 : 4); zx++)
-							for (int zy = 0; zy < 4; zy++) {
-								int col = BitmapCpc.paletteSprite[BitmapCpc.spritesHard[numBank, spr, x, y]];
-								RvbColor c = new RvbColor((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17));
-								bmp.SetPixel(zx + ((x + (spr << 4)) << 2), zy + (y << 2), c);
-							}
+							for (int zy = 0; zy < 4; zy++)
+								bmpAllSprites.SetPixel(zx + ((x + (spr << 4)) << 2), zy + (y << 2), c);
+
+						if (spr == numSprite)
+							for (int zx = 0; zx < 38; zx++)
+								for (int zy = 0; zy < 38; zy++)
+									bmpSprite.SetPixel(zx + (x * 40), zy + (y * 40), c);
 					}
 				}
 			}
 			pictAllSprites.Refresh();
+			pictEditSprite.Refresh();
 		}
 
 		private void DrawSprite() {
@@ -84,15 +90,29 @@ namespace ConvImgCpc {
 			bpSuiv.Visible = numSprite < 15;
 			for (int y = 0; y < 16; y++) {
 				for (int x = 0; x < 16; x++) {
+					int col = BitmapCpc.paletteSprite[BitmapCpc.spritesHard[numBank, numSprite, x, y]];
+					RvbColor c = new RvbColor((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17));
 					for (int zx = 0; zx < 38; zx++)
-						for (int zy = 0; zy < 38; zy++) {
-							int col = BitmapCpc.paletteSprite[BitmapCpc.spritesHard[numBank, numSprite, x, y]];
-							RvbColor c = new RvbColor((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17));
+						for (int zy = 0; zy < 38; zy++)
 							bmpSprite.SetPixel(zx + (x * 40), zy + (y * 40), c);
-						}
 				}
 			}
-			pictEditMatrice.Refresh();
+			pictEditSprite.Refresh();
+		}
+
+		private void SetPixelSprite(int x, int y) {
+			int col = BitmapCpc.paletteSprite[BitmapCpc.spritesHard[numBank, numSprite, x, y]];
+			RvbColor c = new RvbColor((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17));
+			for (int zx = 0; zx < 38; zx++)
+				for (int zy = 0; zy < 38; zy++)
+					bmpSprite.SetPixel(zx + (x * 40), zy + (y * 40), c);
+
+			for (int zx = 0; zx < (x == 15 ? 3 : 4); zx++)
+				for (int zy = 0; zy < 4; zy++)
+					bmpAllSprites.SetPixel(zx + ((x + (numSprite << 4)) << 2), zy + (y << 2), c);
+
+			pictEditSprite.Refresh();
+			pictAllSprites.Refresh();
 		}
 
 		private void DrawPens() {
@@ -105,8 +125,41 @@ namespace ConvImgCpc {
 		private void pictAllMatrice_MouseDown(object sender, MouseEventArgs e) {
 			int y = e.X / 64;
 			if (y >= 0 && y < 16) {
-				numSprite = y;
-				DrawSprite();
+				if (e.Button == MouseButtons.Left && y != numSprite) {
+					numSprite = y;
+					DrawSprite();
+				}
+				if (e.Button == MouseButtons.Right) {
+					if (selSprite == -1) {
+						selSprite = y;
+						for (int i = 0; i < 64; i++) {
+							bmpAllSprites.SetPixel(0 + (selSprite << 6), i, 0xFFFFFF);
+							bmpAllSprites.SetPixel(63 + (selSprite << 6), i, 0xFFFFFF);
+							bmpAllSprites.SetPixel(i + (selSprite << 6), 0, 0xFFFFFF);
+							bmpAllSprites.SetPixel(i + (selSprite << 6), 63, 0xFFFFFF);
+						}
+					}
+					else {
+						for (int i = 0; i < 64; i++) {
+							bmpAllSprites.SetPixel(0 + (selSprite << 6), i, 0);
+							bmpAllSprites.SetPixel(63 + (selSprite << 6), i, 0);
+							bmpAllSprites.SetPixel(i + (selSprite << 6), 0, 0);
+							bmpAllSprites.SetPixel(i + (selSprite << 6), 63, 0);
+						}
+						int swapSprite = y;
+						if (swapSprite != selSprite) {
+							for (y = 0; y < 16; y++)
+								for (int x = 0; x < 16; x++) {
+									byte tmp = BitmapCpc.spritesHard[numBank, selSprite, x, y];
+									BitmapCpc.spritesHard[numBank, selSprite, x, y] = BitmapCpc.spritesHard[numBank, swapSprite, x, y];
+									BitmapCpc.spritesHard[numBank, swapSprite, x, y] = tmp;
+								}
+						}
+						selSprite = -1;
+						DrawMatrice();
+					}
+					pictAllSprites.Refresh();
+				}
 			}
 		}
 
@@ -116,14 +169,12 @@ namespace ConvImgCpc {
 			if (x >= 0 && y >= 0 && x < 16 && y < 16) {
 				if (e.Button == MouseButtons.Left) {
 					BitmapCpc.spritesHard[numBank, numSprite, x, y] = penLeft;
-					DrawMatrice();
-					DrawSprite();
+					SetPixelSprite(x, y);
 				}
 				else
 					if (e.Button == MouseButtons.Right) {
 						BitmapCpc.spritesHard[numBank, numSprite, x, y] = 0;
-						DrawMatrice();
-						DrawSprite();
+						SetPixelSprite(x, y);
 					}
 			}
 		}
@@ -191,7 +242,6 @@ namespace ConvImgCpc {
 					//}}}
 				}
 				DrawMatrice();
-				DrawSprite();
 			}
 		}
 
@@ -261,8 +311,6 @@ namespace ConvImgCpc {
 		}
 
 		private void bpTest_Click(object sender, EventArgs e) {
-			DirectBitmap bmp = new DirectBitmap(pictTest.Width, pictTest.Height);
-			pictTest.Image = bmp.Bitmap;
 			int nb = rb1Sprite.Checked ? 1 : rb2Sprite.Checked ? 2 : 4;
 			int mask = rb1Sprite.Checked ? 0xF : rb2Sprite.Checked ? 0x0c : 0x00;
 			int taillex = 1 << (int)zoomX.Value;
@@ -270,13 +318,14 @@ namespace ConvImgCpc {
 			int start = numSprite & mask;
 			for (int y = 0; y < nb; y++)
 				for (int x = 0; x < nb; x++)
-					DrawSpriteTest(bmp, start++, x * taillex * 16, y * tailley * 16);
+					DrawSpriteTest(bmpTest, start++, x * taillex * 16, y * tailley * 16);
+
+			pictTest.Refresh();
 		}
 
 		private void comboBanque_SelectedIndexChanged(object sender, EventArgs e) {
 			numBank = comboBanque.SelectedIndex;
 			DrawMatrice();
-			DrawSprite();
 		}
 	}
 }
