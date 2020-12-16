@@ -55,7 +55,8 @@ namespace ConvImgCpc {
 										"Mode ASC-UT",
 										"Mode ASC0",
 										"Mode ASC1",
-										"Mode ASC2"
+										"Mode ASC2",
+										"Capture Sprites"
 										};
 		static public string CpcVGA = "TDU\\X]LEMVFW^@_NGORBSZY[JCK";
 
@@ -272,7 +273,7 @@ namespace ConvImgCpc {
 		}
 
 		static public int CalcTx(int y = 0) {
-			return 8 >> (modeVirtuel == 8 ? 0 : modeVirtuel > 8 ? modeVirtuel - 8 : modeVirtuel >= 5 ? 2 : modeVirtuel > 2 ? ((y & 2) == 0 ? modeVirtuel - 1 : modeVirtuel - 2) : modeVirtuel + 1);
+			return 8 >> (modeVirtuel == 11 ? 2 : modeVirtuel == 8 ? 0 : modeVirtuel > 8 ? modeVirtuel - 8 : modeVirtuel >= 5 ? 2 : modeVirtuel > 2 ? ((y & 2) == 0 ? modeVirtuel - 1 : modeVirtuel - 2) : modeVirtuel + 1);
 		}
 
 		static public int MaxPen(int y = 0) {

@@ -423,42 +423,9 @@ namespace ConvImgCpc {
 			return nbCol;
 		}
 
-		static private void SetPixTrameM1(DirectBitmap bitmap, Param prm, ImageCpc dest, int maxPen, RvbColor[,] tabCol) {
-			for (int y = 0; y <= BitmapCpc.TailleY - 8; y += 8) {
-				maxPen = BitmapCpc.MaxPen(y);
-				for (int x = 0; x < BitmapCpc.TailleX; x += 8) {
-					int choix = 0, oldDist = 0x7FFFFFFF;
-					for (int i = 0; i < 16; i++) {
-						int dist = 0, r1 = 0, v1 = 0, b1 = 0, r2 = 0, v2 = 0, b2 = 0;
-						for (int ym = 0; ym < 4; ym++) {
-							for (int xm = 0; xm < 4; xm++) {
-								RvbColor pix = bitmap.GetPixelColor(x + (xm << 1), y + (ym << 1));
-								RvbColor c = tabCol[BitmapCpc.trameM1[i, xm, ym], ym + (y >> 1)];
-								r1 += pix.r;
-								v1 += pix.v;
-								b1 += pix.b;
-								r2 += c.r;
-								v2 += c.v;
-								b2 += c.b;
-							}
-						}
-						dist = Math.Abs(r1 - r2) * prm.coefR + Math.Abs(v1 - v2) * prm.coefV + Math.Abs(b1 - b2) * prm.coefB;
-						if (dist < oldDist) {
-							choix = i;
-							oldDist = dist;
-							if (dist == 0)
-								i = 16;
-						}
-					}
-					for (int ym = 0; ym < 4; ym++)
-						for (int xm = 0; xm < 4; xm++)
-							dest.SetPixelCpc(x + (xm << 1), y + (ym << 1), BitmapCpc.trameM1[choix, xm, ym], 2);
-				}
-			}
-		}
-
+		// Conversion "standard"
 		static private void SetPixCol(DirectBitmap bitmap, Param prm, ImageCpc dest, int maxPen, RvbColor[,] tabCol) {
-			int incY = BitmapCpc.modeVirtuel >= 8 ? 8 : 2;
+			int incY = BitmapCpc.modeVirtuel >= 8 && BitmapCpc.modeVirtuel <= 10 ? 8 : 2;
 			RvbColor pix;
 			for (int y = 0; y < BitmapCpc.TailleY; y += incY) {
 				int Tx = BitmapCpc.CalcTx(y);
@@ -495,6 +462,42 @@ namespace ConvImgCpc {
 			}
 		}
 
+		// Conversion avec trames précalculées en mode 1
+		static private void SetPixTrameM1(DirectBitmap bitmap, Param prm, ImageCpc dest, int maxPen, RvbColor[,] tabCol) {
+			for (int y = 0; y <= BitmapCpc.TailleY - 8; y += 8) {
+				maxPen = BitmapCpc.MaxPen(y);
+				for (int x = 0; x < BitmapCpc.TailleX; x += 8) {
+					int choix = 0, oldDist = 0x7FFFFFFF;
+					for (int i = 0; i < 16; i++) {
+						int dist = 0, r1 = 0, v1 = 0, b1 = 0, r2 = 0, v2 = 0, b2 = 0;
+						for (int ym = 0; ym < 4; ym++) {
+							for (int xm = 0; xm < 4; xm++) {
+								RvbColor pix = bitmap.GetPixelColor(x + (xm << 1), y + (ym << 1));
+								RvbColor c = tabCol[BitmapCpc.trameM1[i, xm, ym], ym + (y >> 1)];
+								r1 += pix.r;
+								v1 += pix.v;
+								b1 += pix.b;
+								r2 += c.r;
+								v2 += c.v;
+								b2 += c.b;
+							}
+						}
+						dist = Math.Abs(r1 - r2) * prm.coefR + Math.Abs(v1 - v2) * prm.coefV + Math.Abs(b1 - b2) * prm.coefB;
+						if (dist < oldDist) {
+							choix = i;
+							oldDist = dist;
+							if (dist == 0)
+								i = 16;
+						}
+					}
+					for (int ym = 0; ym < 4; ym++)
+						for (int xm = 0; xm < 4; xm++)
+							dest.SetPixelCpc(x + (xm << 1), y + (ym << 1), BitmapCpc.trameM1[choix, xm, ym], 2);
+				}
+			}
+		}
+
+		// Conversion avec des "splits-rasters"
 		static private void SetPixColSplit(DirectBitmap bitmap, Param prm, ImageCpc dest, RvbColor[,] tabCol) {
 			for (int y = 0; y < BitmapCpc.TailleY; y += 2) {
 				int tailleSplit = 0, colSplit = -1;
@@ -570,13 +573,19 @@ namespace ConvImgCpc {
 						tabCol[i, y >> 1] = dest.bitmapCpc.GetColorPal(i);
 				}
 			}
-			if (BitmapCpc.modeVirtuel == 7)
-				SetPixTrameM1(source, p, dest, maxPen, tabCol);
-			else
-				if (BitmapCpc.modeVirtuel == 6)
-				SetPixColSplit(source, p, dest, tabCol);
-			else
-				SetPixCol(source, p, dest, maxPen, tabCol);
+			switch (BitmapCpc.modeVirtuel) {
+				case 6:
+					SetPixColSplit(source, p, dest, tabCol);
+					break;
+
+				case 7:
+					SetPixTrameM1(source, p, dest, maxPen, tabCol);
+					break;
+
+				default:
+					SetPixCol(source, p, dest, maxPen, tabCol);
+					break;
+			}
 		}
 
 		static public int Convert(DirectBitmap source, ImageCpc dest, Param p, bool noInfo = false) {
