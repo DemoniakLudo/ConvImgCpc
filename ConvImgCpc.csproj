@@ -59,7 +59,16 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\Capture.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interfaces\Capture.Designer.cs">
+      <DependentUpon>Capture.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dither.cs" />
+    <Compile Include="Interfaces\CaptureSprites.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Interfaces\EditSprites.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,6 +152,9 @@
     <Compile Include="SaveAsm.cs" />
     <Compile Include="UndoRedo.cs" />
     <Compile Include="XorDrawing.cs" />
+    <EmbeddedResource Include="Interfaces\Capture.resx">
+      <DependentUpon>Capture.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Interfaces\Animation.resx">
       <DependentUpon>Animation.cs</DependentUpon>
     </EmbeddedResource>

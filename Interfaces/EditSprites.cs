@@ -316,6 +316,11 @@ namespace ConvImgCpc {
 			int taillex = 1 << (int)zoomX.Value;
 			int tailley = 2 << (int)zoomY.Value;
 			int start = numSprite & mask;
+
+			for (int y = 0; y < 512; y++)
+				for (int x = 0; x < 512; x++)
+					bmpTest.SetPixel(x, y, 0);
+
 			for (int y = 0; y < nb; y++)
 				for (int x = 0; x < nb; x++)
 					DrawSpriteTest(bmpTest, start++, x * taillex * 16, y * tailley * 16);

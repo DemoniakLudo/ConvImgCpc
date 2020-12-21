@@ -43,6 +43,7 @@
 			this.bpUndo = new System.Windows.Forms.Button();
 			this.chkRendu = new System.Windows.Forms.CheckBox();
 			this.pictureBox = new System.Windows.Forms.PictureBox();
+			this.modeCaptureSprites = new System.Windows.Forms.CheckBox();
 			this.grpEdition.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
 			this.SuspendLayout();
@@ -266,14 +267,28 @@
 			this.pictureBox.TabIndex = 0;
 			this.pictureBox.TabStop = false;
 			this.pictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TrtMouseMove);
+			this.pictureBox.MouseLeave += new System.EventHandler(this.pictureBox_MouseLeave);
 			this.pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TrtMouseMove);
+			// 
+			// modeCaptureSprites
+			// 
+			this.modeCaptureSprites.AutoSize = true;
+			this.modeCaptureSprites.Location = new System.Drawing.Point(796, 12);
+			this.modeCaptureSprites.Name = "modeCaptureSprites";
+			this.modeCaptureSprites.Size = new System.Drawing.Size(111, 17);
+			this.modeCaptureSprites.TabIndex = 10;
+			this.modeCaptureSprites.Text = "Capture de sprites";
+			this.modeCaptureSprites.UseVisualStyleBackColor = true;
+			this.modeCaptureSprites.Visible = false;
+			this.modeCaptureSprites.CheckedChanged += new System.EventHandler(this.modeCaptureSprites_CheckedChanged);
 			// 
 			// ImageCpc
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(946, 620);
+			this.ClientSize = new System.Drawing.Size(942, 620);
 			this.ControlBox = false;
+			this.Controls.Add(this.modeCaptureSprites);
 			this.Controls.Add(this.grpEdition);
 			this.Controls.Add(this.vScrollBar);
 			this.Controls.Add(this.hScrollBar);
@@ -317,6 +332,7 @@
 		private System.Windows.Forms.Label undrawColor;
 		private System.Windows.Forms.RadioButton rbCopy;
 		private System.Windows.Forms.Label lblInfoPos;
+		private System.Windows.Forms.CheckBox modeCaptureSprites;
 
 	}
 }

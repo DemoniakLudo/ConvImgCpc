@@ -217,59 +217,35 @@ namespace ConvImgCpc {
 
 		// Sur déplacement de la souris...
 		private void TrtMouseMove(object sender, MouseEventArgs e) {
-			if (modeEdition.Checked) {
-				int incY = BitmapCpc.modeVirtuel >= 8 ? 8 : 2;
-				int yReel = ((offsetY + (e.Y / zoom)) & -incY) >> 1;
-				int tx = BitmapCpc.CalcTx(yReel);
-				int xReel = (offsetX + (e.X / zoom)) & -tx;
-				lblInfoPos.Text = "x:" + xReel.ToString("000") + " y:" + yReel.ToString("000");
-				switch (editToolMode) {
-					case EditTool.Draw:
-						ToolModeDraw(e);
-						break;
+			if (modeCaptureSprites.Checked)
+				CaptureSprites(e);		// Capture de sprites hard
+			else
+				if (modeEdition.Checked) {
+					int incY = BitmapCpc.modeVirtuel >= 8 ? 8 : 2;
+					int yReel = ((offsetY + (e.Y / zoom)) & -incY) >> 1;
+					int tx = BitmapCpc.CalcTx(yReel);
+					int xReel = (offsetX + (e.X / zoom)) & -tx;
+					lblInfoPos.Text = "x:" + xReel.ToString("000") + " y:" + yReel.ToString("000");
+					switch (editToolMode) {
+						case EditTool.Draw:
+							ToolModeDraw(e);
+							break;
 
-					case EditTool.Zoom:
-						ToolModeZoom(e);
-						break;
+						case EditTool.Zoom:
+							ToolModeZoom(e);
+							break;
 
-					case EditTool.Copy:
-						ToolModeCopy(e);
-						break;
-				}
-				if (e.Button == MouseButtons.None) {
-					bpUndo.Enabled = undo.CanUndo;
-					bpRedo.Enabled = undo.CanRedo;
-				}
-			}
-			else {
-				// Déplacement/Zoom image
-				if (e.Button == MouseButtons.Left) {
-					if (!movePos) {
-						main.GetSizePos(ref posx, ref posy, ref sizex, ref sizey);
-						movePos = true;
-						memoMouseX = e.X;
-						memoMouseY = e.Y;
+						case EditTool.Copy:
+							ToolModeCopy(e);
+							break;
 					}
-					else {
-						main.SetSizePos(posx + memoMouseX - e.X, posy + memoMouseY - e.Y, sizex, sizey, true);
+					if (e.Button == MouseButtons.None) {
+						bpUndo.Enabled = undo.CanUndo;
+						bpRedo.Enabled = undo.CanRedo;
 					}
 				}
-				else {
-					if (e.Button == MouseButtons.Right) {
-						if (!moveSize) {
-							main.GetSizePos(ref posx, ref posy, ref sizex, ref sizey);
-							moveSize = true;
-							memoMouseX = e.X;
-							memoMouseY = e.Y;
-						}
-						else {
-							main.SetSizePos(posx, posy, sizex - memoMouseX + e.X, sizey - memoMouseY + e.Y, true);
-						}
-					}
-					else
-						movePos = moveSize = false;
-				}
-			}
+				else
+					MoveOrSize(e);		// Déplacement/Zoom image
 		}
 
 		private void vScrollBar_Scroll(object sender, ScrollEventArgs e) {

@@ -97,6 +97,8 @@ namespace ConvImgCpc {
 
 		public void Render(bool forceDrawZoom = false) {
 			UpdatePalette();
+			modeCaptureSprites.Visible = BitmapCpc.modeVirtuel == 11;
+			modeEdition.Visible = BitmapCpc.modeVirtuel != 11;
 			if (chkDoRedo.Checked && modeEdition.Checked) {
 				Enabled = false;
 				List<MemoPoint> lst = undo.lstUndoRedo;
@@ -129,6 +131,36 @@ namespace ConvImgCpc {
 			pictureBox.Refresh();
 			if (fenetreRendu != null)
 				fenetreRendu.Picture.Refresh();
+		}
+
+		// Déplacement/Zoom image
+		private void MoveOrSize(MouseEventArgs e) {
+			if (e.Button == MouseButtons.Left) {
+				if (!movePos) {
+					main.GetSizePos(ref posx, ref posy, ref sizex, ref sizey);
+					movePos = true;
+					memoMouseX = e.X;
+					memoMouseY = e.Y;
+				}
+				else {
+					main.SetSizePos(posx + memoMouseX - e.X, posy + memoMouseY - e.Y, sizex, sizey, true);
+				}
+			}
+			else {
+				if (e.Button == MouseButtons.Right) {
+					if (!moveSize) {
+						main.GetSizePos(ref posx, ref posy, ref sizex, ref sizey);
+						moveSize = true;
+						memoMouseX = e.X;
+						memoMouseY = e.Y;
+					}
+					else {
+						main.SetSizePos(posx, posy, sizex - memoMouseX + e.X, sizey - memoMouseY + e.Y, true);
+					}
+				}
+				else
+					movePos = moveSize = false;
+			}
 		}
 
 		#region Lecture/Sauvegarde
