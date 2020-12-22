@@ -45,6 +45,8 @@
 			this.label4 = new System.Windows.Forms.Label();
 			this.comboBanque = new System.Windows.Forms.ComboBox();
 			this.bpSaveAll = new System.Windows.Forms.Button();
+			this.bpReadPal = new System.Windows.Forms.Button();
+			this.bpSavePal = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.pictEditSprite)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictAllSprites)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictTest)).BeginInit();
@@ -52,10 +54,10 @@
 			((System.ComponentModel.ISupportInitialize)(this.zoomY)).BeginInit();
 			this.SuspendLayout();
 			// 
-			// pictEditMatrice
+			// pictEditSprite
 			// 
 			this.pictEditSprite.Location = new System.Drawing.Point(84, 71);
-			this.pictEditSprite.Name = "pictEditMatrice";
+			this.pictEditSprite.Name = "pictEditSprite";
 			this.pictEditSprite.Size = new System.Drawing.Size(640, 640);
 			this.pictEditSprite.TabIndex = 0;
 			this.pictEditSprite.TabStop = false;
@@ -95,7 +97,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(12, 309);
+			this.label2.Location = new System.Drawing.Point(12, 272);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(49, 13);
 			this.label2.TabIndex = 4;
@@ -112,14 +114,14 @@
 			// lblPenRight
 			// 
 			this.lblPenRight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.lblPenRight.Location = new System.Drawing.Point(11, 322);
+			this.lblPenRight.Location = new System.Drawing.Point(11, 285);
 			this.lblPenRight.Name = "lblPenRight";
 			this.lblPenRight.Size = new System.Drawing.Size(48, 48);
 			this.lblPenRight.TabIndex = 5;
 			// 
 			// bpRead
 			// 
-			this.bpRead.Location = new System.Drawing.Point(3, 467);
+			this.bpRead.Location = new System.Drawing.Point(3, 355);
 			this.bpRead.Name = "bpRead";
 			this.bpRead.Size = new System.Drawing.Size(75, 48);
 			this.bpRead.TabIndex = 6;
@@ -129,7 +131,7 @@
 			// 
 			// bpSave
 			// 
-			this.bpSave.Location = new System.Drawing.Point(3, 535);
+			this.bpSave.Location = new System.Drawing.Point(3, 423);
 			this.bpSave.Name = "bpSave";
 			this.bpSave.Size = new System.Drawing.Size(75, 63);
 			this.bpSave.TabIndex = 6;
@@ -283,7 +285,7 @@
 			// 
 			// bpSaveAll
 			// 
-			this.bpSaveAll.Location = new System.Drawing.Point(3, 620);
+			this.bpSaveAll.Location = new System.Drawing.Point(3, 508);
 			this.bpSaveAll.Name = "bpSaveAll";
 			this.bpSaveAll.Size = new System.Drawing.Size(75, 61);
 			this.bpSaveAll.TabIndex = 6;
@@ -291,11 +293,33 @@
 			this.bpSaveAll.UseVisualStyleBackColor = true;
 			this.bpSaveAll.Click += new System.EventHandler(this.bpSaveAll_Click);
 			// 
+			// bpReadPal
+			// 
+			this.bpReadPal.Location = new System.Drawing.Point(3, 625);
+			this.bpReadPal.Name = "bpReadPal";
+			this.bpReadPal.Size = new System.Drawing.Size(75, 40);
+			this.bpReadPal.TabIndex = 14;
+			this.bpReadPal.Text = "Lire palette";
+			this.bpReadPal.UseVisualStyleBackColor = true;
+			this.bpReadPal.Click += new System.EventHandler(this.bpReadPal_Click);
+			// 
+			// bpSavePal
+			// 
+			this.bpSavePal.Location = new System.Drawing.Point(3, 671);
+			this.bpSavePal.Name = "bpSavePal";
+			this.bpSavePal.Size = new System.Drawing.Size(75, 40);
+			this.bpSavePal.TabIndex = 14;
+			this.bpSavePal.Text = "Sauver palette";
+			this.bpSavePal.UseVisualStyleBackColor = true;
+			this.bpSavePal.Click += new System.EventHandler(this.bpSavePal_Click);
+			// 
 			// EditSprites
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1310, 715);
+			this.Controls.Add(this.bpSavePal);
+			this.Controls.Add(this.bpReadPal);
 			this.Controls.Add(this.comboBanque);
 			this.Controls.Add(this.label4);
 			this.Controls.Add(this.label3);
@@ -358,5 +382,7 @@
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.ComboBox comboBanque;
 		private System.Windows.Forms.Button bpSaveAll;
+		private System.Windows.Forms.Button bpReadPal;
+		private System.Windows.Forms.Button bpSavePal;
 	}
 }

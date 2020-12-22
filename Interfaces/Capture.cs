@@ -67,6 +67,10 @@ namespace ConvImgCpc {
 						}
 					numSpr++;
 				}
+			// Copie de la palette image dans la palette des sprites
+			for (int c = 0; c < 16; c++)
+				BitmapCpc.paletteSprite[c] = BitmapCpc.Palette[c];
+
 			MessageBox.Show("Capture effectuée.");
 		}
 	}

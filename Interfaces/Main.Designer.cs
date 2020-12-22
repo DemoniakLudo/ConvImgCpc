@@ -1178,6 +1178,7 @@
 			this.bpEditSprites.TabIndex = 67;
 			this.bpEditSprites.Text = "Edition Sprites Hard";
 			this.bpEditSprites.UseVisualStyleBackColor = true;
+			this.bpEditSprites.Visible = false;
 			this.bpEditSprites.Click += new System.EventHandler(this.bpEditSprites_Click);
 			// 
 			// Main

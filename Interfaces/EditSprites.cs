@@ -173,9 +173,9 @@ namespace ConvImgCpc {
 				}
 				else
 					if (e.Button == MouseButtons.Right) {
-						BitmapCpc.spritesHard[numBank, numSprite, x, y] = 0;
-						SetPixelSprite(x, y);
-					}
+					BitmapCpc.spritesHard[numBank, numSprite, x, y] = 0;
+					SetPixelSprite(x, y);
+				}
 			}
 		}
 
@@ -189,57 +189,77 @@ namespace ConvImgCpc {
 			DrawSprite();
 		}
 
-		private void bpRead_Click(object sender, EventArgs e) {
-			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.Filter = "Modèle Sprites (.spr)|*.spr";
-			if (dlg.ShowDialog() == DialogResult.OK) {
-				//try {
-				FileStream fileScr = new FileStream(dlg.FileName, FileMode.Open, FileAccess.Read);
+		private void ReadPalette(string fileName) {
+			if (File.Exists(fileName)) {
+				FileStream fileScr = new FileStream(fileName, FileMode.Open, FileAccess.Read);
 				byte[] tabBytes = new byte[fileScr.Length];
 				fileScr.Read(tabBytes, 0, tabBytes.Length);
 				fileScr.Close();
 				if (CpcSystem.CheckAmsdos(tabBytes)) {
-					CpcAmsdos enteteAms = CpcSystem.GetAmsdos(tabBytes);
-					// Décodage sprite
-					int pos = 0;
-					int startBank = enteteAms.RealLength == 0x1000 ? numBank : 0;
-					for (int bank = startBank; bank < 4; bank++)
-						for (int i = 0; i < 16; i++) {
-							for (int y = 0; y < 16; y++) {
-								for (int x = 0; x < 16; x++) {
-									BitmapCpc.spritesHard[bank, i, x, y] = tabBytes[128 + pos++];
-									if (pos >= enteteAms.RealLength) {
-										x = 16;
-										y = 16;
-										i = 16;
-										bank = 4;
-									}
-								}
-							}
-						}
+					BitmapCpc.paletteSprite[0] = 0;
+					colors[0].BackColor = Color.Black;
+					colors[0].Refresh();
+					for (int i = 0; i < 15; i++) {
+						int kit = tabBytes[128 + (i << 1)] + (tabBytes[129 + (i << 1)] << 8);
+						int col = (kit & 0xF00) + ((kit & 0x0F) << 4) + ((kit & 0xF0) >> 4);
+						BitmapCpc.paletteSprite[i + 1] = col;
+						colors[i + 1].BackColor = Color.FromArgb((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17));
+						colors[i + 1].Refresh();
+					}
 				}
-				string filePalette = System.IO.Path.ChangeExtension(dlg.FileName, "kit");
-				if (File.Exists(filePalette)) {
-					fileScr = new FileStream(filePalette, FileMode.Open, FileAccess.Read);
-					tabBytes = new byte[fileScr.Length];
+			}
+		}
+
+		private void SavePalette(string fileName) {
+			CpcAmsdos entete = CpcSystem.CreeEntete(Path.GetFileName(fileName), -32768, 30, 0);
+			BinaryWriter fp = new BinaryWriter(new FileStream(fileName, FileMode.Create));
+			fp.Write(CpcSystem.AmsdosToByte(entete));
+			for (int i = 0; i < 15; i++) {
+				int kit = BitmapCpc.paletteSprite[i + 1];
+				byte c1 = (byte)(((kit & 0x0F) << 4) + ((kit & 0xF0) >> 4));
+				byte c2 = (byte)(kit >> 8);
+				fp.Write(c1);
+				fp.Write(c2);
+			}
+			fp.Close();
+		}
+
+		private void bpRead_Click(object sender, EventArgs e) {
+			OpenFileDialog dlg = new OpenFileDialog();
+			dlg.Filter = "Modèle Sprites (.spr)|*.spr";
+			if (dlg.ShowDialog() == DialogResult.OK) {
+				try {
+					FileStream fileScr = new FileStream(dlg.FileName, FileMode.Open, FileAccess.Read);
+					byte[] tabBytes = new byte[fileScr.Length];
 					fileScr.Read(tabBytes, 0, tabBytes.Length);
 					fileScr.Close();
 					if (CpcSystem.CheckAmsdos(tabBytes)) {
-						BitmapCpc.paletteSprite[0] = 0;
-						colors[0].BackColor = Color.Black;
-						colors[0].Refresh();
-						for (int i = 0; i < 15; i++) {
-							int kit = tabBytes[128 + (i << 1)] + (tabBytes[129 + (i << 1)] << 8);
-							int col = (kit & 0xF00) + ((kit & 0x0F) << 4) + ((kit & 0xF0) >> 4);
-							BitmapCpc.paletteSprite[i + 1] = col;
-							colors[i + 1].BackColor = Color.FromArgb((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17));
-							colors[i + 1].Refresh();
-						}
+						CpcAmsdos enteteAms = CpcSystem.GetAmsdos(tabBytes);
+						// Décodage sprite
+						int pos = 0;
+						int startBank = enteteAms.RealLength == 0x1000 ? numBank : 0;
+						for (int bank = startBank; bank < 4; bank++)
+							for (int i = 0; i < 16; i++) {
+								for (int y = 0; y < 16; y++) {
+									for (int x = 0; x < 16; x++) {
+										BitmapCpc.spritesHard[bank, i, x, y] = tabBytes[128 + pos++];
+										if (pos >= enteteAms.RealLength) {
+											x = 16;
+											y = 16;
+											i = 16;
+											bank = 4;
+										}
+									}
+								}
+							}
 					}
-					//}
-					//catch {
-					//	main.DisplayErreur("Impossible de lire les sprites.");
-					//}}}
+					string filePalette = Path.ChangeExtension(dlg.FileName, "kit");
+					if (File.Exists(filePalette))
+						ReadPalette(filePalette);
+
+				}
+				catch {
+					main.DisplayErreur("Impossible de lire les sprites.");
 				}
 				DrawMatrice();
 			}
@@ -268,18 +288,7 @@ namespace ConvImgCpc {
 					fp.Write(buffer);
 					fp.Close();
 					// Sauvegarde palette au format .KIT
-					string filePalette = System.IO.Path.ChangeExtension(dlg.FileName, "kit");
-					entete = CpcSystem.CreeEntete(Path.GetFileName(filePalette), -32768, 30, 0);
-					fp = new BinaryWriter(new FileStream(filePalette, FileMode.Create));
-					fp.Write(CpcSystem.AmsdosToByte(entete));
-					for (int i = 0; i < 15; i++) {
-						int kit = BitmapCpc.paletteSprite[i + 1];
-						byte c1 = (byte)(((kit & 0x0F) << 4) + ((kit & 0xF0) >> 4));
-						byte c2 = (byte)(kit >> 8);
-						fp.Write(c1);
-						fp.Write(c2);
-					}
-					fp.Close();
+					SavePalette(Path.ChangeExtension(dlg.FileName, "kit"));
 				}
 				catch {
 					main.DisplayErreur("Impossible de sauver les sprites.");
@@ -289,6 +298,33 @@ namespace ConvImgCpc {
 
 		private void bpSave_Click(object sender, EventArgs e) {
 			SauveSprites();
+		}
+
+		private void bpReadPal_Click(object sender, EventArgs e) {
+			OpenFileDialog dlg = new OpenFileDialog();
+			dlg.Filter = "Palette CPC+ (.kit)|*.kit";
+			if (dlg.ShowDialog() == DialogResult.OK) {
+				try {
+					ReadPalette(dlg.FileName);
+					DrawMatrice();
+				}
+				catch {
+					main.DisplayErreur("Impossible de lire palette.");
+				}
+			}
+		}
+
+		private void bpSavePal_Click(object sender, EventArgs e) {
+			SaveFileDialog dlg = new SaveFileDialog();
+			dlg.Filter = "Palette CPC+ (.kit)|*.kit";
+			if (dlg.ShowDialog() == DialogResult.OK) {
+				try {
+					SavePalette(dlg.FileName);
+				}
+				catch {
+					main.DisplayErreur("Impossible de sauver la palette.");
+				}
+			}
 		}
 
 		private void bpSaveAll_Click(object sender, EventArgs e) {
