@@ -440,6 +440,20 @@ namespace ConvImgCpc {
 			}
 			Convert(false);
 		}
+
+		// Copier la palette dans le presse-papier
+		private void bpCopyPal_Click(object sender, EventArgs e) {
+			string palTxt = "";
+			int maxPen = BitmapCpc.MaxPen(2);
+			for (int i = 0; i < maxPen; i++) {
+				int val = BitmapCpc.Palette[i];
+				string valStr = BitmapCpc.cpcPlus ? ("&" + val.ToString("X3")) : val.ToString();
+				palTxt += valStr + (i < maxPen - 1 ? "," : "");
+			}
+			Clipboard.SetText(palTxt);
+			MessageBox.Show("Palette copiée dans le presse-papier");
+		}
+
 		#endregion
 
 		private void ImageCpc_FormClosing(object sender, FormClosingEventArgs e) {

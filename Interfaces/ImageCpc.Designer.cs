@@ -44,6 +44,7 @@
 			this.chkRendu = new System.Windows.Forms.CheckBox();
 			this.pictureBox = new System.Windows.Forms.PictureBox();
 			this.modeCaptureSprites = new System.Windows.Forms.CheckBox();
+			this.bpCopyPal = new System.Windows.Forms.Button();
 			this.grpEdition.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
 			this.SuspendLayout();
@@ -153,7 +154,7 @@
 			this.grpEdition.Controls.Add(this.tailleCrayon);
 			this.grpEdition.Location = new System.Drawing.Point(790, 35);
 			this.grpEdition.Name = "grpEdition";
-			this.grpEdition.Size = new System.Drawing.Size(149, 561);
+			this.grpEdition.Size = new System.Drawing.Size(149, 497);
 			this.grpEdition.TabIndex = 9;
 			this.grpEdition.TabStop = false;
 			this.grpEdition.Visible = false;
@@ -218,7 +219,7 @@
 			// chkDoRedo
 			// 
 			this.chkDoRedo.AutoSize = true;
-			this.chkDoRedo.Location = new System.Drawing.Point(15, 520);
+			this.chkDoRedo.Location = new System.Drawing.Point(19, 460);
 			this.chkDoRedo.Name = "chkDoRedo";
 			this.chkDoRedo.Size = new System.Drawing.Size(108, 30);
 			this.chkDoRedo.TabIndex = 11;
@@ -282,12 +283,23 @@
 			this.modeCaptureSprites.Visible = false;
 			this.modeCaptureSprites.CheckedChanged += new System.EventHandler(this.modeCaptureSprites_CheckedChanged);
 			// 
+			// bpCopyPal
+			// 
+			this.bpCopyPal.Location = new System.Drawing.Point(800, 547);
+			this.bpCopyPal.Name = "bpCopyPal";
+			this.bpCopyPal.Size = new System.Drawing.Size(107, 49);
+			this.bpCopyPal.TabIndex = 11;
+			this.bpCopyPal.Text = "Copier palette dans presse-papier";
+			this.bpCopyPal.UseVisualStyleBackColor = true;
+			this.bpCopyPal.Click += new System.EventHandler(this.bpCopyPal_Click);
+			// 
 			// ImageCpc
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(942, 620);
 			this.ControlBox = false;
+			this.Controls.Add(this.bpCopyPal);
 			this.Controls.Add(this.modeCaptureSprites);
 			this.Controls.Add(this.grpEdition);
 			this.Controls.Add(this.vScrollBar);
@@ -333,6 +345,7 @@
 		private System.Windows.Forms.RadioButton rbCopy;
 		private System.Windows.Forms.Label lblInfoPos;
 		private System.Windows.Forms.CheckBox modeCaptureSprites;
+		private System.Windows.Forms.Button bpCopyPal;
 
 	}
 }
