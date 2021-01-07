@@ -339,6 +339,43 @@ namespace ConvImgCpc {
 			file.Close();
 		}
 
+		public void ReadPaletteKit(string fileName, Label[] colors) {
+			if (File.Exists(fileName)) {
+				FileStream fileScr = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+				byte[] tabBytes = new byte[fileScr.Length];
+				fileScr.Read(tabBytes, 0, tabBytes.Length);
+				fileScr.Close();
+				if (CpcSystem.CheckAmsdos(tabBytes)) {
+					BitmapCpc.paletteSprite[0] = 0;
+					colors[0].BackColor = Color.Black;
+					colors[0].Refresh();
+					for (int i = 0; i < 15; i++) {
+						int kit = tabBytes[128 + (i << 1)] + (tabBytes[129 + (i << 1)] << 8);
+						int col = (kit & 0xF00) + ((kit & 0x0F) << 4) + ((kit & 0xF0) >> 4);
+						BitmapCpc.paletteSprite[i + 1] = col;
+						colors[i + 1].BackColor = Color.FromArgb((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17));
+						colors[i + 1].Refresh();
+					}
+					SetInfo("Lecture palette ok.");
+				}
+			}
+		}
+
+		public void SavePaletteKit(string fileName, int[] palette) {
+			CpcAmsdos entete = CpcSystem.CreeEntete(Path.GetFileName(fileName), -32768, 30, 0);
+			BinaryWriter fp = new BinaryWriter(new FileStream(fileName, FileMode.Create));
+			fp.Write(CpcSystem.AmsdosToByte(entete));
+			for (int i = 0; i < 15; i++) {
+				int kit = BitmapCpc.paletteSprite[i + 1];
+				byte c1 = (byte)(((kit & 0x0F) << 4) + ((kit & 0xF0) >> 4));
+				byte c2 = (byte)(kit >> 8);
+				fp.Write(c1);
+				fp.Write(c2);
+			}
+			fp.Close();
+			SetInfo("Sauvegarde palette ok.");
+		}
+
 		private void bpCreate_Click(object sender, EventArgs e) {
 			CreationImages dlg = new CreationImages();
 			dlg.ShowDialog();
@@ -396,10 +433,12 @@ namespace ConvImgCpc {
 		private void bpSave_Click(object sender, EventArgs e) {
 			SaveFileDialog dlg = new SaveFileDialog();
 			dlg.InitialDirectory = param.lastSavePath;
-			dlg.Filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.png)|*.png|Sprite assembleur (.asm)|*.asm|Sprite assembleur compacté (.asm)|*.asm|Ecran compacté (.cmp)|*.cmp|Ecran assembleur compacté (.asm)|*.asm|Palette (.pal)|*.pal|Animation DeltaPack (.asm)|*.asm|Animation imp (*.imp)|*.imp|Paramètres (.xml)|*.xml";
-			if (BitmapCpc.modeVirtuel == 3 || BitmapCpc.modeVirtuel == 4)
-				dlg.Filter += "|2 images séparées (.scr)|*.scr";
+			string filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.png)|*.png|Sprite assembleur (.asm)|*.asm|Sprite assembleur compacté (.asm)|*.asm|Ecran compacté (.cmp)|*.cmp"
+							+ "|Ecran assembleur compacté (.asm)|*.asm|Animation DeltaPack (.asm)|*.asm|Animation imp (*.imp)|*.imp|Paramètres (.xml)|*.xml|Palette (.pal)|*.pal"
+							+ (BitmapCpc.cpcPlus ? "|Palette CPC+ (.kit)|*.kit" : "")
+							+ (BitmapCpc.modeVirtuel == 3 || BitmapCpc.modeVirtuel == 4 ? "|2 images séparées (.scr)|*.scr" : "");
 
+			dlg.Filter = filter;
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
 				switch (dlg.FilterIndex) {
@@ -428,23 +467,27 @@ namespace ConvImgCpc {
 						break;
 
 					case 7:
-						imgCpc.SauvePalette(dlg.FileName, param);
-						break;
-
-					case 8:
 						imgCpc.SauveDeltaPack(dlg.FileName, lblInfoVersion.Text, param, true);
 						break;
 
-					case 9:
+					case 8:
 						imgCpc.SauveImp(dlg.FileName);
 						break;
 
-					case 10:
+					case 9:
 						SaveParam(dlg.FileName);
 						break;
 
+					case 10:
+						imgCpc.SauvePalette(dlg.FileName, param);
+						break;
+
 					case 11:
-						imgCpc.SauveEgx(dlg.FileName, param);
+					case 12:
+						if (BitmapCpc.cpcPlus && dlg.FilterIndex == 11)
+							SavePaletteKit(dlg.FileName, BitmapCpc.Palette);
+						else
+							imgCpc.SauveEgx(dlg.FileName, param);
 						break;
 				}
 				param.lastSavePath = Path.GetDirectoryName(dlg.FileName);

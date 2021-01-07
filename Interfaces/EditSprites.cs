@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using System.Xml.Serialization;
 
 namespace ConvImgCpc {
 	public partial class EditSprites : Form {
@@ -189,41 +188,6 @@ namespace ConvImgCpc {
 			DrawSprite();
 		}
 
-		private void ReadPalette(string fileName) {
-			if (File.Exists(fileName)) {
-				FileStream fileScr = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-				byte[] tabBytes = new byte[fileScr.Length];
-				fileScr.Read(tabBytes, 0, tabBytes.Length);
-				fileScr.Close();
-				if (CpcSystem.CheckAmsdos(tabBytes)) {
-					BitmapCpc.paletteSprite[0] = 0;
-					colors[0].BackColor = Color.Black;
-					colors[0].Refresh();
-					for (int i = 0; i < 15; i++) {
-						int kit = tabBytes[128 + (i << 1)] + (tabBytes[129 + (i << 1)] << 8);
-						int col = (kit & 0xF00) + ((kit & 0x0F) << 4) + ((kit & 0xF0) >> 4);
-						BitmapCpc.paletteSprite[i + 1] = col;
-						colors[i + 1].BackColor = Color.FromArgb((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17));
-						colors[i + 1].Refresh();
-					}
-				}
-			}
-		}
-
-		private void SavePalette(string fileName) {
-			CpcAmsdos entete = CpcSystem.CreeEntete(Path.GetFileName(fileName), -32768, 30, 0);
-			BinaryWriter fp = new BinaryWriter(new FileStream(fileName, FileMode.Create));
-			fp.Write(CpcSystem.AmsdosToByte(entete));
-			for (int i = 0; i < 15; i++) {
-				int kit = BitmapCpc.paletteSprite[i + 1];
-				byte c1 = (byte)(((kit & 0x0F) << 4) + ((kit & 0xF0) >> 4));
-				byte c2 = (byte)(kit >> 8);
-				fp.Write(c1);
-				fp.Write(c2);
-			}
-			fp.Close();
-		}
-
 		private void bpRead_Click(object sender, EventArgs e) {
 			OpenFileDialog dlg = new OpenFileDialog();
 			dlg.Filter = "Modèle Sprites (.spr)|*.spr";
@@ -255,7 +219,7 @@ namespace ConvImgCpc {
 					}
 					string filePalette = Path.ChangeExtension(dlg.FileName, "kit");
 					if (File.Exists(filePalette))
-						ReadPalette(filePalette);
+						main.ReadPaletteKit(filePalette, colors);
 
 				}
 				catch {
@@ -288,7 +252,7 @@ namespace ConvImgCpc {
 					fp.Write(buffer);
 					fp.Close();
 					// Sauvegarde palette au format .KIT
-					SavePalette(Path.ChangeExtension(dlg.FileName, "kit"));
+					main.SavePaletteKit(Path.ChangeExtension(dlg.FileName, "kit"), BitmapCpc.paletteSprite);
 				}
 				catch {
 					main.DisplayErreur("Impossible de sauver les sprites.");
@@ -305,7 +269,7 @@ namespace ConvImgCpc {
 			dlg.Filter = "Palette CPC+ (.kit)|*.kit";
 			if (dlg.ShowDialog() == DialogResult.OK) {
 				try {
-					ReadPalette(dlg.FileName);
+					main.ReadPaletteKit(dlg.FileName, colors);
 					DrawMatrice();
 				}
 				catch {
@@ -319,7 +283,7 @@ namespace ConvImgCpc {
 			dlg.Filter = "Palette CPC+ (.kit)|*.kit";
 			if (dlg.ShowDialog() == DialogResult.OK) {
 				try {
-					SavePalette(dlg.FileName);
+					main.SavePaletteKit(dlg.FileName, BitmapCpc.paletteSprite);
 				}
 				catch {
 					main.DisplayErreur("Impossible de sauver la palette.");
