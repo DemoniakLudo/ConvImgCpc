@@ -176,6 +176,12 @@
     <EmbeddedResource Include="Interfaces\ImageCpc.resx">
       <DependentUpon>ImageCpc.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Interfaces\Main.en.resx">
+      <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interfaces\Main.fr.resx">
+      <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Interfaces\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
@@ -235,8 +241,11 @@
     </Content>
     <Content Include="Icones\Copy.png" />
     <Content Include="Icones\Draw.png" />
+    <Content Include="Icones\En.png" />
+    <Content Include="Icones\Fr.png" />
     <Content Include="Icones\Zoom.png" />
     <Content Include="Docs\ToDoList.txt" />
+    <None Include="Resources\Fr.bmp" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

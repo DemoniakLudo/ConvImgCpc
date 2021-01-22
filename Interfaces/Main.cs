@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
@@ -44,6 +46,20 @@ namespace ConvImgCpc {
 
 			anim.Show();
 			imgCpc.Show();
+		}
+
+
+		private void ChangeLanguage(Control.ControlCollection ctrl, string lang) {
+			foreach (Control c in ctrl) {
+				ComponentResourceManager resources = new ComponentResourceManager(typeof(Main));
+				resources.ApplyResources(c, c.Name, new CultureInfo(lang));
+				if (c.Controls.Count > 0)
+					ChangeLanguage(c.Controls, lang);
+			}
+		}
+
+		private void ChangeLanguage(string lang) {
+			ChangeLanguage(Controls, lang);
 		}
 
 		private void SetModes() {
@@ -903,6 +919,14 @@ namespace ConvImgCpc {
 
 		private void Main_Click(object sender, EventArgs e) {
 			imgCpc.BringToFront();
+		}
+
+		private void bpFr_Click(object sender, EventArgs e) {
+			ChangeLanguage("fr-FR");
+		}
+
+		private void bpEn_Click(object sender, EventArgs e) {
+			ChangeLanguage("en-US");
 		}
 	}
 }

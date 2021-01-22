@@ -117,20 +117,174 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Icones\Copy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="bpLoad.Text" xml:space="preserve">
+    <value>Read</value>
   </data>
-  <data name="Draw" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Icones\Draw.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="bpConvert.Text" xml:space="preserve">
+    <value>Convert</value>
   </data>
-  <data name="En" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\icones\en.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>64, 13</value>
   </data>
-  <data name="Fr" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\icones\fr.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Nb Columns</value>
   </data>
-  <data name="Zoom" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Icones\Zoom.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>49, 13</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Nb Lines</value>
+  </data>
+  <data name="bpCalcSprite.Text" xml:space="preserve">
+    <value>Auto. sprite calculation</value>
+  </data>
+  <data name="bpEditTrame.Text" xml:space="preserve">
+    <value>Frames edition</value>
+  </data>
+  <data name="resoCPC.Text" xml:space="preserve">
+    <value>CPC resolution</value>
+  </data>
+  <data name="chkTrameTC.Size" type="System.Drawing.Size, System.Drawing">
+    <value>87, 17</value>
+  </data>
+  <data name="chkTrameTC.Text" xml:space="preserve">
+    <value>"TC" Frames</value>
+  </data>
+  <data name="chkLissage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 17</value>
+  </data>
+  <data name="chkLissage.Text" xml:space="preserve">
+    <value>Smoothing</value>
+  </data>
+  <data name="tramage.Text" xml:space="preserve">
+    <value>Dithering and rendering</value>
+  </data>
+  <data name="chkNewReduc.Size" type="System.Drawing.Size, System.Drawing">
+    <value>114, 17</value>
+  </data>
+  <data name="chkNewReduc.Text" xml:space="preserve">
+    <value>Alternative method</value>
+  </data>
+  <data name="chkPalCpc.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 30</value>
+  </data>
+  <data name="chkPalCpc.Text" xml:space="preserve">
+    <value>Pallet reduction
+source image</value>
+  </data>
+  <data name="autoRecalc.Size" type="System.Drawing.Size, System.Drawing">
+    <value>136, 17</value>
+  </data>
+  <data name="autoRecalc.Text" xml:space="preserve">
+    <value>Automatic recalculation</value>
+  </data>
+  <data name="radioOrigin.Size" type="System.Drawing.Size, System.Drawing">
+    <value>81, 17</value>
+  </data>
+  <data name="radioOrigin.Text" xml:space="preserve">
+    <value>Original size</value>
+  </data>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>33, 13</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>Size :</value>
+  </data>
+  <data name="radioUserSize.Size" type="System.Drawing.Size, System.Drawing">
+    <value>68, 17</value>
+  </data>
+  <data name="radioUserSize.Text" xml:space="preserve">
+    <value>User size</value>
+  </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>Source image size</value>
+  </data>
+  <data name="bpSave.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="withCode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>165, 17</value>
+  </data>
+  <data name="withCode.Text" xml:space="preserve">
+    <value>Include display code in image</value>
+  </data>
+  <data name="withPalette.Size" type="System.Drawing.Size, System.Drawing">
+    <value>138, 17</value>
+  </data>
+  <data name="withPalette.Text" xml:space="preserve">
+    <value>Include palette in image</value>
+  </data>
+  <data name="chkAllPics.Size" type="System.Drawing.Size, System.Drawing">
+    <value>73, 17</value>
+  </data>
+  <data name="chkAllPics.Text" xml:space="preserve">
+    <value>All images</value>
+  </data>
+  <data name="bpCreate.Text" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="chkParamInterne.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 17</value>
+  </data>
+  <data name="chkParamInterne.Text" xml:space="preserve">
+    <value>Internal settings</value>
+  </data>
+  <data name="reducPal4.Text" xml:space="preserve">
+    <value>Reduction 4</value>
+  </data>
+  <data name="nb.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 17</value>
+  </data>
+  <data name="nb.Text" xml:space="preserve">
+    <value>Black &amp;&amp; white</value>
+  </data>
+  <data name="sortPal.Size" type="System.Drawing.Size, System.Drawing">
+    <value>45, 17</value>
+  </data>
+  <data name="sortPal.Text" xml:space="preserve">
+    <value>Sort</value>
+  </data>
+  <data name="reducPal3.Text" xml:space="preserve">
+    <value>Reduction 3</value>
+  </data>
+  <data name="reducPal2.Text" xml:space="preserve">
+    <value>Reduction 2</value>
+  </data>
+  <data name="reducPal1.Text" xml:space="preserve">
+    <value>Reduction 1</value>
+  </data>
+  <data name="rb24bits.Size" type="System.Drawing.Size, System.Drawing">
+    <value>84, 17</value>
+  </data>
+  <data name="rb24bits.Text" xml:space="preserve">
+    <value>24bits colors</value>
+  </data>
+  <data name="rb12bits.Size" type="System.Drawing.Size, System.Drawing">
+    <value>84, 17</value>
+  </data>
+  <data name="rb12bits.Text" xml:space="preserve">
+    <value>12bits colors</value>
+  </data>
+  <data name="rb9bits.Size" type="System.Drawing.Size, System.Drawing">
+    <value>78, 17</value>
+  </data>
+  <data name="rb9bits.Text" xml:space="preserve">
+    <value>9bits colors</value>
+  </data>
+  <data name="rb6bits.Size" type="System.Drawing.Size, System.Drawing">
+    <value>78, 17</value>
+  </data>
+  <data name="rb6bits.Text" xml:space="preserve">
+    <value>6bits colors</value>
+  </data>
+  <data name="bpRaz.Text" xml:space="preserve">
+    <value>Reset color parameters</value>
+  </data>
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>Color management</value>
+  </data>
+  <data name="bpEditSprites.Text" xml:space="preserve">
+    <value>Editing Hard Sprites</value>
   </data>
 </root>
