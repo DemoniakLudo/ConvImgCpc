@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 
@@ -48,6 +50,19 @@ namespace ConvImgCpc {
 			tailleCrayon.SelectedItem = "1";
 			Convert = fctConvert;
 			pictureBox.Image = imgOrigine = BmpLock.Bitmap;
+		}
+
+		private void ChangeLanguage(Control.ControlCollection ctrl, string lang) {
+			foreach (Control c in ctrl) {
+				ComponentResourceManager resources = new ComponentResourceManager(typeof(ImageCpc));
+				resources.ApplyResources(c, c.Name, new CultureInfo(lang));
+				if (c.Controls.Count > 0)
+					ChangeLanguage(c.Controls, lang);
+			}
+		}
+
+		public void ChangeLanguage(string lang) {
+			ChangeLanguage(Controls, lang);
 		}
 
 		public void InitBitmapCpc(int nbImage) {

@@ -60,6 +60,7 @@ namespace ConvImgCpc {
 
 		private void ChangeLanguage(string lang) {
 			ChangeLanguage(Controls, lang);
+			imgCpc.ChangeLanguage(lang);
 		}
 
 		private void SetModes() {
@@ -922,7 +923,7 @@ namespace ConvImgCpc {
 		}
 
 		private void bpFr_Click(object sender, EventArgs e) {
-			ChangeLanguage("fr-FR");
+			ChangeLanguage(Controls, "fr-FR");
 		}
 
 		private void bpEn_Click(object sender, EventArgs e) {

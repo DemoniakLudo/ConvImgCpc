@@ -23,6 +23,7 @@
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreationImages));
 			this.rbSingle = new System.Windows.Forms.RadioButton();
 			this.rbAnim = new System.Windows.Forms.RadioButton();
 			this.bpCreer = new System.Windows.Forms.Button();
@@ -34,48 +35,33 @@
 			// 
 			// rbSingle
 			// 
-			this.rbSingle.AutoSize = true;
-			this.rbSingle.Location = new System.Drawing.Point(12, 37);
+			resources.ApplyResources(this.rbSingle, "rbSingle");
 			this.rbSingle.Name = "rbSingle";
-			this.rbSingle.Size = new System.Drawing.Size(89, 17);
-			this.rbSingle.TabIndex = 0;
 			this.rbSingle.TabStop = true;
-			this.rbSingle.Text = "Image unique";
 			this.rbSingle.UseVisualStyleBackColor = true;
 			// 
 			// rbAnim
 			// 
-			this.rbAnim.AutoSize = true;
-			this.rbAnim.Location = new System.Drawing.Point(12, 77);
+			resources.ApplyResources(this.rbAnim, "rbAnim");
 			this.rbAnim.Name = "rbAnim";
-			this.rbAnim.Size = new System.Drawing.Size(71, 17);
-			this.rbAnim.TabIndex = 0;
 			this.rbAnim.TabStop = true;
-			this.rbAnim.Text = "Animation";
 			this.rbAnim.UseVisualStyleBackColor = true;
 			// 
 			// bpCreer
 			// 
-			this.bpCreer.Location = new System.Drawing.Point(47, 120);
+			resources.ApplyResources(this.bpCreer, "bpCreer");
 			this.bpCreer.Name = "bpCreer";
-			this.bpCreer.Size = new System.Drawing.Size(116, 23);
-			this.bpCreer.TabIndex = 1;
-			this.bpCreer.Text = "Créer";
 			this.bpCreer.UseVisualStyleBackColor = true;
 			this.bpCreer.Click += new System.EventHandler(this.bpCreer_Click);
 			// 
 			// label1
 			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(44, 9);
+			resources.ApplyResources(this.label1, "label1");
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(119, 13);
-			this.label1.TabIndex = 2;
-			this.label1.Text = "Type de média à créer :";
 			// 
 			// nbImages
 			// 
-			this.nbImages.Location = new System.Drawing.Point(101, 77);
+			resources.ApplyResources(this.nbImages, "nbImages");
 			this.nbImages.Maximum = new decimal(new int[] {
             999,
             0,
@@ -87,8 +73,6 @@
             0,
             0});
 			this.nbImages.Name = "nbImages";
-			this.nbImages.Size = new System.Drawing.Size(48, 20);
-			this.nbImages.TabIndex = 3;
 			this.nbImages.Value = new decimal(new int[] {
             1,
             0,
@@ -97,18 +81,13 @@
 			// 
 			// lblNbImages
 			// 
-			this.lblNbImages.AutoSize = true;
-			this.lblNbImages.Location = new System.Drawing.Point(155, 79);
+			resources.ApplyResources(this.lblNbImages, "lblNbImages");
 			this.lblNbImages.Name = "lblNbImages";
-			this.lblNbImages.Size = new System.Drawing.Size(46, 13);
-			this.lblNbImages.TabIndex = 4;
-			this.lblNbImages.Text = "image(s)";
 			// 
 			// CreationImages
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(216, 155);
 			this.Controls.Add(this.lblNbImages);
 			this.Controls.Add(this.nbImages);
 			this.Controls.Add(this.label1);
@@ -119,7 +98,6 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "CreationImages";
-			this.Text = "CreationImages";
 			((System.ComponentModel.ISupportInitialize)(this.nbImages)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();

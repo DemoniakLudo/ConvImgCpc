@@ -161,6 +161,9 @@
     <EmbeddedResource Include="Interfaces\EditSprites.resx">
       <DependentUpon>EditSprites.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Interfaces\ImageCpc.en.resx">
+      <DependentUpon>ImageCpc.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Interfaces\Informations.resx">
       <DependentUpon>Informations.cs</DependentUpon>
     </EmbeddedResource>

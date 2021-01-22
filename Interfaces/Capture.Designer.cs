@@ -23,6 +23,7 @@
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Capture));
 			this.pictCapture = new System.Windows.Forms.PictureBox();
 			this.rbCapt1 = new System.Windows.Forms.RadioButton();
 			this.rbCapt2 = new System.Windows.Forms.RadioButton();
@@ -37,44 +38,30 @@
 			// 
 			// pictCapture
 			// 
-			this.pictCapture.Location = new System.Drawing.Point(276, 12);
+			resources.ApplyResources(this.pictCapture, "pictCapture");
 			this.pictCapture.Name = "pictCapture";
-			this.pictCapture.Size = new System.Drawing.Size(512, 512);
-			this.pictCapture.TabIndex = 9;
 			this.pictCapture.TabStop = false;
 			// 
 			// rbCapt1
 			// 
-			this.rbCapt1.AutoSize = true;
+			resources.ApplyResources(this.rbCapt1, "rbCapt1");
 			this.rbCapt1.Checked = true;
-			this.rbCapt1.Location = new System.Drawing.Point(12, 12);
 			this.rbCapt1.Name = "rbCapt1";
-			this.rbCapt1.Size = new System.Drawing.Size(102, 17);
-			this.rbCapt1.TabIndex = 10;
 			this.rbCapt1.TabStop = true;
-			this.rbCapt1.Text = "Capturer 1 sprite";
 			this.rbCapt1.UseVisualStyleBackColor = true;
 			this.rbCapt1.CheckedChanged += new System.EventHandler(this.rbCapt1_CheckedChanged);
 			// 
 			// rbCapt2
 			// 
-			this.rbCapt2.AutoSize = true;
-			this.rbCapt2.Location = new System.Drawing.Point(12, 35);
+			resources.ApplyResources(this.rbCapt2, "rbCapt2");
 			this.rbCapt2.Name = "rbCapt2";
-			this.rbCapt2.Size = new System.Drawing.Size(118, 17);
-			this.rbCapt2.TabIndex = 10;
-			this.rbCapt2.Text = "Capturer 2x2 sprites";
 			this.rbCapt2.UseVisualStyleBackColor = true;
 			this.rbCapt2.CheckedChanged += new System.EventHandler(this.rbCapt2_CheckedChanged);
 			// 
 			// rbCapt4
 			// 
-			this.rbCapt4.AutoSize = true;
-			this.rbCapt4.Location = new System.Drawing.Point(12, 58);
+			resources.ApplyResources(this.rbCapt4, "rbCapt4");
 			this.rbCapt4.Name = "rbCapt4";
-			this.rbCapt4.Size = new System.Drawing.Size(118, 17);
-			this.rbCapt4.TabIndex = 10;
-			this.rbCapt4.Text = "Capturer 4x4 sprites";
 			this.rbCapt4.UseVisualStyleBackColor = true;
 			this.rbCapt4.CheckedChanged += new System.EventHandler(this.rbCapt4_CheckedChanged);
 			// 
@@ -82,51 +69,39 @@
 			// 
 			this.comboBanque.FormattingEnabled = true;
 			this.comboBanque.Items.AddRange(new object[] {
-            "Banque 1",
-            "Banque 2",
-            "Banque 3",
-            "Banque 4"});
-			this.comboBanque.Location = new System.Drawing.Point(12, 332);
+            resources.GetString("comboBanque.Items"),
+            resources.GetString("comboBanque.Items1"),
+            resources.GetString("comboBanque.Items2"),
+            resources.GetString("comboBanque.Items3")});
+			resources.ApplyResources(this.comboBanque, "comboBanque");
 			this.comboBanque.Name = "comboBanque";
-			this.comboBanque.Size = new System.Drawing.Size(89, 21);
-			this.comboBanque.TabIndex = 14;
 			// 
 			// numSprite
 			// 
-			this.numSprite.Location = new System.Drawing.Point(65, 309);
+			resources.ApplyResources(this.numSprite, "numSprite");
 			this.numSprite.Maximum = new decimal(new int[] {
             15,
             0,
             0,
             0});
 			this.numSprite.Name = "numSprite";
-			this.numSprite.Size = new System.Drawing.Size(36, 20);
-			this.numSprite.TabIndex = 15;
 			// 
 			// label1
 			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(12, 311);
+			resources.ApplyResources(this.label1, "label1");
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(47, 13);
-			this.label1.TabIndex = 16;
-			this.label1.Text = "Sprite n°";
 			// 
 			// bpCapture
 			// 
-			this.bpCapture.Location = new System.Drawing.Point(128, 321);
+			resources.ApplyResources(this.bpCapture, "bpCapture");
 			this.bpCapture.Name = "bpCapture";
-			this.bpCapture.Size = new System.Drawing.Size(75, 23);
-			this.bpCapture.TabIndex = 17;
-			this.bpCapture.Text = "Capturer";
 			this.bpCapture.UseVisualStyleBackColor = true;
 			this.bpCapture.Click += new System.EventHandler(this.bpCapture_Click);
 			// 
 			// Capture
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(800, 535);
 			this.ControlBox = false;
 			this.Controls.Add(this.bpCapture);
 			this.Controls.Add(this.label1);
@@ -142,7 +117,6 @@
 			this.Name = "Capture";
 			this.ShowIcon = false;
 			this.ShowInTaskbar = false;
-			this.Text = "Capture de sprites hard";
 			((System.ComponentModel.ISupportInitialize)(this.pictCapture)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numSprite)).EndInit();
 			this.ResumeLayout(false);

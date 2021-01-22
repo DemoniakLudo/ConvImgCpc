@@ -117,4 +117,590 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="lockAllPal.Location" type="System.Drawing.Point, System.Drawing">
+    <value>784, 602</value>
+  </data>
+  <data name="&gt;&gt;rbZoom.Name" xml:space="preserve">
+    <value>rbZoom</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="pictureBox.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;lblZoom.Parent" xml:space="preserve">
+    <value>grpEdition</value>
+  </data>
+  <data name="lblInfoPos.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="&gt;&gt;vScrollBar.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>84, 13</value>
+  </data>
+  <data name="&gt;&gt;lockAllPal.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lockAllPal.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;lblInfoPos.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tailleCrayon.Items" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="hScrollBar.Size" type="System.Drawing.Size, System.Drawing">
+    <value>768, 16</value>
+  </data>
+  <data name="lblZoom.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="lockAllPal.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="rbZoom.Location" type="System.Drawing.Point, System.Drawing">
+    <value>10, 69</value>
+  </data>
+  <data name="modeEdition.Size" type="System.Drawing.Size, System.Drawing">
+    <value>84, 17</value>
+  </data>
+  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
+    <value>grpEdition</value>
+  </data>
+  <data name="rbDraw.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="&gt;&gt;bpUndo.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="chkDoRedo.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;vScrollBar.Name" xml:space="preserve">
+    <value>vScrollBar</value>
+  </data>
+  <data name="grpEdition.Location" type="System.Drawing.Point, System.Drawing">
+    <value>790, 35</value>
+  </data>
+  <data name="vScrollBar.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Image CPC</value>
+  </data>
+  <data name="&gt;&gt;drawColor.Name" xml:space="preserve">
+    <value>drawColor</value>
+  </data>
+  <data name="modeCaptureSprites.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;vScrollBar.Type" xml:space="preserve">
+    <value>System.Windows.Forms.VScrollBar, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="chkDoRedo.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="tailleCrayon.Items1" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;undrawColor.Parent" xml:space="preserve">
+    <value>grpEdition</value>
+  </data>
+  <data name="&gt;&gt;modeCaptureSprites.Name" xml:space="preserve">
+    <value>modeCaptureSprites</value>
+  </data>
+  <data name="label3.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="bpUndo.Location" type="System.Drawing.Point, System.Drawing">
+    <value>36, 402</value>
+  </data>
+  <data name="&gt;&gt;tailleCrayon.Name" xml:space="preserve">
+    <value>tailleCrayon</value>
+  </data>
+  <data name="vScrollBar.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="tailleCrayon.Location" type="System.Drawing.Point, System.Drawing">
+    <value>96, 179</value>
+  </data>
+  <data name="undrawColor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 70</value>
+  </data>
+  <data name="tailleCrayon.Items4" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;lockAllPal.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pictureBox.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="lblInfoPos.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 151</value>
+  </data>
+  <data name="&gt;&gt;modeEdition.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;grpEdition.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;drawColor.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>Couleur crayon :</value>
+  </data>
+  <data name="chkRendu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>107, 17</value>
+  </data>
+  <data name="&gt;&gt;chkDoRedo.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="bpRedo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;chkRendu.Name" xml:space="preserve">
+    <value>chkRendu</value>
+  </data>
+  <data name="label3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="chkDoRedo.Text" xml:space="preserve">
+    <value>Garder retouches
+après recalcul</value>
+  </data>
+  <data name="chkDoRedo.Location" type="System.Drawing.Point, System.Drawing">
+    <value>19, 460</value>
+  </data>
+  <data name="lockAllPal.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;rbCopy.Name" xml:space="preserve">
+    <value>rbCopy</value>
+  </data>
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="&gt;&gt;rbZoom.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="bpCopyPal.Text" xml:space="preserve">
+    <value>Copier palette dans presse-papier</value>
+  </data>
+  <data name="modeEdition.Location" type="System.Drawing.Point, System.Drawing">
+    <value>797, 12</value>
+  </data>
+  <data name="drawColor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 70</value>
+  </data>
+  <data name="&gt;&gt;rbDraw.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;bpRedo.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;lblZoom.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="vScrollBar.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 544</value>
+  </data>
+  <data name="bpRedo.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="chkRendu.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;undrawColor.Name" xml:space="preserve">
+    <value>undrawColor</value>
+  </data>
+  <data name="&gt;&gt;rbCopy.Parent" xml:space="preserve">
+    <value>grpEdition</value>
+  </data>
+  <data name="tailleCrayon.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;drawColor.Parent" xml:space="preserve">
+    <value>grpEdition</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>ImageCpc</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="pictureBox.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>StretchImage</value>
+  </data>
+  <data name="lblZoom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>22, 13</value>
+  </data>
+  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
+    <value>grpEdition</value>
+  </data>
+  <data name="&gt;&gt;chkDoRedo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblZoom.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tailleCrayon.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;undrawColor.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;bpRedo.Parent" xml:space="preserve">
+    <value>grpEdition</value>
+  </data>
+  <data name="bpCopyPal.Size" type="System.Drawing.Size, System.Drawing">
+    <value>107, 49</value>
+  </data>
+  <data name="&gt;&gt;vScrollBar.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="lblInfoPos.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 13</value>
+  </data>
+  <data name="tailleCrayon.Items2" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="modeEdition.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="rbCopy.Size" type="System.Drawing.Size, System.Drawing">
+    <value>48, 32</value>
+  </data>
+  <data name="lblZoom.Location" type="System.Drawing.Point, System.Drawing">
+    <value>65, 75</value>
+  </data>
+  <data name="lblZoom.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="bpCopyPal.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;pictureBox.Name" xml:space="preserve">
+    <value>pictureBox</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>73, 13</value>
+  </data>
+  <data name="&gt;&gt;pictureBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;modeCaptureSprites.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;bpUndo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="bpUndo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="&gt;&gt;hScrollBar.Name" xml:space="preserve">
+    <value>hScrollBar</value>
+  </data>
+  <data name="hScrollBar.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="bpRedo.Location" type="System.Drawing.Point, System.Drawing">
+    <value>36, 431</value>
+  </data>
+  <data name="&gt;&gt;chkDoRedo.Parent" xml:space="preserve">
+    <value>grpEdition</value>
+  </data>
+  <data name="pictureBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>768, 544</value>
+  </data>
+  <data name="&gt;&gt;modeEdition.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="bpRedo.Text" xml:space="preserve">
+    <value>Redo</value>
+  </data>
+  <data name="&gt;&gt;rbZoom.Parent" xml:space="preserve">
+    <value>grpEdition</value>
+  </data>
+  <data name="modeCaptureSprites.Location" type="System.Drawing.Point, System.Drawing">
+    <value>796, 12</value>
+  </data>
+  <data name="modeCaptureSprites.Text" xml:space="preserve">
+    <value>Capture de sprites</value>
+  </data>
+  <data name="&gt;&gt;tailleCrayon.Parent" xml:space="preserve">
+    <value>grpEdition</value>
+  </data>
+  <data name="modeCaptureSprites.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="rbZoom.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;lblZoom.Name" xml:space="preserve">
+    <value>lblZoom</value>
+  </data>
+  <data name="&gt;&gt;chkDoRedo.Name" xml:space="preserve">
+    <value>chkDoRedo</value>
+  </data>
+  <data name="&gt;&gt;label3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;hScrollBar.Type" xml:space="preserve">
+    <value>System.Windows.Forms.HScrollBar, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tailleCrayon.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lockAllPal.Name" xml:space="preserve">
+    <value>lockAllPal</value>
+  </data>
+  <data name="lblZoom.Text" xml:space="preserve">
+    <value>1:1</value>
+  </data>
+  <data name="&gt;&gt;hScrollBar.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>17, 217</value>
+  </data>
+  <data name="label2.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;tailleCrayon.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="grpEdition.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;rbZoom.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="tailleCrayon.Size" type="System.Drawing.Size, System.Drawing">
+    <value>31, 21</value>
+  </data>
+  <data name="&gt;&gt;drawColor.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vScrollBar.Location" type="System.Drawing.Point, System.Drawing">
+    <value>771, 0</value>
+  </data>
+  <data name="&gt;&gt;lblInfoPos.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;modeCaptureSprites.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;rbDraw.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;bpCopyPal.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;bpCopyPal.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;label3.Name" xml:space="preserve">
+    <value>label3</value>
+  </data>
+  <data name="chkRendu.Text" xml:space="preserve">
+    <value>Fenêtre de rendu</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="undrawColor.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Taille crayon :</value>
+  </data>
+  <data name="undrawColor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 325</value>
+  </data>
+  <data name="&gt;&gt;bpCopyPal.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="bpCopyPal.Location" type="System.Drawing.Point, System.Drawing">
+    <value>800, 547</value>
+  </data>
+  <data name="&gt;&gt;hScrollBar.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="rbCopy.Location" type="System.Drawing.Point, System.Drawing">
+    <value>10, 103</value>
+  </data>
+  <data name="&gt;&gt;rbCopy.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="modeCaptureSprites.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;chkRendu.Parent" xml:space="preserve">
+    <value>grpEdition</value>
+  </data>
+  <data name="&gt;&gt;modeEdition.Name" xml:space="preserve">
+    <value>modeEdition</value>
+  </data>
+  <data name="lblInfoPos.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lockAllPal.Text" xml:space="preserve">
+    <value>Tout vérouiller</value>
+  </data>
+  <data name="modeEdition.Text" xml:space="preserve">
+    <value>Editer image</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
+  </data>
+  <data name="chkDoRedo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>108, 30</value>
+  </data>
+  <data name="&gt;&gt;grpEdition.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;grpEdition.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="chkRendu.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;rbCopy.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="hScrollBar.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 547</value>
+  </data>
+  <data name="&gt;&gt;grpEdition.Name" xml:space="preserve">
+    <value>grpEdition</value>
+  </data>
+  <data name="&gt;&gt;chkRendu.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="drawColor.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="drawColor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 243</value>
+  </data>
+  <data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
+  </data>
+  <data name="rbZoom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>48, 32</value>
+  </data>
+  <data name="bpUndo.Text" xml:space="preserve">
+    <value>Undo</value>
+  </data>
+  <data name="rbDraw.Location" type="System.Drawing.Point, System.Drawing">
+    <value>10, 35</value>
+  </data>
+  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 182</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>942, 620</value>
+  </data>
+  <data name="bpUndo.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;modeCaptureSprites.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblInfoPos.Parent" xml:space="preserve">
+    <value>grpEdition</value>
+  </data>
+  <data name="&gt;&gt;bpRedo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="rbCopy.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;bpUndo.Name" xml:space="preserve">
+    <value>bpUndo</value>
+  </data>
+  <data name="hScrollBar.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="modeCaptureSprites.Size" type="System.Drawing.Size, System.Drawing">
+    <value>111, 17</value>
+  </data>
+  <data name="&gt;&gt;rbDraw.Parent" xml:space="preserve">
+    <value>grpEdition</value>
+  </data>
+  <data name="&gt;&gt;chkRendu.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="lockAllPal.Size" type="System.Drawing.Size, System.Drawing">
+    <value>93, 17</value>
+  </data>
+  <data name="bpUndo.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="bpRedo.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="modeEdition.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="chkRendu.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 10</value>
+  </data>
+  <data name="rbDraw.Size" type="System.Drawing.Size, System.Drawing">
+    <value>48, 32</value>
+  </data>
+  <data name="pictureBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="&gt;&gt;undrawColor.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;rbDraw.Name" xml:space="preserve">
+    <value>rbDraw</value>
+  </data>
+  <data name="&gt;&gt;modeEdition.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pictureBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;bpUndo.Parent" xml:space="preserve">
+    <value>grpEdition</value>
+  </data>
+  <data name="&gt;&gt;bpCopyPal.Name" xml:space="preserve">
+    <value>bpCopyPal</value>
+  </data>
+  <data name="&gt;&gt;lblInfoPos.Name" xml:space="preserve">
+    <value>lblInfoPos</value>
+  </data>
+  <data name="grpEdition.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 497</value>
+  </data>
+  <data name="grpEdition.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="tailleCrayon.Items3" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;bpRedo.Name" xml:space="preserve">
+    <value>bpRedo</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>fr</value>
+  </metadata>
 </root>

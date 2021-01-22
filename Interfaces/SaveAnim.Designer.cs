@@ -23,6 +23,7 @@
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SaveAnim));
 			this.bpSave = new System.Windows.Forms.Button();
 			this.chk128Ko = new System.Windows.Forms.CheckBox();
 			this.chkBoucle = new System.Windows.Forms.CheckBox();
@@ -54,101 +55,63 @@
 			// 
 			// bpSave
 			// 
-			this.bpSave.Location = new System.Drawing.Point(408, 207);
+			resources.ApplyResources(this.bpSave, "bpSave");
 			this.bpSave.Name = "bpSave";
-			this.bpSave.Size = new System.Drawing.Size(75, 23);
-			this.bpSave.TabIndex = 1;
-			this.bpSave.Text = "Enregistrer";
 			this.bpSave.UseVisualStyleBackColor = true;
 			this.bpSave.Click += new System.EventHandler(this.bpSave_Click);
 			// 
 			// chk128Ko
 			// 
-			this.chk128Ko.AutoSize = true;
-			this.chk128Ko.Location = new System.Drawing.Point(25, 35);
+			resources.ApplyResources(this.chk128Ko, "chk128Ko");
 			this.chk128Ko.Name = "chk128Ko";
-			this.chk128Ko.Size = new System.Drawing.Size(143, 17);
-			this.chk128Ko.TabIndex = 2;
-			this.chk128Ko.Text = "Gérer 128Ko de mémoire";
 			this.chk128Ko.UseVisualStyleBackColor = true;
 			this.chk128Ko.CheckedChanged += new System.EventHandler(this.chk128Ko_CheckedChanged);
 			// 
 			// chkBoucle
 			// 
-			this.chkBoucle.AutoSize = true;
-			this.chkBoucle.Location = new System.Drawing.Point(25, 12);
+			resources.ApplyResources(this.chkBoucle, "chkBoucle");
 			this.chkBoucle.Name = "chkBoucle";
-			this.chkBoucle.Size = new System.Drawing.Size(186, 17);
-			this.chkBoucle.TabIndex = 3;
-			this.chkBoucle.Text = "Rebouclage sur la première image";
 			this.chkBoucle.UseVisualStyleBackColor = true;
 			// 
 			// label1
 			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(329, 16);
+			resources.ApplyResources(this.label1, "label1");
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(96, 13);
-			this.label1.TabIndex = 4;
-			this.label1.Text = "Adresse de début :";
 			// 
 			// txbAdrDeb
 			// 
-			this.txbAdrDeb.Location = new System.Drawing.Point(431, 12);
+			resources.ApplyResources(this.txbAdrDeb, "txbAdrDeb");
 			this.txbAdrDeb.Name = "txbAdrDeb";
-			this.txbAdrDeb.Size = new System.Drawing.Size(53, 20);
-			this.txbAdrDeb.TabIndex = 5;
-			this.txbAdrDeb.Text = "#200";
-			this.txbAdrDeb.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
 			// chkMaxMem
 			// 
-			this.chkMaxMem.AutoSize = true;
-			this.chkMaxMem.Location = new System.Drawing.Point(25, 58);
+			resources.ApplyResources(this.chkMaxMem, "chkMaxMem");
 			this.chkMaxMem.Name = "chkMaxMem";
-			this.chkMaxMem.Size = new System.Drawing.Size(196, 17);
-			this.chkMaxMem.TabIndex = 6;
-			this.chkMaxMem.Text = "Adresse mémoire à ne pas dépasser";
 			this.chkMaxMem.UseVisualStyleBackColor = true;
-			this.chkMaxMem.Visible = false;
 			this.chkMaxMem.CheckedChanged += new System.EventHandler(this.chkMaxMem_CheckedChanged);
 			// 
 			// tbxAdrMax
 			// 
-			this.tbxAdrMax.Enabled = false;
-			this.tbxAdrMax.Location = new System.Drawing.Point(227, 55);
+			resources.ApplyResources(this.tbxAdrMax, "tbxAdrMax");
 			this.tbxAdrMax.Name = "tbxAdrMax";
-			this.tbxAdrMax.Size = new System.Drawing.Size(53, 20);
-			this.tbxAdrMax.TabIndex = 7;
-			this.tbxAdrMax.Text = "#A600";
-			this.tbxAdrMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.tbxAdrMax.Visible = false;
 			// 
 			// chkDirecMem
 			// 
-			this.chkDirecMem.AutoSize = true;
-			this.chkDirecMem.Location = new System.Drawing.Point(25, 81);
+			resources.ApplyResources(this.chkDirecMem, "chkDirecMem");
 			this.chkDirecMem.Name = "chkDirecMem";
-			this.chkDirecMem.Size = new System.Drawing.Size(131, 17);
-			this.chkDirecMem.TabIndex = 8;
-			this.chkDirecMem.Text = "Mode \'Mémoire Direct\'";
 			this.chkDirecMem.UseVisualStyleBackColor = true;
 			this.chkDirecMem.CheckedChanged += new System.EventHandler(this.chkDirecMem_CheckedChanged);
 			// 
 			// chkDelai
 			// 
-			this.chkDelai.AutoSize = true;
-			this.chkDelai.Location = new System.Drawing.Point(25, 207);
+			resources.ApplyResources(this.chkDelai, "chkDelai");
 			this.chkDelai.Name = "chkDelai";
-			this.chkDelai.Size = new System.Drawing.Size(134, 17);
-			this.chkDelai.TabIndex = 9;
-			this.chkDelai.Text = "Ajout délai inter-images";
 			this.chkDelai.UseVisualStyleBackColor = true;
 			this.chkDelai.CheckedChanged += new System.EventHandler(this.chkDelai_CheckedChanged);
 			// 
 			// numDelai
 			// 
-			this.numDelai.Location = new System.Drawing.Point(165, 207);
+			resources.ApplyResources(this.numDelai, "numDelai");
 			this.numDelai.Maximum = new decimal(new int[] {
             255,
             0,
@@ -160,98 +123,60 @@
             0,
             0});
 			this.numDelai.Name = "numDelai";
-			this.numDelai.Size = new System.Drawing.Size(46, 20);
-			this.numDelai.TabIndex = 10;
 			this.numDelai.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
-			this.numDelai.Visible = false;
 			// 
 			// lblDelai
 			// 
-			this.lblDelai.AutoSize = true;
-			this.lblDelai.Location = new System.Drawing.Point(210, 211);
+			resources.ApplyResources(this.lblDelai, "lblDelai");
 			this.lblDelai.Name = "lblDelai";
-			this.lblDelai.Size = new System.Drawing.Size(56, 13);
-			this.lblDelai.TabIndex = 11;
-			this.lblDelai.Text = "/ 300 sec.";
-			this.lblDelai.Visible = false;
 			// 
 			// rb1L
 			// 
-			this.rb1L.AutoSize = true;
-			this.rb1L.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
+			resources.ApplyResources(this.rb1L, "rb1L");
 			this.rb1L.Checked = true;
-			this.rb1L.Location = new System.Drawing.Point(6, 11);
 			this.rb1L.Name = "rb1L";
-			this.rb1L.Size = new System.Drawing.Size(141, 17);
-			this.rb1L.TabIndex = 12;
 			this.rb1L.TabStop = true;
-			this.rb1L.Text = "Générer toutes les lignes";
 			this.rb1L.UseVisualStyleBackColor = true;
 			// 
 			// rb2L
 			// 
-			this.rb2L.AutoSize = true;
-			this.rb2L.Location = new System.Drawing.Point(6, 34);
+			resources.ApplyResources(this.rb2L, "rb2L");
 			this.rb2L.Name = "rb2L";
-			this.rb2L.Size = new System.Drawing.Size(114, 17);
-			this.rb2L.TabIndex = 13;
-			this.rb2L.Text = "Générer 1 ligne / 2";
 			this.rb2L.UseVisualStyleBackColor = true;
 			// 
 			// rb4L
 			// 
-			this.rb4L.AutoSize = true;
-			this.rb4L.Location = new System.Drawing.Point(6, 57);
+			resources.ApplyResources(this.rb4L, "rb4L");
 			this.rb4L.Name = "rb4L";
-			this.rb4L.Size = new System.Drawing.Size(114, 17);
-			this.rb4L.TabIndex = 14;
-			this.rb4L.Text = "Générer 1 ligne / 4";
 			this.rb4L.UseVisualStyleBackColor = true;
 			// 
 			// rb8L
 			// 
-			this.rb8L.AutoSize = true;
-			this.rb8L.Location = new System.Drawing.Point(6, 80);
+			resources.ApplyResources(this.rb8L, "rb8L");
 			this.rb8L.Name = "rb8L";
-			this.rb8L.Size = new System.Drawing.Size(114, 17);
-			this.rb8L.TabIndex = 15;
-			this.rb8L.Text = "Générer 1 ligne / 8";
 			this.rb8L.UseVisualStyleBackColor = true;
 			// 
 			// chk2Zone
 			// 
-			this.chk2Zone.AutoSize = true;
-			this.chk2Zone.Location = new System.Drawing.Point(330, 133);
+			resources.ApplyResources(this.chk2Zone, "chk2Zone");
 			this.chk2Zone.Name = "chk2Zone";
-			this.chk2Zone.Size = new System.Drawing.Size(114, 17);
-			this.chk2Zone.TabIndex = 16;
-			this.chk2Zone.Text = "2 Zones par image";
 			this.chk2Zone.UseVisualStyleBackColor = true;
 			this.chk2Zone.CheckedChanged += new System.EventHandler(this.chk2Zone_CheckedChanged);
 			// 
 			// chkZoneVert
 			// 
-			this.chkZoneVert.AutoSize = true;
-			this.chkZoneVert.Location = new System.Drawing.Point(330, 156);
+			resources.ApplyResources(this.chkZoneVert, "chkZoneVert");
 			this.chkZoneVert.Name = "chkZoneVert";
-			this.chkZoneVert.Size = new System.Drawing.Size(104, 17);
-			this.chkZoneVert.TabIndex = 17;
-			this.chkZoneVert.Text = "Zones verticales";
 			this.chkZoneVert.UseVisualStyleBackColor = true;
-			this.chkZoneVert.Visible = false;
 			// 
 			// chkCol
 			// 
-			this.chkCol.AutoSize = true;
-			this.chkCol.Location = new System.Drawing.Point(330, 180);
+			resources.ApplyResources(this.chkCol, "chkCol");
 			this.chkCol.Name = "chkCol";
-			this.chkCol.Size = new System.Drawing.Size(148, 17);
-			this.chkCol.TabIndex = 19;
-			this.chkCol.Text = "Compacter en \"colonnes\"";
 			this.chkCol.UseVisualStyleBackColor = true;
 			// 
 			// grpGenereLigne
@@ -260,10 +185,8 @@
 			this.grpGenereLigne.Controls.Add(this.rb2L);
 			this.grpGenereLigne.Controls.Add(this.rb4L);
 			this.grpGenereLigne.Controls.Add(this.rb8L);
-			this.grpGenereLigne.Location = new System.Drawing.Point(36, 97);
+			resources.ApplyResources(this.grpGenereLigne, "grpGenereLigne");
 			this.grpGenereLigne.Name = "grpGenereLigne";
-			this.grpGenereLigne.Size = new System.Drawing.Size(152, 104);
-			this.grpGenereLigne.TabIndex = 20;
 			this.grpGenereLigne.TabStop = false;
 			// 
 			// grpAscii
@@ -271,60 +194,41 @@
 			this.grpAscii.Controls.Add(this.rbFrameFull);
 			this.grpAscii.Controls.Add(this.rbFrameD);
 			this.grpAscii.Controls.Add(this.rbFrameO);
-			this.grpAscii.Location = new System.Drawing.Point(30, 104);
+			resources.ApplyResources(this.grpAscii, "grpAscii");
 			this.grpAscii.Name = "grpAscii";
-			this.grpAscii.Size = new System.Drawing.Size(138, 89);
-			this.grpAscii.TabIndex = 21;
 			this.grpAscii.TabStop = false;
 			// 
 			// rbFrameFull
 			// 
-			this.rbFrameFull.AutoSize = true;
+			resources.ApplyResources(this.rbFrameFull, "rbFrameFull");
 			this.rbFrameFull.Checked = true;
-			this.rbFrameFull.Location = new System.Drawing.Point(5, 10);
 			this.rbFrameFull.Name = "rbFrameFull";
-			this.rbFrameFull.Size = new System.Drawing.Size(126, 17);
-			this.rbFrameFull.TabIndex = 1;
 			this.rbFrameFull.TabStop = true;
-			this.rbFrameFull.Text = "Tous types de frames";
 			this.rbFrameFull.UseVisualStyleBackColor = true;
 			// 
 			// rbFrameD
 			// 
-			this.rbFrameD.AutoSize = true;
-			this.rbFrameD.Location = new System.Drawing.Point(5, 56);
+			resources.ApplyResources(this.rbFrameD, "rbFrameD");
 			this.rbFrameD.Name = "rbFrameD";
-			this.rbFrameD.Size = new System.Drawing.Size(99, 17);
-			this.rbFrameD.TabIndex = 0;
-			this.rbFrameD.Text = "Forcer frame \'D\'";
 			this.rbFrameD.UseVisualStyleBackColor = true;
 			// 
 			// rbFrameO
 			// 
-			this.rbFrameO.AutoSize = true;
-			this.rbFrameO.Location = new System.Drawing.Point(5, 33);
+			resources.ApplyResources(this.rbFrameO, "rbFrameO");
 			this.rbFrameO.Name = "rbFrameO";
-			this.rbFrameO.Size = new System.Drawing.Size(99, 17);
-			this.rbFrameO.TabIndex = 0;
-			this.rbFrameO.Text = "Forcer frame \'O\'";
 			this.rbFrameO.UseVisualStyleBackColor = true;
 			// 
 			// chkDataBrut
 			// 
-			this.chkDataBrut.AutoSize = true;
-			this.chkDataBrut.Location = new System.Drawing.Point(329, 97);
+			resources.ApplyResources(this.chkDataBrut, "chkDataBrut");
 			this.chkDataBrut.Name = "chkDataBrut";
-			this.chkDataBrut.Size = new System.Drawing.Size(131, 17);
-			this.chkDataBrut.TabIndex = 22;
-			this.chkDataBrut.Text = "Export données \"brut\"";
 			this.chkDataBrut.UseVisualStyleBackColor = true;
 			this.chkDataBrut.CheckedChanged += new System.EventHandler(this.chkDataBrut_CheckedChanged);
 			// 
 			// SaveAnim
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(487, 235);
 			this.Controls.Add(this.chkDataBrut);
 			this.Controls.Add(this.grpAscii);
 			this.Controls.Add(this.grpGenereLigne);
@@ -346,7 +250,6 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "SaveAnim";
-			this.Text = "Sauvegarde animation";
 			((System.ComponentModel.ISupportInitialize)(this.numDelai)).EndInit();
 			this.grpGenereLigne.ResumeLayout(false);
 			this.grpGenereLigne.PerformLayout();

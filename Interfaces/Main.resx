@@ -359,90 +359,6 @@
   <data name="&gt;&gt;pctTrame.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;bpCalcSprite.Name" xml:space="preserve">
-    <value>bpCalcSprite</value>
-  </data>
-  <data name="&gt;&gt;bpCalcSprite.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;bpCalcSprite.Parent" xml:space="preserve">
-    <value>resoCPC</value>
-  </data>
-  <data name="&gt;&gt;bpCalcSprite.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;bpEditTrame.Name" xml:space="preserve">
-    <value>bpEditTrame</value>
-  </data>
-  <data name="&gt;&gt;bpEditTrame.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;bpEditTrame.Parent" xml:space="preserve">
-    <value>resoCPC</value>
-  </data>
-  <data name="&gt;&gt;bpEditTrame.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;trackModeX.Name" xml:space="preserve">
-    <value>trackModeX</value>
-  </data>
-  <data name="&gt;&gt;trackModeX.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;trackModeX.Parent" xml:space="preserve">
-    <value>resoCPC</value>
-  </data>
-  <data name="&gt;&gt;trackModeX.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;bpStandard.Name" xml:space="preserve">
-    <value>bpStandard</value>
-  </data>
-  <data name="&gt;&gt;bpStandard.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;bpStandard.Parent" xml:space="preserve">
-    <value>resoCPC</value>
-  </data>
-  <data name="&gt;&gt;bpStandard.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;bpOverscan.Name" xml:space="preserve">
-    <value>bpOverscan</value>
-  </data>
-  <data name="&gt;&gt;bpOverscan.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;bpOverscan.Parent" xml:space="preserve">
-    <value>resoCPC</value>
-  </data>
-  <data name="&gt;&gt;bpOverscan.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="resoCPC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>241, 8</value>
-  </data>
-  <data name="resoCPC.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 174</value>
-  </data>
-  <data name="resoCPC.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="resoCPC.Text" xml:space="preserve">
-    <value>Résolution CPC</value>
-  </data>
-  <data name="&gt;&gt;resoCPC.Name" xml:space="preserve">
-    <value>resoCPC</value>
-  </data>
-  <data name="&gt;&gt;resoCPC.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;resoCPC.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;resoCPC.ZOrder" xml:space="preserve">
-    <value>16</value>
-  </data>
   <data name="bpCalcSprite.Location" type="System.Drawing.Point, System.Drawing">
     <value>8, 92</value>
   </data>
@@ -569,89 +485,29 @@
   <data name="&gt;&gt;bpOverscan.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;chkDiffErr.Name" xml:space="preserve">
-    <value>chkDiffErr</value>
+  <data name="resoCPC.Location" type="System.Drawing.Point, System.Drawing">
+    <value>241, 8</value>
   </data>
-  <data name="&gt;&gt;chkDiffErr.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="resoCPC.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 174</value>
   </data>
-  <data name="&gt;&gt;chkDiffErr.Parent" xml:space="preserve">
-    <value>tramage</value>
-  </data>
-  <data name="&gt;&gt;chkDiffErr.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;chkTrameTC.Name" xml:space="preserve">
-    <value>chkTrameTC</value>
-  </data>
-  <data name="&gt;&gt;chkTrameTC.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkTrameTC.Parent" xml:space="preserve">
-    <value>tramage</value>
-  </data>
-  <data name="&gt;&gt;chkTrameTC.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;chkLissage.Name" xml:space="preserve">
-    <value>chkLissage</value>
-  </data>
-  <data name="&gt;&gt;chkLissage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkLissage.Parent" xml:space="preserve">
-    <value>tramage</value>
-  </data>
-  <data name="&gt;&gt;chkLissage.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;lblPct.Name" xml:space="preserve">
-    <value>lblPct</value>
-  </data>
-  <data name="&gt;&gt;lblPct.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblPct.Parent" xml:space="preserve">
-    <value>tramage</value>
-  </data>
-  <data name="&gt;&gt;lblPct.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;label4.Name" xml:space="preserve">
-    <value>label4</value>
-  </data>
-  <data name="&gt;&gt;label4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
-    <value>tramage</value>
-  </data>
-  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="tramage.Location" type="System.Drawing.Point, System.Drawing">
-    <value>545, 8</value>
-  </data>
-  <data name="tramage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>172, 174</value>
-  </data>
-  <data name="tramage.TabIndex" type="System.Int32, mscorlib">
+  <data name="resoCPC.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
-  <data name="tramage.Text" xml:space="preserve">
-    <value>Tramage et rendu</value>
+  <data name="resoCPC.Text" xml:space="preserve">
+    <value>Résolution CPC</value>
   </data>
-  <data name="&gt;&gt;tramage.Name" xml:space="preserve">
-    <value>tramage</value>
+  <data name="&gt;&gt;resoCPC.Name" xml:space="preserve">
+    <value>resoCPC</value>
   </data>
-  <data name="&gt;&gt;tramage.Type" xml:space="preserve">
+  <data name="&gt;&gt;resoCPC.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tramage.Parent" xml:space="preserve">
+  <data name="&gt;&gt;resoCPC.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;tramage.ZOrder" xml:space="preserve">
-    <value>15</value>
+  <data name="&gt;&gt;resoCPC.ZOrder" xml:space="preserve">
+    <value>16</value>
   </data>
   <data name="chkDiffErr.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -793,6 +649,30 @@
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
     <value>6</value>
+  </data>
+  <data name="tramage.Location" type="System.Drawing.Point, System.Drawing">
+    <value>545, 8</value>
+  </data>
+  <data name="tramage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>172, 174</value>
+  </data>
+  <data name="tramage.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="tramage.Text" xml:space="preserve">
+    <value>Tramage et rendu</value>
+  </data>
+  <data name="&gt;&gt;tramage.Name" xml:space="preserve">
+    <value>tramage</value>
+  </data>
+  <data name="&gt;&gt;tramage.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tramage.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tramage.ZOrder" xml:space="preserve">
+    <value>15</value>
   </data>
   <data name="chkNewReduc.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -956,126 +836,6 @@ image source</value>
   </data>
   <data name="&gt;&gt;radioFit.ZOrder" xml:space="preserve">
     <value>8</value>
-  </data>
-  <data name="&gt;&gt;radioOrigin.Name" xml:space="preserve">
-    <value>radioOrigin</value>
-  </data>
-  <data name="&gt;&gt;radioOrigin.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;radioOrigin.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;radioOrigin.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;label7.Name" xml:space="preserve">
-    <value>label7</value>
-  </data>
-  <data name="&gt;&gt;label7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label7.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;label5.Name" xml:space="preserve">
-    <value>label5</value>
-  </data>
-  <data name="&gt;&gt;label5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;tbxPosY.Name" xml:space="preserve">
-    <value>tbxPosY</value>
-  </data>
-  <data name="&gt;&gt;tbxPosY.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbxPosY.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;tbxPosY.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;tbxSizeY.Name" xml:space="preserve">
-    <value>tbxSizeY</value>
-  </data>
-  <data name="&gt;&gt;tbxSizeY.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbxSizeY.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;tbxSizeY.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;tbxPosX.Name" xml:space="preserve">
-    <value>tbxPosX</value>
-  </data>
-  <data name="&gt;&gt;tbxPosX.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbxPosX.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;tbxPosX.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;tbxSizeX.Name" xml:space="preserve">
-    <value>tbxSizeX</value>
-  </data>
-  <data name="&gt;&gt;tbxSizeX.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbxSizeX.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;tbxSizeX.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;radioUserSize.Name" xml:space="preserve">
-    <value>radioUserSize</value>
-  </data>
-  <data name="&gt;&gt;radioUserSize.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;radioUserSize.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;radioUserSize.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>399, 8</value>
-  </data>
-  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 174</value>
-  </data>
-  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>49</value>
-  </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>Taille image source</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
-    <value>13</value>
   </data>
   <data name="radioOrigin.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1280,6 +1040,30 @@ image source</value>
   </data>
   <data name="&gt;&gt;radioUserSize.ZOrder" xml:space="preserve">
     <value>7</value>
+  </data>
+  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>399, 8</value>
+  </data>
+  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 174</value>
+  </data>
+  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>49</value>
+  </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>Taille image source</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
+    <value>13</value>
   </data>
   <data name="bpSave.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 117</value>
@@ -2701,6 +2485,9 @@ image source</value>
   <data name="&gt;&gt;bpEn.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>en</value>
+  </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
