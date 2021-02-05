@@ -45,27 +45,14 @@ namespace ConvImgCpc {
 				Controls.Add(lockColors[i]);
 				lockColors[i].Update();
 			}
-			InitBitmapCpc(1);
+			InitBitmapCpc(1, 100);
 			Reset();
 			tailleCrayon.SelectedItem = "1";
 			Convert = fctConvert;
 			pictureBox.Image = imgOrigine = BmpLock.Bitmap;
 		}
 
-		private void ChangeLanguage(Control.ControlCollection ctrl, string lang) {
-			foreach (Control c in ctrl) {
-				ComponentResourceManager resources = new ComponentResourceManager(typeof(ImageCpc));
-				resources.ApplyResources(c, c.Name, new CultureInfo(lang));
-				if (c.Controls.Count > 0)
-					ChangeLanguage(c.Controls, lang);
-			}
-		}
-
-		public void ChangeLanguage(string lang) {
-			ChangeLanguage(Controls, lang);
-		}
-
-		public void InitBitmapCpc(int nbImage) {
+		public void InitBitmapCpc(int nbImage, int tps) {
 			if (nbImage == 0)
 				nbImage++;
 
@@ -76,6 +63,7 @@ namespace ConvImgCpc {
 			for (int i = 0; i < nbImage; i++) {
 				TabBitmapCpc[i] = new BitmapCpc();
 				tabBmpLock[i] = new DirectBitmap(pictureBox.Width, pictureBox.Height);
+				tabBmpLock[i].Tps = tps;
 			}
 		}
 
@@ -321,7 +309,7 @@ namespace ConvImgCpc {
 				maxSize = (BitmapCpc.TailleX * BitmapCpc.TailleY) >> 4;
 			else
 				if (maxSize >= 0x4000)
-					maxSize += 0x3800;
+				maxSize += 0x3800;
 
 			byte[] ret = new byte[maxSize];
 			Array.Clear(ret, 0, ret.Length);

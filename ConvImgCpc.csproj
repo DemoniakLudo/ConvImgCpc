@@ -137,6 +137,7 @@
     <Compile Include="Interfaces\SaveAnim.Designer.cs">
       <DependentUpon>SaveAnim.cs</DependentUpon>
     </Compile>
+    <Compile Include="Multilingue.cs" />
     <Compile Include="PackDepack.cs" />
     <Compile Include="Param.cs" />
     <Compile Include="Program.cs" />
@@ -161,9 +162,6 @@
     <EmbeddedResource Include="Interfaces\EditSprites.resx">
       <DependentUpon>EditSprites.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Interfaces\ImageCpc.en.resx">
-      <DependentUpon>ImageCpc.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Interfaces\Informations.resx">
       <DependentUpon>Informations.cs</DependentUpon>
     </EmbeddedResource>
@@ -178,15 +176,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Interfaces\ImageCpc.resx">
       <DependentUpon>ImageCpc.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Interfaces\Main.en.resx">
-      <DependentUpon>Main.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Interfaces\Main.fr.resx">
-      <DependentUpon>Main.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Interfaces\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Interfaces\ParamInterne.resx">
       <DependentUpon>ParamInterne.cs</DependentUpon>
@@ -248,7 +242,6 @@
     <Content Include="Icones\Fr.png" />
     <Content Include="Icones\Zoom.png" />
     <Content Include="Docs\ToDoList.txt" />
-    <None Include="Resources\Fr.bmp" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

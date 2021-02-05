@@ -19,7 +19,7 @@ namespace ConvImgCpc {
 		}
 
 		public void SetNbImgs(int nbImg, int tps) {
-			lblMaxImage.Text = "Nbre images:" + nbImg;
+			lblMaxImage.Text = main.multilingue.GetString("Animation.lblMaxImage") + nbImg;
 			lblMaxImage.Visible = lblNumImage.Visible = numImage.Visible = nbImg > 1;
 			numImage.Maximum = nbImg - 1;
 			numImage.Value = hScrollBar1.Value = 0;
@@ -44,7 +44,7 @@ namespace ConvImgCpc {
 				tabPb[i - startImg].Image = displaySrc ? main.imgSrc.GetBitmap(i) : main.imgCpc.tabBmpLock[i].Bitmap;
 				tabPb[i - startImg].Refresh();
 				tabButton[i - startImg].Visible = tabTxt[i - startImg].Visible = startImg + i > 0 || endImg - startImg > 2;
-				tabTxt[i - startImg].Text = tempsAffiche != null ? tempsAffiche[i].ToString() : "";
+				tabTxt[i - startImg].Text = main.imgCpc.tabBmpLock[i].Tps.ToString();   // tempsAffiche != null ? tempsAffiche[i].ToString() : "";
 			}
 			for (int i = endImg - startImg + 1; i < 5; i++) {
 				tabPb[i].Image = null;
@@ -73,7 +73,7 @@ namespace ConvImgCpc {
 			main.imgSrc.DeleteImage(index);
 			numImage.Maximum = main.imgSrc.NbImg - 1;
 			main.SetInfo("Suppression image " + index);
-			lblMaxImage.Text = "Nbre images:" + main.imgSrc.NbImg;
+			lblMaxImage.Text = main.multilingue.GetString("Animation.lblMaxImage") + main.imgSrc.NbImg;
 			main.SelectImage(num > main.imgSrc.NbImg - 1 ? main.imgSrc.NbImg - 1 : num);
 		}
 
@@ -98,7 +98,7 @@ namespace ConvImgCpc {
 
 		private void bpSaveGif_Click(object sender, EventArgs e) {
 			SaveFileDialog dlg = new SaveFileDialog();
-			dlg.Filter = "Gif animé (*.gif)|*.gif";
+			dlg.Filter = "Gif anim (*.gif)|*.gif";
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
 				byte[] GifAnimation = { 33, 255, 11, 78, 69, 84, 83, 67, 65, 80, 69, 50, 46, 48, 3, 1, 0, 0, 0 };
@@ -154,7 +154,8 @@ namespace ConvImgCpc {
 			if (int.TryParse(t.Text, out v) && v > 0 && v <= 5000) {
 				int num = (int)numImage.Value;
 				int index = System.Convert.ToInt32(t.Tag) + num;
-				tempsAffiche[index] = v;
+				main.imgCpc.tabBmpLock[index].Tps = v;
+				//tempsAffiche[index] = v;
 			}
 		}
 	}

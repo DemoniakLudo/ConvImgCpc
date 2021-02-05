@@ -23,7 +23,6 @@
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ParamInterne));
 			this.trackLumR = new System.Windows.Forms.TrackBar();
 			this.trackLumB = new System.Windows.Forms.TrackBar();
 			this.trackLumV = new System.Windows.Forms.TrackBar();
@@ -111,78 +110,105 @@
 			// 
 			// trackLumR
 			// 
-			resources.ApplyResources(this.trackLumR, "trackLumR");
+			this.trackLumR.AutoSize = false;
 			this.trackLumR.LargeChange = 50;
+			this.trackLumR.Location = new System.Drawing.Point(27, 19);
 			this.trackLumR.Maximum = 32767;
 			this.trackLumR.Name = "trackLumR";
+			this.trackLumR.Size = new System.Drawing.Size(742, 41);
+			this.trackLumR.TabIndex = 0;
 			this.trackLumR.TickStyle = System.Windows.Forms.TickStyle.None;
 			this.trackLumR.Scroll += new System.EventHandler(this.trackLumR_Scroll);
 			// 
 			// trackLumB
 			// 
-			resources.ApplyResources(this.trackLumB, "trackLumB");
+			this.trackLumB.AutoSize = false;
 			this.trackLumB.LargeChange = 50;
+			this.trackLumB.Location = new System.Drawing.Point(26, 117);
 			this.trackLumB.Maximum = 32767;
 			this.trackLumB.Name = "trackLumB";
+			this.trackLumB.Size = new System.Drawing.Size(743, 41);
+			this.trackLumB.TabIndex = 1;
 			this.trackLumB.TickStyle = System.Windows.Forms.TickStyle.None;
 			this.trackLumB.Scroll += new System.EventHandler(this.trackLumB_Scroll);
 			// 
 			// trackLumV
 			// 
-			resources.ApplyResources(this.trackLumV, "trackLumV");
+			this.trackLumV.AutoSize = false;
 			this.trackLumV.LargeChange = 50;
+			this.trackLumV.Location = new System.Drawing.Point(27, 66);
 			this.trackLumV.Maximum = 32767;
 			this.trackLumV.Name = "trackLumV";
+			this.trackLumV.Size = new System.Drawing.Size(742, 41);
+			this.trackLumV.TabIndex = 2;
 			this.trackLumV.TickStyle = System.Windows.Forms.TickStyle.None;
 			this.trackLumV.Scroll += new System.EventHandler(this.trackLumV_Scroll);
 			// 
 			// label1
 			// 
-			resources.ApplyResources(this.label1, "label1");
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(6, 29);
 			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(15, 13);
+			this.label1.TabIndex = 3;
+			this.label1.Text = "R";
 			// 
 			// label2
 			// 
-			resources.ApplyResources(this.label2, "label2");
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(7, 78);
 			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(14, 13);
+			this.label2.TabIndex = 4;
+			this.label2.Text = "V";
 			// 
 			// numericLumR
 			// 
-			resources.ApplyResources(this.numericLumR, "numericLumR");
+			this.numericLumR.Location = new System.Drawing.Point(775, 29);
 			this.numericLumR.Maximum = new decimal(new int[] {
             32767,
             0,
             0,
             0});
 			this.numericLumR.Name = "numericLumR";
+			this.numericLumR.Size = new System.Drawing.Size(65, 20);
+			this.numericLumR.TabIndex = 5;
 			this.numericLumR.ValueChanged += new System.EventHandler(this.numericLumR_ValueChanged);
 			// 
 			// numericLumV
 			// 
-			resources.ApplyResources(this.numericLumV, "numericLumV");
+			this.numericLumV.Location = new System.Drawing.Point(775, 74);
 			this.numericLumV.Maximum = new decimal(new int[] {
             32767,
             0,
             0,
             0});
 			this.numericLumV.Name = "numericLumV";
+			this.numericLumV.Size = new System.Drawing.Size(65, 20);
+			this.numericLumV.TabIndex = 6;
 			this.numericLumV.ValueChanged += new System.EventHandler(this.numericLumV_ValueChanged);
 			// 
 			// numericLumB
 			// 
-			resources.ApplyResources(this.numericLumB, "numericLumB");
+			this.numericLumB.Location = new System.Drawing.Point(775, 119);
 			this.numericLumB.Maximum = new decimal(new int[] {
             32767,
             0,
             0,
             0});
 			this.numericLumB.Name = "numericLumB";
+			this.numericLumB.Size = new System.Drawing.Size(65, 20);
+			this.numericLumB.TabIndex = 7;
 			this.numericLumB.ValueChanged += new System.EventHandler(this.numericLumB_ValueChanged);
 			// 
 			// label3
 			// 
-			resources.ApplyResources(this.label3, "label3");
+			this.label3.AutoSize = true;
+			this.label3.Location = new System.Drawing.Point(6, 127);
 			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(14, 13);
+			this.label3.TabIndex = 8;
+			this.label3.Text = "B";
 			// 
 			// groupBox1
 			// 
@@ -195,9 +221,12 @@
 			this.groupBox1.Controls.Add(this.trackLumR);
 			this.groupBox1.Controls.Add(this.trackLumB);
 			this.groupBox1.Controls.Add(this.trackLumV);
-			resources.ApplyResources(this.groupBox1, "groupBox1");
+			this.groupBox1.Location = new System.Drawing.Point(12, 12);
 			this.groupBox1.Name = "groupBox1";
+			this.groupBox1.Size = new System.Drawing.Size(846, 173);
+			this.groupBox1.TabIndex = 9;
 			this.groupBox1.TabStop = false;
+			this.groupBox1.Text = "Constantes conversion luminance";
 			// 
 			// groupBox2
 			// 
@@ -213,105 +242,140 @@
 			this.groupBox2.Controls.Add(this.label6);
 			this.groupBox2.Controls.Add(this.label5);
 			this.groupBox2.Controls.Add(this.label4);
-			resources.ApplyResources(this.groupBox2, "groupBox2");
+			this.groupBox2.Location = new System.Drawing.Point(12, 191);
 			this.groupBox2.Name = "groupBox2";
+			this.groupBox2.Size = new System.Drawing.Size(280, 389);
+			this.groupBox2.TabIndex = 10;
 			this.groupBox2.TabStop = false;
+			this.groupBox2.Text = "Seuil passage niveau Rouge CPC";
 			// 
 			// numericR4
 			// 
-			resources.ApplyResources(this.numericR4, "numericR4");
+			this.numericR4.Location = new System.Drawing.Point(226, 362);
 			this.numericR4.Maximum = new decimal(new int[] {
             511,
             0,
             0,
             0});
 			this.numericR4.Name = "numericR4";
+			this.numericR4.Size = new System.Drawing.Size(51, 20);
+			this.numericR4.TabIndex = 8;
 			this.numericR4.ValueChanged += new System.EventHandler(this.numericR4_ValueChanged);
 			// 
 			// trackR4
 			// 
-			resources.ApplyResources(this.trackR4, "trackR4");
+			this.trackR4.Location = new System.Drawing.Point(9, 362);
 			this.trackR4.Maximum = 511;
 			this.trackR4.Name = "trackR4";
+			this.trackR4.Size = new System.Drawing.Size(211, 45);
+			this.trackR4.TabIndex = 9;
 			this.trackR4.TickStyle = System.Windows.Forms.TickStyle.None;
 			this.trackR4.Scroll += new System.EventHandler(this.trackR4_Scroll);
 			// 
 			// numericR3
 			// 
-			resources.ApplyResources(this.numericR3, "numericR3");
+			this.numericR3.Location = new System.Drawing.Point(223, 259);
 			this.numericR3.Maximum = new decimal(new int[] {
             511,
             0,
             0,
             0});
 			this.numericR3.Name = "numericR3";
+			this.numericR3.Size = new System.Drawing.Size(51, 20);
+			this.numericR3.TabIndex = 6;
 			this.numericR3.ValueChanged += new System.EventHandler(this.numericR3_ValueChanged);
 			// 
 			// trackR3
 			// 
-			resources.ApplyResources(this.trackR3, "trackR3");
+			this.trackR3.Location = new System.Drawing.Point(6, 259);
 			this.trackR3.Maximum = 511;
 			this.trackR3.Name = "trackR3";
+			this.trackR3.Size = new System.Drawing.Size(211, 45);
+			this.trackR3.TabIndex = 7;
 			this.trackR3.TickStyle = System.Windows.Forms.TickStyle.None;
 			this.trackR3.Scroll += new System.EventHandler(this.trackR3_Scroll);
 			// 
 			// numericR2
 			// 
-			resources.ApplyResources(this.numericR2, "numericR2");
+			this.numericR2.Location = new System.Drawing.Point(223, 156);
 			this.numericR2.Maximum = new decimal(new int[] {
             511,
             0,
             0,
             0});
 			this.numericR2.Name = "numericR2";
+			this.numericR2.Size = new System.Drawing.Size(51, 20);
+			this.numericR2.TabIndex = 4;
 			this.numericR2.ValueChanged += new System.EventHandler(this.numericR2_ValueChanged);
 			// 
 			// trackR2
 			// 
-			resources.ApplyResources(this.trackR2, "trackR2");
+			this.trackR2.Location = new System.Drawing.Point(6, 156);
 			this.trackR2.Maximum = 511;
 			this.trackR2.Name = "trackR2";
+			this.trackR2.Size = new System.Drawing.Size(211, 45);
+			this.trackR2.TabIndex = 5;
 			this.trackR2.TickStyle = System.Windows.Forms.TickStyle.None;
 			this.trackR2.Scroll += new System.EventHandler(this.trackR2_Scroll);
 			// 
 			// numericR1
 			// 
-			resources.ApplyResources(this.numericR1, "numericR1");
+			this.numericR1.Location = new System.Drawing.Point(223, 53);
 			this.numericR1.Maximum = new decimal(new int[] {
             511,
             0,
             0,
             0});
 			this.numericR1.Name = "numericR1";
+			this.numericR1.Size = new System.Drawing.Size(51, 20);
+			this.numericR1.TabIndex = 0;
 			this.numericR1.ValueChanged += new System.EventHandler(this.numericR1_ValueChanged);
 			// 
 			// trackR1
 			// 
-			resources.ApplyResources(this.trackR1, "trackR1");
+			this.trackR1.Location = new System.Drawing.Point(6, 53);
 			this.trackR1.Maximum = 511;
 			this.trackR1.Name = "trackR1";
+			this.trackR1.Size = new System.Drawing.Size(211, 45);
+			this.trackR1.TabIndex = 0;
 			this.trackR1.TickStyle = System.Windows.Forms.TickStyle.None;
 			this.trackR1.Scroll += new System.EventHandler(this.trackR1_Scroll);
 			// 
 			// label7
 			// 
-			resources.ApplyResources(this.label7, "label7");
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(7, 346);
 			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(50, 13);
+			this.label7.TabIndex = 3;
+			this.label7.Text = "Niveau 4";
 			// 
 			// label6
 			// 
-			resources.ApplyResources(this.label6, "label6");
+			this.label6.AutoSize = true;
+			this.label6.Location = new System.Drawing.Point(7, 243);
 			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(50, 13);
+			this.label6.TabIndex = 2;
+			this.label6.Text = "Niveau 3";
 			// 
 			// label5
 			// 
-			resources.ApplyResources(this.label5, "label5");
+			this.label5.AutoSize = true;
+			this.label5.Location = new System.Drawing.Point(7, 140);
 			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(50, 13);
+			this.label5.TabIndex = 1;
+			this.label5.Text = "Niveau 2";
 			// 
 			// label4
 			// 
-			resources.ApplyResources(this.label4, "label4");
+			this.label4.AutoSize = true;
+			this.label4.Location = new System.Drawing.Point(7, 37);
 			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(50, 13);
+			this.label4.TabIndex = 0;
+			this.label4.Text = "Niveau 1";
 			// 
 			// groupBox3
 			// 
@@ -327,104 +391,139 @@
 			this.groupBox3.Controls.Add(this.trackV1);
 			this.groupBox3.Controls.Add(this.trackV2);
 			this.groupBox3.Controls.Add(this.numericV1);
-			resources.ApplyResources(this.groupBox3, "groupBox3");
+			this.groupBox3.Location = new System.Drawing.Point(295, 191);
 			this.groupBox3.Name = "groupBox3";
+			this.groupBox3.Size = new System.Drawing.Size(280, 389);
+			this.groupBox3.TabIndex = 11;
 			this.groupBox3.TabStop = false;
+			this.groupBox3.Text = "Seuil passage niveau Vert CPC";
 			// 
 			// numericV4
 			// 
-			resources.ApplyResources(this.numericV4, "numericV4");
+			this.numericV4.Location = new System.Drawing.Point(225, 362);
 			this.numericV4.Maximum = new decimal(new int[] {
             511,
             0,
             0,
             0});
 			this.numericV4.Name = "numericV4";
+			this.numericV4.Size = new System.Drawing.Size(51, 20);
+			this.numericV4.TabIndex = 20;
 			this.numericV4.ValueChanged += new System.EventHandler(this.numericV4_ValueChanged);
 			// 
 			// label11
 			// 
-			resources.ApplyResources(this.label11, "label11");
+			this.label11.AutoSize = true;
+			this.label11.Location = new System.Drawing.Point(6, 37);
 			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(50, 13);
+			this.label11.TabIndex = 12;
+			this.label11.Text = "Niveau 1";
 			// 
 			// trackV4
 			// 
-			resources.ApplyResources(this.trackV4, "trackV4");
+			this.trackV4.Location = new System.Drawing.Point(8, 362);
 			this.trackV4.Maximum = 511;
 			this.trackV4.Name = "trackV4";
+			this.trackV4.Size = new System.Drawing.Size(211, 45);
+			this.trackV4.TabIndex = 21;
 			this.trackV4.TickStyle = System.Windows.Forms.TickStyle.None;
 			this.trackV4.Scroll += new System.EventHandler(this.trackV4_Scroll);
 			// 
 			// label10
 			// 
-			resources.ApplyResources(this.label10, "label10");
+			this.label10.AutoSize = true;
+			this.label10.Location = new System.Drawing.Point(6, 140);
 			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(50, 13);
+			this.label10.TabIndex = 13;
+			this.label10.Text = "Niveau 2";
 			// 
 			// numericV3
 			// 
-			resources.ApplyResources(this.numericV3, "numericV3");
+			this.numericV3.Location = new System.Drawing.Point(222, 259);
 			this.numericV3.Maximum = new decimal(new int[] {
             511,
             0,
             0,
             0});
 			this.numericV3.Name = "numericV3";
+			this.numericV3.Size = new System.Drawing.Size(51, 20);
+			this.numericV3.TabIndex = 18;
 			this.numericV3.ValueChanged += new System.EventHandler(this.numericV3_ValueChanged);
 			// 
 			// label9
 			// 
-			resources.ApplyResources(this.label9, "label9");
+			this.label9.AutoSize = true;
+			this.label9.Location = new System.Drawing.Point(6, 243);
 			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(50, 13);
+			this.label9.TabIndex = 14;
+			this.label9.Text = "Niveau 3";
 			// 
 			// trackV3
 			// 
-			resources.ApplyResources(this.trackV3, "trackV3");
+			this.trackV3.Location = new System.Drawing.Point(5, 259);
 			this.trackV3.Maximum = 511;
 			this.trackV3.Name = "trackV3";
+			this.trackV3.Size = new System.Drawing.Size(211, 45);
+			this.trackV3.TabIndex = 19;
 			this.trackV3.TickStyle = System.Windows.Forms.TickStyle.None;
 			this.trackV3.Scroll += new System.EventHandler(this.trackV3_Scroll);
 			// 
 			// label8
 			// 
-			resources.ApplyResources(this.label8, "label8");
+			this.label8.AutoSize = true;
+			this.label8.Location = new System.Drawing.Point(6, 346);
 			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(50, 13);
+			this.label8.TabIndex = 15;
+			this.label8.Text = "Niveau 4";
 			// 
 			// numericV2
 			// 
-			resources.ApplyResources(this.numericV2, "numericV2");
+			this.numericV2.Location = new System.Drawing.Point(222, 156);
 			this.numericV2.Maximum = new decimal(new int[] {
             511,
             0,
             0,
             0});
 			this.numericV2.Name = "numericV2";
+			this.numericV2.Size = new System.Drawing.Size(51, 20);
+			this.numericV2.TabIndex = 16;
 			this.numericV2.ValueChanged += new System.EventHandler(this.numericV2_ValueChanged);
 			// 
 			// trackV1
 			// 
-			resources.ApplyResources(this.trackV1, "trackV1");
+			this.trackV1.Location = new System.Drawing.Point(5, 53);
 			this.trackV1.Maximum = 511;
 			this.trackV1.Name = "trackV1";
+			this.trackV1.Size = new System.Drawing.Size(211, 45);
+			this.trackV1.TabIndex = 11;
 			this.trackV1.TickStyle = System.Windows.Forms.TickStyle.None;
 			this.trackV1.Scroll += new System.EventHandler(this.trackV1_Scroll);
 			// 
 			// trackV2
 			// 
-			resources.ApplyResources(this.trackV2, "trackV2");
+			this.trackV2.Location = new System.Drawing.Point(5, 156);
 			this.trackV2.Maximum = 511;
 			this.trackV2.Name = "trackV2";
+			this.trackV2.Size = new System.Drawing.Size(211, 45);
+			this.trackV2.TabIndex = 17;
 			this.trackV2.TickStyle = System.Windows.Forms.TickStyle.None;
 			this.trackV2.Scroll += new System.EventHandler(this.trackV2_Scroll);
 			// 
 			// numericV1
 			// 
-			resources.ApplyResources(this.numericV1, "numericV1");
+			this.numericV1.Location = new System.Drawing.Point(222, 53);
 			this.numericV1.Maximum = new decimal(new int[] {
             511,
             0,
             0,
             0});
 			this.numericV1.Name = "numericV1";
+			this.numericV1.Size = new System.Drawing.Size(51, 20);
+			this.numericV1.TabIndex = 10;
 			this.numericV1.ValueChanged += new System.EventHandler(this.numericV1_ValueChanged);
 			// 
 			// groupBox4
@@ -441,110 +540,146 @@
 			this.groupBox4.Controls.Add(this.label14);
 			this.groupBox4.Controls.Add(this.label15);
 			this.groupBox4.Controls.Add(this.trackB3);
-			resources.ApplyResources(this.groupBox4, "groupBox4");
+			this.groupBox4.Location = new System.Drawing.Point(578, 191);
 			this.groupBox4.Name = "groupBox4";
+			this.groupBox4.Size = new System.Drawing.Size(280, 389);
+			this.groupBox4.TabIndex = 11;
 			this.groupBox4.TabStop = false;
+			this.groupBox4.Text = "Seuil passage niveau Bleu CPC";
 			// 
 			// numericB4
 			// 
-			resources.ApplyResources(this.numericB4, "numericB4");
+			this.numericB4.Location = new System.Drawing.Point(225, 362);
 			this.numericB4.Maximum = new decimal(new int[] {
             511,
             0,
             0,
             0});
 			this.numericB4.Name = "numericB4";
+			this.numericB4.Size = new System.Drawing.Size(51, 20);
+			this.numericB4.TabIndex = 32;
 			this.numericB4.ValueChanged += new System.EventHandler(this.numericB4_ValueChanged);
 			// 
 			// label12
 			// 
-			resources.ApplyResources(this.label12, "label12");
+			this.label12.AutoSize = true;
+			this.label12.Location = new System.Drawing.Point(6, 37);
 			this.label12.Name = "label12";
+			this.label12.Size = new System.Drawing.Size(50, 13);
+			this.label12.TabIndex = 24;
+			this.label12.Text = "Niveau 1";
 			// 
 			// numericB1
 			// 
-			resources.ApplyResources(this.numericB1, "numericB1");
+			this.numericB1.Location = new System.Drawing.Point(222, 53);
 			this.numericB1.Maximum = new decimal(new int[] {
             511,
             0,
             0,
             0});
 			this.numericB1.Name = "numericB1";
+			this.numericB1.Size = new System.Drawing.Size(51, 20);
+			this.numericB1.TabIndex = 22;
 			this.numericB1.ValueChanged += new System.EventHandler(this.numericB1_ValueChanged);
 			// 
 			// trackB4
 			// 
-			resources.ApplyResources(this.trackB4, "trackB4");
+			this.trackB4.Location = new System.Drawing.Point(8, 362);
 			this.trackB4.Maximum = 511;
 			this.trackB4.Name = "trackB4";
+			this.trackB4.Size = new System.Drawing.Size(211, 45);
+			this.trackB4.TabIndex = 33;
 			this.trackB4.TickStyle = System.Windows.Forms.TickStyle.None;
 			this.trackB4.Scroll += new System.EventHandler(this.trackB4_Scroll);
 			// 
 			// trackB2
 			// 
-			resources.ApplyResources(this.trackB2, "trackB2");
+			this.trackB2.Location = new System.Drawing.Point(5, 156);
 			this.trackB2.Maximum = 511;
 			this.trackB2.Name = "trackB2";
+			this.trackB2.Size = new System.Drawing.Size(211, 45);
+			this.trackB2.TabIndex = 29;
 			this.trackB2.TickStyle = System.Windows.Forms.TickStyle.None;
 			this.trackB2.Scroll += new System.EventHandler(this.trackB2_Scroll);
 			// 
 			// label13
 			// 
-			resources.ApplyResources(this.label13, "label13");
+			this.label13.AutoSize = true;
+			this.label13.Location = new System.Drawing.Point(6, 140);
 			this.label13.Name = "label13";
+			this.label13.Size = new System.Drawing.Size(50, 13);
+			this.label13.TabIndex = 25;
+			this.label13.Text = "Niveau 2";
 			// 
 			// trackB1
 			// 
-			resources.ApplyResources(this.trackB1, "trackB1");
+			this.trackB1.Location = new System.Drawing.Point(5, 53);
 			this.trackB1.Maximum = 511;
 			this.trackB1.Name = "trackB1";
+			this.trackB1.Size = new System.Drawing.Size(211, 45);
+			this.trackB1.TabIndex = 23;
 			this.trackB1.TickStyle = System.Windows.Forms.TickStyle.None;
 			this.trackB1.Scroll += new System.EventHandler(this.trackB1_Scroll);
 			// 
 			// numericB3
 			// 
-			resources.ApplyResources(this.numericB3, "numericB3");
+			this.numericB3.Location = new System.Drawing.Point(222, 259);
 			this.numericB3.Maximum = new decimal(new int[] {
             511,
             0,
             0,
             0});
 			this.numericB3.Name = "numericB3";
+			this.numericB3.Size = new System.Drawing.Size(51, 20);
+			this.numericB3.TabIndex = 30;
 			this.numericB3.ValueChanged += new System.EventHandler(this.numericB3_ValueChanged);
 			// 
 			// numericB2
 			// 
-			resources.ApplyResources(this.numericB2, "numericB2");
+			this.numericB2.Location = new System.Drawing.Point(222, 156);
 			this.numericB2.Maximum = new decimal(new int[] {
             511,
             0,
             0,
             0});
 			this.numericB2.Name = "numericB2";
+			this.numericB2.Size = new System.Drawing.Size(51, 20);
+			this.numericB2.TabIndex = 28;
 			this.numericB2.ValueChanged += new System.EventHandler(this.numericB2_ValueChanged);
 			// 
 			// label14
 			// 
-			resources.ApplyResources(this.label14, "label14");
+			this.label14.AutoSize = true;
+			this.label14.Location = new System.Drawing.Point(6, 243);
 			this.label14.Name = "label14";
+			this.label14.Size = new System.Drawing.Size(50, 13);
+			this.label14.TabIndex = 26;
+			this.label14.Text = "Niveau 3";
 			// 
 			// label15
 			// 
-			resources.ApplyResources(this.label15, "label15");
+			this.label15.AutoSize = true;
+			this.label15.Location = new System.Drawing.Point(6, 346);
 			this.label15.Name = "label15";
+			this.label15.Size = new System.Drawing.Size(50, 13);
+			this.label15.TabIndex = 27;
+			this.label15.Text = "Niveau 4";
 			// 
 			// trackB3
 			// 
-			resources.ApplyResources(this.trackB3, "trackB3");
+			this.trackB3.Location = new System.Drawing.Point(5, 259);
 			this.trackB3.Maximum = 511;
 			this.trackB3.Name = "trackB3";
+			this.trackB3.Size = new System.Drawing.Size(211, 45);
+			this.trackB3.TabIndex = 31;
 			this.trackB3.TickStyle = System.Windows.Forms.TickStyle.None;
 			this.trackB3.Scroll += new System.EventHandler(this.trackB3_Scroll);
 			// 
 			// ParamInterne
 			// 
-			resources.ApplyResources(this, "$this");
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.ClientSize = new System.Drawing.Size(870, 591);
 			this.ControlBox = false;
 			this.Controls.Add(this.groupBox4);
 			this.Controls.Add(this.groupBox3);
@@ -552,6 +687,7 @@
 			this.Controls.Add(this.groupBox1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "ParamInterne";
+			this.Text = "Paramètres internes";
 			((System.ComponentModel.ISupportInitialize)(this.trackLumR)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackLumB)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackLumV)).EndInit();

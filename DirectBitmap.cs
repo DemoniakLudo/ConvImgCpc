@@ -11,6 +11,7 @@ namespace ConvImgCpc {
 		public int Height { get; private set; }
 		public int Width { get; private set; }
 		public int Length { get { return Width * Height; } }
+		public int Tps { get; set; }
 
 		protected GCHandle BitsHandle { get; private set; }
 
@@ -21,6 +22,7 @@ namespace ConvImgCpc {
 		public DirectBitmap(DirectBitmap source) {
 			CreateBitmap(source.Width, source.Height);
 			CopyBits(source);
+			Tps = 100;
 		}
 
 		public void CopyBits(DirectBitmap source) {

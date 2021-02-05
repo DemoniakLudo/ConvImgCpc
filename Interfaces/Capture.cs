@@ -6,12 +6,15 @@ namespace ConvImgCpc {
 		private int captSize = 1;
 		public int CaptSize { get { return captSize; } }
 		private DirectBitmap bmp = new DirectBitmap(512, 512);
+		private Main main;
 
-		public Capture() {
+		public Capture(Main m) {
 			InitializeComponent();
 			pictCapture.Image = bmp.Bitmap;
 			RazCapture();
 			comboBanque.SelectedIndex = 0;
+			main = m;
+			main.ChangeLanguage(Controls, "Capture");
 		}
 
 		private void RazCapture() {
@@ -71,7 +74,7 @@ namespace ConvImgCpc {
 			for (int c = 0; c < 16; c++)
 				BitmapCpc.paletteSprite[c] = BitmapCpc.Palette[c];
 
-			MessageBox.Show("Capture effectuée.");
+			MessageBox.Show("Capture Ok.");
 		}
 	}
 }

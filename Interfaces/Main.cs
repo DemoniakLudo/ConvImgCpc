@@ -17,6 +17,7 @@ namespace ConvImgCpc {
 		private Informations info = new Informations();
 		private Animation anim;
 		private ParamInterne paramIntere;
+		public Multilingue multilingue = new Multilingue();
 
 		public Main() {
 			InitializeComponent();
@@ -24,6 +25,7 @@ namespace ConvImgCpc {
 			anim = new Animation(this);
 			paramIntere = new ParamInterne(this);
 			paramIntere.InitValues();
+			ChangeLanguage("FR");
 
 			int i = 1;
 			foreach (KeyValuePair<string, double[,]> dith in Dither.dicMat)
@@ -48,19 +50,23 @@ namespace ConvImgCpc {
 			imgCpc.Show();
 		}
 
-
-		private void ChangeLanguage(Control.ControlCollection ctrl, string lang) {
+		public void ChangeLanguage(Control.ControlCollection ctrl, string prefix) {
 			foreach (Control c in ctrl) {
-				ComponentResourceManager resources = new ComponentResourceManager(typeof(Main));
-				resources.ApplyResources(c, c.Name, new CultureInfo(lang));
+				string key = prefix + "." + c.Name;
+				string text = multilingue.GetString(key);
+				if (text != null)
+					c.Text = text;
+
 				if (c.Controls.Count > 0)
-					ChangeLanguage(c.Controls, lang);
+					ChangeLanguage(c.Controls, prefix);
 			}
 		}
 
 		private void ChangeLanguage(string lang) {
-			ChangeLanguage(Controls, lang);
-			imgCpc.ChangeLanguage(lang);
+			multilingue.SetLangue(lang);
+			ChangeLanguage(Controls, "Main");
+			ChangeLanguage(imgCpc.Controls, "ImageCpc");
+			ChangeLanguage(anim.Controls, "Animation");
 		}
 
 		private void SetModes() {
@@ -192,7 +198,7 @@ namespace ConvImgCpc {
 						}
 					}
 					if (isImp) {
-						imgCpc.InitBitmapCpc(nbImages);
+						imgCpc.InitBitmapCpc(nbImages, imgSrc.tpsFrame);
 						imgSrc.InitBitmap(nbImages);
 						anim.SetNbImgs(nbImages, imgSrc.tpsFrame);
 						SetInfo("Création animation (IMP) avec " + nbImages + " images.");
@@ -274,7 +280,7 @@ namespace ConvImgCpc {
 					tbxPosY.Text = "0";
 				}
 				if (!singlePicture && !isImp)
-					imgCpc.InitBitmapCpc(nbImg);
+					imgCpc.InitBitmapCpc(nbImg, imgSrc.tpsFrame);
 
 				SelectImage(0);
 				imgCpc.Reset(true);
@@ -406,7 +412,7 @@ namespace ConvImgCpc {
 					SetInfo("Création animation avec " + nbImages + " images.");
 				}
 				SelectImage(0);
-				imgCpc.InitBitmapCpc(nbImages);
+				imgCpc.InitBitmapCpc(nbImages, 100);
 				imgCpc.Reset(true);
 				Convert(false);
 			}
@@ -923,11 +929,11 @@ namespace ConvImgCpc {
 		}
 
 		private void bpFr_Click(object sender, EventArgs e) {
-			ChangeLanguage(Controls, "fr-FR");
+			ChangeLanguage("FR");
 		}
 
 		private void bpEn_Click(object sender, EventArgs e) {
-			ChangeLanguage("en-US");
+			ChangeLanguage("EN");
 		}
 	}
 }
