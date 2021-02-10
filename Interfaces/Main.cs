@@ -400,7 +400,7 @@ namespace ConvImgCpc {
 		}
 
 		private void bpCreate_Click(object sender, EventArgs e) {
-			CreationImages dlg = new CreationImages();
+			CreationImages dlg = new CreationImages(this);
 			dlg.ShowDialog();
 			int nbImages = dlg.NbImages;
 			if (nbImages != -1) {

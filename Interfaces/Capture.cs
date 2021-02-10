@@ -6,15 +6,13 @@ namespace ConvImgCpc {
 		private int captSize = 1;
 		public int CaptSize { get { return captSize; } }
 		private DirectBitmap bmp = new DirectBitmap(512, 512);
-		private Main main;
 
 		public Capture(Main m) {
 			InitializeComponent();
 			pictCapture.Image = bmp.Bitmap;
 			RazCapture();
 			comboBanque.SelectedIndex = 0;
-			main = m;
-			main.ChangeLanguage(Controls, "Capture");
+			m.ChangeLanguage(Controls, "Capture");
 		}
 
 		private void RazCapture() {

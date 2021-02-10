@@ -40,7 +40,6 @@
 			this.rbSingle.Size = new System.Drawing.Size(89, 17);
 			this.rbSingle.TabIndex = 0;
 			this.rbSingle.TabStop = true;
-			this.rbSingle.Text = "Image unique";
 			this.rbSingle.UseVisualStyleBackColor = true;
 			// 
 			// rbAnim
@@ -60,7 +59,6 @@
 			this.bpCreer.Name = "bpCreer";
 			this.bpCreer.Size = new System.Drawing.Size(116, 23);
 			this.bpCreer.TabIndex = 1;
-			this.bpCreer.Text = "Créer";
 			this.bpCreer.UseVisualStyleBackColor = true;
 			this.bpCreer.Click += new System.EventHandler(this.bpCreer_Click);
 			// 
@@ -71,7 +69,6 @@
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(119, 13);
 			this.label1.TabIndex = 2;
-			this.label1.Text = "Type de média à créer :";
 			// 
 			// nbImages
 			// 
@@ -102,7 +99,6 @@
 			this.lblNbImages.Name = "lblNbImages";
 			this.lblNbImages.Size = new System.Drawing.Size(46, 13);
 			this.lblNbImages.TabIndex = 4;
-			this.lblNbImages.Text = "image(s)";
 			// 
 			// CreationImages
 			// 

@@ -17,12 +17,13 @@ namespace ConvImgCpc {
 		private Main main;
 
 		public EditTrameAscii(Main m, ImageSource s, ImageCpc i, Param p) {
+			InitializeComponent();
 			main = m;
+			main.ChangeLanguage(Controls, "EditTrameAscii");
 			imgSrc = s;
 			imgCpc = i;
 			bmpCpc = i.bitmapCpc;
 			param = p;
-			InitializeComponent();
 			bmpTrame = new DirectBitmap(pictEditMatrice.Width, pictEditMatrice.Height);
 			pictEditMatrice.Image = bmpTrame.Bitmap;
 			DrawMatrice();

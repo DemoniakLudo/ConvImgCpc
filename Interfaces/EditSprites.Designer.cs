@@ -70,7 +70,6 @@
 			this.bpPrev.Name = "bpPrev";
 			this.bpPrev.Size = new System.Drawing.Size(75, 23);
 			this.bpPrev.TabIndex = 2;
-			this.bpPrev.Text = "Précédent";
 			this.bpPrev.UseVisualStyleBackColor = true;
 			this.bpPrev.Visible = false;
 			this.bpPrev.Click += new System.EventHandler(this.bpPrev_Click);
@@ -81,7 +80,6 @@
 			this.bpSuiv.Name = "bpSuiv";
 			this.bpSuiv.Size = new System.Drawing.Size(75, 23);
 			this.bpSuiv.TabIndex = 2;
-			this.bpSuiv.Text = "Suivant";
 			this.bpSuiv.UseVisualStyleBackColor = true;
 			this.bpSuiv.Click += new System.EventHandler(this.bpSuiv_Click);
 			// 
@@ -92,7 +90,6 @@
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(59, 13);
 			this.label1.TabIndex = 4;
-			this.label1.Text = "Bp gauche";
 			// 
 			// label2
 			// 
@@ -101,7 +98,6 @@
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(49, 13);
 			this.label2.TabIndex = 4;
-			this.label2.Text = "Bp droite";
 			// 
 			// lblPenLeft
 			// 
@@ -125,7 +121,6 @@
 			this.bpRead.Name = "bpRead";
 			this.bpRead.Size = new System.Drawing.Size(75, 48);
 			this.bpRead.TabIndex = 6;
-			this.bpRead.Text = "Lire sprites";
 			this.bpRead.UseVisualStyleBackColor = true;
 			this.bpRead.Click += new System.EventHandler(this.bpRead_Click);
 			// 
@@ -135,7 +130,6 @@
 			this.bpSave.Name = "bpSave";
 			this.bpSave.Size = new System.Drawing.Size(75, 63);
 			this.bpSave.TabIndex = 6;
-			this.bpSave.Text = "Sauver sprites (banque courante)";
 			this.bpSave.UseVisualStyleBackColor = true;
 			this.bpSave.Click += new System.EventHandler(this.bpSave_Click);
 			// 
@@ -155,7 +149,6 @@
 			this.lblSelSprite.Name = "lblSelSprite";
 			this.lblSelSprite.Size = new System.Drawing.Size(59, 13);
 			this.lblSelSprite.TabIndex = 7;
-			this.lblSelSprite.Text = "lblSelSprite";
 			// 
 			// pictTest
 			// 
@@ -289,7 +282,6 @@
 			this.bpSaveAll.Name = "bpSaveAll";
 			this.bpSaveAll.Size = new System.Drawing.Size(75, 61);
 			this.bpSaveAll.TabIndex = 6;
-			this.bpSaveAll.Text = "Sauver sprites (toutes les banques)";
 			this.bpSaveAll.UseVisualStyleBackColor = true;
 			this.bpSaveAll.Click += new System.EventHandler(this.bpSaveAll_Click);
 			// 
@@ -299,7 +291,6 @@
 			this.bpReadPal.Name = "bpReadPal";
 			this.bpReadPal.Size = new System.Drawing.Size(75, 40);
 			this.bpReadPal.TabIndex = 14;
-			this.bpReadPal.Text = "Lire palette";
 			this.bpReadPal.UseVisualStyleBackColor = true;
 			this.bpReadPal.Click += new System.EventHandler(this.bpReadPal_Click);
 			// 
@@ -309,7 +300,6 @@
 			this.bpSavePal.Name = "bpSavePal";
 			this.bpSavePal.Size = new System.Drawing.Size(75, 40);
 			this.bpSavePal.TabIndex = 14;
-			this.bpSavePal.Text = "Sauver palette";
 			this.bpSavePal.UseVisualStyleBackColor = true;
 			this.bpSavePal.Click += new System.EventHandler(this.bpSavePal_Click);
 			// 

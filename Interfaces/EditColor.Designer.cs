@@ -44,7 +44,6 @@
 			this.lblNumColor.Name = "lblNumColor";
 			this.lblNumColor.Size = new System.Drawing.Size(64, 13);
 			this.lblNumColor.TabIndex = 1;
-			this.lblNumColor.Text = "Couleur 00 :";
 			// 
 			// bpValide
 			// 
@@ -52,7 +51,7 @@
 			this.bpValide.Name = "bpValide";
 			this.bpValide.Size = new System.Drawing.Size(75, 23);
 			this.bpValide.TabIndex = 2;
-			this.bpValide.Text = "Valider";
+
 			this.bpValide.UseVisualStyleBackColor = true;
 			this.bpValide.Click += new System.EventHandler(this.bpValide_Click);
 			// 
@@ -62,7 +61,6 @@
 			this.bpAnnule.Name = "bpAnnule";
 			this.bpAnnule.Size = new System.Drawing.Size(75, 23);
 			this.bpAnnule.TabIndex = 2;
-			this.bpAnnule.Text = "Annuler";
 			this.bpAnnule.UseVisualStyleBackColor = true;
 			this.bpAnnule.Click += new System.EventHandler(this.bpAnnule_Click);
 			// 

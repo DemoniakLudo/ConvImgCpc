@@ -198,7 +198,7 @@
 			// 
 			this.numImage.Location = new System.Drawing.Point(62, 2);
 			this.numImage.Maximum = new decimal(new int[] {
-            1,
+            0,
             0,
             0,
             0});

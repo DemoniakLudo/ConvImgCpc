@@ -67,7 +67,6 @@
 			this.bpPrev.Name = "bpPrev";
 			this.bpPrev.Size = new System.Drawing.Size(75, 23);
 			this.bpPrev.TabIndex = 2;
-			this.bpPrev.Text = "Précédente";
 			this.bpPrev.UseVisualStyleBackColor = true;
 			this.bpPrev.Visible = false;
 			this.bpPrev.Click += new System.EventHandler(this.bpPrev_Click);
@@ -78,7 +77,6 @@
 			this.bpSuiv.Name = "bpSuiv";
 			this.bpSuiv.Size = new System.Drawing.Size(75, 23);
 			this.bpSuiv.TabIndex = 2;
-			this.bpSuiv.Text = "Suivante";
 			this.bpSuiv.UseVisualStyleBackColor = true;
 			this.bpSuiv.Click += new System.EventHandler(this.bpSuiv_Click);
 			// 
@@ -125,7 +123,6 @@
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(62, 13);
 			this.label1.TabIndex = 4;
-			this.label1.Text = "Bp gauche:";
 			// 
 			// label2
 			// 
@@ -134,7 +131,6 @@
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(52, 13);
 			this.label2.TabIndex = 4;
-			this.label2.Text = "Bp droite:";
 			// 
 			// lblPenLeft
 			// 
@@ -158,7 +154,6 @@
 			this.bpRead.Name = "bpRead";
 			this.bpRead.Size = new System.Drawing.Size(85, 23);
 			this.bpRead.TabIndex = 6;
-			this.bpRead.Text = "Lire trames";
 			this.bpRead.UseVisualStyleBackColor = true;
 			this.bpRead.Click += new System.EventHandler(this.bpRead_Click);
 			// 
@@ -168,7 +163,6 @@
 			this.bpSave.Name = "bpSave";
 			this.bpSave.Size = new System.Drawing.Size(85, 23);
 			this.bpSave.TabIndex = 6;
-			this.bpSave.Text = "Sauver trames";
 			this.bpSave.UseVisualStyleBackColor = true;
 			this.bpSave.Click += new System.EventHandler(this.bpSave_Click);
 			// 
@@ -178,7 +172,6 @@
 			this.bpAutoGene.Name = "bpAutoGene";
 			this.bpAutoGene.Size = new System.Drawing.Size(119, 45);
 			this.bpAutoGene.TabIndex = 7;
-			this.bpAutoGene.Text = "Génération Automatique";
 			this.bpAutoGene.UseVisualStyleBackColor = true;
 			this.bpAutoGene.Click += new System.EventHandler(this.bpAutoGene_Click);
 			// 

@@ -14,6 +14,7 @@ namespace ConvImgCpc {
 		public EditSprites(Main m) {
 			InitializeComponent();
 			main = m;
+			main.ChangeLanguage(Controls, "EditSprites");
 			for (int c = 0; c < 16; c++) {
 				// Générer les contrôles de "couleurs"
 				colors[c] = new Label();
@@ -46,7 +47,7 @@ namespace ConvImgCpc {
 			if (e.Button == MouseButtons.Right) {
 				int col = BitmapCpc.paletteSprite[pen];
 				RvbColor colRvb = new RvbColor((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17));
-				EditColor ed = new EditColor(pen, col, colRvb.GetColor, true);
+				EditColor ed = new EditColor(main, pen, col, colRvb.GetColor, true);
 				ed.ShowDialog(this);
 				if (ed.isValide) {
 					BitmapCpc.paletteSprite[pen] = ed.ValColor;

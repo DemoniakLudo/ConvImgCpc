@@ -403,7 +403,7 @@ namespace ConvImgCpc {
 			Label colorClick = sender as Label;
 			int pen = colorClick.Tag != null ? (int)colorClick.Tag : 0;
 			if (!modeEdition.Checked) {
-				EditColor ed = new EditColor(pen, BitmapCpc.Palette[pen], bitmapCpc.GetColorPal(pen).GetColorArgb, BitmapCpc.cpcPlus);
+				EditColor ed = new EditColor(main, pen, BitmapCpc.Palette[pen], bitmapCpc.GetColorPal(pen).GetColorArgb, BitmapCpc.cpcPlus);
 				ed.ShowDialog(this);
 				if (ed.isValide) {
 					BitmapCpc.Palette[pen] = ed.ValColor;

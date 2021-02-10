@@ -6,8 +6,9 @@ namespace ConvImgCpc {
 		private int ret = -1;
 		public int NbImages { get { return ret; } }
 
-		public CreationImages() {
+		public CreationImages(Main m) {
 			InitializeComponent();
+			m.ChangeLanguage(Controls, "CreationImages");
 		}
 
 		private void bpCreer_Click(object sender, EventArgs e) {

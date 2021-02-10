@@ -12,10 +12,11 @@ namespace ConvImgCpc {
 		public int ValColor { get { return valColor; } }
 		public bool isValide;
 
-		public EditColor(int numColor, int val, int rgbColor, bool cpcPlus) {
+		public EditColor(Main m, int numColor, int val, int rgbColor, bool cpcPlus) {
 			InitializeComponent();
 			selColor.BackColor = Color.FromArgb(rgbColor);
-			lblNumColor.Text = "Couleur " + numColor;
+			m.ChangeLanguage(Controls, "EditColor");
+			lblNumColor.Text += numColor;
 			if (cpcPlus) {
 				for (int i = 0; i < 3; i++) {
 					tabLabel[i] = new Label();
