@@ -17,12 +17,13 @@ namespace ConvImgCpc {
 		private ImageCpc img;
 		private Param param;
 
-		public SaveAnim(string f, string v, ImageCpc i, Param p) {
+		public SaveAnim(Main m, string f, string v, ImageCpc i, Param p) {
 			fileName = f;
 			version = v;
 			img = i;
 			param = p;
 			InitializeComponent();
+			m.ChangeLanguage(Controls, "SaveAnim");
 			grpGenereLigne.Visible = chk2Zone.Visible = chkDirecMem.Visible = chkCol.Visible = BitmapCpc.modeVirtuel < 7;
 			grpAscii.Visible = BitmapCpc.modeVirtuel >= 7;
 		}
@@ -330,9 +331,9 @@ namespace ConvImgCpc {
 			}
 			else
 				if (chkDirecMem.Checked)
-					return PackDirectMem(bufOut, ref sizeDepack, true, razDiff);
-				else
-					return PackWinDC(bufOut, ref sizeDepack, topBottom, razDiff, modeLigne, optimSpeed);
+				return PackDirectMem(bufOut, ref sizeDepack, true, razDiff);
+			else
+				return PackWinDC(bufOut, ref sizeDepack, topBottom, razDiff, modeLigne, optimSpeed);
 		}
 		#endregion
 
@@ -403,9 +404,9 @@ namespace ConvImgCpc {
 					SaveAsm.GenereDrawAscii(sw, rbFrameFull.Checked, rbFrameO.Checked, rbFrameD.Checked, gest128K, imageMode);
 				else
 					if (chkDirecMem.Checked)
-						SaveAsm.GenereDrawDirect(sw, gest128K);
-					else
-						SaveAsm.GenereDrawDC(sw, delai, chkCol.Checked, gest128K, modeLigne == 8 ? 0x3F : modeLigne == 4 ? 0x1F : modeLigne == 2 ? 0xF : 0x7, optimSpeed);
+					SaveAsm.GenereDrawDirect(sw, gest128K);
+				else
+					SaveAsm.GenereDrawDC(sw, delai, chkCol.Checked, gest128K, modeLigne == 8 ? 0x3F : modeLigne == 4 ? 0x1F : modeLigne == 2 ? 0xF : 0x7, optimSpeed);
 			}
 			if ((param.withPalette || param.withCode) && !chkDataBrut.Checked) {
 				if (BitmapCpc.cpcPlus)
@@ -446,9 +447,9 @@ namespace ConvImgCpc {
 				SaveAsm.GenerePointeurs(sw, posPack, bank, gest128K && numBank > 0xC0);
 			else
 				if (!imageMode && !chkDataBrut.Checked) {
-					sw.WriteLine("	DB	#FF			; Fin de l'animation");
-					ltot++;
-				}
+				sw.WriteLine("	DB	#FF			; Fin de l'animation");
+				ltot++;
+			}
 			SaveAsm.GenereFin(sw, ltot, gest128K && endBank0 < 0x8000);
 			SaveAsm.CloseAsm(sw);
 			for (int i = 0; i < posPack; i++)

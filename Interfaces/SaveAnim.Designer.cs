@@ -58,7 +58,6 @@
 			this.bpSave.Name = "bpSave";
 			this.bpSave.Size = new System.Drawing.Size(75, 23);
 			this.bpSave.TabIndex = 1;
-			this.bpSave.Text = "Enregistrer";
 			this.bpSave.UseVisualStyleBackColor = true;
 			this.bpSave.Click += new System.EventHandler(this.bpSave_Click);
 			// 
@@ -69,7 +68,6 @@
 			this.chk128Ko.Name = "chk128Ko";
 			this.chk128Ko.Size = new System.Drawing.Size(143, 17);
 			this.chk128Ko.TabIndex = 2;
-			this.chk128Ko.Text = "Gérer 128Ko de mémoire";
 			this.chk128Ko.UseVisualStyleBackColor = true;
 			this.chk128Ko.CheckedChanged += new System.EventHandler(this.chk128Ko_CheckedChanged);
 			// 
@@ -80,7 +78,6 @@
 			this.chkBoucle.Name = "chkBoucle";
 			this.chkBoucle.Size = new System.Drawing.Size(186, 17);
 			this.chkBoucle.TabIndex = 3;
-			this.chkBoucle.Text = "Rebouclage sur la première image";
 			this.chkBoucle.UseVisualStyleBackColor = true;
 			// 
 			// label1
@@ -90,7 +87,6 @@
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(96, 13);
 			this.label1.TabIndex = 4;
-			this.label1.Text = "Adresse de début :";
 			// 
 			// txbAdrDeb
 			// 
@@ -108,7 +104,6 @@
 			this.chkMaxMem.Name = "chkMaxMem";
 			this.chkMaxMem.Size = new System.Drawing.Size(196, 17);
 			this.chkMaxMem.TabIndex = 6;
-			this.chkMaxMem.Text = "Adresse mémoire à ne pas dépasser";
 			this.chkMaxMem.UseVisualStyleBackColor = true;
 			this.chkMaxMem.Visible = false;
 			this.chkMaxMem.CheckedChanged += new System.EventHandler(this.chkMaxMem_CheckedChanged);
@@ -131,7 +126,6 @@
 			this.chkDirecMem.Name = "chkDirecMem";
 			this.chkDirecMem.Size = new System.Drawing.Size(131, 17);
 			this.chkDirecMem.TabIndex = 8;
-			this.chkDirecMem.Text = "Mode \'Mémoire Direct\'";
 			this.chkDirecMem.UseVisualStyleBackColor = true;
 			this.chkDirecMem.CheckedChanged += new System.EventHandler(this.chkDirecMem_CheckedChanged);
 			// 
@@ -142,7 +136,6 @@
 			this.chkDelai.Name = "chkDelai";
 			this.chkDelai.Size = new System.Drawing.Size(134, 17);
 			this.chkDelai.TabIndex = 9;
-			this.chkDelai.Text = "Ajout délai inter-images";
 			this.chkDelai.UseVisualStyleBackColor = true;
 			this.chkDelai.CheckedChanged += new System.EventHandler(this.chkDelai_CheckedChanged);
 			// 
@@ -189,7 +182,6 @@
 			this.rb1L.Size = new System.Drawing.Size(141, 17);
 			this.rb1L.TabIndex = 12;
 			this.rb1L.TabStop = true;
-			this.rb1L.Text = "Générer toutes les lignes";
 			this.rb1L.UseVisualStyleBackColor = true;
 			// 
 			// rb2L
@@ -199,7 +191,6 @@
 			this.rb2L.Name = "rb2L";
 			this.rb2L.Size = new System.Drawing.Size(114, 17);
 			this.rb2L.TabIndex = 13;
-			this.rb2L.Text = "Générer 1 ligne / 2";
 			this.rb2L.UseVisualStyleBackColor = true;
 			// 
 			// rb4L
@@ -209,7 +200,6 @@
 			this.rb4L.Name = "rb4L";
 			this.rb4L.Size = new System.Drawing.Size(114, 17);
 			this.rb4L.TabIndex = 14;
-			this.rb4L.Text = "Générer 1 ligne / 4";
 			this.rb4L.UseVisualStyleBackColor = true;
 			// 
 			// rb8L
@@ -219,7 +209,6 @@
 			this.rb8L.Name = "rb8L";
 			this.rb8L.Size = new System.Drawing.Size(114, 17);
 			this.rb8L.TabIndex = 15;
-			this.rb8L.Text = "Générer 1 ligne / 8";
 			this.rb8L.UseVisualStyleBackColor = true;
 			// 
 			// chk2Zone
@@ -229,7 +218,6 @@
 			this.chk2Zone.Name = "chk2Zone";
 			this.chk2Zone.Size = new System.Drawing.Size(114, 17);
 			this.chk2Zone.TabIndex = 16;
-			this.chk2Zone.Text = "2 Zones par image";
 			this.chk2Zone.UseVisualStyleBackColor = true;
 			this.chk2Zone.CheckedChanged += new System.EventHandler(this.chk2Zone_CheckedChanged);
 			// 
@@ -240,7 +228,6 @@
 			this.chkZoneVert.Name = "chkZoneVert";
 			this.chkZoneVert.Size = new System.Drawing.Size(104, 17);
 			this.chkZoneVert.TabIndex = 17;
-			this.chkZoneVert.Text = "Zones verticales";
 			this.chkZoneVert.UseVisualStyleBackColor = true;
 			this.chkZoneVert.Visible = false;
 			// 
@@ -251,7 +238,6 @@
 			this.chkCol.Name = "chkCol";
 			this.chkCol.Size = new System.Drawing.Size(148, 17);
 			this.chkCol.TabIndex = 19;
-			this.chkCol.Text = "Compacter en \"colonnes\"";
 			this.chkCol.UseVisualStyleBackColor = true;
 			// 
 			// grpGenereLigne
@@ -286,7 +272,6 @@
 			this.rbFrameFull.Size = new System.Drawing.Size(126, 17);
 			this.rbFrameFull.TabIndex = 1;
 			this.rbFrameFull.TabStop = true;
-			this.rbFrameFull.Text = "Tous types de frames";
 			this.rbFrameFull.UseVisualStyleBackColor = true;
 			// 
 			// rbFrameD
@@ -296,7 +281,6 @@
 			this.rbFrameD.Name = "rbFrameD";
 			this.rbFrameD.Size = new System.Drawing.Size(99, 17);
 			this.rbFrameD.TabIndex = 0;
-			this.rbFrameD.Text = "Forcer frame \'D\'";
 			this.rbFrameD.UseVisualStyleBackColor = true;
 			// 
 			// rbFrameO
@@ -306,7 +290,6 @@
 			this.rbFrameO.Name = "rbFrameO";
 			this.rbFrameO.Size = new System.Drawing.Size(99, 17);
 			this.rbFrameO.TabIndex = 0;
-			this.rbFrameO.Text = "Forcer frame \'O\'";
 			this.rbFrameO.UseVisualStyleBackColor = true;
 			// 
 			// chkDataBrut
@@ -316,7 +299,6 @@
 			this.chkDataBrut.Name = "chkDataBrut";
 			this.chkDataBrut.Size = new System.Drawing.Size(131, 17);
 			this.chkDataBrut.TabIndex = 22;
-			this.chkDataBrut.Text = "Export données \"brut\"";
 			this.chkDataBrut.UseVisualStyleBackColor = true;
 			this.chkDataBrut.CheckedChanged += new System.EventHandler(this.chkDataBrut_CheckedChanged);
 			// 
@@ -346,7 +328,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "SaveAnim";
-			this.Text = "Sauvegarde animation";
+			this.Text = "SaveAnim";
 			((System.ComponentModel.ISupportInitialize)(this.numDelai)).EndInit();
 			this.grpGenereLigne.ResumeLayout(false);
 			this.grpGenereLigne.PerformLayout();

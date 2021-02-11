@@ -16,15 +16,15 @@ namespace ConvImgCpc {
 		private MemoryStream imageStream;
 		private Informations info = new Informations();
 		private Animation anim;
-		private ParamInterne paramIntere;
+		private ParamInterne paramInterne;
 		public Multilingue multilingue = new Multilingue();
 
 		public Main() {
 			InitializeComponent();
 			imgCpc = new ImageCpc(this, Convert);
 			anim = new Animation(this);
-			paramIntere = new ParamInterne(this);
-			paramIntere.InitValues();
+			paramInterne = new ParamInterne(this);
+			paramInterne.InitValues();
 			ChangeLanguage("FR");
 
 			int i = 1;
@@ -137,7 +137,7 @@ namespace ConvImgCpc {
 					param.newReduc = chkNewReduc.Checked;
 					DirectBitmap tmp = GetResizeBitmap();
 					if (!noInfo && doConvert)
-						SetInfo("Conversion en cours...");
+						SetInfo(multilingue.GetString("Main.Prg.TxtInfo1"));
 
 					Conversion.Convert(tmp, imgCpc, param, !doConvert || noInfo);
 					bpSave.Enabled = bpConvert.Enabled = true;
@@ -201,7 +201,7 @@ namespace ConvImgCpc {
 						imgCpc.InitBitmapCpc(nbImages, imgSrc.tpsFrame);
 						imgSrc.InitBitmap(nbImages);
 						anim.SetNbImgs(nbImages, imgSrc.tpsFrame);
-						SetInfo("Création animation (IMP) avec " + nbImages + " images.");
+						SetInfo(multilingue.GetString("Main.Prg.TxtInfo2") + nbImages + " images.");
 						BitmapCpc.TailleX = width << 3;
 						BitmapCpc.TailleY = height << 1;
 						int x = BitmapCpc.NbCol;
@@ -253,7 +253,7 @@ namespace ConvImgCpc {
 							BitmapCpc.TailleY = param.nbLignes << 1;
 							param.modeVirtuel = mode.SelectedIndex = BitmapCpc.modeVirtuel;
 						}
-						SetInfo("Lecture image de type CPC.");
+						SetInfo(multilingue.GetString("Main.prg.TxtInfo3"));
 					}
 				}
 				else {
@@ -264,11 +264,11 @@ namespace ConvImgCpc {
 						nbImg = imgSrc.NbImg;
 						anim.SetNbImgs(nbImg, imgSrc.tpsFrame);
 						chkAllPics.Visible = nbImg > 1;
-						SetInfo("Lecture image PC" + (nbImg > 0 ? (" de type animation avec " + nbImg + " images.") : "."));
+						SetInfo(multilingue.GetString("Main.prg.TxtInfo4") + (nbImg > 0 ? (multilingue.GetString("Main.prg.TxtInfo5") + nbImg + " images.") : "."));
 					}
 					else {
 						imgSrc.ImportBitmap(new Bitmap(imageStream), imgCpc.selImage);
-						SetInfo("Lecture image PC.");
+						SetInfo(multilingue.GetString("Main.prg.TxtInfo4"));
 					}
 				}
 				radioUserSize.Enabled = radioOrigin.Enabled = true;
@@ -287,7 +287,7 @@ namespace ConvImgCpc {
 				Convert(false);
 			}
 			catch {
-				DisplayErreur("Impossible de lire l'image (format inconnu ???).");
+				DisplayErreur(multilingue.GetString("Main.prg.TxtInfo6"));
 			}
 		}
 
@@ -298,7 +298,7 @@ namespace ConvImgCpc {
 				imgCpc.Reset();
 				anim.DrawImages(n);
 				if (!noInfo && imgSrc.NbImg > 1)
-					SetInfo("Image sélectionnée: " + n.ToString());
+					SetInfo(multilingue.GetString("Main.prg.TxtInfo7") + n.ToString());
 			}
 		}
 
@@ -336,11 +336,11 @@ namespace ConvImgCpc {
 				withPalette.Checked = param.withPalette;
 				chkPalCpc.Checked = param.setPalCpc;
 				chkLissage.Checked = param.lissage;
-				paramIntere.InitValues();
-				SetInfo("Lecture paramètres ok.");
+				paramInterne.InitValues();
+				SetInfo(multilingue.GetString("Main.prg.TxtInfo8"));
 			}
 			catch {
-				DisplayErreur("Ce fichier de paramètres ne peut pas être décodé.");
+				DisplayErreur(multilingue.GetString("Main.prg.TxtInfo9"));
 			}
 			fileParam.Close();
 		}
@@ -354,10 +354,10 @@ namespace ConvImgCpc {
 					GetSizePos(ref param.posx, ref param.posy, ref param.sizex, ref param.sizey);
 
 				new XmlSerializer(typeof(Param)).Serialize(file, param);
-				SetInfo("Sauvegarde paramètres ok.");
+				SetInfo(multilingue.GetString("Main.prg.TxtInfo10"));
 			}
 			catch {
-				DisplayErreur("Impossible de sauvegarder le fichier de paramètres.");
+				DisplayErreur(multilingue.GetString("Main.prg.TxtInfo11"));
 			}
 			file.Close();
 		}
@@ -379,7 +379,7 @@ namespace ConvImgCpc {
 						colors[i + 1].BackColor = Color.FromArgb((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17));
 						colors[i + 1].Refresh();
 					}
-					SetInfo("Lecture palette ok.");
+					SetInfo(multilingue.GetString("Main.prg.TxtInfo12"));
 				}
 			}
 		}
@@ -396,7 +396,7 @@ namespace ConvImgCpc {
 				fp.Write(c2);
 			}
 			fp.Close();
-			SetInfo("Sauvegarde palette ok.");
+			SetInfo(multilingue.GetString("Main.prg.TxtInfo13"));
 		}
 
 		private void bpCreate_Click(object sender, EventArgs e) {
@@ -406,10 +406,10 @@ namespace ConvImgCpc {
 			if (nbImages != -1) {
 				imgSrc.InitBitmap(nbImages);
 				if (nbImages == 1)
-					SetInfo("Création image vierge");
+					SetInfo(multilingue.GetString("Main.prg.TxtInfo14"));
 				else {
 					anim.SetNbImgs(nbImages, 100);
-					SetInfo("Création animation avec " + nbImages + " images.");
+					SetInfo(multilingue.GetString("Main.prg.TxtInfo15") + nbImages + " images.");
 				}
 				SelectImage(0);
 				imgCpc.InitBitmapCpc(nbImages, 100);
@@ -420,7 +420,8 @@ namespace ConvImgCpc {
 
 		private void bpImport_Click(object sender, EventArgs e) {
 			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.Filter = "Images (*.bmp, *.gif, *.png, *.jpg,*.jpeg, *.scr)|*.bmp;*.gif;*.png;*.jpg;*.jpeg;*.scr|Tous fichiers|*.*";
+			dlg.Filter = multilingue.GetString("Main.prg.TxtInfo16") + " (*.bmp, *.gif, *.png, *.jpg,*.jpeg, *.scr)|*.bmp;*.gif;*.png;*.jpg;*.jpeg;*.scr|"
+						+ multilingue.GetString("Main.prg.TxtInfo17") + "|*.*";
 			dlg.InitialDirectory = param.lastReadPath;
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
@@ -431,7 +432,9 @@ namespace ConvImgCpc {
 
 		private void bpLoad_Click(object sender, EventArgs e) {
 			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.Filter = "Images (*.bmp, *.gif, *.png, *.jpg,*.jpeg, *.scr, *.imp)|*.bmp;*.gif;*.png;*.jpg;*.jpeg;*.scr;*.imp|Palette (*.pal)|*.pal|Paramètres ConvImgCpc (*.xml)|*.xml|Tous fichiers|*.*";
+			dlg.Filter = multilingue.GetString("Main.prg.TxtInfo16") + " (*.bmp, *.gif, *.png, *.jpg,*.jpeg, *.scr, *.imp)|*.bmp;*.gif;*.png;*.jpg;*.jpeg;*.scr;*.imp|"
+						+ multilingue.GetString("Main.prg.TxtInfo18") + " (*.pal)|*.pal|" + multilingue.GetString("Main.prg.TxtInfo19") + " (*.xml)|*.xml|"
+						+ multilingue.GetString("Main.prg.TxtInfo17") + "|*.*";
 			dlg.InitialDirectory = param.lastReadPath;
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
@@ -456,10 +459,17 @@ namespace ConvImgCpc {
 		private void bpSave_Click(object sender, EventArgs e) {
 			SaveFileDialog dlg = new SaveFileDialog();
 			dlg.InitialDirectory = param.lastSavePath;
-			string filter = "Image CPC (*.scr)|*.scr|Image Bitmap (.png)|*.png|Sprite assembleur (.asm)|*.asm|Sprite assembleur compacté (.asm)|*.asm|Ecran compacté (.cmp)|*.cmp"
-							+ "|Ecran assembleur compacté (.asm)|*.asm|Animation DeltaPack (.asm)|*.asm|Animation imp (*.imp)|*.imp|Paramètres (.xml)|*.xml|Palette (.pal)|*.pal"
-							+ (BitmapCpc.cpcPlus ? "|Palette CPC+ (.kit)|*.kit" : "")
-							+ (BitmapCpc.modeVirtuel == 3 || BitmapCpc.modeVirtuel == 4 ? "|2 images séparées (.scr)|*.scr" : "");
+			string filter = multilingue.GetString("Main.prg.TxtInfo20") + " (*.scr)|*.scr|Bitmap (.png)|*.png|"
+							+ multilingue.GetString("Main.prg.TxtInfo21") + " (.asm)|*.asm|"
+							+ multilingue.GetString("Main.prg.TxtInfo22") + " (.asm)|*.asm|"
+							+ multilingue.GetString("Main.prg.TxtInfo23") + " (.cmp)|*.cmp|"
+							+ multilingue.GetString("Main.prg.TxtInfo24") + " (.asm)|*.asm|"
+							+ multilingue.GetString("Main.prg.TxtInfo25") + " (.asm)|*.asm|"
+							+ multilingue.GetString("Main.prg.TxtInfo26") + " (.imp)|*.imp|"
+							+ multilingue.GetString("Main.prg.TxtInfo19") + "Paramètres (.xml)|*.xml|"
+							+ multilingue.GetString("Main.prg.TxtInfo18") + " (.pal)|*.pal"
+							+ (BitmapCpc.cpcPlus ? ("|" + multilingue.GetString("Main.prg.TxtInfo27") + " (.kit)|*.kit") : "")
+							+ (BitmapCpc.modeVirtuel == 3 || BitmapCpc.modeVirtuel == 4 ? ("|" + multilingue.GetString("Main.prg.TxtInfo28") + " (.scr)|*.scr") : "");
 
 			dlg.Filter = filter;
 			DialogResult result = dlg.ShowDialog();
@@ -695,10 +705,13 @@ namespace ConvImgCpc {
 		}
 
 		private void chkParamInterne_CheckedChanged(object sender, EventArgs e) {
-			if (chkParamInterne.Checked)
-				paramIntere.Show();
+			if (chkParamInterne.Checked) {
+				paramInterne.Text = chkParamInterne.Text;
+				ChangeLanguage(paramInterne.Controls, "ParamInterne");
+				paramInterne.Show();
+			}
 			else
-				paramIntere.Hide();
+				paramInterne.Hide();
 		}
 
 		#region Gestion des couleurs

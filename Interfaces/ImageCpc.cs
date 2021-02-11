@@ -218,7 +218,7 @@ namespace ConvImgCpc {
 		public void SauveCmp(string fileName, Param param, string version = null) {
 			bitmapCpc.CreeBmpCpc(BmpLock, colMode5);
 			if (BitmapCpc.modeVirtuel >= 7) {
-				SaveAnim sa = new SaveAnim(fileName, version, this, param);
+				SaveAnim sa = new SaveAnim(main, fileName, version, this, param);
 				sa.DoSave(true);
 				sa.Dispose();
 			}
@@ -350,7 +350,7 @@ namespace ConvImgCpc {
 			if (BitmapCpc.NbCol * BitmapCpc.NbLig > 0x4000)
 				MessageBox.Show("Les animations avec des écrans de plus de 16ko ne sont pas supportés...");
 			else
-				new SaveAnim(fileName, version, this, param).ShowDialog();
+				new SaveAnim(main, fileName, version, this, param).ShowDialog();
 		}
 
 		public void LirePalette(string fileName, Param param) {

@@ -226,7 +226,6 @@
 			this.groupBox1.Size = new System.Drawing.Size(846, 173);
 			this.groupBox1.TabIndex = 9;
 			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Constantes conversion luminance";
 			// 
 			// groupBox2
 			// 
@@ -247,7 +246,6 @@
 			this.groupBox2.Size = new System.Drawing.Size(280, 389);
 			this.groupBox2.TabIndex = 10;
 			this.groupBox2.TabStop = false;
-			this.groupBox2.Text = "Seuil passage niveau Rouge CPC";
 			// 
 			// numericR4
 			// 
@@ -348,7 +346,6 @@
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(50, 13);
 			this.label7.TabIndex = 3;
-			this.label7.Text = "Niveau 4";
 			// 
 			// label6
 			// 
@@ -357,7 +354,6 @@
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(50, 13);
 			this.label6.TabIndex = 2;
-			this.label6.Text = "Niveau 3";
 			// 
 			// label5
 			// 
@@ -366,7 +362,6 @@
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(50, 13);
 			this.label5.TabIndex = 1;
-			this.label5.Text = "Niveau 2";
 			// 
 			// label4
 			// 
@@ -375,7 +370,6 @@
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(50, 13);
 			this.label4.TabIndex = 0;
-			this.label4.Text = "Niveau 1";
 			// 
 			// groupBox3
 			// 
@@ -396,7 +390,6 @@
 			this.groupBox3.Size = new System.Drawing.Size(280, 389);
 			this.groupBox3.TabIndex = 11;
 			this.groupBox3.TabStop = false;
-			this.groupBox3.Text = "Seuil passage niveau Vert CPC";
 			// 
 			// numericV4
 			// 
@@ -418,7 +411,6 @@
 			this.label11.Name = "label11";
 			this.label11.Size = new System.Drawing.Size(50, 13);
 			this.label11.TabIndex = 12;
-			this.label11.Text = "Niveau 1";
 			// 
 			// trackV4
 			// 
@@ -437,7 +429,6 @@
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(50, 13);
 			this.label10.TabIndex = 13;
-			this.label10.Text = "Niveau 2";
 			// 
 			// numericV3
 			// 
@@ -459,7 +450,6 @@
 			this.label9.Name = "label9";
 			this.label9.Size = new System.Drawing.Size(50, 13);
 			this.label9.TabIndex = 14;
-			this.label9.Text = "Niveau 3";
 			// 
 			// trackV3
 			// 
@@ -478,7 +468,6 @@
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(50, 13);
 			this.label8.TabIndex = 15;
-			this.label8.Text = "Niveau 4";
 			// 
 			// numericV2
 			// 
@@ -545,7 +534,6 @@
 			this.groupBox4.Size = new System.Drawing.Size(280, 389);
 			this.groupBox4.TabIndex = 11;
 			this.groupBox4.TabStop = false;
-			this.groupBox4.Text = "Seuil passage niveau Bleu CPC";
 			// 
 			// numericB4
 			// 
@@ -567,7 +555,6 @@
 			this.label12.Name = "label12";
 			this.label12.Size = new System.Drawing.Size(50, 13);
 			this.label12.TabIndex = 24;
-			this.label12.Text = "Niveau 1";
 			// 
 			// numericB1
 			// 
@@ -609,7 +596,6 @@
 			this.label13.Name = "label13";
 			this.label13.Size = new System.Drawing.Size(50, 13);
 			this.label13.TabIndex = 25;
-			this.label13.Text = "Niveau 2";
 			// 
 			// trackB1
 			// 
@@ -654,7 +640,6 @@
 			this.label14.Name = "label14";
 			this.label14.Size = new System.Drawing.Size(50, 13);
 			this.label14.TabIndex = 26;
-			this.label14.Text = "Niveau 3";
 			// 
 			// label15
 			// 
@@ -663,7 +648,6 @@
 			this.label15.Name = "label15";
 			this.label15.Size = new System.Drawing.Size(50, 13);
 			this.label15.TabIndex = 27;
-			this.label15.Text = "Niveau 4";
 			// 
 			// trackB3
 			// 
@@ -687,7 +671,6 @@
 			this.Controls.Add(this.groupBox1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "ParamInterne";
-			this.Text = "Paramètres internes";
 			((System.ComponentModel.ISupportInitialize)(this.trackLumR)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackLumB)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackLumV)).EndInit();
