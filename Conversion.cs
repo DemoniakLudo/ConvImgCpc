@@ -187,8 +187,8 @@ namespace ConvImgCpc {
 					}
 					if (prm.trameTc) {
 						// Moyenne des 2 pixels
-						RvbColor p0 = source.GetPixelColor(xPix, yPix);
-						RvbColor p1 = source.GetPixelColor(xPix, yPix + 2);
+						RvbColor p0 = GetPixel(source, xPix, yPix, Tx, prm, pct);
+						RvbColor p1 = GetPixel(source, xPix, yPix + 2, Tx, prm, pct);
 						int r = (p0.r + p1.r);
 						int v = (p0.v + p1.v);
 						int b = (p0.b + p1.b);
