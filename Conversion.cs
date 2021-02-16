@@ -594,11 +594,7 @@ namespace ConvImgCpc {
 			for (int i = 0; i < 256; i++)
 				tblContrast[i] = MinMaxByte(((((i / 255.0) - 0.5) * c) + 0.5) * 255.0);
 
-			//if (p.trameTc)
 			ConvertPasse1(source, dest, p);
-			//else
-			//				ConvertPasse1(source, dest, p);
-
 			int nbCol = 0;
 			for (int i = 0; i < coulTrouvee.GetLength(0); i++) {
 				bool memoCol = false;

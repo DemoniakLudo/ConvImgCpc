@@ -40,7 +40,7 @@ namespace ConvImgCpc {
 			param.withCode = withCode.Checked;
 			param.withPalette = withPalette.Checked;
 			Version version = Assembly.GetExecutingAssembly().GetName().Version;
-			lblInfoVersion.Text = "V " + version.ToString() + " du " + new DateTime(2000, 1, 1).AddDays(version.Build).ToShortDateString();
+			lblInfoVersion.Text = "V " + version.ToString() + " - " + new DateTime(2000, 1, 1).AddDays(version.Build).ToShortDateString();
 			radioUserSize_CheckedChanged(null, null);
 			string configDetault = "ConvImgCpc.xml";
 			if (File.Exists(configDetault))
