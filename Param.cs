@@ -50,5 +50,6 @@
 		public bool newReduc;
 		public int bitsRVB = 24;
 		public bool diffErr;
+		public string langue = "FR";
 	}
 }

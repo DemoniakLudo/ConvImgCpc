@@ -140,8 +140,8 @@ namespace ConvImgCpc {
 			dic.Add("Main.prg.TxtInfo27.EN", "CPC+ pallet");
 			dic.Add("Main.prg.TxtInfo28.FR", "2 images séparées");
 			dic.Add("Main.prg.TxtInfo28.EN", "2 separate images");
-			dic.Add("Main.prg.TxtInfo29.FR", "");
-			dic.Add("Main.prg.TxtInfo29.EN", "");
+			dic.Add("Main.prg.TxtInfo29.FR", "Il existe une version plus récente sur le site web :");
+			dic.Add("Main.prg.TxtInfo29.EN", "There is a newer version on the website :");
 			dic.Add("Main.prg.TxtInfo30.FR", "");
 			dic.Add("Main.prg.TxtInfo39.EN", "");
 

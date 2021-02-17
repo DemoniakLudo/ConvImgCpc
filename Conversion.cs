@@ -194,7 +194,7 @@ namespace ConvImgCpc {
 						int b = (p0.b + p1.b);
 						if (prm.cpcPlus) {
 							n1 = new RvbColor((byte)((r >> 4) * 8), (byte)((v >> 4) * 8), (byte)((b >> 4) * 8));
-							n2 = new RvbColor((byte)((r >> 5) * 17), (byte)((v >> 5) * 17), (byte)((b >> 5) * 17));
+							n2 = new RvbColor((byte)((r >> 5) * 8), (byte)((v >> 5) * 8), (byte)((b >> 5) * 8));
 						}
 						else {
 							n1 = BitmapCpc.RgbCPC[(r > prm.cstR3 ? 6 : r > prm.cstR1 ? 3 : 0) + (v > prm.cstV3 ? 18 : v > prm.cstV1 ? 9 : 0) + (b > prm.cstB3 ? 2 : b > prm.cstB1 ? 1 : 0)];

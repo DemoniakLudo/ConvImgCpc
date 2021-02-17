@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Globalization;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -26,7 +25,6 @@ namespace ConvImgCpc {
 			paramInterne = new ParamInterne(this);
 			paramInterne.InitValues();
 			ChangeLanguage("FR");
-
 			int i = 1;
 			foreach (KeyValuePair<string, double[,]> dith in Dither.dicMat)
 				methode.Items.Insert(i++, dith.Key);
@@ -48,6 +46,45 @@ namespace ConvImgCpc {
 
 			anim.Show();
 			imgCpc.Show();
+			Show();
+			CheckVersion(version);
+		}
+
+		private void CheckVersion(Version version) {
+			byte[] buffer = new byte[0x4000];
+			string url = "http://ldeplanque.free.fr/ConvImgCpc/new/ConvImgCpc.exe";
+			WebRequest objRequest = WebRequest.Create(url);
+			WebResponse objResponse = objRequest.GetResponse();
+			Stream input = objResponse.GetResponseStream();
+			MemoryStream output = new MemoryStream();
+			int bytesRead;
+			while ((bytesRead = input.Read(buffer, 0, buffer.Length)) > 0) {
+				output.Write(buffer, 0, bytesRead);
+			}
+			input.Close();
+			input.Dispose();
+			output.Close();
+			byte[] lastVersion = output.ToArray();
+			for (int i = 0; i < lastVersion.Length - 32; i++) {
+				if (lastVersion[i] == 'V' &&
+					lastVersion[i + 2] == 'e' &&
+					lastVersion[i + 4] == 'r' &&
+					lastVersion[i + 6] == 's' &&
+					lastVersion[i + 8] == 'i' &&
+					lastVersion[i + 10] == 'o' &&
+					lastVersion[i + 12] == 'n' &&
+					lastVersion[i + 18] == '.' &&
+					lastVersion[i + 22] == '.' &&
+					lastVersion[i + 32] == '.'
+					) {
+					int downVersion = System.Convert.ToInt32(new string(new char[4] { (char)lastVersion[i + 24], (char)lastVersion[i + 26], (char)lastVersion[i + 28], (char)lastVersion[i + 30] }));
+					if (downVersion > version.Build)
+						MessageBox.Show(multilingue.GetString("Main.prg.TxtInfo29") + "\n\n\r" + url);
+
+					break;
+				}
+			}
+			output.Dispose();
 		}
 
 		public void ChangeLanguage(Control.ControlCollection ctrl, string prefix) {
@@ -63,6 +100,7 @@ namespace ConvImgCpc {
 		}
 
 		private void ChangeLanguage(string lang) {
+			param.langue = lang;
 			multilingue.SetLangue(lang);
 			ChangeLanguage(Controls, "Main");
 			ChangeLanguage(imgCpc.Controls, "ImageCpc");
@@ -337,6 +375,7 @@ namespace ConvImgCpc {
 				chkPalCpc.Checked = param.setPalCpc;
 				chkLissage.Checked = param.lissage;
 				paramInterne.InitValues();
+				ChangeLanguage(param.langue);
 				SetInfo(multilingue.GetString("Main.prg.TxtInfo8"));
 			}
 			catch {
