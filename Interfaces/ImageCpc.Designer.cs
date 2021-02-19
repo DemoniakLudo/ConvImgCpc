@@ -52,9 +52,9 @@
 			// lockAllPal
 			// 
 			this.lockAllPal.AutoSize = true;
-			this.lockAllPal.Location = new System.Drawing.Point(784, 602);
+			this.lockAllPal.Location = new System.Drawing.Point(779, 12);
 			this.lockAllPal.Name = "lockAllPal";
-			this.lockAllPal.Size = new System.Drawing.Size(93, 17);
+			this.lockAllPal.Size = new System.Drawing.Size(15, 14);
 			this.lockAllPal.TabIndex = 1;
 			this.lockAllPal.UseVisualStyleBackColor = true;
 			this.lockAllPal.CheckedChanged += new System.EventHandler(this.lockAllPal_CheckedChanged);
@@ -62,9 +62,9 @@
 			// modeEdition
 			// 
 			this.modeEdition.AutoSize = true;
-			this.modeEdition.Location = new System.Drawing.Point(797, 12);
+			this.modeEdition.Location = new System.Drawing.Point(798, 102);
 			this.modeEdition.Name = "modeEdition";
-			this.modeEdition.Size = new System.Drawing.Size(84, 17);
+			this.modeEdition.Size = new System.Drawing.Size(15, 14);
 			this.modeEdition.TabIndex = 2;
 			this.modeEdition.UseVisualStyleBackColor = true;
 			this.modeEdition.CheckedChanged += new System.EventHandler(this.modeEdition_CheckedChanged);
@@ -72,7 +72,7 @@
 			// hScrollBar
 			// 
 			this.hScrollBar.LargeChange = 32;
-			this.hScrollBar.Location = new System.Drawing.Point(0, 547);
+			this.hScrollBar.Location = new System.Drawing.Point(2, 603);
 			this.hScrollBar.Name = "hScrollBar";
 			this.hScrollBar.Size = new System.Drawing.Size(768, 16);
 			this.hScrollBar.SmallChange = 8;
@@ -83,7 +83,7 @@
 			// vScrollBar
 			// 
 			this.vScrollBar.LargeChange = 32;
-			this.vScrollBar.Location = new System.Drawing.Point(771, 0);
+			this.vScrollBar.Location = new System.Drawing.Point(773, 56);
 			this.vScrollBar.Name = "vScrollBar";
 			this.vScrollBar.Size = new System.Drawing.Size(16, 544);
 			this.vScrollBar.SmallChange = 8;
@@ -104,7 +104,7 @@
 			this.label3.AutoSize = true;
 			this.label3.Location = new System.Drawing.Point(17, 217);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(84, 13);
+			this.label3.Size = new System.Drawing.Size(0, 13);
 			this.label3.TabIndex = 4;
 			// 
 			// label2
@@ -112,7 +112,7 @@
 			this.label2.AutoSize = true;
 			this.label2.Location = new System.Drawing.Point(7, 182);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(73, 13);
+			this.label2.Size = new System.Drawing.Size(0, 13);
 			this.label2.TabIndex = 5;
 			// 
 			// tailleCrayon
@@ -148,7 +148,7 @@
 			this.grpEdition.Controls.Add(this.label3);
 			this.grpEdition.Controls.Add(this.label2);
 			this.grpEdition.Controls.Add(this.tailleCrayon);
-			this.grpEdition.Location = new System.Drawing.Point(790, 35);
+			this.grpEdition.Location = new System.Drawing.Point(792, 122);
 			this.grpEdition.Name = "grpEdition";
 			this.grpEdition.Size = new System.Drawing.Size(149, 497);
 			this.grpEdition.TabIndex = 9;
@@ -217,7 +217,7 @@
 			this.chkDoRedo.AutoSize = true;
 			this.chkDoRedo.Location = new System.Drawing.Point(19, 460);
 			this.chkDoRedo.Name = "chkDoRedo";
-			this.chkDoRedo.Size = new System.Drawing.Size(108, 30);
+			this.chkDoRedo.Size = new System.Drawing.Size(15, 14);
 			this.chkDoRedo.TabIndex = 11;
 			this.chkDoRedo.UseVisualStyleBackColor = true;
 			// 
@@ -248,14 +248,14 @@
 			this.chkRendu.AutoSize = true;
 			this.chkRendu.Location = new System.Drawing.Point(6, 10);
 			this.chkRendu.Name = "chkRendu";
-			this.chkRendu.Size = new System.Drawing.Size(107, 17);
+			this.chkRendu.Size = new System.Drawing.Size(15, 14);
 			this.chkRendu.TabIndex = 9;
 			this.chkRendu.UseVisualStyleBackColor = true;
 			this.chkRendu.CheckedChanged += new System.EventHandler(this.chkRendu_CheckedChanged);
 			// 
 			// pictureBox
 			// 
-			this.pictureBox.Location = new System.Drawing.Point(0, 0);
+			this.pictureBox.Location = new System.Drawing.Point(2, 56);
 			this.pictureBox.Name = "pictureBox";
 			this.pictureBox.Size = new System.Drawing.Size(768, 544);
 			this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -268,9 +268,9 @@
 			// modeCaptureSprites
 			// 
 			this.modeCaptureSprites.AutoSize = true;
-			this.modeCaptureSprites.Location = new System.Drawing.Point(796, 12);
+			this.modeCaptureSprites.Location = new System.Drawing.Point(798, 102);
 			this.modeCaptureSprites.Name = "modeCaptureSprites";
-			this.modeCaptureSprites.Size = new System.Drawing.Size(111, 17);
+			this.modeCaptureSprites.Size = new System.Drawing.Size(15, 14);
 			this.modeCaptureSprites.TabIndex = 10;
 			this.modeCaptureSprites.UseVisualStyleBackColor = true;
 			this.modeCaptureSprites.Visible = false;
@@ -278,7 +278,7 @@
 			// 
 			// bpCopyPal
 			// 
-			this.bpCopyPal.Location = new System.Drawing.Point(800, 547);
+			this.bpCopyPal.Location = new System.Drawing.Point(823, 43);
 			this.bpCopyPal.Name = "bpCopyPal";
 			this.bpCopyPal.Size = new System.Drawing.Size(107, 49);
 			this.bpCopyPal.TabIndex = 11;

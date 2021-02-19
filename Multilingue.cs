@@ -146,8 +146,8 @@ namespace ConvImgCpc {
 			dic.Add("Main.prg.TxtInfo39.EN", "");
 
 			// ImageCpc
-			dic.Add("ImageCpc.lockAllPal.FR", "Tout vérouiller");
-			dic.Add("ImageCpc.lockAllPal.EN", "Lock all");
+			dic.Add("ImageCpc.lockAllPal.FR", "Vérouiller toute la palette");
+			dic.Add("ImageCpc.lockAllPal.EN", "Lock all pallet");
 			dic.Add("ImageCpc.modeEdition.FR", "Editer image");
 			dic.Add("ImageCpc.modeEdition.EN", "Edit picture");
 			dic.Add("ImageCpc.label3.FR", "Couleur crayon :");

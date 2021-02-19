@@ -31,14 +31,14 @@ namespace ConvImgCpc {
 				// Générer les contrôles de "couleurs"
 				colors[i] = new Label();
 				colors[i].BorderStyle = BorderStyle.FixedSingle;
-				colors[i].Location = new Point(4 + i * 48, 568);
+				colors[i].Location = new Point(4 + i * 48, 568-564);
 				colors[i].Size = new Size(40, 32);
 				colors[i].Tag = i;
 				colors[i].MouseDown += ClickColor;
 				Controls.Add(colors[i]);
 				// Générer les contrôles de "bloquage couleur"
 				lockColors[i] = new CheckBox();
-				lockColors[i].Location = new Point(16 + i * 48, 600);
+				lockColors[i].Location = new Point(16 + i * 48, 600-564);
 				lockColors[i].Size = new Size(20, 20);
 				lockColors[i].Tag = i;
 				lockColors[i].Click += ClickLock;
