@@ -51,5 +51,6 @@
 		public int bitsRVB = 24;
 		public bool diffErr;
 		public string langue = "FR";
+		public bool modeImpDraw;
 	}
 }

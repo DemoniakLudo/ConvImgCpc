@@ -83,6 +83,9 @@ namespace ConvImgCpc {
 			dic.Add("Main.groupBox2.EN", "Color management");
 			dic.Add("Main.bpEditSprites.FR", "Edition Sprites Hard");
 			dic.Add("Main.bpEditSprites.EN", "Editing Hard Sprites");
+			dic.Add("Main.chkImpDraw.FR", "Mode ImpDraw");
+			dic.Add("Main.chkImpDraw.EN", "ImpDraw mode");
+
 			// --- Libellés du programme
 			dic.Add("Main.Prg.TxtInfo1.FR", "Conversion en cours...");
 			dic.Add("Main.Prg.TxtInfo1.EN", "Conversion in progress...");

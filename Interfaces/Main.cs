@@ -44,10 +44,11 @@ namespace ConvImgCpc {
 			if (File.Exists(configDetault))
 				ReadParam(configDetault);
 
+			CheckVersion(version);
+
 			anim.Show();
 			imgCpc.Show();
 			Show();
-			CheckVersion(version);
 		}
 
 		private void CheckVersion(Version version) {
@@ -753,8 +754,13 @@ namespace ConvImgCpc {
 				paramInterne.Hide();
 		}
 
-		#region Gestion des couleurs
+		private void chkImpDraw_CheckedChanged(object sender, EventArgs e) {
+			param.modeImpDraw = chkImpDraw.Checked;
+			if (Enabled)
+				Convert(false);
+		}
 
+		#region Gestion des couleurs
 		private void red_ValueChanged(object sender, EventArgs e) {
 			param.pctRed = red.Value;
 			if (Enabled)
@@ -987,5 +993,6 @@ namespace ConvImgCpc {
 		private void bpEn_Click(object sender, EventArgs e) {
 			ChangeLanguage("EN");
 		}
+
 	}
 }
