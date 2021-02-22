@@ -184,6 +184,7 @@ namespace ConvImgCpc {
 				}
 				SelectImage(imgSel);
 			}
+			imgCpc.SetImpDrawMode(param.modeImpDraw);
 			imgCpc.Render();
 		}
 

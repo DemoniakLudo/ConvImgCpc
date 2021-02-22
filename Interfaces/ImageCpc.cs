@@ -31,14 +31,14 @@ namespace ConvImgCpc {
 				// Générer les contrôles de "couleurs"
 				colors[i] = new Label();
 				colors[i].BorderStyle = BorderStyle.FixedSingle;
-				colors[i].Location = new Point(4 + i * 48, 568-564);
+				colors[i].Location = new Point(4 + i * 48, 568 - 564);
 				colors[i].Size = new Size(40, 32);
 				colors[i].Tag = i;
 				colors[i].MouseDown += ClickColor;
 				Controls.Add(colors[i]);
 				// Générer les contrôles de "bloquage couleur"
 				lockColors[i] = new CheckBox();
-				lockColors[i].Location = new Point(16 + i * 48, 600-564);
+				lockColors[i].Location = new Point(16 + i * 48, 600 - 564);
 				lockColors[i].Size = new Size(20, 20);
 				lockColors[i].Tag = i;
 				lockColors[i].Click += ClickLock;
@@ -96,6 +96,10 @@ namespace ConvImgCpc {
 
 		public void SetPixelCpc(int xPos, int yPos, int col, int tx) {
 			BmpLock.SetHorLineDouble(xPos, yPos, tx, GetPalCPC(BitmapCpc.modeVirtuel == 5 || BitmapCpc.modeVirtuel == 6 ? colMode5[yPos >> 1, col] : BitmapCpc.Palette[col]));
+		}
+
+		public void SetImpDrawMode(bool impDrawMode) {
+			modeImpDraw = pictImpDraw.Visible = impDrawMode;
 		}
 
 		public void Render(bool forceDrawZoom = false) {
@@ -309,7 +313,7 @@ namespace ConvImgCpc {
 				maxSize = (BitmapCpc.TailleX * BitmapCpc.TailleY) >> 4;
 			else
 				if (maxSize >= 0x4000)
-				maxSize += 0x3800;
+					maxSize += 0x3800;
 
 			byte[] ret = new byte[maxSize];
 			Array.Clear(ret, 0, ret.Length);

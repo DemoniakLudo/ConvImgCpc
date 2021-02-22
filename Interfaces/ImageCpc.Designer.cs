@@ -45,8 +45,10 @@
 			this.pictureBox = new System.Windows.Forms.PictureBox();
 			this.modeCaptureSprites = new System.Windows.Forms.CheckBox();
 			this.bpCopyPal = new System.Windows.Forms.Button();
+			this.pictImpDraw = new System.Windows.Forms.PictureBox();
 			this.grpEdition.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictImpDraw)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// lockAllPal
@@ -285,12 +287,21 @@
 			this.bpCopyPal.UseVisualStyleBackColor = true;
 			this.bpCopyPal.Click += new System.EventHandler(this.bpCopyPal_Click);
 			// 
+			// pictImpDraw
+			// 
+			this.pictImpDraw.Location = new System.Drawing.Point(2, 56);
+			this.pictImpDraw.Name = "pictImpDraw";
+			this.pictImpDraw.Size = new System.Drawing.Size(768, 2);
+			this.pictImpDraw.TabIndex = 12;
+			this.pictImpDraw.TabStop = false;
+			// 
 			// ImageCpc
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(942, 620);
 			this.ControlBox = false;
+			this.Controls.Add(this.pictImpDraw);
 			this.Controls.Add(this.bpCopyPal);
 			this.Controls.Add(this.modeCaptureSprites);
 			this.Controls.Add(this.grpEdition);
@@ -309,6 +320,7 @@
 			this.grpEdition.ResumeLayout(false);
 			this.grpEdition.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictImpDraw)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -338,6 +350,7 @@
 		private System.Windows.Forms.Label lblInfoPos;
 		private System.Windows.Forms.CheckBox modeCaptureSprites;
 		private System.Windows.Forms.Button bpCopyPal;
+		private System.Windows.Forms.PictureBox pictImpDraw;
 
 	}
 }

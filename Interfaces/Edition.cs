@@ -23,6 +23,7 @@ namespace ConvImgCpc {
 		private EditTool editToolMode = EditTool.Draw;
 		private DirectBitmap imgMotif;
 		private DirectBitmap imgCopy;
+		private bool modeImpDraw;
 
 		private void ToolModeDraw(MouseEventArgs e) {
 			int incY = BitmapCpc.modeVirtuel >= 8 ? 8 : 2;
@@ -69,7 +70,8 @@ namespace ConvImgCpc {
 			hScrollBar.Maximum = hScrollBar.LargeChange + BitmapCpc.TailleX - (BitmapCpc.TailleX / zoom);
 			vScrollBar.Maximum = vScrollBar.LargeChange + BitmapCpc.TailleY - (BitmapCpc.TailleY / zoom);
 			hScrollBar.Value = Math.Max(0, Math.Min(Math.Min(zoomRectx, zoomRectx + zoomRectw), BitmapCpc.TailleX - ((imgOrigine.Width + zoom) / zoom)));
-			vScrollBar.Value = Math.Max(0, Math.Min(Math.Min(zoomRecty, zoomRecty + zoomRecth), BitmapCpc.TailleY - ((imgOrigine.Height + zoom) / zoom)));
+			vScrollBar.Minimum = modeImpDraw ? 2 : 0;
+			vScrollBar.Value = Math.Max(modeImpDraw ? 2 : 0, Math.Min(Math.Min(zoomRecty, zoomRecty + zoomRecth), BitmapCpc.TailleY - ((imgOrigine.Height + zoom) / zoom)));
 			offsetX = (hScrollBar.Value >> 3) << 3;
 			offsetY = (vScrollBar.Value >> 1) << 1;
 			lblZoom.Text = zoom.ToString() + ":1";
@@ -222,7 +224,7 @@ namespace ConvImgCpc {
 			else
 				if (modeEdition.Checked) {
 					int incY = BitmapCpc.modeVirtuel >= 8 ? 8 : 2;
-					int yReel = ((offsetY + (e.Y / zoom)) & -incY) >> 1;
+					int yReel = (((offsetY + (e.Y / zoom)) & -incY) >> 1) - (modeImpDraw ? 1 : 0);
 					int tx = BitmapCpc.CalcTx(yReel);
 					int xReel = (offsetX + (e.X / zoom)) & -tx;
 					lblInfoPos.Text = "x:" + xReel.ToString("000") + " y:" + yReel.ToString("000");
