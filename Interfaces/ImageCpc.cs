@@ -99,7 +99,7 @@ namespace ConvImgCpc {
 		}
 
 		public void SetImpDrawMode(bool impDrawMode) {
-			modeImpDraw = pictImpDraw.Visible = impDrawMode;
+			modeImpDraw = pictImpDraw.Visible = BitmapCpc.TailleY == 544 && BitmapCpc.TailleX == 768 && impDrawMode;
 		}
 
 		public void Render(bool forceDrawZoom = false) {

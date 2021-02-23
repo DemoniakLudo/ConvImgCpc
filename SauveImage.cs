@@ -211,7 +211,7 @@ namespace ConvImgCpc {
 			0xC9						//				RET
 		};
 
-		static byte[] codeEgx1 = {	
+		static byte[] codeEgx1 = {
 			0x16, 0x45,					//				LD		D,#45
 			0x01, 0x0E, 0xF4,			//	WaitKey1:	LD		BC,#F40E
 			0xED, 0x49,					//				OUT		(C),C
@@ -376,8 +376,8 @@ namespace ConvImgCpc {
 						Buffer.BlockCopy(codeEgx0, 0, imgCpc, 0x37D0, codeEgx0.Length);
 						Buffer.BlockCopy(codeEgx1, 0, imgCpc, 0x2FD0, codeEgx1.Length);
 						imgCpc[0x07F2] = 0xD0;
-						imgCpc[0x07F3] = 0xF7;	//	CALL 0xF7D0
-						imgCpc[0x37FA] = 0xEF;	//	Call 0xEFD0
+						imgCpc[0x07F3] = 0xF7;  //	CALL 0xF7D0
+						imgCpc[0x37FA] = 0xEF;  //	Call 0xEFD0
 					}
 				}
 			}
@@ -396,14 +396,14 @@ namespace ConvImgCpc {
 							if (param.cpcPlus) {
 								imgCpc[0x669] = 0xCD;
 								imgCpc[0x66A] = 0x00;
-								imgCpc[0x66B] = 0x18;		// CALL	#1800
+								imgCpc[0x66B] = 0x18;       // CALL	#1800
 							}
 							else {
 								imgCpc[0x631] = 0x00;
-								imgCpc[0x632] = 0x18;		// CALL	#1800
+								imgCpc[0x632] = 0x18;       // CALL	#1800
 							}
 							imgCpc[0x1629] = 0x40;
-							imgCpc[0x162A] = 0x18;	//	CALL	#1840
+							imgCpc[0x162A] = 0x18;  //	CALL	#1840
 						}
 					}
 				}
@@ -462,13 +462,16 @@ namespace ConvImgCpc {
 				fp.Write(CpcSystem.AmsdosToByte(entete));
 				fp.Write(compact ? bufPack : bitmapCpc.bmpCpc, 0, lg);
 				fp.Close();
-				if ( lg==16336) {
+				if (lg == 16336) {
 					PackZX0 pk = new PackZX0();
 					int newlg = 0;
-					byte[] newpk = pk.compress(bitmapCpc.bmpCpc, lg, ref newlg);
-					BinaryWriter fp2 = new BinaryWriter(new FileStream(fileName+".pk", FileMode.Create));
+					pk.Show();
+					byte[] newpk = pk.Pack(bitmapCpc.bmpCpc, lg, ref newlg);
+					BinaryWriter fp2 = new BinaryWriter(new FileStream(fileName + ".pk", FileMode.Create));
 					fp2.Write(newpk, 0, newlg);
 					fp2.Close();
+					pk.Close();
+					pk.Dispose();
 				}
 			}
 			return (lg);
@@ -518,7 +521,7 @@ namespace ConvImgCpc {
 					if (param.cpcPlus) {
 						for (int i = 0; i < 16; i++) {
 							int r = 0, v = 0, b = 0;
-							for (int k = 26; k-- > 0; ) {
+							for (int k = 26; k-- > 0;) {
 								if (pal[3 + i * 12] == (byte)BitmapCpc.CpcVGA[k])
 									r = (26 - k) << 4;
 
