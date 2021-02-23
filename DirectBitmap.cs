@@ -53,10 +53,11 @@ namespace ConvImgCpc {
 			uint color = (uint)c | 0xFF000000;
 			int index = pixelX + (pixelY * Width);
 			for (; lineLength-- > 0; ) {
-				tabBits[index] = color;
-				if (index + Width < Length)
-					tabBits[index + Width] = color;
-
+				if (index < Length) {
+					tabBits[index] = color;
+					if (index + Width < Length)
+						tabBits[index + Width] = color;
+				}
 				index++;
 			}
 		}

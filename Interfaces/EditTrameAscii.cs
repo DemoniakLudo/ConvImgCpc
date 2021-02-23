@@ -197,7 +197,7 @@ namespace ConvImgCpc {
 			for (int i = 0; i < nbImages; i++) {
 				main.SelectImage(i);
 				DirectBitmap tmp = main.GetResizeBitmap();
-				Conversion.CnvTrame(tmp, param, imgCpc, lstTrame, param);
+				Conversion.CnvTrame(tmp, param, imgCpc, lstTrame);
 				tmp.Dispose();
 				lstTrame.Sort((x, y) => y.nbFound - x.nbFound);
 			}

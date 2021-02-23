@@ -83,6 +83,9 @@ namespace ConvImgCpc {
 			dic.Add("Main.groupBox2.EN", "Color management");
 			dic.Add("Main.bpEditSprites.FR", "Edition Sprites Hard");
 			dic.Add("Main.bpEditSprites.EN", "Editing Hard Sprites");
+			dic.Add("Main.chkImpDraw.FR", "Mode ImpDraw");
+			dic.Add("Main.chkImpDraw.EN", "ImpDraw mode");
+
 			// --- Libellés du programme
 			dic.Add("Main.Prg.TxtInfo1.FR", "Conversion en cours...");
 			dic.Add("Main.Prg.TxtInfo1.EN", "Conversion in progress...");
@@ -146,7 +149,7 @@ namespace ConvImgCpc {
 			dic.Add("Main.prg.TxtInfo39.EN", "");
 
 			// ImageCpc
-			dic.Add("ImageCpc.lockAllPal.FR", "Vérouiller toute la palette");
+			dic.Add("ImageCpc.lockAllPal.FR", "Verrouiller toute la palette");
 			dic.Add("ImageCpc.lockAllPal.EN", "Lock all pallet");
 			dic.Add("ImageCpc.modeEdition.FR", "Editer image");
 			dic.Add("ImageCpc.modeEdition.EN", "Edit picture");
@@ -174,9 +177,9 @@ namespace ConvImgCpc {
 			dic.Add("Animation.bpSup4.EN", "Delete");
 			dic.Add("Animation.bpSup5.FR", "Supprimer");
 			dic.Add("Animation.bpSup5.EN", "Delete");
-			dic.Add("Animation.rbSource.FR", "Affichier images source");
+			dic.Add("Animation.rbSource.FR", "Afficher images source");
 			dic.Add("Animation.rbSource.EN", "Display source pictures");
-			dic.Add("Animation.rvCalculee.FR", "Affichier images calculées");
+			dic.Add("Animation.rvCalculee.FR", "Afficher images calculées");
 			dic.Add("Animation.rvCalculee.EN", "Display calculated pictures");
 			dic.Add("Animation.bpSaveGif.FR", "Sauvegarde GIF Anim");
 			dic.Add("Animation.bpSaveGif.EN", "Save as GIF Anim");

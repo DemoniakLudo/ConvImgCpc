@@ -116,6 +116,7 @@
 			this.bpEditSprites = new System.Windows.Forms.Button();
 			this.bpFr = new System.Windows.Forms.Button();
 			this.bpEn = new System.Windows.Forms.Button();
+			this.chkImpDraw = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -201,7 +202,7 @@
 			this.label1.AutoSize = true;
 			this.label1.Location = new System.Drawing.Point(5, 18);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(64, 13);
+			this.label1.Size = new System.Drawing.Size(0, 13);
 			this.label1.TabIndex = 6;
 			// 
 			// label2
@@ -209,7 +210,7 @@
 			this.label2.AutoSize = true;
 			this.label2.Location = new System.Drawing.Point(5, 44);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(49, 13);
+			this.label2.Size = new System.Drawing.Size(0, 13);
 			this.label2.TabIndex = 6;
 			// 
 			// mode
@@ -336,6 +337,7 @@
 			// 
 			// tramage
 			// 
+			this.tramage.Controls.Add(this.chkImpDraw);
 			this.tramage.Controls.Add(this.chkDiffErr);
 			this.tramage.Controls.Add(this.chkTrameTC);
 			this.tramage.Controls.Add(this.chkLissage);
@@ -366,7 +368,7 @@
 			this.chkTrameTC.AutoSize = true;
 			this.chkTrameTC.Location = new System.Drawing.Point(46, 125);
 			this.chkTrameTC.Name = "chkTrameTC";
-			this.chkTrameTC.Size = new System.Drawing.Size(87, 17);
+			this.chkTrameTC.Size = new System.Drawing.Size(15, 14);
 			this.chkTrameTC.TabIndex = 16;
 			this.chkTrameTC.UseVisualStyleBackColor = true;
 			this.chkTrameTC.CheckedChanged += new System.EventHandler(this.InterfaceChange);
@@ -376,7 +378,7 @@
 			this.chkLissage.AutoSize = true;
 			this.chkLissage.Location = new System.Drawing.Point(46, 98);
 			this.chkLissage.Name = "chkLissage";
-			this.chkLissage.Size = new System.Drawing.Size(76, 17);
+			this.chkLissage.Size = new System.Drawing.Size(15, 14);
 			this.chkLissage.TabIndex = 15;
 			this.chkLissage.UseVisualStyleBackColor = true;
 			this.chkLissage.CheckedChanged += new System.EventHandler(this.InterfaceChange);
@@ -405,7 +407,7 @@
 			this.chkNewReduc.AutoSize = true;
 			this.chkNewReduc.Location = new System.Drawing.Point(574, 19);
 			this.chkNewReduc.Name = "chkNewReduc";
-			this.chkNewReduc.Size = new System.Drawing.Size(114, 17);
+			this.chkNewReduc.Size = new System.Drawing.Size(15, 14);
 			this.chkNewReduc.TabIndex = 17;
 			this.chkNewReduc.UseVisualStyleBackColor = true;
 			this.chkNewReduc.CheckedChanged += new System.EventHandler(this.InterfaceChange);
@@ -415,7 +417,7 @@
 			this.chkPalCpc.AutoSize = true;
 			this.chkPalCpc.Location = new System.Drawing.Point(574, 42);
 			this.chkPalCpc.Name = "chkPalCpc";
-			this.chkPalCpc.Size = new System.Drawing.Size(99, 30);
+			this.chkPalCpc.Size = new System.Drawing.Size(15, 14);
 			this.chkPalCpc.TabIndex = 14;
 			this.chkPalCpc.UseVisualStyleBackColor = true;
 			this.chkPalCpc.CheckedChanged += new System.EventHandler(this.InterfaceChange);
@@ -425,7 +427,7 @@
 			this.autoRecalc.AutoSize = true;
 			this.autoRecalc.Location = new System.Drawing.Point(7, 94);
 			this.autoRecalc.Name = "autoRecalc";
-			this.autoRecalc.Size = new System.Drawing.Size(136, 17);
+			this.autoRecalc.Size = new System.Drawing.Size(15, 14);
 			this.autoRecalc.TabIndex = 44;
 			this.autoRecalc.UseVisualStyleBackColor = true;
 			this.autoRecalc.CheckedChanged += new System.EventHandler(this.InterfaceChange);
@@ -490,7 +492,7 @@
 			this.radioOrigin.Enabled = false;
 			this.radioOrigin.Location = new System.Drawing.Point(6, 94);
 			this.radioOrigin.Name = "radioOrigin";
-			this.radioOrigin.Size = new System.Drawing.Size(81, 17);
+			this.radioOrigin.Size = new System.Drawing.Size(14, 13);
 			this.radioOrigin.TabIndex = 46;
 			this.radioOrigin.TabStop = true;
 			this.radioOrigin.UseVisualStyleBackColor = true;
@@ -510,7 +512,7 @@
 			this.label5.AutoSize = true;
 			this.label5.Location = new System.Drawing.Point(3, 120);
 			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(33, 13);
+			this.label5.Size = new System.Drawing.Size(0, 13);
 			this.label5.TabIndex = 45;
 			// 
 			// tbxPosY
@@ -574,7 +576,7 @@
 			this.lblInfoVersion.AutoSize = true;
 			this.lblInfoVersion.Location = new System.Drawing.Point(7, 552);
 			this.lblInfoVersion.Name = "lblInfoVersion";
-			this.lblInfoVersion.Size = new System.Drawing.Size(42, 13);
+			this.lblInfoVersion.Size = new System.Drawing.Size(0, 13);
 			this.lblInfoVersion.TabIndex = 52;
 			// 
 			// withCode
@@ -584,7 +586,7 @@
 			this.withCode.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.withCode.Location = new System.Drawing.Point(6, 142);
 			this.withCode.Name = "withCode";
-			this.withCode.Size = new System.Drawing.Size(165, 17);
+			this.withCode.Size = new System.Drawing.Size(15, 14);
 			this.withCode.TabIndex = 52;
 			this.withCode.UseVisualStyleBackColor = true;
 			this.withCode.CheckedChanged += new System.EventHandler(this.withCode_CheckedChanged);
@@ -596,7 +598,7 @@
 			this.withPalette.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.withPalette.Location = new System.Drawing.Point(6, 165);
 			this.withPalette.Name = "withPalette";
-			this.withPalette.Size = new System.Drawing.Size(138, 17);
+			this.withPalette.Size = new System.Drawing.Size(15, 14);
 			this.withPalette.TabIndex = 52;
 			this.withPalette.UseVisualStyleBackColor = true;
 			this.withPalette.CheckedChanged += new System.EventHandler(this.withPalette_CheckedChanged);
@@ -606,7 +608,7 @@
 			this.chkAllPics.AutoSize = true;
 			this.chkAllPics.Location = new System.Drawing.Point(121, 69);
 			this.chkAllPics.Name = "chkAllPics";
-			this.chkAllPics.Size = new System.Drawing.Size(73, 17);
+			this.chkAllPics.Size = new System.Drawing.Size(15, 14);
 			this.chkAllPics.TabIndex = 57;
 			this.chkAllPics.UseVisualStyleBackColor = true;
 			this.chkAllPics.Visible = false;
@@ -647,7 +649,7 @@
 			this.chkParamInterne.AutoSize = true;
 			this.chkParamInterne.Location = new System.Drawing.Point(304, 517);
 			this.chkParamInterne.Name = "chkParamInterne";
-			this.chkParamInterne.Size = new System.Drawing.Size(100, 17);
+			this.chkParamInterne.Size = new System.Drawing.Size(15, 14);
 			this.chkParamInterne.TabIndex = 63;
 			this.chkParamInterne.UseVisualStyleBackColor = true;
 			this.chkParamInterne.CheckedChanged += new System.EventHandler(this.chkParamInterne_CheckedChanged);
@@ -657,7 +659,7 @@
 			this.reducPal4.AutoSize = true;
 			this.reducPal4.Location = new System.Drawing.Point(374, 41);
 			this.reducPal4.Name = "reducPal4";
-			this.reducPal4.Size = new System.Drawing.Size(84, 17);
+			this.reducPal4.Size = new System.Drawing.Size(15, 14);
 			this.reducPal4.TabIndex = 60;
 			this.reducPal4.UseVisualStyleBackColor = true;
 			this.reducPal4.CheckedChanged += new System.EventHandler(this.reducPal4_CheckedChanged);
@@ -858,7 +860,7 @@
 			this.nb.AutoSize = true;
 			this.nb.Location = new System.Drawing.Point(166, 19);
 			this.nb.Name = "nb";
-			this.nb.Size = new System.Drawing.Size(90, 17);
+			this.nb.Size = new System.Drawing.Size(15, 14);
 			this.nb.TabIndex = 51;
 			this.nb.UseVisualStyleBackColor = true;
 			this.nb.CheckedChanged += new System.EventHandler(this.nb_CheckedChanged);
@@ -868,7 +870,7 @@
 			this.sortPal.AutoSize = true;
 			this.sortPal.Location = new System.Drawing.Point(6, 19);
 			this.sortPal.Name = "sortPal";
-			this.sortPal.Size = new System.Drawing.Size(45, 17);
+			this.sortPal.Size = new System.Drawing.Size(15, 14);
 			this.sortPal.TabIndex = 50;
 			this.sortPal.UseVisualStyleBackColor = true;
 			this.sortPal.CheckedChanged += new System.EventHandler(this.sortPal_CheckedChanged);
@@ -918,7 +920,7 @@
 			this.reducPal3.AutoSize = true;
 			this.reducPal3.Location = new System.Drawing.Point(273, 41);
 			this.reducPal3.Name = "reducPal3";
-			this.reducPal3.Size = new System.Drawing.Size(84, 17);
+			this.reducPal3.Size = new System.Drawing.Size(15, 14);
 			this.reducPal3.TabIndex = 47;
 			this.reducPal3.UseVisualStyleBackColor = true;
 			this.reducPal3.CheckedChanged += new System.EventHandler(this.reducPal3_CheckedChanged);
@@ -939,7 +941,7 @@
 			this.reducPal2.AutoSize = true;
 			this.reducPal2.Location = new System.Drawing.Point(166, 41);
 			this.reducPal2.Name = "reducPal2";
-			this.reducPal2.Size = new System.Drawing.Size(84, 17);
+			this.reducPal2.Size = new System.Drawing.Size(15, 14);
 			this.reducPal2.TabIndex = 46;
 			this.reducPal2.UseVisualStyleBackColor = true;
 			this.reducPal2.CheckedChanged += new System.EventHandler(this.reducPal2_CheckedChanged);
@@ -949,7 +951,7 @@
 			this.reducPal1.AutoSize = true;
 			this.reducPal1.Location = new System.Drawing.Point(59, 41);
 			this.reducPal1.Name = "reducPal1";
-			this.reducPal1.Size = new System.Drawing.Size(84, 17);
+			this.reducPal1.Size = new System.Drawing.Size(15, 14);
 			this.reducPal1.TabIndex = 46;
 			this.reducPal1.UseVisualStyleBackColor = true;
 			this.reducPal1.CheckedChanged += new System.EventHandler(this.reducPal1_CheckedChanged);
@@ -969,7 +971,7 @@
 			this.newMethode.AutoSize = true;
 			this.newMethode.Location = new System.Drawing.Point(374, 19);
 			this.newMethode.Name = "newMethode";
-			this.newMethode.Size = new System.Drawing.Size(83, 17);
+			this.newMethode.Size = new System.Drawing.Size(15, 14);
 			this.newMethode.TabIndex = 45;
 			this.newMethode.UseVisualStyleBackColor = true;
 			this.newMethode.CheckedChanged += new System.EventHandler(this.newMethode_CheckedChanged);
@@ -1039,7 +1041,7 @@
 			this.rb24bits.Checked = true;
 			this.rb24bits.Location = new System.Drawing.Point(59, 64);
 			this.rb24bits.Name = "rb24bits";
-			this.rb24bits.Size = new System.Drawing.Size(84, 17);
+			this.rb24bits.Size = new System.Drawing.Size(14, 13);
 			this.rb24bits.TabIndex = 61;
 			this.rb24bits.TabStop = true;
 			this.rb24bits.UseVisualStyleBackColor = true;
@@ -1050,7 +1052,7 @@
 			this.rb12bits.AutoSize = true;
 			this.rb12bits.Location = new System.Drawing.Point(166, 64);
 			this.rb12bits.Name = "rb12bits";
-			this.rb12bits.Size = new System.Drawing.Size(84, 17);
+			this.rb12bits.Size = new System.Drawing.Size(14, 13);
 			this.rb12bits.TabIndex = 62;
 			this.rb12bits.UseVisualStyleBackColor = true;
 			this.rb12bits.CheckedChanged += new System.EventHandler(this.rb12bits_CheckedChanged);
@@ -1060,7 +1062,7 @@
 			this.rb9bits.AutoSize = true;
 			this.rb9bits.Location = new System.Drawing.Point(273, 64);
 			this.rb9bits.Name = "rb9bits";
-			this.rb9bits.Size = new System.Drawing.Size(78, 17);
+			this.rb9bits.Size = new System.Drawing.Size(14, 13);
 			this.rb9bits.TabIndex = 63;
 			this.rb9bits.UseVisualStyleBackColor = true;
 			this.rb9bits.CheckedChanged += new System.EventHandler(this.rb9bits_CheckedChanged);
@@ -1070,7 +1072,7 @@
 			this.rb6bits.AutoSize = true;
 			this.rb6bits.Location = new System.Drawing.Point(374, 64);
 			this.rb6bits.Name = "rb6bits";
-			this.rb6bits.Size = new System.Drawing.Size(78, 17);
+			this.rb6bits.Size = new System.Drawing.Size(14, 13);
 			this.rb6bits.TabIndex = 64;
 			this.rb6bits.UseVisualStyleBackColor = true;
 			this.rb6bits.CheckedChanged += new System.EventHandler(this.rb6bits_CheckedChanged);
@@ -1167,6 +1169,16 @@
 			this.bpEn.TabIndex = 68;
 			this.bpEn.UseVisualStyleBackColor = true;
 			this.bpEn.Click += new System.EventHandler(this.bpEn_Click);
+			// 
+			// chkImpDraw
+			// 
+			this.chkImpDraw.AutoSize = true;
+			this.chkImpDraw.Location = new System.Drawing.Point(46, 152);
+			this.chkImpDraw.Name = "chkImpDraw";
+			this.chkImpDraw.Size = new System.Drawing.Size(97, 17);
+			this.chkImpDraw.TabIndex = 69;
+			this.chkImpDraw.UseVisualStyleBackColor = true;
+			this.chkImpDraw.CheckedChanged += new System.EventHandler(this.chkImpDraw_CheckedChanged);
 			// 
 			// Main
 			// 
@@ -1321,6 +1333,7 @@
 		private System.Windows.Forms.Button bpEditSprites;
 		private System.Windows.Forms.Button bpFr;
 		private System.Windows.Forms.Button bpEn;
+		private System.Windows.Forms.CheckBox chkImpDraw;
 	}
 }
 
