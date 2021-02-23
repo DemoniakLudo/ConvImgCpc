@@ -12,7 +12,7 @@ namespace ConvImgCpc {
 		public int SelImage { get { return (int)numImage.Value; } }
 		public int MaxImage { get { return (int)numImage.Maximum; } }
 		private int[] tempsAffiche;
-
+		private bool lockTps = false;
 		public Animation(Main m) {
 			main = m;
 			InitializeComponent();
@@ -24,9 +24,9 @@ namespace ConvImgCpc {
 			numImage.Maximum = nbImg - 1;
 			numImage.Value = hScrollBar1.Value = 0;
 			if (nbImg > 1)
-				this.Text = "Animation";
+				Text = "Animation";
 			else
-				this.Text = "Image";
+				Text = "Image";
 
 			List<int> lst = new List<int>();
 			for (int i = 0; i < nbImg; i++)
@@ -36,6 +36,7 @@ namespace ConvImgCpc {
 		}
 
 		public void DrawImages(int startImg) {
+			lockTps = true;
 			PictureBox[] tabPb = new PictureBox[] { pictureBox1, pictureBox2, pictureBox3, pictureBox4, pictureBox5 };
 			Button[] tabButton = new Button[] { bpSup1, bpSup2, bpSup3, bpSup4, bpSup5 };
 			TextBox[] tabTxt = new TextBox[] { txbTps1, txbTps2, txbTps3, txbTps4, txbTps5 };
@@ -44,7 +45,7 @@ namespace ConvImgCpc {
 				tabPb[i - startImg].Image = displaySrc ? main.imgSrc.GetBitmap(i) : main.imgCpc.tabBmpLock[i].Bitmap;
 				tabPb[i - startImg].Refresh();
 				tabButton[i - startImg].Visible = tabTxt[i - startImg].Visible = startImg + i > 0 || endImg - startImg > 2;
-				tabTxt[i - startImg].Text = main.imgCpc.tabBmpLock[i].Tps.ToString();   // tempsAffiche != null ? tempsAffiche[i].ToString() : "";
+				tabTxt[i - startImg].Text = main.imgCpc.tabBmpLock[i].Tps.ToString();
 			}
 			for (int i = endImg - startImg + 1; i < 5; i++) {
 				tabPb[i].Image = null;
@@ -54,6 +55,7 @@ namespace ConvImgCpc {
 			}
 			hScrollBar1.Visible = numImage.Maximum >= 5;
 			hScrollBar1.Maximum = (int)(numImage.Maximum);
+			lockTps = false;
 		}
 
 		private void numImage_ValueChanged(object sender, EventArgs e) {
@@ -149,13 +151,15 @@ namespace ConvImgCpc {
 		}
 
 		private void txbTps_TextChanged(object sender, EventArgs e) {
-			int v = 0;
-			TextBox t = (TextBox)sender;
-			if (int.TryParse(t.Text, out v) && v > 0 && v <= 5000) {
-				int num = (int)numImage.Value;
-				int index = System.Convert.ToInt32(t.Tag) + num;
-				main.imgCpc.tabBmpLock[index].Tps = v;
-				//tempsAffiche[index] = v;
+			if (!lockTps) {
+				int v = 0;
+				TextBox t = (TextBox)sender;
+				if (int.TryParse(t.Text, out v) && v > 0 && v <= 5000) {
+					int num = (int)numImage.Value;
+					int index = Convert.ToInt32(t.Tag) + num;
+					if (index >= 0 && index < main.imgCpc.tabBmpLock.Length)
+						main.imgCpc.tabBmpLock[index].Tps = v;
+				}
 			}
 		}
 	}

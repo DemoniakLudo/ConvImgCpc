@@ -87,7 +87,7 @@ namespace ConvImgCpc {
 		static double[,] matDither;
 
 		static public Dictionary<string, double[,]> dicMat = new Dictionary<string, double[,]>() {
-			{"Floyd-Steinberg (2x2)",	floyd},
+			{ "Floyd-Steinberg (2x2)",	floyd},
 			{ "Bayer 1 (2X2)",			bayer1},
 			{ "Bayer 2 (4x4)",			bayer2},
 			{ "Bayer 3 (4X4)",			bayer3},

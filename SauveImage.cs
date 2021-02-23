@@ -462,6 +462,14 @@ namespace ConvImgCpc {
 				fp.Write(CpcSystem.AmsdosToByte(entete));
 				fp.Write(compact ? bufPack : bitmapCpc.bmpCpc, 0, lg);
 				fp.Close();
+				if ( lg==16336) {
+					PackZX0 pk = new PackZX0();
+					int newlg = 0;
+					byte[] newpk = pk.compress(bitmapCpc.bmpCpc, lg, ref newlg);
+					BinaryWriter fp2 = new BinaryWriter(new FileStream(fileName+".pk", FileMode.Create));
+					fp2.Write(newpk, 0, newlg);
+					fp2.Close();
+				}
 			}
 			return (lg);
 		}

@@ -19,12 +19,6 @@ namespace ConvImgCpc {
 			CreateBitmap(width, height);
 		}
 
-		public DirectBitmap(DirectBitmap source) {
-			CreateBitmap(source.Width, source.Height);
-			CopyBits(source);
-			Tps = 100;
-		}
-
 		public void CopyBits(DirectBitmap source) {
 			Array.Copy(source.tabBits, tabBits, tabBits.Length);
 		}

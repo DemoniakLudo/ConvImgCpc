@@ -139,6 +139,7 @@
     </Compile>
     <Compile Include="Multilingue.cs" />
     <Compile Include="PackDepack.cs" />
+    <Compile Include="PackZX0.cs" />
     <Compile Include="Param.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
