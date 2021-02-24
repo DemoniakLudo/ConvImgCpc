@@ -276,8 +276,8 @@ namespace ConvImgCpc {
 			sw.WriteLine("	OUT	(C),C");
 		}
 
-		static public void GenereAffichage(StreamWriter sw, int delai, bool reboucle, bool gest128K, bool imageMode, Main.PackMethode methode) {
-			if (delai > 0) {
+		static public void GenereAffichage(StreamWriter sw, bool delai, bool reboucle, bool gest128K, bool imageMode, Main.PackMethode methode) {
+			if (delai) {
 				sw.WriteLine("	LD	HL,NewIrq");
 				sw.WriteLine("	LD	(#39),HL");
 				sw.WriteLine("	EI");
@@ -310,50 +310,44 @@ namespace ConvImgCpc {
 				sw.WriteLine("	JR	NZ,SetFonte");
 			}
 			sw.WriteLine("Debut");
-			if (!gest128K)
-				sw.WriteLine("	LD	HL,Delta0");
-			else
-				sw.WriteLine("	LD	IX,AnimDelta");
+			sw.WriteLine("	LD	IX,AnimDelta");
 
 			if (!imageMode) {
 				sw.WriteLine("Boucle:");
-				if (!gest128K) {
-					sw.WriteLine("	LD	A,(HL)");
-					sw.WriteLine("	INC	A");
-				}
-				else {
+				if (gest128K) {
 					sw.WriteLine("	LD	BC,#7FC0");
 					sw.WriteLine("	OUT	(C),C");
-					sw.WriteLine("	LD	H,(IX+1)");
-					sw.WriteLine("	LD	L,(IX+0)");
-					sw.WriteLine("	LD	A,H");
-					sw.WriteLine("	OR	H");
 				}
+				sw.WriteLine("	LD	H,(IX+1)");
+				sw.WriteLine("	LD	L,(IX+0)");
+				sw.WriteLine("	LD	A,H");
+				sw.WriteLine("	OR	H");
 				if (reboucle) {
 					sw.WriteLine("	JR	NZ,Boucle2");
-					if (!gest128K)
-						sw.WriteLine("	LD	HL,Delta1");
-					else {
-						sw.WriteLine("	LD	IX,AnimDelta+3");
-						sw.WriteLine("	JR	Boucle");
-					}
+					sw.WriteLine("	LD	IX,AnimDelta+" + (2 + (gest128K ? 1 : 0) + (delai ? 1 : 0)).ToString());
+					sw.WriteLine("	JR	Boucle");
+
 					sw.WriteLine("Boucle2:");
 				}
 				else
 					sw.WriteLine("	JR	Z,Debut");
 			}
+			if (delai) {
+				sw.WriteLine("	LD	A,(IX+2)");
+				sw.WriteLine("	LD	(SyncFrame+3),A");
+			}
 			if (gest128K) {
 				sw.WriteLine("	LD	B,#7F");
-				sw.WriteLine("	LD	A,(IX+2)");
+				sw.WriteLine("	LD	A,(IX+3)");
 				sw.WriteLine("	OUT	(C),A");
 			}
 			sw.WriteLine("	LD	DE,Buffer");
 			if (methode == Main.PackMethode.Standard)
-				GenereDepack(sw,"InitDraw");
+				GenereDepack(sw, "InitDraw");
 			else
-				GenereDZ80(sw,"InitDraw");
+				GenereDZ80(sw, "InitDraw");
 
-			if (delai > 0) {
+			if (delai) {
 				sw.WriteLine("NewIrq:");
 				sw.WriteLine("	PUSH	AF");
 				sw.WriteLine("	LD	A,(SyncFrame+1)");
@@ -364,20 +358,17 @@ namespace ConvImgCpc {
 				sw.WriteLine("	RET");
 			}
 			sw.WriteLine("InitDraw:");
-			if (!gest128K && !imageMode)
-				sw.WriteLine("	PUSH	HL");
-
-			if (delai > 0) {
+			if (delai) {
 				sw.WriteLine("SyncFrame:");
 				sw.WriteLine("	LD	A,0");
-				sw.WriteLine("	CP	" + delai.ToString());
+				sw.WriteLine("	CP	1");
 				sw.WriteLine("	JR	C,SyncFrame");
 				sw.WriteLine("	XOR	A");
 				sw.WriteLine("	LD	(SyncFrame+1),A");
 			}
 		}
 
-		static public void GenereDrawDC(StreamWriter sw, int delai, bool modeCol, bool gest128K, int addBC26, bool optimSpeed) {
+		static public void GenereDrawDC(StreamWriter sw, bool delai, bool modeCol, bool gest128K, int addBC26, bool optimSpeed) {
 			sw.WriteLine("	LD	HL,buffer");
 			if (modeCol) {
 				sw.WriteLine("	LD	B,(HL)		; Taille en X");
@@ -390,7 +381,7 @@ namespace ConvImgCpc {
 				sw.WriteLine("	LD	D,(HL)		; Adresse écran");
 				sw.WriteLine("	INC	HL");
 				sw.WriteLine("	EX	DE,HL");
-				if (delai > 0)
+				if (delai)
 					sw.WriteLine("	DI");
 
 				sw.WriteLine("	LD	(SauvSp+1),SP");
@@ -417,7 +408,7 @@ namespace ConvImgCpc {
 				sw.WriteLine("	DJNZ	Draw1");
 				sw.WriteLine("SauvSp:");
 				sw.WriteLine("	LD	SP,0");
-				if (delai > 0)
+				if (delai)
 					sw.WriteLine("	EI");
 			}
 			else {
@@ -461,16 +452,14 @@ namespace ConvImgCpc {
 				sw.WriteLine("	DEC	A");
 				sw.WriteLine("	JR	NZ,Nbx");
 			}
-			if (!gest128K) {
-				sw.WriteLine("	POP	HL");
-				sw.WriteLine("	INC	HL");
-			}
-			else {
+			sw.WriteLine("	INC	IX");
+			sw.WriteLine("	INC	IX");
+			if (delai)
 				sw.WriteLine("	INC	IX");
+
+			if (gest128K)
 				sw.WriteLine("	INC	IX");
-				if (gest128K)
-					sw.WriteLine("	INC	IX");
-			}
+
 			sw.WriteLine("	JP	Boucle" + Environment.NewLine);
 			sw.WriteLine("	Nolist");
 		}
@@ -520,16 +509,12 @@ namespace ConvImgCpc {
 			sw.WriteLine("	LDI				; Octet a copier");
 			sw.WriteLine("DrawImgD3:");
 			sw.WriteLine("	JP	PE,DrawImgD1");
-			if (!gest128K) {
-				sw.WriteLine("	POP	HL");
-				sw.WriteLine("	INC	HL");
-			}
-			else {
+			sw.WriteLine("	INC	IX");
+			sw.WriteLine("	INC	IX");
+			sw.WriteLine("	INC	IX");
+			if (gest128K)
 				sw.WriteLine("	INC	IX");
-				sw.WriteLine("	INC	IX");
-				if (gest128K)
-					sw.WriteLine("	INC	IX");
-			}
+
 			sw.WriteLine("	JP	Boucle" + Environment.NewLine);
 			sw.WriteLine("DrawImgD4:");
 			sw.WriteLine("	AND	#7F");
@@ -552,7 +537,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("	Nolist");
 		}
 
-		static public void GenereDrawAscii(StreamWriter sw, bool frameFull, bool frameO, bool frameD, bool gest128K, bool imageMode) {
+		static public void GenereDrawAscii(StreamWriter sw, bool frameFull, bool frameO, bool frameD, bool gest128K, bool imageMode, bool withSpeed) {
 			if (frameFull && !imageMode) {
 				sw.WriteLine("	LD	HL,Buffer");
 				sw.WriteLine("	LD	A,(HL)");
@@ -657,16 +642,14 @@ namespace ConvImgCpc {
 			if (!frameD) {
 				if (!imageMode) {
 					sw.WriteLine("DrawImgI:");
-					if (!gest128K && !imageMode) {
-						sw.WriteLine("	POP	HL");
-						sw.WriteLine("	INC	HL");
-					}
-					else {
+					sw.WriteLine("	INC	IX");
+					sw.WriteLine("	INC	IX");
+					if (withSpeed)
 						sw.WriteLine("	INC	IX");
+
+					if (gest128K)
 						sw.WriteLine("	INC	IX");
-						if (gest128K)
-							sw.WriteLine("	INC	IX");
-					}
+
 					sw.WriteLine("	JP	Boucle");
 				}
 				else
@@ -764,16 +747,14 @@ namespace ConvImgCpc {
 				sw.WriteLine("	JP	PE,DrawImgD1");
 				if (frameD) {
 					if (!imageMode) {
-						if (!gest128K) {
-							sw.WriteLine("	POP	HL");
-							sw.WriteLine("	INC	HL");
-						}
-						else {
+						sw.WriteLine("	INC	IX");
+						sw.WriteLine("	INC	IX");
+						if (withSpeed)
 							sw.WriteLine("	INC	IX");
+
+						if (gest128K)
 							sw.WriteLine("	INC	IX");
-							if (gest128K)
-								sw.WriteLine("	INC	IX");
-						}
+
 						sw.WriteLine("	JP	Boucle");
 					}
 					else
@@ -839,29 +820,21 @@ namespace ConvImgCpc {
 			sw.WriteLine("buffer" + (force8000 ? "	equ	#8000" : ":"));
 		}
 
-		static public void GenerePointeurs(StreamWriter sw, int nbImages, int[] bank, bool gest128K) {
-			string line = "\tDW\t";
-			int nbFramesWrite = 0;
+		static public void GenerePointeurs(StreamWriter sw, int nbImages, int[] bank, int[] speed, bool gest128K) {
 			if (gest128K) {
 				sw.WriteLine("	ORG EndBank0");
 				sw.WriteLine("	Write Direct -1,-1,#C0");
 			}
 			sw.WriteLine("AnimDelta:");
 			for (int i = 0; i < nbImages; i++) {
-				if (gest128K) {
-					sw.WriteLine("\tDW\tDelta" + i.ToString());
+				sw.WriteLine("\tDW\tDelta" + i.ToString());
+				if (speed != null)
+					sw.WriteLine("\tDB\t#" + Convert.ToInt32(Math.Max(1, Math.Min(255, speed[i] / 3.333333))).ToString("X2"));
+
+				if (gest128K)
 					sw.WriteLine("\tDB\t#" + bank[i].ToString("X2"));
-				}
-				else {
-					line += "Delta" + i.ToString() + ",";
-					if (++nbFramesWrite >= Math.Min(16, BitmapCpc.NbCol)) {
-						sw.WriteLine(line.Substring(0, line.Length - 1));
-						line = "\tDW\t";
-						nbFramesWrite = 0;
-					}
-				}
 			}
-			sw.WriteLine(line + "0");
+			sw.WriteLine("\tDW\t#0");
 		}
 
 		// #### A revoir...
