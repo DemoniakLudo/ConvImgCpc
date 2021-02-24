@@ -301,7 +301,7 @@ namespace ConvImgCpc {
 			return 16;
 		}
 
-		private void DepactPK() {
+		private void DepactPK(Main.PackMethode methode) {
 			byte[] Palette = new byte[0x100];
 
 			// Valeurs par défaut
@@ -324,7 +324,7 @@ namespace ConvImgCpc {
 				for (int i = 0; i < 17; i++)
 					Palette[i] = bmpCpc[i + 4];
 
-			int l = PackDepack.Depack(bmpCpc, Std ? 21 : 4, bufTmp);
+			int l = new PackModule().Depack(bmpCpc, Std ? 21 : 4, bufTmp, methode);
 			if (Std) {
 				int i = 0;
 				for (int x = 0; x < 80; x++)
@@ -490,13 +490,13 @@ namespace ConvImgCpc {
 				CreeImgAscii(bmpLock);
 		}
 
-		public Bitmap CreateImageFromCpc(int length, Param par, bool isSprite = false) {
+		public Bitmap CreateImageFromCpc(int length, Param par, Main.PackMethode methode, bool isSprite = false) {
 			if (!isSprite) {
 				if (bmpCpc[0] == 'M' && bmpCpc[1] == 'J' && bmpCpc[2] == 'H')
 					DepactOCP();
 				else
 					if (bmpCpc[0] == 'P' && bmpCpc[1] == 'K' && (bmpCpc[2] == 'O' || bmpCpc[2] == 'V' || bmpCpc[2] == 'S'))
-						DepactPK();
+						DepactPK(methode);
 					else {
 						if (!InitDatas()) {
 							if (length == 16384) {
@@ -505,7 +505,7 @@ namespace ConvImgCpc {
 							}
 							else
 								if (length < 32000) {
-									int l = PackDepack.Depack(bmpCpc, 0, bufTmp);
+									int l = new PackModule().Depack(bmpCpc, 0, bufTmp, methode);
 									Array.Copy(bufTmp, bmpCpc, l);
 									if (!InitDatas()) {
 										cpcPlus = false;

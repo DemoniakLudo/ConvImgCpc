@@ -1,5 +1,5 @@
 ﻿namespace ConvImgCpc {
-	partial class PackZX0 {
+	partial class PackModule {
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>

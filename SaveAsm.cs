@@ -26,6 +26,64 @@ namespace ConvImgCpc {
 				sw.WriteLine(line.Substring(0, line.Length - 1));
 		}
 
+		static public void GenereDZ80(StreamWriter sw, string jumpLabel = null) {
+			sw.WriteLine("; Decompactage");
+			sw.WriteLine("DepkLzw:");
+			sw.WriteLine("	ld	bc, #ffff	; preserve default offset 1");
+			sw.WriteLine("	push    bc");
+			sw.WriteLine("	inc     bc");
+			sw.WriteLine("	ld      a, #80");
+			sw.WriteLine("dzx0s_literals:");
+			sw.WriteLine("	call    dzx0s_elias             ; obtain length");
+			sw.WriteLine("	ldir                            ; copy literals");
+			sw.WriteLine("	add     a, a                    ; copy from last offset or new offset?");
+			sw.WriteLine("	jr      c, dzx0s_new_offset");
+			sw.WriteLine("	call    dzx0s_elias             ; obtain length");
+			sw.WriteLine("dzx0s_copy:");
+			sw.WriteLine("	ex      (sp), hl                ; preserve source, restore offset");
+			sw.WriteLine("	push    hl                      ; preserve offset");
+			sw.WriteLine("	add     hl, de                  ; calculate destination - offset");
+			sw.WriteLine("	ldir                            ; copy from offset");
+			sw.WriteLine("	pop     hl                      ; restore offset");
+			sw.WriteLine("	ex      (sp), hl                ; preserve offset, restore source");
+			sw.WriteLine("	add     a, a                    ; copy from literals or new offset?");
+			sw.WriteLine("	jr      nc, dzx0s_literals");
+			sw.WriteLine("dzx0s_new_offset:");
+			sw.WriteLine("	call    dzx0s_elias             ; obtain offset MSB");
+			sw.WriteLine("	ld b,a");
+			sw.WriteLine("	pop     af                      ; discard last offset");
+			sw.WriteLine("	xor     a                       ; adjust for negative offset");
+			sw.WriteLine("	sub     c");
+			sw.WriteLine((jumpLabel != null ? ("	JP	Z," + jumpLabel) : "	RET	Z") + "		; Plus d'octets à traiter = fini" + Environment.NewLine);
+			sw.WriteLine("	ld      c,a");
+			sw.WriteLine("	ld      a,b");
+			sw.WriteLine("	ld      b,c");
+			sw.WriteLine("	ld      c, (hl)                 ; obtain offset LSB");
+			sw.WriteLine("	inc     hl");
+			sw.WriteLine("	rr      b                       ; last offset bit becomes first length bit");
+			sw.WriteLine("	rr      c");
+			sw.WriteLine("	push    bc                      ; preserve new offset");
+			sw.WriteLine("	ld      bc, 1                   ; obtain length");
+			sw.WriteLine("	call    nc, dzx0s_elias_backtrack");
+			sw.WriteLine("	inc     bc");
+			sw.WriteLine("	jr      dzx0s_copy");
+			sw.WriteLine("dzx0s_elias:");
+			sw.WriteLine("	inc     c                       ; interlaced Elias gamma coding");
+			sw.WriteLine("dzx0s_elias_loop:");
+			sw.WriteLine("	add     a, a");
+			sw.WriteLine("	jr      nz, dzx0s_elias_skip");
+			sw.WriteLine("	ld      a, (hl)                 ; load another group of 8 bits");
+			sw.WriteLine("	inc     hl");
+			sw.WriteLine("	rla");
+			sw.WriteLine("dzx0s_elias_skip:");
+			sw.WriteLine("	ret 	c");
+			sw.WriteLine("dzx0s_elias_backtrack:");
+			sw.WriteLine("	add     a, a");
+			sw.WriteLine("	rl      c");
+			sw.WriteLine("	rl      b");
+			sw.WriteLine("	jr      dzx0s_elias_loop");
+		}
+
 		static public void GenereDepack(StreamWriter sw, string jumpLabel = null) {
 			sw.WriteLine("; Decompactage");
 			sw.WriteLine("DepkLzw:");
@@ -218,7 +276,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("	OUT	(C),C");
 		}
 
-		static public void GenereAffichage(StreamWriter sw, int delai, bool reboucle, bool gest128K, bool imageMode) {
+		static public void GenereAffichage(StreamWriter sw, int delai, bool reboucle, bool gest128K, bool imageMode, Main.PackMethode methode) {
 			if (delai > 0) {
 				sw.WriteLine("	LD	HL,NewIrq");
 				sw.WriteLine("	LD	(#39),HL");
@@ -290,7 +348,11 @@ namespace ConvImgCpc {
 				sw.WriteLine("	OUT	(C),A");
 			}
 			sw.WriteLine("	LD	DE,Buffer");
-			SaveAsm.GenereDepack(sw, "InitDraw");
+			if (methode == Main.PackMethode.Standard)
+				GenereDepack(sw,"InitDraw");
+			else
+				GenereDZ80(sw,"InitDraw");
+
 			if (delai > 0) {
 				sw.WriteLine("NewIrq:");
 				sw.WriteLine("	PUSH	AF");
@@ -802,9 +864,8 @@ namespace ConvImgCpc {
 			sw.WriteLine(line + "0");
 		}
 
-
 		// #### A revoir...
-		static public void GenereAfficheStd(StreamWriter sw, ImageCpc img, int mode, int[] palette, bool overscan) {
+		static public void GenereAfficheStd(StreamWriter sw, ImageCpc img, int mode, int[] palette, bool overscan, Main.PackMethode methode) {
 			sw.WriteLine("	DI");
 			if (BitmapCpc.cpcPlus)
 				GenereInitPlus(sw);
@@ -825,7 +886,10 @@ namespace ConvImgCpc {
 			sw.WriteLine("	EI");
 			sw.WriteLine("	RET");
 
-			GenereDepack(sw);
+			if (methode == Main.PackMethode.Standard)
+				GenereDepack(sw);
+			else
+				GenereDZ80(sw);
 
 			if (BitmapCpc.cpcPlus)
 				GenerePalettePlus(sw, img);
@@ -833,7 +897,7 @@ namespace ConvImgCpc {
 				GenerePaletteOld(sw, img);
 		}
 
-		static public void GenereAfficheModeX(StreamWriter sw, int[,] colMode5, bool isOverscan) {
+		static public void GenereAfficheModeX(StreamWriter sw, int[,] colMode5, bool isOverscan, Main.PackMethode methode) {
 			sw.WriteLine("	LD	HL,ImageCmp");
 			sw.WriteLine("	LD	DE,#" + (isOverscan ? "0200" : "C000"));
 			sw.WriteLine("	CALL	DepkLzw");
@@ -906,7 +970,10 @@ namespace ConvImgCpc {
 			sw.WriteLine("	JR	Boucle");
 
 			// Code du décompacteur avant les datas
-			GenereDepack(sw);
+			if (methode == Main.PackMethode.Standard)
+				GenereDepack(sw);
+			else
+				GenereDZ80(sw);
 
 			sw.WriteLine("Color01:");
 			sw.WriteLine("	DB	'" + BitmapCpc.CpcVGA[colMode5[0, 0]].ToString() + BitmapCpc.CpcVGA[colMode5[0, 1]].ToString() + "'");
@@ -925,7 +992,7 @@ namespace ConvImgCpc {
 				sw.WriteLine(line + "'");
 		}
 
-		static public void GenereAfficheModeEgx(StreamWriter sw, int[] palette, bool overscan) {
+		static public void GenereAfficheModeEgx(StreamWriter sw, int[] palette, bool overscan, Main.PackMethode methode) {
 			sw.WriteLine("	LD	HL,Palette");
 			sw.WriteLine("	LD	B,(HL)");
 			sw.WriteLine("	LD	C,B");
@@ -988,7 +1055,10 @@ namespace ConvImgCpc {
 			sw.WriteLine("	RET");
 
 			GenereTspace(sw, false);
-			GenereDepack(sw);
+			if (methode == Main.PackMethode.Standard)
+				GenereDepack(sw);
+			else
+				GenereDZ80(sw);
 
 			string line = "\tDB\t";
 			for (int y = 0; y < 16; y++)

@@ -40,6 +40,7 @@
 			this.bpStandard = new System.Windows.Forms.Button();
 			this.bpOverscan = new System.Windows.Forms.Button();
 			this.tramage = new System.Windows.Forms.GroupBox();
+			this.chkImpDraw = new System.Windows.Forms.CheckBox();
 			this.chkDiffErr = new System.Windows.Forms.CheckBox();
 			this.chkTrameTC = new System.Windows.Forms.CheckBox();
 			this.chkLissage = new System.Windows.Forms.CheckBox();
@@ -116,7 +117,8 @@
 			this.bpEditSprites = new System.Windows.Forms.Button();
 			this.bpFr = new System.Windows.Forms.Button();
 			this.bpEn = new System.Windows.Forms.Button();
-			this.chkImpDraw = new System.Windows.Forms.CheckBox();
+			this.rbStdPack = new System.Windows.Forms.RadioButton();
+			this.rbZx0Pack = new System.Windows.Forms.RadioButton();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -135,7 +137,7 @@
 			// 
 			// bpLoad
 			// 
-			this.bpLoad.Location = new System.Drawing.Point(6, 8);
+			this.bpLoad.Location = new System.Drawing.Point(6, 4);
 			this.bpLoad.Name = "bpLoad";
 			this.bpLoad.Size = new System.Drawing.Size(108, 23);
 			this.bpLoad.TabIndex = 2;
@@ -144,7 +146,7 @@
 			// 
 			// bpConvert
 			// 
-			this.bpConvert.Location = new System.Drawing.Point(7, 65);
+			this.bpConvert.Location = new System.Drawing.Point(6, 53);
 			this.bpConvert.Name = "bpConvert";
 			this.bpConvert.Size = new System.Drawing.Size(108, 23);
 			this.bpConvert.TabIndex = 3;
@@ -351,6 +353,16 @@
 			this.tramage.TabIndex = 11;
 			this.tramage.TabStop = false;
 			// 
+			// chkImpDraw
+			// 
+			this.chkImpDraw.AutoSize = true;
+			this.chkImpDraw.Location = new System.Drawing.Point(46, 152);
+			this.chkImpDraw.Name = "chkImpDraw";
+			this.chkImpDraw.Size = new System.Drawing.Size(15, 14);
+			this.chkImpDraw.TabIndex = 69;
+			this.chkImpDraw.UseVisualStyleBackColor = true;
+			this.chkImpDraw.CheckedChanged += new System.EventHandler(this.chkImpDraw_CheckedChanged);
+			// 
 			// chkDiffErr
 			// 
 			this.chkDiffErr.AutoSize = true;
@@ -425,7 +437,7 @@
 			// autoRecalc
 			// 
 			this.autoRecalc.AutoSize = true;
-			this.autoRecalc.Location = new System.Drawing.Point(7, 94);
+			this.autoRecalc.Location = new System.Drawing.Point(6, 78);
 			this.autoRecalc.Name = "autoRecalc";
 			this.autoRecalc.Size = new System.Drawing.Size(15, 14);
 			this.autoRecalc.TabIndex = 44;
@@ -564,7 +576,7 @@
 			// 
 			// bpSave
 			// 
-			this.bpSave.Location = new System.Drawing.Point(6, 117);
+			this.bpSave.Location = new System.Drawing.Point(6, 97);
 			this.bpSave.Name = "bpSave";
 			this.bpSave.Size = new System.Drawing.Size(108, 23);
 			this.bpSave.TabIndex = 52;
@@ -584,7 +596,7 @@
 			this.withCode.AutoSize = true;
 			this.withCode.Checked = true;
 			this.withCode.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.withCode.Location = new System.Drawing.Point(6, 142);
+			this.withCode.Location = new System.Drawing.Point(6, 124);
 			this.withCode.Name = "withCode";
 			this.withCode.Size = new System.Drawing.Size(15, 14);
 			this.withCode.TabIndex = 52;
@@ -596,7 +608,7 @@
 			this.withPalette.AutoSize = true;
 			this.withPalette.Checked = true;
 			this.withPalette.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.withPalette.Location = new System.Drawing.Point(6, 165);
+			this.withPalette.Location = new System.Drawing.Point(6, 147);
 			this.withPalette.Name = "withPalette";
 			this.withPalette.Size = new System.Drawing.Size(15, 14);
 			this.withPalette.TabIndex = 52;
@@ -606,7 +618,7 @@
 			// chkAllPics
 			// 
 			this.chkAllPics.AutoSize = true;
-			this.chkAllPics.Location = new System.Drawing.Point(121, 69);
+			this.chkAllPics.Location = new System.Drawing.Point(121, 59);
 			this.chkAllPics.Name = "chkAllPics";
 			this.chkAllPics.Size = new System.Drawing.Size(15, 14);
 			this.chkAllPics.TabIndex = 57;
@@ -616,7 +628,7 @@
 			// 
 			// bpImport
 			// 
-			this.bpImport.Location = new System.Drawing.Point(7, 36);
+			this.bpImport.Location = new System.Drawing.Point(6, 28);
 			this.bpImport.Name = "bpImport";
 			this.bpImport.Size = new System.Drawing.Size(108, 23);
 			this.bpImport.TabIndex = 58;
@@ -626,7 +638,7 @@
 			// 
 			// bpCreate
 			// 
-			this.bpCreate.Location = new System.Drawing.Point(129, 8);
+			this.bpCreate.Location = new System.Drawing.Point(129, 4);
 			this.bpCreate.Name = "bpCreate";
 			this.bpCreate.Size = new System.Drawing.Size(108, 23);
 			this.bpCreate.TabIndex = 59;
@@ -1170,15 +1182,27 @@
 			this.bpEn.UseVisualStyleBackColor = true;
 			this.bpEn.Click += new System.EventHandler(this.bpEn_Click);
 			// 
-			// chkImpDraw
+			// rbStdPack
 			// 
-			this.chkImpDraw.AutoSize = true;
-			this.chkImpDraw.Location = new System.Drawing.Point(46, 152);
-			this.chkImpDraw.Name = "chkImpDraw";
-			this.chkImpDraw.Size = new System.Drawing.Size(97, 17);
-			this.chkImpDraw.TabIndex = 69;
-			this.chkImpDraw.UseVisualStyleBackColor = true;
-			this.chkImpDraw.CheckedChanged += new System.EventHandler(this.chkImpDraw_CheckedChanged);
+			this.rbStdPack.AutoSize = true;
+			this.rbStdPack.Checked = true;
+			this.rbStdPack.Location = new System.Drawing.Point(6, 167);
+			this.rbStdPack.Name = "rbStdPack";
+			this.rbStdPack.Size = new System.Drawing.Size(129, 17);
+			this.rbStdPack.TabIndex = 69;
+			this.rbStdPack.TabStop = true;
+			this.rbStdPack.Text = "Compression standard";
+			this.rbStdPack.UseVisualStyleBackColor = true;
+			// 
+			// rbZx0Pack
+			// 
+			this.rbZx0Pack.AutoSize = true;
+			this.rbZx0Pack.Location = new System.Drawing.Point(134, 167);
+			this.rbZx0Pack.Name = "rbZx0Pack";
+			this.rbZx0Pack.Size = new System.Drawing.Size(108, 17);
+			this.rbZx0Pack.TabIndex = 69;
+			this.rbZx0Pack.Text = "Compression ZX0";
+			this.rbZx0Pack.UseVisualStyleBackColor = true;
 			// 
 			// Main
 			// 
@@ -1186,6 +1210,8 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(723, 571);
+			this.Controls.Add(this.rbZx0Pack);
+			this.Controls.Add(this.rbStdPack);
 			this.Controls.Add(this.bpEn);
 			this.Controls.Add(this.bpFr);
 			this.Controls.Add(this.bpEditSprites);
@@ -1334,6 +1360,8 @@
 		private System.Windows.Forms.Button bpFr;
 		private System.Windows.Forms.Button bpEn;
 		private System.Windows.Forms.CheckBox chkImpDraw;
+		private System.Windows.Forms.RadioButton rbStdPack;
+		private System.Windows.Forms.RadioButton rbZx0Pack;
 	}
 }
 

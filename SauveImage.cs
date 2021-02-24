@@ -237,6 +237,56 @@ namespace ConvImgCpc {
 			0xC9						//	WaitKey2:	RET
 		};
 
+		static byte[] codeDZX80 = {
+			0x21, 0x00, 0x00,			//				LD		HL,Source
+			0x11, 0x00, 0x00,			//				LD		DE,Dest
+			0x01, 0xFF, 0xFF,			//				LD		BC,#FFFF
+			0xC5,						//				PUSH	BC
+			0x03,						//				INC		BC
+			0x3E, 0x80,					//				LD		A,#80
+			0xCD, 0x3F, 0xA0,			//				CALL	dzx0s_elias
+			0xED, 0xB0,					//				LDIR
+			0x87,						//				ADD		A,A
+			0x38, 0x0D,					//				JR		C,dzx0s_new_offset
+			0xCD, 0x3F, 0xA0,			//				CALL	dzx0s_elias
+			0xE3,						//				EX		(SP),HL
+			0xE5,						//				PUSH	HL
+			0x19,						//				ADD		HL,DE
+			0xED, 0xB0,					//				LDIR
+			0xE1,						//				POP		HL
+			0xE3,						//				EX		(SP),HL
+			0x87,						//				ADD		A,A
+			0x30, 0xEB,					//				JR		NC,dxz0s_litterals
+			0xCD, 0x3F, 0xA0,			//				CALL	dzx0_elias
+			0x47,						//				LD		B,A
+			0xF1,						//				POP		AF
+			0xAF,						//				XOR		A
+			0x91,						//				SUB		C
+			0xCA, 0x00, 0x00,			//				JP		Z,AfficheImage
+			0x4F,						//				LD		C,A
+			0x78,						//				LD		A,B
+			0x41,						//				LD		B,C
+			0x4E,						//				LD		C,(HL)
+			0x23,						//				INC		HL
+			0xCB, 0x18,					//				RR		B
+			0xCB, 0x19,					//				RR		C
+			0xC5,						//				PUSH	BC
+			0x01, 0x01, 0x00,			//				LD		BC,#0001
+			0xD4, 0x47, 0xA0,			//				CALL	NC,dzx0s_elias_backtrack
+			0x03,						//				INC		BC
+			0x18, 0xD9,					//				JR		dzx0s_copy
+			0x0C,						//dzx0s_elias:	INC		C
+			0x87,						//dzx0s_elias_loop:	ADD		A,A
+			0x20, 0x03,					//				JR		NZ,dzx0s_elias_skip
+			0x7E,						//				LD		A,(HL)
+			0x23,						//				INC		HL
+			0x17,						//				RLA
+			0xD8,						//				RET		C
+			0x87,						//				ADD		A,A
+			0xCB, 0x11,					//				RL		C
+			0xCB, 0x10,					//				RL		B
+			0x18, 0xF2					//				JR	dzx0s_elias_loop
+		};
 		static byte[] codeDepack = {
 			0x21, 0x00, 0x00,			//				LD		HL,Source
 			0x11, 0x00, 0x00,			//				LD		DE,Dest
@@ -341,7 +391,7 @@ namespace ConvImgCpc {
 
 		static byte[] ModePal = new byte[48];
 
-		static public int SauveScr(string fileName, BitmapCpc bitmapCpc, ImageCpc img, Param param, bool compact, string version = null, int[,] colMode5 = null) {
+		static public int SauveScr(string fileName, BitmapCpc bitmapCpc, ImageCpc img, Param param, Main.PackMethode compact, string version = null, int[,] colMode5 = null) {
 			byte[] bufPack = new byte[0x8000];
 			bool overscan = (BitmapCpc.NbLig * BitmapCpc.NbCol > 0x3F00);
 			if (param.withPalette && version == null) {
@@ -413,19 +463,44 @@ namespace ConvImgCpc {
 			short exec = (short)(overscan ? param.cpcPlus ? 0x821 : 0x811 : 0xC7D0);
 			CpcAmsdos entete;
 			int lg = BitmapCpc.BitmapSize;
-			if (compact) {
-				lg = PackDepack.Pack(bitmapCpc.bmpCpc, lg, bufPack, 0) + 1; // Prendre 1 octet de marge ?
+			if (compact != Main.PackMethode.None) {
+				lg = new PackModule().Pack(bitmapCpc.bmpCpc, lg, bufPack, 0, compact);
 				if (param.withCode && version == null) {
-					Buffer.BlockCopy(codeDepack, 0, bufPack, lg, codeDepack.Length);
-					bufPack[lg + 4] = (byte)(startAdr & 0xFF);
-					bufPack[lg + 5] = (byte)(startAdr >> 8);
-					startAdr = (short)(0xA657 - (lg + codeDepack.Length));
-					bufPack[lg + 1] = (byte)(startAdr & 0xFF);
-					bufPack[lg + 2] = (byte)(startAdr >> 8);
-					bufPack[lg + 32] = (byte)(exec & 0xFF);
-					bufPack[lg + 33] = (byte)(exec >> 8);
-					lg += codeDepack.Length;
-					exec = (short)(0xA657 - codeDepack.Length);
+					if (compact == Main.PackMethode.Standard) {
+						Buffer.BlockCopy(codeDepack, 0, bufPack, lg, codeDepack.Length);
+						bufPack[lg + 4] = (byte)(startAdr & 0xFF);
+						bufPack[lg + 5] = (byte)(startAdr >> 8);
+						startAdr = (short)(0xA657 - (lg + codeDepack.Length));
+						bufPack[lg + 1] = (byte)(startAdr & 0xFF);
+						bufPack[lg + 2] = (byte)(startAdr >> 8);
+						bufPack[lg + 32] = (byte)(exec & 0xFF);
+						bufPack[lg + 33] = (byte)(exec >> 8);
+						lg += codeDepack.Length;
+						exec = (short)(0xA657 - codeDepack.Length);
+					}
+					else {
+						short newExec = (short)(0xA657 - codeDZX80.Length);
+						Buffer.BlockCopy(codeDZX80, 0, bufPack, lg, codeDZX80.Length);
+						bufPack[lg + 4] = (byte)(startAdr & 0xFF);
+						bufPack[lg + 5] = (byte)(startAdr >> 8);
+
+						bufPack[lg + 0x0E] = (byte)((newExec + 0x3F) & 0x0FF);
+						bufPack[lg + 0x0F] = (byte)((newExec + 0x3F) >> 8);
+						bufPack[lg + 0x16] = (byte)((newExec + 0x3F) & 0x0FF);
+						bufPack[lg + 0x17] = (byte)((newExec + 0x3F) >> 8);
+						bufPack[lg + 0x23] = (byte)((newExec + 0x3F) & 0x0FF);
+						bufPack[lg + 0x24] = (byte)((newExec + 0x3F) >> 8);
+						bufPack[lg + 0x3A] = (byte)((newExec + 0x47) & 0x0FF);
+						bufPack[lg + 0x3B] = (byte)((newExec + 0x47) >> 8);
+
+						startAdr = (short)(0xA657 - (lg + codeDZX80.Length));
+						bufPack[lg + 1] = (byte)(startAdr & 0xFF);
+						bufPack[lg + 2] = (byte)(startAdr >> 8);
+						bufPack[lg + 42] = (byte)(exec & 0xFF);
+						bufPack[lg + 43] = (byte)(exec >> 8);
+						lg += codeDZX80.Length;
+						exec = newExec;
+					}
 				}
 				else {
 					startAdr = (short)(0xA657 - lg);
@@ -445,13 +520,13 @@ namespace ConvImgCpc {
 					sw.WriteLine("	RUN	$");
 					sw.WriteLine("_StartDepack:");
 					if (BitmapCpc.modeVirtuel == 3 || BitmapCpc.modeVirtuel == 4)
-						SaveAsm.GenereAfficheModeEgx(sw, BitmapCpc.Palette, overscan);
+						SaveAsm.GenereAfficheModeEgx(sw, BitmapCpc.Palette, overscan, compact);
 					else {
 						SaveAsm.GenereFormatEcran(sw);
 						if (BitmapCpc.modeVirtuel == 5)
-							SaveAsm.GenereAfficheModeX(sw, colMode5, overscan);
+							SaveAsm.GenereAfficheModeX(sw, colMode5, overscan, compact);
 						else
-							SaveAsm.GenereAfficheStd(sw, img, BitmapCpc.modeVirtuel, BitmapCpc.Palette, overscan);
+							SaveAsm.GenereAfficheStd(sw, img, BitmapCpc.modeVirtuel, BitmapCpc.Palette, overscan, compact);
 					}
 				}
 				SaveAsm.CloseAsm(sw);
@@ -460,19 +535,8 @@ namespace ConvImgCpc {
 				entete = CpcSystem.CreeEntete(fileName, startAdr, (short)lg, exec);
 				BinaryWriter fp = new BinaryWriter(new FileStream(fileName, FileMode.Create));
 				fp.Write(CpcSystem.AmsdosToByte(entete));
-				fp.Write(compact ? bufPack : bitmapCpc.bmpCpc, 0, lg);
+				fp.Write(compact != Main.PackMethode.None ? bufPack : bitmapCpc.bmpCpc, 0, lg);
 				fp.Close();
-				if (lg == 16336) {
-					PackZX0 pk = new PackZX0();
-					int newlg = 0;
-					pk.Show();
-					byte[] newpk = pk.Pack(bitmapCpc.bmpCpc, lg, ref newlg);
-					BinaryWriter fp2 = new BinaryWriter(new FileStream(fileName + ".pk", FileMode.Create));
-					fp2.Write(newpk, 0, newlg);
-					fp2.Close();
-					pk.Close();
-					pk.Dispose();
-				}
 			}
 			return (lg);
 		}
@@ -521,7 +585,7 @@ namespace ConvImgCpc {
 					if (param.cpcPlus) {
 						for (int i = 0; i < 16; i++) {
 							int r = 0, v = 0, b = 0;
-							for (int k = 26; k-- > 0;) {
+							for (int k = 26; k-- > 0; ) {
 								if (pal[3 + i * 12] == (byte)BitmapCpc.CpcVGA[k])
 									r = (26 - k) << 4;
 

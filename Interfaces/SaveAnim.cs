@@ -16,12 +16,14 @@ namespace ConvImgCpc {
 		private string version;
 		private ImageCpc img;
 		private Param param;
+		private Main.PackMethode methode;
 
-		public SaveAnim(Main m, string f, string v, ImageCpc i, Param p) {
+		public SaveAnim(Main m, string f, string v, ImageCpc i, Param p, Main.PackMethode met) {
 			fileName = f;
 			version = v;
 			img = i;
 			param = p;
+			methode = met;
 			InitializeComponent();
 			m.ChangeLanguage(Controls, "SaveAnim");
 			grpGenereLigne.Visible = chk2Zone.Visible = chkDirecMem.Visible = chkCol.Visible = BitmapCpc.modeVirtuel < 7;
@@ -104,7 +106,7 @@ namespace ConvImgCpc {
 						pos += tailleX;
 					}
 				}
-				int lpack = PackDepack.Pack(bLigne, pos, bufOut, 0);
+				int lpack = new PackModule().Pack(bLigne, pos, bufOut, 0, methode);
 				sizeDepack = length + 4;
 				return lpack;
 			}
@@ -159,7 +161,7 @@ namespace ConvImgCpc {
 			BufTmp[0] = (byte)(bc);
 			BufTmp[1] = (byte)(bc >> 8);
 			Buffer.BlockCopy(DiffImage, 0, BufTmp, 2, posDiff);
-			int lPack = PackDepack.Pack(BufTmp, posDiff + 2, bufOut, 0);
+			int lPack = new PackModule().Pack(BufTmp, posDiff + 2, bufOut, 0, methode);
 			Array.Copy(src, BufPrec, BufPrec.Length);
 			sizeDepack = posDiff + 2;
 			return lPack;
@@ -273,7 +275,7 @@ namespace ConvImgCpc {
 				if (rbFrameFull.Checked) {
 					BufTmp[0] = (byte)'I';
 					lastAscii = 'I';
-					return PackDepack.Pack(BufTmp, 1, bufOut, 0);
+					return new PackModule().Pack(BufTmp, 1, bufOut, 0, methode);
 				}
 				else {
 					img.main.SetInfo("Impossible d'ajouter image identique...");
@@ -283,7 +285,7 @@ namespace ConvImgCpc {
 			else {
 				BufTmp[0] = (byte)'O';
 				Array.Copy(img.bitmapCpc.imgAscii, 0, BufTmp, 1, tailleMax);
-				int lo = rbFrameO.Checked || imageMode ? PackDepack.Pack(img.bitmapCpc.imgAscii, tailleMax, BufPrec, 0) : PackDepack.Pack(BufTmp, tailleMax + 1, BufPrec, 0);
+				int lo = rbFrameO.Checked || imageMode ? new PackModule().Pack(img.bitmapCpc.imgAscii, tailleMax, BufPrec, 0, methode) : new PackModule().Pack(BufTmp, tailleMax + 1, BufPrec, 0, methode);
 				posDiff = Math.Min(lastPosDiff, posDiff);
 				if (rbFrameD.Checked || imageMode) {
 					BufTmp[0] = (byte)(posDiff >> 1);
@@ -297,7 +299,7 @@ namespace ConvImgCpc {
 					Array.Copy(DiffImage, 0, BufTmp, 3, posDiff);
 				}
 				int ldRaw = posDiff + (rbFrameD.Checked ? 2 : 3);
-				int ld = PackDepack.Pack(BufTmp, ldRaw, bufOut, 0);
+				int ld = new PackModule().Pack(BufTmp, ldRaw, bufOut, 0, methode);
 				if (ld > ldRaw)
 					img.main.SetInfo("Perte de " + (ld - ldRaw).ToString() + " octets...");
 
@@ -331,13 +333,13 @@ namespace ConvImgCpc {
 			}
 			else
 				if (chkDirecMem.Checked)
-				return PackDirectMem(bufOut, ref sizeDepack, true, razDiff);
-			else
-				return PackWinDC(bufOut, ref sizeDepack, topBottom, razDiff, modeLigne, optimSpeed);
+					return PackDirectMem(bufOut, ref sizeDepack, true, razDiff);
+				else
+					return PackWinDC(bufOut, ref sizeDepack, topBottom, razDiff, modeLigne, optimSpeed);
 		}
 		#endregion
 
-		private void SauveDeltaPack(int adrDeb, int adrMax, int delai, int modeLigne, bool imageMode, bool optimSpeed) {
+		private void SauveDeltaPack(int adrDeb, int adrMax, int delai, int modeLigne, bool imageMode, bool optimSpeed, Main.PackMethode methode) {
 			int sizeDepack = 0;
 			int nbImages = img.main.GetMaxImages();
 			byte[][] bufOut = new byte[nbImages << 1][];
@@ -399,14 +401,14 @@ namespace ConvImgCpc {
 				gest128K = false;
 
 			if (param.withCode && !chkDataBrut.Checked) {
-				SaveAsm.GenereAffichage(sw, delai, chkBoucle.Checked, gest128K, imageMode);
+				SaveAsm.GenereAffichage(sw, delai, chkBoucle.Checked, gest128K, imageMode, methode);
 				if (BitmapCpc.modeVirtuel >= 7)
 					SaveAsm.GenereDrawAscii(sw, rbFrameFull.Checked, rbFrameO.Checked, rbFrameD.Checked, gest128K, imageMode);
 				else
 					if (chkDirecMem.Checked)
-					SaveAsm.GenereDrawDirect(sw, gest128K);
-				else
-					SaveAsm.GenereDrawDC(sw, delai, chkCol.Checked, gest128K, modeLigne == 8 ? 0x3F : modeLigne == 4 ? 0x1F : modeLigne == 2 ? 0xF : 0x7, optimSpeed);
+						SaveAsm.GenereDrawDirect(sw, gest128K);
+					else
+						SaveAsm.GenereDrawDC(sw, delai, chkCol.Checked, gest128K, modeLigne == 8 ? 0x3F : modeLigne == 4 ? 0x1F : modeLigne == 2 ? 0xF : 0x7, optimSpeed);
 			}
 			if ((param.withPalette || param.withCode) && !chkDataBrut.Checked) {
 				if (BitmapCpc.cpcPlus)
@@ -447,9 +449,9 @@ namespace ConvImgCpc {
 				SaveAsm.GenerePointeurs(sw, posPack, bank, gest128K && numBank > 0xC0);
 			else
 				if (!imageMode && !chkDataBrut.Checked) {
-				sw.WriteLine("	DB	#FF			; Fin de l'animation");
-				ltot++;
-			}
+					sw.WriteLine("	DB	#FF			; Fin de l'animation");
+					ltot++;
+				}
 			SaveAsm.GenereFin(sw, ltot, gest128K && endBank0 < 0x8000);
 			SaveAsm.CloseAsm(sw);
 			for (int i = 0; i < posPack; i++)
@@ -494,7 +496,7 @@ namespace ConvImgCpc {
 			chkZoneVert.Visible = chk2Zone.Checked;
 		}
 
-		public void DoSave(bool imageMode) {
+		public void DoSave(bool imageMode, Main.PackMethode methode) {
 			string adrTxt = txbAdrDeb.Text;
 			int adrDeb = 0, adrMax = 0;
 			try {
@@ -518,12 +520,12 @@ namespace ConvImgCpc {
 				img.WindowState = FormWindowState.Minimized;
 				img.Show();
 				img.WindowState = FormWindowState.Normal;
-				SauveDeltaPack(adrDeb, adrMax, chkDelai.Checked ? (int)numDelai.Value : 0, modeLigne, imageMode, optimSpeed);
+				SauveDeltaPack(adrDeb, adrMax, chkDelai.Checked ? (int)numDelai.Value : 0, modeLigne, imageMode, optimSpeed, methode);
 			}
 		}
 
 		private void bpSave_Click(object sender, EventArgs e) {
-			DoSave(false);
+			DoSave(false, methode);
 			Close();
 		}
 	}
