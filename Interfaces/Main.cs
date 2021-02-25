@@ -454,8 +454,9 @@ namespace ConvImgCpc {
 					anim.SetNbImgs(nbImages, 100);
 					SetInfo(multilingue.GetString("Main.prg.TxtInfo15") + nbImages + " images.");
 				}
-				SelectImage(0);
+				chkAllPics.Visible = nbImages > 1;
 				imgCpc.InitBitmapCpc(nbImages, 100);
+				SelectImage(0);
 				imgCpc.Reset(true);
 				Convert(false);
 			}
