@@ -1193,6 +1193,7 @@
 			this.rbStdPack.TabStop = true;
 			this.rbStdPack.Text = "Compression standard";
 			this.rbStdPack.UseVisualStyleBackColor = true;
+			this.rbStdPack.CheckedChanged += new System.EventHandler(this.rbStdPack_CheckedChanged);
 			// 
 			// rbZx0Pack
 			// 
@@ -1203,6 +1204,7 @@
 			this.rbZx0Pack.TabIndex = 69;
 			this.rbZx0Pack.Text = "Compression ZX0";
 			this.rbZx0Pack.UseVisualStyleBackColor = true;
+			this.rbZx0Pack.CheckedChanged += new System.EventHandler(this.rbZx0Pack_CheckedChanged);
 			// 
 			// Main
 			// 

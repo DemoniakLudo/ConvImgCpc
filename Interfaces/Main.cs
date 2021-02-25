@@ -18,6 +18,7 @@ namespace ConvImgCpc {
 		private ParamInterne paramInterne;
 		public Multilingue multilingue = new Multilingue();
 		public enum PackMethode { None = 0, Standard, ZX0 };
+		private PackMethode pkMethode = PackMethode.Standard;
 
 		public Main() {
 			InitializeComponent();
@@ -254,14 +255,14 @@ namespace ConvImgCpc {
 							Array.Copy(tabBytes, posData, tempData, 0, tempData.Length);
 							posData += tempData.Length;
 							BitmapCpc bmp = new BitmapCpc(tempData, width << 3, height << 1);
-							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, rbStdPack.Checked ? PackMethode.Standard : PackMethode.ZX0, true), i);
+							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, true), i);
 						}
 					}
 					else
 						if (isScrImp) {
 							BitmapCpc bmp = new BitmapCpc(tabBytes, 0x110);
 							if (singlePicture)
-								imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, rbStdPack.Checked ? PackMethode.Standard : PackMethode.ZX0), imgCpc.selImage);
+								imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode), imgCpc.selImage);
 							else {
 								BitmapCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = tabBytes[0x94] - 0x0E;
 								BitmapCpc.TailleX = 768;
@@ -279,15 +280,15 @@ namespace ConvImgCpc {
 									for (int i = 0; i < 16; i++)
 										BitmapCpc.Palette[i] = BitmapCpc.CpcVGA.IndexOf((char)tabBytes[0x7E10 + i]);
 								}
-								imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, rbStdPack.Checked ? PackMethode.Standard : PackMethode.ZX0));
+								imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode));
 							}
 						}
 						else {
 							BitmapCpc bmp = new BitmapCpc(tabBytes, 0x80);
 							if (singlePicture)
-								imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, rbStdPack.Checked ? PackMethode.Standard : PackMethode.ZX0), imgCpc.selImage);
+								imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode), imgCpc.selImage);
 							else {
-								imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, rbStdPack.Checked ? PackMethode.Standard : PackMethode.ZX0));
+								imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode));
 								nbCols.Value = param.nbCols = BitmapCpc.NbCol;
 								BitmapCpc.TailleX = param.nbCols << 3;
 								nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
@@ -530,19 +531,19 @@ namespace ConvImgCpc {
 						break;
 
 					case 4:
-						imgCpc.SauveSpriteCmp(dlg.FileName, lblInfoVersion.Text, rbStdPack.Checked ? PackMethode.Standard : PackMethode.ZX0);
+						imgCpc.SauveSpriteCmp(dlg.FileName, lblInfoVersion.Text, pkMethode);
 						break;
 
 					case 5:
-						imgCpc.SauveCmp(dlg.FileName, param, rbStdPack.Checked ? PackMethode.Standard : PackMethode.ZX0);
+						imgCpc.SauveCmp(dlg.FileName, param, pkMethode);
 						break;
 
 					case 6:
-						imgCpc.SauveCmp(dlg.FileName, param, rbStdPack.Checked ? PackMethode.Standard : PackMethode.ZX0, lblInfoVersion.Text);
+						imgCpc.SauveCmp(dlg.FileName, param, pkMethode, lblInfoVersion.Text);
 						break;
 
 					case 7:
-						imgCpc.SauveDeltaPack(dlg.FileName, lblInfoVersion.Text, param, true, rbStdPack.Checked ? PackMethode.Standard : PackMethode.ZX0);
+						imgCpc.SauveDeltaPack(dlg.FileName, lblInfoVersion.Text, param, true, pkMethode);
 						break;
 
 					case 8:
@@ -996,5 +997,12 @@ namespace ConvImgCpc {
 			ChangeLanguage("EN");
 		}
 
+		private void rbStdPack_CheckedChanged(object sender, EventArgs e) {
+			pkMethode = PackMethode.Standard;
+		}
+
+		private void rbZx0Pack_CheckedChanged(object sender, EventArgs e) {
+			pkMethode = PackMethode.ZX0;
+		}
 	}
 }

@@ -442,16 +442,13 @@ namespace ConvImgCpc {
 			return (lengthOut + codecount);
 		}
 
-		public int Depack(byte[] bufIn, int startIn, byte[] bufOut, Main.PackMethode methode) {
+		public int Depack(byte[] bufIn, int startIn, byte[] bufOut, Main.PackMethode pkMethode) {
 			//if (methode == Main.PackMethode.Standard)
 			return Depack(bufIn, startIn, bufOut);
 		}
 
-		public int Pack(byte[] bufIn, int lengthIn, byte[] bufOut, int lengthOut, Main.PackMethode methode) {
-			if (methode == Main.PackMethode.Standard)
-				return Pack(bufIn, lengthIn, bufOut, lengthOut);
-
-			return PackZX0(bufIn, lengthIn, bufOut, lengthOut);
+		public int Pack(byte[] bufIn, int lengthIn, byte[] bufOut, int lengthOut, Main.PackMethode pkMethode) {
+			return pkMethode == Main.PackMethode.Standard ? Pack(bufIn, lengthIn, bufOut, lengthOut) : PackZX0(bufIn, lengthIn, bufOut, lengthOut);
 		}
 	}
 

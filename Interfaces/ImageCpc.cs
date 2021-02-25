@@ -219,15 +219,15 @@ namespace ConvImgCpc {
 			main.SetInfo("Sauvegarde image CPC ok.");
 		}
 
-		public void SauveCmp(string fileName, Param param, Main.PackMethode methode, string version = null) {
+		public void SauveCmp(string fileName, Param param, Main.PackMethode pkMethode, string version = null) {
 			bitmapCpc.CreeBmpCpc(BmpLock, colMode5);
 			if (BitmapCpc.modeVirtuel >= 7) {
-				SaveAnim sa = new SaveAnim(main, fileName, version, this, param, methode);
-				sa.DoSave(true, methode);
+				SaveAnim sa = new SaveAnim(main, fileName, version, this, param, pkMethode);
+				sa.DoSave(true, pkMethode);
 				sa.Dispose();
 			}
 			else
-				SauveImage.SauveScr(fileName, bitmapCpc, this, param, methode, version, colMode5);
+				SauveImage.SauveScr(fileName, bitmapCpc, this, param, pkMethode, version, colMode5);
 
 			main.SetInfo("Sauvegarde image compactée ok.");
 		}
@@ -275,10 +275,10 @@ namespace ConvImgCpc {
 			main.SetInfo("Sauvegarde sprite assembleur ok.");
 		}
 
-		public void SauveSpriteCmp(string fileName, string version, Main.PackMethode methode) {
+		public void SauveSpriteCmp(string fileName, string version, Main.PackMethode pkMethode) {
 			byte[] ret = MakeSprite();
 			byte[] sprCmp = new byte[ret.Length];
-			int l = new PackModule().Pack(ret, ret.Length, sprCmp, 0, methode);
+			int l = new PackModule().Pack(ret, ret.Length, sprCmp, 0, pkMethode);
 			StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
 			SaveAsm.GenereDatas(sw, sprCmp, l, 16);
 			SaveAsm.CloseAsm(sw);
@@ -350,11 +350,11 @@ namespace ConvImgCpc {
 			return ret;
 		}
 
-		public void SauveDeltaPack(string fileName, string version, Param param, bool reboucle, Main.PackMethode methode) {
+		public void SauveDeltaPack(string fileName, string version, Param param, bool reboucle, Main.PackMethode pkMethode) {
 			if (BitmapCpc.NbCol * BitmapCpc.NbLig > 0x4000)
 				MessageBox.Show("Les animations avec des écrans de plus de 16ko ne sont pas supportés...");
 			else
-				new SaveAnim(main, fileName, version, this, param, methode).ShowDialog();
+				new SaveAnim(main, fileName, version, this, param, pkMethode).ShowDialog();
 		}
 
 		public void LirePalette(string fileName, Param param) {

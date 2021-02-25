@@ -16,14 +16,14 @@ namespace ConvImgCpc {
 		private string version;
 		private ImageCpc img;
 		private Param param;
-		private Main.PackMethode methode;
+		private Main.PackMethode pkMethode;
 
-		public SaveAnim(Main m, string f, string v, ImageCpc i, Param p, Main.PackMethode met) {
+		public SaveAnim(Main m, string f, string v, ImageCpc i, Param p, Main.PackMethode pm) {
 			fileName = f;
 			version = v;
 			img = i;
 			param = p;
-			methode = met;
+			pkMethode = pm;
 			InitializeComponent();
 			m.ChangeLanguage(Controls, "SaveAnim");
 			grpGenereLigne.Visible = chk2Zone.Visible = chkDirecMem.Visible = chkCol.Visible = BitmapCpc.modeVirtuel < 7;
@@ -106,7 +106,7 @@ namespace ConvImgCpc {
 						pos += tailleX;
 					}
 				}
-				int lpack = new PackModule().Pack(bLigne, pos, bufOut, 0, methode);
+				int lpack = new PackModule().Pack(bLigne, pos, bufOut, 0, pkMethode);
 				sizeDepack = length + 4;
 				return lpack;
 			}
@@ -161,7 +161,7 @@ namespace ConvImgCpc {
 			BufTmp[0] = (byte)(bc);
 			BufTmp[1] = (byte)(bc >> 8);
 			Buffer.BlockCopy(DiffImage, 0, BufTmp, 2, posDiff);
-			int lPack = new PackModule().Pack(BufTmp, posDiff + 2, bufOut, 0, methode);
+			int lPack = new PackModule().Pack(BufTmp, posDiff + 2, bufOut, 0, pkMethode);
 			Array.Copy(src, BufPrec, BufPrec.Length);
 			sizeDepack = posDiff + 2;
 			return lPack;
@@ -275,7 +275,7 @@ namespace ConvImgCpc {
 				if (rbFrameFull.Checked) {
 					BufTmp[0] = (byte)'I';
 					lastAscii = 'I';
-					return new PackModule().Pack(BufTmp, 1, bufOut, 0, methode);
+					return new PackModule().Pack(BufTmp, 1, bufOut, 0, pkMethode);
 				}
 				else {
 					img.main.SetInfo("Impossible d'ajouter image identique...");
@@ -285,7 +285,7 @@ namespace ConvImgCpc {
 			else {
 				BufTmp[0] = (byte)'O';
 				Array.Copy(img.bitmapCpc.imgAscii, 0, BufTmp, 1, tailleMax);
-				int lo = rbFrameO.Checked || imageMode ? new PackModule().Pack(img.bitmapCpc.imgAscii, tailleMax, BufPrec, 0, methode) : new PackModule().Pack(BufTmp, tailleMax + 1, BufPrec, 0, methode);
+				int lo = rbFrameO.Checked || imageMode ? new PackModule().Pack(img.bitmapCpc.imgAscii, tailleMax, BufPrec, 0, pkMethode) : new PackModule().Pack(BufTmp, tailleMax + 1, BufPrec, 0, pkMethode);
 				posDiff = Math.Min(lastPosDiff, posDiff);
 				if (rbFrameD.Checked || imageMode) {
 					BufTmp[0] = (byte)(posDiff >> 1);
@@ -299,7 +299,7 @@ namespace ConvImgCpc {
 					Array.Copy(DiffImage, 0, BufTmp, 3, posDiff);
 				}
 				int ldRaw = posDiff + (rbFrameD.Checked ? 2 : 3);
-				int ld = new PackModule().Pack(BufTmp, ldRaw, bufOut, 0, methode);
+				int ld = new PackModule().Pack(BufTmp, ldRaw, bufOut, 0, pkMethode);
 				if (ld > ldRaw)
 					img.main.SetInfo("Perte de " + (ld - ldRaw).ToString() + " octets...");
 
@@ -339,7 +339,7 @@ namespace ConvImgCpc {
 		}
 		#endregion
 
-		private void SauveDeltaPack(int adrDeb, int adrMax, int delai, int modeLigne, bool imageMode, bool optimSpeed, Main.PackMethode methode) {
+		private void SauveDeltaPack(int adrDeb, int adrMax, int delai, int modeLigne, bool imageMode, bool optimSpeed, Main.PackMethode pkMethode) {
 			int sizeDepack = 0;
 			int nbImages = img.main.GetMaxImages();
 			byte[][] bufOut = new byte[nbImages << 1][];
@@ -401,7 +401,7 @@ namespace ConvImgCpc {
 				gest128K = false;
 
 			if (param.withCode && !chkDataBrut.Checked) {
-				SaveAsm.GenereAffichage(sw, delai, chkBoucle.Checked, gest128K, imageMode, methode);
+				SaveAsm.GenereAffichage(sw, delai, chkBoucle.Checked, gest128K, imageMode, pkMethode);
 				if (BitmapCpc.modeVirtuel >= 7)
 					SaveAsm.GenereDrawAscii(sw, rbFrameFull.Checked, rbFrameO.Checked, rbFrameD.Checked, gest128K, imageMode);
 				else
@@ -496,7 +496,7 @@ namespace ConvImgCpc {
 			chkZoneVert.Visible = chk2Zone.Checked;
 		}
 
-		public void DoSave(bool imageMode, Main.PackMethode methode) {
+		public void DoSave(bool imageMode, Main.PackMethode pkMethode) {
 			string adrTxt = txbAdrDeb.Text;
 			int adrDeb = 0, adrMax = 0;
 			try {
@@ -520,12 +520,12 @@ namespace ConvImgCpc {
 				img.WindowState = FormWindowState.Minimized;
 				img.Show();
 				img.WindowState = FormWindowState.Normal;
-				SauveDeltaPack(adrDeb, adrMax, chkDelai.Checked ? (int)numDelai.Value : 0, modeLigne, imageMode, optimSpeed, methode);
+				SauveDeltaPack(adrDeb, adrMax, chkDelai.Checked ? (int)numDelai.Value : 0, modeLigne, imageMode, optimSpeed, pkMethode);
 			}
 		}
 
 		private void bpSave_Click(object sender, EventArgs e) {
-			DoSave(false, methode);
+			DoSave(false, pkMethode);
 			Close();
 		}
 	}

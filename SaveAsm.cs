@@ -276,7 +276,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("	OUT	(C),C");
 		}
 
-		static public void GenereAffichage(StreamWriter sw, int delai, bool reboucle, bool gest128K, bool imageMode, Main.PackMethode methode) {
+		static public void GenereAffichage(StreamWriter sw, int delai, bool reboucle, bool gest128K, bool imageMode, Main.PackMethode pkMethode) {
 			if (delai > 0) {
 				sw.WriteLine("	LD	HL,NewIrq");
 				sw.WriteLine("	LD	(#39),HL");
@@ -348,7 +348,7 @@ namespace ConvImgCpc {
 				sw.WriteLine("	OUT	(C),A");
 			}
 			sw.WriteLine("	LD	DE,Buffer");
-			if (methode == Main.PackMethode.Standard)
+			if (pkMethode == Main.PackMethode.Standard)
 				GenereDepack(sw,"InitDraw");
 			else
 				GenereDZ80(sw,"InitDraw");
@@ -865,7 +865,7 @@ namespace ConvImgCpc {
 		}
 
 		// #### A revoir...
-		static public void GenereAfficheStd(StreamWriter sw, ImageCpc img, int mode, int[] palette, bool overscan, Main.PackMethode methode) {
+		static public void GenereAfficheStd(StreamWriter sw, ImageCpc img, int mode, int[] palette, bool overscan, Main.PackMethode pkMethode) {
 			sw.WriteLine("	DI");
 			if (BitmapCpc.cpcPlus)
 				GenereInitPlus(sw);
@@ -886,7 +886,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("	EI");
 			sw.WriteLine("	RET");
 
-			if (methode == Main.PackMethode.Standard)
+			if (pkMethode == Main.PackMethode.Standard)
 				GenereDepack(sw);
 			else
 				GenereDZ80(sw);
@@ -897,7 +897,7 @@ namespace ConvImgCpc {
 				GenerePaletteOld(sw, img);
 		}
 
-		static public void GenereAfficheModeX(StreamWriter sw, int[,] colMode5, bool isOverscan, Main.PackMethode methode) {
+		static public void GenereAfficheModeX(StreamWriter sw, int[,] colMode5, bool isOverscan, Main.PackMethode pkMethode) {
 			sw.WriteLine("	LD	HL,ImageCmp");
 			sw.WriteLine("	LD	DE,#" + (isOverscan ? "0200" : "C000"));
 			sw.WriteLine("	CALL	DepkLzw");
@@ -970,7 +970,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("	JR	Boucle");
 
 			// Code du décompacteur avant les datas
-			if (methode == Main.PackMethode.Standard)
+			if (pkMethode == Main.PackMethode.Standard)
 				GenereDepack(sw);
 			else
 				GenereDZ80(sw);
@@ -992,7 +992,7 @@ namespace ConvImgCpc {
 				sw.WriteLine(line + "'");
 		}
 
-		static public void GenereAfficheModeEgx(StreamWriter sw, int[] palette, bool overscan, Main.PackMethode methode) {
+		static public void GenereAfficheModeEgx(StreamWriter sw, int[] palette, bool overscan, Main.PackMethode pkMethode) {
 			sw.WriteLine("	LD	HL,Palette");
 			sw.WriteLine("	LD	B,(HL)");
 			sw.WriteLine("	LD	C,B");
@@ -1055,7 +1055,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("	RET");
 
 			GenereTspace(sw, false);
-			if (methode == Main.PackMethode.Standard)
+			if (pkMethode == Main.PackMethode.Standard)
 				GenereDepack(sw);
 			else
 				GenereDZ80(sw);
