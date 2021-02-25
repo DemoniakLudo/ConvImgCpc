@@ -339,12 +339,13 @@ namespace ConvImgCpc {
 		}
 		#endregion
 
-		private void SauveDeltaPack(int adrDeb, int adrMax, int delai, int modeLigne, bool imageMode, bool optimSpeed, Main.PackMethode pkMethode) {
+		private void SauveDeltaPack(int adrDeb, int adrMax, bool withDelai, int modeLigne, bool imageMode, bool optimSpeed, Main.PackMethode methode) {
 			int sizeDepack = 0;
 			int nbImages = img.main.GetMaxImages();
 			byte[][] bufOut = new byte[nbImages << 1][];
 			int[] lg = new int[nbImages << 1];
 			int[] bank = new int[nbImages << 1];
+			int[] speed = new int[nbImages << 1];
 			for (int i = 0; i < nbImages << 1; i++)
 				bufOut[i] = new byte[0x18000];
 
@@ -359,6 +360,7 @@ namespace ConvImgCpc {
 				img.main.SelectImage(nbImages - 1, true);
 				img.Convert(!img.bitmapCpc.isCalc, true);
 				lg[posPack] = PackFrame(bufOut[0], ref sizeDepack, true, false, -1, modeLigne, imageMode, optimSpeed);
+				speed[posPack] = img.BmpLock.Tps;
 				if (lg[posPack] > 0)
 					ltot += lg[posPack++];
 			}
@@ -370,6 +372,7 @@ namespace ConvImgCpc {
 					img.Convert(!img.bitmapCpc.isCalc, true);
 				}
 				Application.DoEvents();
+				speed[posPack] = img.BmpLock.Tps;
 				if (chk2Zone.Checked) {
 					lg[posPack] = PackFrame(bufOut[posPack], ref sizeDepack, i == 0 && !chkBoucle.Checked, i == 0 && !chkBoucle.Checked, 0, modeLigne, imageMode, optimSpeed);
 					if (lg[posPack] > 0)
@@ -401,14 +404,14 @@ namespace ConvImgCpc {
 				gest128K = false;
 
 			if (param.withCode && !chkDataBrut.Checked) {
-				SaveAsm.GenereAffichage(sw, delai, chkBoucle.Checked, gest128K, imageMode, pkMethode);
+				SaveAsm.GenereAffichage(sw, withDelai, chkBoucle.Checked, gest128K, imageMode, methode);
 				if (BitmapCpc.modeVirtuel >= 7)
-					SaveAsm.GenereDrawAscii(sw, rbFrameFull.Checked, rbFrameO.Checked, rbFrameD.Checked, gest128K, imageMode);
+					SaveAsm.GenereDrawAscii(sw, rbFrameFull.Checked, rbFrameO.Checked, rbFrameD.Checked, gest128K, imageMode, withDelai);
 				else
 					if (chkDirecMem.Checked)
 						SaveAsm.GenereDrawDirect(sw, gest128K);
 					else
-						SaveAsm.GenereDrawDC(sw, delai, chkCol.Checked, gest128K, modeLigne == 8 ? 0x3F : modeLigne == 4 ? 0x1F : modeLigne == 2 ? 0xF : 0x7, optimSpeed);
+						SaveAsm.GenereDrawDC(sw, withDelai, chkCol.Checked, gest128K, modeLigne == 8 ? 0x3F : modeLigne == 4 ? 0x1F : modeLigne == 2 ? 0xF : 0x7, optimSpeed);
 			}
 			if ((param.withPalette || param.withCode) && !chkDataBrut.Checked) {
 				if (BitmapCpc.cpcPlus)
@@ -445,13 +448,7 @@ namespace ConvImgCpc {
 				sw.WriteLine("Delta" + i.ToString() + ":\t\t; Taille #" + lg[i].ToString("X4"));
 				SaveAsm.GenereDatas(sw, bufOut[i], lg[i], chkDataBrut.Checked ? 3 : 16);
 			}
-			if (gest128K)
-				SaveAsm.GenerePointeurs(sw, posPack, bank, gest128K && numBank > 0xC0);
-			else
-				if (!imageMode && !chkDataBrut.Checked) {
-					sw.WriteLine("	DB	#FF			; Fin de l'animation");
-					ltot++;
-				}
+			SaveAsm.GenerePointeurs(sw, posPack, bank, withDelai ? speed : null, gest128K && numBank > 0xC0);
 			SaveAsm.GenereFin(sw, ltot, gest128K && endBank0 < 0x8000);
 			SaveAsm.CloseAsm(sw);
 			for (int i = 0; i < posPack; i++)
@@ -477,10 +474,6 @@ namespace ConvImgCpc {
 
 		private void chk128Ko_CheckedChanged(object sender, EventArgs e) {
 			tbxAdrMax.Visible = chkMaxMem.Visible = chk128Ko.Checked;
-		}
-
-		private void chkDelai_CheckedChanged(object sender, EventArgs e) {
-			numDelai.Visible = lblDelai.Visible = chkDelai.Checked;
 		}
 
 		private void chkDirecMem_CheckedChanged(object sender, EventArgs e) {
@@ -520,7 +513,7 @@ namespace ConvImgCpc {
 				img.WindowState = FormWindowState.Minimized;
 				img.Show();
 				img.WindowState = FormWindowState.Normal;
-				SauveDeltaPack(adrDeb, adrMax, chkDelai.Checked ? (int)numDelai.Value : 0, modeLigne, imageMode, optimSpeed, pkMethode);
+				SauveDeltaPack(adrDeb, adrMax, chkDelai.Checked, modeLigne, imageMode, optimSpeed, methode);
 			}
 		}
 

@@ -32,8 +32,6 @@
 			this.tbxAdrMax = new System.Windows.Forms.TextBox();
 			this.chkDirecMem = new System.Windows.Forms.CheckBox();
 			this.chkDelai = new System.Windows.Forms.CheckBox();
-			this.numDelai = new System.Windows.Forms.NumericUpDown();
-			this.lblDelai = new System.Windows.Forms.Label();
 			this.rb1L = new System.Windows.Forms.RadioButton();
 			this.rb2L = new System.Windows.Forms.RadioButton();
 			this.rb4L = new System.Windows.Forms.RadioButton();
@@ -47,7 +45,6 @@
 			this.rbFrameD = new System.Windows.Forms.RadioButton();
 			this.rbFrameO = new System.Windows.Forms.RadioButton();
 			this.chkDataBrut = new System.Windows.Forms.CheckBox();
-			((System.ComponentModel.ISupportInitialize)(this.numDelai)).BeginInit();
 			this.grpGenereLigne.SuspendLayout();
 			this.grpAscii.SuspendLayout();
 			this.SuspendLayout();
@@ -66,7 +63,7 @@
 			this.chk128Ko.AutoSize = true;
 			this.chk128Ko.Location = new System.Drawing.Point(25, 35);
 			this.chk128Ko.Name = "chk128Ko";
-			this.chk128Ko.Size = new System.Drawing.Size(143, 17);
+			this.chk128Ko.Size = new System.Drawing.Size(15, 14);
 			this.chk128Ko.TabIndex = 2;
 			this.chk128Ko.UseVisualStyleBackColor = true;
 			this.chk128Ko.CheckedChanged += new System.EventHandler(this.chk128Ko_CheckedChanged);
@@ -76,7 +73,7 @@
 			this.chkBoucle.AutoSize = true;
 			this.chkBoucle.Location = new System.Drawing.Point(25, 12);
 			this.chkBoucle.Name = "chkBoucle";
-			this.chkBoucle.Size = new System.Drawing.Size(186, 17);
+			this.chkBoucle.Size = new System.Drawing.Size(15, 14);
 			this.chkBoucle.TabIndex = 3;
 			this.chkBoucle.UseVisualStyleBackColor = true;
 			// 
@@ -85,7 +82,7 @@
 			this.label1.AutoSize = true;
 			this.label1.Location = new System.Drawing.Point(329, 16);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(96, 13);
+			this.label1.Size = new System.Drawing.Size(0, 13);
 			this.label1.TabIndex = 4;
 			// 
 			// txbAdrDeb
@@ -102,7 +99,7 @@
 			this.chkMaxMem.AutoSize = true;
 			this.chkMaxMem.Location = new System.Drawing.Point(25, 58);
 			this.chkMaxMem.Name = "chkMaxMem";
-			this.chkMaxMem.Size = new System.Drawing.Size(196, 17);
+			this.chkMaxMem.Size = new System.Drawing.Size(15, 14);
 			this.chkMaxMem.TabIndex = 6;
 			this.chkMaxMem.UseVisualStyleBackColor = true;
 			this.chkMaxMem.Visible = false;
@@ -124,7 +121,7 @@
 			this.chkDirecMem.AutoSize = true;
 			this.chkDirecMem.Location = new System.Drawing.Point(25, 81);
 			this.chkDirecMem.Name = "chkDirecMem";
-			this.chkDirecMem.Size = new System.Drawing.Size(131, 17);
+			this.chkDirecMem.Size = new System.Drawing.Size(15, 14);
 			this.chkDirecMem.TabIndex = 8;
 			this.chkDirecMem.UseVisualStyleBackColor = true;
 			this.chkDirecMem.CheckedChanged += new System.EventHandler(this.chkDirecMem_CheckedChanged);
@@ -134,43 +131,9 @@
 			this.chkDelai.AutoSize = true;
 			this.chkDelai.Location = new System.Drawing.Point(25, 207);
 			this.chkDelai.Name = "chkDelai";
-			this.chkDelai.Size = new System.Drawing.Size(134, 17);
+			this.chkDelai.Size = new System.Drawing.Size(15, 14);
 			this.chkDelai.TabIndex = 9;
 			this.chkDelai.UseVisualStyleBackColor = true;
-			this.chkDelai.CheckedChanged += new System.EventHandler(this.chkDelai_CheckedChanged);
-			// 
-			// numDelai
-			// 
-			this.numDelai.Location = new System.Drawing.Point(165, 207);
-			this.numDelai.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-			this.numDelai.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-			this.numDelai.Name = "numDelai";
-			this.numDelai.Size = new System.Drawing.Size(46, 20);
-			this.numDelai.TabIndex = 10;
-			this.numDelai.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-			this.numDelai.Visible = false;
-			// 
-			// lblDelai
-			// 
-			this.lblDelai.AutoSize = true;
-			this.lblDelai.Location = new System.Drawing.Point(210, 211);
-			this.lblDelai.Name = "lblDelai";
-			this.lblDelai.Size = new System.Drawing.Size(56, 13);
-			this.lblDelai.TabIndex = 11;
-			this.lblDelai.Text = "/ 300 sec.";
-			this.lblDelai.Visible = false;
 			// 
 			// rb1L
 			// 
@@ -179,7 +142,7 @@
 			this.rb1L.Checked = true;
 			this.rb1L.Location = new System.Drawing.Point(6, 11);
 			this.rb1L.Name = "rb1L";
-			this.rb1L.Size = new System.Drawing.Size(141, 17);
+			this.rb1L.Size = new System.Drawing.Size(14, 13);
 			this.rb1L.TabIndex = 12;
 			this.rb1L.TabStop = true;
 			this.rb1L.UseVisualStyleBackColor = true;
@@ -189,7 +152,7 @@
 			this.rb2L.AutoSize = true;
 			this.rb2L.Location = new System.Drawing.Point(6, 34);
 			this.rb2L.Name = "rb2L";
-			this.rb2L.Size = new System.Drawing.Size(114, 17);
+			this.rb2L.Size = new System.Drawing.Size(14, 13);
 			this.rb2L.TabIndex = 13;
 			this.rb2L.UseVisualStyleBackColor = true;
 			// 
@@ -198,7 +161,7 @@
 			this.rb4L.AutoSize = true;
 			this.rb4L.Location = new System.Drawing.Point(6, 57);
 			this.rb4L.Name = "rb4L";
-			this.rb4L.Size = new System.Drawing.Size(114, 17);
+			this.rb4L.Size = new System.Drawing.Size(14, 13);
 			this.rb4L.TabIndex = 14;
 			this.rb4L.UseVisualStyleBackColor = true;
 			// 
@@ -207,7 +170,7 @@
 			this.rb8L.AutoSize = true;
 			this.rb8L.Location = new System.Drawing.Point(6, 80);
 			this.rb8L.Name = "rb8L";
-			this.rb8L.Size = new System.Drawing.Size(114, 17);
+			this.rb8L.Size = new System.Drawing.Size(14, 13);
 			this.rb8L.TabIndex = 15;
 			this.rb8L.UseVisualStyleBackColor = true;
 			// 
@@ -216,7 +179,7 @@
 			this.chk2Zone.AutoSize = true;
 			this.chk2Zone.Location = new System.Drawing.Point(330, 133);
 			this.chk2Zone.Name = "chk2Zone";
-			this.chk2Zone.Size = new System.Drawing.Size(114, 17);
+			this.chk2Zone.Size = new System.Drawing.Size(15, 14);
 			this.chk2Zone.TabIndex = 16;
 			this.chk2Zone.UseVisualStyleBackColor = true;
 			this.chk2Zone.CheckedChanged += new System.EventHandler(this.chk2Zone_CheckedChanged);
@@ -226,7 +189,7 @@
 			this.chkZoneVert.AutoSize = true;
 			this.chkZoneVert.Location = new System.Drawing.Point(330, 156);
 			this.chkZoneVert.Name = "chkZoneVert";
-			this.chkZoneVert.Size = new System.Drawing.Size(104, 17);
+			this.chkZoneVert.Size = new System.Drawing.Size(15, 14);
 			this.chkZoneVert.TabIndex = 17;
 			this.chkZoneVert.UseVisualStyleBackColor = true;
 			this.chkZoneVert.Visible = false;
@@ -236,7 +199,7 @@
 			this.chkCol.AutoSize = true;
 			this.chkCol.Location = new System.Drawing.Point(330, 180);
 			this.chkCol.Name = "chkCol";
-			this.chkCol.Size = new System.Drawing.Size(148, 17);
+			this.chkCol.Size = new System.Drawing.Size(15, 14);
 			this.chkCol.TabIndex = 19;
 			this.chkCol.UseVisualStyleBackColor = true;
 			// 
@@ -269,7 +232,7 @@
 			this.rbFrameFull.Checked = true;
 			this.rbFrameFull.Location = new System.Drawing.Point(5, 10);
 			this.rbFrameFull.Name = "rbFrameFull";
-			this.rbFrameFull.Size = new System.Drawing.Size(126, 17);
+			this.rbFrameFull.Size = new System.Drawing.Size(14, 13);
 			this.rbFrameFull.TabIndex = 1;
 			this.rbFrameFull.TabStop = true;
 			this.rbFrameFull.UseVisualStyleBackColor = true;
@@ -279,7 +242,7 @@
 			this.rbFrameD.AutoSize = true;
 			this.rbFrameD.Location = new System.Drawing.Point(5, 56);
 			this.rbFrameD.Name = "rbFrameD";
-			this.rbFrameD.Size = new System.Drawing.Size(99, 17);
+			this.rbFrameD.Size = new System.Drawing.Size(14, 13);
 			this.rbFrameD.TabIndex = 0;
 			this.rbFrameD.UseVisualStyleBackColor = true;
 			// 
@@ -288,7 +251,7 @@
 			this.rbFrameO.AutoSize = true;
 			this.rbFrameO.Location = new System.Drawing.Point(5, 33);
 			this.rbFrameO.Name = "rbFrameO";
-			this.rbFrameO.Size = new System.Drawing.Size(99, 17);
+			this.rbFrameO.Size = new System.Drawing.Size(14, 13);
 			this.rbFrameO.TabIndex = 0;
 			this.rbFrameO.UseVisualStyleBackColor = true;
 			// 
@@ -297,7 +260,7 @@
 			this.chkDataBrut.AutoSize = true;
 			this.chkDataBrut.Location = new System.Drawing.Point(329, 97);
 			this.chkDataBrut.Name = "chkDataBrut";
-			this.chkDataBrut.Size = new System.Drawing.Size(131, 17);
+			this.chkDataBrut.Size = new System.Drawing.Size(15, 14);
 			this.chkDataBrut.TabIndex = 22;
 			this.chkDataBrut.UseVisualStyleBackColor = true;
 			this.chkDataBrut.CheckedChanged += new System.EventHandler(this.chkDataBrut_CheckedChanged);
@@ -313,8 +276,6 @@
 			this.Controls.Add(this.chkCol);
 			this.Controls.Add(this.chkZoneVert);
 			this.Controls.Add(this.chk2Zone);
-			this.Controls.Add(this.lblDelai);
-			this.Controls.Add(this.numDelai);
 			this.Controls.Add(this.chkDelai);
 			this.Controls.Add(this.chkDirecMem);
 			this.Controls.Add(this.tbxAdrMax);
@@ -329,7 +290,6 @@
 			this.MinimizeBox = false;
 			this.Name = "SaveAnim";
 			this.Text = "SaveAnim";
-			((System.ComponentModel.ISupportInitialize)(this.numDelai)).EndInit();
 			this.grpGenereLigne.ResumeLayout(false);
 			this.grpGenereLigne.PerformLayout();
 			this.grpAscii.ResumeLayout(false);
@@ -350,8 +310,6 @@
 		private System.Windows.Forms.TextBox tbxAdrMax;
 		private System.Windows.Forms.CheckBox chkDirecMem;
 		private System.Windows.Forms.CheckBox chkDelai;
-		private System.Windows.Forms.NumericUpDown numDelai;
-		private System.Windows.Forms.Label lblDelai;
 		private System.Windows.Forms.RadioButton rb1L;
 		private System.Windows.Forms.RadioButton rb2L;
 		private System.Windows.Forms.RadioButton rb4L;
