@@ -513,7 +513,7 @@ namespace ConvImgCpc {
 				img.WindowState = FormWindowState.Minimized;
 				img.Show();
 				img.WindowState = FormWindowState.Normal;
-				SauveDeltaPack(adrDeb, adrMax, chkDelai.Checked, modeLigne, imageMode, optimSpeed, methode);
+				SauveDeltaPack(adrDeb, adrMax, chkDelai.Checked, modeLigne, imageMode, optimSpeed, pkMethode);
 			}
 		}
 

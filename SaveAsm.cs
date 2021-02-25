@@ -276,7 +276,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("	OUT	(C),C");
 		}
 
-		static public void GenereAffichage(StreamWriter sw, bool delai, bool reboucle, bool gest128K, bool imageMode, Main.PackMethode methode) {
+		static public void GenereAffichage(StreamWriter sw, bool delai, bool reboucle, bool gest128K, bool imageMode, Main.PackMethode pkMethode) {
 			if (delai) {
 				sw.WriteLine("	LD	HL,NewIrq");
 				sw.WriteLine("	LD	(#39),HL");
