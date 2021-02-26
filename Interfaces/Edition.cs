@@ -347,5 +347,33 @@ namespace ConvImgCpc {
 			bpRedo.Enabled = undo.CanRedo;
 			Enabled = true;
 		}
+
+		// Flip horizontal
+		private void bpHorFlip_Click(object sender, EventArgs e) {
+			int maxY = BitmapCpc.TailleY >> 1;
+			for (int y = 0; y < maxY; y++) {
+				int zy = BitmapCpc.TailleY - 1 - y;
+				for (int x = 0; x < BitmapCpc.TailleX; x++) {
+					int p0 = BmpLock.GetPixel(x, y);
+					BmpLock.SetPixel(x, y, BmpLock.GetPixel(x, zy));
+					BmpLock.SetPixel(x, zy, p0);
+				}
+			}
+			Render(true);
+		}
+
+		// Flip Vertical
+		private void bpVerFlip_Click(object sender, EventArgs e) {
+			int maxX = BitmapCpc.TailleX >> 1;
+			for (int x = 0; x < maxX; x++) {
+				int zx = BitmapCpc.TailleX - 1 - x;
+				for (int y = 0; y < BitmapCpc.TailleY; y++) {
+					int p0 = BmpLock.GetPixel(x, y);
+					BmpLock.SetPixel(x, y, BmpLock.GetPixel(zx, y));
+					BmpLock.SetPixel(zx, y, p0);
+				}
+			}
+			Render(true);
+		}
 	}
 }

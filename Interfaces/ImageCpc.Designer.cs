@@ -46,6 +46,8 @@
 			this.modeCaptureSprites = new System.Windows.Forms.CheckBox();
 			this.bpCopyPal = new System.Windows.Forms.Button();
 			this.pictImpDraw = new System.Windows.Forms.PictureBox();
+			this.bpHorFlip = new System.Windows.Forms.Button();
+			this.bpVerFlip = new System.Windows.Forms.Button();
 			this.grpEdition.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictImpDraw)).BeginInit();
@@ -136,6 +138,8 @@
 			// 
 			// grpEdition
 			// 
+			this.grpEdition.Controls.Add(this.bpVerFlip);
+			this.grpEdition.Controls.Add(this.bpHorFlip);
 			this.grpEdition.Controls.Add(this.lblInfoPos);
 			this.grpEdition.Controls.Add(this.rbCopy);
 			this.grpEdition.Controls.Add(this.undrawColor);
@@ -226,9 +230,9 @@
 			// bpRedo
 			// 
 			this.bpRedo.Enabled = false;
-			this.bpRedo.Location = new System.Drawing.Point(36, 431);
+			this.bpRedo.Location = new System.Drawing.Point(83, 431);
 			this.bpRedo.Name = "bpRedo";
-			this.bpRedo.Size = new System.Drawing.Size(75, 23);
+			this.bpRedo.Size = new System.Drawing.Size(60, 23);
 			this.bpRedo.TabIndex = 10;
 			this.bpRedo.Text = "Redo";
 			this.bpRedo.UseVisualStyleBackColor = true;
@@ -237,9 +241,9 @@
 			// bpUndo
 			// 
 			this.bpUndo.Enabled = false;
-			this.bpUndo.Location = new System.Drawing.Point(36, 402);
+			this.bpUndo.Location = new System.Drawing.Point(6, 431);
 			this.bpUndo.Name = "bpUndo";
-			this.bpUndo.Size = new System.Drawing.Size(75, 23);
+			this.bpUndo.Size = new System.Drawing.Size(60, 23);
 			this.bpUndo.TabIndex = 10;
 			this.bpUndo.Text = "Undo";
 			this.bpUndo.UseVisualStyleBackColor = true;
@@ -294,6 +298,26 @@
 			this.pictImpDraw.Size = new System.Drawing.Size(768, 2);
 			this.pictImpDraw.TabIndex = 12;
 			this.pictImpDraw.TabStop = false;
+			// 
+			// bpHorFlip
+			// 
+			this.bpHorFlip.Location = new System.Drawing.Point(6, 402);
+			this.bpHorFlip.Name = "bpHorFlip";
+			this.bpHorFlip.Size = new System.Drawing.Size(60, 23);
+			this.bpHorFlip.TabIndex = 18;
+			this.bpHorFlip.Text = "Hor. Flip";
+			this.bpHorFlip.UseVisualStyleBackColor = true;
+			this.bpHorFlip.Click += new System.EventHandler(this.bpHorFlip_Click);
+			// 
+			// bpVerFlip
+			// 
+			this.bpVerFlip.Location = new System.Drawing.Point(83, 402);
+			this.bpVerFlip.Name = "bpVerFlip";
+			this.bpVerFlip.Size = new System.Drawing.Size(60, 23);
+			this.bpVerFlip.TabIndex = 19;
+			this.bpVerFlip.Text = "Ver. Flip";
+			this.bpVerFlip.UseVisualStyleBackColor = true;
+			this.bpVerFlip.Click += new System.EventHandler(this.bpVerFlip_Click);
 			// 
 			// ImageCpc
 			// 
@@ -351,6 +375,8 @@
 		private System.Windows.Forms.CheckBox modeCaptureSprites;
 		private System.Windows.Forms.Button bpCopyPal;
 		private System.Windows.Forms.PictureBox pictImpDraw;
+		private System.Windows.Forms.Button bpHorFlip;
+		private System.Windows.Forms.Button bpVerFlip;
 
 	}
 }
