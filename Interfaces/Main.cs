@@ -475,6 +475,7 @@ namespace ConvImgCpc {
 		}
 
 		private void bpLoad_Click(object sender, EventArgs e) {
+			Enabled = false;
 			OpenFileDialog dlg = new OpenFileDialog();
 			dlg.Filter = multilingue.GetString("Main.prg.TxtInfo16") + " (*.bmp, *.gif, *.png, *.jpg,*.jpeg, *.scr, *.imp)|*.bmp;*.gif;*.png;*.jpg;*.jpeg;*.scr;*.imp|"
 						+ multilingue.GetString("Main.prg.TxtInfo18") + " (*.pal)|*.pal|" + multilingue.GetString("Main.prg.TxtInfo19") + " (*.xml)|*.xml|"
@@ -498,9 +499,11 @@ namespace ConvImgCpc {
 				}
 				param.lastReadPath = Path.GetDirectoryName(dlg.FileName);
 			}
+			Enabled = true;
 		}
 
 		private void bpSave_Click(object sender, EventArgs e) {
+			Enabled = false;
 			SaveFileDialog dlg = new SaveFileDialog();
 			dlg.InitialDirectory = param.lastSavePath;
 			string filter = multilingue.GetString("Main.prg.TxtInfo20") + " (*.scr)|*.scr|Bitmap (.png)|*.png|"
@@ -569,6 +572,7 @@ namespace ConvImgCpc {
 				}
 				param.lastSavePath = Path.GetDirectoryName(dlg.FileName);
 			}
+			Enabled = true;
 		}
 
 		private void nbCols_ValueChanged(object sender, EventArgs e) {

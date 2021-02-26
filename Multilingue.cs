@@ -85,6 +85,10 @@ namespace ConvImgCpc {
 			dic.Add("Main.bpEditSprites.EN", "Editing Hard Sprites");
 			dic.Add("Main.chkImpDraw.FR", "Mode ImpDraw");
 			dic.Add("Main.chkImpDraw.EN", "ImpDraw mode");
+			dic.Add("Main.rbStdPack.FR", "Compression standard");
+			dic.Add("Main.rbZx0Pack.FR", "Compression ZX0");
+			dic.Add("Main.rbStdPack.EN", "Standard compression");
+			dic.Add("Main.rbZx0Pack.EN", "ZX0 Compression");
 
 			// --- Libellés du programme
 			dic.Add("Main.Prg.TxtInfo1.FR", "Conversion en cours...");
