@@ -19,6 +19,7 @@ namespace ConvImgCpc {
 		public Multilingue multilingue = new Multilingue();
 		public enum PackMethode { None = 0, Standard, ZX0 };
 		private PackMethode pkMethode = PackMethode.Standard;
+		private Version version = Assembly.GetExecutingAssembly().GetName().Version;
 
 		public Main() {
 			InitializeComponent();
@@ -39,55 +40,15 @@ namespace ConvImgCpc {
 			param.pctContrast = param.pctLumi = param.pctSat = param.pctRed = param.pctGreen = param.pctBlue = 100;
 			param.withCode = withCode.Checked;
 			param.withPalette = withPalette.Checked;
-			Version version = Assembly.GetExecutingAssembly().GetName().Version;
 			lblInfoVersion.Text = "V " + version.ToString() + " - " + new DateTime(2000, 1, 1).AddDays(version.Build).ToShortDateString();
 			radioUserSize_CheckedChanged(null, null);
 			string configDetault = "ConvImgCpc.xml";
 			if (File.Exists(configDetault))
 				ReadParam(configDetault);
 
-			CheckVersion(version);
-
 			anim.Show();
 			imgCpc.Show();
 			Show();
-		}
-
-		private void CheckVersion(Version version) {
-			byte[] buffer = new byte[0x4000];
-			string url = "http://ldeplanque.free.fr/ConvImgCpc/new/ConvImgCpc.exe";
-			WebRequest objRequest = WebRequest.Create(url);
-			WebResponse objResponse = objRequest.GetResponse();
-			Stream input = objResponse.GetResponseStream();
-			MemoryStream output = new MemoryStream();
-			int bytesRead;
-			while ((bytesRead = input.Read(buffer, 0, buffer.Length)) > 0) {
-				output.Write(buffer, 0, bytesRead);
-			}
-			input.Close();
-			input.Dispose();
-			output.Close();
-			byte[] lastVersion = output.ToArray();
-			for (int i = 0; i < lastVersion.Length - 32; i++) {
-				if (lastVersion[i] == 'V' &&
-					lastVersion[i + 2] == 'e' &&
-					lastVersion[i + 4] == 'r' &&
-					lastVersion[i + 6] == 's' &&
-					lastVersion[i + 8] == 'i' &&
-					lastVersion[i + 10] == 'o' &&
-					lastVersion[i + 12] == 'n' &&
-					lastVersion[i + 18] == '.' &&
-					lastVersion[i + 22] == '.' &&
-					lastVersion[i + 32] == '.'
-					) {
-					int downVersion = System.Convert.ToInt32(new string(new char[4] { (char)lastVersion[i + 24], (char)lastVersion[i + 26], (char)lastVersion[i + 28], (char)lastVersion[i + 30] }));
-					if (downVersion > version.Build)
-						MessageBox.Show(multilingue.GetString("Main.prg.TxtInfo29") + "\n\n\r" + url);
-
-					break;
-				}
-			}
-			output.Dispose();
 		}
 
 		public void ChangeLanguage(Control.ControlCollection ctrl, string prefix) {
@@ -1008,6 +969,49 @@ namespace ConvImgCpc {
 
 		private void rbZx0Pack_CheckedChanged(object sender, EventArgs e) {
 			pkMethode = PackMethode.ZX0;
+		}
+
+		private void bpCheckMaj_Click(object sender, EventArgs e) {
+			byte[] buffer = new byte[0x4000];
+			string url = "http://ldeplanque.free.fr/ConvImgCpc/new/ConvImgCpc.exe";
+			WebRequest objRequest = WebRequest.Create(url);
+			WebResponse objResponse = objRequest.GetResponse();
+			Stream input = objResponse.GetResponseStream();
+			MemoryStream output = new MemoryStream();
+			int bytesRead;
+			while ((bytesRead = input.Read(buffer, 0, buffer.Length)) > 0) {
+				output.Write(buffer, 0, bytesRead);
+			}
+			input.Close();
+			input.Dispose();
+			output.Close();
+			bool found = false;
+			byte[] lastVersion = output.ToArray();
+			for (int i = 0; i < lastVersion.Length - 32; i++) {
+				if (lastVersion[i] == 'V' &&
+					lastVersion[i + 2] == 'e' &&
+					lastVersion[i + 4] == 'r' &&
+					lastVersion[i + 6] == 's' &&
+					lastVersion[i + 8] == 'i' &&
+					lastVersion[i + 10] == 'o' &&
+					lastVersion[i + 12] == 'n' &&
+					lastVersion[i + 18] == '.' &&
+					lastVersion[i + 22] == '.' &&
+					lastVersion[i + 32] == '.'
+					) {
+					int downVersion = System.Convert.ToInt32(new string(new char[4] { (char)lastVersion[i + 24], (char)lastVersion[i + 26], (char)lastVersion[i + 28], (char)lastVersion[i + 30] }));
+					if (downVersion > version.Build)
+						found = true;
+
+					break;
+				}
+			}
+			output.Dispose();
+			if (found)
+				MessageBox.Show(multilingue.GetString("Main.prg.TxtInfo29") + "\n\n\r" + url);
+			else
+				MessageBox.Show(multilingue.GetString("Main.prg.TxtInfo30"));
+
 		}
 	}
 }

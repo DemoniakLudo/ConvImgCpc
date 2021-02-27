@@ -89,6 +89,8 @@ namespace ConvImgCpc {
 			dic.Add("Main.rbZx0Pack.FR", "Compression ZX0");
 			dic.Add("Main.rbStdPack.EN", "Standard compression");
 			dic.Add("Main.rbZx0Pack.EN", "ZX0 Compression");
+			dic.Add("Main.bpCheckMaj.FR", "Vérifier mise à jour");
+			dic.Add("Main.bpCheckMaj.EN", "Check for update");
 
 			// --- Libellés du programme
 			dic.Add("Main.Prg.TxtInfo1.FR", "Conversion en cours...");
@@ -149,8 +151,8 @@ namespace ConvImgCpc {
 			dic.Add("Main.prg.TxtInfo28.EN", "2 separate images");
 			dic.Add("Main.prg.TxtInfo29.FR", "Il existe une version plus récente sur le site web :");
 			dic.Add("Main.prg.TxtInfo29.EN", "There is a newer version on the website :");
-			dic.Add("Main.prg.TxtInfo30.FR", "");
-			dic.Add("Main.prg.TxtInfo39.EN", "");
+			dic.Add("Main.prg.TxtInfo30.FR", "Vous avez la dernière mise à jour.");
+			dic.Add("Main.prg.TxtInfo30.EN", "You have the lastest update.");
 
 			// ImageCpc
 			dic.Add("ImageCpc.lockAllPal.FR", "Verrouiller toute la palette");

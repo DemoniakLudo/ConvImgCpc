@@ -119,6 +119,7 @@
 			this.bpEn = new System.Windows.Forms.Button();
 			this.rbStdPack = new System.Windows.Forms.RadioButton();
 			this.rbZx0Pack = new System.Windows.Forms.RadioButton();
+			this.bpCheckMaj = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -586,7 +587,7 @@
 			// lblInfoVersion
 			// 
 			this.lblInfoVersion.AutoSize = true;
-			this.lblInfoVersion.Location = new System.Drawing.Point(7, 552);
+			this.lblInfoVersion.Location = new System.Drawing.Point(9, 517);
 			this.lblInfoVersion.Name = "lblInfoVersion";
 			this.lblInfoVersion.Size = new System.Drawing.Size(0, 13);
 			this.lblInfoVersion.TabIndex = 52;
@@ -1153,9 +1154,9 @@
 			// 
 			// bpEditSprites
 			// 
-			this.bpEditSprites.Location = new System.Drawing.Point(10, 511);
+			this.bpEditSprites.Location = new System.Drawing.Point(129, 30);
 			this.bpEditSprites.Name = "bpEditSprites";
-			this.bpEditSprites.Size = new System.Drawing.Size(117, 23);
+			this.bpEditSprites.Size = new System.Drawing.Size(108, 23);
 			this.bpEditSprites.TabIndex = 67;
 			this.bpEditSprites.UseVisualStyleBackColor = true;
 			this.bpEditSprites.Visible = false;
@@ -1188,7 +1189,7 @@
 			this.rbStdPack.Checked = true;
 			this.rbStdPack.Location = new System.Drawing.Point(6, 167);
 			this.rbStdPack.Name = "rbStdPack";
-			this.rbStdPack.Size = new System.Drawing.Size(129, 17);
+			this.rbStdPack.Size = new System.Drawing.Size(14, 13);
 			this.rbStdPack.TabIndex = 69;
 			this.rbStdPack.TabStop = true;
 			this.rbStdPack.UseVisualStyleBackColor = true;
@@ -1199,10 +1200,19 @@
 			this.rbZx0Pack.AutoSize = true;
 			this.rbZx0Pack.Location = new System.Drawing.Point(134, 167);
 			this.rbZx0Pack.Name = "rbZx0Pack";
-			this.rbZx0Pack.Size = new System.Drawing.Size(108, 17);
+			this.rbZx0Pack.Size = new System.Drawing.Size(14, 13);
 			this.rbZx0Pack.TabIndex = 69;
 			this.rbZx0Pack.UseVisualStyleBackColor = true;
 			this.rbZx0Pack.CheckedChanged += new System.EventHandler(this.rbZx0Pack_CheckedChanged);
+			// 
+			// bpCheckMaj
+			// 
+			this.bpCheckMaj.Location = new System.Drawing.Point(6, 542);
+			this.bpCheckMaj.Name = "bpCheckMaj";
+			this.bpCheckMaj.Size = new System.Drawing.Size(122, 23);
+			this.bpCheckMaj.TabIndex = 70;
+			this.bpCheckMaj.UseVisualStyleBackColor = true;
+			this.bpCheckMaj.Click += new System.EventHandler(this.bpCheckMaj_Click);
 			// 
 			// Main
 			// 
@@ -1210,6 +1220,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(723, 571);
+			this.Controls.Add(this.bpCheckMaj);
 			this.Controls.Add(this.rbZx0Pack);
 			this.Controls.Add(this.rbStdPack);
 			this.Controls.Add(this.bpEn);
@@ -1362,6 +1373,7 @@
 		private System.Windows.Forms.CheckBox chkImpDraw;
 		private System.Windows.Forms.RadioButton rbStdPack;
 		private System.Windows.Forms.RadioButton rbZx0Pack;
+		private System.Windows.Forms.Button bpCheckMaj;
 	}
 }
 
