@@ -338,7 +338,7 @@ namespace ConvImgCpc {
 			}
 			if (gest128K) {
 				sw.WriteLine("	LD	B,#7F");
-				sw.WriteLine("	LD	A,(IX+3)");
+				sw.WriteLine("	LD	A,(IX+" + (delai ? "3" : "2") + ")");
 				sw.WriteLine("	OUT	(C),A");
 			}
 			sw.WriteLine("	LD	DE,Buffer");

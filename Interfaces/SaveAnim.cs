@@ -17,6 +17,7 @@ namespace ConvImgCpc {
 		private ImageCpc img;
 		private Param param;
 		private Main.PackMethode pkMethode;
+		private PackModule pk = new PackModule();
 
 		public SaveAnim(Main m, string f, string v, ImageCpc i, Param p, Main.PackMethode pm) {
 			fileName = f;
@@ -106,7 +107,7 @@ namespace ConvImgCpc {
 						pos += tailleX;
 					}
 				}
-				int lpack = new PackModule().Pack(bLigne, pos, bufOut, 0, pkMethode);
+				int lpack = pk.Pack(bLigne, pos, bufOut, 0, pkMethode);
 				sizeDepack = length + 4;
 				return lpack;
 			}
@@ -161,7 +162,7 @@ namespace ConvImgCpc {
 			BufTmp[0] = (byte)(bc);
 			BufTmp[1] = (byte)(bc >> 8);
 			Buffer.BlockCopy(DiffImage, 0, BufTmp, 2, posDiff);
-			int lPack = new PackModule().Pack(BufTmp, posDiff + 2, bufOut, 0, pkMethode);
+			int lPack = pk.Pack(BufTmp, posDiff + 2, bufOut, 0, pkMethode);
 			Array.Copy(src, BufPrec, BufPrec.Length);
 			sizeDepack = posDiff + 2;
 			return lPack;
@@ -275,7 +276,7 @@ namespace ConvImgCpc {
 				if (rbFrameFull.Checked) {
 					BufTmp[0] = (byte)'I';
 					lastAscii = 'I';
-					return new PackModule().Pack(BufTmp, 1, bufOut, 0, pkMethode);
+					return pk.Pack(BufTmp, 1, bufOut, 0, pkMethode);
 				}
 				else {
 					img.main.SetInfo("Impossible d'ajouter image identique...");
@@ -285,7 +286,7 @@ namespace ConvImgCpc {
 			else {
 				BufTmp[0] = (byte)'O';
 				Array.Copy(img.bitmapCpc.imgAscii, 0, BufTmp, 1, tailleMax);
-				int lo = rbFrameO.Checked || imageMode ? new PackModule().Pack(img.bitmapCpc.imgAscii, tailleMax, BufPrec, 0, pkMethode) : new PackModule().Pack(BufTmp, tailleMax + 1, BufPrec, 0, pkMethode);
+				int lo = rbFrameO.Checked || imageMode ? pk.Pack(img.bitmapCpc.imgAscii, tailleMax, BufPrec, 0, pkMethode) : pk.Pack(BufTmp, tailleMax + 1, BufPrec, 0, pkMethode);
 				posDiff = Math.Min(lastPosDiff, posDiff);
 				if (rbFrameD.Checked || imageMode) {
 					BufTmp[0] = (byte)(posDiff >> 1);
@@ -299,7 +300,7 @@ namespace ConvImgCpc {
 					Array.Copy(DiffImage, 0, BufTmp, 3, posDiff);
 				}
 				int ldRaw = posDiff + (rbFrameD.Checked ? 2 : 3);
-				int ld = new PackModule().Pack(BufTmp, ldRaw, bufOut, 0, pkMethode);
+				int ld = pk.Pack(BufTmp, ldRaw, bufOut, 0, pkMethode);
 				if (ld > ldRaw)
 					img.main.SetInfo("Perte de " + (ld - ldRaw).ToString() + " octets...");
 
@@ -342,11 +343,11 @@ namespace ConvImgCpc {
 		private void SauveDeltaPack(int adrDeb, int adrMax, bool withDelai, int modeLigne, bool imageMode, bool optimSpeed, Main.PackMethode methode) {
 			int sizeDepack = 0;
 			int nbImages = img.main.GetMaxImages();
-			byte[][] bufOut = new byte[nbImages << 1][];
-			int[] lg = new int[nbImages << 1];
-			int[] bank = new int[nbImages << 1];
-			int[] speed = new int[nbImages << 1];
-			for (int i = 0; i < nbImages << 1; i++)
+			byte[][] bufOut = new byte[1 + (nbImages << 1)][];
+			int[] lg = new int[1 + (nbImages << 1)];
+			int[] bank = new int[1 + (nbImages << 1)];
+			int[] speed = new int[1 + (nbImages << 1)];
+			for (int i = 0; i <= nbImages << 1; i++)
 				bufOut[i] = new byte[0x18000];
 
 			if (adrMax == 0)
@@ -518,6 +519,7 @@ namespace ConvImgCpc {
 		}
 
 		private void bpSave_Click(object sender, EventArgs e) {
+			Hide();
 			DoSave(false, pkMethode);
 			Close();
 		}
