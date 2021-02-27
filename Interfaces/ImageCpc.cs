@@ -124,9 +124,9 @@ namespace ConvImgCpc {
 
 				if (forceDrawZoom) {
 					for (int y = 0; y < imgOrigine.Height; y += 2) {
-						int ySrc = Math.Min(offsetY + (y / zoom), BitmapCpc.TailleY - 1);
+						int ySrc = offsetY + (y / zoom);
 						for (int x = 0; x < imgOrigine.Width; x += zoom)
-							tmpLock.SetHorLineDouble(x, y, Math.Min(zoom, imgOrigine.Width - x - 1), BmpLock.GetPixel(offsetX + (x / zoom), ySrc));
+							tmpLock.SetHorLineDouble(x, y, Math.Min(zoom, imgOrigine.Width - x - 1), ySrc > BitmapCpc.TailleY - 1 ? SystemColors.Control.ToArgb() : BmpLock.GetPixel(offsetX + (x / zoom), ySrc));
 					}
 				}
 				pictureBox.Image = tmpLock.Bitmap;

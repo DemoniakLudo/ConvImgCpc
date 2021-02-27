@@ -66,7 +66,8 @@ namespace ConvImgCpc {
 		}
 
 		private void DoZoom() {
-			vScrollBar.Visible = hScrollBar.Visible = zoom > 1;
+			vScrollBar.Visible = BitmapCpc.TailleY * zoom > pictureBox.Image.Height;
+			hScrollBar.Visible = BitmapCpc.TailleX * zoom > pictureBox.Image.Width;
 			hScrollBar.Maximum = hScrollBar.LargeChange + BitmapCpc.TailleX - (BitmapCpc.TailleX / zoom);
 			vScrollBar.Maximum = vScrollBar.LargeChange + BitmapCpc.TailleY - (BitmapCpc.TailleY / zoom);
 			hScrollBar.Value = Math.Max(0, Math.Min(Math.Min(zoomRectx, zoomRectx + zoomRectw), BitmapCpc.TailleX - ((imgOrigine.Width + zoom) / zoom)));
