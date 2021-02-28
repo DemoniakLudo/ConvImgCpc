@@ -63,6 +63,7 @@ namespace ConvImgCpc {
 			hScrollBar1.Value = (int)numImage.Value;
 			main.imgCpc.SetImgCopy();
 			main.Convert(false);
+			main.imgCpc.Render(true);
 		}
 
 		private void hScrollBar1_Scroll(object sender, ScrollEventArgs e) {
