@@ -244,6 +244,7 @@
     <Content Include="Docs\index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Docs\Versions.txt" />
     <Content Include="Icones\Copy.png" />
     <Content Include="Icones\Draw.png" />
     <Content Include="Icones\En.png" />

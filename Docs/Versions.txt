@@ -1,0 +1,2 @@
+﻿V1.0.7728 (27/02/2021) : Correction d'un bug dans l'éditeur en mode "zoom", et ajout d'un bouton pour vérifier manuellement si il existe une mise à jour.
+V1.0.7729 (28/02/2021) : Pouvoir se déplacer dans les images du animation quand on est en mode édition/zoom.
