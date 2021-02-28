@@ -320,7 +320,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void write_interlaced_elias_gamma(int value, byte[] output_data) {
+		private void write_interlaced_elias_gammaZX0(int value, byte[] output_data) {
 			int i;
 			for (i = 2; i <= value; i <<= 1)
 				;
@@ -330,6 +330,18 @@ namespace ConvImgCpc {
 				write_bit(value & i, output_data);
 			}
 			write_bit(1, output_data);
+		}
+
+		private void write_interlaced_elias_gammaZX1(int value, byte[] output_data) {
+			int i;
+			for (i = 2; i <= value; i <<= 1)
+				;
+			i >>= 1;
+			while ((i >>= 1) > 0) {
+				write_bit(1, output_data);
+				write_bit(value & i, output_data);
+			}
+			write_bit(0, output_data);
 		}
 
 		private int PackZX0(byte[] input_data, int input_size, byte[] output_data, int output_size) {
@@ -417,33 +429,32 @@ namespace ConvImgCpc {
 					else
 						write_bit(0, output_data);
 
-					write_interlaced_elias_gamma(optimal.length, output_data);
+					write_interlaced_elias_gammaZX0(optimal.length, output_data);
 					for (int i = 0; i < optimal.length; i++)
 						output_data[output_index++] = input_data[input_index++];
 				}
 				else
 					if (optimal.offset == last_offset) {
 						write_bit(0, output_data);
-						write_interlaced_elias_gamma(optimal.length, output_data);
+						write_interlaced_elias_gammaZX0(optimal.length, output_data);
 						input_index += optimal.length;
 					}
 					else {
 						write_bit(1, output_data);
-						write_interlaced_elias_gamma((optimal.offset - 1) / 128 + 1, output_data);
+						write_interlaced_elias_gammaZX0((optimal.offset - 1) / 128 + 1, output_data);
 						output_data[output_index++] = (byte)((255 - ((optimal.offset - 1) % 128)) << 1);
 						backtrack = true;
-						write_interlaced_elias_gamma(optimal.length - 1, output_data);
+						write_interlaced_elias_gammaZX0(optimal.length - 1, output_data);
 						input_index += optimal.length;
 						last_offset = optimal.offset;
 					}
 			}
 			write_bit(1, output_data);
-			write_interlaced_elias_gamma(256, output_data);
+			write_interlaced_elias_gammaZX0(256, output_data);
 			Hide();
 			return output_size;
 		}
 
-/*
 		private int PackZX1(byte[] input_data, int input_size, byte[] output_data, int output_size) {
 			Show();
 			int bits, length;
@@ -529,14 +540,14 @@ namespace ConvImgCpc {
 					else
 						write_bit(0, output_data);
 
-					write_interlaced_elias_gamma(optimal.length, output_data);
+					write_interlaced_elias_gammaZX1(optimal.length, output_data);
 					for (int i = 0; i < optimal.length; i++)
 						output_data[output_index++] = input_data[input_index++];
 				}
 				else
 					if (optimal.offset == last_offset) {
 						write_bit(0, output_data);
-						write_interlaced_elias_gamma(optimal.length, output_data);
+						write_interlaced_elias_gammaZX1(optimal.length, output_data);
 						input_index += optimal.length;
 					}
 					else {
@@ -548,7 +559,7 @@ namespace ConvImgCpc {
 						else
 							output_data[output_index++] = (byte)(256 - optimal.offset * 2);
 
-						write_interlaced_elias_gamma(optimal.length - 1, output_data);
+						write_interlaced_elias_gammaZX1(optimal.length - 1, output_data);
 						input_index += optimal.length;
 						last_offset = optimal.offset;
 					}
@@ -559,7 +570,6 @@ namespace ConvImgCpc {
 			Hide();
 			return output_size;
 		}
-*/
 
 		public int Depack(byte[] bufIn, int startIn, byte[] bufOut, Main.PackMethode pkMethode) {
 			//if (methode == Main.PackMethode.Standard)
@@ -567,7 +577,21 @@ namespace ConvImgCpc {
 		}
 
 		public int Pack(byte[] bufIn, int lengthIn, byte[] bufOut, int lengthOut, Main.PackMethode pkMethode) {
-			return pkMethode == Main.PackMethode.Standard ? Pack(bufIn, lengthIn, bufOut, lengthOut) : PackZX0(bufIn, lengthIn, bufOut, lengthOut);
+			int ret = 0;
+			switch (pkMethode) {
+				case Main.PackMethode.Standard:
+					ret = Pack(bufIn, lengthIn, bufOut, lengthOut);
+					break;
+
+				case Main.PackMethode.ZX0:
+					ret = PackZX0(bufIn, lengthIn, bufOut, lengthOut);
+					break;
+
+				case Main.PackMethode.ZX1:
+					ret = PackZX1(bufIn, lengthIn, bufOut, lengthOut);
+					break;
+			}
+			return ret;
 		}
 	}
 

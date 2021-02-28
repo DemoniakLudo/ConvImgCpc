@@ -17,7 +17,7 @@ namespace ConvImgCpc {
 		private Animation anim;
 		private ParamInterne paramInterne;
 		public Multilingue multilingue = new Multilingue();
-		public enum PackMethode { None = 0, Standard, ZX0 };
+		public enum PackMethode { None = 0, Standard, ZX0, ZX1 };
 		private PackMethode pkMethode = PackMethode.Standard;
 		private Version version = Assembly.GetExecutingAssembly().GetName().Version;
 
@@ -46,6 +46,7 @@ namespace ConvImgCpc {
 			if (File.Exists(configDetault))
 				ReadParam(configDetault);
 
+			comboPackMethode.SelectedItem = "Standard";
 			anim.Show();
 			imgCpc.Show();
 			Show();
@@ -963,12 +964,20 @@ namespace ConvImgCpc {
 			ChangeLanguage("EN");
 		}
 
-		private void rbStdPack_CheckedChanged(object sender, EventArgs e) {
-			pkMethode = PackMethode.Standard;
-		}
+		private void comboPackMethode_SelectedIndexChanged(object sender, EventArgs e) {
+			switch (comboPackMethode.SelectedItem.ToString()) {
+				case "Standard":
+					pkMethode = PackMethode.Standard;
+					break;
 
-		private void rbZx0Pack_CheckedChanged(object sender, EventArgs e) {
-			pkMethode = PackMethode.ZX0;
+				case "ZX0":
+					pkMethode = PackMethode.ZX0;
+					break;
+
+				case "ZX1":
+					pkMethode = PackMethode.ZX1;
+					break;
+			}
 		}
 
 		private void bpCheckMaj_Click(object sender, EventArgs e) {

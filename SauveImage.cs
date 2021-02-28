@@ -237,7 +237,7 @@ namespace ConvImgCpc {
 			0xC9						//	WaitKey2:	RET
 		};
 
-		static byte[] codeDZX80 = {
+		static byte[] codeDZX0 = {
 			0x21, 0x00, 0x00,			//				LD		HL,Source
 			0x11, 0x00, 0x00,			//				LD		DE,Dest
 			0x01, 0xFF, 0xFF,			//				LD		BC,#FFFF
@@ -287,6 +287,56 @@ namespace ConvImgCpc {
 			0xCB, 0x10,					//				RL		B
 			0x18, 0xF2					//				JR	dzx0s_elias_loop
 		};
+
+		static byte[] codeDZX1 = {
+			0x21, 0x00, 0x00,			//				LD		HL,Source
+			0x11, 0x00, 0x00,			//				LD		DE,Dest
+			0x01, 0xFF, 0xFF,			//				LD		BC,#FFFF
+			0xC5,						//				PUSH	BC
+			0x3E, 0x80,					//				LD		A,#80
+			0xCD, 0x3D, 0xA0,			//dzx1s_litteral:	CALL	dzx1s_elias
+			0xED, 0xB0,					//				LDIR
+			0x87,						//				ADD		A,A
+			0x38, 0x0D,					//				JR		C,dzx1s_new_offset
+			0xCD, 0x3D, 0xA0,			//				CALL	dzx1s_elias
+			0xE3,						//dzx1s_copy:	EX		(SP),HL
+			0xE5,						//				PUSH	HL
+			0x19,						//				ADD		HL,DE
+			0xED, 0xB0,					//				LDIR
+			0xE1,						//				POP		HL
+			0xE3,						//				EX		(SP),HL
+			0x87,						//				ADD		A,A
+			0x30, 0xEB,					//				JR		C,dzx1s_literals
+			0x33,						//				INC		SP
+			0x33,						//				INC		SP
+			0x05,						//				DEC		B
+			0x4E,						//				LD		C,(HL)
+			0X23,						//				INC		HL
+			0xCB, 0x19,					//				RR		C
+			0x30, 0x0A,					//				JR		NC,dzx1s_msb_skip
+			0x46,						//				LD		B,(HL)
+			0x23,						//				INC		HL
+			0xCB, 0x18,					//				RR		B
+			0x04,						//				INC		B
+			0xCA, 0x00, 0x00,			//				JP		Z,AfficheImage
+			0xCB, 0x11,					//				RL		C
+			0xC5,						//				PUSH	BC
+			0xCD, 0x3B, 0xA0,			//				CALL	dzx1s_elias
+			0x03,						//				INC		BC
+			0x18, 0xDC,					//				JR		dzx1s_copy
+			0x01, 0x01, 0x00,			//dzx1s_elias:	LD		BC,1
+			0x87,						//dzx1s_elias_loop:	ADD		A,A
+			0x20, 0x03,					//				JR		NZ,dzx1s_elias_skip
+			0x7E,						//				LD		A,(HL)
+			0x23,						//				INC		HL
+			0x17,						//				RLA
+			0xD0,						//dzx1s_elias_skip:	RET		NC
+			0x87,						//				ADD		A,A
+			0xCB, 0x11,					//				RL		C
+			0xCB, 0x10,					//				RL		B
+			0x18, 0xF2					//				JR	dzx1s_elias_loop
+		};
+
 		static byte[] codeDepack = {
 			0x21, 0x00, 0x00,			//				LD		HL,Source
 			0x11, 0x00, 0x00,			//				LD		DE,Dest
@@ -466,40 +516,62 @@ namespace ConvImgCpc {
 			if (compact != Main.PackMethode.None) {
 				lg = new PackModule().Pack(bitmapCpc.bmpCpc, lg, bufPack, 0, compact);
 				if (param.withCode && version == null) {
-					if (compact == Main.PackMethode.Standard) {
-						Buffer.BlockCopy(codeDepack, 0, bufPack, lg, codeDepack.Length);
-						bufPack[lg + 4] = (byte)(startAdr & 0xFF);
-						bufPack[lg + 5] = (byte)(startAdr >> 8);
-						startAdr = (short)(0xA657 - (lg + codeDepack.Length));
-						bufPack[lg + 1] = (byte)(startAdr & 0xFF);
-						bufPack[lg + 2] = (byte)(startAdr >> 8);
-						bufPack[lg + 32] = (byte)(exec & 0xFF);
-						bufPack[lg + 33] = (byte)(exec >> 8);
-						lg += codeDepack.Length;
-						exec = (short)(0xA657 - codeDepack.Length);
-					}
-					else {
-						short newExec = (short)(0xA657 - codeDZX80.Length);
-						Buffer.BlockCopy(codeDZX80, 0, bufPack, lg, codeDZX80.Length);
-						bufPack[lg + 4] = (byte)(startAdr & 0xFF);
-						bufPack[lg + 5] = (byte)(startAdr >> 8);
+					short newExec;
+					switch (compact) {
+						case Main.PackMethode.Standard:
+							Buffer.BlockCopy(codeDepack, 0, bufPack, lg, codeDepack.Length);
+							bufPack[lg + 4] = (byte)(startAdr & 0xFF);
+							bufPack[lg + 5] = (byte)(startAdr >> 8);
+							startAdr = (short)(0xA657 - (lg + codeDepack.Length));
+							bufPack[lg + 1] = (byte)(startAdr & 0xFF);
+							bufPack[lg + 2] = (byte)(startAdr >> 8);
+							bufPack[lg + 32] = (byte)(exec & 0xFF);
+							bufPack[lg + 33] = (byte)(exec >> 8);
+							lg += codeDepack.Length;
+							exec = (short)(0xA657 - codeDepack.Length);
+							break;
 
-						bufPack[lg + 0x0E] = (byte)((newExec + 0x3F) & 0x0FF);
-						bufPack[lg + 0x0F] = (byte)((newExec + 0x3F) >> 8);
-						bufPack[lg + 0x16] = (byte)((newExec + 0x3F) & 0x0FF);
-						bufPack[lg + 0x17] = (byte)((newExec + 0x3F) >> 8);
-						bufPack[lg + 0x23] = (byte)((newExec + 0x3F) & 0x0FF);
-						bufPack[lg + 0x24] = (byte)((newExec + 0x3F) >> 8);
-						bufPack[lg + 0x3A] = (byte)((newExec + 0x47) & 0x0FF);
-						bufPack[lg + 0x3B] = (byte)((newExec + 0x47) >> 8);
+						case Main.PackMethode.ZX0:
+							newExec = (short)(0xA657 - codeDZX0.Length);
+							Buffer.BlockCopy(codeDZX0, 0, bufPack, lg, codeDZX0.Length);
+							bufPack[lg + 4] = (byte)(startAdr & 0xFF);
+							bufPack[lg + 5] = (byte)(startAdr >> 8);
+							bufPack[lg + 0x0E] = (byte)((newExec + 0x3F) & 0x0FF);
+							bufPack[lg + 0x0F] = (byte)((newExec + 0x3F) >> 8);
+							bufPack[lg + 0x16] = (byte)((newExec + 0x3F) & 0x0FF);
+							bufPack[lg + 0x17] = (byte)((newExec + 0x3F) >> 8);
+							bufPack[lg + 0x23] = (byte)((newExec + 0x3F) & 0x0FF);
+							bufPack[lg + 0x24] = (byte)((newExec + 0x3F) >> 8);
+							bufPack[lg + 0x3A] = (byte)((newExec + 0x47) & 0x0FF);
+							bufPack[lg + 0x3B] = (byte)((newExec + 0x47) >> 8);
+							startAdr = (short)(0xA657 - (lg + codeDZX0.Length));
+							bufPack[lg + 1] = (byte)(startAdr & 0xFF);
+							bufPack[lg + 2] = (byte)(startAdr >> 8);
+							bufPack[lg + 42] = (byte)(exec & 0xFF);
+							bufPack[lg + 43] = (byte)(exec >> 8);
+							lg += codeDZX0.Length;
+							exec = newExec;
+							break;
 
-						startAdr = (short)(0xA657 - (lg + codeDZX80.Length));
-						bufPack[lg + 1] = (byte)(startAdr & 0xFF);
-						bufPack[lg + 2] = (byte)(startAdr >> 8);
-						bufPack[lg + 42] = (byte)(exec & 0xFF);
-						bufPack[lg + 43] = (byte)(exec >> 8);
-						lg += codeDZX80.Length;
-						exec = newExec;
+						case Main.PackMethode.ZX1:
+							newExec = (short)(0xA657 - codeDZX1.Length);
+							Buffer.BlockCopy(codeDZX1, 0, bufPack, lg, codeDZX1.Length);
+							bufPack[lg + 4] = (byte)(startAdr & 0xFF);
+							bufPack[lg + 5] = (byte)(startAdr >> 8);
+							bufPack[lg + 0x0D] = (byte)((newExec + 0x3B) & 0x0FF);
+							bufPack[lg + 0x0E] = (byte)((newExec + 0x3B) >> 8);
+							bufPack[lg + 0x15] = (byte)((newExec + 0x3B) & 0x0FF);
+							bufPack[lg + 0x16] = (byte)((newExec + 0x3B) >> 8);
+							bufPack[lg + 0x36] = (byte)((newExec + 0x3B) & 0x0FF);
+							bufPack[lg + 0x37] = (byte)((newExec + 0x3B) >> 8);
+							startAdr = (short)(0xA657 - (lg + codeDZX1.Length));
+							bufPack[lg + 1] = (byte)(startAdr & 0xFF);
+							bufPack[lg + 2] = (byte)(startAdr >> 8);
+							bufPack[lg + 0x30] = (byte)(exec & 0xFF);
+							bufPack[lg + 0x31] = (byte)(exec >> 8);
+							lg += codeDZX1.Length;
+							exec = newExec;
+							break;
 					}
 				}
 				else {

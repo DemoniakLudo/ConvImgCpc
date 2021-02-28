@@ -117,9 +117,9 @@
 			this.bpEditSprites = new System.Windows.Forms.Button();
 			this.bpFr = new System.Windows.Forms.Button();
 			this.bpEn = new System.Windows.Forms.Button();
-			this.rbStdPack = new System.Windows.Forms.RadioButton();
-			this.rbZx0Pack = new System.Windows.Forms.RadioButton();
 			this.bpCheckMaj = new System.Windows.Forms.Button();
+			this.label13 = new System.Windows.Forms.Label();
+			this.comboPackMethode = new System.Windows.Forms.ComboBox();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -1183,28 +1183,6 @@
 			this.bpEn.UseVisualStyleBackColor = true;
 			this.bpEn.Click += new System.EventHandler(this.bpEn_Click);
 			// 
-			// rbStdPack
-			// 
-			this.rbStdPack.AutoSize = true;
-			this.rbStdPack.Checked = true;
-			this.rbStdPack.Location = new System.Drawing.Point(6, 167);
-			this.rbStdPack.Name = "rbStdPack";
-			this.rbStdPack.Size = new System.Drawing.Size(14, 13);
-			this.rbStdPack.TabIndex = 69;
-			this.rbStdPack.TabStop = true;
-			this.rbStdPack.UseVisualStyleBackColor = true;
-			this.rbStdPack.CheckedChanged += new System.EventHandler(this.rbStdPack_CheckedChanged);
-			// 
-			// rbZx0Pack
-			// 
-			this.rbZx0Pack.AutoSize = true;
-			this.rbZx0Pack.Location = new System.Drawing.Point(134, 167);
-			this.rbZx0Pack.Name = "rbZx0Pack";
-			this.rbZx0Pack.Size = new System.Drawing.Size(14, 13);
-			this.rbZx0Pack.TabIndex = 69;
-			this.rbZx0Pack.UseVisualStyleBackColor = true;
-			this.rbZx0Pack.CheckedChanged += new System.EventHandler(this.rbZx0Pack_CheckedChanged);
-			// 
 			// bpCheckMaj
 			// 
 			this.bpCheckMaj.Location = new System.Drawing.Point(6, 542);
@@ -1214,15 +1192,37 @@
 			this.bpCheckMaj.UseVisualStyleBackColor = true;
 			this.bpCheckMaj.Click += new System.EventHandler(this.bpCheckMaj_Click);
 			// 
+			// label13
+			// 
+			this.label13.AutoSize = true;
+			this.label13.Location = new System.Drawing.Point(5, 169);
+			this.label13.Name = "label13";
+			this.label13.Size = new System.Drawing.Size(0, 13);
+			this.label13.TabIndex = 66;
+			// 
+			// comboPackMethode
+			// 
+			this.comboPackMethode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.comboPackMethode.FormattingEnabled = true;
+			this.comboPackMethode.Items.AddRange(new object[] {
+            "Standard",
+            "ZX0",
+            "ZX1"});
+			this.comboPackMethode.Location = new System.Drawing.Point(145, 166);
+			this.comboPackMethode.Name = "comboPackMethode";
+			this.comboPackMethode.Size = new System.Drawing.Size(90, 21);
+			this.comboPackMethode.TabIndex = 66;
+			this.comboPackMethode.SelectedIndexChanged += new System.EventHandler(this.comboPackMethode_SelectedIndexChanged);
+			// 
 			// Main
 			// 
 			this.AllowDrop = true;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(723, 571);
+			this.Controls.Add(this.comboPackMethode);
+			this.Controls.Add(this.label13);
 			this.Controls.Add(this.bpCheckMaj);
-			this.Controls.Add(this.rbZx0Pack);
-			this.Controls.Add(this.rbStdPack);
 			this.Controls.Add(this.bpEn);
 			this.Controls.Add(this.bpFr);
 			this.Controls.Add(this.bpEditSprites);
@@ -1371,9 +1371,9 @@
 		private System.Windows.Forms.Button bpFr;
 		private System.Windows.Forms.Button bpEn;
 		private System.Windows.Forms.CheckBox chkImpDraw;
-		private System.Windows.Forms.RadioButton rbStdPack;
-		private System.Windows.Forms.RadioButton rbZx0Pack;
 		private System.Windows.Forms.Button bpCheckMaj;
+		private System.Windows.Forms.Label label13;
+		private System.Windows.Forms.ComboBox comboPackMethode;
 	}
 }
 

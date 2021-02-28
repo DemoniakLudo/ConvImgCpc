@@ -243,6 +243,7 @@
   <ItemGroup>
     <Content Include="Docs\index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Docs\Versions.txt" />
     <Content Include="Icones\Copy.png" />
