@@ -24,6 +24,8 @@ namespace ConvImgCpc {
 			}
 			if (nbOctets > 0)
 				sw.WriteLine(line.Substring(0, line.Length - 1));
+
+			sw.WriteLine("; Taille totale : " + length.ToString() + " octets");
 		}
 
 		static public void GenereDZX0(StreamWriter sw, string jumpLabel = null) {
@@ -529,7 +531,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("	Nolist");
 		}
 
-		static private void GenereTspace(StreamWriter sw, bool wait) {
+		static private void GenereTspace(StreamWriter sw, bool wait, bool withoutRet = false) {
 			sw.WriteLine("TstSpace:");
 			sw.WriteLine("	LD	BC,#F40E");
 			sw.WriteLine("	OUT	(C),C");
@@ -551,7 +553,8 @@ namespace ConvImgCpc {
 			if (wait)
 				sw.WriteLine("	JR	Z,TstSpace");
 
-			sw.WriteLine("	RET");
+			if (!withoutRet)
+				sw.WriteLine("	RET");
 		}
 
 		static public void GenereDrawDirect(StreamWriter sw, bool gest128K) {
@@ -613,7 +616,7 @@ namespace ConvImgCpc {
 			}
 			else
 				if (frameO)
-					sw.WriteLine("	LD	HL,Buffer");
+				sw.WriteLine("	LD	HL,Buffer");
 
 			if (!frameD) {
 				sw.WriteLine("	LD	BC,#C000");
@@ -914,7 +917,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("	LD	HL,ImageCmp");
 			sw.WriteLine("	LD	DE,#" + (overscan ? "0200" : "C000"));
 			sw.WriteLine("	CALL	DepkLzw");
-			GenereTspace(sw, false);
+			GenereTspace(sw, true, true);
 
 			sw.WriteLine("	LD	BC,#BC0C");
 			sw.WriteLine("	LD	A,#30");

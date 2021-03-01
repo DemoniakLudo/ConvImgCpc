@@ -13,6 +13,7 @@ namespace ConvImgCpc {
 		public int MaxImage { get { return (int)numImage.Maximum; } }
 		private int[] tempsAffiche;
 		private bool lockTps = false;
+
 		public Animation(Main m) {
 			main = m;
 			InitializeComponent();
@@ -23,11 +24,7 @@ namespace ConvImgCpc {
 			lblMaxImage.Visible = lblNumImage.Visible = numImage.Visible = nbImg > 1;
 			numImage.Maximum = nbImg - 1;
 			numImage.Value = hScrollBar1.Value = 0;
-			if (nbImg > 1)
-				Text = "Animation";
-			else
-				Text = "Image";
-
+			Text = nbImg > 1 ? "Animation" : "Image";
 			List<int> lst = new List<int>();
 			for (int i = 0; i < nbImg; i++)
 				lst.Add(tps);
