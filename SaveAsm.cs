@@ -25,7 +25,7 @@ namespace ConvImgCpc {
 			if (nbOctets > 0)
 				sw.WriteLine(line.Substring(0, line.Length - 1));
 
-			sw.WriteLine("; Taille totale : " + length.ToString() + " octets");
+			sw.WriteLine("; Taille totale " + length.ToString() + " octets");
 		}
 
 		static public void GenereDZX0(StreamWriter sw, string jumpLabel = null) {
