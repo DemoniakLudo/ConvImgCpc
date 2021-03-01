@@ -981,6 +981,7 @@ namespace ConvImgCpc {
 		}
 
 		private void bpCheckMaj_Click(object sender, EventArgs e) {
+			Enabled = false;
 			byte[] buffer = new byte[0x4000];
 			string url = "http://ldeplanque.free.fr/ConvImgCpc/new/ConvImgCpc.exe";
 			WebRequest objRequest = WebRequest.Create(url);
@@ -1016,11 +1017,9 @@ namespace ConvImgCpc {
 				}
 			}
 			output.Dispose();
-			if (found)
-				MessageBox.Show(multilingue.GetString("Main.prg.TxtInfo29") + "\n\n\r" + url);
-			else
-				MessageBox.Show(multilingue.GetString("Main.prg.TxtInfo30"));
-
+			Popup pop = new Popup(multilingue.GetString(found ? "Main.prg.TxtInfo29" : "Main.prg.TxtInfo30"), found ? url : "");
+			pop.Show();
+			Enabled = true;
 		}
 	}
 }
