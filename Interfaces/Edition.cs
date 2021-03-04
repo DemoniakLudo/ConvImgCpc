@@ -360,6 +360,11 @@ namespace ConvImgCpc {
 					BmpLock.SetPixel(x, zy, p0);
 				}
 			}
+
+			List<MemoPoint> lst = undo.lstUndoRedo;
+			foreach (MemoPoint p in lst) 
+				p.posy = BitmapCpc.TailleY - 1 - p.posy;
+
 			Render(true);
 		}
 
@@ -374,6 +379,11 @@ namespace ConvImgCpc {
 					BmpLock.SetPixel(zx, y, p0);
 				}
 			}
+
+			List<MemoPoint> lst = undo.lstUndoRedo;
+			foreach (MemoPoint p in lst)
+				p.posx = BitmapCpc.TailleX - 1 - p.posx;
+
 			Render(true);
 		}
 	}
