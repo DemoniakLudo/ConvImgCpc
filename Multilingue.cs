@@ -32,7 +32,7 @@ namespace ConvImgCpc {
 			dic.Add("Main.chkNewReduc.FR", "Méthode alternative");
 			dic.Add("Main.chkNewReduc.EN", "Alternative method");
 			dic.Add("Main.chkPalCpc.FR", "Réduction palette\r\nimage source");
-			dic.Add("Main.chkPalCpc.EN", "Pallet reduction");
+			dic.Add("Main.chkPalCpc.EN", "Palette reduction");
 			dic.Add("Main.autoRecalc.FR", "Recalculer Automatiquement");
 			dic.Add("Main.autoRecalc.EN", "Automatic recalculation");
 			dic.Add("Main.radioOrigin.FR", "Taille d'origine");
@@ -114,9 +114,9 @@ namespace ConvImgCpc {
 			dic.Add("Main.prg.TxtInfo11.FR", "Impossible de sauvegarder le fichier de paramètres");
 			dic.Add("Main.prg.TxtInfo11.EN", "Cannot save settings file");
 			dic.Add("Main.prg.TxtInfo12.FR", "Lecture palette ok");
-			dic.Add("Main.prg.TxtInfo12.EN", "Pallet reading ok");
+			dic.Add("Main.prg.TxtInfo12.EN", "Palette reading ok");
 			dic.Add("Main.prg.TxtInfo13.FR", "Sauvegarde palette ok");
-			dic.Add("Main.prg.TxtInfo13.EN", "Pallet save ok");
+			dic.Add("Main.prg.TxtInfo13.EN", "Palette save ok");
 			dic.Add("Main.prg.TxtInfo14.FR", "Création image vierge");
 			dic.Add("Main.prg.TxtInfo14.EN", "Blank image creation");
 			dic.Add("Main.prg.TxtInfo15.FR", "Création animation avec ");
@@ -126,7 +126,7 @@ namespace ConvImgCpc {
 			dic.Add("Main.prg.TxtInfo17.FR", "Tous fichiers");
 			dic.Add("Main.prg.TxtInfo17.EN", "All files");
 			dic.Add("Main.prg.TxtInfo18.FR", "Palette");
-			dic.Add("Main.prg.TxtInfo18.EN", "Pallet");
+			dic.Add("Main.prg.TxtInfo18.EN", "Palette");
 			dic.Add("Main.prg.TxtInfo19.FR", "Paramètres ConvImgCpc");
 			dic.Add("Main.prg.TxtInfo19.EN", "ConvImgCpc parameters");
 			dic.Add("Main.prg.TxtInfo20.FR", "Image CPC");
@@ -144,7 +144,7 @@ namespace ConvImgCpc {
 			dic.Add("Main.prg.TxtInfo26.FR", "Animation imp");
 			dic.Add("Main.prg.TxtInfo26.EN", "imp animation");
 			dic.Add("Main.prg.TxtInfo27.FR", "Palette CPC+");
-			dic.Add("Main.prg.TxtInfo27.EN", "CPC+ pallet");
+			dic.Add("Main.prg.TxtInfo27.EN", "CPC+ palette");
 			dic.Add("Main.prg.TxtInfo28.FR", "2 images séparées");
 			dic.Add("Main.prg.TxtInfo28.EN", "2 separate images");
 			dic.Add("Main.prg.TxtInfo29.FR", "Il existe une version plus récente sur le site web :");
@@ -154,7 +154,7 @@ namespace ConvImgCpc {
 
 			// ImageCpc
 			dic.Add("ImageCpc.lockAllPal.FR", "Verrouiller toute la palette");
-			dic.Add("ImageCpc.lockAllPal.EN", "Lock all pallet");
+			dic.Add("ImageCpc.lockAllPal.EN", "Lock all palette");
 			dic.Add("ImageCpc.modeEdition.FR", "Editer image");
 			dic.Add("ImageCpc.modeEdition.EN", "Edit picture");
 			dic.Add("ImageCpc.label3.FR", "Couleur crayon :");
@@ -234,9 +234,9 @@ namespace ConvImgCpc {
 			dic.Add("EditSprites.bpSaveAll.FR", "Sauver sprites (toutes les banks)");
 			dic.Add("EditSprites.bpSaveAll.EN", "Save sprites (all banks)");
 			dic.Add("EditSprites.bpReadPal.FR", "Lire palette");
-			dic.Add("EditSprites.bpReadPal.EN", "Read pallet");
+			dic.Add("EditSprites.bpReadPal.EN", "Read palette");
 			dic.Add("EditSprites.bpSavePal.FR", "Sauver palette");
-			dic.Add("EditSprites.bpSavePal.EN", "Save pallet");
+			dic.Add("EditSprites.bpSavePal.EN", "Save palette");
 
 			// EditTrameAscii
 			dic.Add("EditTrameAscii.bpPrev.FR", "Précédente");
