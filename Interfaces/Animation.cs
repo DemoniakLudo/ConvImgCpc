@@ -25,11 +25,9 @@ namespace ConvImgCpc {
 			numImage.Maximum = nbImg - 1;
 			numImage.Value = hScrollBar1.Value = 0;
 			Text = nbImg > 1 ? "Animation" : "Image";
-			List<int> lst = new List<int>();
+			tempsAffiche = new int[nbImg];
 			for (int i = 0; i < nbImg; i++)
-				lst.Add(tps);
-
-			tempsAffiche = lst.ToArray();
+				tempsAffiche[i] = tps;
 		}
 
 		public void DrawImages(int startImg) {
@@ -126,26 +124,21 @@ namespace ConvImgCpc {
 			}
 		}
 
-
 		private Bitmap GetBitmap(Bitmap image) {
 			Bitmap bitmap = new Bitmap(BitmapCpc.TailleX, BitmapCpc.TailleY, PixelFormat.Format24bppRgb);
-			using (Graphics g = Graphics.FromImage(bitmap)) {
-				g.DrawImage(image, new Rectangle(0, 0, bitmap.Width, bitmap.Height), new Rectangle(0, 0, bitmap.Width, bitmap.Height), GraphicsUnit.Pixel);
-			}
+			Graphics g = Graphics.FromImage(bitmap);
+			g.DrawImage(image, new Rectangle(0, 0, bitmap.Width, bitmap.Height), new Rectangle(0, 0, bitmap.Width, bitmap.Height), GraphicsUnit.Pixel);
+			g.Dispose();
 			return bitmap;
 		}
 
 		private void WriteGifImg(byte[] tabByte, BinaryWriter bWr) {
-			tabByte[785] = 25; //0.5 secs delay
+			tabByte[785] = (byte)(tempsAffiche[0] / 20);
 			tabByte[786] = 0;
 			tabByte[798] = (byte)(tabByte[798] | 0X87);
 			bWr.Write(tabByte, 781, 18);
 			bWr.Write(tabByte, 13, 768);
 			bWr.Write(tabByte, 799, tabByte.Length - 800);
-		}
-
-		private void Animation_FormClosing(object sender, FormClosingEventArgs e) {
-			e.Cancel = true;
 		}
 
 		private void txbTps_TextChanged(object sender, EventArgs e) {
@@ -159,6 +152,10 @@ namespace ConvImgCpc {
 						main.imgCpc.tabBmpLock[index].Tps = v;
 				}
 			}
+		}
+
+		private void Animation_FormClosing(object sender, FormClosingEventArgs e) {
+			e.Cancel = true;
 		}
 	}
 }

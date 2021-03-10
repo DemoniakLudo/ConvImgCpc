@@ -14,33 +14,33 @@ namespace ConvImgCpc {
 		*/
 
 		static byte[] CodeStd = {  // Routine à mettre en #C7D0
-			0x3A, 0xD0, 0xD7,               //      LD      A,  (#D7D0)
-			0xCD, 0x1C, 0xBD,               //      CALL    #BD1C
-			0x21, 0xD1, 0xD7,               //      LD      HL, #D7D1
-			0x46,                           //      LD      B,  (HL)
-			0x48,                           //      LD      C,  B
-			0xCD, 0x38, 0xBC,               //      CALL    #BC38
-			0xAF,                           //      XOR     A
-			0x21, 0xD1, 0xD7,               //      LD      HL, #D7D1
-			0x46,                           // BCL: LD      B,  (HL)
-			0x48,                           //      LD      C,  B
-			0xF5,                           //      PUSH    AF
-			0xE5,                           //      PUSH    HL
-			0xCD, 0x32, 0xBC,               //      CALL    #BC32
-			0xE1,                           //      POP     HL
-			0xF1,                           //      POP     AF
-			0x23,                           //      INC     HL
-			0x3C,                           //      INC     A
-			0xFE, 0x10,                     //      CP      #10
-			0x20, 0xF1,                     //      JR      NZ,BCL
-			0xC3, 0x18, 0xBB,               //      JP      #BB18
+			0x3A, 0xD0, 0xD7,			//				LD		A,(#D7D0)
+			0xCD, 0x1C, 0xBD,			//				CALL	#BD1C
+			0x21, 0xD1, 0xD7,			//				LD		HL, #D7D1
+			0x46,						//				LD		B,(HL)
+			0x48,						//				LD		C,B
+			0xCD, 0x38, 0xBC,			//				CALL	#BC38
+			0xAF,						//				XOR		A
+			0x21, 0xD1, 0xD7,			//				LD		HL,#D7D1
+			0x46,						//BCL:			LD		B,(HL)
+			0x48,						//				LD		C,B
+			0xF5,						//				PUSH	AF
+			0xE5,						//				PUSH	HL
+			0xCD, 0x32, 0xBC,			//				CALL	#BC32
+			0xE1,						//				POP		HL
+			0xF1,						//				POP		AF
+			0x23,						//				INC		HL
+			0x3C,						//				INC		A
+			0xFE, 0x10,					//				CP		#10
+			0x20, 0xF1,					//				JR		NZ,BCL
+			0xC3, 0x18, 0xBB,			//				JP		#BB18
 			};
 
 		static byte[] CodeP0 = {
 			0xF3,						//				DI
 			0x01, 0x11, 0xBC,			//				LD		BC,#BC11
 			0x21, 0xD0, 0xDF,			//				LD		HL,#DFD0
-			0x7E,						//	BCL1:		LD		A,(HL)
+			0x7E,						//BCL1:			LD		A,(HL)
 			0xED, 0x79,					//				OUT		(C),A
 			0x23,						//				INC		HL
 			0x0D,						//				DEC		C
@@ -55,14 +55,14 @@ namespace ConvImgCpc {
 			0x11, 0x00, 0x64,			//				LD		DE,#6400
 			0x01, 0x22, 0x00,			//				LD		BC,#0022
 			0xED, 0xB0,					//				LDIR
-			0xCD, 0xD0, 0xCF,			//	BCL2:		CALL	WaitKey
+			0xCD, 0xD0, 0xCF,			//BCL2:			CALL	WaitKey
 			0x38, 0xFB,					//				JR		C,BCL2
 			0xFB,						//				EI
 			0xC9						//				RET
 			};
 
 		static byte[] CodeP1 = {
-			0x01, 0x0E, 0xF4,			//	WaitKey:	LD		BC,#F40E
+			0x01, 0x0E, 0xF4,			//WaitKey:		LD		BC,#F40E
 			0xED, 0x49,					//				OUT		(C),C
 			0x01, 0xC0, 0xF6,			//				LD		BC,#F6C0
 			0xED, 0x49,					//				OUT		(C),C
@@ -92,7 +92,7 @@ namespace ConvImgCpc {
 			0xCD, 0x1C, 0xBD,			//				CALL	#BD1C
 			0x21, 0x01, 0x08,			//				LD		HL,#0801
 			0xAF,						//				XOR		A
-			0x4E,						//	SetPal:		LD		C,(HL)
+			0x4E,						//SetPal:			LD		C,(HL)
 			0x41,						//				LD		B,C
 			0xF5,						//				PUSH	AF
 			0xE5,						//				PUSH	HL
@@ -105,8 +105,8 @@ namespace ConvImgCpc {
 			0x20, 0xF1,					//				JR		NZ,SetPal
 			0xCD, 0x18, 0xBB,			//				CALL	#BB18
 			0x21, 0x57, 0x08,			//				LD		HL,#0857 // Remise aux valeurs originales
-			0x01, 0x00, 0xBC,			//	SetRegs:	LD		BC,#BC00
-			0x7E,						//	SetRegs1:	LD		A,(HL)
+			0x01, 0x00, 0xBC,			//SetRegs:		LD		BC,#BC00
+			0x7E,						//SetRegs1:		LD		A,(HL)
 			0xA7,						//				AND		A
 			0xC8,						//				RET		Z
 			0xED, 0x79,					//				OUT		(C),A
@@ -127,7 +127,7 @@ namespace ConvImgCpc {
 			0xF3,						//				DI
 			0x01, 0x11, 0xBC,			//				LD		BC,#BC11
 			0x21, 0x86, 0x08,			//				LD		HL,#0886
-			0x04,						//	SetAsic:	INC		B
+			0x04,						//SetAsic:		INC		B
 			0xED, 0xA3,					//				OUTI
 			0x0D,						//				DEC		C
 			0x20, 0xFA,					//				JR		NZ,SetAsic
@@ -141,7 +141,7 @@ namespace ConvImgCpc {
 			0x11, 0x00, 0x64,			//				LD		DE,#6400
 			0x01, 0x20, 0x00,			//				LD		BC,#0020
 			0xED, 0xB0,					//				LDIR
-			0xAF,						//	WaitKey:	XOR		A
+			0xAF,						//WaitKey:		XOR		A
 			0x01, 0x0E, 0xF4,			//				LD		BC,#F40E
 			0xED, 0x49,					//				OUT		(C),C
 			0x01, 0xC0, 0xF6,			//				LD		BC,#F6C0
@@ -161,8 +161,8 @@ namespace ConvImgCpc {
 			0xED, 0x49,					//				OUT		(C),C
 			0xFB,						//				EI
 			0x21, 0xA5, 0x08,			//				LD		HL,#08A5
-			0x01, 0x00, 0xBC,			//	SetReg:		LD		BC,#BC00
-			0x7E,						//	SetReg1:	LD		A,(HL)
+			0x01, 0x00, 0xBC,			//SetReg:		LD		BC,#BC00
+			0x7E,						//SetReg1:		LD		A,(HL)
 			0xA7,						//				AND		A
 			0xC8,						//				RET		Z
 			0xED, 0x79,					//				OUT		(C),A
@@ -182,24 +182,24 @@ namespace ConvImgCpc {
 			};
 		static byte[] codeEgx0 = {
 			0x21, 0x00, 0x20,			//				LD		HL,#2000
-			0x2B,						//	Wait0:		DEC		HL
+			0x2B,						//Wait0:		DEC		HL
 			0x7C,						//				LD		A,H
 			0xB5,						//				OR		L
 			0x20, 0xFB,					//				JR		NZ,Wait0
 			0xF3,						//				DI
-			0x06, 0xF5,					//	WaitVbl:	LD		B,#F5
+			0x06, 0xF5,					//WaitVbl:		LD		B,#F5
 			0xED, 0x78,					//				IN		A,(C)
 			0x1F,						//				RRA
 			0x30,0xF9,					//				JR		NC,WaitVbl
 			0x21, 0x2F, 0x01,			//				LD		HL,#012F
 			0x11, 0x01, 0x8C,			//				LD		DE,#8C01
-			0x06, 0x7F,					//	SetMode:	LD		B,#7F
+			0x06, 0x7F,					//SetMode:		LD		B,#7F
 			0xED, 0x51,					//				OUT		(C),D
 			0x7A,						//				LD		A,D
 			0xAB,						//				XOR		E
 			0x57,						//				LD		D,A
 			0x06, 0x0B,					//				LD		B,#0B
-			0x10, 0xFE,					//	WaitNextLine:	DJNZ	WaitNextLine
+			0x10, 0xFE,					//WaitNextLine:	DJNZ	WaitNextLine
 			0xCB, 0x46,					//				BIT		0,(HL)
 			0x2B,						//				DEC		HL
 			0x7C,						//				LD		A,H
@@ -213,7 +213,7 @@ namespace ConvImgCpc {
 
 		static byte[] codeEgx1 = {
 			0x16, 0x45,					//				LD		D,#45
-			0x01, 0x0E, 0xF4,			//	WaitKey1:	LD		BC,#F40E
+			0x01, 0x0E, 0xF4,			//WaitKey1:		LD		BC,#F40E
 			0xED, 0x49,					//				OUT		(C),C
 			0x01, 0xC0, 0xF6,			//				LD		BC,#F6C0
 			0xED, 0x49,					//				OUT		(C),C
@@ -234,8 +234,110 @@ namespace ConvImgCpc {
 			0x57,						//				LD		D,A
 			0xFE, 0x4A,					//				CP		#4A
 			0x38, 0xD7,					//				JR		C,WaitKey1
-			0xC9						//	WaitKey2:	RET
+			0xC9						//WaitKey2:		RET
 		};
+
+		static byte[] codeDepack = {
+			0x21, 0x00, 0x00,			//				LD		HL,Source
+			0x11, 0x00, 0x00,			//				LD		DE,Dest
+			0x7E,						//DepkLzw:		LD		A,(HL)
+			0x23,						//				INC		HL
+			0x1F,						//				RRA
+			0xCB, 0xFF,					//				SET		7,A
+			0x32, 0xD3, 0xA5,			//				LD		(BclLzw+1),A
+			0x38, 0x0D,					//				JR		C,TstCodeLzw
+			0xED, 0xA0,					//				LDI
+			0x3E, 0x00,					//BclLzw:		LD		A,0
+			0xCB, 0x1F,					//				RRA
+			0x32, 0xD3, 0xA5,			//				LD		(BclLzw+1),A
+			0x30, 0xF5,					//				JR		NC,CopByteLzw
+			0x28, 0xE9,					//				JR		Z,DepkLzw
+			0x7E,						//				LD		A,(HL)
+			0xA7,						//				AND		A
+			0xCA, 0x00, 0x00,			//				JP		Z,AfficheImage
+			0x23,						//				INC		HL
+			0x47,						//				LD		B,A
+			0x07,						//				RLCA
+			0x30, 0x1D,					//				JR		NC,TstLzw40
+			0x07,						//				RLCA
+			0x07,						//				RLCA
+			0x07,						//				RLCA
+			0xE6, 0x07,					//				AND		#07
+			0xC6, 0x03,					//				ADD		A,#03
+			0x4F,						//				LD		C,A
+			0x78,						//				LD		A,B
+			0xE6, 0x0F,					//				AND		#0F
+			0x47,						//				LD		B,A
+			0x79,						//				LD		A,C
+			0x37,						//				SCF
+			0x4E,						//CopyBytes0:	LD		C,(HL)
+			0x23,						//				INC		HL
+			0xE5,						//				PUSH	HL
+			0x62,						//				LD		H,D
+			0x6B,						//				LD		L,E
+			0xED, 0x42,					//				SBC		HL,DE
+			0x06, 0x00,					//				LD		B,#00
+			0x4F,						//CopyBytes1:	KD		C,A
+			0xED, 0xB0,					//CopyBytes2:	LDIR
+			0xE1,						//CopyBytes3:	POP		HL
+			0x18, 0xCE,					//				JR		BclLzw
+			0x07,						//TstLzw40:		RLCA
+			0x30, 0x10,					//				JR		NC,TstLzw20
+			0x48,						//				LD		C,B
+			0xCB, 0xB1,					//				RES		6,C
+			0x06, 0x00,					//				LD		B,#00
+			0xE5,						//				PUSH	HL
+			0x62,						//				LD		H,D
+			0x6B,						//				LD		L,E
+			0xED, 0x42,					//				SBC		HL,BC
+			0xED, 0xA0,					//				LDI
+			0xED, 0xA0,					//				LDI
+			0x18, 0xEA,					//				JR		CopyBytes3
+			0x07,						//TstLzw20:		RLCA
+			0x30, 0x29,					//				JR		NC,TstLzw10
+			0x78,						//				LD		A,B
+			0xC6, 0xE2,					//				ADD		A,#E2
+			0x06, 0x00,					//				LD		B,#00
+			0x18, 0xD4,					//				JR		CopyBytes0
+			0x4E,						//CodeLzw0F:	LD		C,(HL)
+			0xE5,						//				PUSH	HL
+			0x62,						//				LD		H,D
+			0x6B,						//				LD		L,E
+			0xFE, 0xF0,					//				CP		#F0
+			0x20, 0x0B,					//				JR		NZ,CodeLzw02
+			0xAF,						//				XOR		A
+			0x47,						//				LD		B,A
+			0x03,						//				INC		BC
+			0xED, 0x42,					//				SBC		HL,BC
+			0xED, 0xB0,					//				LDIR
+			0xE1,						//				POP		HL
+			0x23,						//				INC		HL
+			0x18, 0x9E,					//				JR		BclLzw
+			0xFE, 0x20,					//CodeLzw02:	CP		#20
+			0x38, 0x07,					//				JR		C,CodeLzw01
+			0x48,						//				LD		C,B
+			0x06, 0x00,					//				LD		B,#00
+			0xED, 0x42,					//				SBC		HL,BC
+			0x18, 0xC0,					//				JR		CopyBytes2
+			0xAF,						//CodeLzw01:	XOR		A
+			0x25,						//				DEC		H
+			0x18, 0xBB,					//				JR		CopyBytes1
+			0x07,						//TstLzw10:		RLCA
+			0x30, 0xDB,					//				JR		NC,CodeLzw0F
+			0xCB, 0xA0,					//				RES		4,B
+			0x4E,						//				LD		C,(HL)
+			0x23,						//				INC		HL
+			0x7E,						//				LD		A,(HL)
+			0x23,						//				INC		HL
+			0xE5,						//				PUSH	HL
+			0x62,						//				LD		H,D
+			0x6B,						//				LD		L,E
+			0xED, 0x42,					//				SBC		HL,BC
+			0x06, 0x00,					//				LD		B,#00
+			0x4F,						//				LD		C,A
+			0x03,						//				INC		BC
+			0x18, 0xA8,					//				JR		CopyBytes2
+			};
 
 		static byte[] codeDZX0 = {
 			0x21, 0x00, 0x00,			//				LD		HL,Source
@@ -337,108 +439,6 @@ namespace ConvImgCpc {
 			0x18, 0xF2					//				JR	dzx1s_elias_loop
 		};
 
-		static byte[] codeDepack = {
-			0x21, 0x00, 0x00,			//				LD		HL,Source
-			0x11, 0x00, 0x00,			//				LD		DE,Dest
-			0x7E,						//	DepkLzw:	LD		A,(HL)
-			0x23,						//				INC		HL
-			0x1F,						//				RRA
-			0xCB, 0xFF,					//				SET		7,A
-			0x32, 0xD3, 0xA5,			//				LD		(BclLzw+1),A
-			0x38, 0x0D,					//				JR		C,TstCodeLzw
-			0xED, 0xA0,					//				LDI
-			0x3E, 0x00,					//	BclLzw:		LD		A,0
-			0xCB, 0x1F,					//				RRA
-			0x32, 0xD3, 0xA5,			//				LD		(BclLzw+1),A
-			0x30, 0xF5,					//				JR		NC,CopByteLzw
-			0x28, 0xE9,					//				JR		Z,DepkLzw
-			0x7E,						//				LD		A,(HL)
-			0xA7,						//				AND		A
-			0xCA, 0x00, 0x00,			//				JP		Z,AfficheImage
-			0x23,						//				INC		HL
-			0x47,						//				LD		B,A
-			0x07,						//				RLCA
-			0x30, 0x1D,					//				JR		NC,TstLzw40
-			0x07,						//				RLCA
-			0x07,						//				RLCA
-			0x07,						//				RLCA
-			0xE6, 0x07,					//				AND		#07
-			0xC6, 0x03,					//				ADD		A,#03
-			0x4F,						//				LD		C,A
-			0x78,						//				LD		A,B
-			0xE6, 0x0F,					//				AND		#0F
-			0x47,						//				LD		B,A
-			0x79,						//				LD		A,C
-			0x37,						//				SCF
-			0x4E,						//	CopyBytes0:	LD		C,(HL)
-			0x23,						//				INC		HL
-			0xE5,						//				PUSH	HL
-			0x62,						//				LD		H,D
-			0x6B,						//				LD		L,E
-			0xED, 0x42,					//				SBC		HL,DE
-			0x06, 0x00,					//				LD		B,#00
-			0x4F,						//	CopyBytes1:	KD		C,A
-			0xED, 0xB0,					//	CopyBytes2:	LDIR
-			0xE1,						//	CopyBytes3:	POP		HL
-			0x18, 0xCE,					//				JR		BclLzw
-			0x07,						//	TstLzw40:	RLCA
-			0x30, 0x10,					//				JR		NC,TstLzw20
-			0x48,						//				LD		C,B
-			0xCB, 0xB1,					//				RES		6,C
-			0x06, 0x00,					//				LD		B,#00
-			0xE5,						//				PUSH	HL
-			0x62,						//				LD		H,D
-			0x6B,						//				LD		L,E
-			0xED, 0x42,					//				SBC		HL,BC
-			0xED, 0xA0,					//				LDI
-			0xED, 0xA0,					//				LDI
-			0x18, 0xEA,					//				JR		CopyBytes3
-			0x07,						//	TstLzw20:	RLCA
-			0x30, 0x29,					//				JR		NC,TstLzw10
-			0x78,						//				LD		A,B
-			0xC6, 0xE2,					//				ADD		A,#E2
-			0x06, 0x00,					//				LD		B,#00
-			0x18, 0xD4,					//				JR		CopyBytes0
-			0x4E,						//	CodeLzw0F:	LD		C,(HL)
-			0xE5,						//				PUSH	HL
-			0x62,						//				LD		H,D
-			0x6B,						//				LD		L,E
-			0xFE, 0xF0,					//				CP		#F0
-			0x20, 0x0B,					//				JR		NZ,CodeLzw02
-			0xAF,						//				XOR		A
-			0x47,						//				LD		B,A
-			0x03,						//				INC		BC
-			0xED, 0x42,					//				SBC		HL,BC
-			0xED, 0xB0,					//				LDIR
-			0xE1,						//				POP		HL
-			0x23,						//				INC		HL
-			0x18, 0x9E,					//				JR		BclLzw
-			0xFE, 0x20,					//	CodeLzw02:	CP		#20
-			0x38, 0x07,					//				JR		C,CodeLzw01
-			0x48,						//				LD		C,B
-			0x06, 0x00,					//				LD		B,#00
-			0xED, 0x42,					//				SBC		HL,BC
-			0x18, 0xC0,					//				JR		CopyBytes2
-			0xAF,						//	CodeLzw01:	XOR		A
-			0x25,						//				DEC		H
-			0x18, 0xBB,					//				JR		CopyBytes1
-			0x07,						//	TstLzw10:	RLCA
-			0x30, 0xDB,					//				JR		NC,CodeLzw0F
-			0xCB, 0xA0,					//				RES		4,B
-			0x4E,						//				LD		C,(HL)
-			0x23,						//				INC		HL
-			0x7E,						//				LD		A,(HL)
-			0x23,						//				INC		HL
-			0xE5,						//				PUSH	HL
-			0x62,						//				LD		H,D
-			0x6B,						//				LD		L,E
-			0xED, 0x42,					//				SBC		HL,BC
-			0x06, 0x00,					//				LD		B,#00
-			0x4F,						//				LD		C,A
-			0x03,						//				INC		BC
-			0x18, 0xA8,					//				JR		CopyBytes2
-			};
-
 		static byte[] ModePal = new byte[48];
 
 		static public int SauveScr(string fileName, BitmapCpc bitmapCpc, ImageCpc img, Param param, Main.PackMethode compact, string version = null, int[,] colMode5 = null) {
@@ -520,13 +520,13 @@ namespace ConvImgCpc {
 					switch (compact) {
 						case Main.PackMethode.Standard:
 							Buffer.BlockCopy(codeDepack, 0, bufPack, lg, codeDepack.Length);
-							bufPack[lg + 4] = (byte)(startAdr & 0xFF);
-							bufPack[lg + 5] = (byte)(startAdr >> 8);
+							bufPack[lg + 0x04] = (byte)(startAdr & 0xFF);
+							bufPack[lg + 0x05] = (byte)(startAdr >> 8);
 							startAdr = (short)(0xA657 - (lg + codeDepack.Length));
-							bufPack[lg + 1] = (byte)(startAdr & 0xFF);
-							bufPack[lg + 2] = (byte)(startAdr >> 8);
-							bufPack[lg + 32] = (byte)(exec & 0xFF);
-							bufPack[lg + 33] = (byte)(exec >> 8);
+							bufPack[lg + 0x01] = (byte)(startAdr & 0xFF);
+							bufPack[lg + 0x02] = (byte)(startAdr >> 8);
+							bufPack[lg + 0x20] = (byte)(exec & 0xFF);
+							bufPack[lg + 0x21] = (byte)(exec >> 8);
 							lg += codeDepack.Length;
 							exec = (short)(0xA657 - codeDepack.Length);
 							break;
@@ -534,8 +534,8 @@ namespace ConvImgCpc {
 						case Main.PackMethode.ZX0:
 							newExec = (short)(0xA657 - codeDZX0.Length);
 							Buffer.BlockCopy(codeDZX0, 0, bufPack, lg, codeDZX0.Length);
-							bufPack[lg + 4] = (byte)(startAdr & 0xFF);
-							bufPack[lg + 5] = (byte)(startAdr >> 8);
+							bufPack[lg + 0x04] = (byte)(startAdr & 0xFF);
+							bufPack[lg + 0x05] = (byte)(startAdr >> 8);
 							bufPack[lg + 0x0E] = (byte)((newExec + 0x3F) & 0x0FF);
 							bufPack[lg + 0x0F] = (byte)((newExec + 0x3F) >> 8);
 							bufPack[lg + 0x16] = (byte)((newExec + 0x3F) & 0x0FF);
@@ -545,8 +545,8 @@ namespace ConvImgCpc {
 							bufPack[lg + 0x3A] = (byte)((newExec + 0x47) & 0x0FF);
 							bufPack[lg + 0x3B] = (byte)((newExec + 0x47) >> 8);
 							startAdr = (short)(0xA657 - (lg + codeDZX0.Length));
-							bufPack[lg + 1] = (byte)(startAdr & 0xFF);
-							bufPack[lg + 2] = (byte)(startAdr >> 8);
+							bufPack[lg + 0x01] = (byte)(startAdr & 0xFF);
+							bufPack[lg + 0x02] = (byte)(startAdr >> 8);
 							bufPack[lg + 42] = (byte)(exec & 0xFF);
 							bufPack[lg + 43] = (byte)(exec >> 8);
 							lg += codeDZX0.Length;
@@ -556,8 +556,8 @@ namespace ConvImgCpc {
 						case Main.PackMethode.ZX1:
 							newExec = (short)(0xA657 - codeDZX1.Length);
 							Buffer.BlockCopy(codeDZX1, 0, bufPack, lg, codeDZX1.Length);
-							bufPack[lg + 4] = (byte)(startAdr & 0xFF);
-							bufPack[lg + 5] = (byte)(startAdr >> 8);
+							bufPack[lg + 0x04] = (byte)(startAdr & 0xFF);
+							bufPack[lg + 0x05] = (byte)(startAdr >> 8);
 							bufPack[lg + 0x0D] = (byte)((newExec + 0x3B) & 0x0FF);
 							bufPack[lg + 0x0E] = (byte)((newExec + 0x3B) >> 8);
 							bufPack[lg + 0x15] = (byte)((newExec + 0x3B) & 0x0FF);
@@ -565,8 +565,8 @@ namespace ConvImgCpc {
 							bufPack[lg + 0x36] = (byte)((newExec + 0x3B) & 0x0FF);
 							bufPack[lg + 0x37] = (byte)((newExec + 0x3B) >> 8);
 							startAdr = (short)(0xA657 - (lg + codeDZX1.Length));
-							bufPack[lg + 1] = (byte)(startAdr & 0xFF);
-							bufPack[lg + 2] = (byte)(startAdr >> 8);
+							bufPack[lg + 0x01] = (byte)(startAdr & 0xFF);
+							bufPack[lg + 0x02] = (byte)(startAdr >> 8);
 							bufPack[lg + 0x30] = (byte)(exec & 0xFF);
 							bufPack[lg + 0x31] = (byte)(exec >> 8);
 							lg += codeDZX1.Length;

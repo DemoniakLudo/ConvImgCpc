@@ -77,13 +77,13 @@ namespace ConvImgCpc {
 		}
 	}
 
-	[StructLayoutAttribute(LayoutKind.Sequential, Pack = 1)]
+	[StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public struct CpcAmsdos {
 		//
 		// Structure d'une entrée AMSDOS
 		//
 		public byte UserNumber;				// User
-		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x0F)]
 		public string FileName;				// Nom + extension
 		public byte BlockNum;				// Numéro du premier bloc (disquette)
 		public byte LastBlock;				// Numéro du dernier bloc (disquette)

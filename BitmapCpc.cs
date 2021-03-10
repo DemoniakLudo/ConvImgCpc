@@ -324,7 +324,7 @@ namespace ConvImgCpc {
 				for (int i = 0; i < 17; i++)
 					Palette[i] = bmpCpc[i + 4];
 
-			int l = new PackModule().Depack(bmpCpc, Std ? 21 : 4, bufTmp, pkMethode);
+			int l = new PackModule().Depack(bmpCpc, Std ? 21 : 4, bufTmp, Main.PackMethode.Standard);
 			if (Std) {
 				int i = 0;
 				for (int x = 0; x < 80; x++)
@@ -353,11 +353,11 @@ namespace ConvImgCpc {
 				byte v = (byte)(((c & 0xF00) >> 8) * 17);
 				return (int)(r + (v << 8) + (b << 16) + 0xFF000000);
 			}
-			return BitmapCpc.RgbCPC[c < 27 ? c : 0].GetColor;
+			return RgbCPC[c < 27 ? c : 0].GetColor;
 		}
 
 		public void CreeBmpCpc(DirectBitmap bmpLock, int[,] colMode5, bool egx = false, int lignestart = 0) {
-			System.Array.Clear(bmpCpc, 0, bmpCpc.Length);
+			Array.Clear(bmpCpc, 0, bmpCpc.Length);
 			for (int y = 0; y < TailleY; y += 2) {
 				int adrCPC = GetAdrCpc(y);
 				int tx = CalcTx(y);
@@ -387,7 +387,7 @@ namespace ConvImgCpc {
 		}
 
 		public void CreeBmpCpcForceMode1(DirectBitmap bmpLock) {
-			System.Array.Clear(bmpCpc, 0, bmpCpc.Length);
+			Array.Clear(bmpCpc, 0, bmpCpc.Length);
 			for (int y = 0; y < TailleY; y += 2) {
 				int adrCPC = GetAdrCpc(y);
 				int tx = CalcTx(y);
@@ -505,8 +505,11 @@ namespace ConvImgCpc {
 							}
 							else
 								if (length < 32000) {
-									int l = new PackModule().Depack(bmpCpc, 0, bufTmp, pkMethode);
-									Array.Copy(bufTmp, bmpCpc, l);
+									try {
+										int l = new PackModule().Depack(bmpCpc, 0, bufTmp, Main.PackMethode.Standard);
+										Array.Copy(bufTmp, bmpCpc, l);
+									}
+									catch(Exception) { }
 									if (!InitDatas()) {
 										cpcPlus = false;
 										nbCol = maxColsCpc;
