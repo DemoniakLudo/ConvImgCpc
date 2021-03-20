@@ -189,6 +189,10 @@ namespace ConvImgCpc {
 			dic.Add("Animation.bpSaveGif.EN", "Save as GIF Anim");
 			dic.Add("Animation.lblMaxImage.FR", "Nbre images:");
 			dic.Add("Animation.lblMaxImage.EN", "Nb pictures:");
+			dic.Add("Animation.bpPlay.FR", "Jouer anim");
+			dic.Add("Animation.bpPlay.EN", "Play anim");
+			dic.Add("Animation.bpStop.FR", "Arrêt anim");
+			dic.Add("Animation.bpStop.EN", "Stop anim");
 
 			// Capture
 			dic.Add("Capture.rbCapt1.FR", "Capturer 1 sprite");

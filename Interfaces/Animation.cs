@@ -13,6 +13,7 @@ namespace ConvImgCpc {
 		public int MaxImage { get { return (int)numImage.Maximum; } }
 		private int[] tempsAffiche;
 		private bool lockTps = false;
+		private int tpsStart;
 
 		public Animation(Main m) {
 			main = m;
@@ -28,6 +29,8 @@ namespace ConvImgCpc {
 			tempsAffiche = new int[nbImg];
 			for (int i = 0; i < nbImg; i++)
 				tempsAffiche[i] = tps;
+
+			bpPlay.Enabled = nbImg > 1;
 		}
 
 		public void DrawImages(int startImg) {
@@ -154,8 +157,34 @@ namespace ConvImgCpc {
 			}
 		}
 
+		private void bpPlay_Click(object sender, EventArgs e) {
+			main.Enabled = main.imgCpc.Enabled = false;
+			bpPlay.Enabled = false;
+			bpStop.Enabled = timer1.Enabled = true;
+			tpsStart = Environment.TickCount;
+			numImage.Value = 0;
+		}
+
+		private void bpStop_Click(object sender, EventArgs e) {
+			bpPlay.Enabled = true;
+			bpStop.Enabled = timer1.Enabled = false;
+			main.Enabled = main.imgCpc.Enabled = true;
+		}
+
 		private void Animation_FormClosing(object sender, FormClosingEventArgs e) {
 			e.Cancel = true;
+		}
+
+		private void timer1_Tick(object sender, EventArgs e) {
+			int i = (int)numImage.Value;
+			int tpsWait = tempsAffiche[i];
+			if (Environment.TickCount - tpsStart > tpsWait) {
+				tpsStart = Environment.TickCount;
+				if (++i > (int)numImage.Maximum)
+					i = 0;
+
+				numImage.Value = i;
+			}
 		}
 	}
 }
