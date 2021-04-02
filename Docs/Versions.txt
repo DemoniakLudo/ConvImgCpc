@@ -3,3 +3,4 @@ V1.0.7729 (28/02/2021) : Pouvoir se déplacer dans les images du animation quand
 V1.0.7730 (01/03/2021) :	- Correction pb génération écran en fichiers assembleur compacté (pb test touche espace)
 							- Intégration compression ZX1
 V1.0.7733 (04/03/2021) :	Correction pb undo-redo si flip horizontal/vertical appliqué
+V1.0.7762 (02/04/2021) : Correction pb mode ImpDraw + correction pb initialisation palette CPC ou CPC+ depuis le fichier de configuration XML

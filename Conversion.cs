@@ -456,7 +456,7 @@ namespace ConvImgCpc {
 							}
 						}
 					}
-					int offsetY = 0; //					prm.modeImpDraw && BitmapCpc.TailleY == 544 ? 2 : 0;
+					int offsetY = prm.modeImpDraw && BitmapCpc.TailleY == 544 ? 2 : 0;
 					for (int j = 0; j < incY; j += 2)
 						dest.SetPixelCpc(x, y + offsetY + j, choix, Tx);
 				}

@@ -340,6 +340,7 @@ namespace ConvImgCpc {
 				withPalette.Checked = param.withPalette;
 				chkPalCpc.Checked = param.setPalCpc;
 				chkLissage.Checked = param.lissage;
+				modePlus.Checked = param.cpcPlus;
 				paramInterne.InitValues();
 				ChangeLanguage(param.langue);
 				SetInfo(multilingue.GetString("Main.prg.TxtInfo8"));
