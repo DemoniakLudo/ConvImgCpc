@@ -50,6 +50,11 @@ namespace ConvImgCpc {
 			anim.Show();
 			imgCpc.Show();
 			Show();
+			int tpsStart = Environment.TickCount;
+			bool internet = CheckForInternetConnection();
+			int tpsElapsed = Environment.TickCount - tpsStart;
+			if (tpsElapsed < 500 && internet)
+				CheckMaj(true);
 		}
 
 		public void ChangeLanguage(Control.ControlCollection ctrl, string prefix) {
@@ -981,8 +986,26 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void bpCheckMaj_Click(object sender, EventArgs e) {
-			Enabled = false;
+		private bool CheckForInternetConnection() {
+			try {
+				HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://google.com/generate_204");
+				request.Timeout = 1000;
+				HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+				Stream receiveStream = response.GetResponseStream();
+				StreamReader readStream = new StreamReader(receiveStream, System.Text.Encoding.UTF8);
+				string ret = readStream.ReadToEnd();
+				response.Close();
+				readStream.Close();
+				return true;
+			}
+			catch {
+				return false;
+			}
+		}
+
+		private void CheckMaj(bool noResponseOk = false) {
+			Enabled = noResponseOk;
+			Application.DoEvents();
 			byte[] buffer = new byte[0x4000];
 			string url = "http://ldeplanque.free.fr/ConvImgCpc/new/ConvImgCpc.exe";
 			WebRequest objRequest = WebRequest.Create(url);
@@ -1019,8 +1042,14 @@ namespace ConvImgCpc {
 			}
 			output.Dispose();
 			Popup pop = new Popup(multilingue.GetString(found ? "Main.prg.TxtInfo29" : "Main.prg.TxtInfo30"), found ? url : "");
-			pop.Show();
+			if (found || !noResponseOk)
+				pop.Show();
+			
 			Enabled = true;
+		}
+
+		private void bpCheckMaj_Click(object sender, EventArgs e) {
+			CheckMaj();
 		}
 	}
 }
