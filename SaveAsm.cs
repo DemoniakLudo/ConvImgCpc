@@ -787,8 +787,6 @@ namespace ConvImgCpc {
 				sw.WriteLine("	LD	A,(DE)");
 				if (BitmapCpc.modeVirtuel == 7)
 					sw.WriteLine("	DEC	E");
-				else
-					sw.WriteLine("	INC	DE");
 
 				sw.WriteLine("	LD	(HL),A");
 				sw.WriteLine("	SET	3,H");
