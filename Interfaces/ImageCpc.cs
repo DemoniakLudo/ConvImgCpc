@@ -136,8 +136,10 @@ namespace ConvImgCpc {
 				tmpLock = null;
 			}
 			pictureBox.Refresh();
-			if (fenetreRendu != null)
+			if (fenetreRendu != null) {
+				fenetreRendu.SetImage(BmpLock.Bitmap);
 				fenetreRendu.Picture.Refresh();
+			}
 		}
 
 		// Déplacement/Zoom image

@@ -63,7 +63,6 @@
 			this.ShowIcon = false;
 			this.ShowInTaskbar = false;
 			this.Text = "Rendu";
-			this.TopMost = true;
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();

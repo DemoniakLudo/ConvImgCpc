@@ -7,6 +7,10 @@ namespace ConvImgCpc {
 
 		public Rendu(Bitmap b) {
 			InitializeComponent();
+			SetImage(b);
+		}
+
+		public void SetImage(Bitmap b) {
 			pictureBox.Image = b;
 		}
 
