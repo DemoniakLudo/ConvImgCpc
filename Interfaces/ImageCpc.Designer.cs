@@ -32,6 +32,7 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.tailleCrayon = new System.Windows.Forms.ComboBox();
 			this.grpEdition = new System.Windows.Forms.GroupBox();
+			this.rbPickColor = new System.Windows.Forms.RadioButton();
 			this.bpVerFlip = new System.Windows.Forms.Button();
 			this.bpHorFlip = new System.Windows.Forms.Button();
 			this.lblInfoPos = new System.Windows.Forms.Label();
@@ -44,14 +45,14 @@
 			this.bpRedo = new System.Windows.Forms.Button();
 			this.bpUndo = new System.Windows.Forms.Button();
 			this.chkRendu = new System.Windows.Forms.CheckBox();
-			this.pictureBox = new System.Windows.Forms.PictureBox();
 			this.modeCaptureSprites = new System.Windows.Forms.CheckBox();
 			this.bpCopyPal = new System.Windows.Forms.Button();
-			this.pictImpDraw = new System.Windows.Forms.PictureBox();
 			this.chkX2 = new System.Windows.Forms.CheckBox();
+			this.pictImpDraw = new System.Windows.Forms.PictureBox();
+			this.pictureBox = new System.Windows.Forms.PictureBox();
 			this.grpEdition.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictImpDraw)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// lockAllPal
@@ -107,18 +108,20 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(17, 217);
+			this.label3.Location = new System.Drawing.Point(7, 225);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(0, 13);
+			this.label3.Size = new System.Drawing.Size(23, 13);
 			this.label3.TabIndex = 4;
+			this.label3.Text = "lbl3";
 			// 
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(7, 182);
+			this.label2.Location = new System.Drawing.Point(7, 198);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(0, 13);
+			this.label2.Size = new System.Drawing.Size(23, 13);
 			this.label2.TabIndex = 5;
+			this.label2.Text = "lbl2";
 			// 
 			// tailleCrayon
 			// 
@@ -131,7 +134,7 @@
             "3",
             "4",
             "8"});
-			this.tailleCrayon.Location = new System.Drawing.Point(96, 179);
+			this.tailleCrayon.Location = new System.Drawing.Point(96, 190);
 			this.tailleCrayon.Name = "tailleCrayon";
 			this.tailleCrayon.Size = new System.Drawing.Size(31, 21);
 			this.tailleCrayon.TabIndex = 3;
@@ -139,6 +142,7 @@
 			// 
 			// grpEdition
 			// 
+			this.grpEdition.Controls.Add(this.rbPickColor);
 			this.grpEdition.Controls.Add(this.bpVerFlip);
 			this.grpEdition.Controls.Add(this.bpHorFlip);
 			this.grpEdition.Controls.Add(this.lblInfoPos);
@@ -161,6 +165,17 @@
 			this.grpEdition.TabIndex = 9;
 			this.grpEdition.TabStop = false;
 			this.grpEdition.Visible = false;
+			// 
+			// rbPickColor
+			// 
+			this.rbPickColor.Image = global::ConvImgCpc.Properties.Resources.PickColor;
+			this.rbPickColor.Location = new System.Drawing.Point(10, 132);
+			this.rbPickColor.Name = "rbPickColor";
+			this.rbPickColor.Size = new System.Drawing.Size(48, 32);
+			this.rbPickColor.TabIndex = 14;
+			this.rbPickColor.TabStop = true;
+			this.rbPickColor.UseVisualStyleBackColor = true;
+			this.rbPickColor.CheckedChanged += new System.EventHandler(this.rbPickColor_CheckedChanged);
 			// 
 			// bpVerFlip
 			// 
@@ -185,15 +200,16 @@
 			// lblInfoPos
 			// 
 			this.lblInfoPos.AutoSize = true;
-			this.lblInfoPos.Location = new System.Drawing.Point(7, 151);
+			this.lblInfoPos.Location = new System.Drawing.Point(7, 172);
 			this.lblInfoPos.Name = "lblInfoPos";
-			this.lblInfoPos.Size = new System.Drawing.Size(0, 13);
+			this.lblInfoPos.Size = new System.Drawing.Size(43, 13);
 			this.lblInfoPos.TabIndex = 17;
+			this.lblInfoPos.Text = "position";
 			// 
 			// rbCopy
 			// 
 			this.rbCopy.Image = global::ConvImgCpc.Properties.Resources.Copy;
-			this.rbCopy.Location = new System.Drawing.Point(10, 103);
+			this.rbCopy.Location = new System.Drawing.Point(10, 96);
 			this.rbCopy.Name = "rbCopy";
 			this.rbCopy.Size = new System.Drawing.Size(48, 32);
 			this.rbCopy.TabIndex = 16;
@@ -220,7 +236,7 @@
 			// rbZoom
 			// 
 			this.rbZoom.Image = global::ConvImgCpc.Properties.Resources.Zoom;
-			this.rbZoom.Location = new System.Drawing.Point(10, 69);
+			this.rbZoom.Location = new System.Drawing.Point(10, 62);
 			this.rbZoom.Name = "rbZoom";
 			this.rbZoom.Size = new System.Drawing.Size(48, 32);
 			this.rbZoom.TabIndex = 13;
@@ -231,7 +247,7 @@
 			// 
 			this.rbDraw.Checked = true;
 			this.rbDraw.Image = global::ConvImgCpc.Properties.Resources.Draw;
-			this.rbDraw.Location = new System.Drawing.Point(10, 35);
+			this.rbDraw.Location = new System.Drawing.Point(10, 28);
 			this.rbDraw.Name = "rbDraw";
 			this.rbDraw.Size = new System.Drawing.Size(48, 32);
 			this.rbDraw.TabIndex = 12;
@@ -280,18 +296,6 @@
 			this.chkRendu.UseVisualStyleBackColor = true;
 			this.chkRendu.CheckedChanged += new System.EventHandler(this.chkRendu_CheckedChanged);
 			// 
-			// pictureBox
-			// 
-			this.pictureBox.Location = new System.Drawing.Point(168, 61);
-			this.pictureBox.Name = "pictureBox";
-			this.pictureBox.Size = new System.Drawing.Size(768, 544);
-			this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.pictureBox.TabIndex = 0;
-			this.pictureBox.TabStop = false;
-			this.pictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TrtMouseMove);
-			this.pictureBox.MouseLeave += new System.EventHandler(this.pictureBox_MouseLeave);
-			this.pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TrtMouseMove);
-			// 
 			// modeCaptureSprites
 			// 
 			this.modeCaptureSprites.AutoSize = true;
@@ -312,14 +316,6 @@
 			this.bpCopyPal.UseVisualStyleBackColor = true;
 			this.bpCopyPal.Click += new System.EventHandler(this.bpCopyPal_Click);
 			// 
-			// pictImpDraw
-			// 
-			this.pictImpDraw.Location = new System.Drawing.Point(168, 61);
-			this.pictImpDraw.Name = "pictImpDraw";
-			this.pictImpDraw.Size = new System.Drawing.Size(768, 2);
-			this.pictImpDraw.TabIndex = 12;
-			this.pictImpDraw.TabStop = false;
-			// 
 			// chkX2
 			// 
 			this.chkX2.AutoSize = true;
@@ -330,6 +326,26 @@
 			this.chkX2.Text = "X2";
 			this.chkX2.UseVisualStyleBackColor = true;
 			this.chkX2.CheckedChanged += new System.EventHandler(this.chkX2_CheckedChanged);
+			// 
+			// pictImpDraw
+			// 
+			this.pictImpDraw.Location = new System.Drawing.Point(168, 61);
+			this.pictImpDraw.Name = "pictImpDraw";
+			this.pictImpDraw.Size = new System.Drawing.Size(768, 2);
+			this.pictImpDraw.TabIndex = 12;
+			this.pictImpDraw.TabStop = false;
+			// 
+			// pictureBox
+			// 
+			this.pictureBox.Location = new System.Drawing.Point(168, 61);
+			this.pictureBox.Name = "pictureBox";
+			this.pictureBox.Size = new System.Drawing.Size(768, 544);
+			this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.pictureBox.TabIndex = 0;
+			this.pictureBox.TabStop = false;
+			this.pictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TrtMouseMove);
+			this.pictureBox.MouseLeave += new System.EventHandler(this.pictureBox_MouseLeave);
+			this.pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TrtMouseMove);
 			// 
 			// ImageCpc
 			// 
@@ -356,8 +372,8 @@
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ImageCpc_FormClosing);
 			this.grpEdition.ResumeLayout(false);
 			this.grpEdition.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictImpDraw)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -391,5 +407,6 @@
 		private System.Windows.Forms.Button bpHorFlip;
 		private System.Windows.Forms.Button bpVerFlip;
 		private System.Windows.Forms.CheckBox chkX2;
+		private System.Windows.Forms.RadioButton rbPickColor;
 	}
 }

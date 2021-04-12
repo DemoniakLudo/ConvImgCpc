@@ -19,7 +19,7 @@ namespace ConvImgCpc {
 		private bool doDraw = false;
 		private bool setCopyRect = false;
 		private int copyRectx, copyRecty, copyRectw, copyRecth;
-		private enum EditTool { Draw, Zoom, Copy };
+		private enum EditTool { Draw, Zoom, Copy, Pick };
 		private EditTool editToolMode = EditTool.Draw;
 		private DirectBitmap imgMotif;
 		private DirectBitmap imgCopy;
@@ -206,6 +206,36 @@ namespace ConvImgCpc {
 			}
 		}
 
+		private void ToolModePick(MouseEventArgs e) {
+			int incY = BitmapCpc.modeVirtuel >= 8 ? 8 : 2;
+			int yReel = e != null ? (offsetY + (e.Y / (zoom * (chkX2.Checked ? 2 : 1)))) & -incY : 0;
+			int tx = BitmapCpc.CalcTx(yReel);
+			int xReel = (offsetX + (e.X / (zoom * (chkX2.Checked ? 2 : 1)))) & -tx;
+			RvbColor col = BmpLock.GetPixelColor(xReel, yReel);
+			int pen = 0;
+			if (BitmapCpc.cpcPlus) {
+				for (pen = 0; pen < 16; pen++) {
+					if ((col.v >> 4) == (BitmapCpc.Palette[pen] >> 8) && (col.r >> 4) == ((BitmapCpc.Palette[pen] >> 4) & 0x0F) && (col.b >> 4) == (BitmapCpc.Palette[pen] & 0x0F))
+						break;
+				}
+			}
+			else {
+				for (pen = 0; pen < 16; pen++) {
+					RvbColor fixedCol = BitmapCpc.RgbCPC[BitmapCpc.Palette[pen]];
+					if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
+						break;
+				}
+			}
+			if (e.Button == MouseButtons.Left) {
+				drawCol = pen;
+				drawColor.BackColor = Color.FromArgb(col.r, col.v, col.b);
+			}
+			if (e.Button == MouseButtons.Right) {
+				undrawCol = pen;
+				undrawColor.BackColor = Color.FromArgb(col.r, col.v, col.b);
+			}
+		}
+
 		private void ReleaseMotif() {
 			if (imgCopy != null) {
 				imgCopy.Dispose();
@@ -240,6 +270,10 @@ namespace ConvImgCpc {
 
 					case EditTool.Copy:
 						ToolModeCopy(e);
+						break;
+
+					case EditTool.Pick:
+						ToolModePick(e);
 						break;
 				}
 				if (e.Button == MouseButtons.None) {
@@ -315,6 +349,10 @@ namespace ConvImgCpc {
 
 		private void rbCopy_CheckedChanged(object sender, EventArgs e) {
 			editToolMode = EditTool.Copy;
+		}
+
+		private void rbPickColor_CheckedChanged(object sender, EventArgs e) {
+			editToolMode = EditTool.Pick;
 		}
 
 		private void bpUndo_Click(object sender, System.EventArgs e) {

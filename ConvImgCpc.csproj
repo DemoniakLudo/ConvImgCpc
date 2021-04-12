@@ -260,6 +260,7 @@
     <Content Include="Icones\Draw.png" />
     <Content Include="Icones\En.png" />
     <Content Include="Icones\Fr.png" />
+    <Content Include="Icones\PickColor.png" />
     <Content Include="Icones\Zoom.png" />
     <Content Include="Docs\ToDoList.txt" />
   </ItemGroup>

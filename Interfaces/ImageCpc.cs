@@ -424,7 +424,7 @@ namespace ConvImgCpc {
 					rbDraw.Checked = true;
 
 				RvbColor col = bitmapCpc.GetColorPal(pen);
-				if (e.Button == System.Windows.Forms.MouseButtons.Left) {
+				if (e.Button == MouseButtons.Left) {
 					drawCol = pen;
 					drawColor.BackColor = Color.FromArgb(col.r, col.v, col.b);
 				}
@@ -482,7 +482,6 @@ namespace ConvImgCpc {
 				hScrollBar.Top = 608;
 			}
 			pictureBox.Refresh();
-
 		}
 
 		private void ImageCpc_FormClosing(object sender, FormClosingEventArgs e) {
