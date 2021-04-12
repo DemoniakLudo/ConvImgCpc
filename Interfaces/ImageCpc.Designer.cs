@@ -32,6 +32,8 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.tailleCrayon = new System.Windows.Forms.ComboBox();
 			this.grpEdition = new System.Windows.Forms.GroupBox();
+			this.bpVerFlip = new System.Windows.Forms.Button();
+			this.bpHorFlip = new System.Windows.Forms.Button();
 			this.lblInfoPos = new System.Windows.Forms.Label();
 			this.rbCopy = new System.Windows.Forms.RadioButton();
 			this.undrawColor = new System.Windows.Forms.Label();
@@ -46,8 +48,7 @@
 			this.modeCaptureSprites = new System.Windows.Forms.CheckBox();
 			this.bpCopyPal = new System.Windows.Forms.Button();
 			this.pictImpDraw = new System.Windows.Forms.PictureBox();
-			this.bpHorFlip = new System.Windows.Forms.Button();
-			this.bpVerFlip = new System.Windows.Forms.Button();
+			this.chkX2 = new System.Windows.Forms.CheckBox();
 			this.grpEdition.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictImpDraw)).BeginInit();
@@ -56,7 +57,7 @@
 			// lockAllPal
 			// 
 			this.lockAllPal.AutoSize = true;
-			this.lockAllPal.Location = new System.Drawing.Point(779, 12);
+			this.lockAllPal.Location = new System.Drawing.Point(12, 12);
 			this.lockAllPal.Name = "lockAllPal";
 			this.lockAllPal.Size = new System.Drawing.Size(15, 14);
 			this.lockAllPal.TabIndex = 1;
@@ -66,7 +67,7 @@
 			// modeEdition
 			// 
 			this.modeEdition.AutoSize = true;
-			this.modeEdition.Location = new System.Drawing.Point(798, 102);
+			this.modeEdition.Location = new System.Drawing.Point(19, 125);
 			this.modeEdition.Name = "modeEdition";
 			this.modeEdition.Size = new System.Drawing.Size(15, 14);
 			this.modeEdition.TabIndex = 2;
@@ -76,7 +77,7 @@
 			// hScrollBar
 			// 
 			this.hScrollBar.LargeChange = 32;
-			this.hScrollBar.Location = new System.Drawing.Point(2, 603);
+			this.hScrollBar.Location = new System.Drawing.Point(168, 608);
 			this.hScrollBar.Name = "hScrollBar";
 			this.hScrollBar.Size = new System.Drawing.Size(768, 16);
 			this.hScrollBar.SmallChange = 8;
@@ -87,7 +88,7 @@
 			// vScrollBar
 			// 
 			this.vScrollBar.LargeChange = 32;
-			this.vScrollBar.Location = new System.Drawing.Point(773, 56);
+			this.vScrollBar.Location = new System.Drawing.Point(939, 61);
 			this.vScrollBar.Name = "vScrollBar";
 			this.vScrollBar.Size = new System.Drawing.Size(16, 544);
 			this.vScrollBar.SmallChange = 8;
@@ -154,12 +155,32 @@
 			this.grpEdition.Controls.Add(this.label3);
 			this.grpEdition.Controls.Add(this.label2);
 			this.grpEdition.Controls.Add(this.tailleCrayon);
-			this.grpEdition.Location = new System.Drawing.Point(792, 122);
+			this.grpEdition.Location = new System.Drawing.Point(13, 145);
 			this.grpEdition.Name = "grpEdition";
-			this.grpEdition.Size = new System.Drawing.Size(149, 497);
+			this.grpEdition.Size = new System.Drawing.Size(149, 479);
 			this.grpEdition.TabIndex = 9;
 			this.grpEdition.TabStop = false;
 			this.grpEdition.Visible = false;
+			// 
+			// bpVerFlip
+			// 
+			this.bpVerFlip.Location = new System.Drawing.Point(83, 402);
+			this.bpVerFlip.Name = "bpVerFlip";
+			this.bpVerFlip.Size = new System.Drawing.Size(60, 23);
+			this.bpVerFlip.TabIndex = 19;
+			this.bpVerFlip.Text = "Ver. Flip";
+			this.bpVerFlip.UseVisualStyleBackColor = true;
+			this.bpVerFlip.Click += new System.EventHandler(this.bpVerFlip_Click);
+			// 
+			// bpHorFlip
+			// 
+			this.bpHorFlip.Location = new System.Drawing.Point(6, 402);
+			this.bpHorFlip.Name = "bpHorFlip";
+			this.bpHorFlip.Size = new System.Drawing.Size(60, 23);
+			this.bpHorFlip.TabIndex = 18;
+			this.bpHorFlip.Text = "Hor. Flip";
+			this.bpHorFlip.UseVisualStyleBackColor = true;
+			this.bpHorFlip.Click += new System.EventHandler(this.bpHorFlip_Click);
 			// 
 			// lblInfoPos
 			// 
@@ -261,7 +282,7 @@
 			// 
 			// pictureBox
 			// 
-			this.pictureBox.Location = new System.Drawing.Point(2, 56);
+			this.pictureBox.Location = new System.Drawing.Point(168, 61);
 			this.pictureBox.Name = "pictureBox";
 			this.pictureBox.Size = new System.Drawing.Size(768, 544);
 			this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -274,7 +295,7 @@
 			// modeCaptureSprites
 			// 
 			this.modeCaptureSprites.AutoSize = true;
-			this.modeCaptureSprites.Location = new System.Drawing.Point(798, 102);
+			this.modeCaptureSprites.Location = new System.Drawing.Point(19, 125);
 			this.modeCaptureSprites.Name = "modeCaptureSprites";
 			this.modeCaptureSprites.Size = new System.Drawing.Size(15, 14);
 			this.modeCaptureSprites.TabIndex = 10;
@@ -284,47 +305,39 @@
 			// 
 			// bpCopyPal
 			// 
-			this.bpCopyPal.Location = new System.Drawing.Point(823, 43);
+			this.bpCopyPal.Location = new System.Drawing.Point(12, 34);
 			this.bpCopyPal.Name = "bpCopyPal";
-			this.bpCopyPal.Size = new System.Drawing.Size(107, 49);
+			this.bpCopyPal.Size = new System.Drawing.Size(128, 49);
 			this.bpCopyPal.TabIndex = 11;
 			this.bpCopyPal.UseVisualStyleBackColor = true;
 			this.bpCopyPal.Click += new System.EventHandler(this.bpCopyPal_Click);
 			// 
 			// pictImpDraw
 			// 
-			this.pictImpDraw.Location = new System.Drawing.Point(2, 56);
+			this.pictImpDraw.Location = new System.Drawing.Point(168, 61);
 			this.pictImpDraw.Name = "pictImpDraw";
 			this.pictImpDraw.Size = new System.Drawing.Size(768, 2);
 			this.pictImpDraw.TabIndex = 12;
 			this.pictImpDraw.TabStop = false;
 			// 
-			// bpHorFlip
+			// chkX2
 			// 
-			this.bpHorFlip.Location = new System.Drawing.Point(6, 402);
-			this.bpHorFlip.Name = "bpHorFlip";
-			this.bpHorFlip.Size = new System.Drawing.Size(60, 23);
-			this.bpHorFlip.TabIndex = 18;
-			this.bpHorFlip.Text = "Hor. Flip";
-			this.bpHorFlip.UseVisualStyleBackColor = true;
-			this.bpHorFlip.Click += new System.EventHandler(this.bpHorFlip_Click);
-			// 
-			// bpVerFlip
-			// 
-			this.bpVerFlip.Location = new System.Drawing.Point(83, 402);
-			this.bpVerFlip.Name = "bpVerFlip";
-			this.bpVerFlip.Size = new System.Drawing.Size(60, 23);
-			this.bpVerFlip.TabIndex = 19;
-			this.bpVerFlip.Text = "Ver. Flip";
-			this.bpVerFlip.UseVisualStyleBackColor = true;
-			this.bpVerFlip.Click += new System.EventHandler(this.bpVerFlip_Click);
+			this.chkX2.AutoSize = true;
+			this.chkX2.Location = new System.Drawing.Point(19, 94);
+			this.chkX2.Name = "chkX2";
+			this.chkX2.Size = new System.Drawing.Size(39, 17);
+			this.chkX2.TabIndex = 13;
+			this.chkX2.Text = "X2";
+			this.chkX2.UseVisualStyleBackColor = true;
+			this.chkX2.CheckedChanged += new System.EventHandler(this.chkX2_CheckedChanged);
 			// 
 			// ImageCpc
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(942, 620);
+			this.ClientSize = new System.Drawing.Size(957, 629);
 			this.ControlBox = false;
+			this.Controls.Add(this.chkX2);
 			this.Controls.Add(this.pictImpDraw);
 			this.Controls.Add(this.bpCopyPal);
 			this.Controls.Add(this.modeCaptureSprites);
@@ -377,6 +390,6 @@
 		private System.Windows.Forms.PictureBox pictImpDraw;
 		private System.Windows.Forms.Button bpHorFlip;
 		private System.Windows.Forms.Button bpVerFlip;
-
+		private System.Windows.Forms.CheckBox chkX2;
 	}
 }

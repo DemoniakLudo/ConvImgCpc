@@ -31,14 +31,14 @@ namespace ConvImgCpc {
 				// Générer les contrôles de "couleurs"
 				colors[i] = new Label();
 				colors[i].BorderStyle = BorderStyle.FixedSingle;
-				colors[i].Location = new Point(4 + i * 48, 568 - 564);
+				colors[i].Location = new Point(168 + i * 48, 568 - 564);
 				colors[i].Size = new Size(40, 32);
 				colors[i].Tag = i;
 				colors[i].MouseDown += ClickColor;
 				Controls.Add(colors[i]);
 				// Générer les contrôles de "bloquage couleur"
 				lockColors[i] = new CheckBox();
-				lockColors[i].Location = new Point(16 + i * 48, 600 - 564);
+				lockColors[i].Location = new Point(180 + i * 48, 600 - 564);
 				lockColors[i].Size = new Size(20, 20);
 				lockColors[i].Tag = i;
 				lockColors[i].Click += ClickLock;
@@ -462,8 +462,28 @@ namespace ConvImgCpc {
 			Clipboard.SetText(palTxt);
 			MessageBox.Show("Palette copiée dans le presse-papier");
 		}
-
 		#endregion
+
+		private void chkX2_CheckedChanged(object sender, EventArgs e) {
+			if (chkX2.Checked) {
+				this.Width = 973+768;
+				this.Height = 668+544;
+				pictureBox.Width = 1536;
+				pictureBox.Height = 1088;
+				vScrollBar.Left = 939+768;
+				hScrollBar.Top = 608+544;
+			}
+			else {
+				this.Width = 973;
+				this.Height = 668;
+				pictureBox.Width = 768;
+				pictureBox.Height = 544;
+				vScrollBar.Left = 939;
+				hScrollBar.Top = 608;
+			}
+			pictureBox.Refresh();
+
+		}
 
 		private void ImageCpc_FormClosing(object sender, FormClosingEventArgs e) {
 			e.Cancel = true;
