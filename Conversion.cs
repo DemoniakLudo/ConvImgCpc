@@ -158,9 +158,8 @@ namespace ConvImgCpc {
 
 		//
 		// Passe 1 : Réduit la palette aux x couleurs de la palette du CPC.
+		// Remplit le tableau coulTrouvee avec ces couleurs
 		// Effectue également un traitement de l'erreur (tramage) si demandé.
-		// Calcule le nombre de couleurs utilisées dans l'image, et
-		// remplit le tableau coulTrouvee avec ces couleurs
 		//
 		static private void ConvertPasse1(DirectBitmap source, Param prm) {
 			int pct = Dither.SetMatDither(prm);
@@ -535,7 +534,7 @@ namespace ConvImgCpc {
 		}
 
 		//
-		// Passe 2 : réduit l'image à MaxPen couleurs.
+		// Passe 2 : réduit l'image au nombre de couleurs max du mode CPC choisi.
 		//
 		static private void Passe2(DirectBitmap source, ImageCpc dest, Param prm, ref int colSplit) {
 			RvbColor[,] tabCol = new RvbColor[16, 272];
@@ -546,12 +545,14 @@ namespace ConvImgCpc {
 			for (i = 0; i < 16; i++)
 				MemoLockState[i] = prm.lockState[i];
 
+			// Modes EGX ?
 			if (BitmapCpc.modeVirtuel == 3 || BitmapCpc.modeVirtuel == 4) {
 				int newMax = BitmapCpc.MaxPen(0);
 				RechercheCMax(newMax, MemoLockState, prm);
 				for (i = 0; i < newMax; i++)
 					MemoLockState[i] = 1;
 			}
+			// Mode X ou Mode Split ?
 			if (BitmapCpc.modeVirtuel == 5 || BitmapCpc.modeVirtuel == 6) {
 				if (BitmapCpc.modeVirtuel == 5)
 					colSplit = RechercheCMaxModeX(dest.colMode5, MemoLockState, BitmapCpc.TailleY, prm);
@@ -559,13 +560,13 @@ namespace ConvImgCpc {
 					colSplit = RechercheCMaxModeSplit(dest.colMode5, MemoLockState, BitmapCpc.TailleY, prm);
 					maxPen = 9;
 				}
-				// réduit l'image à MaxPen couleurs.
+				// réduit l'image à maxPen couleurs.
 				for (int y = 0; y < BitmapCpc.TailleY >> 1; y++)
 					for (i = 0; i < maxPen; i++)
 						tabCol[i, y] = prm.cpcPlus ? new RvbColor((byte)((dest.colMode5[y, i] & 0x0F) * 17), (byte)(((dest.colMode5[y, i] & 0xF00) >> 8) * 17), (byte)(((dest.colMode5[y, i] & 0xF0) >> 4) * 17))
 							: BitmapCpc.RgbCPC[dest.colMode5[y, i] < 27 ? dest.colMode5[y, i] : 0];
 			}
-			else {
+			else {	// Mode standard CPC ou utilisation de gros pixels trames
 				RechercheCMax(maxPen, MemoLockState, prm);
 				// réduit l'image à MaxPen couleurs.
 				for (int y = 0; y < BitmapCpc.TailleY; y += 2) {
@@ -596,6 +597,8 @@ namespace ConvImgCpc {
 				tblContrast[i] = MinMaxByte(((((i / 255.0) - 0.5) * c) + 0.5) * 255.0);
 
 			ConvertPasse1(source, prm);
+
+			// Calculer nbre de couleurs dans l'image
 			int nbCol = 0;
 			for (int i = 0; i < coulTrouvee.GetLength(0); i++) {
 				bool memoCol = false;

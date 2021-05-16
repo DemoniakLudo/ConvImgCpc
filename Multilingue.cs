@@ -151,6 +151,8 @@ namespace ConvImgCpc {
 			dic.Add("Main.prg.TxtInfo29.EN", "There is a newer version on the website :");
 			dic.Add("Main.prg.TxtInfo30.FR", "Vous avez la dernière mise à jour.");
 			dic.Add("Main.prg.TxtInfo30.EN", "You have the lastest update.");
+			dic.Add("Main.prg.TxtInfo31.FR", "Fichier DSK");
+			dic.Add("Main.prg.TxtInfo31.EN", "DSK File");
 
 			// ImageCpc
 			dic.Add("ImageCpc.lockAllPal.FR", "Verrouiller toute la palette");
