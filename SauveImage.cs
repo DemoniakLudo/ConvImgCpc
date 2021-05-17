@@ -441,7 +441,7 @@ namespace ConvImgCpc {
 
 		static byte[] ModePal = new byte[48];
 
-		static public int SauveScr(string fileName, BitmapCpc bitmapCpc, ImageCpc img, Param param, Main.PackMethode compact, Main.OutputFormat format, GestDSK dsk, string version = null, int[,] colMode5 = null) {
+		static public int SauveScr(string fileName, BitmapCpc bitmapCpc, ImageCpc img, Param param, Main.PackMethode compact, Main.OutputFormat format, Main main, string version = null, int[,] colMode5 = null) {
 			byte[] bufPack = new byte[0x8000];
 			bool overscan = (BitmapCpc.NbLig * BitmapCpc.NbCol > 0x3F00);
 			if (param.withPalette && format != Main.OutputFormat.Assembler) {
@@ -614,7 +614,7 @@ namespace ConvImgCpc {
 
 				case Main.OutputFormat.DSK:
 					if (File.Exists(fileName))
-						dsk.Load(fileName);
+						main.dsk.Load(fileName);
 
 					MemoryStream ms = new MemoryStream();
 					entete = CpcSystem.CreeEntete(fileName, startAdr, (short)lg, exec);
@@ -625,13 +625,15 @@ namespace ConvImgCpc {
 					byte[] fic = ms.ToArray();
 					GestDSK.DskError err = GestDSK.DskError.ERR_NO_ERR;
 					for (int i = 0; i < 100; i++) {
-						string nom = "CNVIMG" + i++.ToString("00") + (compact == Main.PackMethode.None ? ".SCR" : ".CMP");
-						err = dsk.CopieFichier(fic, nom, fic.Length, 178, 0);
-						if (err == GestDSK.DskError.ERR_NO_ERR)
+						string nom = "CNVIMG" + i.ToString("00") + (compact == Main.PackMethode.None ? ".SCR" : ".CMP");
+						err = main.dsk.CopieFichier(fic, nom, fic.Length, 178, 0);
+						if (err == GestDSK.DskError.ERR_NO_ERR) {
+							main.SetInfo(main.multilingue.GetString("Main.prg.TxtInfo33") + nom);
 							break;
+						}
 					}
 					if (err == GestDSK.DskError.ERR_NO_ERR)
-						dsk.Save(fileName);
+						main.dsk.Save(fileName);
 					else {
 						switch (err) {
 							case GestDSK.DskError.ERR_FILE_EXIST:

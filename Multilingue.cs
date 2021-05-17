@@ -155,6 +155,8 @@ namespace ConvImgCpc {
 			dic.Add("Main.prg.TxtInfo31.EN", "CPC image on DSK file");
 			dic.Add("Main.prg.TxtInfo32.FR", "Ecran compacté dans fichier DSK");
 			dic.Add("Main.prg.TxtInfo32.EN", "Compacted screen on DSK file");
+			dic.Add("Main.prg.TxtInfo33.FR", "Fichier écris sur DSK:");
+			dic.Add("Main.prg.TxtInfo33.EN", "File written on DSK:");
 
 			// ImageCpc
 			dic.Add("ImageCpc.lockAllPal.FR", "Verrouiller toute la palette");
