@@ -87,7 +87,7 @@
     </Compile>
     <Compile Include="BitmapCpc.cs" />
     <Compile Include="Conversion.cs" />
-    <Compile Include="CpcSystem.cs" />
+    <Compile Include="GestCPC\CpcSystem.cs" />
     <Compile Include="Interfaces\Informations.cs">
       <SubType>Form</SubType>
     </Compile>

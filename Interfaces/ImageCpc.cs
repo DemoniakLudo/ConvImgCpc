@@ -215,9 +215,9 @@ namespace ConvImgCpc {
 			main.SetInfo("Sauvegarde image PNG ok.");
 		}
 
-		public void SauveScr(string fileName, Param param) {
+		public void SauveScr(string fileName, Param param, Main.OutputFormat format) {
 			bitmapCpc.CreeBmpCpc(BmpLock, colMode5);
-			SauveImage.SauveScr(fileName, bitmapCpc, this, param, Main.PackMethode.None, Main.OutputFormat.Binary, main.dsk);
+			SauveImage.SauveScr(fileName, bitmapCpc, this, param, Main.PackMethode.None, format, main.dsk);
 			main.SetInfo("Sauvegarde image CPC ok.");
 		}
 
@@ -315,7 +315,7 @@ namespace ConvImgCpc {
 				maxSize = (BitmapCpc.TailleX * BitmapCpc.TailleY) >> 4;
 			else
 				if (maxSize >= 0x4000)
-					maxSize += 0x3800;
+				maxSize += 0x3800;
 
 			byte[] ret = new byte[maxSize];
 			Array.Clear(ret, 0, ret.Length);

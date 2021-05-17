@@ -481,22 +481,21 @@ namespace ConvImgCpc {
 							+ multilingue.GetString("Main.prg.TxtInfo22") + " (.asm)|*.asm|"								//	4
 							+ multilingue.GetString("Main.prg.TxtInfo23") + " (.cmp)|*.cmp|"								//	5
 							+ multilingue.GetString("Main.prg.TxtInfo24") + " (.asm)|*.asm|"								//	6
-							
 							+ multilingue.GetString("Main.prg.TxtInfo31") + " (.dsk)|*.dsk|"								//	7
-							
-							+ multilingue.GetString("Main.prg.TxtInfo25") + " (.asm)|*.asm|"								//	7
-							+ multilingue.GetString("Main.prg.TxtInfo26") + " (.imp)|*.imp|"								//	8
-							+ multilingue.GetString("Main.prg.TxtInfo19") + "Paramètres (.xml)|*.xml|"						//	9
-							+ multilingue.GetString("Main.prg.TxtInfo18") + " (.pal)|*.pal"									//	10
-							+ (BitmapCpc.cpcPlus ? ("|" + multilingue.GetString("Main.prg.TxtInfo27") + " (.kit)|*.kit") : "")	//	11
-							+ (BitmapCpc.modeVirtuel == 3 || BitmapCpc.modeVirtuel == 4 ? ("|" + multilingue.GetString("Main.prg.TxtInfo28") + " (.scr)|*.scr") : "");	//	12
+							+ multilingue.GetString("Main.prg.TxtInfo32") + " (.dsk)|*.dsk|"								//	8
+							+ multilingue.GetString("Main.prg.TxtInfo25") + " (.asm)|*.asm|"								//	9
+							+ multilingue.GetString("Main.prg.TxtInfo26") + " (.imp)|*.imp|"								//	10
+							+ multilingue.GetString("Main.prg.TxtInfo19") + "Paramètres (.xml)|*.xml|"						//	11
+							+ multilingue.GetString("Main.prg.TxtInfo18") + " (.pal)|*.pal"									//	12
+							+ (BitmapCpc.cpcPlus ? ("|" + multilingue.GetString("Main.prg.TxtInfo27") + " (.kit)|*.kit") : "")	//	13
+							+ (BitmapCpc.modeVirtuel == 3 || BitmapCpc.modeVirtuel == 4 ? ("|" + multilingue.GetString("Main.prg.TxtInfo28") + " (.scr)|*.scr") : "");	//	14
 
 			dlg.Filter = filter;
 			DialogResult result = dlg.ShowDialog();
 			if (result == DialogResult.OK) {
 				switch (dlg.FilterIndex) {
 					case 1:
-						imgCpc.SauveScr(dlg.FileName, param);
+						imgCpc.SauveScr(dlg.FileName, param,OutputFormat.Binary);
 						break;
 
 					case 2:
@@ -520,28 +519,32 @@ namespace ConvImgCpc {
 						break;
 
 					case 7:
-						imgCpc.SauveCmp(dlg.FileName, param, pkMethode, OutputFormat.DSK);
+						imgCpc.SauveScr(dlg.FileName, param, OutputFormat.DSK);
 						break;
 
 					case 8:
-						imgCpc.SauveDeltaPack(dlg.FileName, lblInfoVersion.Text, param, true, pkMethode);
+						imgCpc.SauveCmp(dlg.FileName, param, pkMethode, OutputFormat.DSK);
 						break;
 
 					case 9:
-						imgCpc.SauveImp(dlg.FileName);
+						imgCpc.SauveDeltaPack(dlg.FileName, lblInfoVersion.Text, param, true, pkMethode);
 						break;
 
 					case 10:
-						SaveParam(dlg.FileName);
+						imgCpc.SauveImp(dlg.FileName);
 						break;
 
 					case 11:
-						imgCpc.SauvePalette(dlg.FileName, param);
+						SaveParam(dlg.FileName);
 						break;
 
 					case 12:
+						imgCpc.SauvePalette(dlg.FileName, param);
+						break;
+
 					case 13:
-						if (BitmapCpc.cpcPlus && dlg.FilterIndex == 12)
+					case 14:
+						if (BitmapCpc.cpcPlus && dlg.FilterIndex == 13)
 							SavePaletteKit(dlg.FileName, BitmapCpc.Palette);
 						else
 							imgCpc.SauveEgx(dlg.FileName, param);
@@ -1059,24 +1062,6 @@ namespace ConvImgCpc {
 
 		private void bpCheckMaj_Click(object sender, EventArgs e) {
 			CheckMaj();
-		}
-
-		private void button1_Click(object sender, EventArgs e) {
-			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.Filter = "Fichier DSK (*.dsk)|*.dsk";
-			DialogResult result = dlg.ShowDialog();
-			if (result == DialogResult.OK) {
-				dsk.Load(dlg.FileName);
-			}
-		}
-
-		private void button2_Click(object sender, EventArgs e) {
-			SaveFileDialog dlg = new SaveFileDialog();
-			dlg.Filter = "Fichier DSK (*.dsk)|*.dsk";
-			DialogResult result = dlg.ShowDialog();
-			if (result == DialogResult.OK) {
-				dsk.Save(dlg.FileName);
-			}
 		}
 	}
 }

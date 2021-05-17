@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
 public class CPCEMUEnt {
 	[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x30)]
 	public string id;			// "MV - CPCEMU Disk-File\r\nDisk-Info\r\n"

@@ -4,10 +4,10 @@ using System.Runtime.InteropServices;
 using System.Text;
 
 public class GestDSK {
-	public const int MAX_DSK = 2;		// Nbre de fichiers DSK gérés
-	const int MAX_TRACKS = 99;			// Nbre maxi de pistes/DSK
-	const int SECTSIZE = 512;			// Taille secteur standard
-	const byte USER_DELETED = 0xE5;		// Octet pour fichier effacé
+	public const int MAX_DSK = 2;       // Nbre de fichiers DSK gérés
+	const int MAX_TRACKS = 99;          // Nbre maxi de pistes/DSK
+	const int SECTSIZE = 512;           // Taille secteur standard
+	const byte USER_DELETED = 0xE5;     // Octet pour fichier effacé
 	public string NomFic;
 	public bool ImageOk;
 	public CPCEMUEnt Infos = new CPCEMUEnt();
@@ -18,35 +18,36 @@ public class GestDSK {
 	public enum DskError { ERR_NO_ERR = 0, ERR_NO_DIRENTRY, ERR_NO_BLOCK, ERR_FILE_EXIST };
 
 	public GestDSK() {
-		Infos.id = "MV - CPCEMU Disk-File\r\nDisk-Info\r\n";
+		Infos.id = "EXTENDED CPC DSK File\r\nDisk-Info\r\nConvImgCpc    ";
+		Infos.NbTracks = 40;
+		Infos.NbHeads = 1;
+		for (int i = 0; i < 40; i++)
+			Infos.TrackSizeTable[i] = 0x13;
+
 		Tracks = new CPCEMUTrack[MAX_TRACKS][];
 		Data = new byte[MAX_TRACKS][][];
 		for (int t = 0; t < MAX_TRACKS; t++) {
 			Tracks[t] = new CPCEMUTrack[2];
 			Tracks[t][0] = new CPCEMUTrack();
 			Tracks[t][1] = new CPCEMUTrack();
-			Tracks[t][0].id = "Track-Info\r\n";
-			Tracks[t][1].id = "Track-Info\r\n";
 			Data[t] = new byte[2][];
 			Data[t][0] = new byte[0x1800];
 			Data[t][1] = new byte[0x1800];
-			for (int i = 0; i < 0x1800; i++) {
-				Data[t][0][i] = USER_DELETED;
-				Data[t][1][i] = USER_DELETED;
-			}
+			FormatTrack(t, 0, 0xC1, 9);
+			FormatTrack(t, 1, 0xC1, 9);
 		}
 	}
 
 	//
 	// Retourne la position d'un secteur dans le fichier DSK
 	//
-	private int GetPosData(int track, int sect, bool SectPhysique) {
+	private int GetPosData(int track, int sect) {
 		// Recherche position secteur
 		int Pos = 0;
 		CPCEMUTrack tr = Tracks[track][0];
 
 		for (int s = 0; s < tr.NbSect; s++) {
-			if (((tr.Sect[s].R == sect) && SectPhysique) || ((s == sect) && !SectPhysique))
+			if (tr.Sect[s].R == sect)
 				break;
 
 			if (tr.Sect[s].SectSize != 0)
@@ -55,6 +56,15 @@ public class GestDSK {
 				Pos += (128 << tr.Sect[s].N);
 		}
 		return (Pos);
+	}
+
+	private int GetIndexSecteur(int track, int sect) {
+		CPCEMUTrack tr = Tracks[track][0];
+		for (int s = 0; s < tr.NbSect; s++) {
+			if (tr.Sect[s].R == sect)
+				return s;
+		}
+		return -1;
 	}
 
 	//
@@ -83,7 +93,7 @@ public class GestDSK {
 		int MinSect = GetMinSect(true);
 		int s = (NumDir >> 4) + MinSect;
 		int t = MinSect == 0x41 ? 2 : MinSect == 1 ? 1 : 0;
-		int pos = GetPosData(t, s, true);
+		int pos = GetPosData(t, s) + ((NumDir & 15) << 5);
 		int length = Marshal.SizeOf(Dir);
 		IntPtr ptr = Marshal.AllocHGlobal(length);
 		Marshal.Copy(Data[t][0], pos, ptr, length);
@@ -200,15 +210,14 @@ public class GestDSK {
 	//
 	// Formater une piste
 	//
-	private void FormatTrack(int t, int MinSect, int NbSect) {
-		CPCEMUTrack tr = Tracks[t][0];
+	private void FormatTrack(int t, int h, int MinSect, int NbSect) {
+		CPCEMUTrack tr = Tracks[t][h];
 		for (int i = 0; i < 0x1800; i++)
-			Data[t][0][i] = USER_DELETED;
+			Data[t][h][i] = USER_DELETED;
 
-
-		tr.id = "Track-Info\r\n";
+		tr.id = "Track-Info\r\n    ";
 		tr.Track = (byte)t;
-		tr.Head = 0;
+		tr.Head = (byte)h;
 		tr.SectSize = 2;
 		tr.NbSect = (byte)NbSect;
 		tr.Gap3 = 0x4E;
@@ -217,16 +226,16 @@ public class GestDSK {
 		//
 		// Gestion "entrelacement" des secteurs
 		//
-		for (int s = 0; s < NbSect; ) {
+		for (int s = 0; s < NbSect;) {
 			tr.Sect[s].C = (byte)t;
-			tr.Sect[s].H = 0;
+			tr.Sect[s].H = (byte)h;
 			tr.Sect[s].R = (byte)(ss + MinSect);
 			tr.Sect[s].N = 2;
 			tr.Sect[s].SectSize = SECTSIZE;
 			ss++;
 			if (++s < NbSect) {
 				tr.Sect[s].C = (byte)t;
-				tr.Sect[s].H = 0;
+				tr.Sect[s].H = (byte)h;
 				tr.Sect[s].R = (byte)(ss + MinSect + 4);
 				tr.Sect[s].N = 2;
 				tr.Sect[s].SectSize = SECTSIZE;
@@ -246,24 +255,24 @@ public class GestDSK {
 			track += 2;
 		else
 			if (MinSect == 0x01)
-				track++;
+			track++;
 
 		//
 		// Ajuste le nombre de pistes si dépassement capacité
 		//
 		if (track > Infos.NbTracks - 1) {
 			Infos.NbTracks = (byte)(track + 1);
-			FormatTrack(track, MinSect, 9);
+			FormatTrack(track, 0, MinSect, 9);
 		}
 
-		int Pos = GetPosData(track, sect + MinSect, true);
+		int Pos = GetPosData(track, sect + MinSect);
 		int l = Math.Min(SECTSIZE, BufBloc.Length - offset);
 		Array.Copy(BufBloc, offset, Data[track][0], Pos, l);
 		if (++sect > 8) {
 			track++;
 			sect = 0;
 		}
-		Pos = GetPosData(track, sect + MinSect, true);
+		Pos = GetPosData(track, sect + MinSect);
 		l = Math.Min(SECTSIZE, BufBloc.Length - offset - SECTSIZE);
 		if (l > 0)
 			Array.Copy(BufBloc, offset + SECTSIZE, Data[track][0], Pos, l);
@@ -276,11 +285,12 @@ public class GestDSK {
 		int MinSect = GetMinSect(true);
 		int s = (NumDir >> 4) + MinSect;
 		int t = MinSect == 0x41 ? 2 : MinSect == 1 ? 1 : 0;
-		int pos = GetPosData(t, s, true) + ((NumDir & 15) << 5);
+		int pos = GetPosData(t, s) + ((NumDir & 15) << 5);
 		int len = Marshal.SizeOf(Dir);
+		int idSect = GetIndexSecteur(t, s);
 		IntPtr ptr = Marshal.AllocHGlobal(len);
 		Marshal.StructureToPtr(Dir, ptr, true);
-		Marshal.Copy(ptr, Data[t][s], 0, len);
+		Marshal.Copy(ptr, Data[t][0], pos, len);
 		Marshal.FreeHGlobal(ptr);
 	}
 
@@ -293,7 +303,7 @@ public class GestDSK {
 		if (FileExist(FullName, User) > -1)
 			return (DskError.ERR_FILE_EXIST);
 
-		for (PosFile = 0; PosFile < TailleFic; ) {
+		for (PosFile = 0; PosFile < TailleFic;) {
 			PosDir = RechercheDirLibre();
 			if (PosDir != -1) {
 				DirLoc.User = (byte)User;
@@ -357,12 +367,12 @@ public class GestDSK {
 							n = (n + 0xFF) & 0x1F00;
 						else
 							if (n == 0) {
-								n = sect.N;
-								if (n < 6)
-									n = 128 << n;
-								else
-									n = 0x1800;
-							}
+							n = sect.N;
+							if (n < 6)
+								n = 128 << n;
+							else
+								n = 0x1800;
+						}
 						tailleData += n > 0x100 ? n : 0x100;
 					}
 				}
@@ -413,12 +423,12 @@ public class GestDSK {
 								n = (n + 0xFF) & 0x1F00;
 							else
 								if (n == 0) {
-									n = sect.N;
-									if (n < 6)
-										n = 128 << n;
-									else
-										n = 0x1800;
-								}
+								n = sect.N;
+								if (n < 6)
+									n = 128 << n;
+								else
+									n = 0x1800;
+							}
 							tailleData += n > 0x100 ? n : 0x100;
 						}
 					}

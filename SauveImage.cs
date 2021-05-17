@@ -613,6 +613,9 @@ namespace ConvImgCpc {
 					break;
 
 				case Main.OutputFormat.DSK:
+					if (File.Exists(fileName))
+						dsk.Load(fileName);
+
 					MemoryStream ms = new MemoryStream();
 					entete = CpcSystem.CreeEntete(fileName, startAdr, (short)lg, exec);
 					BinaryWriter fpm = new BinaryWriter(ms);
@@ -620,8 +623,27 @@ namespace ConvImgCpc {
 					fpm.Write(compact != Main.PackMethode.None ? bufPack : bitmapCpc.bmpCpc, 0, lg);
 					fpm.Close();
 					byte[] fic = ms.ToArray();
-					dsk.CopieFichier(fic, "Image.scr", fic.Length, 178, 0);
-					dsk.Save(fileName);
+					GestDSK.DskError err = GestDSK.DskError.ERR_NO_ERR;
+					for (int i = 0; i < 100; i++) {
+						string nom = "CNVIMG" + i++.ToString("00") + (compact == Main.PackMethode.None ? ".SCR" : ".CMP");
+						err = dsk.CopieFichier(fic, nom, fic.Length, 178, 0);
+						if (err == GestDSK.DskError.ERR_NO_ERR)
+							break;
+					}
+					if (err == GestDSK.DskError.ERR_NO_ERR)
+						dsk.Save(fileName);
+					else {
+						switch (err) {
+							case GestDSK.DskError.ERR_FILE_EXIST:
+								break;
+
+							case GestDSK.DskError.ERR_NO_BLOCK:
+								break;
+
+							case GestDSK.DskError.ERR_NO_DIRENTRY:
+								break;
+						}
+					}
 					break;
 			}
 			return (lg);
@@ -671,7 +693,7 @@ namespace ConvImgCpc {
 					if (param.cpcPlus) {
 						for (int i = 0; i < 16; i++) {
 							int r = 0, v = 0, b = 0;
-							for (int k = 26; k-- > 0; ) {
+							for (int k = 26; k-- > 0;) {
 								if (pal[3 + i * 12] == (byte)BitmapCpc.CpcVGA[k])
 									r = (26 - k) << 4;
 
