@@ -82,22 +82,22 @@ namespace ConvImgCpc {
 		//
 		// Structure d'une entrée AMSDOS
 		//
-		public byte UserNumber;				// User
+		public byte UserNumber;             // User
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x0F)]
-		public string FileName;				// Nom + extension
-		public byte BlockNum;				// Numéro du premier bloc (disquette)
-		public byte LastBlock;				// Numéro du dernier bloc (disquette)
-		public byte FileType;				// Type de fichier
-		public short Length;				// Longueur
-		public short Adress;				// Adresse
-		public byte FirstBlock;				// Premier bloc de fichier (disquette)
-		public short LogicalLength;			// Longueur logique
-		public short EntryAdress;			// Point d'entrée
+		public string FileName;             // Nom + extension
+		public byte BlockNum;               // Numéro du premier bloc (disquette)
+		public byte LastBlock;              // Numéro du dernier bloc (disquette)
+		public byte FileType;               // Type de fichier
+		public short Length;                // Longueur
+		public short Adress;                // Adresse
+		public byte FirstBlock;             // Premier bloc de fichier (disquette)
+		public short LogicalLength;         // Longueur logique
+		public short EntryAdress;           // Point d'entrée
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x24)]
 		public string Unused;
-		public short RealLength;			// Longueur réelle
-		public byte BigLength;				// Longueur réelle (3 octets)
-		public short CheckSum;				// CheckSum Amsdos
+		public short RealLength;            // Longueur réelle
+		public byte BigLength;              // Longueur réelle (3 octets)
+		public short CheckSum;              // CheckSum Amsdos
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x3B)]
 		public string Unused2;
 	}
