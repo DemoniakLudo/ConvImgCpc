@@ -5,3 +5,5 @@ V1.0.7730 (01/03/2021) :	- Correction pb génération écran en fichiers assembl
 V1.0.7733 (04/03/2021) :	Correction pb undo-redo si flip horizontal/vertical appliqué
 V1.0.7762 (02/04/2021) : Correction pb mode ImpDraw + correction pb initialisation palette CPC ou CPC+ depuis le fichier de configuration XML
 V1.0.7771 (11/04/2021) : Ajout option "X2" dans la fenêtre de rendu du mode édition
+V1.0.7772 (12/04/2021) :	- Ajout option "X2" dans la fenêtre d'affichage et édition CPC
+							- Ajout outil "PickColor" dans l'éditeur
