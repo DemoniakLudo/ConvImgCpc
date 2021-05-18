@@ -616,7 +616,7 @@ namespace ConvImgCpc {
 			}
 			else
 				if (frameO)
-				sw.WriteLine("	LD	HL,Buffer");
+					sw.WriteLine("	LD	HL,Buffer");
 
 			if (!frameD) {
 				sw.WriteLine("	LD	BC,#C000");
@@ -735,6 +735,11 @@ namespace ConvImgCpc {
 
 				sw.WriteLine("	LD	C,(IY+0)");
 				sw.WriteLine("	LD	B,(IY+1)");
+				if (frameD) {
+					sw.WriteLine("	LD	A,B");
+					sw.WriteLine("	OR	C");
+					sw.WriteLine("	JR	Z,EndDraw");
+				}
 				sw.WriteLine("DrawImgD1:");
 				sw.WriteLine("	LD	D,0");
 				sw.WriteLine("	LD	E,(IY+2)			; Déplacement");
@@ -813,6 +818,7 @@ namespace ConvImgCpc {
 				sw.WriteLine("	JP	PE,DrawImgD1");
 				if (frameD) {
 					if (!imageMode) {
+						sw.WriteLine("EndDraw");
 						sw.WriteLine("	INC	IX");
 						sw.WriteLine("	INC	IX");
 						if (withSpeed)
