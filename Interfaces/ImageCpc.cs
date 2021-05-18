@@ -173,7 +173,7 @@ namespace ConvImgCpc {
 		}
 
 		#region Lecture/Sauvegarde
-		public void SauvePng(string fileName, Param param) {
+		public void SauvePng(string fileName) {
 			if (BitmapCpc.modeVirtuel == 6) {
 				string singleName = Path.GetDirectoryName(fileName) + "\\" + Path.GetFileNameWithoutExtension(fileName);
 				DirectBitmap bmpRaster = new DirectBitmap(BmpLock.Bitmap.Width >> 1, BmpLock.Bitmap.Height >> 1);
@@ -207,7 +207,7 @@ namespace ConvImgCpc {
 				}
 				bmpRaster.Bitmap.Save(singleName + "_Rasters" + ".png", System.Drawing.Imaging.ImageFormat.Png);
 				bitmapCpc.CreeBmpCpcForceMode1(BmpLock);
-				SauveImage.SauveScr(singleName + ".scr", bitmapCpc, this, param, Main.PackMethode.None, Main.OutputFormat.Binary, main);
+				SauveImage.SauveScr(singleName + ".scr", bitmapCpc, main, Main.PackMethode.None, Main.OutputFormat.Binary);
 			}
 			else
 				BmpLock.Bitmap.Save(fileName, System.Drawing.Imaging.ImageFormat.Png);
@@ -215,21 +215,21 @@ namespace ConvImgCpc {
 			main.SetInfo("Sauvegarde image PNG ok.");
 		}
 
-		public void SauveScr(string fileName, Param param, Main.OutputFormat format) {
+		public void SauveScr(string fileName, Main.OutputFormat format) {
 			bitmapCpc.CreeBmpCpc(BmpLock, colMode5);
-			SauveImage.SauveScr(fileName, bitmapCpc, this, param, Main.PackMethode.None, format, main);
+			SauveImage.SauveScr(fileName, bitmapCpc, main, Main.PackMethode.None, format);
 			main.SetInfo("Sauvegarde image CPC ok.");
 		}
 
-		public void SauveCmp(string fileName, Param param, Main.PackMethode pkMethode, Main.OutputFormat format, string version = null) {
+		public void SauveCmp(string fileName, Main.PackMethode pkMethode, Main.OutputFormat format, string version = null) {
 			bitmapCpc.CreeBmpCpc(BmpLock, colMode5);
-			if (BitmapCpc.modeVirtuel >= 7) {
-				SaveAnim sa = new SaveAnim(main, fileName, version, this, param, pkMethode);
+			if (BitmapCpc.modeVirtuel >= 7 && version != null) {
+				SaveAnim sa = new SaveAnim(main, fileName, version, pkMethode);
 				sa.DoSave(true, pkMethode);
 				sa.Dispose();
 			}
 			else
-				SauveImage.SauveScr(fileName, bitmapCpc, this, param, pkMethode, format, main, version, colMode5);
+				SauveImage.SauveScr(fileName, bitmapCpc, main, pkMethode, format, version, colMode5);
 
 			main.SetInfo("Sauvegarde image compactée ok.");
 		}
@@ -315,7 +315,7 @@ namespace ConvImgCpc {
 				maxSize = (BitmapCpc.TailleX * BitmapCpc.TailleY) >> 4;
 			else
 				if (maxSize >= 0x4000)
-					maxSize += 0x3800;
+				maxSize += 0x3800;
 
 			byte[] ret = new byte[maxSize];
 			Array.Clear(ret, 0, ret.Length);
@@ -352,11 +352,11 @@ namespace ConvImgCpc {
 			return ret;
 		}
 
-		public void SauveDeltaPack(string fileName, string version, Param param, bool reboucle, Main.PackMethode pkMethode) {
+		public void SauveDeltaPack(string fileName, string version, bool reboucle, Main.PackMethode pkMethode) {
 			if (BitmapCpc.NbCol * BitmapCpc.NbLig > 0x4000)
 				MessageBox.Show("Les animations avec des écrans de plus de 16ko ne sont pas supportés...");
 			else
-				new SaveAnim(main, fileName, version, this, param, pkMethode).ShowDialog();
+				new SaveAnim(main, fileName, version, pkMethode).ShowDialog();
 		}
 
 		public void LirePalette(string fileName, Param param) {
@@ -373,7 +373,7 @@ namespace ConvImgCpc {
 			main.SetInfo("Sauvegarde palette ok.");
 		}
 
-		public void SauveEgx(string fileName, Param param) {
+		public void SauveEgx(string fileName) {
 			int mode = BitmapCpc.modeVirtuel;
 			int model1 = mode == 3 ? 1 : 2;
 			int model2 = mode == 3 ? 0 : 1;
@@ -382,10 +382,10 @@ namespace ConvImgCpc {
 				fileName = fileName.Substring(0, fileName.Length - 4);
 
 			bitmapCpc.CreeBmpCpc(BmpLock, colMode5, true, 0);
-			SauveImage.SauveScr(fileName + "0.SCR", bitmapCpc, this, param, Main.PackMethode.None, Main.OutputFormat.Binary, main);
+			SauveImage.SauveScr(fileName + "0.SCR", bitmapCpc, main, Main.PackMethode.None, Main.OutputFormat.Binary);
 			BitmapCpc.modeVirtuel = model2;
 			bitmapCpc.CreeBmpCpc(BmpLock, colMode5, true, 1);
-			SauveImage.SauveScr(fileName + "1.SCR", bitmapCpc, this, param, Main.PackMethode.None, Main.OutputFormat.Binary, main);
+			SauveImage.SauveScr(fileName + "1.SCR", bitmapCpc, main, Main.PackMethode.None, Main.OutputFormat.Binary);
 			main.SetInfo("Sauvegarde des deux images CPC ok.");
 			BitmapCpc.modeVirtuel = mode;
 		}

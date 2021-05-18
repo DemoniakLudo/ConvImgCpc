@@ -18,12 +18,14 @@ namespace ConvImgCpc {
 		private Param param;
 		private Main.PackMethode pkMethode;
 		private PackModule pk = new PackModule();
+		private Main main;
 
-		public SaveAnim(Main m, string f, string v, ImageCpc i, Param p, Main.PackMethode pm) {
+		public SaveAnim(Main m, string f, string v, Main.PackMethode pm) {
 			fileName = f;
 			version = v;
-			img = i;
-			param = p;
+			main = m;
+			img = main.imgCpc;
+			param = main.param;
 			pkMethode = pm;
 			InitializeComponent();
 			m.ChangeLanguage(Controls, "SaveAnim");
@@ -272,12 +274,12 @@ namespace ConvImgCpc {
 			}
 			Array.Copy(img.bitmapCpc.imgAscii, OldImgAscii, OldImgAscii.Length);
 			sizeDepack = img.bitmapCpc.imgAscii.Length + 4;
-			if (nDiff == 0 && rbFrameFull.Checked) {
-				if (rbFrameFull.Checked) {
-					BufTmp[0] = (byte)'I';
-					lastAscii = 'I';
-					return pk.Pack(BufTmp, 1, bufOut, 0, pkMethode);
-				}
+			if (nDiff == 0) {
+				BufTmp[0] = (byte)'I';
+				lastAscii = 'I';
+				int l = pk.Pack(BufTmp, 1, bufOut, 0, pkMethode);
+				if (rbFrameFull.Checked)
+					return l;
 				else {
 					img.main.SetInfo("Impossible d'ajouter image identique...");
 					return 0;
@@ -334,9 +336,9 @@ namespace ConvImgCpc {
 			}
 			else
 				if (chkDirecMem.Checked)
-					return PackDirectMem(bufOut, ref sizeDepack, true, razDiff);
-				else
-					return PackWinDC(bufOut, ref sizeDepack, topBottom, razDiff, modeLigne, optimSpeed);
+				return PackDirectMem(bufOut, ref sizeDepack, true, razDiff);
+			else
+				return PackWinDC(bufOut, ref sizeDepack, topBottom, razDiff, modeLigne, optimSpeed);
 		}
 		#endregion
 
@@ -410,9 +412,9 @@ namespace ConvImgCpc {
 					SaveAsm.GenereDrawAscii(sw, rbFrameFull.Checked, rbFrameO.Checked, rbFrameD.Checked, gest128K, imageMode, withDelai);
 				else
 					if (chkDirecMem.Checked)
-						SaveAsm.GenereDrawDirect(sw, gest128K);
-					else
-						SaveAsm.GenereDrawDC(sw, withDelai, chkCol.Checked, gest128K, modeLigne == 8 ? 0x3F : modeLigne == 4 ? 0x1F : modeLigne == 2 ? 0xF : 0x7, optimSpeed);
+					SaveAsm.GenereDrawDirect(sw, gest128K);
+				else
+					SaveAsm.GenereDrawDC(sw, withDelai, chkCol.Checked, gest128K, modeLigne == 8 ? 0x3F : modeLigne == 4 ? 0x1F : modeLigne == 2 ? 0xF : 0x7, optimSpeed);
 			}
 			if ((param.withPalette || param.withCode) && !chkDataBrut.Checked) {
 				if (BitmapCpc.cpcPlus)

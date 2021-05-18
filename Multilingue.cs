@@ -157,6 +157,10 @@ namespace ConvImgCpc {
 			dic.Add("Main.prg.TxtInfo32.EN", "Compacted screen on DSK file");
 			dic.Add("Main.prg.TxtInfo33.FR", "Fichier écris sur DSK:");
 			dic.Add("Main.prg.TxtInfo33.EN", "File written on DSK:");
+			dic.Add("Main.prg.TxtInfo34.FR", "Trop de fichiers sur le DSK");
+			dic.Add("Main.prg.TxtInfo34.EN", "Too many files on the DSK");
+			dic.Add("Main.prg.TxtInfo35.FR", "DSK plein");
+			dic.Add("Main.prg.TxtInfo35.EN", "DSK full");
 
 			// ImageCpc
 			dic.Add("ImageCpc.lockAllPal.FR", "Verrouiller toute la palette");

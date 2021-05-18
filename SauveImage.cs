@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Windows.Forms;
 
 namespace ConvImgCpc {
 	static public class SauveImage {
@@ -441,11 +442,11 @@ namespace ConvImgCpc {
 
 		static byte[] ModePal = new byte[48];
 
-		static public int SauveScr(string fileName, BitmapCpc bitmapCpc, ImageCpc img, Param param, Main.PackMethode compact, Main.OutputFormat format, Main main, string version = null, int[,] colMode5 = null) {
+		static public int SauveScr(string fileName, BitmapCpc bitmapCpc, Main main, Main.PackMethode compact, Main.OutputFormat format, string version = null, int[,] colMode5 = null) {
 			byte[] bufPack = new byte[0x8000];
 			bool overscan = (BitmapCpc.NbLig * BitmapCpc.NbCol > 0x3F00);
-			if (param.withPalette && format != Main.OutputFormat.Assembler) {
-				if (param.cpcPlus) {
+			if (main.param.withPalette && format != Main.OutputFormat.Assembler) {
+				if (main.param.cpcPlus) {
 					ModePal[0] = (byte)(BitmapCpc.modeVirtuel | 0x8C);
 					int k = 1;
 					for (int i = 0; i < 16; i++) {
@@ -463,8 +464,8 @@ namespace ConvImgCpc {
 			byte[] imgCpc = bitmapCpc.bmpCpc;
 			if (!overscan) {
 				Buffer.BlockCopy(ModePal, 0, imgCpc, 0x17D0, ModePal.Length);
-				if (param.withCode && format != Main.OutputFormat.Assembler) {
-					if (param.cpcPlus) {
+				if (main.param.withCode && format != Main.OutputFormat.Assembler) {
+					if (main.param.cpcPlus) {
 						Buffer.BlockCopy(CodeP0, 0, imgCpc, 0x07D0, CodeP0.Length);
 						Buffer.BlockCopy(CodeP1, 0, imgCpc, 0x0FD0, CodeP1.Length);
 						Buffer.BlockCopy(CodeP3, 0, imgCpc, 0x1FD0, CodeP3.Length);
@@ -484,8 +485,8 @@ namespace ConvImgCpc {
 			else {
 				if (BitmapCpc.NbLig * BitmapCpc.NbCol > 0x4000) {
 					Buffer.BlockCopy(ModePal, 0, imgCpc, 0x600, ModePal.Length);
-					if (param.withCode && format != Main.OutputFormat.Assembler) {
-						if (param.cpcPlus)
+					if (main.param.withCode && format != Main.OutputFormat.Assembler) {
+						if (main.param.cpcPlus)
 							Buffer.BlockCopy(CodeOvP, 0, imgCpc, 0x621, CodeOvP.Length);
 						else
 							Buffer.BlockCopy(CodeOv, 0, imgCpc, 0x611, CodeOv.Length);
@@ -493,7 +494,7 @@ namespace ConvImgCpc {
 						if (BitmapCpc.modeVirtuel == 3 || BitmapCpc.modeVirtuel == 4) {
 							Buffer.BlockCopy(codeEgx0, 0, imgCpc, 0x1600, codeEgx0.Length);
 							Buffer.BlockCopy(codeEgx1, 0, imgCpc, 0x1640, codeEgx1.Length);
-							if (param.cpcPlus) {
+							if (main.param.cpcPlus) {
 								imgCpc[0x669] = 0xCD;
 								imgCpc[0x66A] = 0x00;
 								imgCpc[0x66B] = 0x18;       // CALL	#1800
@@ -510,12 +511,12 @@ namespace ConvImgCpc {
 			}
 
 			short startAdr = (short)(overscan ? 0x200 : 0xC000);
-			short exec = (short)(overscan ? param.cpcPlus ? 0x821 : 0x811 : 0xC7D0);
+			short exec = (short)(overscan ? main.param.cpcPlus ? 0x821 : 0x811 : 0xC7D0);
 			CpcAmsdos entete;
 			int lg = BitmapCpc.BitmapSize;
 			if (compact != Main.PackMethode.None) {
 				lg = new PackModule().Pack(bitmapCpc.bmpCpc, lg, bufPack, 0, compact);
-				if (param.withCode && format != Main.OutputFormat.Assembler) {
+				if (main.param.withCode && format != Main.OutputFormat.Assembler) {
 					short newExec;
 					switch (compact) {
 						case Main.PackMethode.Standard:
@@ -596,7 +597,7 @@ namespace ConvImgCpc {
 					sw.WriteLine("ImageCmp:");
 					SaveAsm.GenereDatas(sw, bufPack, lg, 16);
 					sw.WriteLine("	List");
-					if (param.withCode) {
+					if (main.param.withCode) {
 						sw.WriteLine("	RUN	$");
 						sw.WriteLine("_StartDepack:");
 						if (BitmapCpc.modeVirtuel == 3 || BitmapCpc.modeVirtuel == 4)
@@ -606,7 +607,7 @@ namespace ConvImgCpc {
 							if (BitmapCpc.modeVirtuel == 5)
 								SaveAsm.GenereAfficheModeX(sw, colMode5, overscan, compact);
 							else
-								SaveAsm.GenereAfficheStd(sw, img, BitmapCpc.modeVirtuel, BitmapCpc.Palette, overscan, compact);
+								SaveAsm.GenereAfficheStd(sw, main.imgCpc, BitmapCpc.modeVirtuel, BitmapCpc.Palette, overscan, compact);
 						}
 					}
 					SaveAsm.CloseAsm(sw);
@@ -637,12 +638,12 @@ namespace ConvImgCpc {
 					else {
 						switch (err) {
 							case GestDSK.DskError.ERR_FILE_EXIST:
+							case GestDSK.DskError.ERR_NO_DIRENTRY:
+								MessageBox.Show(main.multilingue.GetString("Main.prg.TxtInfo34"));
 								break;
 
 							case GestDSK.DskError.ERR_NO_BLOCK:
-								break;
-
-							case GestDSK.DskError.ERR_NO_DIRENTRY:
+								MessageBox.Show(main.multilingue.GetString("Main.prg.TxtInfo35"));
 								break;
 						}
 					}
