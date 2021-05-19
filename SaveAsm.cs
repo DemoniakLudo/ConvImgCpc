@@ -292,6 +292,9 @@ namespace ConvImgCpc {
 		}
 
 		static public void GenereEntete(StreamWriter sw, int adr) {
+			if (BitmapCpc.NbLig * BitmapCpc.NbCol > 0x4000)
+				adr = 0x8000;
+
 			sw.WriteLine("	ORG	#" + adr.ToString("X4"));
 			sw.WriteLine("	RUN	$" + Environment.NewLine);
 			sw.WriteLine("	DI");
@@ -368,7 +371,10 @@ namespace ConvImgCpc {
 				sw.WriteLine("	JR	NZ,SetFonte");
 			}
 			sw.WriteLine("Debut");
-			sw.WriteLine("	LD	IX,AnimDelta");
+			if (imageMode)
+				sw.WriteLine("LD	HL,Delta0");
+			else
+				sw.WriteLine("	LD	IX,AnimDelta");
 
 			if (!imageMode) {
 				sw.WriteLine("Boucle:");
@@ -606,6 +612,7 @@ namespace ConvImgCpc {
 		}
 
 		static public void GenereDrawAscii(StreamWriter sw, bool frameFull, bool frameO, bool frameD, bool gest128K, bool imageMode, bool withSpeed) {
+			bool overscan = BitmapCpc.NbLig * BitmapCpc.NbCol > 0x4000;
 			if (frameFull && !imageMode) {
 				sw.WriteLine("	LD	HL,Buffer");
 				sw.WriteLine("	LD	A,(HL)");
@@ -616,10 +623,10 @@ namespace ConvImgCpc {
 			}
 			else
 				if (frameO)
-					sw.WriteLine("	LD	HL,Buffer");
+				sw.WriteLine("	LD	HL,Buffer");
 
 			if (!frameD) {
-				sw.WriteLine("	LD	BC,#C000");
+				sw.WriteLine("	LD	BC," + (overscan ? "#0200" : "#C000"));
 				if (BitmapCpc.modeVirtuel == 7)
 					sw.WriteLine("	LD	D,Fonte/256");
 
@@ -706,6 +713,16 @@ namespace ConvImgCpc {
 				sw.WriteLine("	INC	BC");
 				sw.WriteLine("	BIT	3,B");
 				sw.WriteLine("	JR	Z,DrawImgO");
+				if (overscan) {
+					sw.WriteLine("	PUSH HL");
+					sw.WriteLine("	LD	HL,#4000");
+					sw.WriteLine("	ADD	HL,BC");
+					sw.WriteLine("	LD	B,H");
+					sw.WriteLine("	LD	C,L");
+					sw.WriteLine("	POP	HL");
+					sw.WriteLine("	BIT	7,B");
+					sw.WriteLine("	JR	Z,DrawImgO");
+				}
 			}
 			if (!frameD) {
 				if (!imageMode) {
