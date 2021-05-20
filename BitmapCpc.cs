@@ -2,7 +2,7 @@
 using System.Drawing;
 
 namespace ConvImgCpc {
-	public class BitmapCpc {
+	public partial class BitmapCpc {
 		private const int maxColsCpc = 96;
 		private const int maxLignesCpc = 272;
 

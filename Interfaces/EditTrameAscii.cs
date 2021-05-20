@@ -33,6 +33,7 @@ namespace ConvImgCpc {
 			lblPen2.BackColor = Color.FromArgb(bmpCpc.GetColorPal(2).GetColorArgb);
 			lblPen3.BackColor = Color.FromArgb(bmpCpc.GetColorPal(3).GetColorArgb);
 			DrawPens();
+			numTabTrame.Maximum = BitmapCpc.TramesAscUt.GetLength(0) - 1;
 		}
 
 		private void DrawMatrice() {
@@ -210,6 +211,33 @@ namespace ConvImgCpc {
 			DrawMatrice();
 			DrawTrame();
 			Enabled = true;
+		}
+
+		private void bpCopyTrame_Click(object sender, EventArgs e) {
+			BitmapCpc.CopyTrame((int)numTabTrame.Value);
+			DrawMatrice();
+			DrawTrame();
+		}
+
+		private void button1_Click(object sender, EventArgs e) {
+			StreamWriter sw = File.CreateText("Trames.txt");
+			for (int i = 0; i < 16; i++) {
+				sw.Write("{");
+				for (int y = 0; y < 4; y++) {
+					sw.Write("	{");
+					for (int x = 0; x < 4; x++) {
+					
+						sw.Write(BitmapCpc.trameM1[i, y, x].ToString());
+						if (x < 3)
+							sw.Write(", ");
+						else
+							sw.Write("}");
+					}
+					sw.WriteLine(y < 3 ? "," : "},");
+				}
+				sw.WriteLine();
+			}
+			sw.Close();
 		}
 	}
 

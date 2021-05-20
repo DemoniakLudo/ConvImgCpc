@@ -4,8 +4,8 @@ OK Anim: prévoir rebouclage 1ere image avec image 0 calculée 2 fois pour rebou
 OK Ajouter import/export format .IMP : http://impdraw.wikidot.com/le-format-imp
 OK Import animation image par image
 OK Affichage images sources/calculées dans la fenêtre d'animation
+OK Routine affichage images en mode X
+OK Routine Affichage images ASCII en overscan
 - Améliorer le mode édition (palette d'outils ?)
 - Ajuster sauvegarde source assembleur compacté (pb dimensions écran)
-- Routine affichage images en mode X
-- Routine Affichage images ASCII en overscan
 - Edition palette animation image par image
