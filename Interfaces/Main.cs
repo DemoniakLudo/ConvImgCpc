@@ -20,7 +20,7 @@ namespace ConvImgCpc {
 		public enum PackMethode { None = 0, Standard, ZX0, ZX1 };
 		private PackMethode pkMethode = PackMethode.Standard;
 		private Version version = Assembly.GetExecutingAssembly().GetName().Version;
-		public GestDSK dsk = new GestDSK();
+		public GestDSK dsk;
 		public enum OutputFormat { Binary = 0, Assembler, DSK, SNA };
 
 		public Main() {
@@ -28,6 +28,7 @@ namespace ConvImgCpc {
 			imgCpc = new ImageCpc(this, Convert);
 			anim = new Animation(this);
 			paramInterne = new ParamInterne(this);
+			dsk = new GestDSK(this);
 			paramInterne.InitValues();
 			ChangeLanguage("FR");
 			int i = 1;

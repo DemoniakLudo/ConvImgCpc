@@ -9,7 +9,7 @@ namespace ConvImgCpc {
 	public partial class EditTrameAscii : Form {
 		private BitmapCpc bmpCpc;
 		private int numTrame = 0;
-		private int penLeft = 1, penRight = 0;
+		private byte penLeft = 1, penRight = 0;
 		private DirectBitmap bmpTrame;
 		private ImageCpc imgCpc;
 		private ImageSource imgSrc;
@@ -92,10 +92,10 @@ namespace ConvImgCpc {
 				}
 				else
 					if (e.Button == MouseButtons.Right) {
-						BitmapCpc.trameM1[numTrame, x, y] = penRight;
-						DrawMatrice();
-						DrawTrame();
-					}
+					BitmapCpc.trameM1[numTrame, x, y] = penRight;
+					DrawMatrice();
+					DrawTrame();
+				}
 			}
 		}
 
@@ -151,8 +151,8 @@ namespace ConvImgCpc {
 			if (dlg.ShowDialog() == DialogResult.OK) {
 				FileStream fileParam = File.Open(dlg.FileName, FileMode.Open);
 				try {
-					int[] trame;
-					trame = (int[])new XmlSerializer(typeof(int[])).Deserialize(fileParam);
+					byte[] trame;
+					trame = (byte[])new XmlSerializer(typeof(byte[])).Deserialize(fileParam);
 					int pos = 0;
 					for (int i = 0; i < 16; i++)
 						for (int y = 0; y < 4; y++)
@@ -173,7 +173,7 @@ namespace ConvImgCpc {
 			SaveFileDialog dlg = new SaveFileDialog();
 			dlg.Filter = "Modèle trames (.xml)|*.xml";
 			if (dlg.ShowDialog() == DialogResult.OK) {
-				int[] trame = new int[256];
+				byte[] trame = new byte[256];
 				int pos = 0;
 				for (int i = 0; i < 16; i++)
 					for (int y = 0; y < 4; y++)
@@ -219,37 +219,22 @@ namespace ConvImgCpc {
 			DrawTrame();
 		}
 
-		private void button1_Click(object sender, EventArgs e) {
-			StreamWriter sw = File.CreateText("Trames.txt");
-			for (int i = 0; i < 16; i++) {
-				sw.Write("{");
-				for (int y = 0; y < 4; y++) {
-					sw.Write("	{");
-					for (int x = 0; x < 4; x++) {
-					
-						sw.Write(BitmapCpc.trameM1[i, y, x].ToString());
-						if (x < 3)
-							sw.Write(", ");
-						else
-							sw.Write("}");
-					}
-					sw.WriteLine(y < 3 ? "," : "},");
-				}
-				sw.WriteLine();
-			}
-			sw.Close();
+		private void bpForceCalc_Click(object sender, EventArgs e) {
+			Enabled = false;
+			main.Convert(true);
+			Enabled = true;
 		}
 	}
 
 	public class TrameM1 {
-		int[,] trame = new int[4, 4];
+		byte[,] trame = new byte [4, 4];
 		public int nbFound = 0;
 
-		public void SetPix(int x, int y, int p) {
+		public void SetPix(int x, int y, byte p) {
 			trame[x, y] = p;
 		}
 
-		public int GetPix(int x, int y) {
+		public byte GetPix(int x, int y) {
 			return trame[x, y];
 		}
 

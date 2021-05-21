@@ -644,7 +644,7 @@ namespace ConvImgCpc {
 										i = 4;
 								}
 							}
-							locTrame.SetPix(matx, maty, choix);
+							locTrame.SetPix(matx, maty, (byte)choix);
 						}
 					}
 					bool found = false;

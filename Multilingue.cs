@@ -267,6 +267,10 @@ namespace ConvImgCpc {
 			dic.Add("EditTrameAscii.bpSave.EN", "Save frames");
 			dic.Add("EditTrameAscii.bpAutoGene.FR", "Génération Automatique");
 			dic.Add("EditTrameAscii.bpAutoGene.EN", "Automatic Generation");
+			dic.Add("EditTrameAscii.bpCopyTrame.FR", "Récupérer trame interne");
+			dic.Add("EditTrameAscii.bpCopyTrame.EN", "Get internal frames");
+			dic.Add("EditTrameAscii.bpForceCalc.FR", "Lancer recalcul");
+			dic.Add("EditTrameAscii.bpForceCalc.EN", "Do reconvert");
 
 			// ParamInterne
 			dic.Add("ParamInterne.groupBox1.FR", "Constantes conversion luminance");
@@ -340,6 +344,11 @@ namespace ConvImgCpc {
 			dic.Add("SaveAnim.chkDataBrut.FR", "Export données \"brut\"");
 			dic.Add("SaveAnim.chkDataBrut.EN", "\"Raw\" data export");
 
+			// GestDSK
+			dic.Add("GestDSK.TxtInfo1.FR", "Impossible de lire le fichier DSK");
+			dic.Add("GestDSK.TxtInfo1.EN", "Unable to read the DSK file");
+			dic.Add("GestDSK.TxtInfo2.FR", "Impossible de sauver le fichier DSK");
+			dic.Add("GestDSK.TxtInfo2.EN", "Unable to save the DSK file");
 		}
 
 		public void SetLangue(string lg) {

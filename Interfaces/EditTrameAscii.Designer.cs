@@ -40,7 +40,7 @@
 			this.bpAutoGene = new System.Windows.Forms.Button();
 			this.bpCopyTrame = new System.Windows.Forms.Button();
 			this.numTabTrame = new System.Windows.Forms.NumericUpDown();
-			this.button1 = new System.Windows.Forms.Button();
+			this.bpForceCalc = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.pictEditMatrice)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictAllMatrice)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numTabTrame)).BeginInit();
@@ -183,9 +183,8 @@
 			// 
 			this.bpCopyTrame.Location = new System.Drawing.Point(486, 211);
 			this.bpCopyTrame.Name = "bpCopyTrame";
-			this.bpCopyTrame.Size = new System.Drawing.Size(93, 37);
+			this.bpCopyTrame.Size = new System.Drawing.Size(93, 41);
 			this.bpCopyTrame.TabIndex = 8;
-			this.bpCopyTrame.Text = "copta";
 			this.bpCopyTrame.UseVisualStyleBackColor = true;
 			this.bpCopyTrame.Click += new System.EventHandler(this.bpCopyTrame_Click);
 			// 
@@ -196,22 +195,21 @@
 			this.numTabTrame.Size = new System.Drawing.Size(35, 20);
 			this.numTabTrame.TabIndex = 9;
 			// 
-			// button1
+			// bpForceCalc
 			// 
-			this.button1.Location = new System.Drawing.Point(31, 291);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(75, 47);
-			this.button1.TabIndex = 10;
-			this.button1.Text = "button1";
-			this.button1.UseVisualStyleBackColor = true;
-			this.button1.Click += new System.EventHandler(this.button1_Click);
+			this.bpForceCalc.Location = new System.Drawing.Point(501, 356);
+			this.bpForceCalc.Name = "bpForceCalc";
+			this.bpForceCalc.Size = new System.Drawing.Size(119, 28);
+			this.bpForceCalc.TabIndex = 11;
+			this.bpForceCalc.UseVisualStyleBackColor = true;
+			this.bpForceCalc.Click += new System.EventHandler(this.bpForceCalc_Click);
 			// 
 			// EditTrameAscii
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(632, 453);
-			this.Controls.Add(this.button1);
+			this.Controls.Add(this.bpForceCalc);
 			this.Controls.Add(this.numTabTrame);
 			this.Controls.Add(this.bpCopyTrame);
 			this.Controls.Add(this.bpAutoGene);
@@ -229,7 +227,7 @@
 			this.Controls.Add(this.bpPrev);
 			this.Controls.Add(this.pictAllMatrice);
 			this.Controls.Add(this.pictEditMatrice);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "EditTrameAscii";
@@ -262,6 +260,6 @@
 		private System.Windows.Forms.Button bpAutoGene;
 		private System.Windows.Forms.Button bpCopyTrame;
 		private System.Windows.Forms.NumericUpDown numTabTrame;
-		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.Button bpForceCalc;
 	}
 }
