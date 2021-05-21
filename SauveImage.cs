@@ -181,6 +181,7 @@ namespace ConvImgCpc {
 			0x28, 0x02, 0x2E, 0x06, 0x19, 0x07, 0x1E, 0x0C,
 			0x30
 			};
+
 		static byte[] codeEgx0 = {
 			0x21, 0x00, 0x20,			//				LD		HL,#2000
 			0x2B,						//Wait0:		DEC		HL
@@ -442,6 +443,11 @@ namespace ConvImgCpc {
 
 		static byte[] ModePal = new byte[48];
 
+		static private void Poke16(byte[] tabMem, int offset, short value) {
+			tabMem[offset] = (byte)(value & 0xFF);
+			tabMem[offset + 1] = (byte)(value >> 8);
+		}
+
 		static public int SauveScr(string fileName, BitmapCpc bitmapCpc, Main main, Main.PackMethode compact, Main.OutputFormat format, string version = null, int[,] colMode5 = null) {
 			byte[] bufPack = new byte[0x8000];
 			bool overscan = (BitmapCpc.NbLig * BitmapCpc.NbCol > 0x3F00);
@@ -496,15 +502,12 @@ namespace ConvImgCpc {
 							Buffer.BlockCopy(codeEgx1, 0, imgCpc, 0x1640, codeEgx1.Length);
 							if (main.param.cpcPlus) {
 								imgCpc[0x669] = 0xCD;
-								imgCpc[0x66A] = 0x00;
-								imgCpc[0x66B] = 0x18;       // CALL	#1800
+								Poke16(imgCpc, 0x66A, 0x1800);  // CALL	#1800
 							}
-							else {
-								imgCpc[0x631] = 0x00;
-								imgCpc[0x632] = 0x18;       // CALL	#1800
-							}
-							imgCpc[0x1629] = 0x40;
-							imgCpc[0x162A] = 0x18;  //	CALL	#1840
+							else
+								Poke16(imgCpc, 0x631, 0x1800);  // CALL	#1800
+
+							Poke16(imgCpc, 0x1629, 0x1840); //	CALL	#1840
 						}
 					}
 				}
@@ -521,13 +524,10 @@ namespace ConvImgCpc {
 					switch (compact) {
 						case Main.PackMethode.Standard:
 							Buffer.BlockCopy(codeDepack, 0, bufPack, lg, codeDepack.Length);
-							bufPack[lg + 0x04] = (byte)(startAdr & 0xFF);
-							bufPack[lg + 0x05] = (byte)(startAdr >> 8);
+							Poke16(bufPack, lg + 0x04, startAdr);
 							startAdr = (short)(0xA657 - (lg + codeDepack.Length));
-							bufPack[lg + 0x01] = (byte)(startAdr & 0xFF);
-							bufPack[lg + 0x02] = (byte)(startAdr >> 8);
-							bufPack[lg + 0x20] = (byte)(exec & 0xFF);
-							bufPack[lg + 0x21] = (byte)(exec >> 8);
+							Poke16(bufPack, lg + 0x01, startAdr);
+							Poke16(bufPack, lg + 0x20, exec);
 							lg += codeDepack.Length;
 							exec = (short)(0xA657 - codeDepack.Length);
 							break;
@@ -535,21 +535,14 @@ namespace ConvImgCpc {
 						case Main.PackMethode.ZX0:
 							newExec = (short)(0xA657 - codeDZX0.Length);
 							Buffer.BlockCopy(codeDZX0, 0, bufPack, lg, codeDZX0.Length);
-							bufPack[lg + 0x04] = (byte)(startAdr & 0xFF);
-							bufPack[lg + 0x05] = (byte)(startAdr >> 8);
-							bufPack[lg + 0x0E] = (byte)((newExec + 0x3F) & 0x0FF);
-							bufPack[lg + 0x0F] = (byte)((newExec + 0x3F) >> 8);
-							bufPack[lg + 0x16] = (byte)((newExec + 0x3F) & 0x0FF);
-							bufPack[lg + 0x17] = (byte)((newExec + 0x3F) >> 8);
-							bufPack[lg + 0x23] = (byte)((newExec + 0x3F) & 0x0FF);
-							bufPack[lg + 0x24] = (byte)((newExec + 0x3F) >> 8);
-							bufPack[lg + 0x3A] = (byte)((newExec + 0x47) & 0x0FF);
-							bufPack[lg + 0x3B] = (byte)((newExec + 0x47) >> 8);
+							Poke16(bufPack, lg + 0x04, startAdr);
+							Poke16(bufPack, lg + 0x0E, (short)(newExec + 0x3F));
+							Poke16(bufPack, lg + 0x16, (short)(newExec + 0x3F));
+							Poke16(bufPack, lg + 0x23, (short)(newExec + 0x3F));
+							Poke16(bufPack, lg + 0x3A, (short)(newExec + 0x47));
 							startAdr = (short)(0xA657 - (lg + codeDZX0.Length));
-							bufPack[lg + 0x01] = (byte)(startAdr & 0xFF);
-							bufPack[lg + 0x02] = (byte)(startAdr >> 8);
-							bufPack[lg + 42] = (byte)(exec & 0xFF);
-							bufPack[lg + 43] = (byte)(exec >> 8);
+							Poke16(bufPack, lg + 0x01, startAdr);
+							Poke16(bufPack, lg + 0x2A, exec);
 							lg += codeDZX0.Length;
 							exec = newExec;
 							break;
@@ -557,19 +550,13 @@ namespace ConvImgCpc {
 						case Main.PackMethode.ZX1:
 							newExec = (short)(0xA657 - codeDZX1.Length);
 							Buffer.BlockCopy(codeDZX1, 0, bufPack, lg, codeDZX1.Length);
-							bufPack[lg + 0x04] = (byte)(startAdr & 0xFF);
-							bufPack[lg + 0x05] = (byte)(startAdr >> 8);
-							bufPack[lg + 0x0D] = (byte)((newExec + 0x3B) & 0x0FF);
-							bufPack[lg + 0x0E] = (byte)((newExec + 0x3B) >> 8);
-							bufPack[lg + 0x15] = (byte)((newExec + 0x3B) & 0x0FF);
-							bufPack[lg + 0x16] = (byte)((newExec + 0x3B) >> 8);
-							bufPack[lg + 0x36] = (byte)((newExec + 0x3B) & 0x0FF);
-							bufPack[lg + 0x37] = (byte)((newExec + 0x3B) >> 8);
+							Poke16(bufPack, lg + 0x04, startAdr);
+							Poke16(bufPack, lg + 0x0D, (short)(newExec + 0x3B));
+							Poke16(bufPack, lg + 0x15, (short)(newExec + 0x3B));
+							Poke16(bufPack, lg + 0x36, (short)(newExec + 0x3B));
 							startAdr = (short)(0xA657 - (lg + codeDZX1.Length));
-							bufPack[lg + 0x01] = (byte)(startAdr & 0xFF);
-							bufPack[lg + 0x02] = (byte)(startAdr >> 8);
-							bufPack[lg + 0x30] = (byte)(exec & 0xFF);
-							bufPack[lg + 0x31] = (byte)(exec >> 8);
+							Poke16(bufPack, lg + 0x01, startAdr);
+							Poke16(bufPack, lg + 0x30, exec);
 							lg += codeDZX1.Length;
 							exec = newExec;
 							break;

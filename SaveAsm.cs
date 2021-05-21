@@ -3,12 +3,18 @@ using System.IO;
 
 namespace ConvImgCpc {
 	public class SaveAsm {
+		#region Code assembleur général
 		static public StreamWriter OpenAsm(string fileName, string version) {
 			StreamWriter sw = File.CreateText(fileName);
 			sw.WriteLine("; Généré par ConvImgCpc" + version.Replace('\n', ' ') + " - le " + DateTime.Now.ToString("dd/MM/yyyy (HH mm ss)"));
 			sw.WriteLine("; Mode écran - " + BitmapCpc.modesVirtuels[BitmapCpc.modeVirtuel]);
 			sw.WriteLine("; Taille (nbColsxNbLignes) " + BitmapCpc.NbCol.ToString() + "x" + BitmapCpc.NbLig.ToString());
 			return sw;
+		}
+
+		static public void CloseAsm(StreamWriter sw) {
+			sw.Close();
+			sw.Dispose();
 		}
 
 		static public void GenereDatas(StreamWriter sw, byte[] tabByte, int length, int nbOctetsLigne) {
@@ -28,9 +34,25 @@ namespace ConvImgCpc {
 			sw.WriteLine("; Taille totale " + length.ToString() + " octets");
 		}
 
-		static public void GenereDZX0(StreamWriter sw, string jumpLabel = null) {
+		static private void GenereDepack(StreamWriter sw, Main.PackMethode pkMethode, string jumpLabel = null) {
+			switch (pkMethode) {
+				case Main.PackMethode.Standard:
+					GenereDStd(sw, jumpLabel);
+					break;
+
+				case Main.PackMethode.ZX0:
+					GenereDZX0(sw, jumpLabel);
+					break;
+
+				case Main.PackMethode.ZX1:
+					GenereDZX1(sw, jumpLabel);
+					break;
+			}
+		}
+
+		static private void GenereDZX0(StreamWriter sw, string jumpLabel = null) {
 			sw.WriteLine("; Decompactage");
-			sw.WriteLine("DepkLzw:");
+			sw.WriteLine("Depack:");
 			sw.WriteLine("	ld	bc,#ffff			; preserve default offset 1");
 			sw.WriteLine("	push	bc");
 			sw.WriteLine("	inc	bc");
@@ -86,9 +108,9 @@ namespace ConvImgCpc {
 			sw.WriteLine("	jr	dzx0s_elias_loop");
 		}
 
-		static public void GenereDZX1(StreamWriter sw, string jumpLabel = null) {
+		static private void GenereDZX1(StreamWriter sw, string jumpLabel = null) {
 			sw.WriteLine("; Decompactage");
-			sw.WriteLine("DepkLzw:");
+			sw.WriteLine("Depack:");
 			sw.WriteLine("	ld	bc,#ffff			; preserve default offset 1");
 			sw.WriteLine("	push	bc");
 			sw.WriteLine("	ld	a,#80");
@@ -142,9 +164,9 @@ namespace ConvImgCpc {
 			sw.WriteLine("	jr	dzx1s_elias_loop");
 		}
 
-		static public void GenereDepack(StreamWriter sw, string jumpLabel = null) {
+		static private void GenereDStd(StreamWriter sw, string jumpLabel = null) {
 			sw.WriteLine("; Decompactage");
-			sw.WriteLine("DepkLzw:");
+			sw.WriteLine("Depack:");
 			sw.WriteLine("	LD	A,(HL)			; DepackBits = InBuf[ InBytes++ ]");
 			sw.WriteLine("	INC	HL");
 			sw.WriteLine("	RRA				; Rotation rapide calcul seulement flag C");
@@ -158,7 +180,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("	RR	A			; Rotation avec calcul Flags C et Z");
 			sw.WriteLine("	LD	(BclLzw+1),A");
 			sw.WriteLine("	JR	NC,CopByteLzw");
-			sw.WriteLine("	JR	Z,DepkLzw" + Environment.NewLine);
+			sw.WriteLine("	JR	Z,Depack" + Environment.NewLine);
 			sw.WriteLine("TstCodeLzw:");
 			sw.WriteLine("	LD	A,(HL)			; A = InBuf[ InBytes ];");
 			sw.WriteLine("	AND	A");
@@ -291,16 +313,6 @@ namespace ConvImgCpc {
 			}
 		}
 
-		static public void GenereEntete(StreamWriter sw, int adr) {
-			if (BitmapCpc.NbLig * BitmapCpc.NbCol > 0x4000)
-				adr = 0x8000;
-
-			sw.WriteLine("	ORG	#" + adr.ToString("X4"));
-			sw.WriteLine("	RUN	$" + Environment.NewLine);
-			sw.WriteLine("	DI");
-			GenereFormatEcran(sw);
-		}
-
 		static public void GenereInitOld(StreamWriter sw) {
 			sw.WriteLine("	LD	HL,Palette");
 			sw.WriteLine("	LD	B,#7F");
@@ -335,6 +347,40 @@ namespace ConvImgCpc {
 			sw.WriteLine("	LDIR");
 			sw.WriteLine("	LD	BC,#7FA0");
 			sw.WriteLine("	OUT	(C),C");
+		}
+
+		static public void GenerePaletteOld(StreamWriter sw, ImageCpc img) {
+			sw.WriteLine("Palette:");
+			string line = "\tDB\t";
+			for (int i = 0; i < 17; i++)
+				line += "#" + ((int)BitmapCpc.CpcVGA[BitmapCpc.Palette[i < BitmapCpc.MaxPen() ? i : 0]]).ToString("X2") + ",";
+
+			line += "#" + ((BitmapCpc.modeVirtuel == 7 ? 1 : BitmapCpc.modeVirtuel & 3) | 0x8C).ToString("X2");
+			sw.WriteLine(line);
+		}
+
+		static public void GenerePalettePlus(StreamWriter sw, ImageCpc img) {
+			sw.WriteLine("UnlockAsic:");
+			sw.WriteLine("	DB	#FF,#00,#FF,#77,#B3,#51,#A8,#D4,#62,#39,#9C,#46,#2B,#15,#8A,#CD,#EE");
+			sw.WriteLine("Palette:");
+			string line = "\tDB\t#" + ((BitmapCpc.modeVirtuel == 7 ? 1 : BitmapCpc.modeVirtuel & 3) | 0x8C).ToString("X2");
+			for (int i = 0; i < 17; i++) {
+				int c = BitmapCpc.Palette[i < BitmapCpc.MaxPen() ? i : 0];
+				line += ",#" + ((byte)(((c >> 4) & 0x0F) | (c << 4))).ToString("X2") + ",#" + ((byte)(c >> 8)).ToString("X2");
+			}
+			sw.WriteLine(line);
+		}
+		#endregion
+
+		#region Code assembleur pour affichage animations
+		static public void GenereEntete(StreamWriter sw, int adr) {
+			if (BitmapCpc.NbLig * BitmapCpc.NbCol > 0x4000)
+				adr = 0x8000;
+
+			sw.WriteLine("	ORG	#" + adr.ToString("X4"));
+			sw.WriteLine("	RUN	$" + Environment.NewLine);
+			sw.WriteLine("	DI");
+			GenereFormatEcran(sw);
 		}
 
 		static public void GenereAffichage(StreamWriter sw, bool delai, bool reboucle, bool gest128K, bool imageMode, Main.PackMethode pkMethode) {
@@ -406,20 +452,7 @@ namespace ConvImgCpc {
 				sw.WriteLine("	OUT	(C),A");
 			}
 			sw.WriteLine("	LD	DE,Buffer");
-			switch (pkMethode) {
-				case Main.PackMethode.Standard:
-					GenereDepack(sw, "InitDraw");
-					break;
-
-				case Main.PackMethode.ZX0:
-					GenereDZX0(sw, "InitDraw");
-					break;
-
-				case Main.PackMethode.ZX1:
-					GenereDZX1(sw, "InitDraw");
-					break;
-			}
-
+			GenereDepack(sw, pkMethode, "InitDraw");
 			if (delai) {
 				sw.WriteLine("NewIrq:");
 				sw.WriteLine("	PUSH	AF");
@@ -535,32 +568,6 @@ namespace ConvImgCpc {
 
 			sw.WriteLine("	JP	Boucle" + Environment.NewLine);
 			sw.WriteLine("	Nolist");
-		}
-
-		static private void GenereTspace(StreamWriter sw, bool wait, bool withoutRet = false) {
-			sw.WriteLine("TstSpace:");
-			sw.WriteLine("	LD	BC,#F40E");
-			sw.WriteLine("	OUT	(C),C");
-			sw.WriteLine("	LD	BC,#F6C0");
-			sw.WriteLine("	OUT	(C),C");
-			sw.WriteLine("	XOR	A");
-			sw.WriteLine("	OUT	(C),A");
-			sw.WriteLine("	LD	BC,#F792");
-			sw.WriteLine("	OUT	(C),C");
-			sw.WriteLine("	LD	BC,#F645");
-			sw.WriteLine("	OUT	(C),C");
-			sw.WriteLine("	LD	B,#F4");
-			sw.WriteLine("	IN	A,(C)");
-			sw.WriteLine("	LD	BC,#F782");
-			sw.WriteLine("	OUT	(C),C");
-			sw.WriteLine("	LD	BC,#F600");
-			sw.WriteLine("	OUT	(C),C");
-			sw.WriteLine("	INC	A");
-			if (wait)
-				sw.WriteLine("	JR	Z,TstSpace");
-
-			if (!withoutRet)
-				sw.WriteLine("	RET");
 		}
 
 		static public void GenereDrawDirect(StreamWriter sw, bool gest128K) {
@@ -859,28 +866,6 @@ namespace ConvImgCpc {
 			}
 		}
 
-		static public void GenerePaletteOld(StreamWriter sw, ImageCpc img) {
-			sw.WriteLine("Palette:");
-			string line = "\tDB\t";
-			for (int i = 0; i < 17; i++)
-				line += "#" + ((int)BitmapCpc.CpcVGA[BitmapCpc.Palette[i < BitmapCpc.MaxPen() ? i : 0]]).ToString("X2") + ",";
-
-			line += "#" + ((BitmapCpc.modeVirtuel == 7 ? 1 : BitmapCpc.modeVirtuel & 3) | 0x8C).ToString("X2");
-			sw.WriteLine(line);
-		}
-
-		static public void GenerePalettePlus(StreamWriter sw, ImageCpc img) {
-			sw.WriteLine("UnlockAsic:");
-			sw.WriteLine("	DB	#FF,#00,#FF,#77,#B3,#51,#A8,#D4,#62,#39,#9C,#46,#2B,#15,#8A,#CD,#EE");
-			sw.WriteLine("Palette:");
-			string line = "\tDB\t#" + ((BitmapCpc.modeVirtuel == 7 ? 1 : BitmapCpc.modeVirtuel & 3) | 0x8C).ToString("X2");
-			for (int i = 0; i < 17; i++) {
-				int c = BitmapCpc.Palette[i < BitmapCpc.MaxPen() ? i : 0];
-				line += ",#" + ((byte)(((c >> 4) & 0x0F) | (c << 4))).ToString("X2") + ",#" + ((byte)(c >> 8)).ToString("X2");
-			}
-			sw.WriteLine(line);
-		}
-
 		static public void GenereFin(StreamWriter sw, int ltot, bool force8000) {
 			sw.WriteLine("; Taille totale animation = " + ltot.ToString() + " (#" + ltot.ToString("X4") + ")");
 			sw.WriteLine("_EndCode:");
@@ -925,6 +910,34 @@ namespace ConvImgCpc {
 			}
 			sw.WriteLine("\tDW\t#0");
 		}
+		#endregion
+
+		#region Code assembleur pour affichage images
+		static private void GenereTspace(StreamWriter sw, bool wait, bool withoutRet = false) {
+			sw.WriteLine("TstSpace:");
+			sw.WriteLine("	LD	BC,#F40E");
+			sw.WriteLine("	OUT	(C),C");
+			sw.WriteLine("	LD	BC,#F6C0");
+			sw.WriteLine("	OUT	(C),C");
+			sw.WriteLine("	XOR	A");
+			sw.WriteLine("	OUT	(C),A");
+			sw.WriteLine("	LD	BC,#F792");
+			sw.WriteLine("	OUT	(C),C");
+			sw.WriteLine("	LD	BC,#F645");
+			sw.WriteLine("	OUT	(C),C");
+			sw.WriteLine("	LD	B,#F4");
+			sw.WriteLine("	IN	A,(C)");
+			sw.WriteLine("	LD	BC,#F782");
+			sw.WriteLine("	OUT	(C),C");
+			sw.WriteLine("	LD	BC,#F600");
+			sw.WriteLine("	OUT	(C),C");
+			sw.WriteLine("	INC	A");
+			if (wait)
+				sw.WriteLine("	JR	Z,TstSpace");
+
+			if (!withoutRet)
+				sw.WriteLine("	RET");
+		}
 
 		// #### A revoir...
 		static public void GenereAfficheStd(StreamWriter sw, ImageCpc img, int mode, int[] palette, bool overscan, Main.PackMethode pkMethode) {
@@ -937,7 +950,7 @@ namespace ConvImgCpc {
 			GenereFormatEcran(sw);
 			sw.WriteLine("	LD	HL,ImageCmp");
 			sw.WriteLine("	LD	DE,#" + (overscan ? "0200" : "C000"));
-			sw.WriteLine("	CALL	DepkLzw");
+			sw.WriteLine("	CALL	Depack");
 			GenereTspace(sw, true, true);
 
 			sw.WriteLine("	LD	BC,#BC0C");
@@ -947,20 +960,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("	OUT	(C),A");
 			sw.WriteLine("	EI");
 			sw.WriteLine("	RET");
-
-			switch (pkMethode) {
-				case Main.PackMethode.Standard:
-					GenereDepack(sw);
-					break;
-
-				case Main.PackMethode.ZX0:
-					GenereDZX0(sw);
-					break;
-
-				case Main.PackMethode.ZX1:
-					GenereDZX1(sw);
-					break;
-			}
+			GenereDepack(sw, pkMethode);
 			if (BitmapCpc.cpcPlus)
 				GenerePalettePlus(sw, img);
 			else
@@ -970,7 +970,7 @@ namespace ConvImgCpc {
 		static public void GenereAfficheModeX(StreamWriter sw, int[,] colMode5, bool isOverscan, Main.PackMethode pkMethode) {
 			sw.WriteLine("	LD	HL,ImageCmp");
 			sw.WriteLine("	LD	DE,#" + (isOverscan ? "0200" : "C000"));
-			sw.WriteLine("	CALL	DepkLzw");
+			sw.WriteLine("	CALL	Depack");
 			sw.WriteLine("	DI");
 			sw.WriteLine("	LD	HL,#C9FB");
 			sw.WriteLine("	LD	(#38),HL");
@@ -1040,19 +1040,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("	JR	Boucle");
 
 			// Code du décompacteur avant les datas
-			switch (pkMethode) {
-				case Main.PackMethode.Standard:
-					GenereDepack(sw);
-					break;
-
-				case Main.PackMethode.ZX0:
-					GenereDZX0(sw);
-					break;
-
-				case Main.PackMethode.ZX1:
-					GenereDZX1(sw);
-					break;
-			}
+			GenereDepack(sw, pkMethode);
 			sw.WriteLine("Color01:");
 			sw.WriteLine("	DB	'" + BitmapCpc.CpcVGA[colMode5[0, 0]].ToString() + BitmapCpc.CpcVGA[colMode5[0, 1]].ToString() + "'");
 			sw.WriteLine("ColorModeX:");
@@ -1093,7 +1081,7 @@ namespace ConvImgCpc {
 			GenereFormatEcran(sw);
 			sw.WriteLine("	LD	HL,ImageCmp");
 			sw.WriteLine("	LD	DE,#" + (overscan ? "0200" : "C000"));
-			sw.WriteLine("	CALL	DepkLzw");
+			sw.WriteLine("	CALL	Depack");
 
 			sw.WriteLine("	DI");
 			sw.WriteLine("WaitVbl:");
@@ -1133,19 +1121,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("	RET");
 
 			GenereTspace(sw, false);
-			switch (pkMethode) {
-				case Main.PackMethode.Standard:
-					GenereDepack(sw);
-					break;
-
-				case Main.PackMethode.ZX0:
-					GenereDZX0(sw);
-					break;
-
-				case Main.PackMethode.ZX1:
-					GenereDZX1(sw);
-					break;
-			}
+			GenereDepack(sw, pkMethode);
 
 			string line = "\tDB\t";
 			for (int y = 0; y < 16; y++)
@@ -1154,10 +1130,6 @@ namespace ConvImgCpc {
 			sw.WriteLine("Palette:");
 			sw.WriteLine(line.Substring(0, line.Length - 1));
 		}
-
-		static public void CloseAsm(StreamWriter sw) {
-			sw.Close();
-			sw.Dispose();
-		}
+		#endregion
 	}
 }
