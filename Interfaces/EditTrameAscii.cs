@@ -39,32 +39,25 @@ namespace ConvImgCpc {
 		private void DrawMatrice() {
 			DirectBitmap bmp = new DirectBitmap(pictAllMatrice.Width, pictAllMatrice.Height);
 			pictAllMatrice.Image = bmp.Bitmap;
-			for (int i = 0; i < 16; i++) {
-				for (int y = 0; y < 4; y++) {
-					for (int x = 0; x < 4; x++) {
+			for (int i = 0; i < 16; i++)
+				for (int y = 0; y < 4; y++)
+					for (int x = 0; x < 4; x++)
 						for (int zx = 0; zx < (x == 3 ? 7 : 8); zx++)
-							for (int zy = 0; zy < 8; zy++) {
-								RvbColor c = bmpCpc.GetColorPal(BitmapCpc.trameM1[i, x, y]);
-								bmp.SetPixel(zx + ((x + (i << 2)) << 3), zy + (y << 3), c);
-							}
-					}
-				}
-			}
+							for (int zy = 0; zy < 8; zy++)
+								bmp.SetPixel(zx + ((x + (i << 2)) << 3), zy + (y << 3), bmpCpc.GetColorPal(BitmapCpc.trameM1[i, x, y]));
+
 			pictAllMatrice.Refresh();
 		}
 
 		private void DrawTrame() {
 			bpPrev.Visible = numTrame > 0;
 			bpSuiv.Visible = numTrame < 15;
-			for (int y = 0; y < 4; y++) {
-				for (int x = 0; x < 4; x++) {
+			for (int y = 0; y < 4; y++)
+				for (int x = 0; x < 4; x++)
 					for (int zx = 0; zx < 78; zx++)
-						for (int zy = 0; zy < 78; zy++) {
-							RvbColor c = bmpCpc.GetColorPal(BitmapCpc.trameM1[numTrame, x, y]);
-							bmpTrame.SetPixel(zx + (x * 80), zy + (y * 80), c);
-						}
-				}
-			}
+						for (int zy = 0; zy < 78; zy++)
+							bmpTrame.SetPixel(zx + (x * 80), zy + (y * 80), bmpCpc.GetColorPal(BitmapCpc.trameM1[numTrame, x, y]));
+
 			pictEditMatrice.Refresh();
 		}
 
@@ -151,8 +144,7 @@ namespace ConvImgCpc {
 			if (dlg.ShowDialog() == DialogResult.OK) {
 				FileStream fileParam = File.Open(dlg.FileName, FileMode.Open);
 				try {
-					byte[] trame;
-					trame = (byte[])new XmlSerializer(typeof(byte[])).Deserialize(fileParam);
+					byte[] trame = (byte[])new XmlSerializer(typeof(byte[])).Deserialize(fileParam);
 					int pos = 0;
 					for (int i = 0; i < 16; i++)
 						for (int y = 0; y < 4; y++)
@@ -227,7 +219,7 @@ namespace ConvImgCpc {
 	}
 
 	public class TrameM1 {
-		byte[,] trame = new byte [4, 4];
+		byte[,] trame = new byte[4, 4];
 		public int nbFound = 0;
 
 		public void SetPix(int x, int y, byte p) {
@@ -236,10 +228,6 @@ namespace ConvImgCpc {
 
 		public byte GetPix(int x, int y) {
 			return trame[x, y];
-		}
-
-		public int GetNbFound() {
-			return nbFound;
 		}
 
 		public bool IsSame(TrameM1 t, int deltaErr = 0) {
