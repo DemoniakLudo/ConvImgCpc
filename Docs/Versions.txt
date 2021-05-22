@@ -7,3 +7,7 @@ V1.0.7762 (02/04/2021) : Correction pb mode ImpDraw + correction pb initialisati
 V1.0.7771 (11/04/2021) : Ajout option "X2" dans la fenêtre de rendu du mode édition
 V1.0.7772 (12/04/2021) :	- Ajout option "X2" dans la fenêtre d'affichage et édition CPC
 							- Ajout outil "PickColor" dans l'éditeur
+V1.0.7812 (22/05/2021) :	- Ajout sauvegarde images directement sur fichier DSK (existant ou nouveau)
+							- Corrections de buggs
+							- Sauvegarde images en mode ASCII (ASC0, ASC1, ASC2 et ASC-UT) en source assembleur
+							- 8 trames ASC-UT prédéfinies et recopiables dans la trame en cours d'utilisation

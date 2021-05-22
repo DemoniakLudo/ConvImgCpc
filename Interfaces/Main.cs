@@ -36,6 +36,7 @@ namespace ConvImgCpc {
 				methode.Items.Insert(i++, dith.Key);
 
 			SetModes();
+			BitmapCpc.CopyTrame(0);		// Copier par défaut la trame 0	
 
 			nbCols.Value = BitmapCpc.TailleX >> 3;
 			nbLignes.Value = BitmapCpc.TailleY >> 1;
