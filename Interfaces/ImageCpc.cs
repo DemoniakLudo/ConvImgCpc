@@ -234,6 +234,46 @@ namespace ConvImgCpc {
 			main.SetInfo("Sauvegarde image compactée ok.");
 		}
 
+		public void SauveTotem(string fileName) {
+			int incy = BitmapCpc.TailleY / 12;
+			int incx = BitmapCpc.TailleX / 16;
+			int nbImages = main.GetMaxImages();
+			StreamWriter sw = File.CreateText(fileName);
+			for (int i = 0; i < nbImages; i++) {
+				main.SelectImage(i, true);
+				Convert(!bitmapCpc.isCalc, true);
+				sw.WriteLine("DataImage" + i.ToString("000"));
+				for (int y = 0; y < BitmapCpc.TailleY; y += incy) {
+					string s = "	DB	";
+					for (int x = 0; x < BitmapCpc.TailleX; x += incx) {
+						int div = 0, totr = 0, totv = 0, totb = 0;
+						for (int yy = 0; yy < incy; yy += 2) {
+							for (int xx = 0; xx < incx; xx += 2) {
+								RvbColor col = BmpLock.GetPixelColor(x + xx, y + yy);
+								totr += col.r;
+								totv += col.v;
+								totb += col.b;
+								div += 17;
+							}
+						}
+						totr = Math.Min(15, (totr / div) + (totv / (div * 2)));
+						totb = Math.Min(15, (totb / div) + (totv / (div * 8)));
+						s += "#" + totr.ToString("X1") + totb.ToString("X1");
+						if (x < BitmapCpc.TailleX - incx)
+							s += ",";
+					}
+					sw.WriteLine(s);
+				}
+			}
+			sw.WriteLine("");
+			sw.WriteLine("Anim");
+			for (int i = 0; i < nbImages; i++)
+				sw.WriteLine("	DW	DataImage" + i.ToString("000"));
+
+			sw.WriteLine("	DW	0");
+			sw.Close();
+		}
+
 		private byte[] MakeSprite() {
 			byte[] ret = new byte[(BitmapCpc.TailleX * BitmapCpc.TailleY) >> 4];
 			Array.Clear(ret, 0, ret.Length);
@@ -315,7 +355,7 @@ namespace ConvImgCpc {
 				maxSize = (BitmapCpc.TailleX * BitmapCpc.TailleY) >> 4;
 			else
 				if (maxSize >= 0x4000)
-				maxSize += 0x3800;
+					maxSize += 0x3800;
 
 			byte[] ret = new byte[maxSize];
 			Array.Clear(ret, 0, ret.Length);

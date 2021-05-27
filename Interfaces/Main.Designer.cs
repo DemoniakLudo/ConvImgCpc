@@ -120,6 +120,7 @@
 			this.bpCheckMaj = new System.Windows.Forms.Button();
 			this.label13 = new System.Windows.Forms.Label();
 			this.comboPackMethode = new System.Windows.Forms.ComboBox();
+			this.bpTotem = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -1214,12 +1215,23 @@
 			this.comboPackMethode.TabIndex = 66;
 			this.comboPackMethode.SelectedIndexChanged += new System.EventHandler(this.comboPackMethode_SelectedIndexChanged);
 			// 
+			// bpTotem
+			// 
+			this.bpTotem.Location = new System.Drawing.Point(648, 523);
+			this.bpTotem.Name = "bpTotem";
+			this.bpTotem.Size = new System.Drawing.Size(62, 23);
+			this.bpTotem.TabIndex = 71;
+			this.bpTotem.Text = "TOTEM";
+			this.bpTotem.UseVisualStyleBackColor = true;
+			this.bpTotem.Click += new System.EventHandler(this.bpTotem_Click);
+			// 
 			// Main
 			// 
 			this.AllowDrop = true;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(723, 571);
+			this.Controls.Add(this.bpTotem);
 			this.Controls.Add(this.comboPackMethode);
 			this.Controls.Add(this.label13);
 			this.Controls.Add(this.bpCheckMaj);
@@ -1374,6 +1386,7 @@
 		private System.Windows.Forms.Button bpCheckMaj;
 		private System.Windows.Forms.Label label13;
 		private System.Windows.Forms.ComboBox comboPackMethode;
+		private System.Windows.Forms.Button bpTotem;
 	}
 }
 

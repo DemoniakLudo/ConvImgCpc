@@ -174,7 +174,7 @@ namespace ConvImgCpc {
 
 				FileStream file = File.Open(dlg.FileName, FileMode.Create);
 				try {
-					new XmlSerializer(typeof(int[])).Serialize(file, trame);
+					new XmlSerializer(typeof(byte[])).Serialize(file, trame);
 				}
 				catch {
 					main.DisplayErreur("Impossible de sauver la trame.");
