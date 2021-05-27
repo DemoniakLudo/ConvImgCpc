@@ -480,13 +480,13 @@ namespace ConvImgCpc {
 							loc.SetHorLineDouble(xBitmap + 2, y, 2, GetPalCPC(Palette[p1]));
 							loc.SetHorLineDouble(xBitmap + 4, y, 2, GetPalCPC(Palette[p2]));
 							loc.SetHorLineDouble(xBitmap + 6, y, 2, GetPalCPC(Palette[p3]));
-							xBitmap += 8;
 							if (imgCpc != null) {
 								imgCpc.SetPixelCpc(xBitmap, y, p0, 2);
 								imgCpc.SetPixelCpc(xBitmap + 2, y, p1, 2);
 								imgCpc.SetPixelCpc(xBitmap + 4, y, p2, 2);
 								imgCpc.SetPixelCpc(xBitmap + 6, y, p3, 2);
 							}
+							xBitmap += 8;
 							break;
 
 						case 2:
