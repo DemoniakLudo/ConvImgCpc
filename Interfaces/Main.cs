@@ -267,6 +267,7 @@ namespace ConvImgCpc {
 							nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
 							BitmapCpc.TailleY = param.nbLignes << 1;
 							param.modeVirtuel = mode.SelectedIndex = BitmapCpc.modeVirtuel;
+							modePlus.Checked = BitmapCpc.cpcPlus;
 						}
 						SetInfo(multilingue.GetString("Main.prg.TxtInfo3"));
 					}
