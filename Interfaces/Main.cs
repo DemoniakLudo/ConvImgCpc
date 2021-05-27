@@ -22,6 +22,7 @@ namespace ConvImgCpc {
 		private Version version = Assembly.GetExecutingAssembly().GetName().Version;
 		public GestDSK dsk;
 		public enum OutputFormat { Binary = 0, Assembler, DSK, SNA };
+		private bool doNotReset = false;
 
 		public Main() {
 			InitializeComponent();
@@ -226,14 +227,14 @@ namespace ConvImgCpc {
 							Array.Copy(tabBytes, posData, tempData, 0, tempData.Length);
 							posData += tempData.Length;
 							BitmapCpc bmp = new BitmapCpc(tempData, width << 3, height << 1);
-							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, true), i);
+							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, true, imgCpc), i);
 						}
 					}
 					else
 						if (isScrImp) {
 						BitmapCpc bmp = new BitmapCpc(tabBytes, 0x110);
 						if (singlePicture)
-							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode), imgCpc.selImage);
+							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc), imgCpc.selImage);
 						else {
 							BitmapCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = tabBytes[0x94] - 0x0E;
 							BitmapCpc.TailleX = 768;
@@ -251,15 +252,16 @@ namespace ConvImgCpc {
 								for (int i = 0; i < 16; i++)
 									BitmapCpc.Palette[i] = BitmapCpc.CpcVGA.IndexOf((char)tabBytes[0x7E10 + i]);
 							}
-							imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode));
+							imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc));
 						}
 					}
 					else {
 						BitmapCpc bmp = new BitmapCpc(tabBytes, 0x80);
 						if (singlePicture)
-							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode), imgCpc.selImage);
+							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc), imgCpc.selImage);
 						else {
-							imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode));
+							doNotReset = true;
+							imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc));
 							nbCols.Value = param.nbCols = BitmapCpc.NbCol;
 							BitmapCpc.TailleX = param.nbCols << 3;
 							nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
@@ -292,12 +294,19 @@ namespace ConvImgCpc {
 					tbxPosX.Text = "0";
 					tbxPosY.Text = "0";
 				}
-				if (!singlePicture && !isImp)
-					imgCpc.InitBitmapCpc(nbImg, imgSrc.tpsFrame);
 
-				SelectImage(0);
-				imgCpc.Reset(true);
+				if (!doNotReset) {
+					if (!singlePicture && !isImp)
+						imgCpc.InitBitmapCpc(nbImg, imgSrc.tpsFrame);
+
+					SelectImage(0);
+					imgCpc.Reset(true);
+				}
+				else
+					imgCpc.Reset(false);
+
 				Convert(false);
+				doNotReset = false;
 			}
 			catch {
 				DisplayErreur(multilingue.GetString("Main.prg.TxtInfo6"));
@@ -559,24 +568,30 @@ namespace ConvImgCpc {
 
 		private void nbCols_ValueChanged(object sender, EventArgs e) {
 			param.nbCols = (int)nbCols.Value;
-			BitmapCpc.TailleX = param.nbCols << 3;
-			imgCpc.Reset(true);
-			Convert(false);
+			if (!doNotReset) {
+				BitmapCpc.TailleX = param.nbCols << 3;
+				imgCpc.Reset(true);
+				Convert(false);
+			}
 		}
 
 		private void nbLignes_ValueChanged(object sender, EventArgs e) {
 			param.nbLignes = (int)nbLignes.Value;
-			BitmapCpc.TailleY = param.nbLignes << 1;
-			imgCpc.Reset(true);
-			Convert(false);
+			if (!doNotReset) {
+				BitmapCpc.TailleY = param.nbLignes << 1;
+				imgCpc.Reset(true);
+				Convert(false);
+			}
 		}
 
 		private void mode_SelectedIndexChanged(object sender, EventArgs e) {
 			BitmapCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex;
-			imgCpc.Reset(true);
 			trackModeX.Visible = mode.SelectedIndex == 5 || mode.SelectedIndex == 6;
 			bpEditTrame.Visible = mode.SelectedIndex == 7;
-			Convert(false);
+			if (!doNotReset) {
+				imgCpc.Reset(true);
+				Convert(false);
+			}
 		}
 
 		private void InterfaceChange(object sender, EventArgs e) {
@@ -693,7 +708,6 @@ namespace ConvImgCpc {
 			dg.ShowDialog();
 			Convert(false);
 		}
-
 
 		private void bpEditSprites_Click(object sender, EventArgs e) {
 			EditSprites dg = new EditSprites(this);

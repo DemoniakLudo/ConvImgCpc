@@ -62,7 +62,7 @@ namespace ConvImgCpc {
 
 		static public byte[,,] trameM1 = new byte[16, 4, 4];
 
-		static public byte[, , ,] spritesHard = new byte[4, 16, 16, 16];
+		static public byte[,,,] spritesHard = new byte[4, 16, 16, 16];
 		static public int[] paletteSprite = new int[16];
 
 		static public int modeVirtuel = 1;
@@ -412,7 +412,7 @@ namespace ConvImgCpc {
 				CreeImgAscii(bmpLock);
 		}
 
-		public Bitmap CreateImageFromCpc(int length, Param par, Main.PackMethode pkMethode, bool isSprite = false) {
+		public Bitmap CreateImageFromCpc(int length, Param par, Main.PackMethode pkMethode, bool isSprite = false, ImageCpc imgCpc = null) {
 			if (!isSprite) {
 				if (bmpCpc[0] == 'M' && bmpCpc[1] == 'J' && bmpCpc[2] == 'H')
 					DepactOCP();
@@ -455,32 +455,55 @@ namespace ConvImgCpc {
 				int mode = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 				int adrCPC = isSprite ? nbCol * (y >> 1) : GetAdrCpc(y);
 				int xBitmap = 0;
+				int p0, p1, p2, p3;
 				for (int x = 0; x < nbCol; x++) {
 					byte octet = bmpCpc[adrCPC + x];
 					switch (mode) {
 						case 0:
-							loc.SetHorLineDouble(xBitmap, y, 4, GetPalCPC(Palette[(octet >> 7) + ((octet & 0x20) >> 3) + ((octet & 0x08) >> 2) + ((octet & 0x02) << 2)]));
-							loc.SetHorLineDouble(xBitmap + 4, y, 4, GetPalCPC(Palette[((octet & 0x40) >> 6) + ((octet & 0x10) >> 2) + ((octet & 0x04) >> 1) + ((octet & 0x01) << 3)]));
+							p0 = (octet >> 7) + ((octet & 0x20) >> 3) + ((octet & 0x08) >> 2) + ((octet & 0x02) << 2);
+							p1 = ((octet & 0x40) >> 6) + ((octet & 0x10) >> 2) + ((octet & 0x04) >> 1) + ((octet & 0x01) << 3);
+							loc.SetHorLineDouble(xBitmap, y, 4, GetPalCPC(Palette[p0]));
+							loc.SetHorLineDouble(xBitmap + 4, y, 4, GetPalCPC(Palette[p1]));
+							if (imgCpc != null) {
+								imgCpc.SetPixelCpc(xBitmap, y, p0, 4);
+								imgCpc.SetPixelCpc(xBitmap+4, y, p1, 4);
+							}
 							xBitmap += 8;
 							break;
 
 						case 1:
-							loc.SetHorLineDouble(xBitmap, y, 2, GetPalCPC(Palette[((octet >> 7) & 1) + ((octet >> 2) & 2)]));
-							loc.SetHorLineDouble(xBitmap + 2, y, 2, GetPalCPC(Palette[((octet >> 6) & 1) + ((octet >> 1) & 2)]));
-							loc.SetHorLineDouble(xBitmap + 4, y, 2, GetPalCPC(Palette[((octet >> 5) & 1) + ((octet >> 0) & 2)]));
-							loc.SetHorLineDouble(xBitmap + 6, y, 2, GetPalCPC(Palette[((octet >> 4) & 1) + ((octet << 1) & 2)]));
+							p0 = ((octet >> 7) & 1) + ((octet >> 2) & 2);
+							p1 = ((octet >> 6) & 1) + ((octet >> 1) & 2);
+							p2 = ((octet >> 5) & 1) + ((octet >> 0) & 2);
+							p3 = ((octet >> 4) & 1) + ((octet << 1) & 2);
+							loc.SetHorLineDouble(xBitmap, y, 2, GetPalCPC(Palette[p0]));
+							loc.SetHorLineDouble(xBitmap + 2, y, 2, GetPalCPC(Palette[p1]));
+							loc.SetHorLineDouble(xBitmap + 4, y, 2, GetPalCPC(Palette[p2]));
+							loc.SetHorLineDouble(xBitmap + 6, y, 2, GetPalCPC(Palette[p3]));
 							xBitmap += 8;
+							if (imgCpc != null) {
+								imgCpc.SetPixelCpc(xBitmap, y, p0, 2);
+								imgCpc.SetPixelCpc(xBitmap + 2, y, p1, 2);
+								imgCpc.SetPixelCpc(xBitmap + 4, y, p2, 2);
+								imgCpc.SetPixelCpc(xBitmap + 6, y, p3, 2);
+							}
 							break;
 
 						case 2:
-							for (int i = 8; i-- > 0; ) {
-								loc.SetPixel(xBitmap, y, GetPalCPC(Palette[(octet >> i) & 1]));
-								loc.SetPixel(xBitmap++, y + 1, GetPalCPC(Palette[(octet >> i) & 1]));
+							for (int i = 8; i-- > 0;) {
+								p0 = (octet >> i) & 1;
+								loc.SetPixel(xBitmap, y, GetPalCPC(Palette[p0]));
+								loc.SetPixel(xBitmap++, y + 1, GetPalCPC(Palette[p0]));
+								if (imgCpc != null)
+									imgCpc.SetPixelCpc(xBitmap, y, p0, 1);
 							}
-
 							break;
 					}
 				}
+			}
+			if (imgCpc != null) {
+				imgCpc.bitmapCpc.isCalc = true;
+				imgCpc.Render();
 			}
 			return (loc.Bitmap);
 		}
