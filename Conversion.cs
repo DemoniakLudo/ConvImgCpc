@@ -591,7 +591,7 @@ namespace ConvImgCpc {
 		}
 
 		static public int Convert(DirectBitmap source, ImageCpc dest, Param prm, bool noInfo = false) {
-			System.Array.Clear(coulTrouvee, 0, coulTrouvee.GetLength(0) * coulTrouvee.GetLength(1));
+			Array.Clear(coulTrouvee, 0, coulTrouvee.GetLength(0) * coulTrouvee.GetLength(1));
 			double c = prm.pctContrast / 100.0;
 			for (int i = 0; i < 256; i++)
 				tblContrast[i] = MinMaxByte(((((i / 255.0) - 0.5) * c) + 0.5) * 255.0);

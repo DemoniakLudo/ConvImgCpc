@@ -73,7 +73,7 @@ namespace ConvImgCpc {
 				int endImg = force ? maxImage : selImage;
 				for (int i = startImg; i < endImg; i++) {
 					selImage = i;
-					int col = System.Drawing.SystemColors.Control.ToArgb();
+					int col = SystemColors.Control.ToArgb();
 					for (int y = 0; y < tabBmpLock[i].Height; y += 2) {
 						int startX = y < BitmapCpc.TailleY ? BitmapCpc.TailleX : 0;
 						tabBmpLock[i].SetHorLineDouble(0, y, startX, GetPalCPC(BitmapCpc.Palette[0]));
