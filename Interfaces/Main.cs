@@ -236,6 +236,7 @@ namespace ConvImgCpc {
 							if (singlePicture)
 							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc), imgCpc.selImage);
 							else {
+								doNotReset = true;
 								BitmapCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = tabBytes[0x94] - 0x0E;
 								BitmapCpc.TailleX = 768;
 								nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
