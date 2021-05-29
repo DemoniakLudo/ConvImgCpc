@@ -23,6 +23,8 @@ namespace ConvImgCpc {
 		public ConvertDelegate Convert;
 		private int[] tabOctetMode = { 0x00, 0x80, 0x08, 0x88, 0x20, 0xA0, 0x28, 0xA8, 0x02, 0x82, 0x0A, 0x8A, 0x22, 0xA2, 0x2A, 0xAA };
 		public int[,] colMode5 = new int[272, 16];
+		private int startGrille, tailleGrille;
+		private bool drawGrille = false;
 
 		public ImageCpc(Main m, ConvertDelegate fctConvert) {
 			InitializeComponent();
@@ -134,6 +136,14 @@ namespace ConvImgCpc {
 			else {
 				pictureBox.Image = imgCopy != null ? imgCopy.Bitmap : BmpLock.Bitmap;
 				tmpLock = null;
+			}
+			if (drawGrille) {
+				int x = startGrille * 16;
+				Graphics g = Graphics.FromImage(pictureBox.Image);
+				while (x < BitmapCpc.TailleX) {
+					XorDrawing.DrawXorLine(g, (Bitmap)pictureBox.Image, x, 0, x, BitmapCpc.TailleY, false);
+					x += tailleGrille * 16;
+				}
 			}
 			pictureBox.Refresh();
 			if (fenetreRendu != null) {
@@ -315,7 +325,7 @@ namespace ConvImgCpc {
 				maxSize = (BitmapCpc.TailleX * BitmapCpc.TailleY) >> 4;
 			else
 				if (maxSize >= 0x4000)
-				maxSize += 0x3800;
+					maxSize += 0x3800;
 
 			byte[] ret = new byte[maxSize];
 			Array.Clear(ret, 0, ret.Length);
@@ -475,7 +485,7 @@ namespace ConvImgCpc {
 			}
 			else {
 				this.Width = 973;
-				this.Height = 668;
+				this.Height = 715;
 				pictureBox.Width = 768;
 				pictureBox.Height = 544;
 				vScrollBar.Left = 939;
@@ -486,6 +496,27 @@ namespace ConvImgCpc {
 
 		private void ImageCpc_FormClosing(object sender, FormClosingEventArgs e) {
 			e.Cancel = true;
+		}
+
+		private void chkGrille_CheckedChanged(object sender, EventArgs e) {
+			if (chkGrille.Checked) {
+				if (int.TryParse(txbStartNop.Text, out startGrille) && int.TryParse(txbTailleNop.Text, out tailleGrille)) {
+					if (tailleGrille > 0 && tailleGrille <= 16 && startGrille + tailleGrille < 64) {
+						txbStartNop.Enabled = txbTailleNop.Enabled = false;
+						drawGrille = true;
+						Render(true);
+					}
+					else
+						chkGrille.Checked = false;
+				}
+				else
+					chkGrille.Checked = false;
+			}
+			else {
+				Render(true);
+				drawGrille = false;
+				txbStartNop.Enabled = txbTailleNop.Enabled = true;
+			}
 		}
 	}
 }

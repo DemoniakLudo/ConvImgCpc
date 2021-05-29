@@ -179,6 +179,8 @@ namespace ConvImgCpc {
 			dic.Add("ImageCpc.modeCaptureSprites.EN", "Sprites capture");
 			dic.Add("ImageCpc.bpCopyPal.FR", "Copier palette dans presse-papier");
 			dic.Add("ImageCpc.bpCopyPal.EN", "Copy palette to clipboard");
+			dic.Add("ImageCpc.chkGrille.FR", "Afficher grille verticale");
+			dic.Add("ImageCpc.chkGrille.EN", "Display vertical grid");
 
 			// Animation
 			dic.Add("Animation.bpSup1.FR", "Supprimer");
