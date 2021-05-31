@@ -279,7 +279,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("	JR	CopyBytes2" + Environment.NewLine);
 		}
 
-		static public void GenereFormatEcran(StreamWriter sw) {
+		static private void GenereFormatEcran(StreamWriter sw) {
 			if (BitmapCpc.NbCol != 80) {
 				sw.WriteLine("	LD	HL,#" + ((BitmapCpc.NbCol + 1) >> 1).ToString("X2") + (26 + (BitmapCpc.NbCol >> 2)).ToString("X2"));
 				sw.WriteLine("	LD	BC,#BC01");
