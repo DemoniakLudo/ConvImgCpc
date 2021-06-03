@@ -47,6 +47,7 @@
 			this.bpSaveAll = new System.Windows.Forms.Button();
 			this.bpReadPal = new System.Windows.Forms.Button();
 			this.bpSavePal = new System.Windows.Forms.Button();
+			this.chkWithPal = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.pictEditSprite)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictAllSprites)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictTest)).BeginInit();
@@ -308,6 +309,16 @@
 			this.bpSavePal.UseVisualStyleBackColor = true;
 			this.bpSavePal.Click += new System.EventHandler(this.bpSavePal_Click);
 			// 
+			// chkWithPal
+			// 
+			this.chkWithPal.AutoSize = true;
+			this.chkWithPal.Location = new System.Drawing.Point(3, 575);
+			this.chkWithPal.Name = "chkWithPal";
+			this.chkWithPal.Size = new System.Drawing.Size(81, 17);
+			this.chkWithPal.TabIndex = 15;
+			this.chkWithPal.Text = "chkWithPal";
+			this.chkWithPal.UseVisualStyleBackColor = true;
+			// 
 			// EditSprites
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -337,6 +348,7 @@
 			this.Controls.Add(this.bpPrev);
 			this.Controls.Add(this.pictAllSprites);
 			this.Controls.Add(this.pictEditSprite);
+			this.Controls.Add(this.chkWithPal);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
@@ -379,5 +391,6 @@
 		private System.Windows.Forms.Button bpSaveAll;
 		private System.Windows.Forms.Button bpReadPal;
 		private System.Windows.Forms.Button bpSavePal;
+		private System.Windows.Forms.CheckBox chkWithPal;
 	}
 }

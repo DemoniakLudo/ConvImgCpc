@@ -253,6 +253,8 @@ namespace ConvImgCpc {
 			dic.Add("EditSprites.bpReadPal.EN", "Read palette");
 			dic.Add("EditSprites.bpSavePal.FR", "Sauver palette");
 			dic.Add("EditSprites.bpSavePal.EN", "Save palette");
+			dic.Add("EditSprites.chkWithPal.FR", "Avec palette");
+			dic.Add("EditSprites.chkWithPal.EN", "With palette");
 
 			// EditTrameAscii
 			dic.Add("EditTrameAscii.bpPrev.FR", "Précédente");
