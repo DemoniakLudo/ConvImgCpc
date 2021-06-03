@@ -35,7 +35,7 @@ namespace ConvImgCpc {
 			}
 
 			if (!paletteSpriteOk)
-				for ( int c = 0; c < 16; c++)
+				for (int c = 0; c < 16; c++)
 					BitmapCpc.paletteSprite[c] = BitmapCpc.Palette[c];
 
 			bmpSprite = new DirectBitmap(pictEditSprite.Width, pictEditSprite.Height);
@@ -181,9 +181,9 @@ namespace ConvImgCpc {
 				}
 				else
 					if (e.Button == MouseButtons.Right) {
-					BitmapCpc.spritesHard[numBank, numSprite, x, y] = 0;
-					SetPixelSprite(x, y);
-				}
+						BitmapCpc.spritesHard[numBank, numSprite, x, y] = 0;
+						SetPixelSprite(x, y);
+					}
 			}
 		}
 
@@ -252,6 +252,21 @@ namespace ConvImgCpc {
 			sw.WriteLine(s);
 		}
 
+		private int GetLastSprite(bool allBank = false) {
+			int startBank = allBank ? 0 : numBank;
+			int endBank = allBank ? 3 : numBank;
+			for (int bank = endBank; bank >= startBank; bank--)
+				for (int i = 15; i >= 0; i--) {
+					int numSprite = i + 16 * bank;
+					for (int y = 0; y < 16; y++) {
+						for (int x = 0; x < 16; x++)
+							if (BitmapCpc.spritesHard[bank, i, x, y] != 0)
+								return numSprite;
+					}
+				}
+			return 0;
+		}
+
 		private void SauveSprites(bool allBank = false) {
 			SaveFileDialog dlg = new SaveFileDialog();
 			dlg.Filter = "Modèle Sprites (.spr)|*.spr|"
@@ -260,6 +275,7 @@ namespace ConvImgCpc {
 			if (dlg.ShowDialog() == DialogResult.OK) {
 				Enabled = false;
 				try {
+					int maxSprite = GetLastSprite(allBank);
 					short size = (short)(allBank ? 0x4000 : 0x1000);
 					byte[] buffer = new byte[size];
 					int pos = 0;
@@ -286,7 +302,7 @@ namespace ConvImgCpc {
 						case 2:
 							// Sauvegarde assembleur
 							StreamWriter sw = SaveAsm.OpenAsm(dlg.FileName, "");
-							SaveAsm.GenereDatas(sw, buffer, size, 16, 16, "SpriteHard");
+							SaveAsm.GenereDatas(sw, buffer, (maxSprite + 1) * 256, 16, 16, "SpriteHard");
 							SavePaletteKitAsm(sw);
 							SaveAsm.CloseAsm(sw);
 							break;
@@ -303,8 +319,28 @@ namespace ConvImgCpc {
 									int l = new PackModule().Pack(spr, 256, sprPk, 0, pkMethod);
 									sw2.WriteLine("SpriteHardPk" + numSpr.ToString("00"));
 									SaveAsm.GenereDatas(sw2, sprPk, l, 16);
-									numSpr++;
+									if (numSpr++ >= maxSprite) {
+										bank = endBank;
+										i = 16;
+									}
 								}
+							// Ajout table des pointeurs
+							sw2.WriteLine("\r\nSpriteHardPtr");
+							string s = "	DW	";
+							int nbWord = 0;
+							for (int i = 0; i < numSpr; i++) {
+								s += "SpriteHardPk" + i.ToString("00");
+								if (++nbWord > 3) {
+									nbWord = 0;
+									sw2.WriteLine(s);
+									s = "	DW	";
+								}
+								else
+									s += ",";
+							}
+							if (s != "	DW	")
+								sw2.WriteLine(s.Substring(0, s.Length - 1));
+
 							SavePaletteKitAsm(sw2);
 							SaveAsm.CloseAsm(sw2);
 							break;
