@@ -32,10 +32,15 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.tailleCrayon = new System.Windows.Forms.ComboBox();
 			this.grpEdition = new System.Windows.Forms.GroupBox();
+			this.label4 = new System.Windows.Forms.Label();
 			this.rbPickColor = new System.Windows.Forms.RadioButton();
+			this.label1 = new System.Windows.Forms.Label();
 			this.bpVerFlip = new System.Windows.Forms.Button();
+			this.txbTailleNop = new System.Windows.Forms.TextBox();
 			this.bpHorFlip = new System.Windows.Forms.Button();
+			this.txbStartNop = new System.Windows.Forms.TextBox();
 			this.lblInfoPos = new System.Windows.Forms.Label();
+			this.chkGrille = new System.Windows.Forms.CheckBox();
 			this.rbCopy = new System.Windows.Forms.RadioButton();
 			this.undrawColor = new System.Windows.Forms.Label();
 			this.lblZoom = new System.Windows.Forms.Label();
@@ -68,7 +73,7 @@
 			// modeEdition
 			// 
 			this.modeEdition.AutoSize = true;
-			this.modeEdition.Location = new System.Drawing.Point(19, 125);
+			this.modeEdition.Location = new System.Drawing.Point(19, 115);
 			this.modeEdition.Name = "modeEdition";
 			this.modeEdition.Size = new System.Drawing.Size(15, 14);
 			this.modeEdition.TabIndex = 2;
@@ -159,12 +164,21 @@
 			this.grpEdition.Controls.Add(this.label3);
 			this.grpEdition.Controls.Add(this.label2);
 			this.grpEdition.Controls.Add(this.tailleCrayon);
-			this.grpEdition.Location = new System.Drawing.Point(13, 145);
+			this.grpEdition.Location = new System.Drawing.Point(13, 133);
 			this.grpEdition.Name = "grpEdition";
-			this.grpEdition.Size = new System.Drawing.Size(149, 479);
+			this.grpEdition.Size = new System.Drawing.Size(149, 467);
 			this.grpEdition.TabIndex = 9;
 			this.grpEdition.TabStop = false;
 			this.grpEdition.Visible = false;
+			// 
+			// label4
+			// 
+			this.label4.AutoSize = true;
+			this.label4.Location = new System.Drawing.Point(30, 652);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(50, 13);
+			this.label4.TabIndex = 17;
+			this.label4.Text = "nb NOPs";
 			// 
 			// rbPickColor
 			// 
@@ -177,9 +191,18 @@
 			this.rbPickColor.UseVisualStyleBackColor = true;
 			this.rbPickColor.CheckedChanged += new System.EventHandler(this.rbPickColor_CheckedChanged);
 			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(30, 628);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(53, 13);
+			this.label1.TabIndex = 16;
+			this.label1.Text = "start NOP";
+			// 
 			// bpVerFlip
 			// 
-			this.bpVerFlip.Location = new System.Drawing.Point(83, 402);
+			this.bpVerFlip.Location = new System.Drawing.Point(83, 400);
 			this.bpVerFlip.Name = "bpVerFlip";
 			this.bpVerFlip.Size = new System.Drawing.Size(60, 23);
 			this.bpVerFlip.TabIndex = 19;
@@ -187,15 +210,31 @@
 			this.bpVerFlip.UseVisualStyleBackColor = true;
 			this.bpVerFlip.Click += new System.EventHandler(this.bpVerFlip_Click);
 			// 
+			// txbTailleNop
+			// 
+			this.txbTailleNop.Location = new System.Drawing.Point(90, 649);
+			this.txbTailleNop.Name = "txbTailleNop";
+			this.txbTailleNop.Size = new System.Drawing.Size(34, 20);
+			this.txbTailleNop.TabIndex = 15;
+			this.txbTailleNop.Text = "1";
+			// 
 			// bpHorFlip
 			// 
-			this.bpHorFlip.Location = new System.Drawing.Point(6, 402);
+			this.bpHorFlip.Location = new System.Drawing.Point(6, 398);
 			this.bpHorFlip.Name = "bpHorFlip";
 			this.bpHorFlip.Size = new System.Drawing.Size(60, 23);
 			this.bpHorFlip.TabIndex = 18;
 			this.bpHorFlip.Text = "Hor. Flip";
 			this.bpHorFlip.UseVisualStyleBackColor = true;
 			this.bpHorFlip.Click += new System.EventHandler(this.bpHorFlip_Click);
+			// 
+			// txbStartNop
+			// 
+			this.txbStartNop.Location = new System.Drawing.Point(89, 624);
+			this.txbStartNop.Name = "txbStartNop";
+			this.txbStartNop.Size = new System.Drawing.Size(34, 20);
+			this.txbStartNop.TabIndex = 15;
+			this.txbStartNop.Text = "0";
 			// 
 			// lblInfoPos
 			// 
@@ -205,6 +244,17 @@
 			this.lblInfoPos.Size = new System.Drawing.Size(43, 13);
 			this.lblInfoPos.TabIndex = 17;
 			this.lblInfoPos.Text = "position";
+			// 
+			// chkGrille
+			// 
+			this.chkGrille.AutoSize = true;
+			this.chkGrille.Location = new System.Drawing.Point(27, 608);
+			this.chkGrille.Name = "chkGrille";
+			this.chkGrille.Size = new System.Drawing.Size(129, 17);
+			this.chkGrille.TabIndex = 14;
+			this.chkGrille.Text = "Afficher grille verticale";
+			this.chkGrille.UseVisualStyleBackColor = true;
+			this.chkGrille.CheckedChanged += new System.EventHandler(this.chkGrille_CheckedChanged);
 			// 
 			// rbCopy
 			// 
@@ -219,7 +269,7 @@
 			// undrawColor
 			// 
 			this.undrawColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.undrawColor.Location = new System.Drawing.Point(6, 325);
+			this.undrawColor.Location = new System.Drawing.Point(6, 323);
 			this.undrawColor.Name = "undrawColor";
 			this.undrawColor.Size = new System.Drawing.Size(70, 70);
 			this.undrawColor.TabIndex = 15;
@@ -258,7 +308,7 @@
 			// chkDoRedo
 			// 
 			this.chkDoRedo.AutoSize = true;
-			this.chkDoRedo.Location = new System.Drawing.Point(19, 460);
+			this.chkDoRedo.Location = new System.Drawing.Point(14, 452);
 			this.chkDoRedo.Name = "chkDoRedo";
 			this.chkDoRedo.Size = new System.Drawing.Size(15, 14);
 			this.chkDoRedo.TabIndex = 11;
@@ -267,7 +317,7 @@
 			// bpRedo
 			// 
 			this.bpRedo.Enabled = false;
-			this.bpRedo.Location = new System.Drawing.Point(83, 431);
+			this.bpRedo.Location = new System.Drawing.Point(83, 425);
 			this.bpRedo.Name = "bpRedo";
 			this.bpRedo.Size = new System.Drawing.Size(60, 23);
 			this.bpRedo.TabIndex = 10;
@@ -278,7 +328,7 @@
 			// bpUndo
 			// 
 			this.bpUndo.Enabled = false;
-			this.bpUndo.Location = new System.Drawing.Point(6, 431);
+			this.bpUndo.Location = new System.Drawing.Point(6, 425);
 			this.bpUndo.Name = "bpUndo";
 			this.bpUndo.Size = new System.Drawing.Size(60, 23);
 			this.bpUndo.TabIndex = 10;
@@ -299,7 +349,7 @@
 			// modeCaptureSprites
 			// 
 			this.modeCaptureSprites.AutoSize = true;
-			this.modeCaptureSprites.Location = new System.Drawing.Point(19, 125);
+			this.modeCaptureSprites.Location = new System.Drawing.Point(19, 115);
 			this.modeCaptureSprites.Name = "modeCaptureSprites";
 			this.modeCaptureSprites.Size = new System.Drawing.Size(15, 14);
 			this.modeCaptureSprites.TabIndex = 10;
@@ -351,16 +401,21 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(957, 629);
+			this.ClientSize = new System.Drawing.Size(957, 676);
 			this.ControlBox = false;
+			this.Controls.Add(this.label4);
 			this.Controls.Add(this.chkX2);
 			this.Controls.Add(this.pictImpDraw);
+			this.Controls.Add(this.label1);
 			this.Controls.Add(this.bpCopyPal);
 			this.Controls.Add(this.modeCaptureSprites);
+			this.Controls.Add(this.txbTailleNop);
 			this.Controls.Add(this.grpEdition);
 			this.Controls.Add(this.vScrollBar);
+			this.Controls.Add(this.txbStartNop);
 			this.Controls.Add(this.hScrollBar);
 			this.Controls.Add(this.modeEdition);
+			this.Controls.Add(this.chkGrille);
 			this.Controls.Add(this.lockAllPal);
 			this.Controls.Add(this.pictureBox);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -408,5 +463,10 @@
 		private System.Windows.Forms.Button bpVerFlip;
 		private System.Windows.Forms.CheckBox chkX2;
 		private System.Windows.Forms.RadioButton rbPickColor;
+		private System.Windows.Forms.CheckBox chkGrille;
+		private System.Windows.Forms.TextBox txbStartNop;
+		private System.Windows.Forms.TextBox txbTailleNop;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Label label4;
 	}
 }

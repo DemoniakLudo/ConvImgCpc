@@ -590,7 +590,7 @@ namespace ConvImgCpc {
 						if (BitmapCpc.modeVirtuel == 3 || BitmapCpc.modeVirtuel == 4)
 							SaveAsm.GenereAfficheModeEgx(sw, BitmapCpc.Palette, overscan, compact);
 						else {
-							SaveAsm.GenereFormatEcran(sw);
+							//SaveAsm.GenereFormatEcran(sw);
 							if (BitmapCpc.modeVirtuel == 5)
 								SaveAsm.GenereAfficheModeX(sw, colMode5, overscan, compact);
 							else
