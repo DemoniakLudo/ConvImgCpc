@@ -1206,9 +1206,9 @@
 			this.comboPackMethode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.comboPackMethode.FormattingEnabled = true;
 			this.comboPackMethode.Items.AddRange(new object[] {
-            "Standard",
             "ZX0",
-            "ZX1"});
+            "ZX1",
+			"Standard"});
 			this.comboPackMethode.Location = new System.Drawing.Point(145, 166);
 			this.comboPackMethode.Name = "comboPackMethode";
 			this.comboPackMethode.Size = new System.Drawing.Size(90, 21);
