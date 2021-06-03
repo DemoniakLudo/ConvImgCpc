@@ -296,14 +296,18 @@ namespace ConvImgCpc {
 							fp.Write(buffer);
 							fp.Close();
 							// Sauvegarde palette au format .KIT
-							main.SavePaletteKit(Path.ChangeExtension(dlg.FileName, "kit"), BitmapCpc.paletteSprite);
+							if (chkWithPal.Checked)
+								main.SavePaletteKit(Path.ChangeExtension(dlg.FileName, "kit"), BitmapCpc.paletteSprite);
+
 							break;
 
 						case 2:
 							// Sauvegarde assembleur
 							StreamWriter sw = SaveAsm.OpenAsm(dlg.FileName, "");
 							SaveAsm.GenereDatas(sw, buffer, (maxSprite + 1) * 256, 16, 16, "SpriteHard");
-							SavePaletteKitAsm(sw);
+							if (chkWithPal.Checked)
+								SavePaletteKitAsm(sw);
+
 							SaveAsm.CloseAsm(sw);
 							break;
 
@@ -341,7 +345,9 @@ namespace ConvImgCpc {
 							if (s != "	DW	")
 								sw2.WriteLine(s.Substring(0, s.Length - 1));
 
-							SavePaletteKitAsm(sw2);
+							if (chkWithPal.Checked)
+								SavePaletteKitAsm(sw2);
+
 							SaveAsm.CloseAsm(sw2);
 							break;
 					}
