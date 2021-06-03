@@ -51,7 +51,7 @@ namespace ConvImgCpc {
 			if (File.Exists(configDetault))
 				ReadParam(configDetault);
 
-			comboPackMethode.SelectedItem = "Standard";
+			comboPackMethode.SelectedItem = "ZX0";
 			anim.Show();
 			imgCpc.Show();
 			Show();
