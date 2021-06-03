@@ -712,7 +712,7 @@ namespace ConvImgCpc {
 		}
 
 		private void bpEditSprites_Click(object sender, EventArgs e) {
-			EditSprites dg = new EditSprites(this);
+			EditSprites dg = new EditSprites(this, pkMethode);
 			dg.ShowDialog();
 		}
 
