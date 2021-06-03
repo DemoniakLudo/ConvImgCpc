@@ -10,11 +10,14 @@ namespace ConvImgCpc {
 		private DirectBitmap bmpSprite, bmpAllSprites, bmpTest;
 		private Main main;
 		private Label[] colors = new Label[16];
+		private Main.PackMethode pkMethod;
 
-		public EditSprites(Main m) {
+		public EditSprites(Main m, Main.PackMethode pk) {
 			InitializeComponent();
 			main = m;
+			pkMethod = pk;
 			main.ChangeLanguage(Controls, "EditSprites");
+			bool paletteSpriteOk = false;
 			for (int c = 0; c < 16; c++) {
 				// Générer les contrôles de "couleurs"
 				colors[c] = new Label();
@@ -23,13 +26,18 @@ namespace ConvImgCpc {
 				colors[c].Size = new Size(40, 32);
 				colors[c].Tag = c;
 				colors[c].MouseDown += ClickColor;
-				if (BitmapCpc.paletteSprite[c] == 0)
-					BitmapCpc.paletteSprite[c] = BitmapCpc.Palette[c];
+				if (BitmapCpc.paletteSprite[c] != 0)
+					paletteSpriteOk = true;
 
 				int col = BitmapCpc.paletteSprite[c];
 				colors[c].BackColor = Color.FromArgb((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17));
 				Controls.Add(colors[c]);
 			}
+
+			if (!paletteSpriteOk)
+				for ( int c = 0; c < 16; c++)
+					BitmapCpc.paletteSprite[c] = BitmapCpc.Palette[c];
+
 			bmpSprite = new DirectBitmap(pictEditSprite.Width, pictEditSprite.Height);
 			pictEditSprite.Image = bmpSprite.Bitmap;
 			bmpAllSprites = new DirectBitmap(pictAllSprites.Width, pictAllSprites.Height);
@@ -230,15 +238,29 @@ namespace ConvImgCpc {
 			}
 		}
 
+		private void SavePaletteKitAsm(StreamWriter sw) {
+			sw.WriteLine("PaletteSprites");
+			string s = "	DB	";
+			for (int i = 0; i < 15; i++) {
+				int kit = BitmapCpc.paletteSprite[i + 1];
+				byte c1 = (byte)(((kit & 0x0F) << 4) + ((kit & 0xF0) >> 4));
+				byte c2 = (byte)(kit >> 8);
+				s += "#" + c1.ToString("X2") + ",#" + c2.ToString("X2");
+				if (i < 14)
+					s += ",";
+			}
+			sw.WriteLine(s);
+		}
+
 		private void SauveSprites(bool allBank = false) {
 			SaveFileDialog dlg = new SaveFileDialog();
-			dlg.Filter = "Modèle Sprites (.spr)|*.spr";
+			dlg.Filter = "Modèle Sprites (.spr)|*.spr|"
+						+ "Fichier assembleur (.asm)|*.asm|"
+						+ "Fichier assembleur compacté individuellement (.asm)|*.asm";
 			if (dlg.ShowDialog() == DialogResult.OK) {
+				Enabled = false;
 				try {
 					short size = (short)(allBank ? 0x4000 : 0x1000);
-					CpcAmsdos entete = CpcSystem.CreeEntete(Path.GetFileName(dlg.FileName), 0x4000, size, 0);
-					BinaryWriter fp = new BinaryWriter(new FileStream(dlg.FileName, FileMode.Create));
-					fp.Write(CpcSystem.AmsdosToByte(entete));
 					byte[] buffer = new byte[size];
 					int pos = 0;
 					int startBank = allBank ? 0 : numBank;
@@ -250,14 +272,48 @@ namespace ConvImgCpc {
 									buffer[pos++] = BitmapCpc.spritesHard[bank, i, x, y];
 							}
 						}
-					fp.Write(buffer);
-					fp.Close();
-					// Sauvegarde palette au format .KIT
-					main.SavePaletteKit(Path.ChangeExtension(dlg.FileName, "kit"), BitmapCpc.paletteSprite);
+					switch (dlg.FilterIndex) {
+						case 1:
+							CpcAmsdos entete = CpcSystem.CreeEntete(Path.GetFileName(dlg.FileName), 0x4000, size, 0);
+							BinaryWriter fp = new BinaryWriter(new FileStream(dlg.FileName, FileMode.Create));
+							fp.Write(CpcSystem.AmsdosToByte(entete));
+							fp.Write(buffer);
+							fp.Close();
+							// Sauvegarde palette au format .KIT
+							main.SavePaletteKit(Path.ChangeExtension(dlg.FileName, "kit"), BitmapCpc.paletteSprite);
+							break;
+
+						case 2:
+							// Sauvegarde assembleur
+							StreamWriter sw = SaveAsm.OpenAsm(dlg.FileName, "");
+							SaveAsm.GenereDatas(sw, buffer, size, 16, 16, "SpriteHard");
+							SavePaletteKitAsm(sw);
+							SaveAsm.CloseAsm(sw);
+							break;
+
+						case 3:
+							// Sauvegarde assembleur compacté 
+							StreamWriter sw2 = SaveAsm.OpenAsm(dlg.FileName, "");
+							int numSpr = 0;
+							byte[] spr = new byte[256];
+							byte[] sprPk = new byte[512];
+							for (int bank = startBank; bank < endBank; bank++)
+								for (int i = 0; i < 16; i++) {
+									Array.Copy(buffer, numSpr * 256, spr, 0, 256);
+									int l = new PackModule().Pack(spr, 256, sprPk, 0, pkMethod);
+									sw2.WriteLine("SpriteHardPk" + numSpr.ToString("00"));
+									SaveAsm.GenereDatas(sw2, sprPk, l, 16);
+									numSpr++;
+								}
+							SavePaletteKitAsm(sw2);
+							SaveAsm.CloseAsm(sw2);
+							break;
+					}
 				}
 				catch {
 					main.DisplayErreur("Impossible de sauver les sprites.");
 				}
+				Enabled = true;
 			}
 		}
 

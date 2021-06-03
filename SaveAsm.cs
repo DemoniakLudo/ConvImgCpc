@@ -17,15 +17,28 @@ namespace ConvImgCpc {
 			sw.Dispose();
 		}
 
-		static public void GenereDatas(StreamWriter sw, byte[] tabByte, int length, int nbOctetsLigne) {
+		static public void GenereDatas(StreamWriter sw, byte[] tabByte, int length, int nbOctetsLigne, int ligneSepa = 0, string labelSepa = null) {
 			string line = "\tDB\t";
-			int nbOctets = 0;
+			int nbOctets = 0, nbLigne = 0, indiceLabel = 0;
+			if (labelSepa != null) {
+				sw.WriteLine(labelSepa + indiceLabel.ToString("00"));
+				indiceLabel++;
+			}
 			for (int i = 0; i < length; i++) {
 				line += "#" + tabByte[i].ToString("X2") + ",";
 				if (++nbOctets >= Math.Min(nbOctetsLigne, BitmapCpc.NbCol)) {
 					sw.WriteLine(line.Substring(0, line.Length - 1));
 					line = "\tDB\t";
 					nbOctets = 0;
+					if (i < length - 1 && ++nbLigne >= ligneSepa && ligneSepa > 0) {
+						nbLigne = 0;
+						if (labelSepa != null) {
+							sw.WriteLine(labelSepa + indiceLabel.ToString("00"));
+							indiceLabel++;
+						}
+						else
+							line += "\r\n";
+					}
 				}
 			}
 			if (nbOctets > 0)

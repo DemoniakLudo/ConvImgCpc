@@ -88,7 +88,7 @@
 			this.label1.AutoSize = true;
 			this.label1.Location = new System.Drawing.Point(8, 174);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(59, 13);
+			this.label1.Size = new System.Drawing.Size(0, 13);
 			this.label1.TabIndex = 4;
 			// 
 			// label2
@@ -96,7 +96,7 @@
 			this.label2.AutoSize = true;
 			this.label2.Location = new System.Drawing.Point(12, 272);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(49, 13);
+			this.label2.Size = new System.Drawing.Size(0, 13);
 			this.label2.TabIndex = 4;
 			// 
 			// lblPenLeft
@@ -121,6 +121,7 @@
 			this.bpRead.Name = "bpRead";
 			this.bpRead.Size = new System.Drawing.Size(75, 48);
 			this.bpRead.TabIndex = 6;
+			this.bpRead.Text = "bpRead";
 			this.bpRead.UseVisualStyleBackColor = true;
 			this.bpRead.Click += new System.EventHandler(this.bpRead_Click);
 			// 
@@ -130,6 +131,7 @@
 			this.bpSave.Name = "bpSave";
 			this.bpSave.Size = new System.Drawing.Size(75, 63);
 			this.bpSave.TabIndex = 6;
+			this.bpSave.Text = "bpSave";
 			this.bpSave.UseVisualStyleBackColor = true;
 			this.bpSave.Click += new System.EventHandler(this.bpSave_Click);
 			// 
@@ -147,7 +149,7 @@
 			this.lblSelSprite.AutoSize = true;
 			this.lblSelSprite.Location = new System.Drawing.Point(0, 111);
 			this.lblSelSprite.Name = "lblSelSprite";
-			this.lblSelSprite.Size = new System.Drawing.Size(59, 13);
+			this.lblSelSprite.Size = new System.Drawing.Size(0, 13);
 			this.lblSelSprite.TabIndex = 7;
 			// 
 			// pictTest
@@ -282,6 +284,7 @@
 			this.bpSaveAll.Name = "bpSaveAll";
 			this.bpSaveAll.Size = new System.Drawing.Size(75, 61);
 			this.bpSaveAll.TabIndex = 6;
+			this.bpSaveAll.Text = "bpSaveAll";
 			this.bpSaveAll.UseVisualStyleBackColor = true;
 			this.bpSaveAll.Click += new System.EventHandler(this.bpSaveAll_Click);
 			// 
@@ -291,6 +294,7 @@
 			this.bpReadPal.Name = "bpReadPal";
 			this.bpReadPal.Size = new System.Drawing.Size(75, 40);
 			this.bpReadPal.TabIndex = 14;
+			this.bpReadPal.Text = "bpReadPal";
 			this.bpReadPal.UseVisualStyleBackColor = true;
 			this.bpReadPal.Click += new System.EventHandler(this.bpReadPal_Click);
 			// 
@@ -300,6 +304,7 @@
 			this.bpSavePal.Name = "bpSavePal";
 			this.bpSavePal.Size = new System.Drawing.Size(75, 40);
 			this.bpSavePal.TabIndex = 14;
+			this.bpSavePal.Text = "bpSavePal";
 			this.bpSavePal.UseVisualStyleBackColor = true;
 			this.bpSavePal.Click += new System.EventHandler(this.bpSavePal_Click);
 			// 
