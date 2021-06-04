@@ -11,6 +11,7 @@ namespace ConvImgCpc {
 		private Main main;
 		private Label[] colors = new Label[16];
 		private Main.PackMethode pkMethod;
+		private byte[] tempSprite = new byte[256];
 
 		public EditSprites(Main m, Main.PackMethode pk) {
 			InitializeComponent();
@@ -18,6 +19,10 @@ namespace ConvImgCpc {
 			pkMethod = pk;
 			main.ChangeLanguage(Controls, "EditSprites");
 			bool paletteSpriteOk = false;
+			for (int c = 0; c < 16; c++)
+				if (BitmapCpc.paletteSprite[c] != 0)
+					paletteSpriteOk = true;
+
 			for (int c = 0; c < 16; c++) {
 				// Générer les contrôles de "couleurs"
 				colors[c] = new Label();
@@ -26,17 +31,14 @@ namespace ConvImgCpc {
 				colors[c].Size = new Size(40, 32);
 				colors[c].Tag = c;
 				colors[c].MouseDown += ClickColor;
-				if (BitmapCpc.paletteSprite[c] != 0)
-					paletteSpriteOk = true;
+
+				if (!paletteSpriteOk)
+					BitmapCpc.paletteSprite[c] = BitmapCpc.Palette[c];
 
 				int col = BitmapCpc.paletteSprite[c];
 				colors[c].BackColor = Color.FromArgb((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17));
 				Controls.Add(colors[c]);
 			}
-
-			if (!paletteSpriteOk)
-				for (int c = 0; c < 16; c++)
-					BitmapCpc.paletteSprite[c] = BitmapCpc.Palette[c];
 
 			bmpSprite = new DirectBitmap(pictEditSprite.Width, pictEditSprite.Height);
 			pictEditSprite.Image = bmpSprite.Bitmap;
@@ -181,9 +183,9 @@ namespace ConvImgCpc {
 				}
 				else
 					if (e.Button == MouseButtons.Right) {
-						BitmapCpc.spritesHard[numBank, numSprite, x, y] = 0;
-						SetPixelSprite(x, y);
-					}
+					BitmapCpc.spritesHard[numBank, numSprite, x, y] = 0;
+					SetPixelSprite(x, y);
+				}
 			}
 		}
 
@@ -199,7 +201,7 @@ namespace ConvImgCpc {
 
 		private void bpRead_Click(object sender, EventArgs e) {
 			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.Filter = "Modèle Sprites (.spr)|*.spr";
+			dlg.Filter = main.multilingue.GetString("EditSprites.TxtInfo1") + " (.spr)|*.spr";
 			if (dlg.ShowDialog() == DialogResult.OK) {
 				try {
 					FileStream fileScr = new FileStream(dlg.FileName, FileMode.Open, FileAccess.Read);
@@ -217,10 +219,7 @@ namespace ConvImgCpc {
 									for (int x = 0; x < 16; x++) {
 										BitmapCpc.spritesHard[bank, i, x, y] = tabBytes[128 + pos++];
 										if (pos >= enteteAms.RealLength) {
-											x = 16;
-											y = 16;
-											i = 16;
-											bank = 4;
+											x = y = i = bank = 16;  // Forcer sortie de toutes les boucles
 										}
 									}
 								}
@@ -229,10 +228,9 @@ namespace ConvImgCpc {
 					string filePalette = Path.ChangeExtension(dlg.FileName, "kit");
 					if (File.Exists(filePalette))
 						main.ReadPaletteKit(filePalette, colors);
-
 				}
 				catch {
-					main.DisplayErreur("Impossible de lire les sprites.");
+					main.DisplayErreur(main.multilingue.GetString("EditSprites.TxtInfo2"));
 				}
 				DrawMatrice();
 			}
@@ -256,22 +254,20 @@ namespace ConvImgCpc {
 			int startBank = allBank ? 0 : numBank;
 			int endBank = allBank ? 3 : numBank;
 			for (int bank = endBank; bank >= startBank; bank--)
-				for (int i = 15; i >= 0; i--) {
-					int numSprite = i + 16 * bank;
-					for (int y = 0; y < 16; y++) {
+				for (int i = 15; i >= 0; i--)
+					for (int y = 0; y < 16; y++)
 						for (int x = 0; x < 16; x++)
 							if (BitmapCpc.spritesHard[bank, i, x, y] != 0)
-								return numSprite;
-					}
-				}
+								return i + 16 * bank;
+
 			return 0;
 		}
 
 		private void SauveSprites(bool allBank = false) {
 			SaveFileDialog dlg = new SaveFileDialog();
-			dlg.Filter = "Modèle Sprites (.spr)|*.spr|"
-						+ "Fichier assembleur (.asm)|*.asm|"
-						+ "Fichier assembleur compacté individuellement (.asm)|*.asm";
+			dlg.Filter = main.multilingue.GetString("EditSprites.TxtInfo1") + " (.spr)|*.spr|"
+						+ main.multilingue.GetString("EditSprites.TxtInfo3") + " (.asm)|*.asm|"
+						+ main.multilingue.GetString("EditSprites.TxtInfo4") + " (.asm)|*.asm";
 			if (dlg.ShowDialog() == DialogResult.OK) {
 				Enabled = false;
 				try {
@@ -353,7 +349,7 @@ namespace ConvImgCpc {
 					}
 				}
 				catch {
-					main.DisplayErreur("Impossible de sauver les sprites.");
+					main.DisplayErreur(main.multilingue.GetString("EditSprites.TxtInfo5"));
 				}
 				Enabled = true;
 			}
@@ -372,7 +368,7 @@ namespace ConvImgCpc {
 					DrawMatrice();
 				}
 				catch {
-					main.DisplayErreur("Impossible de lire palette.");
+					main.DisplayErreur(main.multilingue.GetString("EditSprites.TxtInfo6"));
 				}
 			}
 		}
@@ -385,9 +381,33 @@ namespace ConvImgCpc {
 					main.SavePaletteKit(dlg.FileName, BitmapCpc.paletteSprite);
 				}
 				catch {
-					main.DisplayErreur("Impossible de sauver la palette.");
+					main.DisplayErreur(main.multilingue.GetString("EditSprites.TxtInfo7"));
 				}
 			}
+		}
+
+		private void bpClearBank_Click(object sender, EventArgs e) {
+			for (int i = 0; i < 16; i++)
+				for (int y = 0; y < 16; y++)
+					for (int x = 0; x < 16; x++)
+						BitmapCpc.spritesHard[numBank, i, x, y] = 0;
+
+			DrawMatrice();
+		}
+
+		private void bpCopySprite_Click(object sender, EventArgs e) {
+			for (int y = 0; y < 16; y++)
+				for (int x = 0; x < 16; x++)
+					tempSprite[x + y * 16] = BitmapCpc.spritesHard[numBank, numSprite, x, y];
+		}
+
+		private void bpPasteSprite_Click(object sender, EventArgs e) {
+			for (int y = 0; y < 16; y++)
+				for (int x = 0; x < 16; x++)
+					BitmapCpc.spritesHard[numBank, numSprite, x, y] = tempSprite[x + y * 16];
+
+			DrawMatrice();
+			DrawSprite();
 		}
 
 		private void bpSaveAll_Click(object sender, EventArgs e) {
