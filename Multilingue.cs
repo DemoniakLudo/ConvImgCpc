@@ -255,6 +255,26 @@ namespace ConvImgCpc {
 			dic.Add("EditSprites.bpSavePal.EN", "Save palette");
 			dic.Add("EditSprites.chkWithPal.FR", "Avec palette");
 			dic.Add("EditSprites.chkWithPal.EN", "With palette");
+			dic.Add("EditSprites.bpClearBank.FR", "Effacer bank courante");
+			dic.Add("EditSprites.bpClearBank.EN", "clear current bank");
+			dic.Add("EditSprites.bpCopySprite.FR", "Copier sprite");
+			dic.Add("EditSprites.bpCopySprite.EN", "Copy sprite");
+			dic.Add("EditSprites.bpPasteSprite.FR", "Coller sprite");
+			dic.Add("EditSprites.bpPasteSprite.EN", "Paste sprite");
+			dic.Add("EditSprites.TxtInfo1.FR", "Modèle sprites");
+			dic.Add("EditSprites.TxtInfo1.EN", "Sprites model");
+			dic.Add("EditSprites.TxtInfo2.FR", "Impossible de lire les sprites.");
+			dic.Add("EditSprites.TxtInfo2.EN", "Unable to read sprites.");
+			dic.Add("EditSprites.TxtInfo3.FR", "Fichier assembleur avec les sprites");
+			dic.Add("EditSprites.TxtInfo3.EN", "Assembler file with sprites");
+			dic.Add("EditSprites.TxtInfo4.FR", "Fichier assembleur avec les sprites compactés");
+			dic.Add("EditSprites.TxtInfo4.EN", "Assembler file with packed sprites");
+			dic.Add("EditSprites.TxtInfo5.FR", "Impossible de sauver les sprites.");
+			dic.Add("EditSprites.TxtInfo5.EN", "Unable to save sprites.");
+			dic.Add("EditSprites.TxtInfo6.FR", "Impossible de lire la palette.");
+			dic.Add("EditSprites.TxtInfo6.EN", "Unable to read palette.");
+			dic.Add("EditSprites.TxtInfo7.FR", "Impossible de sauver la palette.");
+			dic.Add("EditSprites.TxtInfo7.EN", "Unable to save palette.");
 
 			// EditTrameAscii
 			dic.Add("EditTrameAscii.bpPrev.FR", "Précédente");

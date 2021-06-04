@@ -48,6 +48,9 @@
 			this.bpReadPal = new System.Windows.Forms.Button();
 			this.bpSavePal = new System.Windows.Forms.Button();
 			this.chkWithPal = new System.Windows.Forms.CheckBox();
+			this.bpClearBank = new System.Windows.Forms.Button();
+			this.bpCopySprite = new System.Windows.Forms.Button();
+			this.bpPasteSprite = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.pictEditSprite)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictAllSprites)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictTest)).BeginInit();
@@ -71,6 +74,7 @@
 			this.bpPrev.Name = "bpPrev";
 			this.bpPrev.Size = new System.Drawing.Size(75, 23);
 			this.bpPrev.TabIndex = 2;
+			this.bpPrev.Text = "bpPrev";
 			this.bpPrev.UseVisualStyleBackColor = true;
 			this.bpPrev.Visible = false;
 			this.bpPrev.Click += new System.EventHandler(this.bpPrev_Click);
@@ -81,6 +85,7 @@
 			this.bpSuiv.Name = "bpSuiv";
 			this.bpSuiv.Size = new System.Drawing.Size(75, 23);
 			this.bpSuiv.TabIndex = 2;
+			this.bpSuiv.Text = "bpSuiv";
 			this.bpSuiv.UseVisualStyleBackColor = true;
 			this.bpSuiv.Click += new System.EventHandler(this.bpSuiv_Click);
 			// 
@@ -89,16 +94,18 @@
 			this.label1.AutoSize = true;
 			this.label1.Location = new System.Drawing.Point(8, 174);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(0, 13);
+			this.label1.Size = new System.Drawing.Size(35, 13);
 			this.label1.TabIndex = 4;
+			this.label1.Text = "label1";
 			// 
 			// label2
 			// 
 			this.label2.AutoSize = true;
 			this.label2.Location = new System.Drawing.Point(12, 272);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(0, 13);
+			this.label2.Size = new System.Drawing.Size(35, 13);
 			this.label2.TabIndex = 4;
+			this.label2.Text = "label2";
 			// 
 			// lblPenLeft
 			// 
@@ -319,11 +326,44 @@
 			this.chkWithPal.Text = "chkWithPal";
 			this.chkWithPal.UseVisualStyleBackColor = true;
 			// 
+			// bpClearBank
+			// 
+			this.bpClearBank.Location = new System.Drawing.Point(1165, 1);
+			this.bpClearBank.Name = "bpClearBank";
+			this.bpClearBank.Size = new System.Drawing.Size(75, 52);
+			this.bpClearBank.TabIndex = 16;
+			this.bpClearBank.Text = "bpClearBank";
+			this.bpClearBank.UseVisualStyleBackColor = true;
+			this.bpClearBank.Click += new System.EventHandler(this.bpClearBank_Click);
+			// 
+			// bpCopySprite
+			// 
+			this.bpCopySprite.Location = new System.Drawing.Point(789, 71);
+			this.bpCopySprite.Name = "bpCopySprite";
+			this.bpCopySprite.Size = new System.Drawing.Size(75, 43);
+			this.bpCopySprite.TabIndex = 17;
+			this.bpCopySprite.Text = "bpCopySprite";
+			this.bpCopySprite.UseVisualStyleBackColor = true;
+			this.bpCopySprite.Click += new System.EventHandler(this.bpCopySprite_Click);
+			// 
+			// bpPasteSprite
+			// 
+			this.bpPasteSprite.Location = new System.Drawing.Point(871, 71);
+			this.bpPasteSprite.Name = "bpPasteSprite";
+			this.bpPasteSprite.Size = new System.Drawing.Size(75, 43);
+			this.bpPasteSprite.TabIndex = 18;
+			this.bpPasteSprite.Text = "bpPasteSprite";
+			this.bpPasteSprite.UseVisualStyleBackColor = true;
+			this.bpPasteSprite.Click += new System.EventHandler(this.bpPasteSprite_Click);
+			// 
 			// EditSprites
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1310, 715);
+			this.Controls.Add(this.bpPasteSprite);
+			this.Controls.Add(this.bpCopySprite);
+			this.Controls.Add(this.bpClearBank);
 			this.Controls.Add(this.bpSavePal);
 			this.Controls.Add(this.bpReadPal);
 			this.Controls.Add(this.comboBanque);
@@ -392,5 +432,8 @@
 		private System.Windows.Forms.Button bpReadPal;
 		private System.Windows.Forms.Button bpSavePal;
 		private System.Windows.Forms.CheckBox chkWithPal;
+		private System.Windows.Forms.Button bpClearBank;
+		private System.Windows.Forms.Button bpCopySprite;
+		private System.Windows.Forms.Button bpPasteSprite;
 	}
 }
