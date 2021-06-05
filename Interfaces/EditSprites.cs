@@ -12,7 +12,9 @@ namespace ConvImgCpc {
 		private Label[] lblColors = new Label[16];
 		private Main.PackMethode pkMethod;
 		private byte[] tempSprite = new byte[256];
-		private Label lblSelColor = new Label();
+		private Label lblRectSelColor = new Label();
+		private Label lblRectSelSprite = new Label();
+		private int tickTimer;
 
 		public EditSprites(Main m, Main.PackMethode pk) {
 			InitializeComponent();
@@ -20,11 +22,13 @@ namespace ConvImgCpc {
 			pkMethod = pk;
 			main.ChangeLanguage(Controls, "EditSprites");
 			bool paletteSpriteOk = false;
-			lblSelColor.Size = new Size(48, 40);
-			lblSelColor.BackColor = Color.Black;
-			lblSelColor.Location = new Point(1200, 1200);
-			Controls.Add(lblSelColor);
-			lblSelSprite.Text = "";
+			lblRectSelColor.Size = new Size(48, 40);
+			lblRectSelColor.BackColor = Color.Black;
+			lblRectSelColor.Location = new Point(1200, 1200);
+			Controls.Add(lblRectSelColor);
+			lblRectSelSprite.Size = new Size(64, 8);
+			Controls.Add(lblRectSelSprite);
+
 			for (int c = 0; c < 16; c++)
 				if (BitmapCpc.paletteSprite[c] != 0)
 					paletteSpriteOk = true;
@@ -33,15 +37,17 @@ namespace ConvImgCpc {
 				// Générer les contrôles de "couleurs"
 				lblColors[c] = new Label();
 				lblColors[c].BorderStyle = BorderStyle.FixedSingle;
-				lblColors[c].Location = new Point(730, 72 + c * 40);
+				lblColors[c].Location = new Point(730, 82 + c * 40);
 				lblColors[c].Size = new Size(40, 32);
 				lblColors[c].Tag = c;
 				lblColors[c].MouseDown += ClickColor;
 				if (!paletteSpriteOk)
 					BitmapCpc.paletteSprite[c] = BitmapCpc.Palette[c];
-
 				int col = BitmapCpc.paletteSprite[c];
-				lblColors[c].BackColor = Color.FromArgb((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17));
+				int r = ((col & 0x0F) * 17);
+				int v = (((col & 0xF00) >> 8) * 17);
+				int b = (((col & 0xF0) >> 4) * 17);
+				lblColors[c].BackColor = Color.FromArgb(r, v, b);
 				Controls.Add(lblColors[c]);
 				lblColors[c].BringToFront();
 			}
@@ -54,6 +60,7 @@ namespace ConvImgCpc {
 			pictTest.Image = bmpTest.Bitmap;
 			comboBanque.SelectedIndex = 0;
 			DrawPens();
+			DrawSprite();
 		}
 
 		// Changement de la palette
@@ -68,7 +75,10 @@ namespace ConvImgCpc {
 				if (ed.isValide) {
 					BitmapCpc.paletteSprite[pen] = ed.ValColor;
 					col = ed.ValColor;
-					lblColors[pen].BackColor = Color.FromArgb((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17));
+					int r = ((col & 0x0F) * 17);
+					int v = (((col & 0xF00) >> 8) * 17);
+					int b = (((col & 0xF0) >> 4) * 17);
+					lblColors[pen].BackColor = Color.FromArgb(r,v,b);
 					lblColors[pen].Refresh();
 					DrawMatrice();
 				}
@@ -102,6 +112,7 @@ namespace ConvImgCpc {
 
 		private void DrawSprite() {
 			lblSelSprite.Text = "Sprite n° : " + numSprite.ToString();
+			lblRectSelSprite.Location = new Point(3 + 64 * numSprite, 65);
 			bpPrev.Visible = numSprite > 0 || numBank > 0;
 			bpSuiv.Visible = numSprite < 15 || numBank < 3;
 			for (int y = 0; y < 16; y++) {
@@ -136,6 +147,9 @@ namespace ConvImgCpc {
 			int cr = BitmapCpc.paletteSprite[0];
 			lblPenLeft.BackColor = Color.FromArgb((byte)((cl & 0x0F) * 17), (byte)(((cl & 0xF00) >> 8) * 17), (byte)(((cl & 0xF0) >> 4) * 17));
 			lblPenRight.BackColor = Color.FromArgb((byte)((cr & 0x0F) * 17), (byte)(((cr & 0xF00) >> 8) * 17), (byte)(((cr & 0xF0) >> 4) * 17));
+			lblColSelR.Text = "R:" + (cl & 0x0F).ToString();
+			lblColSelV.Text = "V:" + (cl >> 8).ToString();
+			lblColSelB.Text = "B:" + ((cl & 0xF0) >> 4).ToString();
 		}
 
 		private void pictAllMatrice_MouseDown(object sender, MouseEventArgs e) {
@@ -193,14 +207,14 @@ namespace ConvImgCpc {
 						BitmapCpc.spritesHard[numBank, numSprite, x, y] = 0;
 						SetPixelSprite(x, y);
 					}
-				lblSelColor.Location = new Point(726, 68 + col * 40);
+				lblRectSelColor.Location = new Point(726, 78 + col * 40);
 			}
 			else
-				lblSelColor.Location = new Point(1200, 1200);
+				lblRectSelColor.Location = new Point(1200, 1200);
 		}
 
 		private void pictEditSprite_MouseLeave(object sender, EventArgs e) {
-			lblSelColor.Location = new Point(1200, 1200);
+			lblRectSelColor.Location = new Point(1200, 1200);
 		}
 
 		private void bpPrev_Click(object sender, EventArgs e) {
@@ -511,10 +525,20 @@ namespace ConvImgCpc {
 				for (int x = 0; x < 512; x++)
 					bmpTest.SetPixel(x, y, 0);
 
-			for (int y = 0; y < nb; y++)
-				for (int x = 0; x < nb; x++)
-					DrawSpriteTest(bmpTest, start++, x * taillex * 16, y * tailley * 16);
+			if (rb42Sprite.Checked) {
+				for (int y = 0; y < 4; y++)
+					for (int x = 0; x < 2; x++)
+						DrawSpriteTest(bmpTest, start++, x * taillex * 16, y * tailley * 16);
 
+				for (int y = 0; y < 4; y++)
+					for (int x = 2; x < 4; x++)
+						DrawSpriteTest(bmpTest, start++, x * taillex * 16, y * tailley * 16);
+			}
+			else {
+				for (int y = 0; y < nb; y++)
+					for (int x = 0; x < nb; x++)
+						DrawSpriteTest(bmpTest, start++, x * taillex * 16, y * tailley * 16);
+			}
 			pictTest.Refresh();
 		}
 
@@ -525,6 +549,31 @@ namespace ConvImgCpc {
 
 		private void EditSprites_Load(object sender, EventArgs e) {
 
+		}
+
+		private void timer1_Tick(object sender, EventArgs e) {
+			if (tickTimer++ == 1) {
+				tickTimer = 0;
+				lblRectSelSprite.BackColor = Color.Black;
+			}
+			else {
+				lblRectSelSprite.BackColor = Color.Red;
+			}
+		}
+
+		private void bpGenPal_Click(object sender, EventArgs e) {
+			GenPalette g = new GenPalette(BitmapCpc.paletteSprite, 1);
+			g.ShowDialog();
+			for (int c = 0; c < 16; c++) {
+				int col = BitmapCpc.paletteSprite[c];
+				int r = ((col & 0x0F) * 17);
+				int v = (((col & 0xF00) >> 8) * 17);
+				int b = (((col & 0xF0) >> 4) * 17);
+				lblColors[c].BackColor = Color.FromArgb(r, v, b);
+				lblColors[c].Refresh();
+			}
+			DrawMatrice();
+			DrawSprite();
 		}
 	}
 }

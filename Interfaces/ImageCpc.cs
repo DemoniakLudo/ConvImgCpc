@@ -105,6 +105,7 @@ namespace ConvImgCpc {
 		}
 
 		public void Render(bool forceDrawZoom = false) {
+			bpGenPal.Visible = BitmapCpc.cpcPlus;
 			UpdatePalette();
 			modeCaptureSprites.Visible = BitmapCpc.modeVirtuel == 11;
 			modeEdition.Visible = BitmapCpc.modeVirtuel != 11;
@@ -517,6 +518,22 @@ namespace ConvImgCpc {
 				drawGrille = false;
 				txbStartNop.Enabled = txbTailleNop.Enabled = true;
 			}
+		}
+
+		private void bpGenPal_Click(object sender, EventArgs e) {
+			GenPalette g = new GenPalette(BitmapCpc.Palette, 0);
+			g.ShowDialog();
+			for (int c = 0; c < 16; c++) {
+				int col = BitmapCpc.Palette[c];
+				int r = ((col & 0x0F) * 17);
+				int v = (((col & 0xF00) >> 8) * 17);
+				int b = (((col & 0xF0) >> 4) * 17);
+				colors[c].BackColor = Color.FromArgb(r, v, b);
+				colors[c].Refresh();
+				lockColors[c].Checked = true;
+				lockState[c] = 1;
+			}
+			Convert(false);
 		}
 	}
 }

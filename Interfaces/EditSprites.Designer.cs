@@ -23,6 +23,7 @@
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
+			this.components = new System.ComponentModel.Container();
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.lblPenLeft = new System.Windows.Forms.Label();
@@ -38,6 +39,11 @@
 			this.label4 = new System.Windows.Forms.Label();
 			this.comboBanque = new System.Windows.Forms.ComboBox();
 			this.chkWithPal = new System.Windows.Forms.CheckBox();
+			this.timer1 = new System.Windows.Forms.Timer(this.components);
+			this.lblColSelR = new System.Windows.Forms.Label();
+			this.lblColSelV = new System.Windows.Forms.Label();
+			this.lblColSelB = new System.Windows.Forms.Label();
+			this.bpGenPal = new System.Windows.Forms.Button();
 			this.bpVerticalFlip = new System.Windows.Forms.Button();
 			this.bpHorizontalFlip = new System.Windows.Forms.Button();
 			this.bpRotateSprite = new System.Windows.Forms.Button();
@@ -55,6 +61,7 @@
 			this.pictAllSprites = new System.Windows.Forms.PictureBox();
 			this.pictEditSprite = new System.Windows.Forms.PictureBox();
 			this.pictTest = new System.Windows.Forms.PictureBox();
+			this.rb42Sprite = new System.Windows.Forms.RadioButton();
 			((System.ComponentModel.ISupportInitialize)(this.zoomX)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.zoomY)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictAllSprites)).BeginInit();
@@ -65,7 +72,7 @@
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(8, 138);
+			this.label1.Location = new System.Drawing.Point(3, 147);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(35, 13);
 			this.label1.TabIndex = 4;
@@ -74,7 +81,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(12, 207);
+			this.label2.Location = new System.Drawing.Point(7, 216);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(35, 13);
 			this.label2.TabIndex = 4;
@@ -83,7 +90,7 @@
 			// lblPenLeft
 			// 
 			this.lblPenLeft.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.lblPenLeft.Location = new System.Drawing.Point(11, 151);
+			this.lblPenLeft.Location = new System.Drawing.Point(6, 160);
 			this.lblPenLeft.Name = "lblPenLeft";
 			this.lblPenLeft.Size = new System.Drawing.Size(48, 48);
 			this.lblPenLeft.TabIndex = 5;
@@ -91,7 +98,7 @@
 			// lblPenRight
 			// 
 			this.lblPenRight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.lblPenRight.Location = new System.Drawing.Point(11, 220);
+			this.lblPenRight.Location = new System.Drawing.Point(6, 229);
 			this.lblPenRight.Name = "lblPenRight";
 			this.lblPenRight.Size = new System.Drawing.Size(48, 48);
 			this.lblPenRight.TabIndex = 5;
@@ -99,7 +106,7 @@
 			// lblSelSprite
 			// 
 			this.lblSelSprite.AutoSize = true;
-			this.lblSelSprite.Location = new System.Drawing.Point(0, 111);
+			this.lblSelSprite.Location = new System.Drawing.Point(0, 121);
 			this.lblSelSprite.Name = "lblSelSprite";
 			this.lblSelSprite.Size = new System.Drawing.Size(47, 13);
 			this.lblSelSprite.TabIndex = 7;
@@ -109,37 +116,37 @@
 			// 
 			this.rb1Sprite.AutoSize = true;
 			this.rb1Sprite.Checked = true;
-			this.rb1Sprite.Location = new System.Drawing.Point(803, 177);
+			this.rb1Sprite.Location = new System.Drawing.Point(795, 189);
 			this.rb1Sprite.Name = "rb1Sprite";
-			this.rb1Sprite.Size = new System.Drawing.Size(61, 17);
+			this.rb1Sprite.Size = new System.Drawing.Size(31, 17);
 			this.rb1Sprite.TabIndex = 9;
 			this.rb1Sprite.TabStop = true;
-			this.rb1Sprite.Text = "1 Sprite";
+			this.rb1Sprite.Text = "1";
 			this.rb1Sprite.UseVisualStyleBackColor = true;
 			// 
 			// rb2Sprite
 			// 
 			this.rb2Sprite.AutoSize = true;
-			this.rb2Sprite.Location = new System.Drawing.Point(894, 177);
+			this.rb2Sprite.Location = new System.Drawing.Point(840, 189);
 			this.rb2Sprite.Name = "rb2Sprite";
-			this.rb2Sprite.Size = new System.Drawing.Size(75, 17);
+			this.rb2Sprite.Size = new System.Drawing.Size(42, 17);
 			this.rb2Sprite.TabIndex = 9;
-			this.rb2Sprite.Text = "2x2 sprites";
+			this.rb2Sprite.Text = "2x2";
 			this.rb2Sprite.UseVisualStyleBackColor = true;
 			// 
 			// rb4Sprite
 			// 
 			this.rb4Sprite.AutoSize = true;
-			this.rb4Sprite.Location = new System.Drawing.Point(985, 179);
+			this.rb4Sprite.Location = new System.Drawing.Point(896, 189);
 			this.rb4Sprite.Name = "rb4Sprite";
-			this.rb4Sprite.Size = new System.Drawing.Size(75, 17);
+			this.rb4Sprite.Size = new System.Drawing.Size(42, 17);
 			this.rb4Sprite.TabIndex = 9;
-			this.rb4Sprite.Text = "4x4 sprites";
+			this.rb4Sprite.Text = "4x4";
 			this.rb4Sprite.UseVisualStyleBackColor = true;
 			// 
 			// bpTest
 			// 
-			this.bpTest.Location = new System.Drawing.Point(1148, 171);
+			this.bpTest.Location = new System.Drawing.Point(1229, 186);
 			this.bpTest.Name = "bpTest";
 			this.bpTest.Size = new System.Drawing.Size(75, 23);
 			this.bpTest.TabIndex = 10;
@@ -149,7 +156,7 @@
 			// 
 			// zoomX
 			// 
-			this.zoomX.Location = new System.Drawing.Point(845, 156);
+			this.zoomX.Location = new System.Drawing.Point(1097, 187);
 			this.zoomX.Maximum = new decimal(new int[] {
             3,
             0,
@@ -171,7 +178,7 @@
 			// 
 			// zoomY
 			// 
-			this.zoomY.Location = new System.Drawing.Point(975, 156);
+			this.zoomY.Location = new System.Drawing.Point(1186, 187);
 			this.zoomY.Maximum = new decimal(new int[] {
             3,
             0,
@@ -194,7 +201,7 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(801, 160);
+			this.label3.Location = new System.Drawing.Point(1053, 191);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(44, 13);
 			this.label3.TabIndex = 12;
@@ -203,7 +210,7 @@
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(931, 160);
+			this.label4.Location = new System.Drawing.Point(1142, 191);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(44, 13);
 			this.label4.TabIndex = 12;
@@ -234,6 +241,49 @@
 			this.chkWithPal.TabIndex = 15;
 			this.chkWithPal.Text = "chkWithPal";
 			this.chkWithPal.UseVisualStyleBackColor = true;
+			// 
+			// timer1
+			// 
+			this.timer1.Enabled = true;
+			this.timer1.Interval = 250;
+			this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+			// 
+			// lblColSelR
+			// 
+			this.lblColSelR.AutoSize = true;
+			this.lblColSelR.Location = new System.Drawing.Point(53, 160);
+			this.lblColSelR.Name = "lblColSelR";
+			this.lblColSelR.Size = new System.Drawing.Size(30, 13);
+			this.lblColSelR.TabIndex = 23;
+			this.lblColSelR.Text = "R:00";
+			// 
+			// lblColSelV
+			// 
+			this.lblColSelV.AutoSize = true;
+			this.lblColSelV.Location = new System.Drawing.Point(53, 177);
+			this.lblColSelV.Name = "lblColSelV";
+			this.lblColSelV.Size = new System.Drawing.Size(29, 13);
+			this.lblColSelV.TabIndex = 24;
+			this.lblColSelV.Text = "V:00";
+			// 
+			// lblColSelB
+			// 
+			this.lblColSelB.AutoSize = true;
+			this.lblColSelB.Location = new System.Drawing.Point(53, 194);
+			this.lblColSelB.Name = "lblColSelB";
+			this.lblColSelB.Size = new System.Drawing.Size(29, 13);
+			this.lblColSelB.TabIndex = 25;
+			this.lblColSelB.Text = "B:00";
+			// 
+			// bpGenPal
+			// 
+			this.bpGenPal.Image = global::ConvImgCpc.Properties.Resources.GenPalette;
+			this.bpGenPal.Location = new System.Drawing.Point(972, 120);
+			this.bpGenPal.Name = "bpGenPal";
+			this.bpGenPal.Size = new System.Drawing.Size(48, 48);
+			this.bpGenPal.TabIndex = 26;
+			this.bpGenPal.UseVisualStyleBackColor = true;
+			this.bpGenPal.Click += new System.EventHandler(this.bpGenPal_Click);
 			// 
 			// bpVerticalFlip
 			// 
@@ -309,7 +359,7 @@
 			// 
 			this.bpSavePal.Image = global::ConvImgCpc.Properties.Resources.Sprite_Save;
 			this.bpSavePal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.bpSavePal.Location = new System.Drawing.Point(876, 95);
+			this.bpSavePal.Location = new System.Drawing.Point(876, 120);
 			this.bpSavePal.Name = "bpSavePal";
 			this.bpSavePal.Size = new System.Drawing.Size(95, 48);
 			this.bpSavePal.TabIndex = 14;
@@ -322,7 +372,7 @@
 			// 
 			this.bpReadPal.Image = global::ConvImgCpc.Properties.Resources.Sprite_Load;
 			this.bpReadPal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.bpReadPal.Location = new System.Drawing.Point(780, 95);
+			this.bpReadPal.Location = new System.Drawing.Point(780, 120);
 			this.bpReadPal.Name = "bpReadPal";
 			this.bpReadPal.Size = new System.Drawing.Size(95, 48);
 			this.bpReadPal.TabIndex = 14;
@@ -371,7 +421,7 @@
 			// bpSuiv
 			// 
 			this.bpSuiv.Image = global::ConvImgCpc.Properties.Resources.Next;
-			this.bpSuiv.Location = new System.Drawing.Point(987, 68);
+			this.bpSuiv.Location = new System.Drawing.Point(987, 78);
 			this.bpSuiv.Name = "bpSuiv";
 			this.bpSuiv.Size = new System.Drawing.Size(40, 40);
 			this.bpSuiv.TabIndex = 2;
@@ -381,7 +431,7 @@
 			// bpPrev
 			// 
 			this.bpPrev.Image = global::ConvImgCpc.Properties.Resources.Prev;
-			this.bpPrev.Location = new System.Drawing.Point(3, 68);
+			this.bpPrev.Location = new System.Drawing.Point(3, 78);
 			this.bpPrev.Name = "bpPrev";
 			this.bpPrev.Size = new System.Drawing.Size(40, 40);
 			this.bpPrev.TabIndex = 2;
@@ -400,7 +450,7 @@
 			// 
 			// pictEditSprite
 			// 
-			this.pictEditSprite.Location = new System.Drawing.Point(84, 71);
+			this.pictEditSprite.Location = new System.Drawing.Point(84, 81);
 			this.pictEditSprite.Name = "pictEditSprite";
 			this.pictEditSprite.Size = new System.Drawing.Size(640, 640);
 			this.pictEditSprite.TabIndex = 0;
@@ -411,17 +461,33 @@
 			// 
 			// pictTest
 			// 
-			this.pictTest.Location = new System.Drawing.Point(792, 199);
+			this.pictTest.Location = new System.Drawing.Point(792, 209);
 			this.pictTest.Name = "pictTest";
 			this.pictTest.Size = new System.Drawing.Size(512, 512);
 			this.pictTest.TabIndex = 8;
 			this.pictTest.TabStop = false;
 			// 
+			// rb42Sprite
+			// 
+			this.rb42Sprite.AutoSize = true;
+			this.rb42Sprite.Location = new System.Drawing.Point(952, 189);
+			this.rb42Sprite.Name = "rb42Sprite";
+			this.rb42Sprite.Size = new System.Drawing.Size(53, 17);
+			this.rb42Sprite.TabIndex = 27;
+			this.rb42Sprite.Text = "2x2x4";
+			this.rb42Sprite.UseVisualStyleBackColor = true;
+			// 
 			// EditSprites
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1305, 712);
+			this.ClientSize = new System.Drawing.Size(1305, 722);
+			this.Controls.Add(this.rb42Sprite);
+			this.Controls.Add(this.bpGenPal);
+			this.Controls.Add(this.lblPenLeft);
+			this.Controls.Add(this.lblColSelB);
+			this.Controls.Add(this.lblColSelV);
+			this.Controls.Add(this.lblColSelR);
 			this.Controls.Add(this.bpVerticalFlip);
 			this.Controls.Add(this.bpHorizontalFlip);
 			this.Controls.Add(this.bpRotateSprite);
@@ -443,7 +509,6 @@
 			this.Controls.Add(this.bpSave);
 			this.Controls.Add(this.bpRead);
 			this.Controls.Add(this.lblPenRight);
-			this.Controls.Add(this.lblPenLeft);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.bpSuiv);
@@ -505,5 +570,11 @@
 		private System.Windows.Forms.Button bpRotateSprite;
 		private System.Windows.Forms.Button bpHorizontalFlip;
 		private System.Windows.Forms.Button bpVerticalFlip;
+		private System.Windows.Forms.Timer timer1;
+		private System.Windows.Forms.Label lblColSelR;
+		private System.Windows.Forms.Label lblColSelV;
+		private System.Windows.Forms.Label lblColSelB;
+		private System.Windows.Forms.Button bpGenPal;
+		private System.Windows.Forms.RadioButton rb42Sprite;
 	}
 }

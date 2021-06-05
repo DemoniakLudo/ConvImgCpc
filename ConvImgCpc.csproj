@@ -59,6 +59,12 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\GenPalette.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interfaces\GenPalette.Designer.cs">
+      <DependentUpon>GenPalette.cs</DependentUpon>
+    </Compile>
     <Compile Include="GestCPC\CPCEMUEnt.cs" />
     <Compile Include="GestCPC\CPCEMUSect.cs" />
     <Compile Include="GestCPC\CPCEMUTrack.cs" />
@@ -169,6 +175,9 @@
     <Compile Include="TramesAscUt.cs" />
     <Compile Include="UndoRedo.cs" />
     <Compile Include="XorDrawing.cs" />
+    <EmbeddedResource Include="Interfaces\GenPalette.resx">
+      <DependentUpon>GenPalette.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Interfaces\Capture.resx">
       <DependentUpon>Capture.cs</DependentUpon>
     </EmbeddedResource>
@@ -267,6 +276,7 @@
     <Content Include="Icones\En.png" />
     <Content Include="Icones\Fr.png" />
     <Content Include="Icones\PickColor.png" />
+    <None Include="Resources\GenPalette.png" />
     <None Include="Resources\Next.png" />
     <None Include="Resources\Prev.png" />
     <None Include="Icones\Sprite_Clear.png" />
