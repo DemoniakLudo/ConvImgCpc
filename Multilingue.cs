@@ -235,32 +235,16 @@ namespace ConvImgCpc {
 			dic.Add("EditColor.bpAnnule.EN", "Cancel");
 
 			// EditSprites
-			dic.Add("EditSprites.bpPrev.FR", "Précédent");
-			dic.Add("EditSprites.bpPrev.EN", "Previous");
-			dic.Add("EditSprites.bpSuiv.FR", "Suivant");
-			dic.Add("EditSprites.bpSuiv.EN", "Next");
 			dic.Add("EditSprites.label1.FR", "Bp gauche");
 			dic.Add("EditSprites.label1.EN", "Left bp");
 			dic.Add("EditSprites.label2.FR", "Bp droite");
 			dic.Add("EditSprites.label2.EN", "Right bp");
-			dic.Add("EditSprites.bpRead.FR", "Lire sprites");
-			dic.Add("EditSprites.bpRead.EN", "Read sprites");
-			dic.Add("EditSprites.bpSave.FR", "Sauver sprites (bank courante)");
-			dic.Add("EditSprites.bpSave.EN", "Save sprites (current bank)");
-			dic.Add("EditSprites.bpSaveAll.FR", "Sauver sprites (toutes les banks)");
-			dic.Add("EditSprites.bpSaveAll.EN", "Save sprites (all banks)");
-			dic.Add("EditSprites.bpReadPal.FR", "Lire palette");
-			dic.Add("EditSprites.bpReadPal.EN", "Read palette");
-			dic.Add("EditSprites.bpSavePal.FR", "Sauver palette");
-			dic.Add("EditSprites.bpSavePal.EN", "Save palette");
+			dic.Add("EditSprites.bpSave.FR", "bank\r\ncourante");
+			dic.Add("EditSprites.bpSave.EN", "current\n\rbank");
+			dic.Add("EditSprites.bpSaveAll.FR", "toutes\r\nles banks");
+			dic.Add("EditSprites.bpSaveAll.EN", "all banks");
 			dic.Add("EditSprites.chkWithPal.FR", "Avec palette");
 			dic.Add("EditSprites.chkWithPal.EN", "With palette");
-			dic.Add("EditSprites.bpClearBank.FR", "Effacer bank courante");
-			dic.Add("EditSprites.bpClearBank.EN", "clear current bank");
-			dic.Add("EditSprites.bpCopySprite.FR", "Copier sprite");
-			dic.Add("EditSprites.bpCopySprite.EN", "Copy sprite");
-			dic.Add("EditSprites.bpPasteSprite.FR", "Coller sprite");
-			dic.Add("EditSprites.bpPasteSprite.EN", "Paste sprite");
 			dic.Add("EditSprites.TxtInfo1.FR", "Modèle sprites");
 			dic.Add("EditSprites.TxtInfo1.EN", "Sprites model");
 			dic.Add("EditSprites.TxtInfo2.FR", "Impossible de lire les sprites.");

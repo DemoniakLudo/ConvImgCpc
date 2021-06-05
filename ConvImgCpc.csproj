@@ -267,6 +267,16 @@
     <Content Include="Icones\En.png" />
     <Content Include="Icones\Fr.png" />
     <Content Include="Icones\PickColor.png" />
+    <None Include="Resources\Next.png" />
+    <None Include="Resources\Prev.png" />
+    <None Include="Icones\Sprite_Clear.png" />
+    <None Include="Icones\Sprite_Copy.png" />
+    <None Include="Icones\Sprite_FlipH.png" />
+    <None Include="Icones\Sprite_FlipV.png" />
+    <None Include="Icones\Sprite_Load.png" />
+    <None Include="Icones\Sprite_Paste.png" />
+    <None Include="Icones\Sprite_Rotate.png" />
+    <None Include="Icones\Sprite_Save.png" />
     <Content Include="Icones\Zoom.png" />
     <Content Include="Docs\ToDoList.txt" />
   </ItemGroup>

@@ -23,18 +23,11 @@
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
-			this.pictEditSprite = new System.Windows.Forms.PictureBox();
-			this.bpPrev = new System.Windows.Forms.Button();
-			this.bpSuiv = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.lblPenLeft = new System.Windows.Forms.Label();
 			this.lblPenRight = new System.Windows.Forms.Label();
-			this.bpRead = new System.Windows.Forms.Button();
-			this.bpSave = new System.Windows.Forms.Button();
-			this.pictAllSprites = new System.Windows.Forms.PictureBox();
 			this.lblSelSprite = new System.Windows.Forms.Label();
-			this.pictTest = new System.Windows.Forms.PictureBox();
 			this.rb1Sprite = new System.Windows.Forms.RadioButton();
 			this.rb2Sprite = new System.Windows.Forms.RadioButton();
 			this.rb4Sprite = new System.Windows.Forms.RadioButton();
@@ -44,55 +37,35 @@
 			this.label3 = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
 			this.comboBanque = new System.Windows.Forms.ComboBox();
-			this.bpSaveAll = new System.Windows.Forms.Button();
-			this.bpReadPal = new System.Windows.Forms.Button();
-			this.bpSavePal = new System.Windows.Forms.Button();
 			this.chkWithPal = new System.Windows.Forms.CheckBox();
-			this.bpClearBank = new System.Windows.Forms.Button();
-			this.bpCopySprite = new System.Windows.Forms.Button();
+			this.bpVerticalFlip = new System.Windows.Forms.Button();
+			this.bpHorizontalFlip = new System.Windows.Forms.Button();
+			this.bpRotateSprite = new System.Windows.Forms.Button();
+			this.bpClearSprite = new System.Windows.Forms.Button();
 			this.bpPasteSprite = new System.Windows.Forms.Button();
-			((System.ComponentModel.ISupportInitialize)(this.pictEditSprite)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictAllSprites)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictTest)).BeginInit();
+			this.bpCopySprite = new System.Windows.Forms.Button();
+			this.bpClearBank = new System.Windows.Forms.Button();
+			this.bpSavePal = new System.Windows.Forms.Button();
+			this.bpReadPal = new System.Windows.Forms.Button();
+			this.bpSaveAll = new System.Windows.Forms.Button();
+			this.bpSave = new System.Windows.Forms.Button();
+			this.bpRead = new System.Windows.Forms.Button();
+			this.bpSuiv = new System.Windows.Forms.Button();
+			this.bpPrev = new System.Windows.Forms.Button();
+			this.pictAllSprites = new System.Windows.Forms.PictureBox();
+			this.pictEditSprite = new System.Windows.Forms.PictureBox();
+			this.pictTest = new System.Windows.Forms.PictureBox();
 			((System.ComponentModel.ISupportInitialize)(this.zoomX)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.zoomY)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictAllSprites)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictEditSprite)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictTest)).BeginInit();
 			this.SuspendLayout();
-			// 
-			// pictEditSprite
-			// 
-			this.pictEditSprite.Location = new System.Drawing.Point(84, 71);
-			this.pictEditSprite.Name = "pictEditSprite";
-			this.pictEditSprite.Size = new System.Drawing.Size(640, 640);
-			this.pictEditSprite.TabIndex = 0;
-			this.pictEditSprite.TabStop = false;
-			this.pictEditSprite.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictEditMatrice_MouseMove);
-			this.pictEditSprite.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictEditMatrice_MouseMove);
-			// 
-			// bpPrev
-			// 
-			this.bpPrev.Location = new System.Drawing.Point(3, 71);
-			this.bpPrev.Name = "bpPrev";
-			this.bpPrev.Size = new System.Drawing.Size(75, 23);
-			this.bpPrev.TabIndex = 2;
-			this.bpPrev.Text = "bpPrev";
-			this.bpPrev.UseVisualStyleBackColor = true;
-			this.bpPrev.Visible = false;
-			this.bpPrev.Click += new System.EventHandler(this.bpPrev_Click);
-			// 
-			// bpSuiv
-			// 
-			this.bpSuiv.Location = new System.Drawing.Point(952, 71);
-			this.bpSuiv.Name = "bpSuiv";
-			this.bpSuiv.Size = new System.Drawing.Size(75, 23);
-			this.bpSuiv.TabIndex = 2;
-			this.bpSuiv.Text = "bpSuiv";
-			this.bpSuiv.UseVisualStyleBackColor = true;
-			this.bpSuiv.Click += new System.EventHandler(this.bpSuiv_Click);
 			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(8, 174);
+			this.label1.Location = new System.Drawing.Point(8, 138);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(35, 13);
 			this.label1.TabIndex = 4;
@@ -101,7 +74,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(12, 272);
+			this.label2.Location = new System.Drawing.Point(12, 207);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(35, 13);
 			this.label2.TabIndex = 4;
@@ -110,7 +83,7 @@
 			// lblPenLeft
 			// 
 			this.lblPenLeft.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.lblPenLeft.Location = new System.Drawing.Point(11, 187);
+			this.lblPenLeft.Location = new System.Drawing.Point(11, 151);
 			this.lblPenLeft.Name = "lblPenLeft";
 			this.lblPenLeft.Size = new System.Drawing.Size(48, 48);
 			this.lblPenLeft.TabIndex = 5;
@@ -118,61 +91,25 @@
 			// lblPenRight
 			// 
 			this.lblPenRight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.lblPenRight.Location = new System.Drawing.Point(11, 285);
+			this.lblPenRight.Location = new System.Drawing.Point(11, 220);
 			this.lblPenRight.Name = "lblPenRight";
 			this.lblPenRight.Size = new System.Drawing.Size(48, 48);
 			this.lblPenRight.TabIndex = 5;
-			// 
-			// bpRead
-			// 
-			this.bpRead.Location = new System.Drawing.Point(3, 355);
-			this.bpRead.Name = "bpRead";
-			this.bpRead.Size = new System.Drawing.Size(75, 48);
-			this.bpRead.TabIndex = 6;
-			this.bpRead.Text = "bpRead";
-			this.bpRead.UseVisualStyleBackColor = true;
-			this.bpRead.Click += new System.EventHandler(this.bpRead_Click);
-			// 
-			// bpSave
-			// 
-			this.bpSave.Location = new System.Drawing.Point(3, 423);
-			this.bpSave.Name = "bpSave";
-			this.bpSave.Size = new System.Drawing.Size(75, 63);
-			this.bpSave.TabIndex = 6;
-			this.bpSave.Text = "bpSave";
-			this.bpSave.UseVisualStyleBackColor = true;
-			this.bpSave.Click += new System.EventHandler(this.bpSave_Click);
-			// 
-			// pictAllSprites
-			// 
-			this.pictAllSprites.Location = new System.Drawing.Point(3, 1);
-			this.pictAllSprites.Name = "pictAllSprites";
-			this.pictAllSprites.Size = new System.Drawing.Size(1024, 64);
-			this.pictAllSprites.TabIndex = 1;
-			this.pictAllSprites.TabStop = false;
-			this.pictAllSprites.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictAllMatrice_MouseDown);
 			// 
 			// lblSelSprite
 			// 
 			this.lblSelSprite.AutoSize = true;
 			this.lblSelSprite.Location = new System.Drawing.Point(0, 111);
 			this.lblSelSprite.Name = "lblSelSprite";
-			this.lblSelSprite.Size = new System.Drawing.Size(0, 13);
+			this.lblSelSprite.Size = new System.Drawing.Size(47, 13);
 			this.lblSelSprite.TabIndex = 7;
-			// 
-			// pictTest
-			// 
-			this.pictTest.Location = new System.Drawing.Point(792, 199);
-			this.pictTest.Name = "pictTest";
-			this.pictTest.Size = new System.Drawing.Size(512, 512);
-			this.pictTest.TabIndex = 8;
-			this.pictTest.TabStop = false;
+			this.lblSelSprite.Text = "selSprite";
 			// 
 			// rb1Sprite
 			// 
 			this.rb1Sprite.AutoSize = true;
 			this.rb1Sprite.Checked = true;
-			this.rb1Sprite.Location = new System.Drawing.Point(803, 170);
+			this.rb1Sprite.Location = new System.Drawing.Point(803, 177);
 			this.rb1Sprite.Name = "rb1Sprite";
 			this.rb1Sprite.Size = new System.Drawing.Size(61, 17);
 			this.rb1Sprite.TabIndex = 9;
@@ -183,7 +120,7 @@
 			// rb2Sprite
 			// 
 			this.rb2Sprite.AutoSize = true;
-			this.rb2Sprite.Location = new System.Drawing.Point(894, 170);
+			this.rb2Sprite.Location = new System.Drawing.Point(894, 177);
 			this.rb2Sprite.Name = "rb2Sprite";
 			this.rb2Sprite.Size = new System.Drawing.Size(75, 17);
 			this.rb2Sprite.TabIndex = 9;
@@ -193,7 +130,7 @@
 			// rb4Sprite
 			// 
 			this.rb4Sprite.AutoSize = true;
-			this.rb4Sprite.Location = new System.Drawing.Point(985, 172);
+			this.rb4Sprite.Location = new System.Drawing.Point(985, 179);
 			this.rb4Sprite.Name = "rb4Sprite";
 			this.rb4Sprite.Size = new System.Drawing.Size(75, 17);
 			this.rb4Sprite.TabIndex = 9;
@@ -202,7 +139,7 @@
 			// 
 			// bpTest
 			// 
-			this.bpTest.Location = new System.Drawing.Point(1148, 164);
+			this.bpTest.Location = new System.Drawing.Point(1148, 171);
 			this.bpTest.Name = "bpTest";
 			this.bpTest.Size = new System.Drawing.Size(75, 23);
 			this.bpTest.TabIndex = 10;
@@ -212,7 +149,7 @@
 			// 
 			// zoomX
 			// 
-			this.zoomX.Location = new System.Drawing.Point(845, 141);
+			this.zoomX.Location = new System.Drawing.Point(845, 156);
 			this.zoomX.Maximum = new decimal(new int[] {
             3,
             0,
@@ -234,7 +171,7 @@
 			// 
 			// zoomY
 			// 
-			this.zoomY.Location = new System.Drawing.Point(975, 141);
+			this.zoomY.Location = new System.Drawing.Point(975, 156);
 			this.zoomY.Maximum = new decimal(new int[] {
             3,
             0,
@@ -257,7 +194,7 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(789, 145);
+			this.label3.Location = new System.Drawing.Point(801, 160);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(44, 13);
 			this.label3.TabIndex = 12;
@@ -266,7 +203,7 @@
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(925, 145);
+			this.label4.Location = new System.Drawing.Point(931, 160);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(44, 13);
 			this.label4.TabIndex = 12;
@@ -280,102 +217,227 @@
             "Bank 2",
             "Bank 3",
             "Bank 4"});
-			this.comboBanque.Location = new System.Drawing.Point(1052, 12);
+			this.comboBanque.Location = new System.Drawing.Point(1033, 12);
 			this.comboBanque.Name = "comboBanque";
-			this.comboBanque.Size = new System.Drawing.Size(89, 21);
+			this.comboBanque.Size = new System.Drawing.Size(61, 21);
 			this.comboBanque.TabIndex = 13;
 			this.comboBanque.SelectedIndexChanged += new System.EventHandler(this.comboBanque_SelectedIndexChanged);
-			// 
-			// bpSaveAll
-			// 
-			this.bpSaveAll.Location = new System.Drawing.Point(3, 508);
-			this.bpSaveAll.Name = "bpSaveAll";
-			this.bpSaveAll.Size = new System.Drawing.Size(75, 61);
-			this.bpSaveAll.TabIndex = 6;
-			this.bpSaveAll.Text = "bpSaveAll";
-			this.bpSaveAll.UseVisualStyleBackColor = true;
-			this.bpSaveAll.Click += new System.EventHandler(this.bpSaveAll_Click);
-			// 
-			// bpReadPal
-			// 
-			this.bpReadPal.Location = new System.Drawing.Point(3, 625);
-			this.bpReadPal.Name = "bpReadPal";
-			this.bpReadPal.Size = new System.Drawing.Size(75, 40);
-			this.bpReadPal.TabIndex = 14;
-			this.bpReadPal.Text = "bpReadPal";
-			this.bpReadPal.UseVisualStyleBackColor = true;
-			this.bpReadPal.Click += new System.EventHandler(this.bpReadPal_Click);
-			// 
-			// bpSavePal
-			// 
-			this.bpSavePal.Location = new System.Drawing.Point(3, 671);
-			this.bpSavePal.Name = "bpSavePal";
-			this.bpSavePal.Size = new System.Drawing.Size(75, 40);
-			this.bpSavePal.TabIndex = 14;
-			this.bpSavePal.Text = "bpSavePal";
-			this.bpSavePal.UseVisualStyleBackColor = true;
-			this.bpSavePal.Click += new System.EventHandler(this.bpSavePal_Click);
 			// 
 			// chkWithPal
 			// 
 			this.chkWithPal.AutoSize = true;
-			this.chkWithPal.Location = new System.Drawing.Point(3, 575);
+			this.chkWithPal.Checked = true;
+			this.chkWithPal.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.chkWithPal.Location = new System.Drawing.Point(1203, 90);
 			this.chkWithPal.Name = "chkWithPal";
 			this.chkWithPal.Size = new System.Drawing.Size(81, 17);
 			this.chkWithPal.TabIndex = 15;
 			this.chkWithPal.Text = "chkWithPal";
 			this.chkWithPal.UseVisualStyleBackColor = true;
 			// 
-			// bpClearBank
+			// bpVerticalFlip
 			// 
-			this.bpClearBank.Location = new System.Drawing.Point(1165, 1);
-			this.bpClearBank.Name = "bpClearBank";
-			this.bpClearBank.Size = new System.Drawing.Size(75, 52);
-			this.bpClearBank.TabIndex = 16;
-			this.bpClearBank.Text = "bpClearBank";
-			this.bpClearBank.UseVisualStyleBackColor = true;
-			this.bpClearBank.Click += new System.EventHandler(this.bpClearBank_Click);
+			this.bpVerticalFlip.Image = global::ConvImgCpc.Properties.Resources.Sprite_FlipV;
+			this.bpVerticalFlip.Location = new System.Drawing.Point(3, 474);
+			this.bpVerticalFlip.Name = "bpVerticalFlip";
+			this.bpVerticalFlip.Size = new System.Drawing.Size(75, 48);
+			this.bpVerticalFlip.TabIndex = 22;
+			this.bpVerticalFlip.UseVisualStyleBackColor = true;
+			this.bpVerticalFlip.Click += new System.EventHandler(this.bpVerticalFlip_Click);
 			// 
-			// bpCopySprite
+			// bpHorizontalFlip
 			// 
-			this.bpCopySprite.Location = new System.Drawing.Point(789, 71);
-			this.bpCopySprite.Name = "bpCopySprite";
-			this.bpCopySprite.Size = new System.Drawing.Size(75, 43);
-			this.bpCopySprite.TabIndex = 17;
-			this.bpCopySprite.Text = "bpCopySprite";
-			this.bpCopySprite.UseVisualStyleBackColor = true;
-			this.bpCopySprite.Click += new System.EventHandler(this.bpCopySprite_Click);
+			this.bpHorizontalFlip.Image = global::ConvImgCpc.Properties.Resources.Sprite_FlipH;
+			this.bpHorizontalFlip.Location = new System.Drawing.Point(3, 425);
+			this.bpHorizontalFlip.Name = "bpHorizontalFlip";
+			this.bpHorizontalFlip.Size = new System.Drawing.Size(75, 48);
+			this.bpHorizontalFlip.TabIndex = 21;
+			this.bpHorizontalFlip.UseVisualStyleBackColor = true;
+			this.bpHorizontalFlip.Click += new System.EventHandler(this.bpHorizontalFlip_Click);
+			// 
+			// bpRotateSprite
+			// 
+			this.bpRotateSprite.Image = global::ConvImgCpc.Properties.Resources.Sprite_Rotate;
+			this.bpRotateSprite.Location = new System.Drawing.Point(3, 523);
+			this.bpRotateSprite.Name = "bpRotateSprite";
+			this.bpRotateSprite.Size = new System.Drawing.Size(75, 48);
+			this.bpRotateSprite.TabIndex = 20;
+			this.bpRotateSprite.UseVisualStyleBackColor = true;
+			this.bpRotateSprite.Click += new System.EventHandler(this.bpRotateSprite_Click);
+			// 
+			// bpClearSprite
+			// 
+			this.bpClearSprite.Image = global::ConvImgCpc.Properties.Resources.Sprite_Clear;
+			this.bpClearSprite.Location = new System.Drawing.Point(3, 661);
+			this.bpClearSprite.Name = "bpClearSprite";
+			this.bpClearSprite.Size = new System.Drawing.Size(75, 48);
+			this.bpClearSprite.TabIndex = 19;
+			this.bpClearSprite.UseVisualStyleBackColor = true;
+			this.bpClearSprite.Click += new System.EventHandler(this.bpClearSprite_Click);
 			// 
 			// bpPasteSprite
 			// 
-			this.bpPasteSprite.Location = new System.Drawing.Point(871, 71);
+			this.bpPasteSprite.Image = global::ConvImgCpc.Properties.Resources.Sprite_Paste;
+			this.bpPasteSprite.Location = new System.Drawing.Point(3, 376);
 			this.bpPasteSprite.Name = "bpPasteSprite";
-			this.bpPasteSprite.Size = new System.Drawing.Size(75, 43);
+			this.bpPasteSprite.Size = new System.Drawing.Size(75, 48);
 			this.bpPasteSprite.TabIndex = 18;
-			this.bpPasteSprite.Text = "bpPasteSprite";
 			this.bpPasteSprite.UseVisualStyleBackColor = true;
 			this.bpPasteSprite.Click += new System.EventHandler(this.bpPasteSprite_Click);
+			// 
+			// bpCopySprite
+			// 
+			this.bpCopySprite.Image = global::ConvImgCpc.Properties.Resources.Sprite_Copy;
+			this.bpCopySprite.Location = new System.Drawing.Point(3, 327);
+			this.bpCopySprite.Name = "bpCopySprite";
+			this.bpCopySprite.Size = new System.Drawing.Size(75, 48);
+			this.bpCopySprite.TabIndex = 17;
+			this.bpCopySprite.UseVisualStyleBackColor = true;
+			this.bpCopySprite.Click += new System.EventHandler(this.bpCopySprite_Click);
+			// 
+			// bpClearBank
+			// 
+			this.bpClearBank.Image = global::ConvImgCpc.Properties.Resources.Sprite_Clear;
+			this.bpClearBank.Location = new System.Drawing.Point(1229, 1);
+			this.bpClearBank.Name = "bpClearBank";
+			this.bpClearBank.Size = new System.Drawing.Size(75, 52);
+			this.bpClearBank.TabIndex = 16;
+			this.bpClearBank.UseVisualStyleBackColor = true;
+			this.bpClearBank.Click += new System.EventHandler(this.bpClearBank_Click);
+			// 
+			// bpSavePal
+			// 
+			this.bpSavePal.Image = global::ConvImgCpc.Properties.Resources.Sprite_Save;
+			this.bpSavePal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.bpSavePal.Location = new System.Drawing.Point(876, 95);
+			this.bpSavePal.Name = "bpSavePal";
+			this.bpSavePal.Size = new System.Drawing.Size(95, 48);
+			this.bpSavePal.TabIndex = 14;
+			this.bpSavePal.Text = "palette";
+			this.bpSavePal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.bpSavePal.UseVisualStyleBackColor = true;
+			this.bpSavePal.Click += new System.EventHandler(this.bpSavePal_Click);
+			// 
+			// bpReadPal
+			// 
+			this.bpReadPal.Image = global::ConvImgCpc.Properties.Resources.Sprite_Load;
+			this.bpReadPal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.bpReadPal.Location = new System.Drawing.Point(780, 95);
+			this.bpReadPal.Name = "bpReadPal";
+			this.bpReadPal.Size = new System.Drawing.Size(95, 48);
+			this.bpReadPal.TabIndex = 14;
+			this.bpReadPal.Text = "palette";
+			this.bpReadPal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.bpReadPal.UseVisualStyleBackColor = true;
+			this.bpReadPal.Click += new System.EventHandler(this.bpReadPal_Click);
+			// 
+			// bpSaveAll
+			// 
+			this.bpSaveAll.Image = global::ConvImgCpc.Properties.Resources.Sprite_Save;
+			this.bpSaveAll.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.bpSaveAll.Location = new System.Drawing.Point(1104, 101);
+			this.bpSaveAll.Name = "bpSaveAll";
+			this.bpSaveAll.Size = new System.Drawing.Size(96, 48);
+			this.bpSaveAll.TabIndex = 6;
+			this.bpSaveAll.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.bpSaveAll.UseVisualStyleBackColor = true;
+			this.bpSaveAll.Click += new System.EventHandler(this.bpSaveAll_Click);
+			// 
+			// bpSave
+			// 
+			this.bpSave.Image = global::ConvImgCpc.Properties.Resources.Sprite_Save;
+			this.bpSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.bpSave.Location = new System.Drawing.Point(1104, 53);
+			this.bpSave.Name = "bpSave";
+			this.bpSave.Size = new System.Drawing.Size(96, 48);
+			this.bpSave.TabIndex = 6;
+			this.bpSave.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.bpSave.UseVisualStyleBackColor = true;
+			this.bpSave.Click += new System.EventHandler(this.bpSave_Click);
+			// 
+			// bpRead
+			// 
+			this.bpRead.Image = global::ConvImgCpc.Properties.Resources.Sprite_Load;
+			this.bpRead.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.bpRead.Location = new System.Drawing.Point(1104, 5);
+			this.bpRead.Name = "bpRead";
+			this.bpRead.Size = new System.Drawing.Size(96, 48);
+			this.bpRead.TabIndex = 6;
+			this.bpRead.Text = "sprites";
+			this.bpRead.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.bpRead.UseVisualStyleBackColor = true;
+			this.bpRead.Click += new System.EventHandler(this.bpRead_Click);
+			// 
+			// bpSuiv
+			// 
+			this.bpSuiv.Image = global::ConvImgCpc.Properties.Resources.Next;
+			this.bpSuiv.Location = new System.Drawing.Point(987, 68);
+			this.bpSuiv.Name = "bpSuiv";
+			this.bpSuiv.Size = new System.Drawing.Size(40, 40);
+			this.bpSuiv.TabIndex = 2;
+			this.bpSuiv.UseVisualStyleBackColor = true;
+			this.bpSuiv.Click += new System.EventHandler(this.bpSuiv_Click);
+			// 
+			// bpPrev
+			// 
+			this.bpPrev.Image = global::ConvImgCpc.Properties.Resources.Prev;
+			this.bpPrev.Location = new System.Drawing.Point(3, 68);
+			this.bpPrev.Name = "bpPrev";
+			this.bpPrev.Size = new System.Drawing.Size(40, 40);
+			this.bpPrev.TabIndex = 2;
+			this.bpPrev.UseVisualStyleBackColor = true;
+			this.bpPrev.Visible = false;
+			this.bpPrev.Click += new System.EventHandler(this.bpPrev_Click);
+			// 
+			// pictAllSprites
+			// 
+			this.pictAllSprites.Location = new System.Drawing.Point(3, 1);
+			this.pictAllSprites.Name = "pictAllSprites";
+			this.pictAllSprites.Size = new System.Drawing.Size(1024, 64);
+			this.pictAllSprites.TabIndex = 1;
+			this.pictAllSprites.TabStop = false;
+			this.pictAllSprites.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictAllMatrice_MouseDown);
+			// 
+			// pictEditSprite
+			// 
+			this.pictEditSprite.Location = new System.Drawing.Point(84, 71);
+			this.pictEditSprite.Name = "pictEditSprite";
+			this.pictEditSprite.Size = new System.Drawing.Size(640, 640);
+			this.pictEditSprite.TabIndex = 0;
+			this.pictEditSprite.TabStop = false;
+			this.pictEditSprite.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictEditMatrice_MouseMove);
+			this.pictEditSprite.MouseLeave += new System.EventHandler(this.pictEditSprite_MouseLeave);
+			this.pictEditSprite.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictEditMatrice_MouseMove);
+			// 
+			// pictTest
+			// 
+			this.pictTest.Location = new System.Drawing.Point(792, 199);
+			this.pictTest.Name = "pictTest";
+			this.pictTest.Size = new System.Drawing.Size(512, 512);
+			this.pictTest.TabIndex = 8;
+			this.pictTest.TabStop = false;
 			// 
 			// EditSprites
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1310, 715);
+			this.ClientSize = new System.Drawing.Size(1305, 712);
+			this.Controls.Add(this.bpVerticalFlip);
+			this.Controls.Add(this.bpHorizontalFlip);
+			this.Controls.Add(this.bpRotateSprite);
+			this.Controls.Add(this.bpClearSprite);
 			this.Controls.Add(this.bpPasteSprite);
 			this.Controls.Add(this.bpCopySprite);
 			this.Controls.Add(this.bpClearBank);
 			this.Controls.Add(this.bpSavePal);
 			this.Controls.Add(this.bpReadPal);
 			this.Controls.Add(this.comboBanque);
-			this.Controls.Add(this.label4);
-			this.Controls.Add(this.label3);
 			this.Controls.Add(this.zoomY);
 			this.Controls.Add(this.zoomX);
 			this.Controls.Add(this.bpTest);
 			this.Controls.Add(this.rb4Sprite);
 			this.Controls.Add(this.rb2Sprite);
 			this.Controls.Add(this.rb1Sprite);
-			this.Controls.Add(this.pictTest);
 			this.Controls.Add(this.lblSelSprite);
 			this.Controls.Add(this.bpSaveAll);
 			this.Controls.Add(this.bpSave);
@@ -389,17 +451,21 @@
 			this.Controls.Add(this.pictAllSprites);
 			this.Controls.Add(this.pictEditSprite);
 			this.Controls.Add(this.chkWithPal);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+			this.Controls.Add(this.pictTest);
+			this.Controls.Add(this.label3);
+			this.Controls.Add(this.label4);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "EditSprites";
 			this.ShowIcon = false;
 			this.Text = "Edition Sprites Hard";
-			((System.ComponentModel.ISupportInitialize)(this.pictEditSprite)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictAllSprites)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictTest)).EndInit();
+			this.Load += new System.EventHandler(this.EditSprites_Load);
 			((System.ComponentModel.ISupportInitialize)(this.zoomX)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.zoomY)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictAllSprites)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictEditSprite)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictTest)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -435,5 +501,9 @@
 		private System.Windows.Forms.Button bpClearBank;
 		private System.Windows.Forms.Button bpCopySprite;
 		private System.Windows.Forms.Button bpPasteSprite;
+		private System.Windows.Forms.Button bpClearSprite;
+		private System.Windows.Forms.Button bpRotateSprite;
+		private System.Windows.Forms.Button bpHorizontalFlip;
+		private System.Windows.Forms.Button bpVerticalFlip;
 	}
 }
