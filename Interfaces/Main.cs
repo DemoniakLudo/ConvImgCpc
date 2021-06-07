@@ -227,14 +227,14 @@ namespace ConvImgCpc {
 							Array.Copy(tabBytes, posData, tempData, 0, tempData.Length);
 							posData += tempData.Length;
 							BitmapCpc bmp = new BitmapCpc(tempData, width << 3, height << 1);
-							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, true, imgCpc), i);
+							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, true, imgCpc).Bitmap, i);
 						}
 					}
 					else
 						if (isScrImp) {
 						BitmapCpc bmp = new BitmapCpc(tabBytes, 0x110);
 						if (singlePicture)
-							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc), imgCpc.selImage);
+							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap, imgCpc.selImage);
 						else {
 							doNotReset = true;
 							BitmapCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = tabBytes[0x94] - 0x0E;
@@ -253,16 +253,16 @@ namespace ConvImgCpc {
 								for (int i = 0; i < 16; i++)
 									BitmapCpc.Palette[i] = BitmapCpc.CpcVGA.IndexOf((char)tabBytes[0x7E10 + i]);
 							}
-							imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc));
+							imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap);
 						}
 					}
 					else {
 						BitmapCpc bmp = new BitmapCpc(tabBytes, 0x80);
 						if (singlePicture)
-							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc), imgCpc.selImage);
+							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap, imgCpc.selImage);
 						else {
 							doNotReset = true;
-							imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc));
+							imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap);
 							nbCols.Value = param.nbCols = BitmapCpc.NbCol;
 							BitmapCpc.TailleX = param.nbCols << 3;
 							nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;

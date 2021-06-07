@@ -62,6 +62,8 @@
 			this.pictEditSprite = new System.Windows.Forms.PictureBox();
 			this.pictTest = new System.Windows.Forms.PictureBox();
 			this.rb42Sprite = new System.Windows.Forms.RadioButton();
+			this.rbPt = new System.Windows.Forms.RadioButton();
+			this.rbLine = new System.Windows.Forms.RadioButton();
 			((System.ComponentModel.ISupportInitialize)(this.zoomX)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.zoomY)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictAllSprites)).BeginInit();
@@ -115,12 +117,10 @@
 			// rb1Sprite
 			// 
 			this.rb1Sprite.AutoSize = true;
-			this.rb1Sprite.Checked = true;
 			this.rb1Sprite.Location = new System.Drawing.Point(795, 189);
 			this.rb1Sprite.Name = "rb1Sprite";
 			this.rb1Sprite.Size = new System.Drawing.Size(31, 17);
 			this.rb1Sprite.TabIndex = 9;
-			this.rb1Sprite.TabStop = true;
 			this.rb1Sprite.Text = "1";
 			this.rb1Sprite.UseVisualStyleBackColor = true;
 			// 
@@ -477,11 +477,35 @@
 			this.rb42Sprite.Text = "2x2x4";
 			this.rb42Sprite.UseVisualStyleBackColor = true;
 			// 
+			// rbPt
+			// 
+			this.rbPt.AutoSize = true;
+			this.rbPt.Checked = true;
+			this.rbPt.Location = new System.Drawing.Point(10, 577);
+			this.rbPt.Name = "rbPt";
+			this.rbPt.Size = new System.Drawing.Size(49, 17);
+			this.rbPt.TabIndex = 28;
+			this.rbPt.TabStop = true;
+			this.rbPt.Text = "Point";
+			this.rbPt.UseVisualStyleBackColor = true;
+			// 
+			// rbLine
+			// 
+			this.rbLine.AutoSize = true;
+			this.rbLine.Location = new System.Drawing.Point(10, 600);
+			this.rbLine.Name = "rbLine";
+			this.rbLine.Size = new System.Drawing.Size(51, 17);
+			this.rbLine.TabIndex = 28;
+			this.rbLine.Text = "Ligne";
+			this.rbLine.UseVisualStyleBackColor = true;
+			// 
 			// EditSprites
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1305, 722);
+			this.Controls.Add(this.rbLine);
+			this.Controls.Add(this.rbPt);
 			this.Controls.Add(this.rb42Sprite);
 			this.Controls.Add(this.bpGenPal);
 			this.Controls.Add(this.lblPenLeft);
@@ -576,5 +600,7 @@
 		private System.Windows.Forms.Label lblColSelB;
 		private System.Windows.Forms.Button bpGenPal;
 		private System.Windows.Forms.RadioButton rb42Sprite;
+		private System.Windows.Forms.RadioButton rbPt;
+		private System.Windows.Forms.RadioButton rbLine;
 	}
 }

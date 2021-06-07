@@ -121,5 +121,15 @@ namespace ConvImgCpc {
 			}
 			Close();
 		}
+
+		private void bpGetCol_Click(object sender, EventArgs e) {
+			int start = 0;
+			if (int.TryParse(txbFrom.Text, out start)) {
+				int cs = palette[start];
+				txbStartR.Text = (cs & 0x0F).ToString();
+				txbStartV.Text = (cs >> 8).ToString();
+				txbStartB.Text = ((cs & 0xF0) >> 4).ToString();
+			}
+		}
 	}
 }

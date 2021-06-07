@@ -169,6 +169,11 @@
     <Compile Include="Interfaces\Rendu.Designer.cs">
       <DependentUpon>Rendu.cs</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="RvbColor.cs" />
     <Compile Include="SauveImage.cs" />
     <Compile Include="SaveAsm.cs" />
@@ -221,14 +226,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="Interfaces\Rendu.resx">
       <DependentUpon>Rendu.cs</DependentUpon>
     </EmbeddedResource>
@@ -276,9 +276,9 @@
     <Content Include="Icones\En.png" />
     <Content Include="Icones\Fr.png" />
     <Content Include="Icones\PickColor.png" />
-    <None Include="Resources\GenPalette.png" />
-    <None Include="Resources\Next.png" />
-    <None Include="Resources\Prev.png" />
+    <None Include="Icones\GenPalette.png" />
+    <None Include="Icones\Next.png" />
+    <None Include="Icones\Prev.png" />
     <None Include="Icones\Sprite_Clear.png" />
     <None Include="Icones\Sprite_Copy.png" />
     <None Include="Icones\Sprite_FlipH.png" />

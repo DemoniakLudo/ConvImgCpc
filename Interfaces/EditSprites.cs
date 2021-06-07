@@ -15,6 +15,7 @@ namespace ConvImgCpc {
 		private Label lblRectSelColor = new Label();
 		private Label lblRectSelSprite = new Label();
 		private int tickTimer;
+		private int lineStartX = -1, lineStartY = -1;
 
 		public EditSprites(Main m, Main.PackMethode pk) {
 			InitializeComponent();
@@ -78,7 +79,7 @@ namespace ConvImgCpc {
 					int r = ((col & 0x0F) * 17);
 					int v = (((col & 0xF00) >> 8) * 17);
 					int b = (((col & 0xF0) >> 4) * 17);
-					lblColors[pen].BackColor = Color.FromArgb(r,v,b);
+					lblColors[pen].BackColor = Color.FromArgb(r, v, b);
 					lblColors[pen].Refresh();
 					DrawMatrice();
 				}
@@ -193,20 +194,162 @@ namespace ConvImgCpc {
 			}
 		}
 
+		private void DrawLine(int x1, int y1, int x2, int y2, bool reel = false) {
+			if (x2 < x1) {
+				int a = x2;
+				x2 = x1;
+				x1 = a;
+				a = y2;
+				y2 = y1;
+				y1 = a;
+			}
+			int dx = x2 - x1;
+			if (dx == 0 && y1 > y2) {
+				int a = y2;
+				y2 = y1;
+				y1 = a;
+			}
+			int dy = y2 - y1;
+			int e;
+			if (dx != 0) {
+				if (dy != 0) {
+					if (dy > 0) {
+						if (dx >= dy) {
+							e = dx;
+							dx <<= 1;
+							dy <<= 1;
+							while (x1 != x2) {
+								SetPixelSprite(x1, y1);
+								if (reel)
+									BitmapCpc.spritesHard[numBank, numSprite, x1, y1] = penLeft;
+
+								x1++;
+								e = e - dy;
+								if (e < 0) {
+									y1++;
+									e = e + dx;
+								};
+							}
+						}
+						else {
+							e = dy;
+							dy <<= 1;
+							dx <<= 1;
+							while (y1 != y2) {
+								SetPixelSprite(x1, y1);
+								if (reel)
+									BitmapCpc.spritesHard[numBank, numSprite, x1, y1] = penLeft;
+
+								y1++;
+								e = e - dx;
+								if (e < 0) {
+									x1++;
+									e = e + dy;
+								}
+							}
+						}
+					}
+					else {
+						if (dx >= -dy) {
+							e = dx;
+							dy <<= 1;
+							dx <<= 1;
+							while (x1 != x2) {
+								SetPixelSprite(x1, y1);
+								if (reel)
+									BitmapCpc.spritesHard[numBank, numSprite, x1, y1] = penLeft;
+
+								x1++;
+								e = e + dy;
+								if (e < 0) {
+									y1--;
+									e = e + dx;
+								}
+							}
+						}
+						else {
+							e = dy;
+							dy <<= 1;
+							dx <<= 1;
+							while (y1 != y2) {
+								SetPixelSprite(x1, y1);
+								if (reel)
+									BitmapCpc.spritesHard[numBank, numSprite, x1, y1] = penLeft;
+
+								y1--;
+								e = e + dx;
+								if (e > 0) {
+									x1++;
+									e = e + dy;
+								}
+							}
+						}
+					}
+				}
+				else {  // dy = 0 (et dx > 0)
+					do {
+						SetPixelSprite(x1, y1);
+						if (reel)
+							BitmapCpc.spritesHard[numBank, numSprite, x1, y1] = penLeft;
+					}
+					while (x1++ != x2);
+				}
+			}
+			else {  // dx = 0
+				if (dy != 0) {
+					do {
+						SetPixelSprite(x1, y1);
+						if (reel)
+							BitmapCpc.spritesHard[numBank, numSprite, x1, y1] = penLeft;
+					}
+					while (y1++ != y2);
+				}
+			}
+			if (reel)
+				DrawSprite();
+		}
+
 		private void pictEditMatrice_MouseMove(object sender, MouseEventArgs e) {
 			int x = e.X / 40;
 			int y = e.Y / 40;
 			if (x >= 0 && y >= 0 && x < 16 && y < 16) {
 				byte col = BitmapCpc.spritesHard[numBank, numSprite, x, y];
 				if (e.Button == MouseButtons.Left) {
-					BitmapCpc.spritesHard[numBank, numSprite, x, y] = penLeft;
-					SetPixelSprite(x, y);
+					if (rbPt.Checked) {
+						BitmapCpc.spritesHard[numBank, numSprite, x, y] = penLeft;
+						SetPixelSprite(x, y);
+					}
+					else
+						if (lineStartX == -1 && lineStartY == -1) {
+							lineStartX = x;
+							lineStartY = y;
+							for (x = 0; x < 16; x++)
+								for (y = 0; y < 16; y++)
+									tempSprite[x + 16 * y] = BitmapCpc.spritesHard[numBank, numSprite, x, y];
+						}
+						else {
+							for (int x1 = 0; x1 < 16; x1++)
+								for (int y1 = 0; y1 < 16; y1++)
+									BitmapCpc.spritesHard[numBank, numSprite, x1, y1] = tempSprite[x1 + 16 * y1];
+
+							DrawLine(lineStartX, lineStartY, x, y, true);
+						}
 				}
 				else
 					if (e.Button == MouseButtons.Right) {
 						BitmapCpc.spritesHard[numBank, numSprite, x, y] = 0;
 						SetPixelSprite(x, y);
 					}
+					else
+						if (lineStartX != -1 && lineStartY != -1) {
+							for (int x1 = 0; x1 < 16; x1++)
+								for (int y1 = 0; y1 < 16; y1++)
+									BitmapCpc.spritesHard[numBank, numSprite, x1, y1] = tempSprite[x1 + 16 * y1];
+
+							DrawLine(lineStartX, lineStartY, x, y, true);
+							lineStartX = lineStartY = -1;
+						}
+
 				lblRectSelColor.Location = new Point(726, 78 + col * 40);
 			}
 			else

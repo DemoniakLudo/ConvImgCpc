@@ -60,9 +60,9 @@ namespace ConvImgCpc {
 										};
 		static public string CpcVGA = "TDU\\X]LEMVFW^@_NGORBSZY[JCK";
 
-		static public byte[,,] trameM1 = new byte[16, 4, 4];
+		static public byte[, ,] trameM1 = new byte[16, 4, 4];
 
-		static public byte[,,,] spritesHard = new byte[4, 16, 16, 16];
+		static public byte[, , ,] spritesHard = new byte[4, 16, 16, 16];
 		static public int[] paletteSprite = new int[16];
 
 		static public int modeVirtuel = 1;
@@ -412,45 +412,9 @@ namespace ConvImgCpc {
 				CreeImgAscii(bmpLock);
 		}
 
-		public Bitmap CreateImageFromCpc(int length, Param par, Main.PackMethode pkMethode, bool isSprite = false, ImageCpc imgCpc = null) {
-			if (!isSprite) {
-				if (bmpCpc[0] == 'M' && bmpCpc[1] == 'J' && bmpCpc[2] == 'H')
-					DepactOCP();
-				else
-					if (bmpCpc[0] == 'P' && bmpCpc[1] == 'K' && (bmpCpc[2] == 'O' || bmpCpc[2] == 'V' || bmpCpc[2] == 'S'))
-						DepactPK(pkMethode);
-					else {
-						if (!InitDatas()) {
-							if (length == 16384) {
-								nbCol = 80;
-								nbLig = 200;
-							}
-							else
-								if (length < 32000) {
-									try {
-										int l = new PackModule().Depack(bmpCpc, 0, bufTmp, Main.PackMethode.Standard);
-										Array.Copy(bufTmp, bmpCpc, l);
-									}
-									catch(Exception) { }
-									if (!InitDatas()) {
-										cpcPlus = false;
-										nbCol = maxColsCpc;
-										nbLig = maxLignesCpc;
-										SetPalette(bmpCpc, 0x600, cpcPlus);
-									}
-								}
-								else {
-									if (length > 0x4000) {
-										nbCol = maxColsCpc;
-										nbLig = maxLignesCpc;
-									}
-								}
-						}
-					}
-			}
-			par.cpcPlus = cpcPlus;
-			// Rendu dans un bitmap PC
-			DirectBitmap loc = new DirectBitmap(nbCol << 3, nbLig * 2);
+		// Rendu d'une image CPC dans un bitmap PC
+		public DirectBitmap DrawBitmap(int nbCol, int nbLig, bool isSprite = false, ImageCpc imgCpc = null) {
+			DirectBitmap loc = new DirectBitmap(nbCol << 3, nbLig << 1);
 			for (int y = 0; y < nbLig << 1; y += 2) {
 				int mode = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 				int adrCPC = isSprite ? nbCol * (y >> 1) : GetAdrCpc(y);
@@ -466,7 +430,7 @@ namespace ConvImgCpc {
 							loc.SetHorLineDouble(xBitmap + 4, y, 4, GetPalCPC(Palette[p1]));
 							if (imgCpc != null) {
 								imgCpc.SetPixelCpc(xBitmap, y, p0, 4);
-								imgCpc.SetPixelCpc(xBitmap+4, y, p1, 4);
+								imgCpc.SetPixelCpc(xBitmap + 4, y, p1, 4);
 							}
 							xBitmap += 8;
 							break;
@@ -490,7 +454,7 @@ namespace ConvImgCpc {
 							break;
 
 						case 2:
-							for (int i = 8; i-- > 0;) {
+							for (int i = 8; i-- > 0; ) {
 								p0 = (octet >> i) & 1;
 								loc.SetPixel(xBitmap, y, GetPalCPC(Palette[p0]));
 								loc.SetPixel(xBitmap++, y + 1, GetPalCPC(Palette[p0]));
@@ -505,7 +469,47 @@ namespace ConvImgCpc {
 				imgCpc.bitmapCpc.isCalc = true;
 				imgCpc.Render();
 			}
-			return (loc.Bitmap);
+			return (loc);
+		}
+
+		public DirectBitmap CreateImageFromCpc(int length, Param par, Main.PackMethode pkMethode, bool isSprite = false, ImageCpc imgCpc = null) {
+			if (!isSprite) {
+				if (bmpCpc[0] == 'M' && bmpCpc[1] == 'J' && bmpCpc[2] == 'H')
+					DepactOCP();
+				else
+					if (bmpCpc[0] == 'P' && bmpCpc[1] == 'K' && (bmpCpc[2] == 'O' || bmpCpc[2] == 'V' || bmpCpc[2] == 'S'))
+						DepactPK(pkMethode);
+					else {
+						if (!InitDatas()) {
+							if (length == 16384) {
+								nbCol = 80;
+								nbLig = 200;
+							}
+							else
+								if (length < 32000) {
+									try {
+										int l = new PackModule().Depack(bmpCpc, 0, bufTmp, Main.PackMethode.Standard);
+										Array.Copy(bufTmp, bmpCpc, l);
+									}
+									catch (Exception) { }
+									if (!InitDatas()) {
+										cpcPlus = false;
+										nbCol = maxColsCpc;
+										nbLig = maxLignesCpc;
+										SetPalette(bmpCpc, 0x600, cpcPlus);
+									}
+								}
+								else {
+									if (length > 0x4000) {
+										nbCol = maxColsCpc;
+										nbLig = maxLignesCpc;
+									}
+								}
+						}
+					}
+			}
+			par.cpcPlus = cpcPlus;
+			return DrawBitmap(nbCol, nbLig, isSprite, imgCpc);
 		}
 	}
 }

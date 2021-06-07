@@ -56,6 +56,7 @@
 			this.pictImpDraw = new System.Windows.Forms.PictureBox();
 			this.pictureBox = new System.Windows.Forms.PictureBox();
 			this.bpGenPal = new System.Windows.Forms.Button();
+			this.bpLoadWin = new System.Windows.Forms.Button();
 			this.grpEdition.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictImpDraw)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
@@ -148,6 +149,7 @@
 			// 
 			// grpEdition
 			// 
+			this.grpEdition.Controls.Add(this.bpLoadWin);
 			this.grpEdition.Controls.Add(this.rbPickColor);
 			this.grpEdition.Controls.Add(this.bpVerFlip);
 			this.grpEdition.Controls.Add(this.bpHorFlip);
@@ -408,6 +410,16 @@
 			this.bpGenPal.UseVisualStyleBackColor = true;
 			this.bpGenPal.Click += new System.EventHandler(this.bpGenPal_Click);
 			// 
+			// bpLoadWin
+			// 
+			this.bpLoadWin.Location = new System.Drawing.Point(68, 101);
+			this.bpLoadWin.Name = "bpLoadWin";
+			this.bpLoadWin.Size = new System.Drawing.Size(75, 23);
+			this.bpLoadWin.TabIndex = 20;
+			this.bpLoadWin.Text = "Load Win";
+			this.bpLoadWin.UseVisualStyleBackColor = true;
+			this.bpLoadWin.Click += new System.EventHandler(this.bpLoadWin_Click);
+			// 
 			// ImageCpc
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -481,5 +493,6 @@
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.Button bpGenPal;
+		private System.Windows.Forms.Button bpLoadWin;
 	}
 }

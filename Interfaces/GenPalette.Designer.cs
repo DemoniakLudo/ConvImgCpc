@@ -50,6 +50,7 @@
 			this.label4 = new System.Windows.Forms.Label();
 			this.label5 = new System.Windows.Forms.Label();
 			this.label6 = new System.Windows.Forms.Label();
+			this.bpGetCol = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.trkStartR)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.trkEndV)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.trkEndR)).BeginInit();
@@ -314,11 +315,22 @@
 			this.label6.TabIndex = 13;
 			this.label6.Text = "B";
 			// 
+			// bpGetCol
+			// 
+			this.bpGetCol.Location = new System.Drawing.Point(145, 6);
+			this.bpGetCol.Name = "bpGetCol";
+			this.bpGetCol.Size = new System.Drawing.Size(59, 23);
+			this.bpGetCol.TabIndex = 14;
+			this.bpGetCol.Text = "Get color";
+			this.bpGetCol.UseVisualStyleBackColor = true;
+			this.bpGetCol.Click += new System.EventHandler(this.bpGetCol_Click);
+			// 
 			// GenPalette
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(445, 351);
+			this.Controls.Add(this.bpGetCol);
 			this.Controls.Add(this.label6);
 			this.Controls.Add(this.label5);
 			this.Controls.Add(this.label4);
@@ -392,5 +404,6 @@
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.Button bpGetCol;
 	}
 }

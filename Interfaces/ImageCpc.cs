@@ -535,5 +535,31 @@ namespace ConvImgCpc {
 			}
 			Convert(false);
 		}
+
+		private void bpLoadWin_Click(object sender, EventArgs e) {
+			Enabled = false;
+			OpenFileDialog dlg = new OpenFileDialog();
+			dlg.Filter = " (*.win)|*.win";
+			DialogResult result = dlg.ShowDialog();
+			if (result == DialogResult.OK) {
+				FileStream fileScr = new FileStream(dlg.FileName, FileMode.Open, FileAccess.Read);
+				int l = (int)fileScr.Length;
+				byte[] tabRead = new byte[l];
+				fileScr.Read(tabRead, 0, l);
+				fileScr.Close();
+				if (CpcSystem.CheckAmsdos(tabRead)) {
+					imgMotif = new BitmapCpc(tabRead, 128).DrawBitmap((tabRead[l - 4] + (tabRead[l - 3] << 8)) >> 3, tabRead[l - 2], true);
+					if (zoom != 1) {
+						zoom = 1;
+						DoZoom();
+					}
+					imgCopy = new DirectBitmap(BmpLock.Width, BmpLock.Height);
+					imgCopy.CopyBits(BmpLock);
+					pictureBox.Image = imgCopy.Bitmap;
+					pictureBox.Refresh();
+				}
+			}
+			Enabled = true;
+		}
 	}
 }
