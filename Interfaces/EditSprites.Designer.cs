@@ -549,7 +549,6 @@
 			this.Name = "EditSprites";
 			this.ShowIcon = false;
 			this.Text = "Edition Sprites Hard";
-			this.Load += new System.EventHandler(this.EditSprites_Load);
 			((System.ComponentModel.ISupportInitialize)(this.zoomX)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.zoomY)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictAllSprites)).EndInit();
