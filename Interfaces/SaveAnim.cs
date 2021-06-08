@@ -416,12 +416,9 @@ namespace ConvImgCpc {
 					else
 						SaveAsm.GenereDrawDC(sw, withDelai, chkCol.Checked, gest128K, modeLigne == 8 ? 0x3F : modeLigne == 4 ? 0x1F : modeLigne == 2 ? 0xF : 0x7, optimSpeed);
 			}
-			if ((param.withPalette || param.withCode) && !chkDataBrut.Checked) {
-				if (BitmapCpc.cpcPlus)
-					SaveAsm.GenerePalettePlus(sw, img);
-				else
-					SaveAsm.GenerePaletteOld(sw, img);
-			}
+			if ((param.withPalette || param.withCode) && !chkDataBrut.Checked)
+				SaveAsm.GenerePalette(sw, img);
+			
 			int endBank0 = 0;
 			int lbank = 0, numBank = 0xC0;
 			for (int i = 0; i < posPack; i++) {

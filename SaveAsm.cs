@@ -362,26 +362,27 @@ namespace ConvImgCpc {
 			sw.WriteLine("	OUT	(C),C");
 		}
 
-		static public void GenerePaletteOld(StreamWriter sw, ImageCpc img) {
-			sw.WriteLine("Palette:");
-			string line = "\tDB\t";
-			for (int i = 0; i < 17; i++)
-				line += "#" + ((int)BitmapCpc.CpcVGA[BitmapCpc.Palette[i < BitmapCpc.MaxPen() ? i : 0]]).ToString("X2") + ",";
-
-			line += "#" + ((BitmapCpc.modeVirtuel == 7 ? 1 : BitmapCpc.modeVirtuel & 3) | 0x8C).ToString("X2");
-			sw.WriteLine(line);
-		}
-
-		static public void GenerePalettePlus(StreamWriter sw, ImageCpc img) {
-			sw.WriteLine("UnlockAsic:");
-			sw.WriteLine("	DB	#FF,#00,#FF,#77,#B3,#51,#A8,#D4,#62,#39,#9C,#46,#2B,#15,#8A,#CD,#EE");
-			sw.WriteLine("Palette:");
-			string line = "\tDB\t#" + ((BitmapCpc.modeVirtuel == 7 ? 1 : BitmapCpc.modeVirtuel & 3) | 0x8C).ToString("X2");
-			for (int i = 0; i < 17; i++) {
-				int c = BitmapCpc.Palette[i < BitmapCpc.MaxPen() ? i : 0];
-				line += ",#" + ((byte)(((c >> 4) & 0x0F) | (c << 4))).ToString("X2") + ",#" + ((byte)(c >> 8)).ToString("X2");
+		static public void GenerePalette(StreamWriter sw, ImageCpc img) {
+			if (BitmapCpc.cpcPlus) {
+				sw.WriteLine("UnlockAsic:");
+				sw.WriteLine("	DB	#FF,#00,#FF,#77,#B3,#51,#A8,#D4,#62,#39,#9C,#46,#2B,#15,#8A,#CD,#EE");
+				sw.WriteLine("Palette:");
+				string line = "\tDB\t#" + ((BitmapCpc.modeVirtuel == 7 ? 1 : BitmapCpc.modeVirtuel & 3) | 0x8C).ToString("X2");
+				for (int i = 0; i < 17; i++) {
+					int c = BitmapCpc.Palette[i < BitmapCpc.MaxPen() ? i : 0];
+					line += ",#" + ((byte)(((c >> 4) & 0x0F) | (c << 4))).ToString("X2") + ",#" + ((byte)(c >> 8)).ToString("X2");
+				}
+				sw.WriteLine(line);
 			}
-			sw.WriteLine(line);
+			else {
+				sw.WriteLine("Palette:");
+				string line = "\tDB\t";
+				for (int i = 0; i < 17; i++)
+					line += "#" + ((int)BitmapCpc.CpcVGA[BitmapCpc.Palette[i < BitmapCpc.MaxPen() ? i : 0]]).ToString("X2") + ",";
+
+				line += "#" + ((BitmapCpc.modeVirtuel == 7 ? 1 : BitmapCpc.modeVirtuel & 3) | 0x8C).ToString("X2");
+				sw.WriteLine(line);
+			}
 		}
 		#endregion
 
@@ -974,10 +975,6 @@ namespace ConvImgCpc {
 			sw.WriteLine("	EI");
 			sw.WriteLine("	RET");
 			GenereDepack(sw, pkMethode);
-			if (BitmapCpc.cpcPlus)
-				GenerePalettePlus(sw, img);
-			else
-				GenerePaletteOld(sw, img);
 		}
 
 		static public void GenereAfficheModeX(StreamWriter sw, int[,] colMode5, bool isOverscan, Main.PackMethode pkMethode) {

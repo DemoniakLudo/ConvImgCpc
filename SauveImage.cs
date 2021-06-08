@@ -597,6 +597,9 @@ namespace ConvImgCpc {
 								SaveAsm.GenereAfficheStd(sw, main.imgCpc, BitmapCpc.modeVirtuel, BitmapCpc.Palette, overscan, compact);
 						}
 					}
+					if (main.param.withPalette|| main.param.withCode)
+						SaveAsm.GenerePalette(sw, main.imgCpc);
+
 					SaveAsm.CloseAsm(sw);
 					break;
 
