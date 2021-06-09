@@ -433,10 +433,8 @@ namespace ConvImgCpc {
 			sw.WriteLine("Debut");
 			if (imageMode)
 				sw.WriteLine("LD	HL,Delta0");
-			else
+			else {
 				sw.WriteLine("	LD	IX,AnimDelta");
-
-			if (!imageMode) {
 				sw.WriteLine("Boucle:");
 				if (gest128K) {
 					sw.WriteLine("	LD	BC,#7FC0");
