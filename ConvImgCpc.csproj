@@ -276,6 +276,7 @@
     <Content Include="Icones\En.png" />
     <Content Include="Icones\Fr.png" />
     <Content Include="Icones\PickColor.png" />
+    <None Include="Resources\InversePalette.png" />
     <None Include="Icones\GenPalette.png" />
     <None Include="Icones\Next.png" />
     <None Include="Icones\Prev.png" />

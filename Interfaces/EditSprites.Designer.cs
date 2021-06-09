@@ -43,13 +43,18 @@
 			this.lblColSelR = new System.Windows.Forms.Label();
 			this.lblColSelV = new System.Windows.Forms.Label();
 			this.lblColSelB = new System.Windows.Forms.Label();
-			this.bpGenPal = new System.Windows.Forms.Button();
+			this.rb42Sprite = new System.Windows.Forms.RadioButton();
+			this.rbPt = new System.Windows.Forms.RadioButton();
+			this.rbLine = new System.Windows.Forms.RadioButton();
+			this.grpEdition = new System.Windows.Forms.GroupBox();
+			this.bpInversePalette = new System.Windows.Forms.Button();
 			this.bpVerticalFlip = new System.Windows.Forms.Button();
 			this.bpHorizontalFlip = new System.Windows.Forms.Button();
 			this.bpRotateSprite = new System.Windows.Forms.Button();
-			this.bpClearSprite = new System.Windows.Forms.Button();
 			this.bpPasteSprite = new System.Windows.Forms.Button();
 			this.bpCopySprite = new System.Windows.Forms.Button();
+			this.bpGenPal = new System.Windows.Forms.Button();
+			this.bpClearSprite = new System.Windows.Forms.Button();
 			this.bpClearBank = new System.Windows.Forms.Button();
 			this.bpSavePal = new System.Windows.Forms.Button();
 			this.bpReadPal = new System.Windows.Forms.Button();
@@ -61,11 +66,9 @@
 			this.pictAllSprites = new System.Windows.Forms.PictureBox();
 			this.pictEditSprite = new System.Windows.Forms.PictureBox();
 			this.pictTest = new System.Windows.Forms.PictureBox();
-			this.rb42Sprite = new System.Windows.Forms.RadioButton();
-			this.rbPt = new System.Windows.Forms.RadioButton();
-			this.rbLine = new System.Windows.Forms.RadioButton();
 			((System.ComponentModel.ISupportInitialize)(this.zoomX)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.zoomY)).BeginInit();
+			this.grpEdition.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictAllSprites)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictEditSprite)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictTest)).BeginInit();
@@ -275,6 +278,114 @@
 			this.lblColSelB.TabIndex = 25;
 			this.lblColSelB.Text = "B:00";
 			// 
+			// rb42Sprite
+			// 
+			this.rb42Sprite.AutoSize = true;
+			this.rb42Sprite.Location = new System.Drawing.Point(952, 189);
+			this.rb42Sprite.Name = "rb42Sprite";
+			this.rb42Sprite.Size = new System.Drawing.Size(53, 17);
+			this.rb42Sprite.TabIndex = 27;
+			this.rb42Sprite.Text = "2x2x4";
+			this.rb42Sprite.UseVisualStyleBackColor = true;
+			// 
+			// rbPt
+			// 
+			this.rbPt.AutoSize = true;
+			this.rbPt.Checked = true;
+			this.rbPt.Location = new System.Drawing.Point(8, 265);
+			this.rbPt.Name = "rbPt";
+			this.rbPt.Size = new System.Drawing.Size(49, 17);
+			this.rbPt.TabIndex = 28;
+			this.rbPt.TabStop = true;
+			this.rbPt.Text = "Point";
+			this.rbPt.UseVisualStyleBackColor = true;
+			// 
+			// rbLine
+			// 
+			this.rbLine.AutoSize = true;
+			this.rbLine.Location = new System.Drawing.Point(8, 288);
+			this.rbLine.Name = "rbLine";
+			this.rbLine.Size = new System.Drawing.Size(51, 17);
+			this.rbLine.TabIndex = 28;
+			this.rbLine.Text = "Ligne";
+			this.rbLine.UseVisualStyleBackColor = true;
+			// 
+			// grpEdition
+			// 
+			this.grpEdition.Controls.Add(this.rbLine);
+			this.grpEdition.Controls.Add(this.rbPt);
+			this.grpEdition.Controls.Add(this.bpVerticalFlip);
+			this.grpEdition.Controls.Add(this.bpHorizontalFlip);
+			this.grpEdition.Controls.Add(this.bpRotateSprite);
+			this.grpEdition.Controls.Add(this.bpPasteSprite);
+			this.grpEdition.Controls.Add(this.bpCopySprite);
+			this.grpEdition.Location = new System.Drawing.Point(-1, 292);
+			this.grpEdition.Name = "grpEdition";
+			this.grpEdition.Size = new System.Drawing.Size(79, 314);
+			this.grpEdition.TabIndex = 29;
+			this.grpEdition.TabStop = false;
+			this.grpEdition.Text = "Edition";
+			// 
+			// bpInversePalette
+			// 
+			this.bpInversePalette.Image = global::ConvImgCpc.Properties.Resources.InversePalette;
+			this.bpInversePalette.Location = new System.Drawing.Point(1026, 121);
+			this.bpInversePalette.Name = "bpInversePalette";
+			this.bpInversePalette.Size = new System.Drawing.Size(48, 48);
+			this.bpInversePalette.TabIndex = 30;
+			this.bpInversePalette.UseVisualStyleBackColor = true;
+			this.bpInversePalette.Click += new System.EventHandler(this.bpInversePalette_Click);
+			// 
+			// bpVerticalFlip
+			// 
+			this.bpVerticalFlip.Image = global::ConvImgCpc.Properties.Resources.Sprite_FlipV;
+			this.bpVerticalFlip.Location = new System.Drawing.Point(1, 162);
+			this.bpVerticalFlip.Name = "bpVerticalFlip";
+			this.bpVerticalFlip.Size = new System.Drawing.Size(75, 48);
+			this.bpVerticalFlip.TabIndex = 22;
+			this.bpVerticalFlip.UseVisualStyleBackColor = true;
+			this.bpVerticalFlip.Click += new System.EventHandler(this.bpVerticalFlip_Click);
+			// 
+			// bpHorizontalFlip
+			// 
+			this.bpHorizontalFlip.Image = global::ConvImgCpc.Properties.Resources.Sprite_FlipH;
+			this.bpHorizontalFlip.Location = new System.Drawing.Point(1, 113);
+			this.bpHorizontalFlip.Name = "bpHorizontalFlip";
+			this.bpHorizontalFlip.Size = new System.Drawing.Size(75, 48);
+			this.bpHorizontalFlip.TabIndex = 21;
+			this.bpHorizontalFlip.UseVisualStyleBackColor = true;
+			this.bpHorizontalFlip.Click += new System.EventHandler(this.bpHorizontalFlip_Click);
+			// 
+			// bpRotateSprite
+			// 
+			this.bpRotateSprite.Image = global::ConvImgCpc.Properties.Resources.Sprite_Rotate;
+			this.bpRotateSprite.Location = new System.Drawing.Point(1, 211);
+			this.bpRotateSprite.Name = "bpRotateSprite";
+			this.bpRotateSprite.Size = new System.Drawing.Size(75, 48);
+			this.bpRotateSprite.TabIndex = 20;
+			this.bpRotateSprite.UseVisualStyleBackColor = true;
+			this.bpRotateSprite.Click += new System.EventHandler(this.bpRotateSprite_Click);
+			// 
+			// bpPasteSprite
+			// 
+			this.bpPasteSprite.Image = global::ConvImgCpc.Properties.Resources.Sprite_Paste;
+			this.bpPasteSprite.Location = new System.Drawing.Point(1, 64);
+			this.bpPasteSprite.Name = "bpPasteSprite";
+			this.bpPasteSprite.Size = new System.Drawing.Size(75, 48);
+			this.bpPasteSprite.TabIndex = 18;
+			this.bpPasteSprite.UseVisualStyleBackColor = true;
+			this.bpPasteSprite.Click += new System.EventHandler(this.bpPasteSprite_Click);
+			// 
+			// bpCopySprite
+			// 
+			this.bpCopySprite.Image = global::ConvImgCpc.Properties.Resources.Sprite_Copy;
+			this.bpCopySprite.Location = new System.Drawing.Point(1, 15);
+			this.bpCopySprite.Name = "bpCopySprite";
+			this.bpCopySprite.Size = new System.Drawing.Size(75, 48);
+			this.bpCopySprite.TabIndex = 17;
+			this.bpCopySprite.UseVisualStyleBackColor = true;
+			this.bpCopySprite.Click += new System.EventHandler(this.bpCopySprite_Click);
+			// 
 			// bpGenPal
 			// 
 			this.bpGenPal.Image = global::ConvImgCpc.Properties.Resources.GenPalette;
@@ -285,36 +396,6 @@
 			this.bpGenPal.UseVisualStyleBackColor = true;
 			this.bpGenPal.Click += new System.EventHandler(this.bpGenPal_Click);
 			// 
-			// bpVerticalFlip
-			// 
-			this.bpVerticalFlip.Image = global::ConvImgCpc.Properties.Resources.Sprite_FlipV;
-			this.bpVerticalFlip.Location = new System.Drawing.Point(3, 474);
-			this.bpVerticalFlip.Name = "bpVerticalFlip";
-			this.bpVerticalFlip.Size = new System.Drawing.Size(75, 48);
-			this.bpVerticalFlip.TabIndex = 22;
-			this.bpVerticalFlip.UseVisualStyleBackColor = true;
-			this.bpVerticalFlip.Click += new System.EventHandler(this.bpVerticalFlip_Click);
-			// 
-			// bpHorizontalFlip
-			// 
-			this.bpHorizontalFlip.Image = global::ConvImgCpc.Properties.Resources.Sprite_FlipH;
-			this.bpHorizontalFlip.Location = new System.Drawing.Point(3, 425);
-			this.bpHorizontalFlip.Name = "bpHorizontalFlip";
-			this.bpHorizontalFlip.Size = new System.Drawing.Size(75, 48);
-			this.bpHorizontalFlip.TabIndex = 21;
-			this.bpHorizontalFlip.UseVisualStyleBackColor = true;
-			this.bpHorizontalFlip.Click += new System.EventHandler(this.bpHorizontalFlip_Click);
-			// 
-			// bpRotateSprite
-			// 
-			this.bpRotateSprite.Image = global::ConvImgCpc.Properties.Resources.Sprite_Rotate;
-			this.bpRotateSprite.Location = new System.Drawing.Point(3, 523);
-			this.bpRotateSprite.Name = "bpRotateSprite";
-			this.bpRotateSprite.Size = new System.Drawing.Size(75, 48);
-			this.bpRotateSprite.TabIndex = 20;
-			this.bpRotateSprite.UseVisualStyleBackColor = true;
-			this.bpRotateSprite.Click += new System.EventHandler(this.bpRotateSprite_Click);
-			// 
 			// bpClearSprite
 			// 
 			this.bpClearSprite.Image = global::ConvImgCpc.Properties.Resources.Sprite_Clear;
@@ -324,26 +405,6 @@
 			this.bpClearSprite.TabIndex = 19;
 			this.bpClearSprite.UseVisualStyleBackColor = true;
 			this.bpClearSprite.Click += new System.EventHandler(this.bpClearSprite_Click);
-			// 
-			// bpPasteSprite
-			// 
-			this.bpPasteSprite.Image = global::ConvImgCpc.Properties.Resources.Sprite_Paste;
-			this.bpPasteSprite.Location = new System.Drawing.Point(3, 376);
-			this.bpPasteSprite.Name = "bpPasteSprite";
-			this.bpPasteSprite.Size = new System.Drawing.Size(75, 48);
-			this.bpPasteSprite.TabIndex = 18;
-			this.bpPasteSprite.UseVisualStyleBackColor = true;
-			this.bpPasteSprite.Click += new System.EventHandler(this.bpPasteSprite_Click);
-			// 
-			// bpCopySprite
-			// 
-			this.bpCopySprite.Image = global::ConvImgCpc.Properties.Resources.Sprite_Copy;
-			this.bpCopySprite.Location = new System.Drawing.Point(3, 327);
-			this.bpCopySprite.Name = "bpCopySprite";
-			this.bpCopySprite.Size = new System.Drawing.Size(75, 48);
-			this.bpCopySprite.TabIndex = 17;
-			this.bpCopySprite.UseVisualStyleBackColor = true;
-			this.bpCopySprite.Click += new System.EventHandler(this.bpCopySprite_Click);
 			// 
 			// bpClearBank
 			// 
@@ -467,57 +528,20 @@
 			this.pictTest.TabIndex = 8;
 			this.pictTest.TabStop = false;
 			// 
-			// rb42Sprite
-			// 
-			this.rb42Sprite.AutoSize = true;
-			this.rb42Sprite.Location = new System.Drawing.Point(952, 189);
-			this.rb42Sprite.Name = "rb42Sprite";
-			this.rb42Sprite.Size = new System.Drawing.Size(53, 17);
-			this.rb42Sprite.TabIndex = 27;
-			this.rb42Sprite.Text = "2x2x4";
-			this.rb42Sprite.UseVisualStyleBackColor = true;
-			// 
-			// rbPt
-			// 
-			this.rbPt.AutoSize = true;
-			this.rbPt.Checked = true;
-			this.rbPt.Location = new System.Drawing.Point(10, 577);
-			this.rbPt.Name = "rbPt";
-			this.rbPt.Size = new System.Drawing.Size(49, 17);
-			this.rbPt.TabIndex = 28;
-			this.rbPt.TabStop = true;
-			this.rbPt.Text = "Point";
-			this.rbPt.UseVisualStyleBackColor = true;
-			// 
-			// rbLine
-			// 
-			this.rbLine.AutoSize = true;
-			this.rbLine.Location = new System.Drawing.Point(10, 600);
-			this.rbLine.Name = "rbLine";
-			this.rbLine.Size = new System.Drawing.Size(51, 17);
-			this.rbLine.TabIndex = 28;
-			this.rbLine.Text = "Ligne";
-			this.rbLine.UseVisualStyleBackColor = true;
-			// 
 			// EditSprites
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1305, 722);
-			this.Controls.Add(this.rbLine);
-			this.Controls.Add(this.rbPt);
+			this.Controls.Add(this.bpInversePalette);
+			this.Controls.Add(this.grpEdition);
 			this.Controls.Add(this.rb42Sprite);
 			this.Controls.Add(this.bpGenPal);
 			this.Controls.Add(this.lblPenLeft);
 			this.Controls.Add(this.lblColSelB);
 			this.Controls.Add(this.lblColSelV);
 			this.Controls.Add(this.lblColSelR);
-			this.Controls.Add(this.bpVerticalFlip);
-			this.Controls.Add(this.bpHorizontalFlip);
-			this.Controls.Add(this.bpRotateSprite);
 			this.Controls.Add(this.bpClearSprite);
-			this.Controls.Add(this.bpPasteSprite);
-			this.Controls.Add(this.bpCopySprite);
 			this.Controls.Add(this.bpClearBank);
 			this.Controls.Add(this.bpSavePal);
 			this.Controls.Add(this.bpReadPal);
@@ -544,6 +568,7 @@
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.label4);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.KeyPreview = true;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "EditSprites";
@@ -551,6 +576,8 @@
 			this.Text = "Edition Sprites Hard";
 			((System.ComponentModel.ISupportInitialize)(this.zoomX)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.zoomY)).EndInit();
+			this.grpEdition.ResumeLayout(false);
+			this.grpEdition.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictAllSprites)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictEditSprite)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictTest)).EndInit();
@@ -601,5 +628,7 @@
 		private System.Windows.Forms.RadioButton rb42Sprite;
 		private System.Windows.Forms.RadioButton rbPt;
 		private System.Windows.Forms.RadioButton rbLine;
+		private System.Windows.Forms.GroupBox grpEdition;
+		private System.Windows.Forms.Button bpInversePalette;
 	}
 }

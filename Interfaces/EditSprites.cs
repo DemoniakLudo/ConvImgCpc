@@ -64,6 +64,21 @@ namespace ConvImgCpc {
 			DrawSprite();
 		}
 
+		protected override bool ProcessCmdKey(ref Message msg, Keys keyData) {
+			switch (keyData) {
+				case Keys.Left:
+					if (bpPrev.Visible)
+						bpPrev_Click(null, null);
+					break;
+
+				case Keys.Right:
+					if (bpSuiv.Visible)
+						bpSuiv_Click(null, null);
+					break;
+			}
+			return base.ProcessCmdKey(ref msg, keyData);
+		}
+
 		// Changement de la palette
 		private void ClickColor(object sender, MouseEventArgs e) {
 			Label colorClick = sender as Label;
@@ -703,6 +718,23 @@ namespace ConvImgCpc {
 			else {
 				lblRectSelSprite.BackColor = Color.Red;
 			}
+		}
+
+		private void bpInversePalette_Click(object sender, EventArgs e) {
+			int[] tempPalette = new int[16];
+			for (int i = 1; i < 16; i++)
+				tempPalette[i] = BitmapCpc.paletteSprite[i];
+
+			for (int i = 1; i < 16; i++) {
+				BitmapCpc.paletteSprite[i] = tempPalette[16 - i];
+				int col = BitmapCpc.paletteSprite[i];
+				int r = ((col & 0x0F) * 17);
+				int v = (((col & 0xF00) >> 8) * 17);
+				int b = (((col & 0xF0) >> 4) * 17);
+				lblColors[i].BackColor = Color.FromArgb(r, v, b);
+			}
+			DrawMatrice();
+			DrawSprite();
 		}
 	}
 }
