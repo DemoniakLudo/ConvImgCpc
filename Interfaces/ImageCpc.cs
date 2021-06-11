@@ -84,7 +84,7 @@ namespace ConvImgCpc {
 				}
 			}
 			int tx = BitmapCpc.CalcTx();
-			int maxPen = BitmapCpc.MaxPen(2);
+			int maxPen = BitmapCpc.MaxPen(BitmapCpc.yEgx ^ 2);
 			for (int i = 0; i < 16; i++)
 				colors[i].Visible = lockColors[i].Visible = i < maxPen;
 
@@ -326,7 +326,7 @@ namespace ConvImgCpc {
 				maxSize = (BitmapCpc.TailleX * BitmapCpc.TailleY) >> 4;
 			else
 				if (maxSize >= 0x4000)
-					maxSize += 0x3800;
+				maxSize += 0x3800;
 
 			byte[] ret = new byte[maxSize];
 			Array.Clear(ret, 0, ret.Length);
@@ -464,7 +464,7 @@ namespace ConvImgCpc {
 		// Copier la palette dans le presse-papier
 		private void bpCopyPal_Click(object sender, EventArgs e) {
 			string palTxt = "";
-			int maxPen = BitmapCpc.MaxPen(2);
+			int maxPen = BitmapCpc.MaxPen(BitmapCpc.yEgx ^ 2);
 			for (int i = 0; i < maxPen; i++) {
 				int val = BitmapCpc.Palette[i];
 				string valStr = BitmapCpc.cpcPlus ? ("&" + val.ToString("X3")) : val.ToString();

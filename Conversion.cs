@@ -547,7 +547,7 @@ namespace ConvImgCpc {
 
 			// Modes EGX ?
 			if (BitmapCpc.modeVirtuel == 3 || BitmapCpc.modeVirtuel == 4) {
-				int newMax = BitmapCpc.MaxPen(0);
+				int newMax = BitmapCpc.MaxPen(BitmapCpc.yEgx);
 				RechercheCMax(newMax, MemoLockState, prm);
 				for (i = 0; i < newMax; i++)
 					MemoLockState[i] = 1;

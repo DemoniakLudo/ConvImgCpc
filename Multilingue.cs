@@ -89,6 +89,8 @@ namespace ConvImgCpc {
 			dic.Add("Main.label13.EN", "Compression method");
 			dic.Add("Main.bpCheckMaj.FR", "Vérifier mise à jour");
 			dic.Add("Main.bpCheckMaj.EN", "Check for update");
+			dic.Add("Main.chkSwapEgx.FR", "Inverser l'ordre des modes");
+			dic.Add("Main.chkSwapEgx.EN", "Reverse modes order");
 
 			// --- Libellés du programme
 			dic.Add("Main.Prg.TxtInfo1.FR", "Conversion en cours...");

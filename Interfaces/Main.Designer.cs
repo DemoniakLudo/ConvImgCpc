@@ -34,6 +34,7 @@
 			this.methode = new System.Windows.Forms.ComboBox();
 			this.pctTrame = new System.Windows.Forms.NumericUpDown();
 			this.resoCPC = new System.Windows.Forms.GroupBox();
+			this.chkSwapEgx = new System.Windows.Forms.CheckBox();
 			this.bpCalcSprite = new System.Windows.Forms.Button();
 			this.bpEditTrame = new System.Windows.Forms.Button();
 			this.trackModeX = new System.Windows.Forms.TrackBar();
@@ -268,6 +269,7 @@
 			// 
 			// resoCPC
 			// 
+			this.resoCPC.Controls.Add(this.chkSwapEgx);
 			this.resoCPC.Controls.Add(this.bpCalcSprite);
 			this.resoCPC.Controls.Add(this.bpEditTrame);
 			this.resoCPC.Controls.Add(this.trackModeX);
@@ -285,6 +287,18 @@
 			this.resoCPC.TabIndex = 11;
 			this.resoCPC.TabStop = false;
 			this.resoCPC.Text = "CPC resolution";
+			// 
+			// chkSwapEgx
+			// 
+			this.chkSwapEgx.AutoSize = true;
+			this.chkSwapEgx.Location = new System.Drawing.Point(2, 151);
+			this.chkSwapEgx.Name = "chkSwapEgx";
+			this.chkSwapEgx.Size = new System.Drawing.Size(73, 17);
+			this.chkSwapEgx.TabIndex = 14;
+			this.chkSwapEgx.Text = "swapEGX";
+			this.chkSwapEgx.UseVisualStyleBackColor = true;
+			this.chkSwapEgx.Visible = false;
+			this.chkSwapEgx.CheckedChanged += new System.EventHandler(this.chkSwapEGX_CheckedChanged);
 			// 
 			// bpCalcSprite
 			// 
@@ -1207,7 +1221,7 @@
 			this.comboPackMethode.Items.AddRange(new object[] {
             "ZX0",
             "ZX1",
-			"Standard"});
+            "Standard"});
 			this.comboPackMethode.Location = new System.Drawing.Point(145, 166);
 			this.comboPackMethode.Name = "comboPackMethode";
 			this.comboPackMethode.Size = new System.Drawing.Size(90, 21);
@@ -1374,6 +1388,7 @@
 		private System.Windows.Forms.Button bpCheckMaj;
 		private System.Windows.Forms.Label label13;
 		private System.Windows.Forms.ComboBox comboPackMethode;
+		private System.Windows.Forms.CheckBox chkSwapEgx;
 	}
 }
 

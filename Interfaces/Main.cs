@@ -590,6 +590,7 @@ namespace ConvImgCpc {
 			BitmapCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex;
 			trackModeX.Visible = mode.SelectedIndex == 5 || mode.SelectedIndex == 6;
 			bpEditTrame.Visible = mode.SelectedIndex == 7;
+			chkSwapEgx.Visible = mode.SelectedIndex == 3 || mode.SelectedIndex == 4;
 			if (!doNotReset) {
 				imgCpc.Reset(true);
 				Convert(false);
@@ -1080,6 +1081,11 @@ namespace ConvImgCpc {
 
 		private void bpCheckMaj_Click(object sender, EventArgs e) {
 			CheckMaj();
+		}
+
+		private void chkSwapEGX_CheckedChanged(object sender, EventArgs e) {
+			BitmapCpc.yEgx = chkSwapEgx.Checked ? 2 : 0;
+			Convert(false);
 		}
 	}
 }

@@ -80,6 +80,7 @@ namespace ConvImgCpc {
 			set { nbLig = value >> 1; }
 		}
 		static public int BitmapSize { get { return nbCol + GetAdrCpc((TailleY & 0x3F8) - 2); } }
+		static public int yEgx = 0;
 
 		public bool isCalc = false;
 
@@ -195,7 +196,7 @@ namespace ConvImgCpc {
 		}
 
 		static public int CalcTx(int y = 0) {
-			return 8 >> (modeVirtuel == 11 ? 2 : modeVirtuel == 8 ? 0 : modeVirtuel > 8 ? modeVirtuel - 8 : modeVirtuel >= 5 ? 2 : modeVirtuel > 2 ? ((y & 2) == 0 ? modeVirtuel - 1 : modeVirtuel - 2) : modeVirtuel + 1);
+			return 8 >> (modeVirtuel == 11 ? 2 : modeVirtuel == 8 ? 0 : modeVirtuel > 8 ? modeVirtuel - 8 : modeVirtuel >= 5 ? 2 : modeVirtuel > 2 ? ((y & 2) == yEgx ? modeVirtuel - 1 : modeVirtuel - 2) : modeVirtuel + 1);
 		}
 
 		static public int MaxPen(int y = 0) {
@@ -206,7 +207,7 @@ namespace ConvImgCpc {
 					return 1 << (4 >> modeVirtuel);
 				case 3:
 				case 4:
-					return 1 << (4 >> ((y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3));
+					return 1 << (4 >> ((y & 2) == yEgx ? modeVirtuel - 2 : modeVirtuel - 3));
 				case 5:
 					return 4;
 				case 6:
@@ -416,7 +417,7 @@ namespace ConvImgCpc {
 		public DirectBitmap DrawBitmap(int nbCol, int nbLig, bool isSprite = false, ImageCpc imgCpc = null) {
 			DirectBitmap loc = new DirectBitmap(nbCol << 3, nbLig << 1);
 			for (int y = 0; y < nbLig << 1; y += 2) {
-				int mode = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == 0 ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
+				int mode = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (y & 2) ==yEgx ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 				int adrCPC = isSprite ? nbCol * (y >> 1) : GetAdrCpc(y);
 				int xBitmap = 0;
 				int p0, p1, p2, p3;

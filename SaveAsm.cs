@@ -1102,7 +1102,14 @@ namespace ConvImgCpc {
 			sw.WriteLine("	RRA");
 			sw.WriteLine("	JR	C,WaitEnd");
 			sw.WriteLine("	LD	HL,#012F");
-			sw.WriteLine("	LD	DE,#8C01");
+			int mode = 0x8C01;
+			if (BitmapCpc.modeVirtuel == 4)
+				mode = 0x8D03;
+
+			if (BitmapCpc.yEgx == 2)
+				mode += 0x100;
+
+			sw.WriteLine("	LD	DE,#" + mode.ToString("X4"));
 			sw.WriteLine("SetMode:");
 			sw.WriteLine("	LD	B,#7F");
 			sw.WriteLine("	OUT	(C),D			; Premier mode pour les lignes paires");

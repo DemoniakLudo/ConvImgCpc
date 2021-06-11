@@ -467,6 +467,17 @@ namespace ConvImgCpc {
 				}
 			}
 
+			if (BitmapCpc.modeVirtuel == 3 || BitmapCpc.modeVirtuel == 4) {
+				int mode = 0x8C01;
+				if (BitmapCpc.modeVirtuel == 4)
+					mode = 0x8D03;
+
+				if (BitmapCpc.yEgx == 2)
+					mode += 0x100;
+
+				codeEgx0[20] = (byte)(mode & 0xFF);
+				codeEgx0[21] = (byte)(mode >> 8);
+			}
 			byte[] imgCpc = bitmapCpc.bmpCpc;
 			if (!overscan) {
 				Buffer.BlockCopy(ModePal, 0, imgCpc, 0x17D0, ModePal.Length);
@@ -596,7 +607,7 @@ namespace ConvImgCpc {
 								SaveAsm.GenereAfficheStd(sw, main.imgCpc, BitmapCpc.modeVirtuel, BitmapCpc.Palette, overscan, compact);
 						}
 					}
-					if (main.param.withPalette || main.param.withCode)
+					if ((main.param.withPalette || main.param.withCode) && (BitmapCpc.modeVirtuel < 3 || BitmapCpc.modeVirtuel > 5))
 						SaveAsm.GenerePalette(sw, main.imgCpc);
 
 					SaveAsm.CloseAsm(sw);
