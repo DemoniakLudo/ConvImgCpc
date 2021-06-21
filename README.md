@@ -1,4 +1,4 @@
-# ConvImgCpc
+# ConvImgCpc Amstrad CPC
 
 ConvImgCpc is a Windows program that allows you to convert pictures to différent CPC screen format:
 - Mode 0 (160x200), 16 colors,
