@@ -14,7 +14,7 @@ namespace ConvImgCpc {
 		public Param param = new Param();
 		private MemoryStream imageStream;
 		private Informations info = new Informations();
-		private Animation anim;
+		public Animation anim;
 		private ParamInterne paramInterne;
 		public Multilingue multilingue = new Multilingue();
 		public enum PackMethode { None = 0, Standard, ZX0, ZX1 };

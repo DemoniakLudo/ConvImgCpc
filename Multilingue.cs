@@ -207,6 +207,8 @@ namespace ConvImgCpc {
 			dic.Add("Animation.bpPlay.EN", "Play anim");
 			dic.Add("Animation.bpStop.FR", "Arrêt anim");
 			dic.Add("Animation.bpStop.EN", "Stop anim");
+			dic.Add("Animation.bpDel1_2.FR", "Supprimer 1 image sur 2");
+			dic.Add("Animation.bpDel1_2.EN", "Delete 1 of 2 images");
 
 			// Capture
 			dic.Add("Capture.rbCapt1.FR", "Capturer 1 sprite");

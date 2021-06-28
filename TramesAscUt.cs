@@ -1,5 +1,5 @@
 ﻿namespace ConvImgCpc {
-	public partial class BitmapCpc {
+	public partial class BitmapBase {
 
 		static public byte[,,,] TramesAscUt = {
 {

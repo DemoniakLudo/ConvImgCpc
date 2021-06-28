@@ -336,12 +336,13 @@ namespace ConvImgCpc {
 			}
 			else
 				if (chkDirecMem.Checked)
-					return PackDirectMem(bufOut, ref sizeDepack, true, razDiff);
-				else
-					return PackWinDC(bufOut, ref sizeDepack, topBottom, razDiff, modeLigne, optimSpeed);
+				return PackDirectMem(bufOut, ref sizeDepack, true, razDiff);
+			else
+				return PackWinDC(bufOut, ref sizeDepack, topBottom, razDiff, modeLigne, optimSpeed);
 		}
 		#endregion
 
+		// Sauvegarde de l'animation
 		private void SauveDeltaPack(int adrDeb, int adrMax, bool withDelai, int modeLigne, bool imageMode, bool optimSpeed, Main.PackMethode methode) {
 			int sizeDepack = 0;
 			int nbImages = img.main.GetMaxImages();
@@ -369,6 +370,7 @@ namespace ConvImgCpc {
 			}
 
 			img.main.SetInfo("Début sauvegarde animation assembleur...");
+			img.main.Enabled = img.main.anim.Enabled = img.Enabled = false;
 			for (int i = 0; i < (imageMode ? 1 : nbImages); i++) {
 				if (!imageMode) {
 					img.main.SelectImage(i, true);
@@ -412,13 +414,13 @@ namespace ConvImgCpc {
 					SaveAsm.GenereDrawAscii(sw, rbFrameFull.Checked, rbFrameO.Checked, rbFrameD.Checked, gest128K, imageMode, withDelai);
 				else
 					if (chkDirecMem.Checked)
-						SaveAsm.GenereDrawDirect(sw, gest128K);
-					else
-						SaveAsm.GenereDrawDC(sw, withDelai, chkCol.Checked, gest128K, modeLigne == 8 ? 0x3F : modeLigne == 4 ? 0x1F : modeLigne == 2 ? 0xF : 0x7, optimSpeed);
+					SaveAsm.GenereDrawDirect(sw, gest128K);
+				else
+					SaveAsm.GenereDrawDC(sw, withDelai, chkCol.Checked, gest128K, modeLigne == 8 ? 0x3F : modeLigne == 4 ? 0x1F : modeLigne == 2 ? 0xF : 0x7, optimSpeed);
 			}
 			if ((param.withPalette || param.withCode) && !chkDataBrut.Checked)
 				SaveAsm.GenerePalette(sw, img);
-			
+
 			int endBank0 = 0;
 			int lbank = 0, numBank = 0xC0;
 			for (int i = 0; i < posPack; i++) {
@@ -466,6 +468,7 @@ namespace ConvImgCpc {
 				img.main.SetInfo("Sauvegarde animation assembleur ok.");
 
 			GC.Collect();
+			img.main.Enabled = img.main.anim.Enabled = img.Enabled = true;
 		}
 
 		private void chkMaxMem_CheckedChanged(object sender, EventArgs e) {

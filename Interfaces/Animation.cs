@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -22,7 +21,8 @@ namespace ConvImgCpc {
 
 		public void SetNbImgs(int nbImg, int tps) {
 			lblMaxImage.Text = main.multilingue.GetString("Animation.lblMaxImage") + nbImg;
-			lblMaxImage.Visible = lblNumImage.Visible = numImage.Visible = nbImg > 1;
+			lblMaxImage.Visible = lblNumImage.Visible = numImage.Visible = bpDel1_2.Visible = nbImg > 1;
+
 			numImage.Maximum = nbImg - 1;
 			numImage.Value = hScrollBar1.Value = 0;
 			Text = nbImg > 1 ? "Animation" : "Image";
@@ -70,7 +70,7 @@ namespace ConvImgCpc {
 
 		private void bpSup_Click(object sender, EventArgs e) {
 			int num = (int)numImage.Value;
-			int index = System.Convert.ToInt32(((Button)sender).Tag) + num;
+			int index = Convert.ToInt32(((Button)sender).Tag) + num;
 			main.imgSrc.DeleteImage(index);
 			numImage.Maximum = main.imgSrc.NbImg - 1;
 			main.SetInfo("Suppression image " + index);
@@ -80,7 +80,7 @@ namespace ConvImgCpc {
 
 		private void pictureBox_Click(object sender, EventArgs e) {
 			int num = (int)numImage.Value;
-			int index = System.Convert.ToInt32(((PictureBox)sender).Tag) + num;
+			int index = Convert.ToInt32(((PictureBox)sender).Tag) + num;
 			if (index <= numImage.Maximum)
 				numImage.Value = index;
 		}
@@ -169,6 +169,18 @@ namespace ConvImgCpc {
 			bpPlay.Enabled = true;
 			bpStop.Enabled = timer1.Enabled = false;
 			main.Enabled = main.imgCpc.Enabled = true;
+		}
+
+		private void bpDel1_2_Click(object sender, EventArgs e) {
+			for (int i = main.imgSrc.NbImg - 1; i > 0; i = i - 2) {
+				main.imgSrc.DeleteImage(i);
+				numImage.Maximum = main.imgSrc.NbImg - 1;
+				main.SetInfo("Suppression image " + i);
+			}
+			lblMaxImage.Text = main.multilingue.GetString("Animation.lblMaxImage") + main.imgSrc.NbImg;
+			main.SelectImage(0);
+			lblMaxImage.Visible = lblNumImage.Visible = numImage.Visible = bpDel1_2.Visible = bpPlay.Enabled = main.imgSrc.NbImg > 1;
+			numImage.Value = 0;
 		}
 
 		private void Animation_FormClosing(object sender, FormClosingEventArgs e) {

@@ -49,6 +49,7 @@
 			this.bpPlay = new System.Windows.Forms.Button();
 			this.bpStop = new System.Windows.Forms.Button();
 			this.timer1 = new System.Windows.Forms.Timer(this.components);
+			this.bpDel1_2 = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -319,12 +320,23 @@
 			this.timer1.Interval = 10;
 			this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
 			// 
+			// bpDel1_2
+			// 
+			this.bpDel1_2.Location = new System.Drawing.Point(574, 43);
+			this.bpDel1_2.Name = "bpDel1_2";
+			this.bpDel1_2.Size = new System.Drawing.Size(142, 23);
+			this.bpDel1_2.TabIndex = 72;
+			this.bpDel1_2.UseVisualStyleBackColor = true;
+			this.bpDel1_2.Visible = false;
+			this.bpDel1_2.Click += new System.EventHandler(this.bpDel1_2_Click);
+			// 
 			// Animation
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(718, 267);
 			this.ControlBox = false;
+			this.Controls.Add(this.bpDel1_2);
 			this.Controls.Add(this.bpStop);
 			this.Controls.Add(this.bpPlay);
 			this.Controls.Add(this.txbTps5);
@@ -394,5 +406,6 @@
 		private System.Windows.Forms.Button bpPlay;
 		private System.Windows.Forms.Button bpStop;
 		private System.Windows.Forms.Timer timer1;
+		private System.Windows.Forms.Button bpDel1_2;
 	}
 }

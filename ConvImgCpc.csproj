@@ -59,6 +59,13 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BitmapBase.cs" />
+    <Compile Include="Conversion\ConvertAscii.cs" />
+    <Compile Include="Conversion\ConvertAscUt.cs" />
+    <Compile Include="Conversion\ConvertBase.cs" />
+    <Compile Include="Conversion\ConvertModeX.cs" />
+    <Compile Include="Conversion\ConvertSplit.cs" />
+    <Compile Include="Conversion\ConvertStd.cs" />
     <Compile Include="Interfaces\GenPalette.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,7 +99,6 @@
       <DependentUpon>Animation.cs</DependentUpon>
     </Compile>
     <Compile Include="BitmapCpc.cs" />
-    <Compile Include="Conversion.cs" />
     <Compile Include="GestCPC\CpcSystem.cs" />
     <Compile Include="Interfaces\Informations.cs">
       <SubType>Form</SubType>
