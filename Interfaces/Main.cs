@@ -232,46 +232,46 @@ namespace ConvImgCpc {
 					}
 					else
 						if (isScrImp) {
-						BitmapCpc bmp = new BitmapCpc(tabBytes, 0x110);
-						if (singlePicture)
-							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap, imgCpc.selImage);
-						else {
-							doNotReset = true;
-							BitmapCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = tabBytes[0x94] - 0x0E;
-							BitmapCpc.TailleX = 768;
-							nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
-							BitmapCpc.TailleY = 544;
-							nbCols.Value = param.nbCols = BitmapCpc.NbCol;
-							BitmapCpc.cpcPlus = tabBytes[0xBC] != 0;
-							if (BitmapCpc.cpcPlus) {
-								// Palette en 0x0711;
-								for (int i = 0; i < 16; i++)
-									BitmapCpc.Palette[i] = ((tabBytes[0x0711 + (i << 1)] << 4) & 0xF0) + (tabBytes[0x0711 + (i << 1)] >> 4) + (tabBytes[0x0712 + (i << 1)] << 8);
-							}
+							BitmapCpc bmp = new BitmapCpc(tabBytes, 0x110);
+							if (singlePicture)
+								imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap, imgCpc.selImage);
 							else {
-								// Palette en 0x7E10
-								for (int i = 0; i < 16; i++)
-									BitmapCpc.Palette[i] = BitmapCpc.CpcVGA.IndexOf((char)tabBytes[0x7E10 + i]);
+								doNotReset = true;
+								BitmapCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = tabBytes[0x94] - 0x0E;
+								BitmapCpc.TailleX = 768;
+								nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
+								BitmapCpc.TailleY = 544;
+								nbCols.Value = param.nbCols = BitmapCpc.NbCol;
+								BitmapCpc.cpcPlus = tabBytes[0xBC] != 0;
+								if (BitmapCpc.cpcPlus) {
+									// Palette en 0x0711;
+									for (int i = 0; i < 16; i++)
+										BitmapCpc.Palette[i] = ((tabBytes[0x0711 + (i << 1)] << 4) & 0xF0) + (tabBytes[0x0711 + (i << 1)] >> 4) + (tabBytes[0x0712 + (i << 1)] << 8);
+								}
+								else {
+									// Palette en 0x7E10
+									for (int i = 0; i < 16; i++)
+										BitmapCpc.Palette[i] = BitmapCpc.CpcVGA.IndexOf((char)tabBytes[0x7E10 + i]);
+								}
+								imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap);
 							}
-							imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap);
 						}
-					}
-					else {
-						BitmapCpc bmp = new BitmapCpc(tabBytes, 0x80);
-						if (singlePicture)
-							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap, imgCpc.selImage);
 						else {
-							doNotReset = true;
-							imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap);
-							nbCols.Value = param.nbCols = BitmapCpc.NbCol;
-							BitmapCpc.TailleX = param.nbCols << 3;
-							nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
-							BitmapCpc.TailleY = param.nbLignes << 1;
-							param.modeVirtuel = mode.SelectedIndex = BitmapCpc.modeVirtuel;
-							modePlus.Checked = BitmapCpc.cpcPlus;
+							BitmapCpc bmp = new BitmapCpc(tabBytes, 0x80);
+							if (singlePicture)
+								imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap, imgCpc.selImage);
+							else {
+								doNotReset = true;
+								imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap);
+								nbCols.Value = param.nbCols = BitmapCpc.NbCol;
+								BitmapCpc.TailleX = param.nbCols << 3;
+								nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
+								BitmapCpc.TailleY = param.nbLignes << 1;
+								param.modeVirtuel = mode.SelectedIndex = BitmapCpc.modeVirtuel;
+								modePlus.Checked = BitmapCpc.cpcPlus;
+							}
+							SetInfo(multilingue.GetString("Main.prg.TxtInfo3"));
 						}
-						SetInfo(multilingue.GetString("Main.prg.TxtInfo3"));
-					}
 				}
 				else {
 					imageStream = new MemoryStream(tabBytes);
@@ -501,7 +501,8 @@ namespace ConvImgCpc {
 							+ multilingue.GetString("Main.prg.TxtInfo19") + "Paramètres (.xml)|*.xml|"                      //	11
 							+ multilingue.GetString("Main.prg.TxtInfo18") + " (.pal)|*.pal"                                 //	12
 							+ (BitmapCpc.cpcPlus ? ("|" + multilingue.GetString("Main.prg.TxtInfo27") + " (.kit)|*.kit") : "")  //	13
-							+ (BitmapCpc.modeVirtuel == 3 || BitmapCpc.modeVirtuel == 4 ? ("|" + multilingue.GetString("Main.prg.TxtInfo28") + " (.scr)|*.scr") : "");  //	14
+							+ (BitmapCpc.modeVirtuel == 3 || BitmapCpc.modeVirtuel == 4 ? ("|" + multilingue.GetString("Main.prg.TxtInfo28") + " (.scr)|*.scr") : "")	//	14
+							+ "|Bump (*.asm)| *.asm";  //	15
 
 			dlg.Filter = filter;
 			DialogResult result = dlg.ShowDialog();
@@ -560,7 +561,10 @@ namespace ConvImgCpc {
 						if (BitmapCpc.cpcPlus && dlg.FilterIndex == 13)
 							SavePaletteKit(dlg.FileName, BitmapCpc.Palette);
 						else
-							imgCpc.SauveEgx(dlg.FileName);
+							if (BitmapCpc.modeVirtuel == 3 || BitmapCpc.modeVirtuel == 4)
+								imgCpc.SauveEgx(dlg.FileName);
+							else
+								imgCpc.SauvBump(dlg.FileName, lblInfoVersion.Text);
 						break;
 				}
 				param.lastSavePath = Path.GetDirectoryName(dlg.FileName);
@@ -670,7 +674,7 @@ namespace ConvImgCpc {
 						ymin = y;
 				}
 				// Calcule xMax
-				for (int x = bmp.Width; --x > 0;) {
+				for (int x = bmp.Width; --x > 0; ) {
 					for (int y = 0; y < bmp.Height; y++) {
 						if ((bmp.GetPixel(x, y).ToArgb() & 0xFFFFFF) > 0) {
 							y = bmp.Height;
@@ -681,7 +685,7 @@ namespace ConvImgCpc {
 						xmax = x;
 				}
 				// Calcule yMax;
-				for (int y = bmp.Height; --y > 0;) {
+				for (int y = bmp.Height; --y > 0; ) {
 					for (int x = 0; x < bmp.Width; x++) {
 						if ((bmp.GetPixel(x, y).ToArgb() & 0xFFFFFF) > 0) {
 							y = 0;

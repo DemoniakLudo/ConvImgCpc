@@ -11,3 +11,5 @@ V1.0.7815 (25/05/2021) :	- Ajout sauvegarde images directement sur fichier DSK (
 							- Corrections de buggs
 							- Sauvegarde images en mode ASCII (ASC0, ASC1, ASC2 et ASC-UT) en source assembleur
 							- 8 trames ASC-UT prédéfinies et recopiables dans la trame en cours d'utilisation
+V1.0.7832 (11/06/2021) :	- Amélioration du module d'édition de sprites hard (CPC+)
+							- Permettre d'inverser l'ordre d'affchage des lignes de modes pour les modes EGX

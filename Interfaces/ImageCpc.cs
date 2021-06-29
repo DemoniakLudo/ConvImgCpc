@@ -324,7 +324,7 @@ namespace ConvImgCpc {
 				maxSize = (BitmapBase.TailleX * BitmapBase.TailleY) >> 4;
 			else
 				if (maxSize >= 0x4000)
-				maxSize += 0x3800;
+					maxSize += 0x3800;
 
 			byte[] ret = new byte[maxSize];
 			Array.Clear(ret, 0, ret.Length);
@@ -339,7 +339,7 @@ namespace ConvImgCpc {
 							RvbColor col = BmpLock.GetPixelColor(x + p, y);
 							if (BitmapBase.cpcPlus) {
 								for (pen = 0; pen < 16; pen++) {
-									if ((col.v >> 4) == (BitmapBase.Palette[pen] >> 8) && (col.r >> 4) == ((BitmapBase.Palette[pen] >> 4) & 0x0F) && (col.b >> 4) == (BitmapBase.Palette[pen] & 0x0F))
+									if ((col.v >> 4) == (BitmapBase.Palette[pen] >> 8) && (col.b >> 4) == ((BitmapBase.Palette[pen] >> 4) & 0x0F) && (col.r >> 4) == (BitmapBase.Palette[pen] & 0x0F))
 										break;
 								}
 							}
@@ -366,6 +366,36 @@ namespace ConvImgCpc {
 				MessageBox.Show("Les animations avec des écrans de plus de 16ko ne sont pas supportés...");
 			else
 				new SaveAnim(main, fileName, version, pkMethode).ShowDialog();
+		}
+
+		public void SauvBump(string fileName, string version) {
+			RvbColor c2 = new RvbColor(0);
+			int posx = 0;
+			byte[] bump = new byte[BitmapBase.TailleY * BitmapBase.TailleX / 64];
+			for (int y = 0; y < BitmapBase.TailleY; y += 8) {
+				for (int x = 0; x < BitmapBase.TailleX; x += 8) {
+					byte pen = 0;
+					RvbColor col = BmpLock.GetPixelColor(x, y);
+					if (BitmapBase.cpcPlus) {
+						for (pen = 0; pen < 16; pen++) {
+							if ((col.v >> 4) == (BitmapBase.Palette[pen] >> 8) && (col.b >> 4) == ((BitmapBase.Palette[pen] >> 4) & 0x0F) && (col.r >> 4) == (BitmapBase.Palette[pen] & 0x0F))
+								break;
+						}
+					}
+					else {
+						for (pen = 0; pen < 16; pen++) {
+							RvbColor fixedCol = BitmapBase.RgbCPC[BitmapBase.Palette[pen]];
+							if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
+								break;
+						}
+					}
+					bump[posx++] = pen;
+				}
+			}
+			StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
+			SaveAsm.GenereDatas(sw, bump, bump.Length, 16);
+			SaveAsm.CloseAsm(sw);
+			main.SetInfo("Sauvegarde bump ok.");
 		}
 
 		public void LirePalette(string fileName, Param param) {
