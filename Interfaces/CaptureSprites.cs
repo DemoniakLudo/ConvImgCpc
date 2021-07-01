@@ -15,8 +15,8 @@ namespace ConvImgCpc {
 				if (e.Button == MouseButtons.Left)
 					fenetreCapture.SetCapture(BmpLock, captx, capty);
 			}
-			captx = e.X & 0xFFE;
-			capty = e.Y & 0xFFE;
+			captx = e.X / (chkX2.Checked ? 2 : 1) & 0xFFE;
+			capty = e.Y / (chkX2.Checked ? 2 : 1) & 0xFFE;
 			XorDrawing.DrawXorRectangle(g, (Bitmap)pictureBox.Image, captx, capty, captx + sprSize, capty + sprSize);
 			pictureBox.Refresh();
 		}

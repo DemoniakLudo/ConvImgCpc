@@ -6,6 +6,7 @@ namespace ConvImgCpc {
 		private int captSize = 1;
 		public int CaptSize { get { return captSize; } }
 		private DirectBitmap bmp = new DirectBitmap(512, 512);
+		private Main main;
 
 		public Capture(Main m) {
 			InitializeComponent();
@@ -13,6 +14,7 @@ namespace ConvImgCpc {
 			RazCapture();
 			comboBanque.SelectedIndex = 0;
 			m.ChangeLanguage(Controls, "Capture");
+			main = m;
 		}
 
 		private void RazCapture() {
@@ -23,14 +25,7 @@ namespace ConvImgCpc {
 		}
 
 		public void SetCapture(DirectBitmap src, int posx, int posy) {
-			int sprSize = CaptSize << 5;
-			for (int x = 0; x < sprSize; x += 2)
-				for (int y = 0; y < sprSize; y += 2) {
-					int c = src.GetPixel(posx + x, posy + y);
-					for (int zx = 0; zx < 8; zx++)
-						for (int zy = 0; zy < 8; zy++)
-							bmp.SetPixel(zx + x * 4, zy + y * 4, c);
-				}
+			main.imgCpc.CaptureSprite(captSize,posx,posy, bmp);
 			pictCapture.Refresh();
 		}
 

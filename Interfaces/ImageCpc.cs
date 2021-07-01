@@ -106,7 +106,7 @@ namespace ConvImgCpc {
 			bpGenPal.Visible = BitmapBase.cpcPlus;
 			UpdatePalette();
 			modeCaptureSprites.Visible = BitmapBase.modeVirtuel == 11;
-			modeEdition.Visible = BitmapBase.modeVirtuel != 11;
+			chkGrille.Visible = modeEdition.Visible = BitmapBase.modeVirtuel != 11;
 			if (chkDoRedo.Checked && modeEdition.Checked) {
 				Enabled = false;
 				List<MemoPoint> lst = undo.lstUndoRedo;
@@ -144,11 +144,43 @@ namespace ConvImgCpc {
 					x += tailleGrille * 16;
 				}
 			}
+			if (BitmapBase.modeVirtuel == 11) {
+				Graphics g = Graphics.FromImage(pictureBox.Image);
+				for (int x = 0; x < BitmapBase.TailleX; x += 32)
+					XorDrawing.DrawXorLine(g, (Bitmap)pictureBox.Image, x, 0, x, BitmapBase.TailleY, false);
+
+				for (int y = 0; y < BitmapBase.TailleY; y += 32)
+					XorDrawing.DrawXorLine(g, (Bitmap)pictureBox.Image, 0, y, BitmapBase.TailleX, y, false);
+			}
 			pictureBox.Refresh();
 			if (fenetreRendu != null) {
 				fenetreRendu.SetImage(BmpLock.Bitmap);
 				fenetreRendu.Picture.Refresh();
 			}
+		}
+
+		public void CaptureSprite(int captSize, int posx, int posy, DirectBitmap bmp) {
+			Graphics g = Graphics.FromImage(pictureBox.Image);
+			int x, y;
+			for (x = 0; x < BitmapBase.TailleX; x += 32)
+				XorDrawing.DrawXorLine(g, (Bitmap)pictureBox.Image, x, 0, x, BitmapBase.TailleY, false);
+
+			for (y = 0; y < BitmapBase.TailleY; y += 32)
+				XorDrawing.DrawXorLine(g, (Bitmap)pictureBox.Image, 0, y, BitmapBase.TailleX, y, false);
+
+			int sprSize = captSize << 5;
+			for (x = 0; x < sprSize; x += 2)
+				for (y = 0; y < sprSize; y += 2) {
+					int c = BmpLock.GetPixel(posx + x, posy + y);
+					for (int zx = 0; zx < 8; zx++)
+						for (int zy = 0; zy < 8; zy++)
+							bmp.SetPixel(zx + x * 4, zy + y * 4, c);
+				}
+			for (x = 0; x < BitmapBase.TailleX; x += 32)
+				XorDrawing.DrawXorLine(g, (Bitmap)pictureBox.Image, x, 0, x, BitmapBase.TailleY, false);
+
+			for (y = 0; y < BitmapBase.TailleY; y += 32)
+				XorDrawing.DrawXorLine(g, (Bitmap)pictureBox.Image, 0, y, BitmapBase.TailleX, y, false);
 		}
 
 		// Déplacement/Zoom image
@@ -324,7 +356,7 @@ namespace ConvImgCpc {
 				maxSize = (BitmapBase.TailleX * BitmapBase.TailleY) >> 4;
 			else
 				if (maxSize >= 0x4000)
-					maxSize += 0x3800;
+				maxSize += 0x3800;
 
 			byte[] ret = new byte[maxSize];
 			Array.Clear(ret, 0, ret.Length);
@@ -370,26 +402,28 @@ namespace ConvImgCpc {
 
 		public void SauvBump(string fileName, string version) {
 			RvbColor c2 = new RvbColor(0);
-			int posx = 0;
+			int pos = 0;
 			byte[] bump = new byte[BitmapBase.TailleY * BitmapBase.TailleX / 64];
-			for (int y = 0; y < BitmapBase.TailleY; y += 8) {
+			for (int y = 0; y < BitmapBase.TailleY; y += 16) {
 				for (int x = 0; x < BitmapBase.TailleX; x += 8) {
-					byte pen = 0;
-					RvbColor col = BmpLock.GetPixelColor(x, y);
-					if (BitmapBase.cpcPlus) {
-						for (pen = 0; pen < 16; pen++) {
-							if ((col.v >> 4) == (BitmapBase.Palette[pen] >> 8) && (col.b >> 4) == ((BitmapBase.Palette[pen] >> 4) & 0x0F) && (col.r >> 4) == (BitmapBase.Palette[pen] & 0x0F))
-								break;
+					for (int yy = 0; yy < 2; yy++) {
+						byte pen = 0;
+						RvbColor col = BmpLock.GetPixelColor(x, y + (yy << 3));
+						if (BitmapBase.cpcPlus) {
+							for (pen = 0; pen < 16; pen++) {
+								if ((col.v >> 4) == (BitmapBase.Palette[pen] >> 8) && (col.b >> 4) == ((BitmapBase.Palette[pen] >> 4) & 0x0F) && (col.r >> 4) == (BitmapBase.Palette[pen] & 0x0F))
+									break;
+							}
 						}
-					}
-					else {
-						for (pen = 0; pen < 16; pen++) {
-							RvbColor fixedCol = BitmapBase.RgbCPC[BitmapBase.Palette[pen]];
-							if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
-								break;
+						else {
+							for (pen = 0; pen < 16; pen++) {
+								RvbColor fixedCol = BitmapBase.RgbCPC[BitmapBase.Palette[pen]];
+								if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
+									break;
+							}
 						}
+						bump[pos++] = pen;
 					}
-					bump[posx++] = pen;
 				}
 			}
 			StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
@@ -505,16 +539,16 @@ namespace ConvImgCpc {
 
 		private void chkX2_CheckedChanged(object sender, EventArgs e) {
 			if (chkX2.Checked) {
-				this.Width = 973 + 768;
-				this.Height = 668 + 544;
+				Width = 973 + 768;
+				Height = 668 + 544;
 				pictureBox.Width = 1536;
 				pictureBox.Height = 1088;
 				vScrollBar.Left = 939 + 768;
 				hScrollBar.Top = 608 + 544;
 			}
 			else {
-				this.Width = 973;
-				this.Height = 715;
+				Width = 973;
+				Height = 715;
 				pictureBox.Width = 768;
 				pictureBox.Height = 544;
 				vScrollBar.Left = 939;
