@@ -56,16 +56,16 @@ namespace ConvImgCpc {
 							int pen = 0;
 							RvbColor col = bmp.GetPixelColor((x << 3) + (sprx << 7), (y << 3) + (spry << 7));
 							for (pen = 0; pen < 16; pen++) {
-								if ((col.v >> 4) == (BitmapCpc.Palette[pen] >> 8) && (col.b >> 4) == ((BitmapCpc.Palette[pen] >> 4) & 0x0F) && (col.r >> 4) == (BitmapCpc.Palette[pen] & 0x0F))
+								if ((col.v >> 4) == (Cpc.Palette[pen] >> 8) && (col.b >> 4) == ((Cpc.Palette[pen] >> 4) & 0x0F) && (col.r >> 4) == (Cpc.Palette[pen] & 0x0F))
 									break;
 							}
-							BitmapCpc.spritesHard[comboBanque.SelectedIndex, numSpr, x, y] = (byte)(pen & 0x0F);
+							Cpc.spritesHard[comboBanque.SelectedIndex, numSpr, x, y] = (byte)(pen & 0x0F);
 						}
 					numSpr++;
 				}
 			// Copie de la palette image dans la palette des sprites
 			for (int c = 0; c < 16; c++)
-				BitmapCpc.paletteSprite[c] = BitmapCpc.Palette[c];
+				Cpc.paletteSprite[c] = Cpc.Palette[c];
 
 			MessageBox.Show("Capture Ok.");
 		}

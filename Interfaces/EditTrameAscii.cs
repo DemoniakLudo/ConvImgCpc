@@ -33,7 +33,7 @@ namespace ConvImgCpc {
 			lblPen2.BackColor = Color.FromArgb(bmpCpc.GetColorPal(2).GetColorArgb);
 			lblPen3.BackColor = Color.FromArgb(bmpCpc.GetColorPal(3).GetColorArgb);
 			DrawPens();
-			numTabTrame.Maximum = BitmapCpc.TramesAscUt.GetLength(0) - 1;
+			numTabTrame.Maximum = Cpc.TramesAscUt.GetLength(0) - 1;
 		}
 
 		private void DrawMatrice() {
@@ -44,7 +44,7 @@ namespace ConvImgCpc {
 					for (int x = 0; x < 4; x++)
 						for (int zx = 0; zx < (x == 3 ? 7 : 8); zx++)
 							for (int zy = 0; zy < 8; zy++)
-								bmp.SetPixel(zx + ((x + (i << 2)) << 3), zy + (y << 3), bmpCpc.GetColorPal(BitmapCpc.trameM1[i, x, y]));
+								bmp.SetPixel(zx + ((x + (i << 2)) << 3), zy + (y << 3), bmpCpc.GetColorPal(Cpc.trameM1[i, x, y]));
 
 			pictAllMatrice.Refresh();
 		}
@@ -56,7 +56,7 @@ namespace ConvImgCpc {
 				for (int x = 0; x < 4; x++)
 					for (int zx = 0; zx < 78; zx++)
 						for (int zy = 0; zy < 78; zy++)
-							bmpTrame.SetPixel(zx + (x * 80), zy + (y * 80), bmpCpc.GetColorPal(BitmapCpc.trameM1[numTrame, x, y]));
+							bmpTrame.SetPixel(zx + (x * 80), zy + (y * 80), bmpCpc.GetColorPal(Cpc.trameM1[numTrame, x, y]));
 
 			pictEditMatrice.Refresh();
 		}
@@ -79,13 +79,13 @@ namespace ConvImgCpc {
 			int y = e.Y / 80;
 			if (x >= 0 && y >= 0 && x < 4 && y < 4) {
 				if (e.Button == MouseButtons.Left) {
-					BitmapCpc.trameM1[numTrame, x, y] = penLeft;
+					Cpc.trameM1[numTrame, x, y] = penLeft;
 					DrawMatrice();
 					DrawTrame();
 				}
 				else
 					if (e.Button == MouseButtons.Right) {
-					BitmapCpc.trameM1[numTrame, x, y] = penRight;
+					Cpc.trameM1[numTrame, x, y] = penRight;
 					DrawMatrice();
 					DrawTrame();
 				}
@@ -149,7 +149,7 @@ namespace ConvImgCpc {
 					for (int i = 0; i < 16; i++)
 						for (int y = 0; y < 4; y++)
 							for (int x = 0; x < 4; x++)
-								BitmapCpc.trameM1[i, x, y] = trame[pos++];
+								Cpc.trameM1[i, x, y] = trame[pos++];
 
 					DrawMatrice();
 					DrawTrame();
@@ -170,7 +170,7 @@ namespace ConvImgCpc {
 				for (int i = 0; i < 16; i++)
 					for (int y = 0; y < 4; y++)
 						for (int x = 0; x < 4; x++)
-							trame[pos++] = BitmapCpc.trameM1[i, x, y];
+							trame[pos++] = Cpc.trameM1[i, x, y];
 
 				FileStream file = File.Open(dlg.FileName, FileMode.Create);
 				try {
@@ -198,7 +198,7 @@ namespace ConvImgCpc {
 			for (int i = 0; i < maxTrame; i++)
 				for (int y = 0; y < 4; y++)
 					for (int x = 0; x < 4; x++)
-						BitmapCpc.trameM1[i, x, y] = lstTrame[i].GetPix(x, y);
+						Cpc.trameM1[i, x, y] = lstTrame[i].GetPix(x, y);
 
 			DrawMatrice();
 			DrawTrame();
@@ -206,7 +206,7 @@ namespace ConvImgCpc {
 		}
 
 		private void bpCopyTrame_Click(object sender, EventArgs e) {
-			BitmapCpc.CopyTrame((int)numTabTrame.Value);
+			Cpc.CopyTrame((int)numTabTrame.Value);
 			DrawMatrice();
 			DrawTrame();
 		}

@@ -7,8 +7,8 @@ namespace ConvImgCpc {
 		static public StreamWriter OpenAsm(string fileName, string version) {
 			StreamWriter sw = File.CreateText(fileName);
 			sw.WriteLine("; Généré par ConvImgCpc" + version.Replace('\n', ' ') + " - le " + DateTime.Now.ToString("dd/MM/yyyy (HH mm ss)"));
-			sw.WriteLine("; Mode écran - " + BitmapCpc.modesVirtuels[BitmapCpc.modeVirtuel]);
-			sw.WriteLine("; Taille (nbColsxNbLignes) " + BitmapCpc.NbCol.ToString() + "x" + BitmapCpc.NbLig.ToString());
+			sw.WriteLine("; Mode écran - " + Cpc.modesVirtuels[Cpc.modeVirtuel]);
+			sw.WriteLine("; Taille (nbColsxNbLignes) " + Cpc.NbCol.ToString() + "x" + Cpc.NbLig.ToString());
 			return sw;
 		}
 
@@ -26,7 +26,7 @@ namespace ConvImgCpc {
 			}
 			for (int i = 0; i < length; i++) {
 				line += "#" + tabByte[i].ToString("X2") + ",";
-				if (++nbOctets >= Math.Min(nbOctetsLigne, BitmapCpc.NbCol)) {
+				if (++nbOctets >= Math.Min(nbOctetsLigne, Cpc.NbCol)) {
 					sw.WriteLine(line.Substring(0, line.Length - 1));
 					line = "\tDB\t";
 					nbOctets = 0;
@@ -293,8 +293,8 @@ namespace ConvImgCpc {
 		}
 
 		static private void GenereFormatEcran(StreamWriter sw) {
-			if (BitmapCpc.NbCol != 80) {
-				sw.WriteLine("	LD	HL,#" + ((BitmapCpc.NbCol + 1) >> 1).ToString("X2") + (26 + (BitmapCpc.NbCol >> 2)).ToString("X2"));
+			if (Cpc.NbCol != 80) {
+				sw.WriteLine("	LD	HL,#" + ((Cpc.NbCol + 1) >> 1).ToString("X2") + (26 + (Cpc.NbCol >> 2)).ToString("X2"));
 				sw.WriteLine("	LD	BC,#BC01");
 				sw.WriteLine("	OUT	(C),C");
 				sw.WriteLine("	INC	B");
@@ -305,8 +305,8 @@ namespace ConvImgCpc {
 				sw.WriteLine("	INC	B");
 				sw.WriteLine("	OUT	(C),L");
 			}
-			if (BitmapCpc.NbLig != 200) {
-				sw.WriteLine("	LD	HL,#" + ((BitmapCpc.NbLig + 7) >> 3).ToString("X2") + (18 + (BitmapCpc.NbLig >> 4)).ToString("X2"));
+			if (Cpc.NbLig != 200) {
+				sw.WriteLine("	LD	HL,#" + ((Cpc.NbLig + 7) >> 3).ToString("X2") + (18 + (Cpc.NbLig >> 4)).ToString("X2"));
 				sw.WriteLine("	LD	BC,#BC06");
 				sw.WriteLine("	OUT	(C),C");
 				sw.WriteLine("	INC	B");
@@ -317,7 +317,7 @@ namespace ConvImgCpc {
 				sw.WriteLine("	INC	B");
 				sw.WriteLine("	OUT	(C),L");
 			}
-			if (BitmapCpc.NbLig * BitmapCpc.NbCol > 0x4000) {
+			if (Cpc.NbLig * Cpc.NbCol > 0x4000) {
 				sw.WriteLine("	LD	BC,#BC0C");
 				sw.WriteLine("	OUT	(C),C");
 				sw.WriteLine("	INC	B");
@@ -363,13 +363,13 @@ namespace ConvImgCpc {
 		}
 
 		static public void GenerePalette(StreamWriter sw, ImageCpc img) {
-			if (BitmapCpc.cpcPlus) {
+			if (Cpc.cpcPlus) {
 				sw.WriteLine("UnlockAsic:");
 				sw.WriteLine("	DB	#FF,#00,#FF,#77,#B3,#51,#A8,#D4,#62,#39,#9C,#46,#2B,#15,#8A,#CD,#EE");
 				sw.WriteLine("Palette:");
-				string line = "\tDB\t#" + ((BitmapCpc.modeVirtuel == 7 ? 1 : BitmapCpc.modeVirtuel & 3) | 0x8C).ToString("X2");
+				string line = "\tDB\t#" + ((Cpc.modeVirtuel == 7 ? 1 : Cpc.modeVirtuel & 3) | 0x8C).ToString("X2");
 				for (int i = 0; i < 17; i++) {
-					int c = BitmapCpc.Palette[i < BitmapCpc.MaxPen() ? i : 0];
+					int c = Cpc.Palette[i < Cpc.MaxPen() ? i : 0];
 					line += ",#" + ((byte)(((c >> 4) & 0x0F) | (c << 4))).ToString("X2") + ",#" + ((byte)(c >> 8)).ToString("X2");
 				}
 				sw.WriteLine(line);
@@ -378,9 +378,9 @@ namespace ConvImgCpc {
 				sw.WriteLine("Palette:");
 				string line = "\tDB\t";
 				for (int i = 0; i < 17; i++)
-					line += "#" + ((int)BitmapCpc.CpcVGA[BitmapCpc.Palette[i < BitmapCpc.MaxPen() ? i : 0]]).ToString("X2") + ",";
+					line += "#" + ((int)Cpc.CpcVGA[Cpc.Palette[i < Cpc.MaxPen() ? i : 0]]).ToString("X2") + ",";
 
-				line += "#" + ((BitmapCpc.modeVirtuel == 7 ? 1 : BitmapCpc.modeVirtuel & 3) | 0x8C).ToString("X2");
+				line += "#" + ((Cpc.modeVirtuel == 7 ? 1 : Cpc.modeVirtuel & 3) | 0x8C).ToString("X2");
 				sw.WriteLine(line);
 			}
 		}
@@ -388,7 +388,7 @@ namespace ConvImgCpc {
 
 		#region Code assembleur pour affichage animations
 		static public void GenereEntete(StreamWriter sw, int adr) {
-			if (BitmapCpc.NbLig * BitmapCpc.NbCol > 0x4000)
+			if (Cpc.NbLig * Cpc.NbCol > 0x4000)
 				adr = 0x8000;
 
 			sw.WriteLine("	ORG	#" + adr.ToString("X4"));
@@ -403,7 +403,7 @@ namespace ConvImgCpc {
 				sw.WriteLine("	LD	(#39),HL");
 				sw.WriteLine("	EI");
 			}
-			if (BitmapCpc.modeVirtuel > 7) {
+			if (Cpc.modeVirtuel > 7) {
 				sw.WriteLine("	LD	BC,#F00");
 				sw.WriteLine("	LD	DE,Fonte");
 				sw.WriteLine("SetFonte:");
@@ -503,7 +503,7 @@ namespace ConvImgCpc {
 					sw.WriteLine("	DI");
 
 				sw.WriteLine("	LD	(SauvSp+1),SP");
-				sw.WriteLine("	LD	SP,#C0" + BitmapCpc.NbCol.ToString("X2"));
+				sw.WriteLine("	LD	SP,#C0" + Cpc.NbCol.ToString("X2"));
 				sw.WriteLine("Draw1:");
 				sw.WriteLine("	LD	(RecupHL+1),HL");
 				sw.WriteLine("NbLig:");
@@ -562,7 +562,7 @@ namespace ConvImgCpc {
 					sw.WriteLine("	LD	BC,#" + addBC26.ToString("X2") + "FF			; 'BC26'");
 					sw.WriteLine("	ADD	HL,BC");
 					sw.WriteLine("	JR	NC,Suite");
-					sw.WriteLine("	LD	BC,#C0" + BitmapCpc.NbCol.ToString("X2"));
+					sw.WriteLine("	LD	BC,#C0" + Cpc.NbCol.ToString("X2"));
 					sw.WriteLine("	ADD	HL,BC");
 					sw.WriteLine("Suite:");
 					sw.WriteLine("	EX	DE,HL");
@@ -631,7 +631,7 @@ namespace ConvImgCpc {
 		}
 
 		static public void GenereDrawAscii(StreamWriter sw, bool frameFull, bool frameO, bool frameD, bool gest128K, bool imageMode, bool withSpeed) {
-			bool overscan = BitmapCpc.NbLig * BitmapCpc.NbCol > 0x4000;
+			bool overscan = Cpc.NbLig * Cpc.NbCol > 0x4000;
 			if (frameFull && !imageMode) {
 				sw.WriteLine("	LD	HL,Buffer");
 				sw.WriteLine("	LD	A,(HL)");
@@ -646,11 +646,11 @@ namespace ConvImgCpc {
 
 			if (!frameD) {
 				sw.WriteLine("	LD	BC," + (overscan ? "#0200" : "#C000"));
-				if (BitmapCpc.modeVirtuel == 7)
+				if (Cpc.modeVirtuel == 7)
 					sw.WriteLine("	LD	D,Fonte/256");
 
 				sw.WriteLine("DrawImgO:");
-				if (BitmapCpc.modeVirtuel > 7) {
+				if (Cpc.modeVirtuel > 7) {
 					sw.WriteLine("	LD	D,Fonte/512");
 					if (!frameO)
 						sw.WriteLine("	INC	HL");
@@ -674,25 +674,25 @@ namespace ConvImgCpc {
 				sw.WriteLine("	INC	L");
 				sw.WriteLine("	LD	(BC),A");
 				sw.WriteLine("	SET	3,B");
-				if (BitmapCpc.modeVirtuel == 7) {
+				if (Cpc.modeVirtuel == 7) {
 					sw.WriteLine("	LD	A,(HL)");
 					sw.WriteLine("	INC	L");
 				}
 				sw.WriteLine("	LD	(BC),A");
 				sw.WriteLine("	SET	4,B");
-				if (BitmapCpc.modeVirtuel == 7) {
+				if (Cpc.modeVirtuel == 7) {
 					sw.WriteLine("	LD	A,(HL)");
 					sw.WriteLine("	INC	L");
 				}
 				sw.WriteLine("	LD	(BC),A");
 				sw.WriteLine("	RES	3,B");
-				if (BitmapCpc.modeVirtuel == 7) {
+				if (Cpc.modeVirtuel == 7) {
 					sw.WriteLine("	LD	A,(HL)");
 					sw.WriteLine("	INC	L");
 				}
 				sw.WriteLine("	LD	(BC),A");
 				sw.WriteLine("	SET	5,B");
-				if (BitmapCpc.modeVirtuel == 7) {
+				if (Cpc.modeVirtuel == 7) {
 					sw.WriteLine("	LD	A,(DE)			; Code ASCII");
 					sw.WriteLine("	AND	#F0");
 					sw.WriteLine("	RRCA");
@@ -701,26 +701,26 @@ namespace ConvImgCpc {
 					sw.WriteLine("	LD	L,A");
 				}
 				sw.WriteLine("	LD	A,(HL)");
-				if (BitmapCpc.modeVirtuel == 7)
+				if (Cpc.modeVirtuel == 7)
 					sw.WriteLine("	DEC	L");
 				else
 					sw.WriteLine("	INC	HL");
 
 				sw.WriteLine("	LD	(BC),A");
 				sw.WriteLine("	SET	3,B");
-				if (BitmapCpc.modeVirtuel == 7) {
+				if (Cpc.modeVirtuel == 7) {
 					sw.WriteLine("	LD	A,(HL)");
 					sw.WriteLine("	DEC	L");
 				}
 				sw.WriteLine("	LD	(BC),A");
 				sw.WriteLine("	RES	4,B");
-				if (BitmapCpc.modeVirtuel == 7) {
+				if (Cpc.modeVirtuel == 7) {
 					sw.WriteLine("	LD	A,(HL)");
 					sw.WriteLine("	DEC	L");
 				}
 				sw.WriteLine("	LD	(BC),A");
 				sw.WriteLine("	RES	3,B");
-				if (BitmapCpc.modeVirtuel == 7) {
+				if (Cpc.modeVirtuel == 7) {
 					sw.WriteLine("	LD	A,(HL)");
 				}
 				sw.WriteLine("	LD	(BC),A");
@@ -781,7 +781,7 @@ namespace ConvImgCpc {
 				sw.WriteLine("	LD	E,(IY+2)			; Déplacement");
 				sw.WriteLine("	ADD	HL,DE			; Ajouter à aresse écran");
 				sw.WriteLine("	EX	DE,HL");
-				if (BitmapCpc.modeVirtuel > 7) {
+				if (Cpc.modeVirtuel > 7) {
 					sw.WriteLine("	LD	H,Fonte/512");
 					sw.WriteLine("	LD	L,(IY+3)			; Code ASCII");
 					sw.WriteLine("	ADD	HL,HL");
@@ -799,25 +799,25 @@ namespace ConvImgCpc {
 				sw.WriteLine("	INC	E");
 				sw.WriteLine("	LD	(HL),A");
 				sw.WriteLine("	SET	3,H");
-				if (BitmapCpc.modeVirtuel == 7) {
+				if (Cpc.modeVirtuel == 7) {
 					sw.WriteLine("	LD	A,(DE)");
 					sw.WriteLine("	INC	E");
 				}
 				sw.WriteLine("	LD	(HL),A");
 				sw.WriteLine("	SET	4,H");
-				if (BitmapCpc.modeVirtuel == 7) {
+				if (Cpc.modeVirtuel == 7) {
 					sw.WriteLine("	LD	A,(DE)");
 					sw.WriteLine("	INC	E");
 				}
 				sw.WriteLine("	LD	(HL),A");
 				sw.WriteLine("	RES	3,H");
-				if (BitmapCpc.modeVirtuel == 7) {
+				if (Cpc.modeVirtuel == 7) {
 					sw.WriteLine("	LD	A,(DE)");
 					sw.WriteLine("	INC	E");
 				}
 				sw.WriteLine("	LD	(HL),A");
 				sw.WriteLine("	SET	5,H");
-				if (BitmapCpc.modeVirtuel == 7) {
+				if (Cpc.modeVirtuel == 7) {
 					sw.WriteLine("	LD	A,(IY+3)			; Code ASCII");
 					sw.WriteLine("	AND	#F0");
 					sw.WriteLine("	RRCA");
@@ -826,24 +826,24 @@ namespace ConvImgCpc {
 					sw.WriteLine("	LD	E,A");
 				}
 				sw.WriteLine("	LD	A,(DE)");
-				if (BitmapCpc.modeVirtuel == 7)
+				if (Cpc.modeVirtuel == 7)
 					sw.WriteLine("	DEC	E");
 
 				sw.WriteLine("	LD	(HL),A");
 				sw.WriteLine("	SET	3,H");
-				if (BitmapCpc.modeVirtuel == 7) {
+				if (Cpc.modeVirtuel == 7) {
 					sw.WriteLine("	LD	A,(DE)");
 					sw.WriteLine("	DEC E");
 				}
 				sw.WriteLine("	LD	(HL),A");
 				sw.WriteLine("	RES	4,H");
-				if (BitmapCpc.modeVirtuel == 7) {
+				if (Cpc.modeVirtuel == 7) {
 					sw.WriteLine("	LD	A,(DE)");
 					sw.WriteLine("	DEC	E");
 				}
 				sw.WriteLine("	LD	(HL),A");
 				sw.WriteLine("	RES	3,H");
-				if (BitmapCpc.modeVirtuel == 7) {
+				if (Cpc.modeVirtuel == 7) {
 					sw.WriteLine("	LD	A,(DE)");
 				}
 				sw.WriteLine("	LD	(HL),A");
@@ -872,7 +872,7 @@ namespace ConvImgCpc {
 					sw.WriteLine("	JR	DrawImgI");
 			}
 			sw.WriteLine("	Nolist");
-			if (BitmapCpc.modeVirtuel > 7) {
+			if (Cpc.modeVirtuel > 7) {
 				sw.WriteLine("DataFnt:");
 				sw.WriteLine("	DB	#00,#C0,#0C,#CC,#30,#F0,#3C,#FC,#03,#C3,#0F,#CF,#33,#F3,#3F,#FF");
 			}
@@ -882,18 +882,18 @@ namespace ConvImgCpc {
 			sw.WriteLine("; Taille totale animation = " + ltot.ToString() + " (#" + ltot.ToString("X4") + ")");
 			sw.WriteLine("_EndCode:");
 			sw.WriteLine("	List");
-			if (BitmapCpc.modeVirtuel >= 7) {
-				int align = BitmapCpc.modeVirtuel == 7 ? 256 : 512;
+			if (Cpc.modeVirtuel >= 7) {
+				int align = Cpc.modeVirtuel == 7 ? 256 : 512;
 				sw.WriteLine("	Align	" + align.ToString() + "		; Doit être un multiple de " + align.ToString());
 				sw.WriteLine("Fonte:");
-				if (BitmapCpc.modeVirtuel == 7) {
+				if (Cpc.modeVirtuel == 7) {
 					int[] ordreAdr = new int[4] { 0, 1, 3, 2 };
 					for (int i = 0; i < 16; i++) {
 						string str = "	DB	";
 						for (int ym = 0; ym < 4; ym++) {
 							byte octet = 0;
 							for (int xm = 0; xm < 4; xm++)
-								octet |= (byte)(BitmapCpc.tabOctetMode[BitmapCpc.trameM1[i, xm, ordreAdr[ym]]] >> xm);
+								octet |= (byte)(Cpc.tabOctetMode[Cpc.trameM1[i, xm, ordreAdr[ym]]] >> xm);
 
 							str += "#" + octet.ToString("X2") + ",";
 						}
@@ -954,7 +954,7 @@ namespace ConvImgCpc {
 		// #### A revoir...
 		static public void GenereAfficheStd(StreamWriter sw, ImageCpc img, int mode, int[] palette, bool overscan, Main.PackMethode pkMethode) {
 			sw.WriteLine("	DI");
-			if (BitmapCpc.cpcPlus)
+			if (Cpc.cpcPlus)
 				GenereInitPlus(sw);
 			else
 				GenereInitOld(sw);
@@ -1013,14 +1013,14 @@ namespace ConvImgCpc {
 			sw.WriteLine("	HALT");
 			sw.WriteLine("	HALT");
 			sw.WriteLine("	DI");
-			sw.WriteLine("	LD	BC," + (BitmapCpc.NbLig == 200 ? 634 : 268).ToString());
+			sw.WriteLine("	LD	BC," + (Cpc.NbLig == 200 ? 634 : 268).ToString());
 			sw.WriteLine("	DEC	BC");
 			sw.WriteLine("	LD	A,B");
 			sw.WriteLine("	OR	C");
 			sw.WriteLine("	JR	NZ,$-3			; Attendre première ligne visible de l'écran");
 			sw.WriteLine("Boucle:");
 			sw.WriteLine("	LD	HL,ColorModeX		; Initaliser les couleurs variables");
-			sw.WriteLine("	LD	DE," + BitmapCpc.NbLig + "			; par lignes de l'image (2 et 3)");
+			sw.WriteLine("	LD	DE," + Cpc.NbLig + "			; par lignes de l'image (2 et 3)");
 			sw.WriteLine("LoopLineX:");
 			sw.WriteLine("	LD	BC,#7F02");
 			sw.WriteLine("	OUT	(C),C			; Sélection pen 2");
@@ -1036,13 +1036,13 @@ namespace ConvImgCpc {
 			sw.WriteLine("	OR	E");
 			sw.WriteLine("	JR	NZ,LoopLineX");
 
-			sw.WriteLine("	LD	BC," + (BitmapCpc.NbLig == 200 ? 1022 : 364).ToString());
+			sw.WriteLine("	LD	BC," + (Cpc.NbLig == 200 ? 1022 : 364).ToString());
 			sw.WriteLine("	DEC	BC");
 			sw.WriteLine("	LD	A,B");
 			sw.WriteLine("	OR	C");
 			sw.WriteLine("	JR	NZ,$-3");
 			sw.WriteLine("	CP	(HL)");
-			if (BitmapCpc.NbLig == 200)
+			if (Cpc.NbLig == 200)
 				sw.WriteLine("	CP	(HL)");
 
 			sw.WriteLine("	JR	Boucle");
@@ -1050,12 +1050,12 @@ namespace ConvImgCpc {
 			// Code du décompacteur avant les datas
 			GenereDepack(sw, pkMethode);
 			sw.WriteLine("Color01:");
-			sw.WriteLine("	DB	'" + BitmapCpc.CpcVGA[colMode5[0, 0]].ToString() + BitmapCpc.CpcVGA[colMode5[0, 1]].ToString() + "'");
+			sw.WriteLine("	DB	'" + Cpc.CpcVGA[colMode5[0, 0]].ToString() + Cpc.CpcVGA[colMode5[0, 1]].ToString() + "'");
 			sw.WriteLine("ColorModeX:");
 			string line = "\tDB\t'";
 			int nbOctets = 0;
 			for (int y = 0; y < 272; y++) {
-				line += BitmapCpc.CpcVGA[colMode5[y, 2]].ToString() + BitmapCpc.CpcVGA[colMode5[y, 3]].ToString();
+				line += Cpc.CpcVGA[colMode5[y, 2]].ToString() + Cpc.CpcVGA[colMode5[y, 3]].ToString();
 				if (++nbOctets >= 16) {
 					sw.WriteLine(line + "'");
 					line = "\tDB\t'";
@@ -1103,10 +1103,10 @@ namespace ConvImgCpc {
 			sw.WriteLine("	JR	C,WaitEnd");
 			sw.WriteLine("	LD	HL,#012F");
 			int mode = 0x8C01;
-			if (BitmapCpc.modeVirtuel == 4)
+			if (Cpc.modeVirtuel == 4)
 				mode = 0x8D03;
 
-			if (BitmapCpc.yEgx == 2)
+			if (Cpc.yEgx == 2)
 				mode += 0x100;
 
 			sw.WriteLine("	LD	DE,#" + mode.ToString("X4"));

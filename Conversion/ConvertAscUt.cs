@@ -5,15 +5,15 @@ namespace ConvImgCpc {
 	public static partial class Conversion {
 		// Conversion avec trames précalculées en mode 1
 		static private void ConvertAscUt(DirectBitmap source, Param prm, ImageCpc dest, RvbColor[,] tabCol) {
-			for (int y = 0; y <= BitmapBase.TailleY - 8; y += 8) {
-				for (int x = 0; x < BitmapBase.TailleX; x += 8) {
+			for (int y = 0; y <= Cpc.TailleY - 8; y += 8) {
+				for (int x = 0; x < Cpc.TailleX; x += 8) {
 					int choix = 0, oldDist = 0x7FFFFFFF;
 					for (int i = 0; i < 16; i++) {
 						int dist = 0, r1 = 0, v1 = 0, b1 = 0, r2 = 0, v2 = 0, b2 = 0;
 						for (int ym = 0; ym < 4; ym++) {
 							for (int xm = 0; xm < 4; xm++) {
 								RvbColor pix = source.GetPixelColor(x + (xm << 1), y + (ym << 1));
-								RvbColor c = tabCol[BitmapBase.trameM1[i, xm, ym], ym + (y >> 1)];
+								RvbColor c = tabCol[Cpc.trameM1[i, xm, ym], ym + (y >> 1)];
 								r1 += pix.r;
 								v1 += pix.v;
 								b1 += pix.b;
@@ -32,7 +32,7 @@ namespace ConvImgCpc {
 					}
 					for (int ym = 0; ym < 4; ym++)
 						for (int xm = 0; xm < 4; xm++)
-							dest.SetPixelCpc(x + (xm << 1), y + (ym << 1), BitmapBase.trameM1[choix, xm, ym], 2);
+							dest.SetPixelCpc(x + (xm << 1), y + (ym << 1), Cpc.trameM1[choix, xm, ym], 2);
 				}
 			}
 		}
@@ -42,8 +42,8 @@ namespace ConvImgCpc {
 			prm.modeVirtuel = 1;
 			ConvertPasse1(source, prm);
 			RechercheCMax(4, prm.lockState, prm);
-			for (int y = 0; y < BitmapBase.TailleY; y += 8) {
-				for (int x = 0; x < BitmapBase.TailleX; x += 8) {
+			for (int y = 0; y < Cpc.TailleY; y += 8) {
+				for (int x = 0; x < Cpc.TailleX; x += 8) {
 					TrameM1 locTrame = new TrameM1();
 					for (int maty = 0; maty < 4; maty++) {
 						for (int matx = 0; matx < 4; matx++) {

@@ -4,10 +4,10 @@
 		static private void ConvertAscii(DirectBitmap source, Param prm, ImageCpc dest, int maxPen, RvbColor[,] tabCol) {
 			int incY = 8;
 			RvbColor pix;
-			for (int y = 0; y < BitmapBase.TailleY; y += incY) {
-				int Tx = BitmapBase.CalcTx(y);
-				maxPen = BitmapBase.MaxPen(y);
-				for (int x = 0; x < BitmapBase.TailleX; x += Tx) {
+			for (int y = 0; y < Cpc.TailleY; y += incY) {
+				int Tx = Cpc.CalcTx(y);
+				maxPen = Cpc.MaxPen(y);
+				for (int x = 0; x < Cpc.TailleX; x += Tx) {
 					int oldDist = 0x7FFFFFFF;
 					int r = 0, v = 0, b = 0;
 					for (int j = 0; j < incY; j += 2) {
@@ -30,7 +30,7 @@
 							}
 						}
 					}
-					int offsetY = prm.modeImpDraw && BitmapBase.TailleY == 544 ? 2 : 0;
+					int offsetY = prm.modeImpDraw && Cpc.TailleY == 544 ? 2 : 0;
 					for (int j = 0; j < incY; j += 2)
 						dest.SetPixelCpc(x, y + offsetY + j, choix, Tx);
 				}

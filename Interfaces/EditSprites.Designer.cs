@@ -223,10 +223,14 @@
 			// 
 			this.comboBanque.FormattingEnabled = true;
 			this.comboBanque.Items.AddRange(new object[] {
-            "Bank 1",
-            "Bank 2",
-            "Bank 3",
-            "Bank 4"});
+			"Bank 1",
+			"Bank 2",
+			"Bank 3",
+			"Bank 4",
+			"Bank 5",
+			"Bank 6",
+			"Bank 7",
+			"Bank 8"});
 			this.comboBanque.Location = new System.Drawing.Point(1033, 12);
 			this.comboBanque.Name = "comboBanque";
 			this.comboBanque.Size = new System.Drawing.Size(61, 21);

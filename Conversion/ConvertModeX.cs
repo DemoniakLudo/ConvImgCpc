@@ -4,14 +4,14 @@
 		// Recherche les couleurs pour le mode "X"
 		//
 		static int RechercheCMaxModeX(int[,] colMode5, int[] lockState, int yMax, Param prm) {
-			int c, FindMax = BitmapBase.cpcPlus ? 4096 : 27;
+			int c, FindMax = Cpc.cpcPlus ? 4096 : 27;
 
 			// Les deux premières couleurs sont "fixes"
 			for (c = 0; c < 2; c++) {
 				if (lockState[c] > 0) {
 					for (int y = 0; y < 272; y++) {
-						coulTrouvee[BitmapBase.Palette[c], y] = 0;
-						colMode5[y, c] = BitmapBase.Palette[c];
+						coulTrouvee[Cpc.Palette[c], y] = 0;
+						colMode5[y, c] = Cpc.Palette[c];
 					}
 				}
 				else {
@@ -23,12 +23,12 @@
 
 						if (valMax < valFound) {
 							valMax = valFound;
-							BitmapBase.Palette[c] = i;
+							Cpc.Palette[c] = i;
 						}
 					}
 					for (int y = 0; y < 272; y++) {
-						coulTrouvee[BitmapBase.Palette[c], y] = 0;
-						colMode5[y, c] = BitmapBase.Palette[c];
+						coulTrouvee[Cpc.Palette[c], y] = 0;
+						colMode5[y, c] = Cpc.Palette[c];
 					}
 				}
 			}
@@ -65,8 +65,8 @@
 		// Conversion "Mode X"
 		static private void ConvertModeX(DirectBitmap source, Param prm, ImageCpc dest, RvbColor[,] tabCol) {
 			RvbColor pix;
-			for (int y = 0; y < BitmapBase.TailleY; y += 2) {
-				for (int x = 0; x < BitmapBase.TailleX; x += 2) {
+			for (int y = 0; y < Cpc.TailleY; y += 2) {
+				for (int x = 0; x < Cpc.TailleX; x += 2) {
 					int oldDist = 0x7FFFFFFF;
 					RvbColor p = source.GetPixelColor(x, y);
 					pix = new RvbColor(p.r, p.v, p.b);
@@ -83,7 +83,7 @@
 							}
 						}
 					}
-					int offsetY = prm.modeImpDraw && BitmapBase.TailleY == 544 ? 2 : 0;
+					int offsetY = prm.modeImpDraw && Cpc.TailleY == 544 ? 2 : 0;
 					dest.SetPixelCpc(x, y + offsetY, choix, 2);
 				}
 			}

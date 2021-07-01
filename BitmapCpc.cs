@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace ConvImgCpc {
-	public class BitmapCpc : BitmapBase {
+	public class BitmapCpc : Cpc {
 		private const int maxColsCpc = 96;
 		private const int maxLignesCpc = 272;
 

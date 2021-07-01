@@ -128,7 +128,7 @@ namespace ConvImgCpc {
 		}
 
 		private Bitmap GetBitmap(Bitmap image) {
-			Bitmap bitmap = new Bitmap(BitmapCpc.TailleX, BitmapCpc.TailleY, PixelFormat.Format24bppRgb);
+			Bitmap bitmap = new Bitmap(Cpc.TailleX, Cpc.TailleY, PixelFormat.Format24bppRgb);
 			Graphics g = Graphics.FromImage(bitmap);
 			g.DrawImage(image, new Rectangle(0, 0, bitmap.Width, bitmap.Height), new Rectangle(0, 0, bitmap.Width, bitmap.Height), GraphicsUnit.Pixel);
 			g.Dispose();

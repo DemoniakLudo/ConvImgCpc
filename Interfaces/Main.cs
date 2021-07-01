@@ -37,10 +37,10 @@ namespace ConvImgCpc {
 				methode.Items.Insert(i++, dith.Key);
 
 			SetModes();
-			BitmapCpc.CopyTrame(0);     // Copier par défaut la trame 0	
+			Cpc.CopyTrame(0);     // Copier par défaut la trame 0	
 
-			nbCols.Value = BitmapCpc.TailleX >> 3;
-			nbLignes.Value = BitmapCpc.TailleY >> 1;
+			nbCols.Value = Cpc.TailleX >> 3;
+			nbLignes.Value = Cpc.TailleY >> 1;
 			methode.SelectedIndex = 0;
 			param.pctContrast = param.pctLumi = param.pctSat = param.pctRed = param.pctGreen = param.pctBlue = 100;
 			param.withCode = withCode.Checked;
@@ -84,47 +84,47 @@ namespace ConvImgCpc {
 
 		private void SetModes() {
 			mode.Items.Clear();
-			int mMax = modePlus.Checked ? BitmapCpc.modesVirtuels.Length : BitmapCpc.modesVirtuels.Length - 1;
+			int mMax = modePlus.Checked ? Cpc.modesVirtuels.Length : Cpc.modesVirtuels.Length - 1;
 			for (int i = 0; i < mMax; i++)
-				mode.Items.Insert(i, BitmapCpc.modesVirtuels[i]);
+				mode.Items.Insert(i, Cpc.modesVirtuels[i]);
 
-			mode.SelectedIndex = BitmapCpc.modeVirtuel < mMax ? BitmapCpc.modeVirtuel : 1;
+			mode.SelectedIndex = Cpc.modeVirtuel < mMax ? Cpc.modeVirtuel : 1;
 		}
 
 		public DirectBitmap GetResizeBitmap() {
-			DirectBitmap tmp = new DirectBitmap(BitmapCpc.TailleX, BitmapCpc.TailleY);
+			DirectBitmap tmp = new DirectBitmap(Cpc.TailleX, Cpc.TailleY);
 			Graphics g = Graphics.FromImage(tmp.Bitmap);
-			double ratio = imgSrc.GetImage.Width * BitmapCpc.TailleY / (double)(imgSrc.GetImage.Height * BitmapCpc.TailleX);
+			double ratio = imgSrc.GetImage.Width * Cpc.TailleY / (double)(imgSrc.GetImage.Height * Cpc.TailleX);
 			switch (param.sMode) {
 				case Param.SizeMode.KeepSmaller:
 					if (ratio < 1) {
-						int newW = (int)(BitmapCpc.TailleX * ratio);
-						g.DrawImage(imgSrc.GetImage, (BitmapCpc.TailleX - newW) >> 1, 0, newW, BitmapCpc.TailleY);
+						int newW = (int)(Cpc.TailleX * ratio);
+						g.DrawImage(imgSrc.GetImage, (Cpc.TailleX - newW) >> 1, 0, newW, Cpc.TailleY);
 					}
 					else {
-						int newH = (int)(BitmapCpc.TailleY / ratio);
-						g.DrawImage(imgSrc.GetImage, 0, (BitmapCpc.TailleY - newH) >> 1, BitmapCpc.TailleX, newH);
+						int newH = (int)(Cpc.TailleY / ratio);
+						g.DrawImage(imgSrc.GetImage, 0, (Cpc.TailleY - newH) >> 1, Cpc.TailleX, newH);
 					}
 					break;
 
 				case Param.SizeMode.KeepLarger:
 					if (ratio < 1) {
-						int newY = (int)(BitmapCpc.TailleY / ratio);
-						g.DrawImage(imgSrc.GetImage, 0, (BitmapCpc.TailleY - newY) >> 1, BitmapCpc.TailleX, newY);
+						int newY = (int)(Cpc.TailleY / ratio);
+						g.DrawImage(imgSrc.GetImage, 0, (Cpc.TailleY - newY) >> 1, Cpc.TailleX, newY);
 					}
 					else {
-						int newX = (int)(BitmapCpc.TailleX * ratio);
-						g.DrawImage(imgSrc.GetImage, (BitmapCpc.TailleX - newX) >> 1, 0, newX, BitmapCpc.TailleY);
+						int newX = (int)(Cpc.TailleX * ratio);
+						g.DrawImage(imgSrc.GetImage, (Cpc.TailleX - newX) >> 1, 0, newX, Cpc.TailleY);
 					}
 					break;
 
 				case Param.SizeMode.Fit:
-					g.DrawImage(imgSrc.GetImage, 0, 0, BitmapCpc.TailleX, BitmapCpc.TailleY);
+					g.DrawImage(imgSrc.GetImage, 0, 0, Cpc.TailleX, Cpc.TailleY);
 					break;
 
 				case Param.SizeMode.UserSize:
 				case Param.SizeMode.Origin:
-					int posx = 0, posy = 0, tx = BitmapCpc.TailleX, ty = BitmapCpc.TailleY;
+					int posx = 0, posy = 0, tx = Cpc.TailleX, ty = Cpc.TailleY;
 					GetSizePos(ref posx, ref posy, ref tx, ref ty);
 					g.DrawImage(imgSrc.GetImage, -(posx << 1), -(posy << 1), tx << 1, ty << 1);
 					break;
@@ -195,9 +195,9 @@ namespace ConvImgCpc {
 			int nbImg = 0;
 			try {
 				bool isImp = false, isScrImp = false;
-				if (CpcSystem.CheckAmsdos(tabBytes)) {
+				if (Cpc.CheckAmsdos(tabBytes)) {
 					int nbImages = 1, width = 1, height = 1;
-					CpcAmsdos enteteAms = CpcSystem.GetAmsdos(tabBytes);
+					CpcAmsdos enteteAms = Cpc.GetAmsdos(tabBytes);
 					// Vérifier si type scr imp
 					isScrImp = (enteteAms.FileName.EndsWith("SCR") && enteteAms.FileType == 0 && enteteAms.Adress == 0x170);
 					if (!isScrImp) {
@@ -216,10 +216,10 @@ namespace ConvImgCpc {
 						imgSrc.InitBitmap(nbImages);
 						anim.SetNbImgs(nbImages, imgSrc.tpsFrame);
 						SetInfo(multilingue.GetString("Main.Prg.TxtInfo2") + nbImages + " images.");
-						BitmapCpc.TailleX = width << 3;
-						BitmapCpc.TailleY = height << 1;
-						int x = BitmapCpc.NbCol;
-						int y = BitmapCpc.NbLig;
+						Cpc.TailleX = width << 3;
+						Cpc.TailleY = height << 1;
+						int x = Cpc.NbCol;
+						int y = Cpc.NbLig;
 						int posData = 128; // Entête Amsdos
 						for (int i = 0; i < nbImages; i++) {
 							SelectImage(i, true);
@@ -237,21 +237,21 @@ namespace ConvImgCpc {
 								imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap, imgCpc.selImage);
 							else {
 								doNotReset = true;
-								BitmapCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = tabBytes[0x94] - 0x0E;
-								BitmapCpc.TailleX = 768;
-								nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
-								BitmapCpc.TailleY = 544;
-								nbCols.Value = param.nbCols = BitmapCpc.NbCol;
-								BitmapCpc.cpcPlus = tabBytes[0xBC] != 0;
-								if (BitmapCpc.cpcPlus) {
+								Cpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = tabBytes[0x94] - 0x0E;
+								Cpc.TailleX = 768;
+								nbLignes.Value = param.nbLignes = Cpc.NbLig;
+								Cpc.TailleY = 544;
+								nbCols.Value = param.nbCols = Cpc.NbCol;
+								Cpc.cpcPlus = tabBytes[0xBC] != 0;
+								if (Cpc.cpcPlus) {
 									// Palette en 0x0711;
 									for (int i = 0; i < 16; i++)
-										BitmapCpc.Palette[i] = ((tabBytes[0x0711 + (i << 1)] << 4) & 0xF0) + (tabBytes[0x0711 + (i << 1)] >> 4) + (tabBytes[0x0712 + (i << 1)] << 8);
+									Cpc.Palette[i] = ((tabBytes[0x0711 + (i << 1)] << 4) & 0xF0) + (tabBytes[0x0711 + (i << 1)] >> 4) + (tabBytes[0x0712 + (i << 1)] << 8);
 								}
 								else {
 									// Palette en 0x7E10
 									for (int i = 0; i < 16; i++)
-										BitmapCpc.Palette[i] = BitmapCpc.CpcVGA.IndexOf((char)tabBytes[0x7E10 + i]);
+									Cpc.Palette[i] = Cpc.CpcVGA.IndexOf((char)tabBytes[0x7E10 + i]);
 								}
 								imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap);
 							}
@@ -263,12 +263,12 @@ namespace ConvImgCpc {
 							else {
 								doNotReset = true;
 								imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap);
-								nbCols.Value = param.nbCols = BitmapCpc.NbCol;
-								BitmapCpc.TailleX = param.nbCols << 3;
-								nbLignes.Value = param.nbLignes = BitmapCpc.NbLig;
-								BitmapCpc.TailleY = param.nbLignes << 1;
-								param.modeVirtuel = mode.SelectedIndex = BitmapCpc.modeVirtuel;
-								modePlus.Checked = BitmapCpc.cpcPlus;
+								nbCols.Value = param.nbCols = Cpc.NbCol;
+								Cpc.TailleX = param.nbCols << 3;
+								nbLignes.Value = param.nbLignes = Cpc.NbLig;
+								Cpc.TailleY = param.nbLignes << 1;
+								param.modeVirtuel = mode.SelectedIndex = Cpc.modeVirtuel;
+								modePlus.Checked = Cpc.cpcPlus;
 							}
 							SetInfo(multilingue.GetString("Main.prg.TxtInfo3"));
 						}
@@ -394,14 +394,14 @@ namespace ConvImgCpc {
 				byte[] tabBytes = new byte[fileScr.Length];
 				fileScr.Read(tabBytes, 0, tabBytes.Length);
 				fileScr.Close();
-				if (CpcSystem.CheckAmsdos(tabBytes)) {
-					BitmapCpc.paletteSprite[0] = 0;
+				if (Cpc.CheckAmsdos(tabBytes)) {
+					Cpc.paletteSprite[0] = 0;
 					colors[0].BackColor = Color.Black;
 					colors[0].Refresh();
 					for (int i = 0; i < 15; i++) {
 						int kit = tabBytes[128 + (i << 1)] + (tabBytes[129 + (i << 1)] << 8);
 						int col = (kit & 0xF00) + ((kit & 0x0F) << 4) + ((kit & 0xF0) >> 4);
-						BitmapCpc.paletteSprite[i + 1] = col;
+						Cpc.paletteSprite[i + 1] = col;
 						colors[i + 1].BackColor = Color.FromArgb((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17));
 						colors[i + 1].Refresh();
 					}
@@ -411,11 +411,11 @@ namespace ConvImgCpc {
 		}
 
 		public void SavePaletteKit(string fileName, int[] palette) {
-			CpcAmsdos entete = CpcSystem.CreeEntete(Path.GetFileName(fileName), -32768, 30, 0);
+			CpcAmsdos entete = Cpc.CreeEntete(Path.GetFileName(fileName), -32768, 30, 0);
 			BinaryWriter fp = new BinaryWriter(new FileStream(fileName, FileMode.Create));
-			fp.Write(CpcSystem.AmsdosToByte(entete));
+			fp.Write(Cpc.AmsdosToByte(entete));
 			for (int i = 0; i < 15; i++) {
-				int kit = BitmapCpc.paletteSprite[i + 1];
+				int kit = Cpc.paletteSprite[i + 1];
 				byte c1 = (byte)(((kit & 0x0F) << 4) + ((kit & 0xF0) >> 4));
 				byte c2 = (byte)(kit >> 8);
 				fp.Write(c1);
@@ -500,8 +500,8 @@ namespace ConvImgCpc {
 							+ multilingue.GetString("Main.prg.TxtInfo26") + " (.imp)|*.imp|"                                //	10
 							+ multilingue.GetString("Main.prg.TxtInfo19") + "Paramètres (.xml)|*.xml|"                      //	11
 							+ multilingue.GetString("Main.prg.TxtInfo18") + " (.pal)|*.pal"                                 //	12
-							+ (BitmapCpc.cpcPlus ? ("|" + multilingue.GetString("Main.prg.TxtInfo27") + " (.kit)|*.kit") : "")  //	13
-							+ (BitmapCpc.modeVirtuel == 3 || BitmapCpc.modeVirtuel == 4 ? ("|" + multilingue.GetString("Main.prg.TxtInfo28") + " (.scr)|*.scr") : "")	//	14
+							+ (Cpc.cpcPlus ? ("|" + multilingue.GetString("Main.prg.TxtInfo27") + " (.kit)|*.kit") : "")  //	13
+							+ (Cpc.modeVirtuel == 3 || Cpc.modeVirtuel == 4 ? ("|" + multilingue.GetString("Main.prg.TxtInfo28") + " (.scr)|*.scr") : "")	//	14
 							+ "|Bump (*.asm)| *.asm";  //	15
 
 			dlg.Filter = filter;
@@ -558,10 +558,10 @@ namespace ConvImgCpc {
 
 					case 13:
 					case 14:
-						if (BitmapCpc.cpcPlus && dlg.FilterIndex == 13)
-							SavePaletteKit(dlg.FileName, BitmapCpc.Palette);
+						if (Cpc.cpcPlus && dlg.FilterIndex == 13)
+							SavePaletteKit(dlg.FileName, Cpc.Palette);
 						else
-							if (BitmapCpc.modeVirtuel == 3 || BitmapCpc.modeVirtuel == 4)
+							if (Cpc.modeVirtuel == 3 || Cpc.modeVirtuel == 4)
 								imgCpc.SauveEgx(dlg.FileName);
 							else
 								imgCpc.SauvBump(dlg.FileName, lblInfoVersion.Text);
@@ -575,7 +575,7 @@ namespace ConvImgCpc {
 		private void nbCols_ValueChanged(object sender, EventArgs e) {
 			param.nbCols = (int)nbCols.Value;
 			if (!doNotReset) {
-				BitmapCpc.TailleX = param.nbCols << 3;
+				Cpc.TailleX = param.nbCols << 3;
 				imgCpc.Reset(true);
 				Convert(false);
 			}
@@ -584,14 +584,14 @@ namespace ConvImgCpc {
 		private void nbLignes_ValueChanged(object sender, EventArgs e) {
 			param.nbLignes = (int)nbLignes.Value;
 			if (!doNotReset) {
-				BitmapCpc.TailleY = param.nbLignes << 1;
+				Cpc.TailleY = param.nbLignes << 1;
 				imgCpc.Reset(true);
 				Convert(false);
 			}
 		}
 
 		private void mode_SelectedIndexChanged(object sender, EventArgs e) {
-			BitmapCpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex;
+			Cpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex;
 			trackModeX.Visible = mode.SelectedIndex == 5 || mode.SelectedIndex == 6;
 			bpEditTrame.Visible = mode.SelectedIndex == 7;
 			chkSwapEgx.Visible = mode.SelectedIndex == 3 || mode.SelectedIndex == 4;
@@ -697,10 +697,10 @@ namespace ConvImgCpc {
 				}
 				SetSizePos(xmin, ymin, bmp.Width, bmp.Height);
 				if (xmax > xmin)
-					BitmapCpc.TailleX = xmax - xmin;
+					Cpc.TailleX = xmax - xmin;
 
 				if (ymax > ymin)
-					BitmapCpc.TailleY = ymax - ymin;
+					Cpc.TailleY = ymax - ymin;
 
 				Convert(false);
 			}
@@ -942,7 +942,7 @@ namespace ConvImgCpc {
 
 		private void modePlus_CheckedChanged(object sender, EventArgs e) {
 			bpEditSprites.Visible = modePlus.Checked;
-			BitmapCpc.cpcPlus = modePlus.Checked;
+			Cpc.cpcPlus = modePlus.Checked;
 			newMethode.Visible = !modePlus.Checked;
 			param.cpcPlus = modePlus.Checked;
 			SetModes();
@@ -1088,7 +1088,7 @@ namespace ConvImgCpc {
 		}
 
 		private void chkSwapEGX_CheckedChanged(object sender, EventArgs e) {
-			BitmapCpc.yEgx = chkSwapEgx.Checked ? 2 : 0;
+			Cpc.yEgx = chkSwapEgx.Checked ? 2 : 0;
 			Convert(false);
 		}
 	}

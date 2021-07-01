@@ -14,7 +14,7 @@ namespace ConvImgCpc {
 		public CPCEMUEnt Infos = new CPCEMUEnt();
 		public CPCEMUTrack[][] Tracks;
 		public byte FlagWrite;
-		public byte[][][] Data;
+		public byte[][][] Data = new byte[MAX_TRACKS][][];
 		public byte[] Bitmap = new byte[256];
 		public enum DskError { ERR_NO_ERR = 0, ERR_NO_DIRENTRY, ERR_NO_BLOCK, ERR_FILE_EXIST };
 		private Main main;
@@ -23,11 +23,7 @@ namespace ConvImgCpc {
 			Infos.id = "EXTENDED CPC DSK File\r\nDisk-Info\r\nConvImgCpc    ";
 			Infos.NbTracks = 40;
 			Infos.NbHeads = 1;
-			for (int i = 0; i < 40; i++)
-				Infos.TrackSizeTable[i] = 0x13;
-
 			Tracks = new CPCEMUTrack[MAX_TRACKS][];
-			Data = new byte[MAX_TRACKS][][];
 			for (int t = 0; t < MAX_TRACKS; t++) {
 				Tracks[t] = new CPCEMUTrack[2];
 				Tracks[t][0] = new CPCEMUTrack();
@@ -37,6 +33,7 @@ namespace ConvImgCpc {
 				Data[t][1] = new byte[0x1800];
 				FormatTrack(t, 0, 0xC1, 9); // Format par défaut = data (face 0)
 				FormatTrack(t, 1, 0xC1, 9); // Format par défaut = data (face 1)
+				Infos.TrackSizeTable[t] = 0x13;
 			}
 			main = m;
 		}
@@ -453,5 +450,45 @@ namespace ConvImgCpc {
 		public byte NbPages;
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
 		public byte[] Blocks;
+	}
+
+	[StructLayout(LayoutKind.Sequential, Pack = 1)]
+	public class CPCEMUEnt {
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x30)]
+		public string id;           // "MV - CPCEMU Disk-File\r\nDisk-Info\r\n"
+		public byte NbTracks;
+		public byte NbHeads;
+		public short TrackSize;     // 0x1300 = 256 + ( 512 * nbsecteurs )
+		public byte[] TrackSizeTable = new byte[204];   // Si "EXTENDED CPC DSK File"
+	};
+
+	public class CPCEMUTrack {
+		public const int MAX_SECTS = 29;    // Nbre maxi de secteurs/pistes
+
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x10)]
+		public string id;       // "Track-Info\r\n"
+		public byte Track;
+		public byte Head;
+		public short Unused;
+		public byte SectSize;   // 2
+		public byte NbSect;     // 9
+		public byte Gap3;       // 0x4E
+		public byte OctRemp;    // 0xE5
+		public CPCEMUSect[] Sect = new CPCEMUSect[MAX_SECTS];
+
+		public CPCEMUTrack() {
+			for (int i = 0; i < MAX_SECTS; i++)
+				Sect[i] = new CPCEMUSect();
+		}
+	}
+
+	public class CPCEMUSect {
+		public byte C;          // track
+		public byte H;          // head
+		public byte R;          // sect
+		public byte N;          // size
+		public byte ST1;        // Valeur ST1
+		public byte ST2;        // Valeur ST2
+		public short SectSize;  // Taille du secteur en octets
 	}
 }

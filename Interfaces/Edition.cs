@@ -26,11 +26,11 @@ namespace ConvImgCpc {
 		private bool modeImpDraw;
 
 		private void ToolModeDraw(MouseEventArgs e) {
-			int incY = BitmapCpc.modeVirtuel >= 8 ? 8 : 2;
+			int incY = Cpc.modeVirtuel >= 8 ? 8 : 2;
 			int yReel = e != null ? (offsetY + (e.Y / (zoom * (chkX2.Checked ? 2 : 1)))) & -incY : 0;
-			int tx = BitmapCpc.CalcTx(yReel);
-			drawColor.BackColor = Color.FromArgb(bitmapCpc.GetColorPal(drawCol % (BitmapCpc.modeVirtuel == 6 ? 16 : 1 << tx)).GetColorArgb);
-			undrawColor.BackColor = Color.FromArgb(bitmapCpc.GetColorPal(undrawCol % (BitmapCpc.modeVirtuel == 6 ? 16 : 1 << tx)).GetColorArgb);
+			int tx = Cpc.CalcTx(yReel);
+			drawColor.BackColor = Color.FromArgb(bitmapCpc.GetColorPal(drawCol % (Cpc.modeVirtuel == 6 ? 16 : 1 << tx)).GetColorArgb);
+			undrawColor.BackColor = Color.FromArgb(bitmapCpc.GetColorPal(undrawCol % (Cpc.modeVirtuel == 6 ? 16 : 1 << tx)).GetColorArgb);
 			drawColor.Width = undrawColor.Width = 35 * Math.Min(tx, 4);
 			drawColor.Refresh();
 			undrawColor.Refresh();
@@ -43,13 +43,13 @@ namespace ConvImgCpc {
 			else {
 				int pen = e.Button == MouseButtons.Left ? drawCol : undrawCol;
 				for (int y = 0; y < penWidth * incY; y += 2) {
-					tx = BitmapCpc.CalcTx(yReel);
-					int nbCol = BitmapCpc.modeVirtuel == 6 ? 16 : 1 << tx;
-					int realColor = GetPalCPC(BitmapCpc.Palette[pen % nbCol]);
+					tx = Cpc.CalcTx(yReel);
+					int nbCol = Cpc.modeVirtuel == 6 ? 16 : 1 << tx;
+					int realColor = GetPalCPC(Cpc.Palette[pen % nbCol]);
 					int yStart = zoom * (yReel - offsetY);
 					for (int x = 0; x < penWidth * tx; x += tx) {
 						int xReel = (x + offsetX + (e.X / (zoom * (chkX2.Checked ? 2 : 1)))) & -tx;
-						if (xReel >= 0 && yReel >= 0 && xReel < BitmapCpc.TailleX && yReel < BitmapCpc.TailleY) {
+						if (xReel >= 0 && yReel >= 0 && xReel < Cpc.TailleX && yReel < Cpc.TailleY) {
 							undo.MemoUndoRedo(xReel, yReel, BmpLock.GetPixel(xReel, yReel), realColor, doDraw);
 							doDraw = true;
 							BmpLock.SetHorLineDouble(xReel, yReel, tx, realColor);
@@ -66,13 +66,13 @@ namespace ConvImgCpc {
 		}
 
 		private void DoZoom() {
-			vScrollBar.Visible = BitmapCpc.TailleY * zoom > pictureBox.Image.Height;
-			hScrollBar.Visible = BitmapCpc.TailleX * zoom > pictureBox.Image.Width;
-			hScrollBar.Maximum = hScrollBar.LargeChange + BitmapCpc.TailleX - (BitmapCpc.TailleX / zoom);
-			vScrollBar.Maximum = vScrollBar.LargeChange + BitmapCpc.TailleY - (BitmapCpc.TailleY / zoom);
-			hScrollBar.Value = Math.Max(0, Math.Min(Math.Min(zoomRectx, zoomRectx + zoomRectw), BitmapCpc.TailleX - ((imgOrigine.Width + zoom) / zoom)));
+			vScrollBar.Visible = Cpc.TailleY * zoom > pictureBox.Image.Height;
+			hScrollBar.Visible = Cpc.TailleX * zoom > pictureBox.Image.Width;
+			hScrollBar.Maximum = hScrollBar.LargeChange + Cpc.TailleX - (Cpc.TailleX / zoom);
+			vScrollBar.Maximum = vScrollBar.LargeChange + Cpc.TailleY - (Cpc.TailleY / zoom);
+			hScrollBar.Value = Math.Max(0, Math.Min(Math.Min(zoomRectx, zoomRectx + zoomRectw), Cpc.TailleX - ((imgOrigine.Width + zoom) / zoom)));
 			vScrollBar.Minimum = modeImpDraw ? 2 : 0;
-			vScrollBar.Value = Math.Max(modeImpDraw ? 2 : 0, Math.Min(Math.Min(zoomRecty, zoomRecty + zoomRecth), BitmapCpc.TailleY - ((imgOrigine.Height + zoom) / zoom)));
+			vScrollBar.Value = Math.Max(modeImpDraw ? 2 : 0, Math.Min(Math.Min(zoomRecty, zoomRecty + zoomRecth), Cpc.TailleY - ((imgOrigine.Height + zoom) / zoom)));
 			offsetX = (hScrollBar.Value >> 3) << 3;
 			offsetY = (vScrollBar.Value >> 1) << 1;
 			lblZoom.Text = zoom.ToString() + ":1";
@@ -129,9 +129,9 @@ namespace ConvImgCpc {
 			if (imgMotif != null && imgCopy != null) {
 				imgCopy.CopyBits(BmpLock);
 				int yReel = ((e.Y / (zoom * (chkX2.Checked ? 2 : 1))) & 0xFFE) * zoom;
-				int tx = BitmapCpc.CalcTx(yReel);
+				int tx = Cpc.CalcTx(yReel);
 				int xReel = ((e.X / (zoom * (chkX2.Checked ? 2 : 1))) & -tx) * zoom;
-				if (xReel < BitmapCpc.NbCol << 3 && yReel < BitmapCpc.NbLig << 1) {
+				if (xReel < Cpc.NbCol << 3 && yReel < Cpc.NbLig << 1) {
 					Graphics g = Graphics.FromImage(pictureBox.Image);
 					g.DrawImage(imgMotif.Bitmap, xReel, yReel);
 					pictureBox.Refresh();
@@ -141,14 +141,14 @@ namespace ConvImgCpc {
 
 		private void ToolModeCopy(MouseEventArgs e) {
 			int yReel = ((e.Y / (zoom * (chkX2.Checked ? 2 : 1))) & 0xFFE) * zoom;
-			int tx = BitmapCpc.CalcTx(yReel);
+			int tx = Cpc.CalcTx(yReel);
 			int xReel = ((e.X / (zoom * (chkX2.Checked ? 2 : 1))) & -tx) * zoom;
 			if (e.Button == MouseButtons.Left && xReel >= 0 && yReel >= 0) {
 				if (imgMotif != null) {
 					for (int y = 0; y < imgMotif.Height; y += 2) {
-						tx = BitmapCpc.CalcTx(y + yReel);
+						tx = Cpc.CalcTx(y + yReel);
 						for (int x = 0; x < imgMotif.Width; x += tx) {
-							if (x + xReel < BitmapCpc.NbCol << 3 && y + yReel < BitmapCpc.NbLig << 1) {
+							if (x + xReel < Cpc.NbCol << 3 && y + yReel < Cpc.NbLig << 1) {
 								int c = imgMotif.GetPixel(x, y);
 								undo.MemoUndoRedo(x + xReel, y + yReel, BmpLock.GetPixel(x + xReel, y + yReel), c, doDraw);
 								BmpLock.SetHorLineDouble(x + xReel, y + yReel, tx, c);
@@ -207,21 +207,21 @@ namespace ConvImgCpc {
 		}
 
 		private void ToolModePick(MouseEventArgs e) {
-			int incY = BitmapCpc.modeVirtuel >= 8 ? 8 : 2;
+			int incY = Cpc.modeVirtuel >= 8 ? 8 : 2;
 			int yReel = e != null ? (offsetY + (e.Y / (zoom * (chkX2.Checked ? 2 : 1)))) & -incY : 0;
-			int tx = BitmapCpc.CalcTx(yReel);
+			int tx = Cpc.CalcTx(yReel);
 			int xReel = (offsetX + (e.X / (zoom * (chkX2.Checked ? 2 : 1)))) & -tx;
 			RvbColor col = BmpLock.GetPixelColor(xReel, yReel);
 			int pen = 0;
-			if (BitmapCpc.cpcPlus) {
+			if (Cpc.cpcPlus) {
 				for (pen = 0; pen < 16; pen++) {
-					if ((col.v >> 4) == (BitmapCpc.Palette[pen] >> 8) && (col.r >> 4) == ((BitmapCpc.Palette[pen] >> 4) & 0x0F) && (col.b >> 4) == (BitmapCpc.Palette[pen] & 0x0F))
+					if ((col.v >> 4) == (Cpc.Palette[pen] >> 8) && (col.r >> 4) == ((Cpc.Palette[pen] >> 4) & 0x0F) && (col.b >> 4) == (Cpc.Palette[pen] & 0x0F))
 						break;
 				}
 			}
 			else {
 				for (pen = 0; pen < 16; pen++) {
-					RvbColor fixedCol = BitmapCpc.RgbCPC[BitmapCpc.Palette[pen]];
+					RvbColor fixedCol = Cpc.RgbCPC[Cpc.Palette[pen]];
 					if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
 						break;
 				}
@@ -254,9 +254,9 @@ namespace ConvImgCpc {
 				CaptureSprites(e);      // Capture de sprites hard
 			else
 				if (modeEdition.Checked) {
-					int incY = BitmapCpc.modeVirtuel >= 8 ? 8 : 2;
+					int incY = Cpc.modeVirtuel >= 8 ? 8 : 2;
 					int yReel = (((offsetY + (e.Y / (zoom * (chkX2.Checked ? 2 : 1)))) & -incY) >> 1) - (modeImpDraw ? 1 : 0);
-					int tx = BitmapCpc.CalcTx(yReel);
+					int tx = Cpc.CalcTx(yReel);
 					int xReel = (offsetX + (e.X / (zoom * (chkX2.Checked ? 2 : 1)))) & -tx;
 					lblInfoPos.Text = "x:" + xReel.ToString("000") + " y:" + yReel.ToString("000");
 					switch (editToolMode) {
@@ -359,7 +359,7 @@ namespace ConvImgCpc {
 			Enabled = false;
 			List<MemoPoint> lst = undo.Undo();
 			foreach (MemoPoint p in lst) {
-				int tx = BitmapCpc.CalcTx(p.posy);
+				int tx = Cpc.CalcTx(p.posy);
 				BmpLock.SetHorLineDouble(p.posx, p.posy, tx, p.oldColor);
 			}
 			if (imgCopy != null)
@@ -375,7 +375,7 @@ namespace ConvImgCpc {
 			Enabled = false;
 			List<MemoPoint> lst = undo.Redo();
 			foreach (MemoPoint p in lst) {
-				int tx = BitmapCpc.CalcTx(p.posy);
+				int tx = Cpc.CalcTx(p.posy);
 				BmpLock.SetHorLineDouble(p.posx, p.posy, tx, p.newColor);
 			}
 			if (imgCopy != null)
@@ -389,10 +389,10 @@ namespace ConvImgCpc {
 
 		// Flip horizontal
 		private void bpHorFlip_Click(object sender, EventArgs e) {
-			int maxY = BitmapCpc.TailleY >> 1;
+			int maxY = Cpc.TailleY >> 1;
 			for (int y = 0; y < maxY; y++) {
-				int zy = BitmapCpc.TailleY - 1 - y;
-				for (int x = 0; x < BitmapCpc.TailleX; x++) {
+				int zy = Cpc.TailleY - 1 - y;
+				for (int x = 0; x < Cpc.TailleX; x++) {
 					int p0 = BmpLock.GetPixel(x, y);
 					BmpLock.SetPixel(x, y, BmpLock.GetPixel(x, zy));
 					BmpLock.SetPixel(x, zy, p0);
@@ -401,17 +401,17 @@ namespace ConvImgCpc {
 
 			List<MemoPoint> lst = undo.lstUndoRedo;
 			foreach (MemoPoint p in lst)
-				p.posy = BitmapCpc.TailleY - 1 - p.posy;
+				p.posy = Cpc.TailleY - 1 - p.posy;
 
 			Render(true);
 		}
 
 		// Flip Vertical
 		private void bpVerFlip_Click(object sender, EventArgs e) {
-			int maxX = BitmapCpc.TailleX >> 1;
+			int maxX = Cpc.TailleX >> 1;
 			for (int x = 0; x < maxX; x++) {
-				int zx = BitmapCpc.TailleX - 1 - x;
-				for (int y = 0; y < BitmapCpc.TailleY; y++) {
+				int zx = Cpc.TailleX - 1 - x;
+				for (int y = 0; y < Cpc.TailleY; y++) {
 					int p0 = BmpLock.GetPixel(x, y);
 					BmpLock.SetPixel(x, y, BmpLock.GetPixel(zx, y));
 					BmpLock.SetPixel(zx, y, p0);
@@ -420,7 +420,7 @@ namespace ConvImgCpc {
 
 			List<MemoPoint> lst = undo.lstUndoRedo;
 			foreach (MemoPoint p in lst)
-				p.posx = BitmapCpc.TailleX - 1 - p.posx;
+				p.posx = Cpc.TailleX - 1 - p.posx;
 
 			Render(true);
 		}

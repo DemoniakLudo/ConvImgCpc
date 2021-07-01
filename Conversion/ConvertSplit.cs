@@ -5,14 +5,14 @@
 		// Recherche les couleurs pour le mode "split"
 		//
 		static int RechercheCMaxModeSplit(int[,] colMode5, int[] lockState, int yMax, Param prm) {
-			int c, FindMax = BitmapBase.cpcPlus ? 4096 : 27;
+			int c, FindMax = Cpc.cpcPlus ? 4096 : 27;
 
 			// Les trois premières couleurs sont "fixes"
 			for (c = 0; c < 3; c++) {
 				if (lockState[c] > 0) {
 					for (int y = 0; y < 272; y++) {
-						coulTrouvee[BitmapBase.Palette[c], y] = 0;
-						colMode5[y, c] = BitmapBase.Palette[c];
+						coulTrouvee[Cpc.Palette[c], y] = 0;
+						colMode5[y, c] = Cpc.Palette[c];
 					}
 				}
 				else {
@@ -24,12 +24,12 @@
 
 						if (valMax < valFound) {
 							valMax = valFound;
-							BitmapBase.Palette[c] = i;
+							Cpc.Palette[c] = i;
 						}
 					}
 					for (int y = 0; y < 272; y++) {
-						coulTrouvee[BitmapBase.Palette[c], y] = 0;
-						colMode5[y, c] = BitmapBase.Palette[c];
+						coulTrouvee[Cpc.Palette[c], y] = 0;
+						colMode5[y, c] = Cpc.Palette[c];
 					}
 				}
 			}
@@ -65,9 +65,9 @@
 
 		// Conversion avec des "splits-rasters"
 		static private void ConvertSplit(DirectBitmap source, Param prm, ImageCpc dest, RvbColor[,] tabCol) {
-			for (int y = 0; y < BitmapBase.TailleY; y += 2) {
+			for (int y = 0; y < Cpc.TailleY; y += 2) {
 				int tailleSplit = 0, colSplit = -1;
-				for (int x = 0; x < BitmapBase.TailleX; x += 2) {
+				for (int x = 0; x < Cpc.TailleX; x += 2) {
 					int oldDist = 0x7FFFFFFF;
 					RvbColor pix = source.GetPixelColor(x, y);
 					int choix = 0, memoPen = 0;

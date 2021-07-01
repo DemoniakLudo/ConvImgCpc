@@ -77,7 +77,7 @@ namespace ConvImgCpc {
 			else {
 				int oldDist = 0x7FFFFFFF;
 				for (int i = 0; i < 27; i++) {
-					RvbColor s = BitmapBase.RgbCPC[i];
+					RvbColor s = Cpc.RgbCPC[i];
 					int dist = (s.r - p.r) * (s.r - p.r) * prm.coefR + (s.v - p.v) * (s.v - p.v) * prm.coefV + (s.b - p.b) * (s.b - p.b) * prm.coefB;
 					if (dist < oldDist) {
 						oldDist = dist;
@@ -149,7 +149,7 @@ namespace ConvImgCpc {
 
 			// Appliquer la matrice de tramage
 			if (pct > 0) {
-				RvbColor choix = prm.cpcPlus ? new RvbColor((byte)((p.r >> 4) * 17), (byte)((p.v >> 4) * 17), (byte)((p.b >> 4) * 17)) : BitmapBase.RgbCPC[GetNumColorPixelCpc(prm, p)];
+				RvbColor choix = prm.cpcPlus ? new RvbColor((byte)((p.r >> 4) * 17), (byte)((p.v >> 4) * 17), (byte)((p.b >> 4) * 17)) : Cpc.RgbCPC[GetNumColorPixelCpc(prm, p)];
 				Dither.DoDitherFull(source, xPix, yPix, Tx, p, choix, prm.diffErr);
 			}
 			return p;
@@ -165,9 +165,9 @@ namespace ConvImgCpc {
 			RvbColor p = new RvbColor(0), choix, n1, n2;
 			int indexChoix = 0;
 			int incY = prm.trameTc ? 4 : 2;
-			for (int yPix = 0; yPix < BitmapBase.TailleY; yPix += incY) {
-				int Tx = BitmapBase.CalcTx(yPix);
-				for (int xPix = 0; xPix < BitmapBase.TailleX; xPix += Tx) {
+			for (int yPix = 0; yPix < Cpc.TailleY; yPix += incY) {
+				int Tx = Cpc.CalcTx(yPix);
+				for (int xPix = 0; xPix < Cpc.TailleX; xPix += Tx) {
 					for (int yy = 0; yy < incY; yy += 2) {
 						p = GetPixel(source, xPix, yy + yPix, Tx, prm, pct);
 						// Recherche le point dans la couleur cpc la plus proche
@@ -177,7 +177,7 @@ namespace ConvImgCpc {
 						}
 						else {
 							indexChoix = GetNumColorPixelCpc(prm, p);
-							choix = BitmapBase.RgbCPC[indexChoix];
+							choix = Cpc.RgbCPC[indexChoix];
 						}
 						coulTrouvee[indexChoix, yPix >> 1]++;
 						if (!prm.trameTc)
@@ -195,8 +195,8 @@ namespace ConvImgCpc {
 							n2 = new RvbColor((byte)(Math.Min(255, (r >> 3) * 8)), (byte)(Math.Min(255, (v >> 3) * 8)), (byte)(Math.Min(255, (b >> 3) * 8)));
 						}
 						else {
-							n1 = BitmapBase.RgbCPC[(r > prm.cstR3 ? 6 : r > prm.cstR1 ? 3 : 0) + (v > prm.cstV3 ? 18 : v > prm.cstV1 ? 9 : 0) + (b > prm.cstB3 ? 2 : b > prm.cstB1 ? 1 : 0)];
-							n2 = BitmapBase.RgbCPC[(r > prm.cstR4 ? 6 : r > prm.cstR2 ? 3 : 0) + (v > prm.cstV4 ? 18 : v > prm.cstV2 ? 9 : 0) + (b > prm.cstB4 ? 2 : b > prm.cstB2 ? 1 : 0)];
+							n1 = Cpc.RgbCPC[(r > prm.cstR3 ? 6 : r > prm.cstR1 ? 3 : 0) + (v > prm.cstV3 ? 18 : v > prm.cstV1 ? 9 : 0) + (b > prm.cstB3 ? 2 : b > prm.cstB1 ? 1 : 0)];
+							n2 = Cpc.RgbCPC[(r > prm.cstR4 ? 6 : r > prm.cstR2 ? 3 : 0) + (v > prm.cstV4 ? 18 : v > prm.cstV2 ? 9 : 0) + (b > prm.cstB4 ? 2 : b > prm.cstB2 ? 1 : 0)];
 						}
 						source.SetPixel(xPix, yPix, (xPix & Tx) == 0 ? n1 : n2);
 						source.SetPixel(xPix, yPix + 2, (xPix & Tx) == 0 ? n2 : n1);
@@ -206,14 +206,14 @@ namespace ConvImgCpc {
 		}
 
 		//
-		// Recherche les x meilleurs couleurs parmis les n possibles (remplit le tableau BitmapCpc.Palette)
+		// Recherche les x meilleurs couleurs parmis les n possibles (remplit le tableau Cpc.Palette)
 		//
 		static void RechercheCMax(int maxPen, int[] lockState, Param prm) {
-			int cUtil, x, FindMax = BitmapBase.cpcPlus ? 4096 : 27, valMax = 0;
+			int cUtil, x, FindMax = Cpc.cpcPlus ? 4096 : 27, valMax = 0;
 			for (x = 0; x < maxPen; x++)
 				if (lockState[x] > 0)
 					for (int y = 0; y < 272; y++)
-						coulTrouvee[BitmapBase.Palette[x], y] = 0;
+						coulTrouvee[Cpc.Palette[x], y] = 0;
 
 			// Recherche la couleur la plus utilisée
 			for (cUtil = 0; cUtil < maxPen; cUtil++) {
@@ -226,18 +226,18 @@ namespace ConvImgCpc {
 
 						if (valMax < nbc) {
 							valMax = nbc;
-							BitmapBase.Palette[cUtil] = i;
+							Cpc.Palette[cUtil] = i;
 						}
 					}
 					for (int y = 0; y < 272; y++)
-						coulTrouvee[BitmapBase.Palette[cUtil], y] = 0;
+						coulTrouvee[Cpc.Palette[cUtil], y] = 0;
 
 					if (prm.newReduc)
 						break; // Première couleur trouvée => sortie
 				}
 			}
 			if (prm.newReduc) {   // Méthode altenative recherche de couleurs : les plus différentes parmis les plus utilisées
-				RvbColor colFirst = BitmapBase.cpcPlus ? new RvbColor((byte)((BitmapBase.Palette[cUtil] & 0x0F) * 17), (byte)(((BitmapBase.Palette[cUtil] & 0xF00) >> 8) * 17), (byte)(((BitmapBase.Palette[cUtil] & 0xF0) >> 4) * 17)) : BitmapBase.RgbCPC[BitmapBase.Palette[cUtil]];
+				RvbColor colFirst = Cpc.cpcPlus ? new RvbColor((byte)((Cpc.Palette[cUtil] & 0x0F) * 17), (byte)(((Cpc.Palette[cUtil] & 0xF00) >> 8) * 17), (byte)(((Cpc.Palette[cUtil] & 0xF0) >> 4) * 17)) : Cpc.RgbCPC[Cpc.Palette[cUtil]];
 				bool takeDist = false;
 				for (x = 0; x < maxPen; x++) {
 					if (takeDist) {
@@ -250,7 +250,7 @@ namespace ConvImgCpc {
 
 								if (valMax < nbc) {
 									valMax = nbc;
-									BitmapBase.Palette[x] = i;
+									Cpc.Palette[x] = i;
 								}
 							}
 						}
@@ -265,11 +265,11 @@ namespace ConvImgCpc {
 										nbc += coulTrouvee[i, y];
 
 									if (nbc > valMax >> rech) {
-										RvbColor c = BitmapBase.cpcPlus ? new RvbColor((byte)((i & 0x0F) * 17), (byte)(((i & 0xF00) >> 8) * 17), (byte)(((i & 0xF0) >> 4) * 17)) : BitmapBase.RgbCPC[i];
+										RvbColor c = Cpc.cpcPlus ? new RvbColor((byte)((i & 0x0F) * 17), (byte)(((i & 0xF00) >> 8) * 17), (byte)(((i & 0xF0) >> 4) * 17)) : Cpc.RgbCPC[i];
 										dist = (c.r - colFirst.r) * (c.r - colFirst.r) * prm.coefR + (c.v - colFirst.v) * (c.v - colFirst.v) * prm.coefV + (c.b - colFirst.b) * (c.b - colFirst.b) * prm.coefB;
 										if (dist > oldDist) {
 											oldDist = dist;
-											BitmapBase.Palette[x] = i;
+											Cpc.Palette[x] = i;
 										}
 									}
 								}
@@ -280,7 +280,7 @@ namespace ConvImgCpc {
 						}
 					}
 					for (int y = 0; y < 272; y++)
-						coulTrouvee[BitmapBase.Palette[x], y] = 0;
+						coulTrouvee[Cpc.Palette[x], y] = 0;
 
 					takeDist = !takeDist;
 					cUtil = x;
@@ -289,10 +289,10 @@ namespace ConvImgCpc {
 			if (prm.sortPal)
 				for (x = 0; x < maxPen - 1; x++)
 					for (int c = x + 1; c < maxPen; c++)
-						if (lockState[x] == 0 && lockState[c] == 0 && BitmapBase.Palette[x] > BitmapBase.Palette[c]) {
-							int tmp = BitmapBase.Palette[x];
-							BitmapBase.Palette[x] = BitmapBase.Palette[c];
-							BitmapBase.Palette[c] = tmp;
+						if (lockState[x] == 0 && lockState[c] == 0 && Cpc.Palette[x] > Cpc.Palette[c]) {
+							int tmp = Cpc.Palette[x];
+							Cpc.Palette[x] = Cpc.Palette[c];
+							Cpc.Palette[c] = tmp;
 						}
 		}
 
@@ -303,42 +303,42 @@ namespace ConvImgCpc {
 			RvbColor[,] tabCol = new RvbColor[16, 272];
 			int[] MemoLockState = new int[16];
 			int i;
-			int Tx = BitmapBase.CalcTx();
-			int maxPen = BitmapBase.MaxPen(2);
+			int Tx = Cpc.CalcTx();
+			int maxPen = Cpc.MaxPen(2);
 			for (i = 0; i < 16; i++)
 				MemoLockState[i] = prm.lockState[i];
 
 			// Modes EGX ?
-			if (BitmapBase.modeVirtuel == 3 || BitmapBase.modeVirtuel == 4) {
-				int newMax = BitmapBase.MaxPen(BitmapBase.yEgx);
+			if (Cpc.modeVirtuel == 3 || Cpc.modeVirtuel == 4) {
+				int newMax = Cpc.MaxPen(Cpc.yEgx);
 				RechercheCMax(newMax, MemoLockState, prm);
 				for (i = 0; i < newMax; i++)
 					MemoLockState[i] = 1;
 			}
 			// Mode X ou Mode Split ?
-			if (BitmapBase.modeVirtuel == 5 || BitmapBase.modeVirtuel == 6) {
-				if (BitmapBase.modeVirtuel == 5)
-					colSplit = RechercheCMaxModeX(dest.colMode5, MemoLockState, BitmapBase.TailleY, prm);
+			if (Cpc.modeVirtuel == 5 || Cpc.modeVirtuel == 6) {
+				if (Cpc.modeVirtuel == 5)
+					colSplit = RechercheCMaxModeX(dest.colMode5, MemoLockState, Cpc.TailleY, prm);
 				else {
-					colSplit = RechercheCMaxModeSplit(dest.colMode5, MemoLockState, BitmapBase.TailleY, prm);
+					colSplit = RechercheCMaxModeSplit(dest.colMode5, MemoLockState, Cpc.TailleY, prm);
 					maxPen = 9;
 				}
 				// réduit l'image à maxPen couleurs.
-				for (int y = 0; y < BitmapBase.TailleY >> 1; y++)
+				for (int y = 0; y < Cpc.TailleY >> 1; y++)
 					for (i = 0; i < maxPen; i++)
 						tabCol[i, y] = prm.cpcPlus ? new RvbColor((byte)((dest.colMode5[y, i] & 0x0F) * 17), (byte)(((dest.colMode5[y, i] & 0xF00) >> 8) * 17), (byte)(((dest.colMode5[y, i] & 0xF0) >> 4) * 17))
-							: BitmapBase.RgbCPC[dest.colMode5[y, i] < 27 ? dest.colMode5[y, i] : 0];
+							: Cpc.RgbCPC[dest.colMode5[y, i] < 27 ? dest.colMode5[y, i] : 0];
 			}
 			else {  // Mode standard CPC ou utilisation de gros pixels trames
 				RechercheCMax(maxPen, MemoLockState, prm);
 				// réduit l'image à MaxPen couleurs.
-				for (int y = 0; y < BitmapBase.TailleY; y += 2) {
-					maxPen = BitmapBase.MaxPen(y);
+				for (int y = 0; y < Cpc.TailleY; y += 2) {
+					maxPen = Cpc.MaxPen(y);
 					for (i = 0; i < maxPen; i++)
 						tabCol[i, y >> 1] = dest.bitmapCpc.GetColorPal(i);
 				}
 			}
-			switch (BitmapBase.modeVirtuel) {
+			switch (Cpc.modeVirtuel) {
 				case 5:
 					ConvertModeX(source, prm, dest, tabCol);
 					break;

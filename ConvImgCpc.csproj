@@ -59,7 +59,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BitmapBase.cs" />
+    <Compile Include="GestCPC\Cpc.cs" />
     <Compile Include="Conversion\ConvertAscii.cs" />
     <Compile Include="Conversion\ConvertAscUt.cs" />
     <Compile Include="Conversion\ConvertBase.cs" />
@@ -72,9 +72,6 @@
     <Compile Include="Interfaces\GenPalette.Designer.cs">
       <DependentUpon>GenPalette.cs</DependentUpon>
     </Compile>
-    <Compile Include="GestCPC\CPCEMUEnt.cs" />
-    <Compile Include="GestCPC\CPCEMUSect.cs" />
-    <Compile Include="GestCPC\CPCEMUTrack.cs" />
     <Compile Include="GestCPC\GestDSK.cs" />
     <Compile Include="Interfaces\Capture.cs">
       <SubType>Form</SubType>
@@ -99,7 +96,6 @@
       <DependentUpon>Animation.cs</DependentUpon>
     </Compile>
     <Compile Include="BitmapCpc.cs" />
-    <Compile Include="GestCPC\CpcSystem.cs" />
     <Compile Include="Interfaces\Informations.cs">
       <SubType>Form</SubType>
     </Compile>
