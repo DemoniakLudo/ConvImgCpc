@@ -76,7 +76,7 @@ namespace ConvImgCpc {
 					int col = SystemColors.Control.ToArgb();
 					for (int y = 0; y < tabBmpLock[i].Height; y += 2) {
 						int startX = y < Cpc.TailleY ? Cpc.TailleX : 0;
-						tabBmpLock[i].SetHorLineDouble(0, y, startX, GetPalCPC(Cpc.Palette[0]));
+						tabBmpLock[i].SetHorLineDouble(0, y, startX, Cpc.GetPalCPC(Cpc.Palette[0]));
 						tabBmpLock[i].SetHorLineDouble(startX, y, tabBmpLock[i].Width - startX, col);
 					}
 				}
@@ -95,7 +95,7 @@ namespace ConvImgCpc {
 		}
 
 		public void SetPixelCpc(int xPos, int yPos, int col, int tx) {
-			BmpLock.SetHorLineDouble(xPos, yPos, tx, GetPalCPC(Cpc.modeVirtuel == 5 || Cpc.modeVirtuel == 6 ? colMode5[Math.Min(271, yPos >> 1), col] : Cpc.Palette[col]));
+			BmpLock.SetHorLineDouble(xPos, yPos, tx, Cpc.GetPalCPC(Cpc.modeVirtuel == 5 || Cpc.modeVirtuel == 6 ? colMode5[Math.Min(271, yPos >> 1), col] : Cpc.Palette[col]));
 		}
 
 		public void SetImpDrawMode(bool impDrawMode) {
@@ -465,10 +465,6 @@ namespace ConvImgCpc {
 		#endregion
 
 		#region Gestion palette
-		private int GetPalCPC(int c) {
-			return Cpc.cpcPlus ? (((c & 0xF0) >> 4) * 17) + ((((c & 0xF00) >> 8) * 17) << 8) + (((c & 0x0F) * 17) << 16) : Cpc.RgbCPC[c < 27 ? c : 0].GetColor;
-		}
-
 		// Click sur un "lock"
 		private void ClickLock(object sender, EventArgs e) {
 			CheckBox colorLock = sender as CheckBox;

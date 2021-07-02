@@ -57,8 +57,8 @@ namespace ConvImgCpc {
 										};
 		static public string CpcVGA = "TDU\\X]LEMVFW^@_NGORBSZY[JCK";
 
-		static public byte[,,] trameM1 = new byte[16, 4, 4];			// NumTrame,X,Y
-		static public byte[,,,] spritesHard = new byte[8, 16, 16, 16];	// NumBank,NumSprite,X,Y
+		static public byte[,,] trameM1 = new byte[16, 4, 4];            // NumTrame,X,Y
+		static public byte[,,,] spritesHard = new byte[8, 16, 16, 16];  // NumBank,NumSprite,X,Y
 		static public int[] paletteSprite = new int[16];
 
 		static public int modeVirtuel = 1;
@@ -113,6 +113,10 @@ namespace ConvImgCpc {
 					return 2;
 			}
 			return 16;
+		}
+
+		static public int GetPalCPC(int c) {
+			return cpcPlus ? (((c & 0xF0) >> 4) * 17) + ((((c & 0xF00) >> 8) * 17) << 8) + (((c & 0x0F) * 17) << 16) : RgbCPC[c < 27 ? c : 0].GetColor;
 		}
 
 		static public CpcAmsdos CreeEntete(string nomFic, short start, short length, short entry) {

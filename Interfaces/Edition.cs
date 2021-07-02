@@ -45,7 +45,7 @@ namespace ConvImgCpc {
 				for (int y = 0; y < penWidth * incY; y += 2) {
 					tx = Cpc.CalcTx(yReel);
 					int nbCol = Cpc.modeVirtuel == 6 ? 16 : 1 << tx;
-					int realColor = GetPalCPC(Cpc.Palette[pen % nbCol]);
+					int realColor = Cpc.GetPalCPC(Cpc.Palette[pen % nbCol]);
 					int yStart = zoom * (yReel - offsetY);
 					for (int x = 0; x < penWidth * tx; x += tx) {
 						int xReel = (x + offsetX + (e.X / (zoom * (chkX2.Checked ? 2 : 1)))) & -tx;

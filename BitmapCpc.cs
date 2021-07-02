@@ -159,16 +159,6 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private int GetPalCPC(int c) {
-			if (cpcPlus) {
-				byte b = (byte)((c & 0x0F) * 17);
-				byte r = (byte)(((c & 0xF0) >> 4) * 17);
-				byte v = (byte)(((c & 0xF00) >> 8) * 17);
-				return (int)(r + (v << 8) + (b << 16) + 0xFF000000);
-			}
-			return RgbCPC[c < 27 ? c : 0].GetColor;
-		}
-
 		public void CreeBmpCpc(DirectBitmap bmpLock, int[,] colMode5, bool egx = false, int lignestart = 0) {
 			Array.Clear(bmpCpc, 0, bmpCpc.Length);
 			for (int y = 0; y < TailleY; y += 2) {
