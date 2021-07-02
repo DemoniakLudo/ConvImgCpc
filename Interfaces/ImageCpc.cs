@@ -102,7 +102,7 @@ namespace ConvImgCpc {
 			modeImpDraw = pictImpDraw.Visible = Cpc.TailleY == 544 && Cpc.TailleX == 768 && impDrawMode;
 		}
 
-		public void Render(bool forceDrawZoom = false) {
+		public void Render(bool forceDrawZoom = false, bool withSpriteGrid=false) {
 			bpGenPal.Visible = Cpc.cpcPlus;
 			UpdatePalette();
 			modeCaptureSprites.Visible = Cpc.modeVirtuel == 11;
@@ -144,7 +144,7 @@ namespace ConvImgCpc {
 					x += tailleGrille * 16;
 				}
 			}
-			if (Cpc.modeVirtuel == 11) {
+			if (withSpriteGrid) {
 				Graphics g = Graphics.FromImage(pictureBox.Image);
 				for (int x = 0; x < Cpc.TailleX; x += 32)
 					XorDrawing.DrawXorLine(g, (Bitmap)pictureBox.Image, x, 0, x, Cpc.TailleY, false);

@@ -325,34 +325,34 @@ namespace ConvImgCpc {
 					}
 					else
 						if (lineStartX == -1 && lineStartY == -1) {
-						lineStartX = x;
-						lineStartY = y;
-						for (x = 0; x < 16; x++)
-							for (y = 0; y < 16; y++)
-								tempSprite[x + 16 * y] = Cpc.spritesHard[numBank, numSprite, x, y];
-					}
-					else {
-						for (int x1 = 0; x1 < 16; x1++)
-							for (int y1 = 0; y1 < 16; y1++)
-								Cpc.spritesHard[numBank, numSprite, x1, y1] = tempSprite[x1 + 16 * y1];
+							lineStartX = x;
+							lineStartY = y;
+							for (x = 0; x < 16; x++)
+								for (y = 0; y < 16; y++)
+									tempSprite[x + 16 * y] = Cpc.spritesHard[numBank, numSprite, x, y];
+						}
+						else {
+							for (int x1 = 0; x1 < 16; x1++)
+								for (int y1 = 0; y1 < 16; y1++)
+									Cpc.spritesHard[numBank, numSprite, x1, y1] = tempSprite[x1 + 16 * y1];
 
-						DrawLine(lineStartX, lineStartY, x, y);
-					}
+							DrawLine(lineStartX, lineStartY, x, y);
+						}
 				}
 				else
 					if (e.Button == MouseButtons.Right) {
-					Cpc.spritesHard[numBank, numSprite, x, y] = 0;
-					SetPixelSprite(x, y);
-				}
-				else
+						Cpc.spritesHard[numBank, numSprite, x, y] = 0;
+						SetPixelSprite(x, y);
+					}
+					else
 						if (lineStartX != -1 && lineStartY != -1) {
-					for (int x1 = 0; x1 < 16; x1++)
-						for (int y1 = 0; y1 < 16; y1++)
-							Cpc.spritesHard[numBank, numSprite, x1, y1] = tempSprite[x1 + 16 * y1];
+							for (int x1 = 0; x1 < 16; x1++)
+								for (int y1 = 0; y1 < 16; y1++)
+									Cpc.spritesHard[numBank, numSprite, x1, y1] = tempSprite[x1 + 16 * y1];
 
-					DrawLine(lineStartX, lineStartY, x, y, true);
-					lineStartX = lineStartY = -1;
-				}
+							DrawLine(lineStartX, lineStartY, x, y, true);
+							lineStartX = lineStartY = -1;
+						}
 
 				lblRectSelColor.Location = new Point(726, 78 + col * 40);
 			}
@@ -679,20 +679,30 @@ namespace ConvImgCpc {
 				for (int x = 0; x < 512; x++)
 					bmpTest.SetPixel(x, y, 0);
 
-			if (rb42Sprite.Checked) {
-				for (int y = 0; y < 4; y++)
-					for (int x = 0; x < 2; x++)
+			if (rb28sprite.Checked) {
+				for (int y = 0; y < 2; y++)
+					for (int x = 0; x < 4; x++)
 						DrawSpriteTest(bmpTest, start++, x * taillex * 16, y * tailley * 16);
 
-				for (int y = 0; y < 4; y++)
-					for (int x = 2; x < 4; x++)
+				for (int y = 0; y < 2; y++)
+					for (int x = 4; x < 8; x++)
 						DrawSpriteTest(bmpTest, start++, x * taillex * 16, y * tailley * 16);
 			}
-			else {
-				for (int y = 0; y < nb; y++)
-					for (int x = 0; x < nb; x++)
-						DrawSpriteTest(bmpTest, start++, x * taillex * 16, y * tailley * 16);
-			}
+			else
+				if (rb42Sprite.Checked) {
+					for (int y = 0; y < 4; y++)
+						for (int x = 0; x < 2; x++)
+							DrawSpriteTest(bmpTest, start++, x * taillex * 16, y * tailley * 16);
+
+					for (int y = 0; y < 4; y++)
+						for (int x = 2; x < 4; x++)
+							DrawSpriteTest(bmpTest, start++, x * taillex * 16, y * tailley * 16);
+				}
+				else {
+					for (int y = 0; y < nb; y++)
+						for (int x = 0; x < nb; x++)
+							DrawSpriteTest(bmpTest, start++, x * taillex * 16, y * tailley * 16);
+				}
 			pictTest.Refresh();
 		}
 

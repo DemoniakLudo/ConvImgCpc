@@ -47,12 +47,12 @@
 			this.rbPt = new System.Windows.Forms.RadioButton();
 			this.rbLine = new System.Windows.Forms.RadioButton();
 			this.grpEdition = new System.Windows.Forms.GroupBox();
-			this.bpInversePalette = new System.Windows.Forms.Button();
 			this.bpVerticalFlip = new System.Windows.Forms.Button();
 			this.bpHorizontalFlip = new System.Windows.Forms.Button();
 			this.bpRotateSprite = new System.Windows.Forms.Button();
 			this.bpPasteSprite = new System.Windows.Forms.Button();
 			this.bpCopySprite = new System.Windows.Forms.Button();
+			this.bpInversePalette = new System.Windows.Forms.Button();
 			this.bpGenPal = new System.Windows.Forms.Button();
 			this.bpClearSprite = new System.Windows.Forms.Button();
 			this.bpClearBank = new System.Windows.Forms.Button();
@@ -66,6 +66,7 @@
 			this.pictAllSprites = new System.Windows.Forms.PictureBox();
 			this.pictEditSprite = new System.Windows.Forms.PictureBox();
 			this.pictTest = new System.Windows.Forms.PictureBox();
+			this.rb28sprite = new System.Windows.Forms.RadioButton();
 			((System.ComponentModel.ISupportInitialize)(this.zoomX)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.zoomY)).BeginInit();
 			this.grpEdition.SuspendLayout();
@@ -120,17 +121,19 @@
 			// rb1Sprite
 			// 
 			this.rb1Sprite.AutoSize = true;
+			this.rb1Sprite.Checked = true;
 			this.rb1Sprite.Location = new System.Drawing.Point(795, 189);
 			this.rb1Sprite.Name = "rb1Sprite";
 			this.rb1Sprite.Size = new System.Drawing.Size(31, 17);
 			this.rb1Sprite.TabIndex = 9;
+			this.rb1Sprite.TabStop = true;
 			this.rb1Sprite.Text = "1";
 			this.rb1Sprite.UseVisualStyleBackColor = true;
 			// 
 			// rb2Sprite
 			// 
 			this.rb2Sprite.AutoSize = true;
-			this.rb2Sprite.Location = new System.Drawing.Point(840, 189);
+			this.rb2Sprite.Location = new System.Drawing.Point(832, 189);
 			this.rb2Sprite.Name = "rb2Sprite";
 			this.rb2Sprite.Size = new System.Drawing.Size(42, 17);
 			this.rb2Sprite.TabIndex = 9;
@@ -140,7 +143,7 @@
 			// rb4Sprite
 			// 
 			this.rb4Sprite.AutoSize = true;
-			this.rb4Sprite.Location = new System.Drawing.Point(896, 189);
+			this.rb4Sprite.Location = new System.Drawing.Point(880, 189);
 			this.rb4Sprite.Name = "rb4Sprite";
 			this.rb4Sprite.Size = new System.Drawing.Size(42, 17);
 			this.rb4Sprite.TabIndex = 9;
@@ -223,14 +226,14 @@
 			// 
 			this.comboBanque.FormattingEnabled = true;
 			this.comboBanque.Items.AddRange(new object[] {
-			"Bank 1",
-			"Bank 2",
-			"Bank 3",
-			"Bank 4",
-			"Bank 5",
-			"Bank 6",
-			"Bank 7",
-			"Bank 8"});
+            "Bank 1",
+            "Bank 2",
+            "Bank 3",
+            "Bank 4",
+            "Bank 5",
+            "Bank 6",
+            "Bank 7",
+            "Bank 8"});
 			this.comboBanque.Location = new System.Drawing.Point(1033, 12);
 			this.comboBanque.Name = "comboBanque";
 			this.comboBanque.Size = new System.Drawing.Size(61, 21);
@@ -285,7 +288,7 @@
 			// rb42Sprite
 			// 
 			this.rb42Sprite.AutoSize = true;
-			this.rb42Sprite.Location = new System.Drawing.Point(952, 189);
+			this.rb42Sprite.Location = new System.Drawing.Point(928, 189);
 			this.rb42Sprite.Name = "rb42Sprite";
 			this.rb42Sprite.Size = new System.Drawing.Size(53, 17);
 			this.rb42Sprite.TabIndex = 27;
@@ -329,16 +332,6 @@
 			this.grpEdition.TabIndex = 29;
 			this.grpEdition.TabStop = false;
 			this.grpEdition.Text = "Edition";
-			// 
-			// bpInversePalette
-			// 
-			this.bpInversePalette.Image = global::ConvImgCpc.Properties.Resources.InversePalette;
-			this.bpInversePalette.Location = new System.Drawing.Point(1026, 121);
-			this.bpInversePalette.Name = "bpInversePalette";
-			this.bpInversePalette.Size = new System.Drawing.Size(48, 48);
-			this.bpInversePalette.TabIndex = 30;
-			this.bpInversePalette.UseVisualStyleBackColor = true;
-			this.bpInversePalette.Click += new System.EventHandler(this.bpInversePalette_Click);
 			// 
 			// bpVerticalFlip
 			// 
@@ -389,6 +382,16 @@
 			this.bpCopySprite.TabIndex = 17;
 			this.bpCopySprite.UseVisualStyleBackColor = true;
 			this.bpCopySprite.Click += new System.EventHandler(this.bpCopySprite_Click);
+			// 
+			// bpInversePalette
+			// 
+			this.bpInversePalette.Image = global::ConvImgCpc.Properties.Resources.InversePalette;
+			this.bpInversePalette.Location = new System.Drawing.Point(1026, 121);
+			this.bpInversePalette.Name = "bpInversePalette";
+			this.bpInversePalette.Size = new System.Drawing.Size(48, 48);
+			this.bpInversePalette.TabIndex = 30;
+			this.bpInversePalette.UseVisualStyleBackColor = true;
+			this.bpInversePalette.Click += new System.EventHandler(this.bpInversePalette_Click);
 			// 
 			// bpGenPal
 			// 
@@ -532,11 +535,22 @@
 			this.pictTest.TabIndex = 8;
 			this.pictTest.TabStop = false;
 			// 
+			// rb28sprite
+			// 
+			this.rb28sprite.AutoSize = true;
+			this.rb28sprite.Location = new System.Drawing.Point(987, 189);
+			this.rb28sprite.Name = "rb28sprite";
+			this.rb28sprite.Size = new System.Drawing.Size(42, 17);
+			this.rb28sprite.TabIndex = 31;
+			this.rb28sprite.Text = "2x8";
+			this.rb28sprite.UseVisualStyleBackColor = true;
+			// 
 			// EditSprites
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1305, 722);
+			this.Controls.Add(this.rb28sprite);
 			this.Controls.Add(this.bpInversePalette);
 			this.Controls.Add(this.grpEdition);
 			this.Controls.Add(this.rb42Sprite);
@@ -634,5 +648,6 @@
 		private System.Windows.Forms.RadioButton rbLine;
 		private System.Windows.Forms.GroupBox grpEdition;
 		private System.Windows.Forms.Button bpInversePalette;
+		private System.Windows.Forms.RadioButton rb28sprite;
 	}
 }
