@@ -8,25 +8,27 @@ namespace ConvImgCpc {
 		private int captx = -1, capty = -1;
 
 		private void CaptureSprites(MouseEventArgs e) {
-			int sprSize = fenetreCapture.CaptSize << 5;
+			int sprSizeX = fenetreCapture.CaptSizeX << 5;
+			int sprSizeY = fenetreCapture.CaptSizeY << 5;
 			Graphics g = Graphics.FromImage(pictureBox.Image);
 			if (captx > -1 && capty > -1) {
-				XorDrawing.DrawXorRectangle(g, (Bitmap)pictureBox.Image, captx, capty, captx + sprSize, capty + sprSize);
+				XorDrawing.DrawXorRectangle(g, (Bitmap)pictureBox.Image, captx, capty, captx + sprSizeX, capty + sprSizeY);
 				if (e.Button == MouseButtons.Left)
 					fenetreCapture.SetCapture(BmpLock, captx, capty);
 			}
 			captx = e.X / (chkX2.Checked ? 2 : 1) & 0xFFE;
 			capty = e.Y / (chkX2.Checked ? 2 : 1) & 0xFFE;
-			XorDrawing.DrawXorRectangle(g, (Bitmap)pictureBox.Image, captx, capty, captx + sprSize, capty + sprSize);
+			XorDrawing.DrawXorRectangle(g, (Bitmap)pictureBox.Image, captx, capty, captx + sprSizeX, capty + sprSizeY);
 			pictureBox.Refresh();
 		}
 
 		private void pictureBox_MouseLeave(object sender, EventArgs e) {
 			if (fenetreCapture != null) {
-				int sprSize = fenetreCapture.CaptSize << 5;
+				int sprSizeX = fenetreCapture.CaptSizeX << 5;
+				int sprSizeY = fenetreCapture.CaptSizeY << 5;
 				Graphics g = Graphics.FromImage(pictureBox.Image);
 				if (captx > -1 && capty > -1)
-					XorDrawing.DrawXorRectangle(g, (Bitmap)pictureBox.Image, captx, capty, captx + sprSize, capty + sprSize);
+					XorDrawing.DrawXorRectangle(g, (Bitmap)pictureBox.Image, captx, capty, captx + sprSizeX, capty + sprSizeY);
 
 				pictureBox.Refresh();
 				captx = -1;
@@ -53,7 +55,14 @@ namespace ConvImgCpc {
 				CloseCapture();
 				main.Enabled = true;
 			}
-			Render(true, true);
+		}
+
+		private void chkGrilleSprite_CheckedChanged(object sender, EventArgs e) {
+			main.Enabled = !chkGrilleSprite.Checked;
+			Render(true);
+			if ( !chkGrilleSprite.Checked)
+				Render(true, true);
+			
 		}
 	}
 }

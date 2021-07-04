@@ -102,10 +102,10 @@ namespace ConvImgCpc {
 			modeImpDraw = pictImpDraw.Visible = Cpc.TailleY == 544 && Cpc.TailleX == 768 && impDrawMode;
 		}
 
-		public void Render(bool forceDrawZoom = false, bool withSpriteGrid=false) {
+		public void Render(bool forceDrawZoom = false, bool withSpriteGrid = false) {
 			bpGenPal.Visible = Cpc.cpcPlus;
 			UpdatePalette();
-			modeCaptureSprites.Visible = Cpc.modeVirtuel == 11;
+			modeCaptureSprites.Visible = chkGrilleSprite.Visible = Cpc.modeVirtuel == 11;
 			chkGrille.Visible = modeEdition.Visible = Cpc.modeVirtuel != 11;
 			if (chkDoRedo.Checked && modeEdition.Checked) {
 				Enabled = false;
@@ -144,7 +144,7 @@ namespace ConvImgCpc {
 					x += tailleGrille * 16;
 				}
 			}
-			if (withSpriteGrid) {
+			if (chkGrilleSprite.Checked || withSpriteGrid) {
 				Graphics g = Graphics.FromImage(pictureBox.Image);
 				for (int x = 0; x < Cpc.TailleX; x += 32)
 					XorDrawing.DrawXorLine(g, (Bitmap)pictureBox.Image, x, 0, x, Cpc.TailleY, false);
@@ -159,28 +159,32 @@ namespace ConvImgCpc {
 			}
 		}
 
-		public void CaptureSprite(int captSize, int posx, int posy, DirectBitmap bmp) {
+		public void CaptureSprite(int captSizeX, int captSizeY, int posx, int posy, DirectBitmap bmp) {
 			Graphics g = Graphics.FromImage(pictureBox.Image);
 			int x, y;
-			for (x = 0; x < Cpc.TailleX; x += 32)
-				XorDrawing.DrawXorLine(g, (Bitmap)pictureBox.Image, x, 0, x, Cpc.TailleY, false);
+			if (chkGrilleSprite.Checked) {
+				for (x = 0; x < Cpc.TailleX; x += 32)
+					XorDrawing.DrawXorLine(g, (Bitmap)pictureBox.Image, x, 0, x, Cpc.TailleY, false);
 
-			for (y = 0; y < Cpc.TailleY; y += 32)
-				XorDrawing.DrawXorLine(g, (Bitmap)pictureBox.Image, 0, y, Cpc.TailleX, y, false);
-
-			int sprSize = captSize << 5;
-			for (x = 0; x < sprSize; x += 2)
-				for (y = 0; y < sprSize; y += 2) {
+				for (y = 0; y < Cpc.TailleY; y += 32)
+					XorDrawing.DrawXorLine(g, (Bitmap)pictureBox.Image, 0, y, Cpc.TailleX, y, false);
+			}
+			int sprSizeX = captSizeX << 5;
+			int sprSizeY = captSizeY << 5;
+			for (x = 0; x < sprSizeX; x += 2)
+				for (y = 0; y < sprSizeY; y += 2) {
 					int c = BmpLock.GetPixel(posx + x, posy + y);
 					for (int zx = 0; zx < 8; zx++)
 						for (int zy = 0; zy < 8; zy++)
 							bmp.SetPixel(zx + x * 4, zy + y * 4, c);
 				}
-			for (x = 0; x < Cpc.TailleX; x += 32)
-				XorDrawing.DrawXorLine(g, (Bitmap)pictureBox.Image, x, 0, x, Cpc.TailleY, false);
+			if (chkGrilleSprite.Checked) {
+				for (x = 0; x < Cpc.TailleX; x += 32)
+					XorDrawing.DrawXorLine(g, (Bitmap)pictureBox.Image, x, 0, x, Cpc.TailleY, false);
 
-			for (y = 0; y < Cpc.TailleY; y += 32)
-				XorDrawing.DrawXorLine(g, (Bitmap)pictureBox.Image, 0, y, Cpc.TailleX, y, false);
+				for (y = 0; y < Cpc.TailleY; y += 32)
+					XorDrawing.DrawXorLine(g, (Bitmap)pictureBox.Image, 0, y, Cpc.TailleX, y, false);
+			}
 		}
 
 		// Déplacement/Zoom image
@@ -356,7 +360,7 @@ namespace ConvImgCpc {
 				maxSize = (Cpc.TailleX * Cpc.TailleY) >> 4;
 			else
 				if (maxSize >= 0x4000)
-				maxSize += 0x3800;
+					maxSize += 0x3800;
 
 			byte[] ret = new byte[maxSize];
 			Array.Clear(ret, 0, ret.Length);

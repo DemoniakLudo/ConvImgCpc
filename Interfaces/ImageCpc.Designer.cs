@@ -32,6 +32,7 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.tailleCrayon = new System.Windows.Forms.ComboBox();
 			this.grpEdition = new System.Windows.Forms.GroupBox();
+			this.bpLoadWin = new System.Windows.Forms.Button();
 			this.rbPickColor = new System.Windows.Forms.RadioButton();
 			this.bpVerFlip = new System.Windows.Forms.Button();
 			this.bpHorFlip = new System.Windows.Forms.Button();
@@ -56,7 +57,7 @@
 			this.pictImpDraw = new System.Windows.Forms.PictureBox();
 			this.pictureBox = new System.Windows.Forms.PictureBox();
 			this.bpGenPal = new System.Windows.Forms.Button();
-			this.bpLoadWin = new System.Windows.Forms.Button();
+			this.chkGrilleSprite = new System.Windows.Forms.CheckBox();
 			this.grpEdition.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictImpDraw)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
@@ -75,7 +76,7 @@
 			// modeEdition
 			// 
 			this.modeEdition.AutoSize = true;
-			this.modeEdition.Location = new System.Drawing.Point(19, 115);
+			this.modeEdition.Location = new System.Drawing.Point(19, 106);
 			this.modeEdition.Name = "modeEdition";
 			this.modeEdition.Size = new System.Drawing.Size(15, 14);
 			this.modeEdition.TabIndex = 2;
@@ -167,12 +168,22 @@
 			this.grpEdition.Controls.Add(this.label3);
 			this.grpEdition.Controls.Add(this.label2);
 			this.grpEdition.Controls.Add(this.tailleCrayon);
-			this.grpEdition.Location = new System.Drawing.Point(13, 133);
+			this.grpEdition.Location = new System.Drawing.Point(13, 145);
 			this.grpEdition.Name = "grpEdition";
 			this.grpEdition.Size = new System.Drawing.Size(149, 467);
 			this.grpEdition.TabIndex = 9;
 			this.grpEdition.TabStop = false;
 			this.grpEdition.Visible = false;
+			// 
+			// bpLoadWin
+			// 
+			this.bpLoadWin.Location = new System.Drawing.Point(68, 101);
+			this.bpLoadWin.Name = "bpLoadWin";
+			this.bpLoadWin.Size = new System.Drawing.Size(75, 23);
+			this.bpLoadWin.TabIndex = 20;
+			this.bpLoadWin.Text = "Load Win";
+			this.bpLoadWin.UseVisualStyleBackColor = true;
+			this.bpLoadWin.Click += new System.EventHandler(this.bpLoadWin_Click);
 			// 
 			// rbPickColor
 			// 
@@ -307,7 +318,7 @@
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(30, 652);
+			this.label4.Location = new System.Drawing.Point(30, 658);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(50, 13);
 			this.label4.TabIndex = 17;
@@ -316,7 +327,7 @@
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(30, 628);
+			this.label1.Location = new System.Drawing.Point(30, 637);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(53, 13);
 			this.label1.TabIndex = 16;
@@ -324,7 +335,7 @@
 			// 
 			// txbTailleNop
 			// 
-			this.txbTailleNop.Location = new System.Drawing.Point(90, 649);
+			this.txbTailleNop.Location = new System.Drawing.Point(90, 655);
 			this.txbTailleNop.Name = "txbTailleNop";
 			this.txbTailleNop.Size = new System.Drawing.Size(34, 20);
 			this.txbTailleNop.TabIndex = 15;
@@ -332,7 +343,7 @@
 			// 
 			// txbStartNop
 			// 
-			this.txbStartNop.Location = new System.Drawing.Point(89, 624);
+			this.txbStartNop.Location = new System.Drawing.Point(89, 633);
 			this.txbStartNop.Name = "txbStartNop";
 			this.txbStartNop.Size = new System.Drawing.Size(34, 20);
 			this.txbStartNop.TabIndex = 15;
@@ -341,7 +352,7 @@
 			// chkGrille
 			// 
 			this.chkGrille.AutoSize = true;
-			this.chkGrille.Location = new System.Drawing.Point(27, 608);
+			this.chkGrille.Location = new System.Drawing.Point(27, 617);
 			this.chkGrille.Name = "chkGrille";
 			this.chkGrille.Size = new System.Drawing.Size(129, 17);
 			this.chkGrille.TabIndex = 14;
@@ -352,7 +363,7 @@
 			// modeCaptureSprites
 			// 
 			this.modeCaptureSprites.AutoSize = true;
-			this.modeCaptureSprites.Location = new System.Drawing.Point(19, 115);
+			this.modeCaptureSprites.Location = new System.Drawing.Point(19, 106);
 			this.modeCaptureSprites.Name = "modeCaptureSprites";
 			this.modeCaptureSprites.Size = new System.Drawing.Size(15, 14);
 			this.modeCaptureSprites.TabIndex = 10;
@@ -372,7 +383,7 @@
 			// chkX2
 			// 
 			this.chkX2.AutoSize = true;
-			this.chkX2.Location = new System.Drawing.Point(19, 94);
+			this.chkX2.Location = new System.Drawing.Point(19, 86);
 			this.chkX2.Name = "chkX2";
 			this.chkX2.Size = new System.Drawing.Size(39, 17);
 			this.chkX2.TabIndex = 13;
@@ -410,15 +421,16 @@
 			this.bpGenPal.UseVisualStyleBackColor = true;
 			this.bpGenPal.Click += new System.EventHandler(this.bpGenPal_Click);
 			// 
-			// bpLoadWin
+			// chkGrilleSprite
 			// 
-			this.bpLoadWin.Location = new System.Drawing.Point(68, 101);
-			this.bpLoadWin.Name = "bpLoadWin";
-			this.bpLoadWin.Size = new System.Drawing.Size(75, 23);
-			this.bpLoadWin.TabIndex = 20;
-			this.bpLoadWin.Text = "Load Win";
-			this.bpLoadWin.UseVisualStyleBackColor = true;
-			this.bpLoadWin.Click += new System.EventHandler(this.bpLoadWin_Click);
+			this.chkGrilleSprite.AutoSize = true;
+			this.chkGrilleSprite.Location = new System.Drawing.Point(19, 126);
+			this.chkGrilleSprite.Name = "chkGrilleSprite";
+			this.chkGrilleSprite.Size = new System.Drawing.Size(15, 14);
+			this.chkGrilleSprite.TabIndex = 28;
+			this.chkGrilleSprite.UseVisualStyleBackColor = true;
+			this.chkGrilleSprite.Visible = false;
+			this.chkGrilleSprite.CheckedChanged += new System.EventHandler(this.chkGrilleSprite_CheckedChanged);
 			// 
 			// ImageCpc
 			// 
@@ -426,6 +438,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(957, 676);
 			this.ControlBox = false;
+			this.Controls.Add(this.chkGrilleSprite);
 			this.Controls.Add(this.bpGenPal);
 			this.Controls.Add(this.label4);
 			this.Controls.Add(this.chkX2);
@@ -494,5 +507,6 @@
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.Button bpGenPal;
 		private System.Windows.Forms.Button bpLoadWin;
+		private System.Windows.Forms.CheckBox chkGrilleSprite;
 	}
 }

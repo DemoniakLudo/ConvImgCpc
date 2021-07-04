@@ -183,6 +183,8 @@ namespace ConvImgCpc {
 			dic.Add("ImageCpc.bpCopyPal.EN", "Copy palette to clipboard");
 			dic.Add("ImageCpc.chkGrille.FR", "Afficher grille verticale");
 			dic.Add("ImageCpc.chkGrille.EN", "Display vertical grid");
+			dic.Add("ImageCpc.chkGrilleSprite.FR", "Grille sprites");
+			dic.Add("ImageCpc.chkGrilleSprite.EN", "Sprites grid");
 
 			// Animation
 			dic.Add("Animation.bpSup1.FR", "Supprimer");
@@ -217,6 +219,8 @@ namespace ConvImgCpc {
 			dic.Add("Capture.rbCapt2.EN", "Capture 2x2 sprites");
 			dic.Add("Capture.rbCapt4.FR", "Capturer 4x4 sprites");
 			dic.Add("Capture.rbCapt4.EN", "Capture 4x4 sprites");
+			dic.Add("Capture.rbCaptUser.FR", "Choisir nb sprites");
+			dic.Add("Capture.rbCaptUser.EN", "Choose nb sprites");
 			dic.Add("Capture.bpCapture.FR", "Capturer");
 			dic.Add("Capture.bpCapture.EN", "Capture");
 

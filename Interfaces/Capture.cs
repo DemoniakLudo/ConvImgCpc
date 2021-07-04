@@ -3,9 +3,10 @@ using System.Windows.Forms;
 
 namespace ConvImgCpc {
 	public partial class Capture : Form {
-		private int captSize = 1;
-		public int CaptSize { get { return captSize; } }
-		private DirectBitmap bmp = new DirectBitmap(512, 512);
+		private int captSizeX = 1, captSizeY = 1;
+		public int CaptSizeX { get { return captSizeX; } }
+		public int CaptSizeY { get { return captSizeY; } }
+		private DirectBitmap bmp = new DirectBitmap(2048, 2048);
 		private Main main;
 
 		public Capture(Main m) {
@@ -25,32 +26,69 @@ namespace ConvImgCpc {
 		}
 
 		public void SetCapture(DirectBitmap src, int posx, int posy) {
-			main.imgCpc.CaptureSprite(captSize,posx,posy, bmp);
+			main.imgCpc.CaptureSprite(captSizeX, captSizeY, posx, posy, bmp);
 			pictCapture.Refresh();
 		}
 
+		private void GetCaptSizeX() {
+			int v = 0;
+			int.TryParse(txbNbX.Text, out v);
+			if (v > 0 && v <= 16 && v * captSizeY <= 16) {
+				captSizeX = v;
+				numSprite.Maximum = 16 - CaptSizeX * captSizeY;
+				RazCapture();
+			}
+		}
+
+		private void GetCaptSizeY() {
+			int v = 0;
+			int.TryParse(txbNbY.Text, out v);
+			if (v > 0 && v <= 16 && v * captSizeX <= 16) {
+				captSizeY = v;
+				numSprite.Maximum = 16 - CaptSizeX * captSizeY;
+				RazCapture();
+			}
+		}
+
 		private void rbCapt1_CheckedChanged(object sender, EventArgs e) {
-			captSize = 1;
+			lblNbX.Visible = lblNbY.Visible = txbNbX.Visible = txbNbY.Visible = false;
+			captSizeX = captSizeY = 1;
 			numSprite.Maximum = 15;
 			RazCapture();
 		}
 
 		private void rbCapt2_CheckedChanged(object sender, EventArgs e) {
-			captSize = 2;
+			lblNbX.Visible = lblNbY.Visible = txbNbX.Visible = txbNbY.Visible = false;
+			captSizeX = captSizeY = 2;
 			numSprite.Maximum = 12;
 			RazCapture();
 		}
 
 		private void rbCapt4_CheckedChanged(object sender, EventArgs e) {
-			captSize = 4;
+			lblNbX.Visible = lblNbY.Visible = txbNbX.Visible = txbNbY.Visible = false;
+			captSizeX = captSizeY = 4;
 			numSprite.Maximum = 0;
 			RazCapture();
 		}
 
+		private void rbCaptUser_CheckedChanged(object sender, EventArgs e) {
+			lblNbX.Visible = lblNbY.Visible = txbNbX.Visible = txbNbY.Visible = true;
+			GetCaptSizeX();
+			GetCaptSizeY();
+		}
+
+		private void txbNbX_TextChanged(object sender, EventArgs e) {
+			GetCaptSizeX();
+		}
+
+		private void txbNbY_TextChanged(object sender, EventArgs e) {
+			GetCaptSizeY();
+		}
+
 		private void bpCapture_Click(object sender, EventArgs e) {
 			int numSpr = (int)numSprite.Value;
-			for (int spry = 0; spry < captSize; spry++)
-				for (int sprx = 0; sprx < captSize; sprx++) {
+			for (int spry = 0; spry < captSizeY; spry++)
+				for (int sprx = 0; sprx < captSizeX; sprx++) {
 					for (int y = 0; y < 16; y++)
 						for (int x = 0; x < 16; x++) {
 							int pen = 0;
