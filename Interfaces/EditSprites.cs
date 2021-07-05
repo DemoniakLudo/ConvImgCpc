@@ -478,7 +478,7 @@ namespace ConvImgCpc {
 				Enabled = false;
 				try {
 					int maxSprite = GetLastSprite(allBank);
-					short size = (short)(allBank ? main.param.modeImpDraw ? 0x4000 : 0x8000 : 0x1000);
+					int size = allBank ? main.param.modeImpDraw ? 0x4000 : 0x8000 : 0x1000;
 					byte[] buffer = new byte[size];
 					int pos = 0;
 					int startBank = allBank ? 0 : numBank;
@@ -492,7 +492,7 @@ namespace ConvImgCpc {
 						}
 					switch (dlg.FilterIndex) {
 						case 1:
-							CpcAmsdos entete = Cpc.CreeEntete(Path.GetFileName(dlg.FileName), 0x4000, size, 0);
+							CpcAmsdos entete = Cpc.CreeEntete(Path.GetFileName(dlg.FileName), 0x4000, (short)size, 0);
 							BinaryWriter fp = new BinaryWriter(new FileStream(dlg.FileName, FileMode.Create));
 							fp.Write(Cpc.AmsdosToByte(entete));
 							fp.Write(buffer);
@@ -575,12 +575,12 @@ namespace ConvImgCpc {
 						// Décodage sprite
 						int pos = 0;
 						int startBank = enteteAms.RealLength == 0x1000 ? numBank : 0;
-						for (int bank = startBank; bank < 4; bank++)
+						for (int bank = startBank; bank < 8; bank++)
 							for (int i = 0; i < 16; i++) {
 								for (int y = 0; y < 16; y++) {
 									for (int x = 0; x < 16; x++) {
 										Cpc.spritesHard[bank, i, x, y] = tabBytes[128 + pos++];
-										if (pos >= enteteAms.RealLength) {
+										if (pos >= tabBytes.Length - 128) {
 											x = y = i = bank = 16;  // Forcer sortie de toutes les boucles
 										}
 									}
