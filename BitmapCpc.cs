@@ -201,7 +201,7 @@ namespace ConvImgCpc {
 						RvbColor col = bmpLock.GetPixelColor(x + p, y);
 						for (pen = 0; pen < maxPen; pen++) {
 							if (cpcPlus) {
-								if ((col.v >> 4) == (Palette[pen] >> 8) && (col.b >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.r >> 4) == (Palette[pen] & 0x0F))
+								if ((col.v >> 4) == (Palette[pen] >> 8) && (col.r >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.b >> 4) == (Palette[pen] & 0x0F))
 									break;
 							}
 							else {
@@ -222,7 +222,7 @@ namespace ConvImgCpc {
 			RvbColor col = bmpLock.GetPixelColor(x, y);
 			if (cpcPlus) {
 				for (pen = 0; pen < 16; pen++) {
-					if ((col.v >> 4) == (Palette[pen] >> 8) && (col.r >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.b >> 4) == (Palette[pen] & 0x0F))
+					if ((col.v >> 4) == (Palette[pen] >> 8) && (col.b >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.r >> 4) == (Palette[pen] & 0x0F))
 						break;
 				}
 			}
