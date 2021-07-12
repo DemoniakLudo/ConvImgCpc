@@ -19,7 +19,6 @@ namespace ConvImgCpc {
 		public int selImage = 0, maxImage = 0;
 		public Main main;
 		public ConvertDelegate Convert;
-		private int[] tabOctetMode = { 0x00, 0x80, 0x08, 0x88, 0x20, 0xA0, 0x28, 0xA8, 0x02, 0x82, 0x0A, 0x8A, 0x22, 0xA2, 0x2A, 0xAA };
 		public int[,] colMode5 = new int[272, 16];
 		private int startGrille, tailleGrille;
 		private bool drawGrille = false;
@@ -306,7 +305,7 @@ namespace ConvImgCpc {
 								pen = 0; // Pb peut survenir si la palette n'est pas la même pour chaque image d'une animation...
 							}
 
-							octet |= (byte)(tabOctetMode[pen % 16] >> (p / tx));
+							octet |= (byte)(Cpc.tabOctetMode[pen % 16] >> (p / tx));
 						}
 					ret[(x >> 3) + (y >> 1) * (Cpc.TailleX >> 3)] = octet;
 				}
@@ -386,7 +385,7 @@ namespace ConvImgCpc {
 										break;
 								}
 							}
-							octet |= (byte)(tabOctetMode[pen] >> (p / tx));
+							octet |= (byte)(Cpc.tabOctetMode[pen] >> (p / tx));
 						}
 					if (!spriteMode)
 						posRet = Cpc.GetAdrCpc(y) + (x >> 3);

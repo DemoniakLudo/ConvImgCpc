@@ -171,17 +171,37 @@ namespace ConvImgCpc {
 		}
 
 		private int PackDataBrut(byte[] bufOut, ref int sizeDepack) {
-			// Copier l'image cpc dans le buffer de travail
-			img.bitmapCpc.CreeBmpCpc(img.BmpLock, null);
-			int maxSize = (Cpc.NbCol) + ((Cpc.NbLig - 1) >> 3) * (Cpc.NbCol) + ((Cpc.NbLig - 1) & 7) * 0x800;
-			if (maxSize >= 0x4000)
-				maxSize += 0x3800;
-
 			int k = 0;
-			for (int i = 0; i < maxSize; i++) {
-				bufOut[k++] = (byte)(i & 0xFF);
-				bufOut[k++] = (byte)(i >> 8);
-				bufOut[k++] = img.bitmapCpc.bmpCpc[i];
+			Array.Clear(bufOut, 0, bufOut.Length);
+			for (int y = 0; y < Cpc.TailleY; y += 2) {
+				int tx = Cpc.CalcTx(y);
+				for (int x = 0; x < Cpc.TailleX; x += 8) {
+					byte pen = 0, octet = 0;
+					for (int p = 0; p < 8; p++)
+						if ((p % tx) == 0) {
+							RvbColor col = img.BmpLock.GetPixelColor(x + p, y);
+							if (Cpc.cpcPlus) {
+								for (pen = 0; pen < 16; pen++) {
+									if ((col.v >> 4) == (Cpc.Palette[pen] >> 8) && (col.r >> 4) == ((Cpc.Palette[pen] >> 4) & 0x0F) && (col.b >> 4) == (Cpc.Palette[pen] & 0x0F))
+										break;
+								}
+							}
+							else {
+								for (pen = 0; pen < 16; pen++) {
+									RvbColor fixedCol = Cpc.RgbCPC[Cpc.Palette[pen]];
+									if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
+										break;
+								}
+							}
+							if (pen > 15) {
+								pen = 0; // Pb peut survenir si la palette n'est pas la même pour chaque image d'une animation...
+							}
+
+							octet |= (byte)(Cpc.tabOctetMode[pen % 16] >> (p / tx));
+						}
+					bufOut[(x >> 3) + (y >> 1) * (Cpc.TailleX >> 3)] = octet;
+					k++;
+				}
 			}
 			return k;
 		}
@@ -448,7 +468,7 @@ namespace ConvImgCpc {
 					sw.WriteLine("; Type Frame ='" + lastAscii + "'");
 
 				sw.WriteLine("Delta" + i.ToString() + ":\t\t; Taille #" + lg[i].ToString("X4"));
-				SaveAsm.GenereDatas(sw, bufOut[i], lg[i], chkDataBrut.Checked ? 3 : 16);
+				SaveAsm.GenereDatas(sw, bufOut[i], lg[i], 16);
 			}
 			SaveAsm.GenerePointeurs(sw, posPack, bank, withDelai ? speed : null, gest128K && numBank > 0xC0);
 			SaveAsm.GenereFin(sw, ltot, gest128K && endBank0 < 0x8000);
