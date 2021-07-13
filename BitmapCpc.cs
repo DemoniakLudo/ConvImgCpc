@@ -26,7 +26,7 @@ namespace ConvImgCpc {
 
 		public RvbColor GetColorPal(int palEntry) {
 			int col = Palette[palEntry];
-			return cpcPlus ? new RvbColor((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17)) : RgbCPC[col < 27 ? col : 0];
+			return cpcPlus ? new RvbColor((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17)) : RgbCPC[col >= 0 && col < 27 ? col : 0];
 		}
 
 		private void SetPalette(byte[] palStart, int startAdr, bool plus) {
@@ -297,7 +297,7 @@ namespace ConvImgCpc {
 		public DirectBitmap DrawBitmap(int nbCol, int nbLig, bool isSprite = false, ImageCpc imgCpc = null) {
 			DirectBitmap loc = new DirectBitmap(nbCol << 3, nbLig << 1);
 			for (int y = 0; y < nbLig << 1; y += 2) {
-				int mode = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (y & 2) ==yEgx ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
+				int mode = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == yEgx ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 				int adrCPC = isSprite ? nbCol * (y >> 1) : GetAdrCpc(y);
 				int xBitmap = 0;
 				int p0, p1, p2, p3;

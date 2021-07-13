@@ -194,7 +194,7 @@ namespace ConvImgCpc {
 			fileScr.Read(tabBytes, 0, tabBytes.Length);
 			fileScr.Close();
 			int nbImg = 0;
-			try {
+			//try {
 				bool isImp = false, isScrImp = false;
 				if (Cpc.CheckAmsdos(tabBytes)) {
 					int nbImages = 1, width = 1, height = 1;
@@ -310,10 +310,10 @@ namespace ConvImgCpc {
 
 				Convert(false);
 				doNotReset = false;
-			}
-			catch {
-				DisplayErreur(multilingue.GetString("Main.prg.TxtInfo6"));
-			}
+			//}
+			//catch {
+			//	DisplayErreur(multilingue.GetString("Main.prg.TxtInfo6"));
+			//}
 		}
 
 		public void SelectImage(int n, bool noInfo = false) {
