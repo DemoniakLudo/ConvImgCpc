@@ -185,6 +185,8 @@ namespace ConvImgCpc {
 			dic.Add("ImageCpc.chkGrille.EN", "Display vertical grid");
 			dic.Add("ImageCpc.chkGrilleSprite.FR", "Grille sprites");
 			dic.Add("ImageCpc.chkGrilleSprite.EN", "Sprites grid");
+			dic.Add("ImageCpc.bpCopyImage.FR", "Copier image dans presse-papier");
+			dic.Add("ImageCpc.bpCopyImage.EN", "Copy image to clipboard");
 
 			// Animation
 			dic.Add("Animation.bpSup1.FR", "Supprimer");

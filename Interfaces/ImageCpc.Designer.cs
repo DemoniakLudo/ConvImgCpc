@@ -58,6 +58,7 @@
 			this.pictureBox = new System.Windows.Forms.PictureBox();
 			this.bpGenPal = new System.Windows.Forms.Button();
 			this.chkGrilleSprite = new System.Windows.Forms.CheckBox();
+			this.bpCopyImage = new System.Windows.Forms.Button();
 			this.grpEdition.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictImpDraw)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
@@ -432,12 +433,23 @@
 			this.chkGrilleSprite.Visible = false;
 			this.chkGrilleSprite.CheckedChanged += new System.EventHandler(this.chkGrilleSprite_CheckedChanged);
 			// 
+			// bpCopyImage
+			// 
+			this.bpCopyImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.bpCopyImage.Location = new System.Drawing.Point(445, 627);
+			this.bpCopyImage.Name = "bpCopyImage";
+			this.bpCopyImage.Size = new System.Drawing.Size(106, 44);
+			this.bpCopyImage.TabIndex = 29;
+			this.bpCopyImage.UseVisualStyleBackColor = true;
+			this.bpCopyImage.Click += new System.EventHandler(this.bpCopyImage_Click);
+			// 
 			// ImageCpc
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(957, 676);
 			this.ControlBox = false;
+			this.Controls.Add(this.bpCopyImage);
 			this.Controls.Add(this.chkGrilleSprite);
 			this.Controls.Add(this.bpGenPal);
 			this.Controls.Add(this.label4);
@@ -508,5 +520,6 @@
 		private System.Windows.Forms.Button bpGenPal;
 		private System.Windows.Forms.Button bpLoadWin;
 		private System.Windows.Forms.CheckBox chkGrilleSprite;
+		private System.Windows.Forms.Button bpCopyImage;
 	}
 }
