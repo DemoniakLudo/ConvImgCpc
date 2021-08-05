@@ -202,6 +202,7 @@
 			this.Name = "Capture";
 			this.ShowIcon = false;
 			this.ShowInTaskbar = false;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Capture sprites hard";
 			((System.ComponentModel.ISupportInitialize)(this.pictCapture)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numSprite)).EndInit();
