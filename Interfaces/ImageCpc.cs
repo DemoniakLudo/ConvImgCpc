@@ -493,7 +493,7 @@ namespace ConvImgCpc {
 				}
 			}
 			else {
-				if (editToolMode != EditTool.Draw)
+				if (editToolMode != EditTool.Draw && editToolMode != EditTool.Fill)
 					rbDraw.Checked = true;
 
 				RvbColor col = bitmapCpc.GetColorPal(pen);

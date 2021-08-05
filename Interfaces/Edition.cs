@@ -19,7 +19,7 @@ namespace ConvImgCpc {
 		private bool doDraw = false;
 		private bool setCopyRect = false;
 		private int copyRectx, copyRecty, copyRectw, copyRecth;
-		private enum EditTool { Draw, Zoom, Copy, Pick };
+		private enum EditTool { Draw, Zoom, Copy, Pick, Fill };
 		private EditTool editToolMode = EditTool.Draw;
 		private DirectBitmap imgMotif;
 		private DirectBitmap imgCopy;
@@ -236,6 +236,45 @@ namespace ConvImgCpc {
 			}
 		}
 
+		int maxFill = 0;
+
+		private void DoFill(int x, int y, int tx, int fill, int old) {
+			if (x >= 0 && x < Cpc.TailleX && y >= 0 && y < Cpc.TailleY && maxFill < 6000) {
+				if (BmpLock.GetPixelColor(x, y).GetColorArgb == old) {
+					maxFill++;
+					undo.MemoUndoRedo(x, y, BmpLock.GetPixel(x, y), fill, doDraw);
+					doDraw = true;
+					BmpLock.SetHorLineDouble(x, y, tx, fill);
+					DoFill(x + tx, y, tx, fill, old);
+					DoFill(x, y + 2, tx, fill, old);
+					DoFill(x - tx, y, tx, fill, old);
+					DoFill(x, y - 2, tx, fill, old);
+				}
+			}
+		}
+
+		private void ToolModeFill(MouseEventArgs e) {
+			if (e == null || e.Button == MouseButtons.None) {
+				if (doDraw) {
+					doDraw = false;
+					undo.EndUndoRedo();
+				}
+			}
+			else {
+				int incY = Cpc.modeVirtuel >= 8 ? 8 : 2;
+				int yReel = e != null ? (offsetY + (e.Y / (zoom * (chkX2.Checked ? 2 : 1)))) & -incY : 0;
+				int tx = Cpc.CalcTx(yReel);
+				int xReel = (offsetX + (e.X / (zoom * (chkX2.Checked ? 2 : 1)))) & -tx;
+				if (xReel >= 0 && yReel >= 0 && xReel < Cpc.TailleX && yReel < Cpc.TailleY) {
+					int fill = bitmapCpc.GetColorPal(e.Button == MouseButtons.Left ? drawCol : undrawCol % (Cpc.modeVirtuel == 6 ? 16 : 1 << tx)).GetColorArgb;
+					int old = BmpLock.GetPixelColor(xReel, yReel).GetColorArgb;
+					maxFill = 0;
+					DoFill(xReel, yReel, tx, fill, old);
+					Render(true);
+				}
+			}
+		}
+
 		private void ReleaseMotif() {
 			if (imgCopy != null) {
 				imgCopy.Dispose();
@@ -274,6 +313,10 @@ namespace ConvImgCpc {
 
 						case EditTool.Pick:
 							ToolModePick(e);
+							break;
+
+						case EditTool.Fill:
+							ToolModeFill(e);
 							break;
 					}
 					if (e.Button == MouseButtons.None) {
@@ -355,6 +398,10 @@ namespace ConvImgCpc {
 			editToolMode = EditTool.Pick;
 		}
 
+		private void rbFill_CheckedChanged(object sender, EventArgs e) {
+			editToolMode = EditTool.Fill;
+		}
+
 		private void bpUndo_Click(object sender, System.EventArgs e) {
 			Enabled = false;
 			List<MemoPoint> lst = undo.Undo();
@@ -423,6 +470,80 @@ namespace ConvImgCpc {
 				p.posx = Cpc.TailleX - 1 - p.posx;
 
 			Render(true);
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		public void MyFill(bool[,] array, int x, int y) {
+			if (!array[y, x])
+				_MyFill(array, x, y, array.GetLength(1), array.GetLength(0));
+		}
+
+		void _MyFill(bool[,] array, int x, int y, int width, int height) {
+			while (true) {
+				int ox = x, oy = y;
+				while (y != 0 && !array[y - 1, x])
+					y--;
+
+				while (x != 0 && !array[y, x - 1])
+					x--;
+
+				if (x == ox && y == oy)
+					break;
+			}
+			MyFillCore(array, x, y, width, height);
+		}
+
+		void MyFillCore(bool[,] array, int x, int y, int width, int height) {
+			int lastRowLength = 0;
+			do {
+				int rowLength = 0, sx = x;
+				if (lastRowLength != 0 && array[y, x]) {
+					do {
+						if (--lastRowLength == 0)
+							return;
+					}
+					while (array[y, ++x]);
+					sx = x;
+				}
+				else {
+					for (; x != 0 && !array[y, x - 1]; rowLength++, lastRowLength++) {
+						array[y, --x] = true;
+						if (y != 0 && !array[y - 1, x])
+							_MyFill(array, x, y - 1, width, height);
+					}
+				}
+				for (; sx < width && !array[y, sx]; rowLength++, sx++)
+					array[y, sx] = true;
+
+				if (rowLength < lastRowLength) {
+					for (int end = x + lastRowLength; ++sx < end; ) {
+						if (!array[y, sx])
+							MyFillCore(array, sx, y, width, height);
+					}
+				}
+				else if (rowLength > lastRowLength && y != 0) {
+					for (int ux = x + lastRowLength; ++ux < sx; ) {
+						if (!array[y - 1, ux])
+							_MyFill(array, ux, y - 1, width, height);
+					}
+				}
+				lastRowLength = rowLength;
+			}
+			while (lastRowLength != 0 && ++y < height);
 		}
 	}
 }
