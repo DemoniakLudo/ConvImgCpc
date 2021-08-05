@@ -349,10 +349,14 @@ namespace ConvImgCpc {
 					tbxSizeX.Text = param.sizex.ToString();
 					tbxSizeY.Text = param.sizey.ToString();
 				}
+				for (int i = 0; i < 16; i++)
+					param.lockState[i] = 0;
+
 				radioFit.Checked = param.sMode == Param.SizeMode.Fit;
 				radioKeepLarger.Checked = param.sMode == Param.SizeMode.KeepLarger;
 				radioKeepSmaller.Checked = param.sMode == Param.SizeMode.KeepSmaller;
 				radioOrigin.Checked = param.sMode == Param.SizeMode.Origin;
+				sortPal.Checked = param.sortPal;
 				radioUserSize.Checked = param.sMode == Param.SizeMode.UserSize;
 				nbCols.Value = param.nbCols;
 				nbLignes.Value = param.nbLignes;
