@@ -492,7 +492,7 @@ namespace ConvImgCpc {
 				}
 			}
 			else {
-				if (editToolMode != EditTool.Draw)
+				if (editToolMode != EditTool.Draw && editToolMode != EditTool.Fill)
 					rbDraw.Checked = true;
 
 				RvbColor col = bitmapCpc.GetColorPal(pen);
@@ -621,6 +621,16 @@ namespace ConvImgCpc {
 				}
 			}
 			Enabled = true;
+		}
+
+		private void bpCopyImage_Click(object sender, EventArgs e) {
+			DirectBitmap bmpTmp = new DirectBitmap(Cpc.TailleX, Cpc.TailleY);
+			for (int x = 0; x < Cpc.TailleX; x++)
+				for (int y = 0; y < Cpc.TailleY; y++)
+					bmpTmp.SetPixel(x, y, BmpLock.GetPixel(x, y));
+
+			Clipboard.SetImage(bmpTmp.Bitmap);
+			bmpTmp.Dispose();
 		}
 	}
 }

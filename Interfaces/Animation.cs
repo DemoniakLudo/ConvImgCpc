@@ -46,10 +46,12 @@ namespace ConvImgCpc {
 				tabTxt[i - startImg].Text = main.imgCpc.tabBmpLock[i].Tps.ToString();
 			}
 			for (int i = endImg - startImg + 1; i < 5; i++) {
-				tabPb[i].Image = null;
-				tabPb[i].Refresh();
-				tabButton[i].Visible = false;
-				tabTxt[i].Visible = false;
+				if (i > 0) {
+					tabPb[i].Image = null;
+					tabPb[i].Refresh();
+					tabButton[i].Visible = false;
+					tabTxt[i].Visible = false;
+				}
 			}
 			hScrollBar1.Visible = numImage.Maximum >= 5;
 			hScrollBar1.Maximum = (int)(numImage.Maximum);

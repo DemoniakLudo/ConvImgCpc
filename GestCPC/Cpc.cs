@@ -177,8 +177,11 @@ namespace ConvImgCpc {
 		}
 
 		static public bool CheckAmsdos(byte[] entete) {
-			CpcAmsdos enteteAms = GetAmsdos(entete);
-			return CalcCheckSum(entete) == enteteAms.CheckSum;
+			if (entete.Length > 128) {
+				CpcAmsdos enteteAms = GetAmsdos(entete);
+				return CalcCheckSum(entete) == enteteAms.CheckSum;
+			}
+			return false;
 		}
 
 		static public byte[] AmsdosToByte(CpcAmsdos obj) {

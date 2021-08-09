@@ -28,10 +28,11 @@
 			this.hScrollBar = new System.Windows.Forms.HScrollBar();
 			this.vScrollBar = new System.Windows.Forms.VScrollBar();
 			this.drawColor = new System.Windows.Forms.Label();
-			this.label3 = new System.Windows.Forms.Label();
-			this.label2 = new System.Windows.Forms.Label();
+			this.lblPenColor = new System.Windows.Forms.Label();
+			this.lblPenSize = new System.Windows.Forms.Label();
 			this.tailleCrayon = new System.Windows.Forms.ComboBox();
 			this.grpEdition = new System.Windows.Forms.GroupBox();
+			this.rbFill = new System.Windows.Forms.RadioButton();
 			this.bpLoadWin = new System.Windows.Forms.Button();
 			this.rbPickColor = new System.Windows.Forms.RadioButton();
 			this.bpVerFlip = new System.Windows.Forms.Button();
@@ -58,6 +59,7 @@
 			this.pictureBox = new System.Windows.Forms.PictureBox();
 			this.bpGenPal = new System.Windows.Forms.Button();
 			this.chkGrilleSprite = new System.Windows.Forms.CheckBox();
+			this.bpCopyImage = new System.Windows.Forms.Button();
 			this.grpEdition.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictImpDraw)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
@@ -108,28 +110,28 @@
 			// drawColor
 			// 
 			this.drawColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.drawColor.Location = new System.Drawing.Point(6, 243);
+			this.drawColor.Location = new System.Drawing.Point(6, 253);
 			this.drawColor.Name = "drawColor";
 			this.drawColor.Size = new System.Drawing.Size(70, 70);
 			this.drawColor.TabIndex = 7;
 			// 
-			// label3
+			// lblPenColor
 			// 
-			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(7, 225);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(23, 13);
-			this.label3.TabIndex = 4;
-			this.label3.Text = "lbl3";
+			this.lblPenColor.AutoSize = true;
+			this.lblPenColor.Location = new System.Drawing.Point(7, 237);
+			this.lblPenColor.Name = "lblPenColor";
+			this.lblPenColor.Size = new System.Drawing.Size(60, 13);
+			this.lblPenColor.TabIndex = 4;
+			this.lblPenColor.Text = "lblPenColor";
 			// 
-			// label2
+			// lblPenSize
 			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(7, 198);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(23, 13);
-			this.label2.TabIndex = 5;
-			this.label2.Text = "lbl2";
+			this.lblPenSize.AutoSize = true;
+			this.lblPenSize.Location = new System.Drawing.Point(7, 219);
+			this.lblPenSize.Name = "lblPenSize";
+			this.lblPenSize.Size = new System.Drawing.Size(56, 13);
+			this.lblPenSize.TabIndex = 5;
+			this.lblPenSize.Text = "lblPenSize";
 			// 
 			// tailleCrayon
 			// 
@@ -142,7 +144,7 @@
             "3",
             "4",
             "8"});
-			this.tailleCrayon.Location = new System.Drawing.Point(96, 190);
+			this.tailleCrayon.Location = new System.Drawing.Point(96, 211);
 			this.tailleCrayon.Name = "tailleCrayon";
 			this.tailleCrayon.Size = new System.Drawing.Size(31, 21);
 			this.tailleCrayon.TabIndex = 3;
@@ -150,6 +152,7 @@
 			// 
 			// grpEdition
 			// 
+			this.grpEdition.Controls.Add(this.rbFill);
 			this.grpEdition.Controls.Add(this.bpLoadWin);
 			this.grpEdition.Controls.Add(this.rbPickColor);
 			this.grpEdition.Controls.Add(this.bpVerFlip);
@@ -165,8 +168,8 @@
 			this.grpEdition.Controls.Add(this.bpUndo);
 			this.grpEdition.Controls.Add(this.chkRendu);
 			this.grpEdition.Controls.Add(this.drawColor);
-			this.grpEdition.Controls.Add(this.label3);
-			this.grpEdition.Controls.Add(this.label2);
+			this.grpEdition.Controls.Add(this.lblPenColor);
+			this.grpEdition.Controls.Add(this.lblPenSize);
 			this.grpEdition.Controls.Add(this.tailleCrayon);
 			this.grpEdition.Location = new System.Drawing.Point(13, 145);
 			this.grpEdition.Name = "grpEdition";
@@ -175,9 +178,20 @@
 			this.grpEdition.TabStop = false;
 			this.grpEdition.Visible = false;
 			// 
+			// rbFill
+			// 
+			this.rbFill.Image = global::ConvImgCpc.Properties.Resources.Fill;
+			this.rbFill.Location = new System.Drawing.Point(10, 160);
+			this.rbFill.Name = "rbFill";
+			this.rbFill.Size = new System.Drawing.Size(48, 32);
+			this.rbFill.TabIndex = 21;
+			this.rbFill.TabStop = true;
+			this.rbFill.UseVisualStyleBackColor = true;
+			this.rbFill.CheckedChanged += new System.EventHandler(this.rbFill_CheckedChanged);
+			// 
 			// bpLoadWin
 			// 
-			this.bpLoadWin.Location = new System.Drawing.Point(68, 101);
+			this.bpLoadWin.Location = new System.Drawing.Point(68, 99);
 			this.bpLoadWin.Name = "bpLoadWin";
 			this.bpLoadWin.Size = new System.Drawing.Size(75, 23);
 			this.bpLoadWin.TabIndex = 20;
@@ -188,7 +202,7 @@
 			// rbPickColor
 			// 
 			this.rbPickColor.Image = global::ConvImgCpc.Properties.Resources.PickColor;
-			this.rbPickColor.Location = new System.Drawing.Point(10, 132);
+			this.rbPickColor.Location = new System.Drawing.Point(10, 127);
 			this.rbPickColor.Name = "rbPickColor";
 			this.rbPickColor.Size = new System.Drawing.Size(48, 32);
 			this.rbPickColor.TabIndex = 14;
@@ -219,7 +233,7 @@
 			// lblInfoPos
 			// 
 			this.lblInfoPos.AutoSize = true;
-			this.lblInfoPos.Location = new System.Drawing.Point(7, 172);
+			this.lblInfoPos.Location = new System.Drawing.Point(7, 200);
 			this.lblInfoPos.Name = "lblInfoPos";
 			this.lblInfoPos.Size = new System.Drawing.Size(43, 13);
 			this.lblInfoPos.TabIndex = 17;
@@ -228,7 +242,7 @@
 			// rbCopy
 			// 
 			this.rbCopy.Image = global::ConvImgCpc.Properties.Resources.Copy;
-			this.rbCopy.Location = new System.Drawing.Point(10, 96);
+			this.rbCopy.Location = new System.Drawing.Point(10, 94);
 			this.rbCopy.Name = "rbCopy";
 			this.rbCopy.Size = new System.Drawing.Size(48, 32);
 			this.rbCopy.TabIndex = 16;
@@ -238,7 +252,7 @@
 			// undrawColor
 			// 
 			this.undrawColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.undrawColor.Location = new System.Drawing.Point(6, 323);
+			this.undrawColor.Location = new System.Drawing.Point(6, 326);
 			this.undrawColor.Name = "undrawColor";
 			this.undrawColor.Size = new System.Drawing.Size(70, 70);
 			this.undrawColor.TabIndex = 15;
@@ -246,7 +260,7 @@
 			// lblZoom
 			// 
 			this.lblZoom.AutoSize = true;
-			this.lblZoom.Location = new System.Drawing.Point(65, 75);
+			this.lblZoom.Location = new System.Drawing.Point(65, 74);
 			this.lblZoom.Name = "lblZoom";
 			this.lblZoom.Size = new System.Drawing.Size(22, 13);
 			this.lblZoom.TabIndex = 14;
@@ -255,7 +269,7 @@
 			// rbZoom
 			// 
 			this.rbZoom.Image = global::ConvImgCpc.Properties.Resources.Zoom;
-			this.rbZoom.Location = new System.Drawing.Point(10, 62);
+			this.rbZoom.Location = new System.Drawing.Point(10, 61);
 			this.rbZoom.Name = "rbZoom";
 			this.rbZoom.Size = new System.Drawing.Size(48, 32);
 			this.rbZoom.TabIndex = 13;
@@ -432,12 +446,23 @@
 			this.chkGrilleSprite.Visible = false;
 			this.chkGrilleSprite.CheckedChanged += new System.EventHandler(this.chkGrilleSprite_CheckedChanged);
 			// 
+			// bpCopyImage
+			// 
+			this.bpCopyImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.bpCopyImage.Location = new System.Drawing.Point(445, 627);
+			this.bpCopyImage.Name = "bpCopyImage";
+			this.bpCopyImage.Size = new System.Drawing.Size(106, 44);
+			this.bpCopyImage.TabIndex = 29;
+			this.bpCopyImage.UseVisualStyleBackColor = true;
+			this.bpCopyImage.Click += new System.EventHandler(this.bpCopyImage_Click);
+			// 
 			// ImageCpc
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(957, 676);
 			this.ControlBox = false;
+			this.Controls.Add(this.bpCopyImage);
 			this.Controls.Add(this.chkGrilleSprite);
 			this.Controls.Add(this.bpGenPal);
 			this.Controls.Add(this.label4);
@@ -479,8 +504,8 @@
 		private System.Windows.Forms.HScrollBar hScrollBar;
 		private System.Windows.Forms.VScrollBar vScrollBar;
 		private System.Windows.Forms.Label drawColor;
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Label lblPenColor;
+		private System.Windows.Forms.Label lblPenSize;
 		private System.Windows.Forms.ComboBox tailleCrayon;
 		private System.Windows.Forms.GroupBox grpEdition;
 		private System.Windows.Forms.CheckBox chkRendu;
@@ -508,5 +533,7 @@
 		private System.Windows.Forms.Button bpGenPal;
 		private System.Windows.Forms.Button bpLoadWin;
 		private System.Windows.Forms.CheckBox chkGrilleSprite;
+		private System.Windows.Forms.Button bpCopyImage;
+		private System.Windows.Forms.RadioButton rbFill;
 	}
 }

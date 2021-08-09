@@ -6,6 +6,7 @@ OK Import animation image par image
 OK Affichage images sources/calculées dans la fenêtre d'animation
 OK Routine affichage images en mode X
 OK Routine Affichage images ASCII en overscan
+- Positionnement sprites hard sur image
 - Améliorer le mode édition (palette d'outils ?)
 - Ajuster sauvegarde source assembleur compacté (pb dimensions écran)
 - Edition palette animation image par image

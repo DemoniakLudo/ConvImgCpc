@@ -169,10 +169,10 @@ namespace ConvImgCpc {
 			dic.Add("ImageCpc.lockAllPal.EN", "Lock all palette");
 			dic.Add("ImageCpc.modeEdition.FR", "Editer image");
 			dic.Add("ImageCpc.modeEdition.EN", "Edit picture");
-			dic.Add("ImageCpc.label3.FR", "Couleur crayon :");
-			dic.Add("ImageCpc.label3.EN", "Pen color :");
-			dic.Add("ImageCpc.label2.FR", "Taille crayon :");
-			dic.Add("ImageCpc.label2.EN", "Pen size :");
+			dic.Add("ImageCpc.lblPenColor.FR", "Couleur crayon :");
+			dic.Add("ImageCpc.lblPenColor.EN", "Pen color :");
+			dic.Add("ImageCpc.lblPenSize.FR", "Taille crayon :");
+			dic.Add("ImageCpc.lblPenSize.EN", "Pen size :");
 			dic.Add("ImageCpc.chkDoRedo.FR", "Garder retouches");
 			dic.Add("ImageCpc.chkDoRedo.EN", "Keep retouchings");
 			dic.Add("ImageCpc.chkRendu.FR", "Fenêtre de rendu");
@@ -185,6 +185,8 @@ namespace ConvImgCpc {
 			dic.Add("ImageCpc.chkGrille.EN", "Display vertical grid");
 			dic.Add("ImageCpc.chkGrilleSprite.FR", "Grille sprites");
 			dic.Add("ImageCpc.chkGrilleSprite.EN", "Sprites grid");
+			dic.Add("ImageCpc.bpCopyImage.FR", "Copier image dans presse-papier");
+			dic.Add("ImageCpc.bpCopyImage.EN", "Copy image to clipboard");
 
 			// Animation
 			dic.Add("Animation.bpSup1.FR", "Supprimer");
