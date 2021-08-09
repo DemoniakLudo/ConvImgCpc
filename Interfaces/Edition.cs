@@ -103,26 +103,26 @@ namespace ConvImgCpc {
 			}
 			else
 				if (e.Button == MouseButtons.Right) {
-					if (!unZoom) {
-						unZoom = true;
-						if (zoom >= 2)
-							zoom >>= 1;
+				if (!unZoom) {
+					unZoom = true;
+					if (zoom >= 2)
+						zoom >>= 1;
 
+					DoZoom();
+				}
+			}
+			else {
+				unZoom = false;
+				if (setZoomRect) {
+					setZoomRect = false;
+					if (zoomRectw != 0 && zoomRecth != 0) {
+						Graphics g = Graphics.FromImage(pictureBox.Image);
+						XorDrawing.DrawXorRectangle(g, (Bitmap)pictureBox.Image, zoomRectx, zoomRecty, zoomRectx + zoomRectw, zoomRecty + zoomRecth);
+						zoom = Math.Max(1, Math.Min(Math.Abs(768 / zoomRectw), Math.Abs(544 / zoomRecth)) & 0x7E);
 						DoZoom();
 					}
 				}
-				else {
-					unZoom = false;
-					if (setZoomRect) {
-						setZoomRect = false;
-						if (zoomRectw != 0 && zoomRecth != 0) {
-							Graphics g = Graphics.FromImage(pictureBox.Image);
-							XorDrawing.DrawXorRectangle(g, (Bitmap)pictureBox.Image, zoomRectx, zoomRecty, zoomRectx + zoomRectw, zoomRecty + zoomRecth);
-							zoom = Math.Max(1, Math.Min(Math.Abs(768 / zoomRectw), Math.Abs(544 / zoomRecth)) & 0x7E);
-							DoZoom();
-						}
-					}
-				}
+			}
 		}
 
 		private void DrawCopy(MouseEventArgs e) {
@@ -236,19 +236,20 @@ namespace ConvImgCpc {
 			}
 		}
 
-		int maxFill = 0;
-
-		private void DoFill(int x, int y, int tx, int fill, int old) {
-			if (x >= 0 && x < Cpc.TailleX && y >= 0 && y < Cpc.TailleY && maxFill < 6000) {
-				if (BmpLock.GetPixelColor(x, y).GetColorArgb == old) {
-					maxFill++;
-					undo.MemoUndoRedo(x, y, BmpLock.GetPixel(x, y), fill, doDraw);
+		private void DoFill(int xReel, int yReel, int tx, int fill) {
+			Stack<Point> pixels = new Stack<Point>();
+			int old = BmpLock.GetPixelColor(xReel, yReel).GetColorArgb;
+			pixels.Push(new Point(xReel, yReel));
+			while (pixels.Count > 0) {
+				Point a = pixels.Pop();
+				if (a.X < Cpc.TailleX && a.X >= 0 && a.Y < Cpc.TailleY && a.Y >= 0 && BmpLock.GetPixelColor(a.X, a.Y).GetColorArgb == old) {
+					undo.MemoUndoRedo(a.X, a.Y, BmpLock.GetPixel(a.X, a.Y), fill, doDraw);
 					doDraw = true;
-					BmpLock.SetHorLineDouble(x, y, tx, fill);
-					DoFill(x + tx, y, tx, fill, old);
-					DoFill(x, y + 2, tx, fill, old);
-					DoFill(x - tx, y, tx, fill, old);
-					DoFill(x, y - 2, tx, fill, old);
+					BmpLock.SetHorLineDouble(a.X, a.Y, tx, fill);
+					pixels.Push(new Point(a.X - tx, a.Y));
+					pixels.Push(new Point(a.X + tx, a.Y));
+					pixels.Push(new Point(a.X, a.Y - 2));
+					pixels.Push(new Point(a.X, a.Y + 2));
 				}
 			}
 		}
@@ -267,9 +268,7 @@ namespace ConvImgCpc {
 				int xReel = (offsetX + (e.X / (zoom * (chkX2.Checked ? 2 : 1)))) & -tx;
 				if (xReel >= 0 && yReel >= 0 && xReel < Cpc.TailleX && yReel < Cpc.TailleY) {
 					int fill = bitmapCpc.GetColorPal(e.Button == MouseButtons.Left ? drawCol : undrawCol % (Cpc.modeVirtuel == 6 ? 16 : 1 << tx)).GetColorArgb;
-					int old = BmpLock.GetPixelColor(xReel, yReel).GetColorArgb;
-					maxFill = 0;
-					DoFill(xReel, yReel, tx, fill, old);
+					DoFill(xReel, yReel, tx, fill);
 					Render(true);
 				}
 			}
@@ -293,39 +292,39 @@ namespace ConvImgCpc {
 				CaptureSprites(e);      // Capture de sprites hard
 			else
 				if (modeEdition.Checked) {
-					int incY = Cpc.modeVirtuel >= 8 ? 8 : 2;
-					int yReel = (((offsetY + (e.Y / (zoom * (chkX2.Checked ? 2 : 1)))) & -incY) >> 1) - (modeImpDraw ? 1 : 0);
-					int tx = Cpc.CalcTx(yReel);
-					int xReel = (offsetX + (e.X / (zoom * (chkX2.Checked ? 2 : 1)))) & -tx;
-					lblInfoPos.Text = "x:" + xReel.ToString("000") + " y:" + yReel.ToString("000");
-					switch (editToolMode) {
-						case EditTool.Draw:
-							ToolModeDraw(e);
-							break;
+				int incY = Cpc.modeVirtuel >= 8 ? 8 : 2;
+				int yReel = (((offsetY + (e.Y / (zoom * (chkX2.Checked ? 2 : 1)))) & -incY) >> 1) - (modeImpDraw ? 1 : 0);
+				int tx = Cpc.CalcTx(yReel);
+				int xReel = (offsetX + (e.X / (zoom * (chkX2.Checked ? 2 : 1)))) & -tx;
+				lblInfoPos.Text = "x:" + xReel.ToString("000") + " y:" + yReel.ToString("000");
+				switch (editToolMode) {
+					case EditTool.Draw:
+						ToolModeDraw(e);
+						break;
 
-						case EditTool.Zoom:
-							ToolModeZoom(e);
-							break;
+					case EditTool.Zoom:
+						ToolModeZoom(e);
+						break;
 
-						case EditTool.Copy:
-							ToolModeCopy(e);
-							break;
+					case EditTool.Copy:
+						ToolModeCopy(e);
+						break;
 
-						case EditTool.Pick:
-							ToolModePick(e);
-							break;
+					case EditTool.Pick:
+						ToolModePick(e);
+						break;
 
-						case EditTool.Fill:
-							ToolModeFill(e);
-							break;
-					}
-					if (e.Button == MouseButtons.None) {
-						bpUndo.Enabled = undo.CanUndo;
-						bpRedo.Enabled = undo.CanRedo;
-					}
+					case EditTool.Fill:
+						ToolModeFill(e);
+						break;
 				}
-				else
-					MoveOrSize(e);      // Déplacement/Zoom image
+				if (e.Button == MouseButtons.None) {
+					bpUndo.Enabled = undo.CanUndo;
+					bpRedo.Enabled = undo.CanRedo;
+				}
+			}
+			else
+				MoveOrSize(e);      // Déplacement/Zoom image
 		}
 
 		private void vScrollBar_Scroll(object sender, ScrollEventArgs e) {
@@ -482,68 +481,5 @@ namespace ConvImgCpc {
 
 
 
-
-
-
-
-
-		public void MyFill(bool[,] array, int x, int y) {
-			if (!array[y, x])
-				_MyFill(array, x, y, array.GetLength(1), array.GetLength(0));
-		}
-
-		void _MyFill(bool[,] array, int x, int y, int width, int height) {
-			while (true) {
-				int ox = x, oy = y;
-				while (y != 0 && !array[y - 1, x])
-					y--;
-
-				while (x != 0 && !array[y, x - 1])
-					x--;
-
-				if (x == ox && y == oy)
-					break;
-			}
-			MyFillCore(array, x, y, width, height);
-		}
-
-		void MyFillCore(bool[,] array, int x, int y, int width, int height) {
-			int lastRowLength = 0;
-			do {
-				int rowLength = 0, sx = x;
-				if (lastRowLength != 0 && array[y, x]) {
-					do {
-						if (--lastRowLength == 0)
-							return;
-					}
-					while (array[y, ++x]);
-					sx = x;
-				}
-				else {
-					for (; x != 0 && !array[y, x - 1]; rowLength++, lastRowLength++) {
-						array[y, --x] = true;
-						if (y != 0 && !array[y - 1, x])
-							_MyFill(array, x, y - 1, width, height);
-					}
-				}
-				for (; sx < width && !array[y, sx]; rowLength++, sx++)
-					array[y, sx] = true;
-
-				if (rowLength < lastRowLength) {
-					for (int end = x + lastRowLength; ++sx < end; ) {
-						if (!array[y, sx])
-							MyFillCore(array, sx, y, width, height);
-					}
-				}
-				else if (rowLength > lastRowLength && y != 0) {
-					for (int ux = x + lastRowLength; ++ux < sx; ) {
-						if (!array[y - 1, ux])
-							_MyFill(array, ux, y - 1, width, height);
-					}
-				}
-				lastRowLength = rowLength;
-			}
-			while (lastRowLength != 0 && ++y < height);
-		}
 	}
 }
