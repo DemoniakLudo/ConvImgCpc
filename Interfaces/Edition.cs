@@ -215,8 +215,8 @@ namespace ConvImgCpc {
 			int pen = 0;
 			if (Cpc.cpcPlus) {
 				for (pen = 0; pen < 16; pen++) {
-					if ((col.v >> 4) == (Cpc.Palette[pen] >> 8) && (col.r >> 4) == ((Cpc.Palette[pen] >> 4) & 0x0F) && (col.b >> 4) == (Cpc.Palette[pen] & 0x0F))
-						break;
+					if ((col.v >> 4) == (Cpc.Palette[pen] >> 8) && (col.b >> 4) == ((Cpc.Palette[pen] >> 4) & 0x0F) && (col.r >> 4) == (Cpc.Palette[pen] & 0x0F))
+					break;
 				}
 			}
 			else {
@@ -239,17 +239,19 @@ namespace ConvImgCpc {
 		private void DoFill(int xReel, int yReel, int tx, int fill) {
 			Stack<Point> pixels = new Stack<Point>();
 			int old = BmpLock.GetPixelColor(xReel, yReel).GetColorArgb;
-			pixels.Push(new Point(xReel, yReel));
-			while (pixels.Count > 0) {
-				Point a = pixels.Pop();
-				if (a.X < Cpc.TailleX && a.X >= 0 && a.Y < Cpc.TailleY && a.Y >= 0 && BmpLock.GetPixelColor(a.X, a.Y).GetColorArgb == old) {
-					undo.MemoUndoRedo(a.X, a.Y, BmpLock.GetPixel(a.X, a.Y), fill, doDraw);
-					doDraw = true;
-					BmpLock.SetHorLineDouble(a.X, a.Y, tx, fill);
-					pixels.Push(new Point(a.X - tx, a.Y));
-					pixels.Push(new Point(a.X + tx, a.Y));
-					pixels.Push(new Point(a.X, a.Y - 2));
-					pixels.Push(new Point(a.X, a.Y + 2));
+			if (old != fill) {
+				pixels.Push(new Point(xReel, yReel));
+				while (pixels.Count > 0) {
+					Point a = pixels.Pop();
+					if (a.X < Cpc.TailleX && a.X >= 0 && a.Y < Cpc.TailleY && a.Y >= 0 && BmpLock.GetPixelColor(a.X, a.Y).GetColorArgb == old) {
+						undo.MemoUndoRedo(a.X, a.Y, BmpLock.GetPixel(a.X, a.Y), fill, doDraw);
+						doDraw = true;
+						BmpLock.SetHorLineDouble(a.X, a.Y, tx, fill);
+						pixels.Push(new Point(a.X - tx, a.Y));
+						pixels.Push(new Point(a.X + tx, a.Y));
+						pixels.Push(new Point(a.X, a.Y - 2));
+						pixels.Push(new Point(a.X, a.Y + 2));
+					}
 				}
 			}
 		}
