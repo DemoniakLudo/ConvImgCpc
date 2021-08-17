@@ -18,13 +18,13 @@ namespace ConvImgCpc {
 		private ParamInterne paramInterne;
 		public Multilingue multilingue = new Multilingue();
 		public enum PackMethode { None = 0, Standard, ZX0, ZX1 };
-		private PackMethode pkMethode = PackMethode.Standard;
+		private PackMethode pkMethode = PackMethode.None;
 		private Version version = Assembly.GetExecutingAssembly().GetName().Version;
 		public GestDSK dsk;
 		public enum OutputFormat { Binary = 0, Assembler, DSK, SNA };
 		private bool doNotReset = false;
 
-		public Main() {
+		public Main(string[] args) {
 			InitializeComponent();
 			imgCpc = new ImageCpc(this, Convert);
 			anim = new Animation(this);
@@ -51,10 +51,121 @@ namespace ConvImgCpc {
 			if (File.Exists(configDetault))
 				ReadParam(configDetault);
 
-			comboPackMethode.SelectedItem = "ZX0";
 			anim.Show();
 			imgCpc.Show();
 			Show();
+			if (args.Length > 0) {
+				bool isAsm = false;
+				Enabled = false;
+				chkInfo.Checked = true;
+				info.Show();
+				foreach (string p in args) {
+					/*
+-B	Valeur	Permet de paramétrer le pourcentage de rendu de la composante bleue. (de 0 à 800%). Par défaut = 100.
+-C	NomFichier	Indique que la palette utilisée pour la conversion sera fixe et lue depuis le fichier "ficPalette".
+-DX	Valeur	Indique le déplacement relatif en X à appliquer à l'image source. Par défaut = 0.
+-DY	Valeur	Indique le déplacement relatif en Y à appliquer à l'image source. Par défaut = 0.
+-K	(Aucun)	Indique que les fichiers destinations seront compactés.
+-L	(Aucun)	Indique que la palette sera calculée pour la première image et bloquée pour les image suivantes.
+-NX	Valeur	Indique la nouvelle taille en X à utiliser pour les images sources.
+-NY	Valeur	Indique la nouvelle taille en Y à utiliser pour les images sources.
+-O	(Aucun)	Indique qu'il faut garder la taille d'origine pour les images sources.
+-P	Valeur	Indique le pourcentage (en % de 0 à 200) de tramage à utiliser (si tramage configuré) dans le calcul des images destination. Par défaut = 100.
+-R	Valeur	Permet de paramétrer le pourcentage de rendu de la composante rouge. (de 0 à 800%). Par défaut = 100.
+-T	Valeur	Indique le type de tramage à utiliser (de 0 à 3, 0 = aucun tramage). Par défaut = 0.
+-U	(Aucun)	Passe en mode "CPC+". Par défaut le mode est "CPC OLD".
+-V	Valeur	Permet de paramétrer le pourcentage de rendu de la composante verte. (de 0 à 800%). Par défaut = 100.
+-X	Valeur	Type de matrice à utiliser pour le tramage (2 = trame 2x2, 3 = trame 3x3). Par défaut = 2.
+ */
+					int v;
+					string pUp = p.ToUpper();
+					if (pUp[0] == '-') {
+						string arg = pUp.Substring(2);
+						switch (pUp[1]) {
+							// -A sauvegarde en assembleur
+							case 'A':
+								isAsm = true;
+								break;
+
+							// -Ffichiers
+							case 'F':
+								string file = Path.GetFileName(arg);
+								string path = Path.GetDirectoryName(arg);
+								if (path == "")
+									path = ".";
+
+								string[] tabFiles = Directory.GetFiles(path, file);
+								foreach (string f in tabFiles) {
+									info.SetInfos("Chargement " + f);
+									ReadScreen(f);
+									Convert(true);
+									if (isAsm && pkMethode == PackMethode.None) {
+										string fs = f.Substring(0, f.IndexOf(Path.GetExtension(f))) + ".ASM";
+										info.SetInfos("Sauvegarde " + fs);
+										imgCpc.SauveSprite(fs, lblInfoVersion.Text);
+									}
+									else {
+										string fs = f.Substring(0, f.IndexOf(Path.GetExtension(f))) + (isAsm ? ".ASM" : pkMethode == PackMethode.None ? ".SCR" : ".CMP");
+										info.SetInfos("Sauvegarde " + fs);
+										if (!isAsm && pkMethode == PackMethode.None)
+											imgCpc.SauveScr(fs, OutputFormat.Binary);
+										else {
+											OutputFormat format = isAsm ? OutputFormat.Assembler : OutputFormat.Binary;
+											imgCpc.SauveCmp(fs, pkMethode, format, lblInfoVersion.Text);
+										}
+									}
+								}
+								break;
+
+							// -I Keep Smaller
+							case 'I':
+								radioKeepSmaller.Checked = true;
+								InterfaceChange(null, null);
+								break;
+
+							// -Kpack (methode de compactage: 0=aucun,1=standard,2=ZX0,3=ZX1)
+							case 'K':
+								if (int.TryParse(arg, out v) && v >= 0 && v <= 3)
+									pkMethode = (PackMethode)v;
+
+								break;
+
+							// -Mmode
+							case 'M':
+								if (int.TryParse(arg, out v) && v >= 0 && v <= 10)
+									Cpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = v;
+
+								break;
+
+							// -S Keep Larger
+							case 'S':
+								radioKeepLarger.Checked = true;
+								InterfaceChange(null, null);
+								break;
+
+							// -U0 ou -U1 (palette OLD ou PLUS)
+							case 'U':
+								if (int.TryParse(arg, out v) && (v == 0 || v == 1)) {
+									modePlus.Checked = v != 0;
+									modePlus_CheckedChanged(null, null);
+								}
+								break;
+
+							// -Z0 ou =Z1 (standard ou overscan)
+							case 'Z':
+								if (int.TryParse(arg, out v) && (v == 0 || v == 1)) {
+									nbLignes.Value = v > 0 ? 272 : 200;
+									nbCols.Value = v > 0 ? 96 : 80;
+								}
+								break;
+						}
+					}
+				}
+				Enabled = true;
+			}
+			else
+				comboPackMethode.SelectedItem = "ZX0";
+
 			//		int tpsStart = Environment.TickCount;
 			//		bool internet = CheckForInternetConnection();
 			//		int tpsElapsed = Environment.TickCount - tpsStart;
@@ -233,46 +344,46 @@ namespace ConvImgCpc {
 				}
 				else
 					if (isScrImp) {
-						BitmapCpc bmp = new BitmapCpc(tabBytes, 0x110);
-						if (singlePicture)
-							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap, imgCpc.selImage);
-						else {
-							doNotReset = true;
-							Cpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = tabBytes[0x94] - 0x0E;
-							Cpc.TailleX = 768;
-							nbLignes.Value = param.nbLignes = Cpc.NbLig;
-							Cpc.TailleY = 544;
-							nbCols.Value = param.nbCols = Cpc.NbCol;
-							Cpc.cpcPlus = tabBytes[0xBC] != 0;
-							if (Cpc.cpcPlus) {
-								// Palette en 0x0711;
-								for (int i = 0; i < 16; i++)
-									Cpc.Palette[i] = ((tabBytes[0x0711 + (i << 1)] << 4) & 0xF0) + (tabBytes[0x0711 + (i << 1)] >> 4) + (tabBytes[0x0712 + (i << 1)] << 8);
-							}
-							else {
-								// Palette en 0x7E10
-								for (int i = 0; i < 16; i++)
-									Cpc.Palette[i] = Cpc.CpcVGA.IndexOf((char)tabBytes[0x7E10 + i]);
-							}
-							imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap);
-						}
-					}
+					BitmapCpc bmp = new BitmapCpc(tabBytes, 0x110);
+					if (singlePicture)
+						imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap, imgCpc.selImage);
 					else {
-						BitmapCpc bmp = new BitmapCpc(tabBytes, 0x80);
-						if (singlePicture)
-							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap, imgCpc.selImage);
-						else {
-							doNotReset = true;
-							imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap);
-							nbCols.Value = param.nbCols = Cpc.NbCol;
-							Cpc.TailleX = param.nbCols << 3;
-							nbLignes.Value = param.nbLignes = Cpc.NbLig;
-							Cpc.TailleY = param.nbLignes << 1;
-							param.modeVirtuel = mode.SelectedIndex = Cpc.modeVirtuel;
-							modePlus.Checked = Cpc.cpcPlus;
+						doNotReset = true;
+						Cpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = tabBytes[0x94] - 0x0E;
+						Cpc.TailleX = 768;
+						nbLignes.Value = param.nbLignes = Cpc.NbLig;
+						Cpc.TailleY = 544;
+						nbCols.Value = param.nbCols = Cpc.NbCol;
+						Cpc.cpcPlus = tabBytes[0xBC] != 0;
+						if (Cpc.cpcPlus) {
+							// Palette en 0x0711;
+							for (int i = 0; i < 16; i++)
+								Cpc.Palette[i] = ((tabBytes[0x0711 + (i << 1)] << 4) & 0xF0) + (tabBytes[0x0711 + (i << 1)] >> 4) + (tabBytes[0x0712 + (i << 1)] << 8);
 						}
-						SetInfo(multilingue.GetString("Main.prg.TxtInfo3"));
+						else {
+							// Palette en 0x7E10
+							for (int i = 0; i < 16; i++)
+								Cpc.Palette[i] = Cpc.CpcVGA.IndexOf((char)tabBytes[0x7E10 + i]);
+						}
+						imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap);
 					}
+				}
+				else {
+					BitmapCpc bmp = new BitmapCpc(tabBytes, 0x80);
+					if (singlePicture)
+						imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap, imgCpc.selImage);
+					else {
+						doNotReset = true;
+						imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap);
+						nbCols.Value = param.nbCols = Cpc.NbCol;
+						Cpc.TailleX = param.nbCols << 3;
+						nbLignes.Value = param.nbLignes = Cpc.NbLig;
+						Cpc.TailleY = param.nbLignes << 1;
+						param.modeVirtuel = mode.SelectedIndex = Cpc.modeVirtuel;
+						modePlus.Checked = Cpc.cpcPlus;
+					}
+					SetInfo(multilingue.GetString("Main.prg.TxtInfo3"));
+				}
 			}
 			else {
 				imageStream = new MemoryStream(tabBytes);
@@ -567,9 +678,9 @@ namespace ConvImgCpc {
 							SavePaletteKit(dlg.FileName, Cpc.Palette);
 						else
 							if (Cpc.modeVirtuel == 3 || Cpc.modeVirtuel == 4)
-								imgCpc.SauveEgx(dlg.FileName);
-							else
-								imgCpc.SauvBump(dlg.FileName, lblInfoVersion.Text);
+							imgCpc.SauveEgx(dlg.FileName);
+						else
+							imgCpc.SauvBump(dlg.FileName, lblInfoVersion.Text);
 						break;
 				}
 				param.lastSavePath = Path.GetDirectoryName(dlg.FileName);
@@ -679,7 +790,7 @@ namespace ConvImgCpc {
 						ymin = y;
 				}
 				// Calcule xMax
-				for (int x = bmp.Width; --x > 0; ) {
+				for (int x = bmp.Width; --x > 0;) {
 					for (int y = 0; y < bmp.Height; y++) {
 						if ((bmp.GetPixel(x, y).ToArgb() & 0xFFFFFF) > 0) {
 							y = bmp.Height;
@@ -690,7 +801,7 @@ namespace ConvImgCpc {
 						xmax = x;
 				}
 				// Calcule yMax;
-				for (int y = bmp.Height; --y > 0; ) {
+				for (int y = bmp.Height; --y > 0;) {
 					for (int x = 0; x < bmp.Width; x++) {
 						if ((bmp.GetPixel(x, y).ToArgb() & 0xFFFFFF) > 0) {
 							y = 0;

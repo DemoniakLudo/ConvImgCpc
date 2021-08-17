@@ -28,10 +28,11 @@
 			// 
 			// listInfo
 			// 
+			this.listInfo.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.listInfo.FormattingEnabled = true;
-			this.listInfo.Location = new System.Drawing.Point(0, 1);
+			this.listInfo.Location = new System.Drawing.Point(0, 0);
 			this.listInfo.Name = "listInfo";
-			this.listInfo.Size = new System.Drawing.Size(567, 160);
+			this.listInfo.Size = new System.Drawing.Size(568, 162);
 			this.listInfo.TabIndex = 0;
 			// 
 			// Informations
@@ -41,7 +42,7 @@
 			this.ClientSize = new System.Drawing.Size(568, 162);
 			this.ControlBox = false;
 			this.Controls.Add(this.listInfo);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.MaximizeBox = false;
 			this.Name = "Informations";
 			this.Text = "Informations";
