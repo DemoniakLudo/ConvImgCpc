@@ -359,7 +359,7 @@ namespace ConvImgCpc {
 				maxSize = (Cpc.TailleX * Cpc.TailleY) >> 4;
 			else
 				if (maxSize >= 0x4000)
-					maxSize += 0x3800;
+				maxSize += 0x3800;
 
 			byte[] ret = new byte[maxSize];
 			Array.Clear(ret, 0, ret.Length);
