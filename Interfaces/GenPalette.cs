@@ -62,14 +62,17 @@ namespace ConvImgCpc {
 
 		private void trkEndR_Scroll(object sender, EventArgs e) {
 			txbEndR.Text = trkEndR.Value.ToString();
+			CalcPalette();
 		}
 
 		private void trkEndV_Scroll(object sender, EventArgs e) {
 			txbEndV.Text = trkEndV.Value.ToString();
+			CalcPalette();
 		}
 
 		private void trkEndB_Scroll(object sender, EventArgs e) {
 			txbEndB.Text = trkEndB.Value.ToString();
+			CalcPalette();
 		}
 
 		private void txbEndR_TextChanged(object sender, EventArgs e) {
@@ -97,6 +100,12 @@ namespace ConvImgCpc {
 		}
 
 		private void bpGenerate_Click(object sender, EventArgs e) {
+			CalcPalette();
+			if (FctToDo == null)
+				Close();
+		}
+
+		private void CalcPalette() {
 			int start = 0, end = 0;
 			double rs = 0, vs = 0, bs = 0, re = 0, ve = 0, be = 0;
 			if (int.TryParse(txbFrom.Text, out start) && int.TryParse(txbTo.Text, out end) && start >= minStart && end <= 15 && start < end) {
@@ -118,14 +127,12 @@ namespace ConvImgCpc {
 							bs += kb;
 							vs += kv;
 						}
-						palette[end]= (int)((re / 17) + ((int)(be / 17) << 4) + ((int)(ve / 17) << 8));
+						palette[end] = (int)((re / 17) + ((int)(be / 17) << 4) + ((int)(ve / 17) << 8));
 					}
 				}
 			}
 			if (FctToDo != null)
 				FctToDo();
-			else
-				Close();
 		}
 
 		private void bpGetCol_Click(object sender, EventArgs e) {
