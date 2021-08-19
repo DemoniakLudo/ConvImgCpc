@@ -582,8 +582,11 @@ namespace ConvImgCpc {
 		}
 
 		private void bpGenPal_Click(object sender, EventArgs e) {
-			GenPalette g = new GenPalette(Cpc.Palette, 0);
+			GenPalette g = new GenPalette(Cpc.Palette, 0, DoGenPal);
 			g.ShowDialog();
+		}
+
+		private void DoGenPal() {
 			for (int c = 0; c < 16; c++) {
 				int col = Cpc.Palette[c];
 				int r = ((col & 0x0F) * 17);

@@ -673,8 +673,8 @@ namespace ConvImgCpc {
 		private void bpTest_Click(object sender, EventArgs e) {
 			int nb = rb1Sprite.Checked ? 1 : rb2Sprite.Checked ? 2 : 4;
 			int mask = rb1Sprite.Checked ? 0xF : rb2Sprite.Checked ? 0x0c : 0x00;
-			int taillex = 1 << (int)zoomX.Value;
-			int tailley = 2 << (int)zoomY.Value;
+			int taillex = (1 << (int)zoomX.Value) << 4;
+			int tailley = (2 << (int)zoomY.Value) << 4;
 			int start = numSprite & mask;
 
 			for (int y = 0; y < 512; y++)
@@ -684,33 +684,36 @@ namespace ConvImgCpc {
 			if (rb28sprite.Checked) {
 				for (int y = 0; y < 2; y++)
 					for (int x = 0; x < 4; x++)
-						DrawSpriteTest(bmpTest, start++, x * taillex * 16, y * tailley * 16);
+						DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
 
 				for (int y = 0; y < 2; y++)
 					for (int x = 4; x < 8; x++)
-						DrawSpriteTest(bmpTest, start++, x * taillex * 16, y * tailley * 16);
+						DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
 			}
 			else
 				if (rb42Sprite.Checked) {
 				for (int y = 0; y < 4; y++)
 					for (int x = 0; x < 2; x++)
-						DrawSpriteTest(bmpTest, start++, x * taillex * 16, y * tailley * 16);
+						DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
 
 				for (int y = 0; y < 4; y++)
 					for (int x = 2; x < 4; x++)
-						DrawSpriteTest(bmpTest, start++, x * taillex * 16, y * tailley * 16);
+						DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
 			}
 			else {
 				for (int y = 0; y < nb; y++)
 					for (int x = 0; x < nb; x++)
-						DrawSpriteTest(bmpTest, start++, x * taillex * 16, y * tailley * 16);
+						DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
 			}
 			pictTest.Refresh();
 		}
 
 		private void bpGenPal_Click(object sender, EventArgs e) {
-			GenPalette g = new GenPalette(Cpc.paletteSprite, 1);
+			GenPalette g = new GenPalette(Cpc.paletteSprite, 1, DoGenPal);
 			g.ShowDialog();
+		}
+
+		private void DoGenPal() {
 			for (int c = 0; c < 16; c++) {
 				int col = Cpc.paletteSprite[c];
 				int r = ((col & 0x0F) * 17);
