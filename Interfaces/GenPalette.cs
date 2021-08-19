@@ -6,8 +6,9 @@ namespace ConvImgCpc {
 	public partial class GenPalette : Form {
 		private int[] palette;
 		private int minStart;
+		Action FctToDo;
 
-		public GenPalette(int[] p, int ms) {
+		public GenPalette(int[] p, int ms, Action a) {
 			InitializeComponent();
 			palette = p;
 			minStart = ms;
@@ -20,6 +21,7 @@ namespace ConvImgCpc {
 			txbEndR.Text = (ce & 0x0F).ToString();
 			txbEndV.Text = (ce >> 8).ToString();
 			txbEndB.Text = ((ce & 0xF0) >> 4).ToString();
+			FctToDo = a;
 		}
 
 		private void trkStartR_Scroll(object sender, EventArgs e) {
@@ -110,16 +112,20 @@ namespace ConvImgCpc {
 						double kr = (re - rs) / (end - start);
 						double kv = (ve - vs) / (end - start);
 						double kb = (be - bs) / (end - start);
-						for (int i = start; i <= end; i++) {
+						for (int i = start; i < end; i++) {
 							palette[i] = (int)((rs / 17) + ((int)(bs / 17) << 4) + ((int)(vs / 17) << 8));
 							rs += kr;
 							bs += kb;
 							vs += kv;
 						}
+						palette[end]= (int)((re / 17) + ((int)(be / 17) << 4) + ((int)(ve / 17) << 8));
 					}
 				}
 			}
-			Close();
+			if (FctToDo != null)
+				FctToDo();
+			else
+				Close();
 		}
 
 		private void bpGetCol_Click(object sender, EventArgs e) {
