@@ -253,8 +253,14 @@ namespace ConvImgCpc {
 				bitmapCpc.CreeBmpCpcForceMode1(BmpLock);
 				SauveImage.SauveScr(singleName + ".scr", bitmapCpc, main, Main.PackMethode.None, Main.OutputFormat.Binary);
 			}
-			else
-				BmpLock.Bitmap.Save(fileName, System.Drawing.Imaging.ImageFormat.Png);
+			else {
+				DirectBitmap bmpResize = new DirectBitmap(Cpc.TailleX, Cpc.TailleY);
+				for (int y = 0; y < Cpc.TailleY; y++)
+					for (int x = 0; x < Cpc.TailleX; x++)
+						bmpResize.SetPixel(x, y, BmpLock.GetPixel(x, y));
+
+				bmpResize.Bitmap.Save(fileName, System.Drawing.Imaging.ImageFormat.Png);
+			}
 
 			main.SetInfo("Sauvegarde image PNG ok.");
 		}
