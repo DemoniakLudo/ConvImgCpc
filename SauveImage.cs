@@ -14,6 +14,7 @@ namespace ConvImgCpc {
 		(3 premiers octets /12 de la palette = composante R,B,V)
 		*/
 
+		#region Gestion du code asm à ajouter pour le décompactage et l'affichage
 		static byte[] CodeStd = {  // Routine à mettre en #C7D0
 			0x3A, 0xD0, 0xD7,			//				LD		A,(#D7D0)
 			0xCD, 0x1C, 0xBD,			//				CALL	#BD1C
@@ -440,6 +441,7 @@ namespace ConvImgCpc {
 			0xCB, 0x10,					//				RL		B
 			0x18, 0xF2					//				JR	dzx1s_elias_loop
 		};
+		#endregion
 
 		static byte[] ModePal = new byte[48];
 
@@ -696,7 +698,7 @@ namespace ConvImgCpc {
 					if (param.cpcPlus) {
 						for (int i = 0; i < 16; i++) {
 							int r = 0, v = 0, b = 0;
-							for (int k = 26; k-- > 0;) {
+							for (int k = 26; k-- > 0; ) {
 								if (pal[3 + i * 12] == (byte)Cpc.CpcVGA[k])
 									r = (26 - k) << 4;
 
@@ -719,6 +721,24 @@ namespace ConvImgCpc {
 				}
 			}
 			return (false);
+		}
+
+		static public bool LirePaletteKit(string NomFic, ImageCpc bitmapCpc, Param param) {
+			if (File.Exists(NomFic)) {
+				FileStream fileScr = new FileStream(NomFic, FileMode.Open, FileAccess.Read);
+				byte[] tabBytes = new byte[fileScr.Length];
+				fileScr.Read(tabBytes, 0, tabBytes.Length);
+				fileScr.Close();
+				if (tabBytes.Length == 160 && Cpc.CheckAmsdos(tabBytes)) {
+					for (int i = 0; i < 16; i++) {
+						int kit = tabBytes[128 + (i << 1)] + (tabBytes[129 + (i << 1)] << 8);
+						int col = (kit & 0xF00) + ((kit & 0x0F) << 4) + ((kit & 0xF0) >> 4);
+						Cpc.Palette[i] = col;
+					}
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 }

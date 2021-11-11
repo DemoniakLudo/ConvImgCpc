@@ -86,7 +86,7 @@ namespace ConvImgCpc {
 			int pen = colorClick.Tag != null ? (int)colorClick.Tag : 0;
 			if (e.Button == MouseButtons.Right) {
 				int col = Cpc.paletteSprite[pen];
-				RvbColor colRvb = new RvbColor((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17));
+				RvbColor colRvb = Cpc.GetColor(col);
 				EditColor ed = new EditColor(main, pen, col, colRvb.GetColor, true);
 				ed.ShowDialog(this);
 				if (ed.isValide) {
@@ -111,7 +111,7 @@ namespace ConvImgCpc {
 				for (int y = 0; y < 16; y++) {
 					for (int x = 0; x < 16; x++) {
 						int col = Cpc.paletteSprite[Cpc.spritesHard[numBank, spr, x, y]];
-						RvbColor c = new RvbColor((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17));
+						RvbColor c = Cpc.GetColor(col);
 						for (int zx = 0; zx < (x == 15 ? 3 : 4); zx++)
 							for (int zy = 0; zy < 4; zy++)
 								bmpAllSprites.SetPixel(zx + ((x + (spr << 4)) << 2), zy + (y << 2), c);
@@ -135,7 +135,7 @@ namespace ConvImgCpc {
 			for (int y = 0; y < 16; y++) {
 				for (int x = 0; x < 16; x++) {
 					int col = Cpc.paletteSprite[Cpc.spritesHard[numBank, numSprite, x, y]];
-					RvbColor c = new RvbColor((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17));
+					RvbColor c = Cpc.GetColor(col);
 					for (int zx = 0; zx < 38; zx++)
 						for (int zy = 0; zy < 38; zy++)
 							bmpSprite.SetPixel(zx + (x * 40), zy + (y * 40), c);
@@ -146,7 +146,7 @@ namespace ConvImgCpc {
 
 		private void SetPixelSprite(int x, int y) {
 			int col = Cpc.paletteSprite[Cpc.spritesHard[numBank, numSprite, x, y]];
-			RvbColor c = new RvbColor((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17));
+			RvbColor c = Cpc.GetColor(col);
 			for (int zx = 0; zx < 38; zx++)
 				for (int zy = 0; zy < 38; zy++)
 					bmpSprite.SetPixel(zx + (x * 40), zy + (y * 40), c);
@@ -499,7 +499,7 @@ namespace ConvImgCpc {
 							fp.Close();
 							// Sauvegarde palette au format .KIT
 							if (chkWithPal.Checked)
-								main.SavePaletteKit(Path.ChangeExtension(dlg.FileName, "kit"), Cpc.paletteSprite);
+								main.SavePaletteKit(Path.ChangeExtension(dlg.FileName, "kit"));
 
 							break;
 
@@ -589,7 +589,7 @@ namespace ConvImgCpc {
 					}
 					string filePalette = Path.ChangeExtension(dlg.FileName, "kit");
 					if (File.Exists(filePalette))
-						main.ReadPaletteKit(filePalette, lblColors);
+						main.ReadPaletteSprite(filePalette, lblColors);
 				}
 				catch {
 					main.DisplayErreur(main.multilingue.GetString("EditSprites.TxtInfo2"));
@@ -621,7 +621,7 @@ namespace ConvImgCpc {
 			dlg.Filter = "Palette CPC+ (.kit)|*.kit";
 			if (dlg.ShowDialog() == DialogResult.OK) {
 				try {
-					main.ReadPaletteKit(dlg.FileName, lblColors);
+					main.ReadPaletteSprite(dlg.FileName, lblColors);
 					DrawMatrice();
 				}
 				catch {
@@ -635,7 +635,7 @@ namespace ConvImgCpc {
 			dlg.Filter = "Palette CPC+ (.kit)|*.kit";
 			if (dlg.ShowDialog() == DialogResult.OK) {
 				try {
-					main.SavePaletteKit(dlg.FileName, Cpc.paletteSprite);
+					main.SavePaletteKit(dlg.FileName);
 				}
 				catch {
 					main.DisplayErreur(main.multilingue.GetString("EditSprites.TxtInfo7"));
@@ -662,7 +662,7 @@ namespace ConvImgCpc {
 						for (int zy = 0; zy < tailley; zy++) {
 							if (zx + (x * taillex) + ofsx < 512 && zy + (y * tailley) + ofsy < 512) {
 								int col = Cpc.paletteSprite[Cpc.spritesHard[numBank, spr, x, y]];
-								RvbColor c = new RvbColor((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17));
+								RvbColor c = Cpc.GetColor(col);
 								bmp.SetPixel(zx + (x * taillex) + ofsx, zy + (y * tailley) + ofsy, c);
 							}
 						}

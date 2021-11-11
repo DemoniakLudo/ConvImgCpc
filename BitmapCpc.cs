@@ -25,8 +25,7 @@ namespace ConvImgCpc {
 		}
 
 		public RvbColor GetColorPal(int palEntry) {
-			int col = Palette[palEntry];
-			return cpcPlus ? new RvbColor((byte)((col & 0x0F) * 17), (byte)(((col & 0xF00) >> 8) * 17), (byte)(((col & 0xF0) >> 4) * 17)) : RgbCPC[col >= 0 && col < 27 ? col : 0];
+			return GetColor(Palette[palEntry]);
 		}
 
 		private void SetPalette(byte[] palStart, int startAdr, bool plus) {
@@ -166,22 +165,12 @@ namespace ConvImgCpc {
 				int tx = CalcTx(y);
 				int maxPen = MaxPen(y);
 				for (int x = 0; x < TailleX; x += 8) {
-					byte pen = 0, octet = 0, decal = 0;
+					byte octet = 0, decal = 0;
 					if (!egx || ((y >> 1) & 1) == lignestart) {
 						for (int p = 0; p < 8; p += tx) {
 							RvbColor col = bmpLock.GetPixelColor(x + p, y);
-							for (pen = 0; pen < maxPen; pen++) {
-								if (cpcPlus) {
-									if ((col.v >> 4) == (Palette[pen] >> 8) && (col.b >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.r >> 4) == (Palette[pen] & 0x0F))
-										break;
-								}
-								else {
-									RvbColor fixedCol = RgbCPC[modeVirtuel == 5 || modeVirtuel == 6 ? colMode5[y >> 1, pen] : Palette[pen]];
-									if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
-										break;
-								}
-							}
-							octet |= (byte)(tabOctetMode[pen % 16] >> (decal++));
+							int pen = Cpc.GetPen(col);
+							octet |= (byte)(tabOctetMode[pen] >> (decal++));
 						}
 						bmpCpc[adrCPC + (x >> 3)] = octet;
 					}

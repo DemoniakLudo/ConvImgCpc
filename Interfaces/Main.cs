@@ -119,7 +119,7 @@ namespace ConvImgCpc {
 											imgCpc.SauveCmp(fs, pkMethode, format, lblInfoVersion.Text);
 										}
 									}
-									if ( lockFirst ) {
+									if (lockFirst) {
 										for (v = 0; v < 16; v++)
 											imgCpc.lockState[v] = param.lockState[v] = 1;
 									}
@@ -158,14 +158,14 @@ namespace ConvImgCpc {
 
 								break;
 
-								// -RpctRouge
+							// -RpctRouge
 							case 'R':
 								if (int.TryParse(arg, out v) && v >= 0 && v <= 800)
 									param.pctRed = v;
 
 								break;
 
-								// -S Keep Larger
+							// -S Keep Larger
 							case 'S':
 								radioKeepLarger.Checked = true;
 								InterfaceChange(null, null);
@@ -553,7 +553,7 @@ namespace ConvImgCpc {
 			file.Close();
 		}
 
-		public void ReadPaletteKit(string fileName, Label[] colors) {
+		public void ReadPaletteSprite(string fileName, Label[] colors) {
 			if (File.Exists(fileName)) {
 				FileStream fileScr = new FileStream(fileName, FileMode.Open, FileAccess.Read);
 				byte[] tabBytes = new byte[fileScr.Length];
@@ -575,12 +575,12 @@ namespace ConvImgCpc {
 			}
 		}
 
-		public void SavePaletteKit(string fileName, int[] palette) {
+		public void SavePaletteKit(string fileName, bool isImage = false) {
 			CpcAmsdos entete = Cpc.CreeEntete(Path.GetFileName(fileName), -32768, 30, 0);
 			BinaryWriter fp = new BinaryWriter(new FileStream(fileName, FileMode.Create));
 			fp.Write(Cpc.AmsdosToByte(entete));
-			for (int i = 0; i < 15; i++) {
-				int kit = Cpc.paletteSprite[i + 1];
+			for (int i = isImage ? 0 : 1; i < 16; i++) {
+				int kit = isImage ? Cpc.Palette[i] : Cpc.paletteSprite[i];
 				byte c1 = (byte)(((kit & 0x0F) << 4) + ((kit & 0xF0) >> 4));
 				byte c2 = (byte)(kit >> 8);
 				fp.Write(c1);
@@ -626,7 +626,9 @@ namespace ConvImgCpc {
 			Enabled = false;
 			OpenFileDialog dlg = new OpenFileDialog();
 			dlg.Filter = multilingue.GetString("Main.prg.TxtInfo16") + " (*.bmp, *.gif, *.png, *.jpg,*.jpeg, *.scr, *.imp)|*.bmp;*.gif;*.png;*.jpg;*.jpeg;*.scr;*.imp|"
-						+ multilingue.GetString("Main.prg.TxtInfo18") + " (*.pal)|*.pal|" + multilingue.GetString("Main.prg.TxtInfo19") + " (*.xml)|*.xml|"
+						+ multilingue.GetString("Main.prg.TxtInfo18") + " (*.pal)|*.pal|"
+						+ multilingue.GetString("Main.prg.TxtInfo19") + " (*.xml)|*.xml|"
+						+ (Cpc.cpcPlus ? (multilingue.GetString("Main.prg.TxtInfo39") + " (.kit)|*.kit|") : "")
 						+ multilingue.GetString("Main.prg.TxtInfo17") + "|*.*";
 			dlg.InitialDirectory = param.lastReadPath;
 			DialogResult result = dlg.ShowDialog();
@@ -634,7 +636,11 @@ namespace ConvImgCpc {
 				switch (dlg.FilterIndex) {
 					case 1:
 					case 4:
-						ReadScreen(dlg.FileName);
+					case 5:
+						if (dlg.FilterIndex == 4 && Cpc.cpcPlus)
+							imgCpc.LirePaletteKit(dlg.FileName, param);
+						else
+							ReadScreen(dlg.FileName);
 						break;
 
 					case 2:
@@ -663,10 +669,13 @@ namespace ConvImgCpc {
 							+ multilingue.GetString("Main.prg.TxtInfo32") + " (.dsk)|*.dsk|"                                //	8
 							+ multilingue.GetString("Main.prg.TxtInfo25") + " (.asm)|*.asm|"                                //	9
 							+ multilingue.GetString("Main.prg.TxtInfo26") + " (.imp)|*.imp|"                                //	10
-							+ multilingue.GetString("Main.prg.TxtInfo19") + "Paramètres (.xml)|*.xml|"                      //	11
-							+ multilingue.GetString("Main.prg.TxtInfo18") + " (.pal)|*.pal"                                 //	12
-							+ (Cpc.cpcPlus ? ("|" + multilingue.GetString("Main.prg.TxtInfo27") + " (.kit)|*.kit") : "")  //	13
-							+ (Cpc.modeVirtuel == 3 || Cpc.modeVirtuel == 4 ? ("|" + multilingue.GetString("Main.prg.TxtInfo28") + " (.scr)|*.scr") : "")   //	14
+							+ multilingue.GetString("Main.prg.TxtInfo36") + " (.imp)|*.imp|"                                //	11
+							+ multilingue.GetString("Main.prg.TxtInfo37") + " (.imp)|*.imp|"                                //	12
+							+ multilingue.GetString("Main.prg.TxtInfo38") + " (.imp)|*.imp|"                                //	13
+							+ multilingue.GetString("Main.prg.TxtInfo19") + "Paramètres (.xml)|*.xml|"                      //	14
+							+ multilingue.GetString("Main.prg.TxtInfo18") + " (.pal)|*.pal"                                 //	15
+							+ (Cpc.cpcPlus ? ("|" + multilingue.GetString("Main.prg.TxtInfo27") + " (.kit)|*.kit") : "")  //	16
+							+ (Cpc.modeVirtuel == 3 || Cpc.modeVirtuel == 4 ? ("|" + multilingue.GetString("Main.prg.TxtInfo28") + " (.scr)|*.scr") : "")   //	17
 							+ "|Bump (*.asm)| *.asm";  //	15
 
 			dlg.Filter = filter;
@@ -714,17 +723,29 @@ namespace ConvImgCpc {
 						break;
 
 					case 11:
-						SaveParam(dlg.FileName);
+						imgCpc.SauveTiles(dlg.FileName, 16, 16, param);
 						break;
 
 					case 12:
-						imgCpc.SauvePalette(dlg.FileName, param);
+						imgCpc.SauveTiles(dlg.FileName, 32, 16, param);
 						break;
 
 					case 13:
+						imgCpc.SauveTiles(dlg.FileName, 32, 32, param);
+						break;
+
 					case 14:
-						if (Cpc.cpcPlus && dlg.FilterIndex == 13)
-							SavePaletteKit(dlg.FileName, Cpc.Palette);
+						SaveParam(dlg.FileName);
+						break;
+
+					case 15:
+						imgCpc.SauvePalette(dlg.FileName, param);
+						break;
+
+					case 16:
+					case 17:
+						if (Cpc.cpcPlus && dlg.FilterIndex == 16)
+							SavePaletteKit(dlg.FileName, true);
 						else
 							if (Cpc.modeVirtuel == 3 || Cpc.modeVirtuel == 4)
 								imgCpc.SauveEgx(dlg.FileName);

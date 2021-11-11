@@ -57,8 +57,8 @@ namespace ConvImgCpc {
 										};
 		static public string CpcVGA = "TDU\\X]LEMVFW^@_NGORBSZY[JCK";
 
-		static public byte[,,] trameM1 = new byte[16, 4, 4];            // NumTrame,X,Y
-		static public byte[,,,] spritesHard = new byte[8, 16, 16, 16];  // NumBank,NumSprite,X,Y
+		static public byte[, ,] trameM1 = new byte[16, 4, 4];            // NumTrame,X,Y
+		static public byte[, , ,] spritesHard = new byte[8, 16, 16, 16];  // NumBank,NumSprite,X,Y
 		static public int[] paletteSprite = new int[16];
 
 		static public int modeVirtuel = 1;
@@ -192,6 +192,26 @@ namespace ConvImgCpc {
 			Marshal.Copy(ptr, arr, 0, len);
 			Marshal.FreeHGlobal(ptr);
 			return arr;
+		}
+
+		static public int GetPen(RvbColor col) {
+			for (int pen = 0; pen < 16; pen++) {
+				if (cpcPlus) {
+					int color = (Palette[pen]);
+					if (col.r == ((color & 0x0F) * 17) && col.v == (((color & 0xF00) >> 8) * 17) && col.b == (((color & 0xF0) >> 4) * 17))
+						return pen;
+				}
+				else {
+					RvbColor fixedCol = RgbCPC[Palette[pen]];
+					if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
+						return pen;
+				}
+			}
+			return 0;
+		}
+
+		static public RvbColor GetColor(int c) {
+			return cpcPlus ? new RvbColor((byte)((c & 0x0F) * 17), (byte)(((c & 0xF00) >> 8) * 17), (byte)(((c & 0xF0) >> 4) * 17)) : RgbCPC[c >= 0 && c < 27 ? c : 0];
 		}
 	}
 

@@ -127,8 +127,8 @@ namespace ConvImgCpc {
 			dic.Add("Main.prg.TxtInfo16.EN", "Pictures");
 			dic.Add("Main.prg.TxtInfo17.FR", "Tous fichiers");
 			dic.Add("Main.prg.TxtInfo17.EN", "All files");
-			dic.Add("Main.prg.TxtInfo18.FR", "Palette");
-			dic.Add("Main.prg.TxtInfo18.EN", "Palette");
+			dic.Add("Main.prg.TxtInfo18.FR", "Palette (PAL)");
+			dic.Add("Main.prg.TxtInfo18.EN", "Palette (PAL)");
 			dic.Add("Main.prg.TxtInfo19.FR", "Paramètres ConvImgCpc");
 			dic.Add("Main.prg.TxtInfo19.EN", "ConvImgCpc parameters");
 			dic.Add("Main.prg.TxtInfo20.FR", "Image CPC");
@@ -163,6 +163,14 @@ namespace ConvImgCpc {
 			dic.Add("Main.prg.TxtInfo34.EN", "Too many files on the DSK");
 			dic.Add("Main.prg.TxtInfo35.FR", "DSK plein");
 			dic.Add("Main.prg.TxtInfo35.EN", "DSK full");
+			dic.Add("Main.prg.TxtInfo36.FR", "Tiles 8x8");
+			dic.Add("Main.prg.TxtInfo36.EN", "8x8 Tiles");
+			dic.Add("Main.prg.TxtInfo37.FR", "Tiles 16x8");
+			dic.Add("Main.prg.TxtInfo37.EN", "16x8 Tiles");
+			dic.Add("Main.prg.TxtInfo38.FR", "Tiles 16x16");
+			dic.Add("Main.prg.TxtInfo38.EN", "16x16 Tiles");
+			dic.Add("Main.prg.TxtInfo39.FR", "Palette (KIT)");
+			dic.Add("Main.prg.TxtInfo39.EN", "Palette (KIT)");
 
 			// ImageCpc
 			dic.Add("ImageCpc.lockAllPal.FR", "Verrouiller toute la palette");

@@ -285,35 +285,23 @@ namespace ConvImgCpc {
 		}
 
 		private byte[] MakeSprite() {
-			byte[] ret = new byte[(Cpc.TailleX * Cpc.TailleY) >> 4];
+			return MakeSprite(0, 0, Cpc.TailleX, Cpc.TailleY);
+		}
+
+		private byte[] MakeSprite(int posX, int posY, int tailleX, int tailleY) {
+			byte[] ret = new byte[(tailleX * tailleY) >> 4];
 			Array.Clear(ret, 0, ret.Length);
-			for (int y = 0; y < Cpc.TailleY; y += 2) {
+			for (int y = 0; y < tailleY; y += 2) {
 				int tx = Cpc.CalcTx(y);
-				for (int x = 0; x < Cpc.TailleX; x += 8) {
-					byte pen = 0, octet = 0;
+				for (int x = 0; x < tailleX; x += 8) {
+					byte octet = 0;
 					for (int p = 0; p < 8; p++)
 						if ((p % tx) == 0) {
-							RvbColor col = BmpLock.GetPixelColor(x + p, y);
-							if (Cpc.cpcPlus) {
-								for (pen = 0; pen < 16; pen++) {
-									if ((col.v >> 4) == (Cpc.Palette[pen] >> 8) && (col.r >> 4) == ((Cpc.Palette[pen] >> 4) & 0x0F) && (col.b >> 4) == (Cpc.Palette[pen] & 0x0F))
-										break;
-								}
-							}
-							else {
-								for (pen = 0; pen < 16; pen++) {
-									RvbColor fixedCol = Cpc.RgbCPC[Cpc.Palette[pen]];
-									if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
-										break;
-								}
-							}
-							if (pen > 15) {
-								pen = 0; // Pb peut survenir si la palette n'est pas la même pour chaque image d'une animation...
-							}
-
-							octet |= (byte)(Cpc.tabOctetMode[pen % 16] >> (p / tx));
+							RvbColor col = BmpLock.GetPixelColor(x + p + posX, y + posY);
+							int pen = Cpc.GetPen(col);
+							octet |= (byte)(Cpc.tabOctetMode[pen] >> (p / tx));
 						}
-					ret[(x >> 3) + (y >> 1) * (Cpc.TailleX >> 3)] = octet;
+					ret[(x >> 3) + (y >> 1) * (tailleX >> 3)] = octet;
 				}
 			}
 			return ret;
@@ -346,7 +334,6 @@ namespace ConvImgCpc {
 				l += MakeSprite().Length;
 			}
 			l += 3; // 3 octets de fin de fichier
-			byte[] endData = { (byte)nbImages, (byte)(Cpc.TailleX >> 3), (byte)(Cpc.TailleY >> 1) };
 			CpcAmsdos entete = Cpc.CreeEntete(fileName, 0x4000, (short)l, -13622);
 			BinaryWriter fp = new BinaryWriter(new FileStream(fileName, FileMode.Create));
 			fp.Write(Cpc.AmsdosToByte(entete));
@@ -355,8 +342,63 @@ namespace ConvImgCpc {
 				byte[] sprite = MakeSprite();
 				fp.Write(sprite, 0, sprite.Length);
 			}
+			byte[] endData = { (byte)(Cpc.TailleX >> 3), (byte)(Cpc.TailleY >> 1), (byte)nbImages };
 			fp.Write(endData, 0, endData.Length);
 			fp.Close();
+		}
+
+		public void SauveTiles(string fileName, int tailleX, int tailleY, Param param) {
+			List<byte[]> lstTiles = new List<byte[]>();
+			int l = 0;
+			byte[] tabTiles = new byte[1024];
+			int nbTiles = 0;
+			for (int y = 0; y < Cpc.TailleY; y += tailleY)
+				for (int x = 0; x < Cpc.TailleX; x += tailleX) {
+					byte[] tile = MakeSprite(x, y, tailleX, tailleY);
+					// Vérifier tile n'existe déjà pas dans la liste
+					bool foundOne = false;
+					for (int t = 0; t < lstTiles.Count; t++) {
+						bool found = true;
+						byte[] tileFound = lstTiles[t];
+						for (int i = 0; i < tileFound.Length; i++)
+							if (tileFound[i] != tile[i]) {
+								found = false;
+								break;
+							}
+						foundOne |= found;
+					}
+					tabTiles[nbTiles++] = (byte)lstTiles.Count;
+					if (!foundOne) {
+						lstTiles.Add(tile);
+						l += tile.Length;
+					}
+				}
+			int nbImages = lstTiles.Count;
+			l += 3; // 3 octets de fin de fichier
+			CpcAmsdos entete = Cpc.CreeEntete(fileName, 0x4000, (short)l, -13622);
+			BinaryWriter fp = new BinaryWriter(new FileStream(fileName, FileMode.Create));
+			fp.Write(Cpc.AmsdosToByte(entete));
+			for (int i = 0; i < nbImages; i++) {
+				byte[] sprite = lstTiles[i];
+				fp.Write(sprite, 0, sprite.Length);
+			}
+			byte[] endData = { (byte)(tailleX >> 3), (byte)(tailleY >> 1), (byte)nbImages };
+			fp.Write(endData, 0, endData.Length);
+			fp.Close();
+
+			// Ecriture fichier .TIL
+			string s = fileName.Substring(0, fileName.Length - 3) + "TIL";
+			entete = Cpc.CreeEntete(s, 0x4000, (short)l, -13622);
+			fp = new BinaryWriter(new FileStream(s, FileMode.Create));
+			fp.Write(Cpc.AmsdosToByte(entete));
+			fp.Write(tabTiles, 0, nbTiles);
+			fp.Close();
+
+			// Ecriture fichier palette
+			if (param.cpcPlus)
+				main.SavePaletteKit(Path.ChangeExtension(fileName, "KIT"), true);
+			else
+				SauvePalette(Path.ChangeExtension(fileName, "PAL"), param);
 		}
 
 		public byte[] GetCpcScr(Param param, bool spriteMode = false) {
@@ -365,7 +407,7 @@ namespace ConvImgCpc {
 				maxSize = (Cpc.TailleX * Cpc.TailleY) >> 4;
 			else
 				if (maxSize >= 0x4000)
-				maxSize += 0x3800;
+					maxSize += 0x3800;
 
 			byte[] ret = new byte[maxSize];
 			Array.Clear(ret, 0, ret.Length);
@@ -446,8 +488,21 @@ namespace ConvImgCpc {
 				UpdatePalette();
 				main.SetInfo("Lecture palette ok.");
 			}
-			else
+			else {
 				main.SetInfo("Erreur lecture palette...");
+				main.DisplayErreur("Erreur lecture palette...");
+			}
+		}
+
+		public void LirePaletteKit(string fileName, Param param) {
+			if (SauveImage.LirePaletteKit(fileName, this, param)) {
+				UpdatePalette();
+				main.SetInfo("Lecture palette ok.");
+			}
+			else {
+				main.SetInfo("Erreur lecture palette...");
+				main.DisplayErreur("Erreur lecture palette...");
+			}
 		}
 
 		public void SauvePalette(string fileName, Param param) {
