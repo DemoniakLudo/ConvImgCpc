@@ -615,8 +615,7 @@ namespace ConvImgCpc {
 			dlg.Filter = multilingue.GetString("Main.prg.TxtInfo16") + " (*.bmp, *.gif, *.png, *.jpg,*.jpeg, *.scr)|*.bmp;*.gif;*.png;*.jpg;*.jpeg;*.scr|"
 						+ multilingue.GetString("Main.prg.TxtInfo17") + "|*.*";
 			dlg.InitialDirectory = param.lastReadPath;
-			DialogResult result = dlg.ShowDialog();
-			if (result == DialogResult.OK) {
+			if (dlg.ShowDialog() == DialogResult.OK) {
 				ReadScreen(dlg.FileName, true);
 				param.lastReadPath = Path.GetDirectoryName(dlg.FileName);
 			}
@@ -631,8 +630,7 @@ namespace ConvImgCpc {
 						+ (Cpc.cpcPlus ? (multilingue.GetString("Main.prg.TxtInfo39") + " (.kit)|*.kit|") : "")
 						+ multilingue.GetString("Main.prg.TxtInfo17") + "|*.*";
 			dlg.InitialDirectory = param.lastReadPath;
-			DialogResult result = dlg.ShowDialog();
-			if (result == DialogResult.OK) {
+			if (dlg.ShowDialog() == DialogResult.OK) {
 				switch (dlg.FilterIndex) {
 					case 1:
 					case 4:
@@ -679,8 +677,7 @@ namespace ConvImgCpc {
 							+ "|Bump (*.asm)| *.asm";  //	15
 
 			dlg.Filter = filter;
-			DialogResult result = dlg.ShowDialog();
-			if (result == DialogResult.OK) {
+			if (dlg.ShowDialog() == DialogResult.OK) {
 				switch (dlg.FilterIndex) {
 					case 1:
 						imgCpc.SauveScr(dlg.FileName, OutputFormat.Binary);

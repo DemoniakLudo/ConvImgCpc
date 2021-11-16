@@ -60,6 +60,7 @@
 			this.bpGenPal = new System.Windows.Forms.Button();
 			this.chkGrilleSprite = new System.Windows.Forms.CheckBox();
 			this.bpCopyImage = new System.Windows.Forms.Button();
+			this.bpSaveWin = new System.Windows.Forms.Button();
 			this.grpEdition.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictImpDraw)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
@@ -152,6 +153,7 @@
 			// 
 			// grpEdition
 			// 
+			this.grpEdition.Controls.Add(this.bpSaveWin);
 			this.grpEdition.Controls.Add(this.rbFill);
 			this.grpEdition.Controls.Add(this.bpLoadWin);
 			this.grpEdition.Controls.Add(this.rbPickColor);
@@ -191,7 +193,7 @@
 			// 
 			// bpLoadWin
 			// 
-			this.bpLoadWin.Location = new System.Drawing.Point(68, 99);
+			this.bpLoadWin.Location = new System.Drawing.Point(68, 91);
 			this.bpLoadWin.Name = "bpLoadWin";
 			this.bpLoadWin.Size = new System.Drawing.Size(75, 23);
 			this.bpLoadWin.TabIndex = 20;
@@ -456,6 +458,16 @@
 			this.bpCopyImage.UseVisualStyleBackColor = true;
 			this.bpCopyImage.Click += new System.EventHandler(this.bpCopyImage_Click);
 			// 
+			// bpSaveWin
+			// 
+			this.bpSaveWin.Location = new System.Drawing.Point(68, 113);
+			this.bpSaveWin.Name = "bpSaveWin";
+			this.bpSaveWin.Size = new System.Drawing.Size(75, 23);
+			this.bpSaveWin.TabIndex = 22;
+			this.bpSaveWin.Text = "Save Win";
+			this.bpSaveWin.UseVisualStyleBackColor = true;
+			this.bpSaveWin.Click += new System.EventHandler(this.bpSaveWin_Click);
+			// 
 			// ImageCpc
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -535,5 +547,6 @@
 		private System.Windows.Forms.CheckBox chkGrilleSprite;
 		private System.Windows.Forms.Button bpCopyImage;
 		private System.Windows.Forms.RadioButton rbFill;
+		private System.Windows.Forms.Button bpSaveWin;
 	}
 }

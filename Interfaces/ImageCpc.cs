@@ -407,7 +407,7 @@ namespace ConvImgCpc {
 				maxSize = (Cpc.TailleX * Cpc.TailleY) >> 4;
 			else
 				if (maxSize >= 0x4000)
-					maxSize += 0x3800;
+				maxSize += 0x3800;
 
 			byte[] ret = new byte[maxSize];
 			Array.Clear(ret, 0, ret.Length);
@@ -661,12 +661,21 @@ namespace ConvImgCpc {
 			Convert(false);
 		}
 
+		private void bpSaveWin_Click(object sender, EventArgs e) {
+			Enabled = false;
+			SaveFileDialog dlg = new SaveFileDialog();
+			dlg.Filter = " (*.win)|*.win";
+			if (dlg.ShowDialog() == DialogResult.OK) {
+
+			}
+			Enabled = true;
+		}
+
 		private void bpLoadWin_Click(object sender, EventArgs e) {
 			Enabled = false;
 			OpenFileDialog dlg = new OpenFileDialog();
 			dlg.Filter = " (*.win)|*.win";
-			DialogResult result = dlg.ShowDialog();
-			if (result == DialogResult.OK) {
+			if (dlg.ShowDialog() == DialogResult.OK) {
 				FileStream fileScr = new FileStream(dlg.FileName, FileMode.Open, FileAccess.Read);
 				int l = (int)fileScr.Length;
 				byte[] tabRead = new byte[l];
