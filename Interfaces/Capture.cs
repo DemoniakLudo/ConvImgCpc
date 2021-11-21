@@ -33,9 +33,10 @@ namespace ConvImgCpc {
 		private void GetCaptSizeX() {
 			int v = 0;
 			int.TryParse(txbNbX.Text, out v);
-			if (v > 0 && v <= 16 && v * captSizeY <= 16) {
+			int numBank = comboBanque.SelectedIndex;
+			if (v > 0 && v <= 16 && v * captSizeY <= 16 * (7 - numBank)) {
 				captSizeX = v;
-				numSprite.Maximum = 16 - CaptSizeX * captSizeY;
+				numSprite.Maximum = (16 * (7 - numBank) - CaptSizeX * captSizeY) % 16;
 				RazCapture();
 			}
 		}
@@ -43,9 +44,10 @@ namespace ConvImgCpc {
 		private void GetCaptSizeY() {
 			int v = 0;
 			int.TryParse(txbNbY.Text, out v);
-			if (v > 0 && v <= 16 && v * captSizeX <= 16) {
+			int numBank = comboBanque.SelectedIndex;
+			if (v > 0 && v <= 16 && v * captSizeX <= 16 * (7 - numBank)) {
 				captSizeY = v;
-				numSprite.Maximum = 16 - CaptSizeX * captSizeY;
+				numSprite.Maximum = (16 * (7 - numBank) - CaptSizeX * captSizeY) % 16;
 				RazCapture();
 			}
 		}
@@ -87,15 +89,20 @@ namespace ConvImgCpc {
 
 		private void bpCapture_Click(object sender, EventArgs e) {
 			int numSpr = (int)numSprite.Value;
+			int numBank = comboBanque.SelectedIndex;
 			for (int spry = 0; spry < captSizeY; spry++)
 				for (int sprx = 0; sprx < captSizeX; sprx++) {
 					for (int y = 0; y < 16; y++)
 						for (int x = 0; x < 16; x++) {
 							RvbColor col = bmp.GetPixelColor((x << 3) + (sprx << 7), (y << 3) + (spry << 7));
 							int pen = Cpc.GetPen(col);
-							Cpc.spritesHard[comboBanque.SelectedIndex, numSpr, x, y] = (byte)pen;
+							Cpc.spritesHard[numBank, numSpr, x, y] = (byte)pen;
 						}
 					numSpr++;
+					if (numSpr > 15) {
+						numSpr = 0;
+						numBank++;
+					}
 				}
 			// Copie de la palette image dans la palette des sprites
 			for (int c = 0; c < 16; c++)
