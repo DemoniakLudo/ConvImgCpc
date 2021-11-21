@@ -1129,6 +1129,15 @@ namespace ConvImgCpc {
 			newMethode.Visible = !modePlus.Checked;
 			param.cpcPlus = modePlus.Checked;
 			SetModes();
+
+			for (int i = 0; i < 16; i++) {
+				if (Cpc.cpcPlus && Cpc.Palette[i] < 27) {
+					RvbColor col = Cpc.RgbCPC[Cpc.Palette[i]];
+					Cpc.Palette[i] = ((col.b >> 4) << 4) + ((col.v >> 4) << 8) + (col.r >> 4);
+				}
+				else
+					Cpc.Palette[i] = 0;
+			}
 			Convert(false);
 		}
 
