@@ -42,7 +42,7 @@ namespace ConvImgCpc {
 		}
 
 		public int GetPixel(int x, int y) {
-			return (int)(tabBits[y < Height ? (x + (y * Width)) : 0] & 0xFFFFFF);
+			return x < Width && y < Height ? (int)(tabBits[y < Height ? (x + (y * Width)) : 0] & 0xFFFFFF) : 0;
 		}
 
 		public RvbColor GetPixelColor(int x, int y) {

@@ -105,7 +105,7 @@ namespace ConvImgCpc {
 			bpGenPal.Visible = Cpc.cpcPlus;
 			UpdatePalette();
 			modeCaptureSprites.Visible = chkGrilleSprite.Visible = Cpc.modeVirtuel == 11;
-			chkGrille.Visible = modeEdition.Visible = Cpc.modeVirtuel != 11;
+			chkGrille.Visible = /*modeEdition.Visible =*/ Cpc.modeVirtuel != 11;
 			if (chkDoRedo.Checked && modeEdition.Checked) {
 				Enabled = false;
 				List<MemoPoint> lst = undo.lstUndoRedo;

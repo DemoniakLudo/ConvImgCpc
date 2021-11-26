@@ -32,6 +32,7 @@
 			this.lblPenSize = new System.Windows.Forms.Label();
 			this.tailleCrayon = new System.Windows.Forms.ComboBox();
 			this.grpEdition = new System.Windows.Forms.GroupBox();
+			this.bpSaveWin = new System.Windows.Forms.Button();
 			this.rbFill = new System.Windows.Forms.RadioButton();
 			this.bpLoadWin = new System.Windows.Forms.Button();
 			this.rbPickColor = new System.Windows.Forms.RadioButton();
@@ -60,7 +61,6 @@
 			this.bpGenPal = new System.Windows.Forms.Button();
 			this.chkGrilleSprite = new System.Windows.Forms.CheckBox();
 			this.bpCopyImage = new System.Windows.Forms.Button();
-			this.bpSaveWin = new System.Windows.Forms.Button();
 			this.grpEdition.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictImpDraw)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
@@ -79,7 +79,7 @@
 			// modeEdition
 			// 
 			this.modeEdition.AutoSize = true;
-			this.modeEdition.Location = new System.Drawing.Point(19, 106);
+			this.modeEdition.Location = new System.Drawing.Point(19, 101);
 			this.modeEdition.Name = "modeEdition";
 			this.modeEdition.Size = new System.Drawing.Size(15, 14);
 			this.modeEdition.TabIndex = 2;
@@ -179,6 +179,16 @@
 			this.grpEdition.TabIndex = 9;
 			this.grpEdition.TabStop = false;
 			this.grpEdition.Visible = false;
+			// 
+			// bpSaveWin
+			// 
+			this.bpSaveWin.Location = new System.Drawing.Point(68, 113);
+			this.bpSaveWin.Name = "bpSaveWin";
+			this.bpSaveWin.Size = new System.Drawing.Size(75, 23);
+			this.bpSaveWin.TabIndex = 22;
+			this.bpSaveWin.Text = "Save Win";
+			this.bpSaveWin.UseVisualStyleBackColor = true;
+			this.bpSaveWin.Click += new System.EventHandler(this.bpSaveWin_Click);
 			// 
 			// rbFill
 			// 
@@ -379,7 +389,7 @@
 			// modeCaptureSprites
 			// 
 			this.modeCaptureSprites.AutoSize = true;
-			this.modeCaptureSprites.Location = new System.Drawing.Point(19, 106);
+			this.modeCaptureSprites.Location = new System.Drawing.Point(19, 116);
 			this.modeCaptureSprites.Name = "modeCaptureSprites";
 			this.modeCaptureSprites.Size = new System.Drawing.Size(15, 14);
 			this.modeCaptureSprites.TabIndex = 10;
@@ -399,7 +409,7 @@
 			// chkX2
 			// 
 			this.chkX2.AutoSize = true;
-			this.chkX2.Location = new System.Drawing.Point(19, 86);
+			this.chkX2.Location = new System.Drawing.Point(19, 83);
 			this.chkX2.Name = "chkX2";
 			this.chkX2.Size = new System.Drawing.Size(39, 17);
 			this.chkX2.TabIndex = 13;
@@ -440,7 +450,7 @@
 			// chkGrilleSprite
 			// 
 			this.chkGrilleSprite.AutoSize = true;
-			this.chkGrilleSprite.Location = new System.Drawing.Point(19, 126);
+			this.chkGrilleSprite.Location = new System.Drawing.Point(19, 131);
 			this.chkGrilleSprite.Name = "chkGrilleSprite";
 			this.chkGrilleSprite.Size = new System.Drawing.Size(15, 14);
 			this.chkGrilleSprite.TabIndex = 28;
@@ -457,16 +467,6 @@
 			this.bpCopyImage.TabIndex = 29;
 			this.bpCopyImage.UseVisualStyleBackColor = true;
 			this.bpCopyImage.Click += new System.EventHandler(this.bpCopyImage_Click);
-			// 
-			// bpSaveWin
-			// 
-			this.bpSaveWin.Location = new System.Drawing.Point(68, 113);
-			this.bpSaveWin.Name = "bpSaveWin";
-			this.bpSaveWin.Size = new System.Drawing.Size(75, 23);
-			this.bpSaveWin.TabIndex = 22;
-			this.bpSaveWin.Text = "Save Win";
-			this.bpSaveWin.UseVisualStyleBackColor = true;
-			this.bpSaveWin.Click += new System.EventHandler(this.bpSaveWin_Click);
 			// 
 			// ImageCpc
 			// 

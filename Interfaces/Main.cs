@@ -612,7 +612,7 @@ namespace ConvImgCpc {
 
 		private void bpImport_Click(object sender, EventArgs e) {
 			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.Filter = multilingue.GetString("Main.prg.TxtInfo16") + " (*.bmp, *.gif, *.png, *.jpg,*.jpeg, *.scr)|*.bmp;*.gif;*.png;*.jpg;*.jpeg;*.scr|"
+			dlg.Filter = multilingue.GetString("Main.prg.TxtInfo16") + " (*.bmp, *.gif, *.png, *.jpg, *.jpeg, *.jfif, *.scr)|*.bmp;*.gif;*.png;*.jpg;*.jpeg;*.jfif;*.scr|"
 						+ multilingue.GetString("Main.prg.TxtInfo17") + "|*.*";
 			dlg.InitialDirectory = param.lastReadPath;
 			if (dlg.ShowDialog() == DialogResult.OK) {
@@ -624,7 +624,7 @@ namespace ConvImgCpc {
 		private void bpLoad_Click(object sender, EventArgs e) {
 			Enabled = false;
 			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.Filter = multilingue.GetString("Main.prg.TxtInfo16") + " (*.bmp, *.gif, *.png, *.jpg,*.jpeg, *.scr, *.imp)|*.bmp;*.gif;*.png;*.jpg;*.jpeg;*.scr;*.imp|"
+			dlg.Filter = multilingue.GetString("Main.prg.TxtInfo16") + " (*.bmp, *.gif, *.png, *.jpg,*.jpeg, *.jfif, *.scr, *.imp)|*.bmp;*.gif;*.png;*.jpg;*.jpeg;*.jfif;*.scr;*.imp|"
 						+ multilingue.GetString("Main.prg.TxtInfo18") + " (*.pal)|*.pal|"
 						+ multilingue.GetString("Main.prg.TxtInfo19") + " (*.xml)|*.xml|"
 						+ (Cpc.cpcPlus ? (multilingue.GetString("Main.prg.TxtInfo39") + " (.kit)|*.kit|") : "")
