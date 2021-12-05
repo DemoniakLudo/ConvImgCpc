@@ -354,126 +354,127 @@ namespace ConvImgCpc {
 			fileScr.Read(tabBytes, 0, tabBytes.Length);
 			fileScr.Close();
 			int nbImg = 0;
-			//try {
-			bool isImp = false, isScrImp = false;
-			if (Cpc.CheckAmsdos(tabBytes)) {
-				int nbImages = 1, width = 1, height = 1;
-				CpcAmsdos enteteAms = Cpc.GetAmsdos(tabBytes);
-				// Vérifier si type scr imp
-				isScrImp = (enteteAms.FileName.EndsWith("SCR") && enteteAms.FileType == 0 && enteteAms.Adress == 0x170);
-				if (!isScrImp) {
-					// Vérifier si type imp
-					if (enteteAms.FileName.EndsWith("IMP")) {
-						int l = tabBytes.Length;
-						nbImages = tabBytes[l - 3];
-						width = tabBytes[l - 2];
-						height = tabBytes[l - 1];
-						int animSize = nbImages * width * height;
-						isImp = l - 131 == animSize; // 131 + 128 (Amsdos) + 3 (imp)
+			try {
+				bool isImp = false, isScrImp = false;
+				if (Cpc.CheckAmsdos(tabBytes)) {
+					int nbImages = 1, width = 1, height = 1;
+					CpcAmsdos enteteAms = Cpc.GetAmsdos(tabBytes);
+					// Vérifier si type scr imp
+					isScrImp = (enteteAms.FileName.EndsWith("SCR") && enteteAms.FileType == 0 && enteteAms.Adress == 0x170);
+					if (!isScrImp) {
+						// Vérifier si type imp
+						if (enteteAms.FileName.EndsWith("IMP")) {
+							int l = tabBytes.Length;
+							nbImages = tabBytes[l - 3];
+							width = tabBytes[l - 2];
+							height = tabBytes[l - 1];
+							int animSize = nbImages * width * height;
+							isImp = l - 131 == animSize; // 131 + 128 (Amsdos) + 3 (imp)
+						}
 					}
-				}
-				if (isImp) {
-					imgCpc.InitBitmapCpc(nbImages, imgSrc.tpsFrame);
-					imgSrc.InitBitmap(nbImages);
-					anim.SetNbImgs(nbImages, imgSrc.tpsFrame);
-					SetInfo(multilingue.GetString("Main.Prg.TxtInfo2") + nbImages + " images.");
-					Cpc.TailleX = width << 3;
-					Cpc.TailleY = height << 1;
-					int x = Cpc.NbCol;
-					int y = Cpc.NbLig;
-					int posData = 128; // Entête Amsdos
-					for (int i = 0; i < nbImages; i++) {
-						SelectImage(i, true);
-						byte[] tempData = new byte[width * height];
-						Array.Copy(tabBytes, posData, tempData, 0, tempData.Length);
-						posData += tempData.Length;
-						BitmapCpc bmp = new BitmapCpc(tempData, width << 3, height << 1);
-						imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, true, imgCpc).Bitmap, i);
+					if (isImp) {
+						imgCpc.InitBitmapCpc(nbImages, imgSrc.tpsFrame);
+						imgSrc.InitBitmap(nbImages);
+						anim.SetNbImgs(nbImages, imgSrc.tpsFrame);
+						SetInfo(multilingue.GetString("Main.Prg.TxtInfo2") + nbImages + " images.");
+						Cpc.TailleX = width << 3;
+						Cpc.TailleY = height << 1;
+						int x = Cpc.NbCol;
+						int y = Cpc.NbLig;
+						int posData = 128; // Entête Amsdos
+						for (int i = 0; i < nbImages; i++) {
+							SelectImage(i, true);
+							byte[] tempData = new byte[width * height];
+							Array.Copy(tabBytes, posData, tempData, 0, tempData.Length);
+							posData += tempData.Length;
+							BitmapCpc bmp = new BitmapCpc(tempData, width << 3, height << 1);
+							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, true, imgCpc).Bitmap, i);
+						}
 					}
-				}
-				else
-					if (isScrImp) {
-						BitmapCpc bmp = new BitmapCpc(tabBytes, 0x110);
-						if (singlePicture)
-							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap, imgCpc.selImage);
-						else {
-							doNotReset = true;
-							Cpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = tabBytes[0x94] - 0x0E;
-							Cpc.TailleX = 768;
-							nbLignes.Value = param.nbLignes = Cpc.NbLig;
-							Cpc.TailleY = 544;
-							nbCols.Value = param.nbCols = Cpc.NbCol;
-							Cpc.cpcPlus = tabBytes[0xBC] != 0;
-							if (Cpc.cpcPlus) {
-								// Palette en 0x0711;
-								for (int i = 0; i < 16; i++)
-									Cpc.Palette[i] = ((tabBytes[0x0711 + (i << 1)] << 4) & 0xF0) + (tabBytes[0x0711 + (i << 1)] >> 4) + (tabBytes[0x0712 + (i << 1)] << 8);
-							}
+					else
+						if (isScrImp) {
+							BitmapCpc bmp = new BitmapCpc(tabBytes, 0x110);
+							if (singlePicture)
+								imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap, imgCpc.selImage);
 							else {
-								// Palette en 0x7E10
-								for (int i = 0; i < 16; i++)
-									Cpc.Palette[i] = Cpc.CpcVGA.IndexOf((char)tabBytes[0x7E10 + i]);
+								doNotReset = true;
+								Cpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = tabBytes[0x94] - 0x0E;
+								Cpc.TailleX = 768;
+								nbLignes.Value = param.nbLignes = Cpc.NbLig;
+								Cpc.TailleY = 544;
+								nbCols.Value = param.nbCols = Cpc.NbCol;
+								Cpc.cpcPlus = tabBytes[0xBC] != 0;
+								if (Cpc.cpcPlus) {
+									// Palette en 0x0711;
+									for (int i = 0; i < 16; i++)
+										Cpc.Palette[i] = ((tabBytes[0x0711 + (i << 1)] << 4) & 0xF0) + (tabBytes[0x0711 + (i << 1)] >> 4) + (tabBytes[0x0712 + (i << 1)] << 8);
+								}
+								else {
+									// Palette en 0x7E10
+									for (int i = 0; i < 16; i++)
+										Cpc.Palette[i] = Cpc.CpcVGA.IndexOf((char)tabBytes[0x7E10 + i]);
+								}
+								imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap);
 							}
-							imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap);
 						}
-					}
-					else {
-						BitmapCpc bmp = new BitmapCpc(tabBytes, 0x80);
-						if (singlePicture)
-							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap, imgCpc.selImage);
 						else {
-							doNotReset = true;
-							imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap);
-							nbCols.Value = param.nbCols = Cpc.NbCol;
-							Cpc.TailleX = param.nbCols << 3;
-							nbLignes.Value = param.nbLignes = Cpc.NbLig;
-							Cpc.TailleY = param.nbLignes << 1;
-							param.modeVirtuel = mode.SelectedIndex = Cpc.modeVirtuel;
-							modePlus.Checked = Cpc.cpcPlus;
+							BitmapCpc bmp = new BitmapCpc(tabBytes, 0x80);
+							if (singlePicture)
+								imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap, imgCpc.selImage);
+							else {
+								doNotReset = true;
+								imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap);
+								nbCols.Value = param.nbCols = Cpc.NbCol;
+								Cpc.TailleX = param.nbCols << 3;
+								nbLignes.Value = param.nbLignes = Cpc.NbLig;
+								Cpc.TailleY = param.nbLignes << 1;
+								param.modeVirtuel = mode.SelectedIndex = Cpc.modeVirtuel;
+								modePlus.Checked = Cpc.cpcPlus;
+							}
+							SetInfo(multilingue.GetString("Main.prg.TxtInfo3"));
 						}
-						SetInfo(multilingue.GetString("Main.prg.TxtInfo3"));
-					}
-			}
-			else {
-				imageStream = new MemoryStream(tabBytes);
-				imageStream.Position = 0;
-				if (!singlePicture) {
-					imgSrc.InitBitmap(imageStream);
-					nbImg = imgSrc.NbImg;
-					anim.SetNbImgs(nbImg, imgSrc.tpsFrame);
-					chkAllPics.Visible = nbImg > 1;
-					SetInfo(multilingue.GetString("Main.prg.TxtInfo4") + (nbImg > 0 ? (multilingue.GetString("Main.prg.TxtInfo5") + nbImg + " images.") : "."));
 				}
 				else {
-					imgSrc.ImportBitmap(new Bitmap(imageStream), imgCpc.selImage);
-					SetInfo(multilingue.GetString("Main.prg.TxtInfo4"));
+					imageStream = new MemoryStream(tabBytes);
+					imageStream.Position = 0;
+					if (!singlePicture) {
+						imgSrc.InitBitmap(imageStream);
+						nbImg = imgSrc.NbImg;
+						anim.SetNbImgs(nbImg, imgSrc.tpsFrame);
+						chkAllPics.Visible = nbImg > 1;
+						SetInfo(multilingue.GetString("Main.prg.TxtInfo4") + (nbImg > 0 ? (multilingue.GetString("Main.prg.TxtInfo5") + nbImg + " images.") : "."));
+					}
+					else {
+						imgSrc.ImportBitmap(new Bitmap(imageStream), imgCpc.selImage);
+						SetInfo(multilingue.GetString("Main.prg.TxtInfo4"));
+					}
+
 				}
-			}
-			radioUserSize.Enabled = radioOrigin.Enabled = true;
-			Text = "ConvImgCPC - " + Path.GetFileName(fileName);
-			if (radioOrigin.Checked) {
-				tbxSizeX.Text = imgSrc.GetImage.Width.ToString();
-				tbxSizeY.Text = imgSrc.GetImage.Height.ToString();
-				tbxPosX.Text = "0";
-				tbxPosY.Text = "0";
-			}
+				radioUserSize.Enabled = radioOrigin.Enabled = true;
+				Text = "ConvImgCPC - " + Path.GetFileName(fileName);
+				if (radioOrigin.Checked) {
+					tbxSizeX.Text = imgSrc.GetImage.Width.ToString();
+					tbxSizeY.Text = imgSrc.GetImage.Height.ToString();
+					tbxPosX.Text = "0";
+					tbxPosY.Text = "0";
+				}
 
-			if (!doNotReset) {
-				if (!singlePicture && !isImp)
-					imgCpc.InitBitmapCpc(nbImg, imgSrc.tpsFrame);
+				if (!doNotReset) {
+					if (!singlePicture && !isImp)
+						imgCpc.InitBitmapCpc(nbImg, imgSrc.tpsFrame);
 
-				SelectImage(0);
-				imgCpc.Reset(true);
+					SelectImage(0);
+					imgCpc.Reset(true);
+				}
+				else
+					imgCpc.Reset(false);
+
+				Convert(false);
+				doNotReset = false;
 			}
-			else
-				imgCpc.Reset(false);
-
-			Convert(false);
-			doNotReset = false;
-			//}
-			//catch {
-			//	DisplayErreur(multilingue.GetString("Main.prg.TxtInfo6"));
-			//}
+			catch {
+				DisplayErreur(multilingue.GetString("Main.prg.TxtInfo6"));
+			}
 		}
 
 		public void SelectImage(int n, bool noInfo = false) {
@@ -616,6 +617,7 @@ namespace ConvImgCpc {
 						+ multilingue.GetString("Main.prg.TxtInfo17") + "|*.*";
 			dlg.InitialDirectory = param.lastReadPath;
 			if (dlg.ShowDialog() == DialogResult.OK) {
+				imgCpc.ResetX2();
 				ReadScreen(dlg.FileName, true);
 				param.lastReadPath = Path.GetDirectoryName(dlg.FileName);
 			}
@@ -631,6 +633,7 @@ namespace ConvImgCpc {
 						+ multilingue.GetString("Main.prg.TxtInfo17") + "|*.*";
 			dlg.InitialDirectory = param.lastReadPath;
 			if (dlg.ShowDialog() == DialogResult.OK) {
+				imgCpc.ResetX2();
 				switch (dlg.FilterIndex) {
 					case 1:
 					case 4:
@@ -678,6 +681,7 @@ namespace ConvImgCpc {
 
 			dlg.Filter = filter;
 			if (dlg.ShowDialog() == DialogResult.OK) {
+				imgCpc.ResetGrille();
 				switch (dlg.FilterIndex) {
 					case 1:
 						imgCpc.SauveScr(dlg.FileName, OutputFormat.Binary);
