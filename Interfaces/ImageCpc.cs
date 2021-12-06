@@ -350,7 +350,7 @@ namespace ConvImgCpc {
 		public void SauveTiles(string fileName, int tailleX, int tailleY, Param param) {
 			List<byte[]> lstTiles = new List<byte[]>();
 			int l = 0;
-			byte[] tabTiles = new byte[1024];
+			byte[] tabTiles = new byte[2048];
 			int nbTiles = 0;
 			for (int y = 0; y < Cpc.TailleY; y += tailleY)
 				for (int x = 0; x < Cpc.TailleX; x += tailleX) {
@@ -365,12 +365,22 @@ namespace ConvImgCpc {
 								found = false;
 								break;
 							}
-						foundOne |= found;
+						if (found) {
+							tabTiles[nbTiles++] = (byte)t;
+							foundOne = true;
+							break;
+						}
 					}
-					tabTiles[nbTiles++] = (byte)lstTiles.Count;
 					if (!foundOne) {
-						lstTiles.Add(tile);
-						l += tile.Length;
+						int t = lstTiles.Count;
+						if (t < 255) {
+							tabTiles[nbTiles++] = (byte)t;
+							lstTiles.Add(tile);
+							l += tile.Length;
+						}
+						else {
+							break;
+						}
 					}
 				}
 			int nbImages = lstTiles.Count;
