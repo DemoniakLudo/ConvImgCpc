@@ -733,14 +733,10 @@ namespace ConvImgCpc {
 				sw.WriteLine("	BIT	3,B");
 				sw.WriteLine("	JR	Z,DrawImgO");
 				if (overscan) {
-					sw.WriteLine("	PUSH HL");
-					sw.WriteLine("	LD	HL,#4000");
-					sw.WriteLine("	ADD	HL,BC");
-					sw.WriteLine("	LD	B,H");
-					sw.WriteLine("	LD	C,L");
-					sw.WriteLine("	POP	HL");
-					sw.WriteLine("	BIT	7,B");
-					sw.WriteLine("	JR	Z,DrawImgO");
+					sw.WriteLine("	LD	A,B");
+					sw.WriteLine("	ADD	A,#40");
+					sw.WriteLine("	LD	B,A");
+					sw.WriteLine("	JP	P,DrawImgO");
 				}
 			}
 			if (!frameD) {
