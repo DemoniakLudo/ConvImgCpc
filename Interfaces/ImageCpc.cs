@@ -384,31 +384,36 @@ namespace ConvImgCpc {
 					}
 				}
 			int nbImages = lstTiles.Count;
-			l += 3; // 3 octets de fin de fichier
-			CpcAmsdos entete = Cpc.CreeEntete(fileName, 0x4000, (short)l, -13622);
-			BinaryWriter fp = new BinaryWriter(new FileStream(fileName, FileMode.Create));
-			fp.Write(Cpc.AmsdosToByte(entete));
-			for (int i = 0; i < nbImages; i++) {
-				byte[] sprite = lstTiles[i];
-				fp.Write(sprite, 0, sprite.Length);
+			if (nbImages < 255) {
+				main.SetInfo("Nbre de tiles:" + nbImages);
+				l += 3; // 3 octets de fin de fichier
+				CpcAmsdos entete = Cpc.CreeEntete(fileName, 0x4000, (short)l, -13622);
+				BinaryWriter fp = new BinaryWriter(new FileStream(fileName, FileMode.Create));
+				fp.Write(Cpc.AmsdosToByte(entete));
+				for (int i = 0; i < nbImages; i++) {
+					byte[] sprite = lstTiles[i];
+					fp.Write(sprite, 0, sprite.Length);
+				}
+				byte[] endData = { (byte)(tailleX >> 3), (byte)(tailleY >> 1), (byte)nbImages };
+				fp.Write(endData, 0, endData.Length);
+				fp.Close();
+
+				// Ecriture fichier .TIL
+				string s = fileName.Substring(0, fileName.Length - 3) + "TIL";
+				entete = Cpc.CreeEntete(s, 0x4000, (short)l, -13622);
+				fp = new BinaryWriter(new FileStream(s, FileMode.Create));
+				fp.Write(Cpc.AmsdosToByte(entete));
+				fp.Write(tabTiles, 0, nbTiles);
+				fp.Close();
+
+				// Ecriture fichier palette
+				if (param.cpcPlus)
+					main.SavePaletteKit(Path.ChangeExtension(fileName, "KIT"), true);
+				else
+					SauvePalette(Path.ChangeExtension(fileName, "PAL"), param);
 			}
-			byte[] endData = { (byte)(tailleX >> 3), (byte)(tailleY >> 1), (byte)nbImages };
-			fp.Write(endData, 0, endData.Length);
-			fp.Close();
-
-			// Ecriture fichier .TIL
-			string s = fileName.Substring(0, fileName.Length - 3) + "TIL";
-			entete = Cpc.CreeEntete(s, 0x4000, (short)l, -13622);
-			fp = new BinaryWriter(new FileStream(s, FileMode.Create));
-			fp.Write(Cpc.AmsdosToByte(entete));
-			fp.Write(tabTiles, 0, nbTiles);
-			fp.Close();
-
-			// Ecriture fichier palette
-			if (param.cpcPlus)
-				main.SavePaletteKit(Path.ChangeExtension(fileName, "KIT"), true);
 			else
-				SauvePalette(Path.ChangeExtension(fileName, "PAL"), param);
+				main.DisplayErreur("Trop de tiles...");
 		}
 
 		public byte[] GetCpcScr(Param param, bool spriteMode = false) {
