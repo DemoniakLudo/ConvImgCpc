@@ -91,7 +91,7 @@
 			this.hScrollBar.LargeChange = 32;
 			this.hScrollBar.Location = new System.Drawing.Point(168, 608);
 			this.hScrollBar.Name = "hScrollBar";
-			this.hScrollBar.Size = new System.Drawing.Size(768, 16);
+			this.hScrollBar.Size = new System.Drawing.Size(1008, 16);
 			this.hScrollBar.SmallChange = 8;
 			this.hScrollBar.TabIndex = 1;
 			this.hScrollBar.Visible = false;
@@ -100,7 +100,7 @@
 			// vScrollBar
 			// 
 			this.vScrollBar.LargeChange = 32;
-			this.vScrollBar.Location = new System.Drawing.Point(939, 61);
+			this.vScrollBar.Location = new System.Drawing.Point(1195, 61);
 			this.vScrollBar.Name = "vScrollBar";
 			this.vScrollBar.Size = new System.Drawing.Size(16, 544);
 			this.vScrollBar.SmallChange = 8;
@@ -415,13 +415,14 @@
 			this.chkX2.TabIndex = 13;
 			this.chkX2.Text = "X2";
 			this.chkX2.UseVisualStyleBackColor = true;
+			this.chkX2.Visible = false;
 			this.chkX2.CheckedChanged += new System.EventHandler(this.chkX2_CheckedChanged);
 			// 
 			// pictImpDraw
 			// 
 			this.pictImpDraw.Location = new System.Drawing.Point(168, 61);
 			this.pictImpDraw.Name = "pictImpDraw";
-			this.pictImpDraw.Size = new System.Drawing.Size(768, 2);
+			this.pictImpDraw.Size = new System.Drawing.Size(1024, 2);
 			this.pictImpDraw.TabIndex = 12;
 			this.pictImpDraw.TabStop = false;
 			// 
@@ -429,7 +430,7 @@
 			// 
 			this.pictureBox.Location = new System.Drawing.Point(168, 61);
 			this.pictureBox.Name = "pictureBox";
-			this.pictureBox.Size = new System.Drawing.Size(768, 544);
+			this.pictureBox.Size = new System.Drawing.Size(1024, 544);
 			this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.pictureBox.TabIndex = 0;
 			this.pictureBox.TabStop = false;
@@ -472,7 +473,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(957, 676);
+			this.ClientSize = new System.Drawing.Size(1294, 676);
 			this.ControlBox = false;
 			this.Controls.Add(this.bpCopyImage);
 			this.Controls.Add(this.chkGrilleSprite);

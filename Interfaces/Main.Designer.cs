@@ -159,7 +159,7 @@
 			// 
 			this.nbCols.Location = new System.Drawing.Point(103, 16);
 			this.nbCols.Maximum = new decimal(new int[] {
-            96,
+            128,
             0,
             0,
             0});
@@ -326,7 +326,7 @@
 			this.trackModeX.Maximum = 32;
 			this.trackModeX.Minimum = 1;
 			this.trackModeX.Name = "trackModeX";
-			this.trackModeX.Size = new System.Drawing.Size(145, 45);
+			this.trackModeX.Size = new System.Drawing.Size(145, 42);
 			this.trackModeX.TabIndex = 11;
 			this.trackModeX.Value = 1;
 			this.trackModeX.Visible = false;
