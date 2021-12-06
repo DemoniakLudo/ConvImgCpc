@@ -20,22 +20,31 @@ namespace ConvImgCpc {
 		private Main main;
 
 		public GestDSK(Main m) {
+			main = m; FormatDsk();
+		}
+
+		public void FormatDsk() {
 			Infos.id = "EXTENDED CPC DSK File\r\nDisk-Info\r\nConvImgCpc    ";
 			Infos.NbTracks = 40;
 			Infos.NbHeads = 1;
 			Tracks = new CPCEMUTrack[MAX_TRACKS][];
 			for (int t = 0; t < MAX_TRACKS; t++) {
-				Tracks[t] = new CPCEMUTrack[2];
-				Tracks[t][0] = new CPCEMUTrack();
-				Tracks[t][1] = new CPCEMUTrack();
-				Data[t] = new byte[2][];
+				if (Tracks[t] == null) {
+					Tracks[t] = new CPCEMUTrack[2];
+					Tracks[t][0] = new CPCEMUTrack();
+					Tracks[t][1] = new CPCEMUTrack();
+				}
+				if (Data[t] == null)
+					Data[t] = new byte[2][];
+
 				Data[t][0] = new byte[0x1800];
+
 				Data[t][1] = new byte[0x1800];
+
 				FormatTrack(t, 0, 0xC1, 9); // Format par défaut = data (face 0)
 				FormatTrack(t, 1, 0xC1, 9); // Format par défaut = data (face 1)
 				Infos.TrackSizeTable[t] = 0x13;
 			}
-			main = m;
 		}
 
 		//
@@ -213,7 +222,7 @@ namespace ConvImgCpc {
 			//
 			// Gestion "entrelacement" des secteurs
 			//
-			for (int s = 0; s < NbSect;) {
+			for (int s = 0; s < NbSect; ) {
 				tr.Sect[s].C = (byte)t;
 				tr.Sect[s].H = (byte)h;
 				tr.Sect[s].R = (byte)(readSect + MinSect);
@@ -242,7 +251,7 @@ namespace ConvImgCpc {
 				track += 2;
 			else
 				if (MinSect == 0x01)
-				track++;
+					track++;
 
 			//
 			// Ajuste le nombre de pistes si dépassement capacité
@@ -293,7 +302,7 @@ namespace ConvImgCpc {
 			if (FileExist(FullName, User) > -1)
 				return (DskError.ERR_FILE_EXIST);
 
-			for (PosFile = 0; PosFile < TailleFic;) {
+			for (PosFile = 0; PosFile < TailleFic; ) {
 				PosDir = RechercheDirLibre();
 				if (PosDir != -1) {
 					DirLoc.User = (byte)User;
@@ -355,12 +364,12 @@ namespace ConvImgCpc {
 									n = (n + 0xFF) & 0x1F00;
 								else
 									if (n == 0) {
-									n = sect.N;
-									if (n < 6)
-										n = 128 << n;
-									else
-										n = 0x1800;
-								}
+										n = sect.N;
+										if (n < 6)
+											n = 128 << n;
+										else
+											n = 0x1800;
+									}
 								tailleData += n > 0x100 ? n : 0x100;
 							}
 						}
@@ -416,12 +425,12 @@ namespace ConvImgCpc {
 										n = (n + 0xFF) & 0x1F00;
 									else
 										if (n == 0) {
-										n = sect.N;
-										if (n < 6)
-											n = 128 << n;
-										else
-											n = 0x1800;
-									}
+											n = sect.N;
+											if (n < 6)
+												n = 128 << n;
+											else
+												n = 0x1800;
+										}
 									tailleData += n > 0x100 ? n : 0x100;
 								}
 							}

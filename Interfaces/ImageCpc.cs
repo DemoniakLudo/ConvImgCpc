@@ -105,7 +105,7 @@ namespace ConvImgCpc {
 			bpGenPal.Visible = Cpc.cpcPlus;
 			UpdatePalette();
 			modeCaptureSprites.Visible = chkGrilleSprite.Visible = Cpc.modeVirtuel == 11;
-			chkGrille.Visible = modeEdition.Visible = Cpc.modeVirtuel != 11;
+			chkGrille.Visible = /*modeEdition.Visible =*/ Cpc.modeVirtuel != 11;
 			if (chkDoRedo.Checked && modeEdition.Checked) {
 				Enabled = false;
 				List<MemoPoint> lst = undo.lstUndoRedo;
@@ -617,6 +617,10 @@ namespace ConvImgCpc {
 			pictureBox.Refresh();
 		}
 
+		public void ResetX2() {
+			chkX2.Checked = false;
+		}
+
 		private void ImageCpc_FormClosing(object sender, FormClosingEventArgs e) {
 			e.Cancel = true;
 		}
@@ -640,6 +644,10 @@ namespace ConvImgCpc {
 				drawGrille = false;
 				txbStartNop.Enabled = txbTailleNop.Enabled = true;
 			}
+		}
+
+		public void ResetGrille() {
+			chkGrille.Checked = false;
 		}
 
 		private void bpGenPal_Click(object sender, EventArgs e) {

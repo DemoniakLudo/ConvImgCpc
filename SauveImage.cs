@@ -618,6 +618,8 @@ namespace ConvImgCpc {
 				case Main.OutputFormat.DSK:
 					if (File.Exists(fileName))
 						main.dsk.Load(fileName);
+					else
+						main.dsk.FormatDsk();
 
 					MemoryStream ms = new MemoryStream();
 					entete = Cpc.CreeEntete(fileName, startAdr, (short)lg, exec);

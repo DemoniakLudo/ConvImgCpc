@@ -42,18 +42,18 @@ namespace ConvImgCpc {
 							new RvbColor( Lum2, Lum2, Lum2)
 							};
 		static public string[] modesVirtuels = {
-										"Mode 0",
-										"Mode 1",
-										"Mode 2",
-										"Mode EGX1",
-										"Mode EGX2",
-										"Mode X",
-										"Mode <Split>",
-										"Mode ASC-UT",
-										"Mode ASC0",
-										"Mode ASC1",
-										"Mode ASC2",
-										"Capture Sprites"
+										"Mode 0",				// 0
+										"Mode 1",				// 1
+										"Mode 2",				// 2
+										"Mode EGX1",			// 3
+										"Mode EGX2",			// 4
+										"Mode X",				// 5
+										"Mode <Split>",			// 6
+										"Mode ASC-UT",			// 7
+										"Mode ASC0",			// 8
+										"Mode ASC1",			// 9
+										"Mode ASC2",			// 10
+										"Capture Sprites"		// 11
 										};
 		static public string CpcVGA = "TDU\\X]LEMVFW^@_NGORBSZY[JCK";
 
@@ -87,7 +87,7 @@ namespace ConvImgCpc {
 		}
 
 		static public int CalcTx(int y = 0) {
-			return 8 >> (modeVirtuel == 11 ? 2 : modeVirtuel == 8 ? 0 : modeVirtuel > 8 ? modeVirtuel - 8 : modeVirtuel >= 5 ? 2 : modeVirtuel > 2 ? ((y & 2) == yEgx ? modeVirtuel - 1 : modeVirtuel - 2) : modeVirtuel + 1);
+			return 8 >> (modeVirtuel == 11 ? 2 : modeVirtuel >= 8 ? modeVirtuel - 8 : modeVirtuel >= 5 ? 2 : modeVirtuel > 2 ? ((y & 2) == yEgx ? modeVirtuel - 1 : modeVirtuel - 2) : modeVirtuel + 1);
 		}
 
 		static public int MaxPen(int y = 0) {
