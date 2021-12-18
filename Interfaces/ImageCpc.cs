@@ -604,6 +604,9 @@ namespace ConvImgCpc {
 			int i, maxPen = Cpc.MaxPen(Cpc.yEgx ^ 2);
 			for (i = 0; i < maxPen; i++) {
 				int val = Cpc.Palette[i];
+				if (Cpc.cpcPlus)
+					val = (val & 0xF00) + ((val & 0x0F) << 4) + ((val & 0xF0) >> 4);
+
 				string valStr = Cpc.cpcPlus ? ("&" + val.ToString("X3")) : val.ToString();
 				palTxt += valStr + (i < maxPen - 1 ? "," : "");
 			}
@@ -615,6 +618,9 @@ namespace ConvImgCpc {
 
 			for (i = 0; i < maxPen; i++) {
 				int val = Cpc.Palette[i];
+				if (Cpc.cpcPlus)
+					val = (val & 0xF00) + ((val & 0x0F) << 4) + ((val & 0xF0) >> 4);
+
 				string valStr = "#" + (Cpc.cpcPlus ? val.ToString("X3") : ((byte)(Cpc.CpcVGA[val])).ToString("X2"));
 				palTxt += valStr + (i < maxPen - 1 ? "," : "");
 
