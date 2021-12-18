@@ -799,9 +799,9 @@ namespace ConvImgCpc {
 				int x = 0, y = 0;
 				if (int.TryParse(tbxSizeX.Text, out x) && int.TryParse(tbxSizeY.Text, out y)) {
 					bpXDiv2.Enabled = x >= 16;
-					bpXMul2.Enabled = x <= 960;
+					bpXMul2.Enabled = x <= 1920;
 					bpYDiv2.Enabled = y >= 16;
-					bpYMul2.Enabled = y <= 540;
+					bpYMul2.Enabled = y <= 1080;
 				}
 			}
 
