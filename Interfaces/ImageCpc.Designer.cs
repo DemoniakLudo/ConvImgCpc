@@ -145,7 +145,7 @@
             "3",
             "4",
             "8"});
-			this.tailleCrayon.Location = new System.Drawing.Point(96, 211);
+			this.tailleCrayon.Location = new System.Drawing.Point(96, 215);
 			this.tailleCrayon.Name = "tailleCrayon";
 			this.tailleCrayon.Size = new System.Drawing.Size(31, 21);
 			this.tailleCrayon.TabIndex = 3;
