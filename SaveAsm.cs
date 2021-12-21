@@ -642,7 +642,7 @@ namespace ConvImgCpc {
 			}
 			else
 				if (frameO)
-				sw.WriteLine("	LD	HL,Buffer");
+					sw.WriteLine("	LD	HL,Buffer");
 
 			if (!frameD) {
 				sw.WriteLine("	LD	BC," + (overscan ? "#0200" : "#C000"));
@@ -868,13 +868,9 @@ namespace ConvImgCpc {
 					sw.WriteLine("	JR	DrawImgI");
 			}
 			sw.WriteLine("	Nolist");
-			if (Cpc.modeVirtuel > 7) {
-				sw.WriteLine("DataFnt:");
-				sw.WriteLine("	DB	#00,#C0,#0C,#CC,#30,#F0,#3C,#FC,#03,#C3,#0F,#CF,#33,#F3,#3F,#FF");
-			}
 		}
 
-		static public void GenereFin(StreamWriter sw, int ltot, bool force8000) {
+		static public void GenereFin(StreamWriter sw, int ltot, bool force8000, bool withCode) {
 			sw.WriteLine("; Taille totale animation = " + ltot.ToString() + " (#" + ltot.ToString("X4") + ")");
 			sw.WriteLine("_EndCode:");
 			sw.WriteLine("	List");
@@ -899,7 +895,17 @@ namespace ConvImgCpc {
 				else
 					sw.WriteLine("	DS	" + align.ToString() + Environment.NewLine);
 			}
+
+			if (withCode && Cpc.modeVirtuel >= 7) {
+				if (force8000)
+					sw.WriteLine("	Org	#8000");
+
+				sw.WriteLine("DataFnt:");
+			}
+
 			sw.WriteLine("buffer" + (force8000 ? "	equ	#8000" : ":"));
+			if (withCode && Cpc.modeVirtuel >= 7)
+				sw.WriteLine("	DB	#00,#C0,#0C,#CC,#30,#F0,#3C,#FC,#03,#C3,#0F,#CF,#33,#F3,#3F,#FF");
 		}
 
 		static public void GenerePointeurs(StreamWriter sw, int nbImages, int[] bank, int[] speed, bool gest128K) {
