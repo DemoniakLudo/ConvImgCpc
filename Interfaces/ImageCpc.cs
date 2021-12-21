@@ -422,7 +422,7 @@ namespace ConvImgCpc {
 				maxSize = (Cpc.TailleX * Cpc.TailleY) >> 4;
 			else
 				if (maxSize >= 0x4000)
-				maxSize += 0x3800;
+					maxSize += 0x3800;
 
 			byte[] ret = new byte[maxSize];
 			Array.Clear(ret, 0, ret.Length);
@@ -601,11 +601,29 @@ namespace ConvImgCpc {
 		// Copier la palette dans le presse-papier
 		private void bpCopyPal_Click(object sender, EventArgs e) {
 			string palTxt = "";
-			int maxPen = Cpc.MaxPen(Cpc.yEgx ^ 2);
-			for (int i = 0; i < maxPen; i++) {
+			int i, maxPen = Cpc.MaxPen(Cpc.yEgx ^ 2);
+			for (i = 0; i < maxPen; i++) {
 				int val = Cpc.Palette[i];
+				if (Cpc.cpcPlus)
+					val = (val & 0xF00) + ((val & 0x0F) << 4) + ((val & 0xF0) >> 4);
+
 				string valStr = Cpc.cpcPlus ? ("&" + val.ToString("X3")) : val.ToString();
 				palTxt += valStr + (i < maxPen - 1 ? "," : "");
+			}
+			palTxt += "\r\n";
+			if (Cpc.cpcPlus)
+				palTxt += ";ASIC Values : ";
+			else
+				palTxt += ";Gate Array Values : ";
+
+			for (i = 0; i < maxPen; i++) {
+				int val = Cpc.Palette[i];
+				if (Cpc.cpcPlus)
+					val = (val & 0xF00) + ((val & 0x0F) << 4) + ((val & 0xF0) >> 4);
+
+				string valStr = "#" + (Cpc.cpcPlus ? val.ToString("X3") : ((byte)(Cpc.CpcVGA[val])).ToString("X2"));
+				palTxt += valStr + (i < maxPen - 1 ? "," : "");
+
 			}
 			Clipboard.SetText(palTxt);
 			MessageBox.Show("Palette copiée dans le presse-papier");

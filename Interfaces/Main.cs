@@ -795,6 +795,16 @@ namespace ConvImgCpc {
 			if (!chkDiffErr.Visible)
 				chkDiffErr.Checked = methode.SelectedItem.ToString() == "Floyd-Steinberg (2x2)";
 
+			if (radioUserSize.Checked) {
+				int x = 0, y = 0;
+				if (int.TryParse(tbxSizeX.Text, out x) && int.TryParse(tbxSizeY.Text, out y)) {
+					bpXDiv2.Enabled = x >= 16;
+					bpXMul2.Enabled = x <= 1920;
+					bpYDiv2.Enabled = y >= 16;
+					bpYMul2.Enabled = y <= 1080;
+				}
+			}
+
 			bpSave.Enabled = !autoRecalc.Checked;
 			lblPct.Visible = pctTrame.Visible = chkDiffErr.Visible = methode.SelectedItem.ToString() != "Aucun";
 			param.methode = methode.SelectedItem.ToString();
@@ -816,6 +826,7 @@ namespace ConvImgCpc {
 
 		private void radioUserSize_CheckedChanged(object sender, EventArgs e) {
 			tbxPosX.Visible = tbxPosY.Visible = tbxSizeX.Visible = tbxSizeY.Visible = label5.Visible = label7.Visible = radioUserSize.Checked || radioOrigin.Checked;
+			bpXDiv2.Visible = bpXMul2.Visible = bpYDiv2.Visible = bpYMul2.Visible = radioUserSize.Checked;
 			if (radioOrigin.Checked || (radioUserSize.Checked && tbxSizeX.Text == "" && tbxSizeY.Text == ""))
 				SetSizePos(0, 0, imgSrc.GetImage.Width, imgSrc.GetImage.Height);
 
@@ -1286,6 +1297,38 @@ namespace ConvImgCpc {
 		private void chkSwapEGX_CheckedChanged(object sender, EventArgs e) {
 			Cpc.yEgx = chkSwapEgx.Checked ? 2 : 0;
 			Convert(false);
+		}
+
+		private void bpXDiv2_Click(object sender, EventArgs e) {
+			int v = 0;
+			if (int.TryParse(tbxSizeX.Text, out v)) {
+				tbxSizeX.Text = (v >> 1).ToString();
+				InterfaceChange(sender, e);
+			}
+		}
+
+		private void bpXMul2_Click(object sender, EventArgs e) {
+			int v = 0;
+			if (int.TryParse(tbxSizeX.Text, out v)) {
+				tbxSizeX.Text = (v << 1).ToString();
+				InterfaceChange(sender, e);
+			}
+		}
+
+		private void bpYDiv2_Click(object sender, EventArgs e) {
+			int v = 0;
+			if (int.TryParse(tbxSizeY.Text, out v)) {
+				tbxSizeY.Text = (v >> 1).ToString();
+				InterfaceChange(sender, e);
+			}
+		}
+
+		private void bpYMul2_Click(object sender, EventArgs e) {
+			int v = 0;
+			if (int.TryParse(tbxSizeY.Text, out v)) {
+				tbxSizeY.Text = (v << 1).ToString();
+				InterfaceChange(sender, e);
+			}
 		}
 	}
 }

@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 
 namespace ConvImgCpc {
-	public partial class EditColor: Form {
+	public partial class EditColor : Form {
 		private Label[] colors = new Label[27];
 		private Label lblValColor = new Label();
 		private TextBox[] tabVal = new TextBox[3];
@@ -34,6 +34,7 @@ namespace ConvImgCpc {
 					tabVal[i].Tag = tabTrack[i].Tag = i;
 					tabLabel[i].Text = "RVB".Substring(i, 1);
 					tabVal[i].Text = (((rgbColor >> (2 - i) * 8) & 0xFF) / 17).ToString();
+					tabVal[i].MaxLength = 2;
 					Controls.Add(tabLabel[i]);
 					Controls.Add(tabTrack[i]);
 					Controls.Add(tabVal[i]);
@@ -73,11 +74,21 @@ namespace ConvImgCpc {
 			bpValide_Click(sender, e);
 		}
 
+		private int GetCompValue(string txt) {
+			int v = 0;
+			if (!int.TryParse(txt, out v))
+				try {
+					v = int.Parse(txt, System.Globalization.NumberStyles.HexNumber);
+				}
+				catch { }
+			return v;
+		}
+
 		private void NewColor() {
 			try {
-				int r = int.Parse(tabVal[0].Text);
-				int v = int.Parse(tabVal[1].Text);
-				int b = int.Parse(tabVal[2].Text);
+				int r = GetCompValue(tabVal[0].Text);
+				int v = GetCompValue(tabVal[1].Text);
+				int b = GetCompValue(tabVal[2].Text);
 				valColor = (v << 8) + (b << 4) + r;
 				selColor.BackColor = Color.FromArgb(r * 17, v * 17, b * 17);
 			}
@@ -92,7 +103,7 @@ namespace ConvImgCpc {
 		private void val_TextChanged(object sender, System.EventArgs e) {
 			try {
 				int i = (int)((TextBox)sender).Tag;
-				tabTrack[i].Value = int.Parse(tabVal[i].Text);
+				tabTrack[i].Value = GetCompValue(tabVal[i].Text);
 				NewColor();
 			}
 			catch { }

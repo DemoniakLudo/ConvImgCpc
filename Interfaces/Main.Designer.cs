@@ -37,9 +37,9 @@
 			this.chkSwapEgx = new System.Windows.Forms.CheckBox();
 			this.bpCalcSprite = new System.Windows.Forms.Button();
 			this.bpEditTrame = new System.Windows.Forms.Button();
-			this.trackModeX = new System.Windows.Forms.TrackBar();
 			this.bpStandard = new System.Windows.Forms.Button();
 			this.bpOverscan = new System.Windows.Forms.Button();
+			this.trackModeX = new System.Windows.Forms.TrackBar();
 			this.tramage = new System.Windows.Forms.GroupBox();
 			this.chkImpDraw = new System.Windows.Forms.CheckBox();
 			this.chkDiffErr = new System.Windows.Forms.CheckBox();
@@ -54,14 +54,18 @@
 			this.radioKeepSmaller = new System.Windows.Forms.RadioButton();
 			this.radioFit = new System.Windows.Forms.RadioButton();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.bpYMul2 = new System.Windows.Forms.Button();
+			this.bpYDiv2 = new System.Windows.Forms.Button();
+			this.bpXMul2 = new System.Windows.Forms.Button();
+			this.bpXDiv2 = new System.Windows.Forms.Button();
 			this.radioOrigin = new System.Windows.Forms.RadioButton();
-			this.label7 = new System.Windows.Forms.Label();
 			this.label5 = new System.Windows.Forms.Label();
 			this.tbxPosY = new System.Windows.Forms.TextBox();
 			this.tbxSizeY = new System.Windows.Forms.TextBox();
 			this.tbxPosX = new System.Windows.Forms.TextBox();
 			this.tbxSizeX = new System.Windows.Forms.TextBox();
 			this.radioUserSize = new System.Windows.Forms.RadioButton();
+			this.label7 = new System.Windows.Forms.Label();
 			this.bpSave = new System.Windows.Forms.Button();
 			this.lblInfoVersion = new System.Windows.Forms.Label();
 			this.withCode = new System.Windows.Forms.CheckBox();
@@ -157,7 +161,7 @@
 			// 
 			// nbCols
 			// 
-			this.nbCols.Location = new System.Drawing.Point(103, 16);
+			this.nbCols.Location = new System.Drawing.Point(91, 16);
 			this.nbCols.Maximum = new decimal(new int[] {
             96,
             0,
@@ -180,7 +184,7 @@
 			// 
 			// nbLignes
 			// 
-			this.nbLignes.Location = new System.Drawing.Point(103, 42);
+			this.nbLignes.Location = new System.Drawing.Point(91, 42);
 			this.nbLignes.Maximum = new decimal(new int[] {
             272,
             0,
@@ -221,7 +225,7 @@
 			// 
 			this.mode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.mode.FormattingEnabled = true;
-			this.mode.Location = new System.Drawing.Point(65, 121);
+			this.mode.Location = new System.Drawing.Point(53, 119);
 			this.mode.Name = "mode";
 			this.mode.Size = new System.Drawing.Size(82, 21);
 			this.mode.TabIndex = 7;
@@ -230,7 +234,7 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(3, 124);
+			this.label3.Location = new System.Drawing.Point(3, 122);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(34, 13);
 			this.label3.TabIndex = 6;
@@ -242,15 +246,15 @@
 			this.methode.FormattingEnabled = true;
 			this.methode.Items.AddRange(new object[] {
             "Aucun"});
-			this.methode.Location = new System.Drawing.Point(48, 14);
+			this.methode.Location = new System.Drawing.Point(33, 14);
 			this.methode.Name = "methode";
-			this.methode.Size = new System.Drawing.Size(117, 21);
+			this.methode.Size = new System.Drawing.Size(116, 21);
 			this.methode.TabIndex = 8;
 			this.methode.SelectedIndexChanged += new System.EventHandler(this.InterfaceChange);
 			// 
 			// pctTrame
 			// 
-			this.pctTrame.Location = new System.Drawing.Point(48, 41);
+			this.pctTrame.Location = new System.Drawing.Point(33, 41);
 			this.pctTrame.Maximum = new decimal(new int[] {
             400,
             0,
@@ -272,7 +276,6 @@
 			this.resoCPC.Controls.Add(this.chkSwapEgx);
 			this.resoCPC.Controls.Add(this.bpCalcSprite);
 			this.resoCPC.Controls.Add(this.bpEditTrame);
-			this.resoCPC.Controls.Add(this.trackModeX);
 			this.resoCPC.Controls.Add(this.bpStandard);
 			this.resoCPC.Controls.Add(this.bpOverscan);
 			this.resoCPC.Controls.Add(this.label1);
@@ -281,9 +284,10 @@
 			this.resoCPC.Controls.Add(this.label2);
 			this.resoCPC.Controls.Add(this.label3);
 			this.resoCPC.Controls.Add(this.mode);
+			this.resoCPC.Controls.Add(this.trackModeX);
 			this.resoCPC.Location = new System.Drawing.Point(241, 8);
 			this.resoCPC.Name = "resoCPC";
-			this.resoCPC.Size = new System.Drawing.Size(152, 174);
+			this.resoCPC.Size = new System.Drawing.Size(140, 181);
 			this.resoCPC.TabIndex = 11;
 			this.resoCPC.TabStop = false;
 			this.resoCPC.Text = "CPC resolution";
@@ -291,7 +295,7 @@
 			// chkSwapEgx
 			// 
 			this.chkSwapEgx.AutoSize = true;
-			this.chkSwapEgx.Location = new System.Drawing.Point(2, 151);
+			this.chkSwapEgx.Location = new System.Drawing.Point(2, 149);
 			this.chkSwapEgx.Name = "chkSwapEgx";
 			this.chkSwapEgx.Size = new System.Drawing.Size(73, 17);
 			this.chkSwapEgx.TabIndex = 14;
@@ -304,7 +308,7 @@
 			// 
 			this.bpCalcSprite.Location = new System.Drawing.Point(8, 92);
 			this.bpCalcSprite.Name = "bpCalcSprite";
-			this.bpCalcSprite.Size = new System.Drawing.Size(138, 23);
+			this.bpCalcSprite.Size = new System.Drawing.Size(126, 23);
 			this.bpCalcSprite.TabIndex = 13;
 			this.bpCalcSprite.UseVisualStyleBackColor = true;
 			this.bpCalcSprite.Visible = false;
@@ -312,25 +316,13 @@
 			// 
 			// bpEditTrame
 			// 
-			this.bpEditTrame.Location = new System.Drawing.Point(53, 148);
+			this.bpEditTrame.Location = new System.Drawing.Point(41, 144);
 			this.bpEditTrame.Name = "bpEditTrame";
 			this.bpEditTrame.Size = new System.Drawing.Size(93, 23);
 			this.bpEditTrame.TabIndex = 12;
 			this.bpEditTrame.UseVisualStyleBackColor = true;
 			this.bpEditTrame.Visible = false;
 			this.bpEditTrame.Click += new System.EventHandler(this.bpEditTrame_Click);
-			// 
-			// trackModeX
-			// 
-			this.trackModeX.Location = new System.Drawing.Point(3, 148);
-			this.trackModeX.Maximum = 32;
-			this.trackModeX.Minimum = 1;
-			this.trackModeX.Name = "trackModeX";
-			this.trackModeX.Size = new System.Drawing.Size(145, 45);
-			this.trackModeX.TabIndex = 11;
-			this.trackModeX.Value = 1;
-			this.trackModeX.Visible = false;
-			this.trackModeX.Scroll += new System.EventHandler(this.InterfaceChange);
 			// 
 			// bpStandard
 			// 
@@ -344,13 +336,25 @@
 			// 
 			// bpOverscan
 			// 
-			this.bpOverscan.Location = new System.Drawing.Point(85, 66);
+			this.bpOverscan.Location = new System.Drawing.Point(73, 66);
 			this.bpOverscan.Name = "bpOverscan";
 			this.bpOverscan.Size = new System.Drawing.Size(62, 22);
 			this.bpOverscan.TabIndex = 10;
 			this.bpOverscan.Text = "Overscan";
 			this.bpOverscan.UseVisualStyleBackColor = true;
 			this.bpOverscan.Click += new System.EventHandler(this.bpOverscan_Click);
+			// 
+			// trackModeX
+			// 
+			this.trackModeX.Location = new System.Drawing.Point(3, 137);
+			this.trackModeX.Maximum = 32;
+			this.trackModeX.Minimum = 1;
+			this.trackModeX.Name = "trackModeX";
+			this.trackModeX.Size = new System.Drawing.Size(126, 42);
+			this.trackModeX.TabIndex = 11;
+			this.trackModeX.Value = 1;
+			this.trackModeX.Visible = false;
+			this.trackModeX.Scroll += new System.EventHandler(this.InterfaceChange);
 			// 
 			// tramage
 			// 
@@ -362,16 +366,16 @@
 			this.tramage.Controls.Add(this.methode);
 			this.tramage.Controls.Add(this.pctTrame);
 			this.tramage.Controls.Add(this.label4);
-			this.tramage.Location = new System.Drawing.Point(545, 8);
+			this.tramage.Location = new System.Drawing.Point(567, 8);
 			this.tramage.Name = "tramage";
-			this.tramage.Size = new System.Drawing.Size(172, 174);
+			this.tramage.Size = new System.Drawing.Size(152, 181);
 			this.tramage.TabIndex = 11;
 			this.tramage.TabStop = false;
 			// 
 			// chkImpDraw
 			// 
 			this.chkImpDraw.AutoSize = true;
-			this.chkImpDraw.Location = new System.Drawing.Point(46, 152);
+			this.chkImpDraw.Location = new System.Drawing.Point(31, 152);
 			this.chkImpDraw.Name = "chkImpDraw";
 			this.chkImpDraw.Size = new System.Drawing.Size(15, 14);
 			this.chkImpDraw.TabIndex = 69;
@@ -381,7 +385,7 @@
 			// chkDiffErr
 			// 
 			this.chkDiffErr.AutoSize = true;
-			this.chkDiffErr.Location = new System.Drawing.Point(46, 70);
+			this.chkDiffErr.Location = new System.Drawing.Point(31, 70);
 			this.chkDiffErr.Name = "chkDiffErr";
 			this.chkDiffErr.Size = new System.Drawing.Size(67, 17);
 			this.chkDiffErr.TabIndex = 18;
@@ -393,7 +397,7 @@
 			// chkTrameTC
 			// 
 			this.chkTrameTC.AutoSize = true;
-			this.chkTrameTC.Location = new System.Drawing.Point(46, 125);
+			this.chkTrameTC.Location = new System.Drawing.Point(31, 125);
 			this.chkTrameTC.Name = "chkTrameTC";
 			this.chkTrameTC.Size = new System.Drawing.Size(15, 14);
 			this.chkTrameTC.TabIndex = 16;
@@ -403,7 +407,7 @@
 			// chkLissage
 			// 
 			this.chkLissage.AutoSize = true;
-			this.chkLissage.Location = new System.Drawing.Point(46, 98);
+			this.chkLissage.Location = new System.Drawing.Point(31, 98);
 			this.chkLissage.Name = "chkLissage";
 			this.chkLissage.Size = new System.Drawing.Size(15, 14);
 			this.chkLissage.TabIndex = 15;
@@ -413,7 +417,7 @@
 			// lblPct
 			// 
 			this.lblPct.AutoSize = true;
-			this.lblPct.Location = new System.Drawing.Point(124, 43);
+			this.lblPct.Location = new System.Drawing.Point(105, 43);
 			this.lblPct.Name = "lblPct";
 			this.lblPct.Size = new System.Drawing.Size(15, 13);
 			this.lblPct.TabIndex = 12;
@@ -423,7 +427,7 @@
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(6, 17);
+			this.label4.Location = new System.Drawing.Point(2, 17);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(31, 13);
 			this.label4.TabIndex = 12;
@@ -462,7 +466,7 @@
 			// radioKeepLarger
 			// 
 			this.radioKeepLarger.AutoSize = true;
-			this.radioKeepLarger.Location = new System.Drawing.Point(6, 54);
+			this.radioKeepLarger.Location = new System.Drawing.Point(6, 50);
 			this.radioKeepLarger.Name = "radioKeepLarger";
 			this.radioKeepLarger.Size = new System.Drawing.Size(80, 17);
 			this.radioKeepLarger.TabIndex = 41;
@@ -473,7 +477,7 @@
 			// radioKeepSmaller
 			// 
 			this.radioKeepSmaller.AutoSize = true;
-			this.radioKeepSmaller.Location = new System.Drawing.Point(6, 34);
+			this.radioKeepSmaller.Location = new System.Drawing.Point(6, 32);
 			this.radioKeepSmaller.Name = "radioKeepSmaller";
 			this.radioKeepSmaller.Size = new System.Drawing.Size(84, 17);
 			this.radioKeepSmaller.TabIndex = 40;
@@ -496,8 +500,11 @@
 			// 
 			// groupBox1
 			// 
+			this.groupBox1.Controls.Add(this.bpYMul2);
+			this.groupBox1.Controls.Add(this.bpYDiv2);
+			this.groupBox1.Controls.Add(this.bpXMul2);
+			this.groupBox1.Controls.Add(this.bpXDiv2);
 			this.groupBox1.Controls.Add(this.radioOrigin);
-			this.groupBox1.Controls.Add(this.label7);
 			this.groupBox1.Controls.Add(this.label5);
 			this.groupBox1.Controls.Add(this.tbxPosY);
 			this.groupBox1.Controls.Add(this.tbxSizeY);
@@ -507,32 +514,65 @@
 			this.groupBox1.Controls.Add(this.radioFit);
 			this.groupBox1.Controls.Add(this.radioKeepSmaller);
 			this.groupBox1.Controls.Add(this.radioKeepLarger);
-			this.groupBox1.Location = new System.Drawing.Point(399, 8);
+			this.groupBox1.Controls.Add(this.label7);
+			this.groupBox1.Location = new System.Drawing.Point(387, 8);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(140, 174);
+			this.groupBox1.Size = new System.Drawing.Size(176, 181);
 			this.groupBox1.TabIndex = 49;
 			this.groupBox1.TabStop = false;
+			// 
+			// bpYMul2
+			// 
+			this.bpYMul2.Location = new System.Drawing.Point(147, 110);
+			this.bpYMul2.Name = "bpYMul2";
+			this.bpYMul2.Size = new System.Drawing.Size(26, 23);
+			this.bpYMul2.TabIndex = 50;
+			this.bpYMul2.Text = "*2";
+			this.bpYMul2.UseVisualStyleBackColor = true;
+			this.bpYMul2.Click += new System.EventHandler(this.bpYMul2_Click);
+			// 
+			// bpYDiv2
+			// 
+			this.bpYDiv2.Location = new System.Drawing.Point(115, 110);
+			this.bpYDiv2.Name = "bpYDiv2";
+			this.bpYDiv2.Size = new System.Drawing.Size(26, 23);
+			this.bpYDiv2.TabIndex = 49;
+			this.bpYDiv2.Text = "/2";
+			this.bpYDiv2.UseVisualStyleBackColor = true;
+			this.bpYDiv2.Click += new System.EventHandler(this.bpYDiv2_Click);
+			// 
+			// bpXMul2
+			// 
+			this.bpXMul2.Location = new System.Drawing.Point(83, 110);
+			this.bpXMul2.Name = "bpXMul2";
+			this.bpXMul2.Size = new System.Drawing.Size(26, 23);
+			this.bpXMul2.TabIndex = 48;
+			this.bpXMul2.Text = "*2";
+			this.bpXMul2.UseVisualStyleBackColor = true;
+			this.bpXMul2.Click += new System.EventHandler(this.bpXMul2_Click);
+			// 
+			// bpXDiv2
+			// 
+			this.bpXDiv2.Location = new System.Drawing.Point(51, 110);
+			this.bpXDiv2.Name = "bpXDiv2";
+			this.bpXDiv2.Size = new System.Drawing.Size(26, 23);
+			this.bpXDiv2.TabIndex = 47;
+			this.bpXDiv2.Text = "/2";
+			this.bpXDiv2.UseVisualStyleBackColor = true;
+			this.bpXDiv2.Click += new System.EventHandler(this.bpXDiv2_Click);
 			// 
 			// radioOrigin
 			// 
 			this.radioOrigin.AutoSize = true;
 			this.radioOrigin.Enabled = false;
-			this.radioOrigin.Location = new System.Drawing.Point(6, 94);
+			this.radioOrigin.Location = new System.Drawing.Point(6, 86);
 			this.radioOrigin.Name = "radioOrigin";
-			this.radioOrigin.Size = new System.Drawing.Size(14, 13);
+			this.radioOrigin.Size = new System.Drawing.Size(80, 17);
 			this.radioOrigin.TabIndex = 46;
 			this.radioOrigin.TabStop = true;
+			this.radioOrigin.Text = "OriginalSize";
 			this.radioOrigin.UseVisualStyleBackColor = true;
 			this.radioOrigin.CheckedChanged += new System.EventHandler(this.radioUserSize_CheckedChanged);
-			// 
-			// label7
-			// 
-			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(3, 144);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(50, 13);
-			this.label7.TabIndex = 45;
-			this.label7.Text = "Position :";
 			// 
 			// label5
 			// 
@@ -544,35 +584,35 @@
 			// 
 			// tbxPosY
 			// 
-			this.tbxPosY.Location = new System.Drawing.Point(100, 141);
+			this.tbxPosY.Location = new System.Drawing.Point(115, 157);
 			this.tbxPosY.Name = "tbxPosY";
-			this.tbxPosY.Size = new System.Drawing.Size(34, 20);
+			this.tbxPosY.Size = new System.Drawing.Size(58, 20);
 			this.tbxPosY.TabIndex = 46;
 			this.tbxPosY.Text = "0";
 			this.tbxPosY.Validating += new System.ComponentModel.CancelEventHandler(this.InterfaceChange);
 			// 
 			// tbxSizeY
 			// 
-			this.tbxSizeY.Location = new System.Drawing.Point(100, 117);
+			this.tbxSizeY.Location = new System.Drawing.Point(115, 133);
 			this.tbxSizeY.Name = "tbxSizeY";
-			this.tbxSizeY.Size = new System.Drawing.Size(34, 20);
+			this.tbxSizeY.Size = new System.Drawing.Size(58, 20);
 			this.tbxSizeY.TabIndex = 44;
 			this.tbxSizeY.Validating += new System.ComponentModel.CancelEventHandler(this.InterfaceChange);
 			// 
 			// tbxPosX
 			// 
-			this.tbxPosX.Location = new System.Drawing.Point(58, 141);
+			this.tbxPosX.Location = new System.Drawing.Point(50, 157);
 			this.tbxPosX.Name = "tbxPosX";
-			this.tbxPosX.Size = new System.Drawing.Size(36, 20);
+			this.tbxPosX.Size = new System.Drawing.Size(59, 20);
 			this.tbxPosX.TabIndex = 45;
 			this.tbxPosX.Text = "0";
 			this.tbxPosX.Validating += new System.ComponentModel.CancelEventHandler(this.InterfaceChange);
 			// 
 			// tbxSizeX
 			// 
-			this.tbxSizeX.Location = new System.Drawing.Point(58, 117);
+			this.tbxSizeX.Location = new System.Drawing.Point(50, 133);
 			this.tbxSizeX.Name = "tbxSizeX";
-			this.tbxSizeX.Size = new System.Drawing.Size(36, 20);
+			this.tbxSizeX.Size = new System.Drawing.Size(60, 20);
 			this.tbxSizeX.TabIndex = 43;
 			this.tbxSizeX.Validating += new System.ComponentModel.CancelEventHandler(this.InterfaceChange);
 			// 
@@ -580,7 +620,7 @@
 			// 
 			this.radioUserSize.AutoSize = true;
 			this.radioUserSize.Enabled = false;
-			this.radioUserSize.Location = new System.Drawing.Point(6, 74);
+			this.radioUserSize.Location = new System.Drawing.Point(6, 68);
 			this.radioUserSize.Name = "radioUserSize";
 			this.radioUserSize.Size = new System.Drawing.Size(68, 17);
 			this.radioUserSize.TabIndex = 42;
@@ -588,6 +628,15 @@
 			this.radioUserSize.Text = "User size";
 			this.radioUserSize.UseVisualStyleBackColor = true;
 			this.radioUserSize.CheckedChanged += new System.EventHandler(this.radioUserSize_CheckedChanged);
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(1, 160);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(50, 13);
+			this.label7.TabIndex = 45;
+			this.label7.Text = "Position :";
 			// 
 			// bpSave
 			// 
@@ -1162,7 +1211,7 @@
 			this.groupBox2.Controls.Add(this.green);
 			this.groupBox2.Location = new System.Drawing.Point(8, 188);
 			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(709, 317);
+			this.groupBox2.Size = new System.Drawing.Size(711, 317);
 			this.groupBox2.TabIndex = 66;
 			this.groupBox2.TabStop = false;
 			// 
@@ -1389,6 +1438,10 @@
 		private System.Windows.Forms.Label label13;
 		private System.Windows.Forms.ComboBox comboPackMethode;
 		private System.Windows.Forms.CheckBox chkSwapEgx;
+		private System.Windows.Forms.Button bpYMul2;
+		private System.Windows.Forms.Button bpYDiv2;
+		private System.Windows.Forms.Button bpXMul2;
+		private System.Windows.Forms.Button bpXDiv2;
 	}
 }
 
