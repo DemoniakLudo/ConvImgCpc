@@ -168,8 +168,7 @@ namespace ConvImgCpc {
 					byte octet = 0, decal = 0;
 					if (!egx || ((y >> 1) & 1) == lignestart) {
 						for (int p = 0; p < 8; p += tx) {
-							RvbColor col = bmpLock.GetPixelColor(x + p, y);
-							int pen = Cpc.GetPen(col);
+							int pen = GetPenColor(bmpLock, x + p, y);
 							octet |= (byte)(tabOctetMode[pen] >> (decal++));
 						}
 						bmpCpc[adrCPC + (x >> 3)] = octet;
@@ -204,25 +203,6 @@ namespace ConvImgCpc {
 					bmpCpc[adrCPC + (x >> 3)] = octet;
 				}
 			}
-		}
-
-		private int GetPenColor(DirectBitmap bmpLock, int x, int y) {
-			int pen = 0;
-			RvbColor col = bmpLock.GetPixelColor(x, y);
-			if (cpcPlus) {
-				for (pen = 0; pen < 16; pen++) {
-					if ((col.v >> 4) == (Palette[pen] >> 8) && (col.b >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.r >> 4) == (Palette[pen] & 0x0F))
-						break;
-				}
-			}
-			else {
-				for (pen = 0; pen < 16; pen++) {
-					RvbColor fixedCol = RgbCPC[Palette[pen]];
-					if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
-						break;
-				}
-			}
-			return pen;
 		}
 
 		private void CreeImgAscii(DirectBitmap bmpLock) {

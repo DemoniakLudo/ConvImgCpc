@@ -93,11 +93,9 @@ namespace ConvImgCpc {
 			for (int spry = 0; spry < captSizeY; spry++)
 				for (int sprx = 0; sprx < captSizeX; sprx++) {
 					for (int y = 0; y < 16; y++)
-						for (int x = 0; x < 16; x++) {
-							RvbColor col = bmp.GetPixelColor((x << 3) + (sprx << 7), (y << 3) + (spry << 7));
-							int pen = Cpc.GetPen(col);
-							Cpc.spritesHard[numBank, numSpr, x, y] = (byte)pen;
-						}
+						for (int x = 0; x < 16; x++)
+							Cpc.spritesHard[numBank, numSpr, x, y] = (byte)Cpc.GetPenColor(bmp, (x << 3) + (sprx << 7), (y << 3) + (spry << 7));
+
 					numSpr++;
 					if (numSpr > 15) {
 						numSpr = 0;

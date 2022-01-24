@@ -179,20 +179,7 @@ namespace ConvImgCpc {
 					byte pen = 0, octet = 0;
 					for (int p = 0; p < 8; p++)
 						if ((p % tx) == 0) {
-							RvbColor col = img.BmpLock.GetPixelColor(x + p, y);
-							if (Cpc.cpcPlus) {
-								for (pen = 0; pen < 16; pen++) {
-									if ((col.v >> 4) == (Cpc.Palette[pen] >> 8) && (col.r >> 4) == ((Cpc.Palette[pen] >> 4) & 0x0F) && (col.b >> 4) == (Cpc.Palette[pen] & 0x0F))
-										break;
-								}
-							}
-							else {
-								for (pen = 0; pen < 16; pen++) {
-									RvbColor fixedCol = Cpc.RgbCPC[Cpc.Palette[pen]];
-									if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
-										break;
-								}
-							}
+							pen = (byte)Cpc.GetPenColor(img.BmpLock, x + p, y);
 							if (pen > 15) {
 								pen = 0; // Pb peut survenir si la palette n'est pas la même pour chaque image d'une animation...
 							}
@@ -439,7 +426,7 @@ namespace ConvImgCpc {
 						SaveAsm.GenereDrawDC(sw, withDelai, chkCol.Checked, gest128K, modeLigne == 8 ? 0x3F : modeLigne == 4 ? 0x1F : modeLigne == 2 ? 0xF : 0x7, optimSpeed);
 			}
 			if ((param.withPalette || param.withCode) && !chkDataBrut.Checked)
-				SaveAsm.GenerePalette(sw, img);
+				SaveAsm.GenerePalette(sw, true);
 
 			int endBank0 = 0;
 			int lbank = 0, numBank = 0xC0;

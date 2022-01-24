@@ -362,10 +362,12 @@ namespace ConvImgCpc {
 			sw.WriteLine("	OUT	(C),C");
 		}
 
-		static public void GenerePalette(StreamWriter sw, ImageCpc img) {
+		static public void GenerePalette(StreamWriter sw, bool withUnlockAsic) {
 			if (Cpc.cpcPlus) {
+				if (withUnlockAsic) {
 				sw.WriteLine("UnlockAsic:");
 				sw.WriteLine("	DB	#FF,#00,#FF,#77,#B3,#51,#A8,#D4,#62,#39,#9C,#46,#2B,#15,#8A,#CD,#EE");
+				}
 				sw.WriteLine("Palette:");
 				string line = "\tDB\t#" + ((Cpc.modeVirtuel == 7 ? 1 : Cpc.modeVirtuel & 3) | 0x8C).ToString("X2");
 				for (int i = 0; i < 17; i++) {

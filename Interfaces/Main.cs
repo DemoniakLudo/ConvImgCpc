@@ -1330,5 +1330,19 @@ namespace ConvImgCpc {
 				InterfaceChange(sender, e);
 			}
 		}
+
+		private void bpTest_Click(object sender, EventArgs e) {
+			Enabled = false;
+			SaveFileDialog dlg = new SaveFileDialog();
+			dlg.InitialDirectory = param.lastSavePath;
+			string filter = "Sauvegarde matrice assembleur (.asm)|*.asm";
+			dlg.Filter = filter;
+			if (dlg.ShowDialog() == DialogResult.OK) {
+				imgCpc.ResetGrille();
+				imgCpc.SauveMatrice(dlg.FileName, lblInfoVersion.Text, pkMethode);
+				param.lastSavePath = Path.GetDirectoryName(dlg.FileName);
+			}
+			Enabled = true;
+		}
 	}
 }

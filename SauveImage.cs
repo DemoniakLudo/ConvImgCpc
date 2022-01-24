@@ -610,7 +610,7 @@ namespace ConvImgCpc {
 						}
 					}
 					if ((main.param.withPalette || main.param.withCode) && (Cpc.modeVirtuel < 3 || Cpc.modeVirtuel > 5))
-						SaveAsm.GenerePalette(sw, main.imgCpc);
+						SaveAsm.GenerePalette(sw, true);
 
 					SaveAsm.CloseAsm(sw);
 					break;
