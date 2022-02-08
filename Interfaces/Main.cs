@@ -530,6 +530,27 @@ namespace ConvImgCpc {
 				paramInterne.InitValues();
 				ChangeLanguage(param.langue);
 				SetInfo(multilingue.GetString("Main.prg.TxtInfo8"));
+				lumi.Value = param.pctLumi;
+				sat.Value = param.pctSat;
+				contrast.Value = param.pctContrast;
+				trackModeX.Value = param.trackModeX;
+				switch (param.bitsRVB) {
+					case 24:
+						rb24bits.Checked = true;
+						break;
+
+					case 12:
+						rb12bits.Checked = true;
+						break;
+
+					case 9:
+						rb9bits.Checked=true;
+						break;
+
+					case 6:
+						rb6bits.Checked = true;
+						break;
+				}
 			}
 			catch {
 				DisplayErreur(multilingue.GetString("Main.prg.TxtInfo9"));
