@@ -194,20 +194,23 @@ namespace ConvImgCpc {
 			return arr;
 		}
 
-		static public int GetPen(RvbColor col) {
-			for (int pen = 0; pen < 16; pen++) {
-				if (cpcPlus) {
-					int color = (Palette[pen]);
-					if (col.r == ((color & 0x0F) * 17) && col.v == (((color & 0xF00) >> 8) * 17) && col.b == (((color & 0xF0) >> 4) * 17))
-						return pen;
-				}
-				else {
-					RvbColor fixedCol = RgbCPC[Palette[pen]];
-					if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
-						return pen;
+		static public int GetPenColor(DirectBitmap bmpLock, int x, int y) {
+			int pen = 0;
+			RvbColor col = bmpLock.GetPixelColor(x, y);
+			if (cpcPlus) {
+				for (pen = 0; pen < 16; pen++) {
+					if ((col.v >> 4) == (Palette[pen] >> 8) && (col.b >> 4) == ((Palette[pen] >> 4) & 0x0F) && (col.r >> 4) == (Palette[pen] & 0x0F))
+						break;
 				}
 			}
-			return 0;
+			else {
+				for (pen = 0; pen < 16; pen++) {
+					RvbColor fixedCol = RgbCPC[Palette[pen]];
+					if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
+						break;
+				}
+			}
+			return pen;
 		}
 
 		static public RvbColor GetColor(int c) {

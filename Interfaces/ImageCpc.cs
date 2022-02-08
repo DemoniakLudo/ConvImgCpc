@@ -297,8 +297,7 @@ namespace ConvImgCpc {
 					byte octet = 0;
 					for (int p = 0; p < 8; p++)
 						if ((p % tx) == 0) {
-							RvbColor col = BmpLock.GetPixelColor(x + p + posX, y + posY);
-							int pen = Cpc.GetPen(col);
+							int pen = Cpc.GetPenColor(BmpLock, x + p + posX, y + posY);
 							octet |= (byte)(Cpc.tabOctetMode[pen] >> (p / tx));
 						}
 					ret[(x >> 3) + (y >> 1) * (tailleX >> 3)] = octet;
@@ -416,47 +415,72 @@ namespace ConvImgCpc {
 				main.DisplayErreur("Trop de tiles...");
 		}
 
-		public byte[] GetCpcScr(Param param, bool spriteMode = false) {
-			int maxSize = (Cpc.TailleX >> 3) + ((Cpc.TailleY - 2) >> 4) * (Cpc.TailleX >> 3) + ((Cpc.TailleY - 2) & 14) * 0x400;
-			if (spriteMode)
-				maxSize = (Cpc.TailleX * Cpc.TailleY) >> 4;
-			else
-				if (maxSize >= 0x4000)
-					maxSize += 0x3800;
+		/*
+				public byte[] GetCpcScr(Param param, bool spriteMode = false) {
+					int maxSize = (Cpc.TailleX >> 3) + ((Cpc.TailleY - 2) >> 4) * (Cpc.TailleX >> 3) + ((Cpc.TailleY - 2) & 14) * 0x400;
+					if (spriteMode)
+						maxSize = (Cpc.TailleX * Cpc.TailleY) >> 4;
+					else
+						if (maxSize >= 0x4000)
+							maxSize += 0x3800;
 
+					byte[] ret = new byte[maxSize];
+					Array.Clear(ret, 0, ret.Length);
+					int posRet = 0;
+					for (int y = 0; y < Cpc.TailleY; y += 2) {
+						int adrCPC = Cpc.GetAdrCpc(y);
+						int tx = Cpc.CalcTx(y);
+						for (int x = 0; x < Cpc.TailleX; x += 8) {
+							byte pen = 0, octet = 0;
+							for (int p = 0; p < 8; p++)
+								if ((p % tx) == 0) {
+									RvbColor col = BmpLock.GetPixelColor(x + p, y);
+									if (Cpc.cpcPlus) {
+										for (pen = 0; pen < 16; pen++) {
+											if ((col.v >> 4) == (Cpc.Palette[pen] >> 8) && (col.b >> 4) == ((Cpc.Palette[pen] >> 4) & 0x0F) && (col.r >> 4) == (Cpc.Palette[pen] & 0x0F))
+												break;
+										}
+									}
+									else {
+										for (pen = 0; pen < 16; pen++) {
+											RvbColor fixedCol = Cpc.RgbCPC[Cpc.Palette[pen]];
+											if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
+												break;
+										}
+									}
+									octet |= (byte)(Cpc.tabOctetMode[pen] >> (p / tx));
+								}
+							if (!spriteMode)
+								posRet = Cpc.GetAdrCpc(y) + (x >> 3);
+
+							ret[posRet++] = octet;
+						}
+					}
+					return ret;
+				}
+		*/
+
+		public void SauveMatrice(string fileName, string version, Main.PackMethode pkMethode) {
+			int maxSize = (Cpc.TailleX * Cpc.TailleY) >> 6;
 			byte[] ret = new byte[maxSize];
 			Array.Clear(ret, 0, ret.Length);
 			int posRet = 0;
-			for (int y = 0; y < Cpc.TailleY; y += 2) {
+			for (int y = 0; y < Cpc.TailleY; y += 8) {
 				int adrCPC = Cpc.GetAdrCpc(y);
 				int tx = Cpc.CalcTx(y);
 				for (int x = 0; x < Cpc.TailleX; x += 8) {
-					byte pen = 0, octet = 0;
-					for (int p = 0; p < 8; p++)
-						if ((p % tx) == 0) {
-							RvbColor col = BmpLock.GetPixelColor(x + p, y);
-							if (Cpc.cpcPlus) {
-								for (pen = 0; pen < 16; pen++) {
-									if ((col.v >> 4) == (Cpc.Palette[pen] >> 8) && (col.b >> 4) == ((Cpc.Palette[pen] >> 4) & 0x0F) && (col.r >> 4) == (Cpc.Palette[pen] & 0x0F))
-										break;
-								}
-							}
-							else {
-								for (pen = 0; pen < 16; pen++) {
-									RvbColor fixedCol = Cpc.RgbCPC[Cpc.Palette[pen]];
-									if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
-										break;
-								}
-							}
-							octet |= (byte)(Cpc.tabOctetMode[pen] >> (p / tx));
-						}
-					if (!spriteMode)
-						posRet = Cpc.GetAdrCpc(y) + (x >> 3);
-
-					ret[posRet++] = octet;
+					byte pen = (byte)Cpc.GetPenColor(BmpLock, x, y);
+					ret[posRet++] = (byte)(Cpc.tabOctetMode[pen] + (Cpc.tabOctetMode[pen] >> 1));
 				}
 			}
-			return ret;
+			byte[] retCmp = new byte[maxSize];
+			int l = new PackModule().Pack(ret, ret.Length, retCmp, 0, pkMethode);
+			StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
+			SaveAsm.GenerePalette(sw, false);
+			sw.WriteLine("Mat64x64Cmp");
+			SaveAsm.GenereDatas(sw, retCmp, l, 16);
+			SaveAsm.CloseAsm(sw);
+			main.SetInfo("Sauvegarde matrice assembleur ok.");
 		}
 
 		public void SauveDeltaPack(string fileName, string version, bool reboucle, Main.PackMethode pkMethode) {
@@ -473,22 +497,7 @@ namespace ConvImgCpc {
 			for (int y = 0; y < Cpc.TailleY; y += 16) {
 				for (int x = 0; x < Cpc.TailleX; x += 8) {
 					for (int yy = 0; yy < 2; yy++) {
-						byte pen = 0;
-						RvbColor col = BmpLock.GetPixelColor(x, y + (yy << 3));
-						if (Cpc.cpcPlus) {
-							for (pen = 0; pen < 16; pen++) {
-								if ((col.v >> 4) == (Cpc.Palette[pen] >> 8) && (col.b >> 4) == ((Cpc.Palette[pen] >> 4) & 0x0F) && (col.r >> 4) == (Cpc.Palette[pen] & 0x0F))
-									break;
-							}
-						}
-						else {
-							for (pen = 0; pen < 16; pen++) {
-								RvbColor fixedCol = Cpc.RgbCPC[Cpc.Palette[pen]];
-								if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
-									break;
-							}
-						}
-						bump[pos++] = pen;
+						bump[pos++] = (byte)Cpc.GetPenColor(BmpLock, x, y + (yy << 3));
 					}
 				}
 			}

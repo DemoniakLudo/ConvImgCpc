@@ -212,20 +212,7 @@ namespace ConvImgCpc {
 			int tx = Cpc.CalcTx(yReel);
 			int xReel = (offsetX + (e.X / (zoom * (chkX2.Checked ? 2 : 1)))) & -tx;
 			RvbColor col = BmpLock.GetPixelColor(xReel, yReel);
-			int pen = 0;
-			if (Cpc.cpcPlus) {
-				for (pen = 0; pen < 16; pen++) {
-					if ((col.v >> 4) == (Cpc.Palette[pen] >> 8) && (col.b >> 4) == ((Cpc.Palette[pen] >> 4) & 0x0F) && (col.r >> 4) == (Cpc.Palette[pen] & 0x0F))
-						break;
-				}
-			}
-			else {
-				for (pen = 0; pen < 16; pen++) {
-					RvbColor fixedCol = Cpc.RgbCPC[Cpc.Palette[pen]];
-					if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
-						break;
-				}
-			}
+			int pen = Cpc.GetPenColor(BmpLock, xReel, yReel);
 			if (e.Button == MouseButtons.Left) {
 				drawCol = pen;
 				drawColor.BackColor = Color.FromArgb(col.r, col.v, col.b);
