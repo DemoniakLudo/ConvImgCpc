@@ -205,7 +205,6 @@ namespace ConvImgCpc {
 			}
 			else {
 				for (pen = 0; pen < 16; pen++) {
-				for (pen = 0; pen < 16; pen++) {
 					RvbColor fixedCol = RgbCPC[Palette[pen]];
 					if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
 						break;

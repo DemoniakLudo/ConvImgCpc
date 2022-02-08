@@ -482,30 +482,6 @@ namespace ConvImgCpc {
 			SaveAsm.CloseAsm(sw);
 			main.SetInfo("Sauvegarde matrice assembleur ok.");
 		}
-		*/
-
-		public void SauveMatrice(string fileName, string version, Main.PackMethode pkMethode) {
-			int maxSize = (Cpc.TailleX * Cpc.TailleY) >> 6;
-			byte[] ret = new byte[maxSize];
-			Array.Clear(ret, 0, ret.Length);
-			int posRet = 0;
-			for (int y = 0; y < Cpc.TailleY; y += 8) {
-				int adrCPC = Cpc.GetAdrCpc(y);
-				int tx = Cpc.CalcTx(y);
-				for (int x = 0; x < Cpc.TailleX; x += 8) {
-					byte pen = (byte)Cpc.GetPenColor(BmpLock, x, y);
-					ret[posRet++] = (byte)(Cpc.tabOctetMode[pen] + (Cpc.tabOctetMode[pen] >> 1));
-				}
-			}
-			byte[] retCmp = new byte[maxSize];
-			int l = new PackModule().Pack(ret, ret.Length, retCmp, 0, pkMethode);
-			StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
-			SaveAsm.GenerePalette(sw, false);
-			sw.WriteLine("Mat64x64Cmp");
-			SaveAsm.GenereDatas(sw, retCmp, l, 16);
-			SaveAsm.CloseAsm(sw);
-			main.SetInfo("Sauvegarde matrice assembleur ok.");
-		}
 
 		public void SauveDeltaPack(string fileName, string version, bool reboucle, Main.PackMethode pkMethode) {
 			if (Cpc.NbCol * Cpc.NbLig > 0x4000)
