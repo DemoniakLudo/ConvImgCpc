@@ -778,21 +778,21 @@ namespace ConvImgCpc {
 				sw.WriteLine("	LD	D,0");
 				sw.WriteLine("	LD	E,(IY+2)			; Déplacement");
 				sw.WriteLine("	ADD	HL,DE			; Ajouter à aresse écran");
-				sw.WriteLine("	EX	DE,HL");
 				if (Cpc.modeVirtuel > 7) {
+					sw.WriteLine("	EX	DE,HL");
 					sw.WriteLine("	LD	H,Fonte/512");
 					sw.WriteLine("	LD	L,(IY+3)			; Code ASCII");
 					sw.WriteLine("	ADD	HL,HL");
+					sw.WriteLine("	EX	DE,HL");
 				}
 				else {
-					sw.WriteLine("	LD	H,Fonte/256");
+					sw.WriteLine("	LD	D,Fonte/256");
 					sw.WriteLine("	LD	A,(IY+3)			; Code ASCII");
 					sw.WriteLine("	AND	#0F");
 					sw.WriteLine("	RLCA");
 					sw.WriteLine("	RLCA");
-					sw.WriteLine("	LD	L,A");
+					sw.WriteLine("	LD	E,A");
 				}
-				sw.WriteLine("	EX	DE,HL");
 				sw.WriteLine("	LD	A,(DE)");
 				sw.WriteLine("	INC	E");
 				sw.WriteLine("	LD	(HL),A");
@@ -898,16 +898,14 @@ namespace ConvImgCpc {
 					sw.WriteLine("	DS	" + align.ToString() + Environment.NewLine);
 			}
 
-			if (withCode && Cpc.modeVirtuel >= 7) {
-				if (force8000)
-					sw.WriteLine("	Org	#8000");
-
-				sw.WriteLine("DataFnt:");
-			}
+			if (withCode && Cpc.modeVirtuel >= 7 && force8000)
+				sw.WriteLine("	Org	#8000");
 
 			sw.WriteLine("buffer" + (force8000 ? "	equ	#8000" : ":"));
-			if (withCode && Cpc.modeVirtuel >= 7)
+			if (withCode && Cpc.modeVirtuel > 7) {
+				sw.WriteLine("DataFnt:");
 				sw.WriteLine("	DB	#00,#C0,#0C,#CC,#30,#F0,#3C,#FC,#03,#C3,#0F,#CF,#33,#F3,#3F,#FF");
+			}
 		}
 
 		static public void GenerePointeurs(StreamWriter sw, int nbImages, int[] bank, int[] speed, bool gest128K) {
