@@ -57,8 +57,8 @@ namespace ConvImgCpc {
 										};
 		static public string CpcVGA = "TDU\\X]LEMVFW^@_NGORBSZY[JCK";
 
-		static public byte[, ,] trameM1 = new byte[16, 4, 4];            // NumTrame,X,Y
-		static public byte[, , ,] spritesHard = new byte[8, 16, 16, 16];  // NumBank,NumSprite,X,Y
+		static public byte[,,] trameM1 = new byte[16, 4, 4];            // NumTrame,X,Y
+		static public byte[,,,] spritesHard = new byte[8, 16, 16, 16];  // NumBank,NumSprite,X,Y
 		static public int[] paletteSprite = new int[16];
 
 		static public int modeVirtuel = 1;
@@ -210,7 +210,7 @@ namespace ConvImgCpc {
 						break;
 				}
 			}
-			return pen;
+			return pen < 16 ? pen : 0;
 		}
 
 		static public RvbColor GetColor(int c) {
