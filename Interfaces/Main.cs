@@ -544,7 +544,7 @@ namespace ConvImgCpc {
 						break;
 
 					case 9:
-						rb9bits.Checked=true;
+						rb9bits.Checked = true;
 						break;
 
 					case 6:
@@ -1165,16 +1165,27 @@ namespace ConvImgCpc {
 			newMethode.Visible = !modePlus.Checked;
 			param.cpcPlus = modePlus.Checked;
 			SetModes();
-
-			for (int i = 0; i < 16; i++) {
-				if (Cpc.cpcPlus && Cpc.Palette[i] < 27) {
-					RvbColor col = Cpc.RgbCPC[Cpc.Palette[i]];
-					Cpc.Palette[i] = ((col.b >> 4) << 4) + ((col.v >> 4) << 8) + (col.r >> 4);
+			if (!Cpc.cpcPlus) {
+				int[] memoLock = new int[16];
+				for (int i = 0; i < 16; i++) {
+					memoLock[i] = imgCpc.lockState[i];
+					imgCpc.lockState[i] = 0;
 				}
-				else
-					Cpc.Palette[i] = 0;
+				Convert(false);
+				for (int i = 0; i < 16; i++)
+					imgCpc.lockState[i] = memoLock[i];
 			}
-			Convert(false);
+			else {
+				for (int i = 0; i < 16; i++) {
+					if (Cpc.Palette[i] < 27) {
+						RvbColor col = Cpc.RgbCPC[Cpc.Palette[i]];
+						Cpc.Palette[i] = ((col.b >> 4) << 4) + ((col.v >> 4) << 8) + (col.r >> 4);
+					}
+					else
+						Cpc.Palette[i] = 0;
+				}
+				Convert(false);
+			}
 		}
 
 		private void rb24bits_CheckedChanged(object sender, EventArgs e) {
