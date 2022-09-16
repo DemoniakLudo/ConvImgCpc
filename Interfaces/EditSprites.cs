@@ -27,7 +27,7 @@ namespace ConvImgCpc {
 			lblRectSelColor.BackColor = Color.Black;
 			lblRectSelColor.Location = new Point(1200, 1200);
 			Controls.Add(lblRectSelColor);
-			lblRectSelSprite.Size = new Size(64, 8);
+			lblRectSelSprite.Size = new Size(64, 4);
 			Controls.Add(lblRectSelSprite);
 
 			for (int c = 0; c < 16; c++)
@@ -38,12 +38,13 @@ namespace ConvImgCpc {
 				// Générer les contrôles de "couleurs"
 				lblColors[c] = new Label();
 				lblColors[c].BorderStyle = BorderStyle.FixedSingle;
-				lblColors[c].Location = new Point(730, 82 + c * 40);
+				lblColors[c].Location = new Point(730, 74 + c * 40);
 				lblColors[c].Size = new Size(40, 32);
 				lblColors[c].Tag = c;
 				lblColors[c].MouseDown += ClickColor;
 				if (!paletteSpriteOk)
 					Cpc.paletteSprite[c] = Cpc.Palette[c];
+
 				int col = Cpc.paletteSprite[c];
 				int r = ((col & 0x0F) * 17);
 				int v = (((col & 0xF00) >> 8) * 17);
@@ -129,7 +130,7 @@ namespace ConvImgCpc {
 
 		private void DrawSprite() {
 			lblSelSprite.Text = "Sprite n° : " + numSprite.ToString();
-			lblRectSelSprite.Location = new Point(3 + 64 * numSprite, 65);
+			lblRectSelSprite.Location = new Point(3 + 64 * numSprite, 63);
 			bpPrev.Visible = numSprite > 0 || numBank > 0;
 			bpSuiv.Visible = numSprite < 15 || numBank < 7;
 			for (int y = 0; y < 16; y++) {
@@ -354,7 +355,7 @@ namespace ConvImgCpc {
 					lineStartX = lineStartY = -1;
 				}
 
-				lblRectSelColor.Location = new Point(726, 78 + col * 40);
+				lblRectSelColor.Location = new Point(726, 70 + col * 40);		// Mise en évidence couleur sous la souris
 			}
 			else
 				lblRectSelColor.Location = new Point(1200, 1200);

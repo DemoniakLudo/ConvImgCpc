@@ -78,7 +78,7 @@
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(3, 147);
+			this.label1.Location = new System.Drawing.Point(3, 140);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(35, 13);
 			this.label1.TabIndex = 4;
@@ -87,7 +87,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(7, 216);
+			this.label2.Location = new System.Drawing.Point(7, 209);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(35, 13);
 			this.label2.TabIndex = 4;
@@ -96,7 +96,7 @@
 			// lblPenLeft
 			// 
 			this.lblPenLeft.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.lblPenLeft.Location = new System.Drawing.Point(6, 160);
+			this.lblPenLeft.Location = new System.Drawing.Point(6, 153);
 			this.lblPenLeft.Name = "lblPenLeft";
 			this.lblPenLeft.Size = new System.Drawing.Size(48, 48);
 			this.lblPenLeft.TabIndex = 5;
@@ -104,7 +104,7 @@
 			// lblPenRight
 			// 
 			this.lblPenRight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.lblPenRight.Location = new System.Drawing.Point(6, 229);
+			this.lblPenRight.Location = new System.Drawing.Point(6, 222);
 			this.lblPenRight.Name = "lblPenRight";
 			this.lblPenRight.Size = new System.Drawing.Size(48, 48);
 			this.lblPenRight.TabIndex = 5;
@@ -112,7 +112,7 @@
 			// lblSelSprite
 			// 
 			this.lblSelSprite.AutoSize = true;
-			this.lblSelSprite.Location = new System.Drawing.Point(0, 121);
+			this.lblSelSprite.Location = new System.Drawing.Point(0, 114);
 			this.lblSelSprite.Name = "lblSelSprite";
 			this.lblSelSprite.Size = new System.Drawing.Size(47, 13);
 			this.lblSelSprite.TabIndex = 7;
@@ -122,7 +122,7 @@
 			// 
 			this.rb1Sprite.AutoSize = true;
 			this.rb1Sprite.Checked = true;
-			this.rb1Sprite.Location = new System.Drawing.Point(795, 189);
+			this.rb1Sprite.Location = new System.Drawing.Point(795, 176);
 			this.rb1Sprite.Name = "rb1Sprite";
 			this.rb1Sprite.Size = new System.Drawing.Size(31, 17);
 			this.rb1Sprite.TabIndex = 9;
@@ -133,7 +133,7 @@
 			// rb2Sprite
 			// 
 			this.rb2Sprite.AutoSize = true;
-			this.rb2Sprite.Location = new System.Drawing.Point(832, 189);
+			this.rb2Sprite.Location = new System.Drawing.Point(832, 176);
 			this.rb2Sprite.Name = "rb2Sprite";
 			this.rb2Sprite.Size = new System.Drawing.Size(42, 17);
 			this.rb2Sprite.TabIndex = 9;
@@ -143,7 +143,7 @@
 			// rb4Sprite
 			// 
 			this.rb4Sprite.AutoSize = true;
-			this.rb4Sprite.Location = new System.Drawing.Point(880, 189);
+			this.rb4Sprite.Location = new System.Drawing.Point(880, 176);
 			this.rb4Sprite.Name = "rb4Sprite";
 			this.rb4Sprite.Size = new System.Drawing.Size(42, 17);
 			this.rb4Sprite.TabIndex = 9;
@@ -152,7 +152,7 @@
 			// 
 			// bpTest
 			// 
-			this.bpTest.Location = new System.Drawing.Point(1229, 186);
+			this.bpTest.Location = new System.Drawing.Point(1229, 172);
 			this.bpTest.Name = "bpTest";
 			this.bpTest.Size = new System.Drawing.Size(75, 23);
 			this.bpTest.TabIndex = 10;
@@ -162,7 +162,7 @@
 			// 
 			// zoomX
 			// 
-			this.zoomX.Location = new System.Drawing.Point(1097, 187);
+			this.zoomX.Location = new System.Drawing.Point(1097, 174);
 			this.zoomX.Maximum = new decimal(new int[] {
             3,
             0,
@@ -184,7 +184,7 @@
 			// 
 			// zoomY
 			// 
-			this.zoomY.Location = new System.Drawing.Point(1186, 187);
+			this.zoomY.Location = new System.Drawing.Point(1186, 174);
 			this.zoomY.Maximum = new decimal(new int[] {
             3,
             0,
@@ -207,7 +207,7 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(1053, 191);
+			this.label3.Location = new System.Drawing.Point(1053, 178);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(44, 13);
 			this.label3.TabIndex = 12;
@@ -216,7 +216,7 @@
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(1142, 191);
+			this.label4.Location = new System.Drawing.Point(1142, 178);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(44, 13);
 			this.label4.TabIndex = 12;
@@ -234,7 +234,7 @@
             "Bank 6",
             "Bank 7",
             "Bank 8"});
-			this.comboBanque.Location = new System.Drawing.Point(1033, 12);
+			this.comboBanque.Location = new System.Drawing.Point(1033, 14);
 			this.comboBanque.Name = "comboBanque";
 			this.comboBanque.Size = new System.Drawing.Size(61, 21);
 			this.comboBanque.TabIndex = 13;
@@ -245,7 +245,7 @@
 			this.chkWithPal.AutoSize = true;
 			this.chkWithPal.Checked = true;
 			this.chkWithPal.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.chkWithPal.Location = new System.Drawing.Point(1203, 90);
+			this.chkWithPal.Location = new System.Drawing.Point(1202, 67);
 			this.chkWithPal.Name = "chkWithPal";
 			this.chkWithPal.Size = new System.Drawing.Size(81, 17);
 			this.chkWithPal.TabIndex = 15;
@@ -261,7 +261,7 @@
 			// lblColSelR
 			// 
 			this.lblColSelR.AutoSize = true;
-			this.lblColSelR.Location = new System.Drawing.Point(53, 160);
+			this.lblColSelR.Location = new System.Drawing.Point(53, 153);
 			this.lblColSelR.Name = "lblColSelR";
 			this.lblColSelR.Size = new System.Drawing.Size(30, 13);
 			this.lblColSelR.TabIndex = 23;
@@ -270,7 +270,7 @@
 			// lblColSelV
 			// 
 			this.lblColSelV.AutoSize = true;
-			this.lblColSelV.Location = new System.Drawing.Point(53, 177);
+			this.lblColSelV.Location = new System.Drawing.Point(53, 170);
 			this.lblColSelV.Name = "lblColSelV";
 			this.lblColSelV.Size = new System.Drawing.Size(29, 13);
 			this.lblColSelV.TabIndex = 24;
@@ -279,7 +279,7 @@
 			// lblColSelB
 			// 
 			this.lblColSelB.AutoSize = true;
-			this.lblColSelB.Location = new System.Drawing.Point(53, 194);
+			this.lblColSelB.Location = new System.Drawing.Point(53, 187);
 			this.lblColSelB.Name = "lblColSelB";
 			this.lblColSelB.Size = new System.Drawing.Size(29, 13);
 			this.lblColSelB.TabIndex = 25;
@@ -288,7 +288,7 @@
 			// rb42Sprite
 			// 
 			this.rb42Sprite.AutoSize = true;
-			this.rb42Sprite.Location = new System.Drawing.Point(928, 189);
+			this.rb42Sprite.Location = new System.Drawing.Point(928, 176);
 			this.rb42Sprite.Name = "rb42Sprite";
 			this.rb42Sprite.Size = new System.Drawing.Size(53, 17);
 			this.rb42Sprite.TabIndex = 27;
@@ -326,7 +326,7 @@
 			this.grpEdition.Controls.Add(this.bpRotateSprite);
 			this.grpEdition.Controls.Add(this.bpPasteSprite);
 			this.grpEdition.Controls.Add(this.bpCopySprite);
-			this.grpEdition.Location = new System.Drawing.Point(-1, 292);
+			this.grpEdition.Location = new System.Drawing.Point(-1, 282);
 			this.grpEdition.Name = "grpEdition";
 			this.grpEdition.Size = new System.Drawing.Size(79, 314);
 			this.grpEdition.TabIndex = 29;
@@ -386,7 +386,7 @@
 			// bpInversePalette
 			// 
 			this.bpInversePalette.Image = global::ConvImgCpc.Properties.Resources.InversePalette;
-			this.bpInversePalette.Location = new System.Drawing.Point(1026, 121);
+			this.bpInversePalette.Location = new System.Drawing.Point(1026, 117);
 			this.bpInversePalette.Name = "bpInversePalette";
 			this.bpInversePalette.Size = new System.Drawing.Size(48, 48);
 			this.bpInversePalette.TabIndex = 30;
@@ -396,7 +396,7 @@
 			// bpGenPal
 			// 
 			this.bpGenPal.Image = global::ConvImgCpc.Properties.Resources.GenPalette;
-			this.bpGenPal.Location = new System.Drawing.Point(972, 120);
+			this.bpGenPal.Location = new System.Drawing.Point(972, 116);
 			this.bpGenPal.Name = "bpGenPal";
 			this.bpGenPal.Size = new System.Drawing.Size(48, 48);
 			this.bpGenPal.TabIndex = 26;
@@ -406,7 +406,7 @@
 			// bpClearSprite
 			// 
 			this.bpClearSprite.Image = global::ConvImgCpc.Properties.Resources.Sprite_Clear;
-			this.bpClearSprite.Location = new System.Drawing.Point(3, 661);
+			this.bpClearSprite.Location = new System.Drawing.Point(3, 654);
 			this.bpClearSprite.Name = "bpClearSprite";
 			this.bpClearSprite.Size = new System.Drawing.Size(75, 48);
 			this.bpClearSprite.TabIndex = 19;
@@ -416,7 +416,7 @@
 			// bpClearBank
 			// 
 			this.bpClearBank.Image = global::ConvImgCpc.Properties.Resources.Sprite_Clear;
-			this.bpClearBank.Location = new System.Drawing.Point(1229, 1);
+			this.bpClearBank.Location = new System.Drawing.Point(1229, 94);
 			this.bpClearBank.Name = "bpClearBank";
 			this.bpClearBank.Size = new System.Drawing.Size(75, 52);
 			this.bpClearBank.TabIndex = 16;
@@ -427,7 +427,7 @@
 			// 
 			this.bpSavePal.Image = global::ConvImgCpc.Properties.Resources.Sprite_Save;
 			this.bpSavePal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.bpSavePal.Location = new System.Drawing.Point(876, 120);
+			this.bpSavePal.Location = new System.Drawing.Point(876, 116);
 			this.bpSavePal.Name = "bpSavePal";
 			this.bpSavePal.Size = new System.Drawing.Size(95, 48);
 			this.bpSavePal.TabIndex = 14;
@@ -440,7 +440,7 @@
 			// 
 			this.bpReadPal.Image = global::ConvImgCpc.Properties.Resources.Sprite_Load;
 			this.bpReadPal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.bpReadPal.Location = new System.Drawing.Point(780, 120);
+			this.bpReadPal.Location = new System.Drawing.Point(780, 116);
 			this.bpReadPal.Name = "bpReadPal";
 			this.bpReadPal.Size = new System.Drawing.Size(95, 48);
 			this.bpReadPal.TabIndex = 14;
@@ -453,7 +453,7 @@
 			// 
 			this.bpSaveAll.Image = global::ConvImgCpc.Properties.Resources.Sprite_Save;
 			this.bpSaveAll.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.bpSaveAll.Location = new System.Drawing.Point(1104, 101);
+			this.bpSaveAll.Location = new System.Drawing.Point(1104, 96);
 			this.bpSaveAll.Name = "bpSaveAll";
 			this.bpSaveAll.Size = new System.Drawing.Size(96, 48);
 			this.bpSaveAll.TabIndex = 6;
@@ -465,7 +465,7 @@
 			// 
 			this.bpSave.Image = global::ConvImgCpc.Properties.Resources.Sprite_Save;
 			this.bpSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.bpSave.Location = new System.Drawing.Point(1104, 53);
+			this.bpSave.Location = new System.Drawing.Point(1104, 48);
 			this.bpSave.Name = "bpSave";
 			this.bpSave.Size = new System.Drawing.Size(96, 48);
 			this.bpSave.TabIndex = 6;
@@ -477,7 +477,7 @@
 			// 
 			this.bpRead.Image = global::ConvImgCpc.Properties.Resources.Sprite_Load;
 			this.bpRead.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.bpRead.Location = new System.Drawing.Point(1104, 5);
+			this.bpRead.Location = new System.Drawing.Point(1104, 0);
 			this.bpRead.Name = "bpRead";
 			this.bpRead.Size = new System.Drawing.Size(96, 48);
 			this.bpRead.TabIndex = 6;
@@ -489,7 +489,7 @@
 			// bpSuiv
 			// 
 			this.bpSuiv.Image = global::ConvImgCpc.Properties.Resources.Next;
-			this.bpSuiv.Location = new System.Drawing.Point(987, 78);
+			this.bpSuiv.Location = new System.Drawing.Point(987, 71);
 			this.bpSuiv.Name = "bpSuiv";
 			this.bpSuiv.Size = new System.Drawing.Size(40, 40);
 			this.bpSuiv.TabIndex = 2;
@@ -499,7 +499,7 @@
 			// bpPrev
 			// 
 			this.bpPrev.Image = global::ConvImgCpc.Properties.Resources.Prev;
-			this.bpPrev.Location = new System.Drawing.Point(3, 78);
+			this.bpPrev.Location = new System.Drawing.Point(3, 71);
 			this.bpPrev.Name = "bpPrev";
 			this.bpPrev.Size = new System.Drawing.Size(40, 40);
 			this.bpPrev.TabIndex = 2;
@@ -509,7 +509,7 @@
 			// 
 			// pictAllSprites
 			// 
-			this.pictAllSprites.Location = new System.Drawing.Point(3, 1);
+			this.pictAllSprites.Location = new System.Drawing.Point(3, 0);
 			this.pictAllSprites.Name = "pictAllSprites";
 			this.pictAllSprites.Size = new System.Drawing.Size(1024, 64);
 			this.pictAllSprites.TabIndex = 1;
@@ -518,7 +518,7 @@
 			// 
 			// pictEditSprite
 			// 
-			this.pictEditSprite.Location = new System.Drawing.Point(84, 81);
+			this.pictEditSprite.Location = new System.Drawing.Point(84, 67);
 			this.pictEditSprite.Name = "pictEditSprite";
 			this.pictEditSprite.Size = new System.Drawing.Size(640, 640);
 			this.pictEditSprite.TabIndex = 0;
@@ -529,7 +529,7 @@
 			// 
 			// pictTest
 			// 
-			this.pictTest.Location = new System.Drawing.Point(792, 209);
+			this.pictTest.Location = new System.Drawing.Point(792, 195);
 			this.pictTest.Name = "pictTest";
 			this.pictTest.Size = new System.Drawing.Size(512, 512);
 			this.pictTest.TabIndex = 8;
@@ -538,7 +538,7 @@
 			// rb28sprite
 			// 
 			this.rb28sprite.AutoSize = true;
-			this.rb28sprite.Location = new System.Drawing.Point(987, 189);
+			this.rb28sprite.Location = new System.Drawing.Point(987, 176);
 			this.rb28sprite.Name = "rb28sprite";
 			this.rb28sprite.Size = new System.Drawing.Size(42, 17);
 			this.rb28sprite.TabIndex = 31;
@@ -549,7 +549,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1305, 722);
+			this.ClientSize = new System.Drawing.Size(1305, 708);
 			this.Controls.Add(this.rb28sprite);
 			this.Controls.Add(this.bpInversePalette);
 			this.Controls.Add(this.grpEdition);
@@ -585,7 +585,7 @@
 			this.Controls.Add(this.pictTest);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.label4);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.KeyPreview = true;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
