@@ -185,6 +185,12 @@ namespace ConvImgCpc {
 						Graphics g = Graphics.FromImage(pictureBox.Image);
 						XorDrawing.DrawXorRectangle(g, (Bitmap)pictureBox.Image, copyRectx, copyRecty, copyRectx + copyRectw, copyRecty + copyRecth);
 						imgMotif = new DirectBitmap(Math.Abs(copyRectw / zoom), Math.Abs(copyRecth / zoom));
+						if (copyRectw < 0)
+							copyRectx += copyRectw;
+
+						if (copyRecth < 0)
+							copyRecty += copyRecth;
+
 						for (int x = 0; x < imgMotif.Width; x++)
 							for (int y = 0; y < imgMotif.Height; y++)
 								imgMotif.SetPixel(x, y, BmpLock.GetPixel(offsetX + x + copyRectx / zoom, offsetY + y + copyRecty / zoom));
