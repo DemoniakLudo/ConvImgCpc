@@ -698,7 +698,8 @@ namespace ConvImgCpc {
 							+ multilingue.GetString("Main.prg.TxtInfo18") + " (.pal)|*.pal"                                 //	15
 							+ (Cpc.cpcPlus ? ("|" + multilingue.GetString("Main.prg.TxtInfo27") + " (.kit)|*.kit") : "")  //	16
 							+ (Cpc.modeVirtuel == 3 || Cpc.modeVirtuel == 4 ? ("|" + multilingue.GetString("Main.prg.TxtInfo28") + " (.scr)|*.scr") : "")   //	17
-							+ "|Bump (*.asm)| *.asm";  //	15
+							+ "|Bump (*.asm)| *.asm"  //	15
+							+ "|DiffAnim (*.asm)| *.asm";
 
 			dlg.Filter = filter;
 			if (dlg.ShowDialog() == DialogResult.OK) {
@@ -772,7 +773,8 @@ namespace ConvImgCpc {
 							if (Cpc.modeVirtuel == 3 || Cpc.modeVirtuel == 4)
 								imgCpc.SauveEgx(dlg.FileName);
 							else
-								imgCpc.SauvBump(dlg.FileName, lblInfoVersion.Text);
+								//imgCpc.SauvBump(dlg.FileName, lblInfoVersion.Text);
+								imgCpc.SauveDiffImage(dlg.FileName, lblInfoVersion.Text, false, PackMethode.None);
 						break;
 				}
 				param.lastSavePath = Path.GetDirectoryName(dlg.FileName);

@@ -490,6 +490,41 @@ namespace ConvImgCpc {
 				new SaveAnim(main, fileName, version, pkMethode).ShowDialog();
 		}
 
+		public void SauveDiffImage(string fileName, string version, bool reboucle, Main.PackMethode pkMethode) {
+			main.SetInfo("Début sauvegarde animation assembleur...");
+			main.Enabled = main.anim.Enabled = Enabled = false;
+			int nbImages = main.GetMaxImages();
+			byte[] bufOut = new byte[0x10000];
+			int adr=0;
+			StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
+			for (int i = 0; i < nbImages; i++) {
+				main.SelectImage(i, true);
+				Convert(!bitmapCpc.isCalc, true);
+				Application.DoEvents();
+				bitmapCpc.CreeBmpCpc(BmpLock, null);
+				byte[] src = bitmapCpc.bmpCpc;
+				if (i==0)
+					Buffer.BlockCopy(src, 0, bufOut, 0, src.Length);
+				else {
+					string line = "";
+					sw.WriteLine("DiffImage_"+i.ToString()+":");
+					for (int m=0; m<src.Length; m++) {
+						if (src[m]!=bufOut[m]) {
+							if (adr<m+1) {
+								adr=m;
+								sw.WriteLine(line);
+								line="\tDW	#"+adr.ToString("X4")+"\n\r	DB	";
+							}
+							bufOut[m]=src[m];
+							line+="#"+bufOut[m].ToString("X2")+",";
+						}
+					}
+					sw.WriteLine(line);
+				}
+			}
+			SaveAsm.CloseAsm(sw);
+		}
+
 		public void SauvBump(string fileName, string version) {
 			RvbColor c2 = new RvbColor(0);
 			int pos = 0;
