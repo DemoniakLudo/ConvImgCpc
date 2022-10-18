@@ -60,6 +60,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DiffAnim.cs" />
     <Compile Include="GestCPC\Cpc.cs" />
     <Compile Include="Conversion\ConvertAscii.cs" />
     <Compile Include="Conversion\ConvertAscUt.cs" />

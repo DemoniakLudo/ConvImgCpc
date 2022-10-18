@@ -491,37 +491,34 @@ namespace ConvImgCpc {
 		}
 
 		public void SauveDiffImage(string fileName, string version, bool reboucle, Main.PackMethode pkMethode) {
-			main.SetInfo("Début sauvegarde animation assembleur...");
+			main.SetInfo("Début sauvegarde DiffImage assembleur...");
 			main.Enabled = main.anim.Enabled = Enabled = false;
 			int nbImages = main.GetMaxImages();
 			byte[] bufOut = new byte[0x10000];
-			int adr=0;
 			StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
+			sw.WriteLine("\tnolist");
 			for (int i = 0; i < nbImages; i++) {
 				main.SelectImage(i, true);
 				Convert(!bitmapCpc.isCalc, true);
 				Application.DoEvents();
 				bitmapCpc.CreeBmpCpc(BmpLock, null);
 				byte[] src = bitmapCpc.bmpCpc;
-				if (i==0)
+				if (i == 0)
 					Buffer.BlockCopy(src, 0, bufOut, 0, src.Length);
 				else {
-					string line = "";
-					sw.WriteLine("DiffImage_"+i.ToString()+":");
-					for (int m=0; m<src.Length; m++) {
-						if (src[m]!=bufOut[m]) {
-							if (adr<m+1) {
-								adr=m;
-								sw.WriteLine(line);
-								line="\tDW	#"+adr.ToString("X4")+"\n\r	DB	";
-							}
-							bufOut[m]=src[m];
-							line+="#"+bufOut[m].ToString("X2")+",";
+					sw.WriteLine("DiffImage_" + i.ToString() + ":");
+					DiffAnim dif = new DiffAnim();
+					for (int m = 0; m < src.Length; m++) {
+						if (src[m] != bufOut[m]) {
+							dif.AddDiff(m, src[m]);
+							bufOut[m] = src[m];
 						}
 					}
-					sw.WriteLine(line);
+					dif.Save(sw, 32);
 				}
 			}
+			sw.WriteLine("\tlist");
+			sw.WriteLine("\tDW\t#0000;\tFin anim");
 			SaveAsm.CloseAsm(sw);
 		}
 

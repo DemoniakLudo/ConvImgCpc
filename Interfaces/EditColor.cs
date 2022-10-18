@@ -11,11 +11,15 @@ namespace ConvImgCpc {
 		private int valColor;
 		public int ValColor { get { return valColor; } }
 		public bool isValide;
+		private Main main;
+		private int numColor;
 
-		public EditColor(Main m, int numColor, int val, int rgbColor, bool cpcPlus) {
+		public EditColor(Main m, int numC, int val, int rgbColor, bool cpcPlus) {
 			InitializeComponent();
 			selColor.BackColor = Color.FromArgb(rgbColor);
 			m.ChangeLanguage(Controls, "EditColor");
+			main = m;
+			numColor = numC;
 			lblNumColor.Text += numColor;
 			if (cpcPlus) {
 				for (int i = 0; i < 3; i++) {
@@ -60,6 +64,7 @@ namespace ConvImgCpc {
 				lblValColor.Text = "=" + val;
 				Controls.Add(lblValColor);
 			}
+			chkDisable.Checked = main.param.disableState[numColor] == 1;
 		}
 
 		private void ClickColor(object sender, System.EventArgs e) {
@@ -116,6 +121,10 @@ namespace ConvImgCpc {
 
 		private void bpAnnule_Click(object sender, System.EventArgs e) {
 			Close();
+		}
+
+		private void chkDisable_CheckedChanged(object sender, System.EventArgs e) {
+			main.param.disableState[numColor] = chkDisable.Checked ? 1 : 0;
 		}
 	}
 }

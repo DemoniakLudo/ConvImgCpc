@@ -52,5 +52,6 @@
 		public bool diffErr;
 		public string langue = "FR";
 		public bool modeImpDraw;
+		public int[] disableState = new int[16];
 	}
 }

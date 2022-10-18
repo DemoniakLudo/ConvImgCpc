@@ -27,6 +27,7 @@
 			this.lblNumColor = new System.Windows.Forms.Label();
 			this.bpValide = new System.Windows.Forms.Button();
 			this.bpAnnule = new System.Windows.Forms.Button();
+			this.chkDisable = new System.Windows.Forms.CheckBox();
 			this.SuspendLayout();
 			// 
 			// selColor
@@ -42,7 +43,7 @@
 			this.lblNumColor.AutoSize = true;
 			this.lblNumColor.Location = new System.Drawing.Point(95, 34);
 			this.lblNumColor.Name = "lblNumColor";
-			this.lblNumColor.Size = new System.Drawing.Size(64, 13);
+			this.lblNumColor.Size = new System.Drawing.Size(0, 13);
 			this.lblNumColor.TabIndex = 1;
 			// 
 			// bpValide
@@ -64,12 +65,24 @@
 			this.bpAnnule.UseVisualStyleBackColor = true;
 			this.bpAnnule.Click += new System.EventHandler(this.bpAnnule_Click);
 			// 
+			// chkDisable
+			// 
+			this.chkDisable.AutoSize = true;
+			this.chkDisable.Location = new System.Drawing.Point(362, 33);
+			this.chkDisable.Name = "chkDisable";
+			this.chkDisable.Size = new System.Drawing.Size(61, 17);
+			this.chkDisable.TabIndex = 3;
+			this.chkDisable.Text = "Disable";
+			this.chkDisable.UseVisualStyleBackColor = true;
+			this.chkDisable.CheckedChanged += new System.EventHandler(this.chkDisable_CheckedChanged);
+			// 
 			// EditColor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(435, 243);
 			this.ControlBox = false;
+			this.Controls.Add(this.chkDisable);
 			this.Controls.Add(this.bpAnnule);
 			this.Controls.Add(this.bpValide);
 			this.Controls.Add(this.lblNumColor);
@@ -91,5 +104,6 @@
 		private System.Windows.Forms.Label lblNumColor;
 		private System.Windows.Forms.Button bpValide;
 		private System.Windows.Forms.Button bpAnnule;
+		private System.Windows.Forms.CheckBox chkDisable;
 	}
 }

@@ -12,7 +12,7 @@
 					int choix = 0;
 					for (int i = 0; i < maxPen; i++) {
 						RvbColor c = tabCol[i, y >> 1];
-						if (c != null) {
+						if (c != null && prm.disableState[i] == 0) {
 							int dist = (c.r - pix.r) * (c.r - pix.r) * prm.coefR + (c.v - pix.v) * (c.v - pix.v) * prm.coefV + (c.b - pix.b) * (c.b - pix.b) * prm.coefB;
 							if (dist < oldDist) {
 								choix = i;

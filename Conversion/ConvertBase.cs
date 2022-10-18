@@ -218,7 +218,7 @@ namespace ConvImgCpc {
 			// Recherche la couleur la plus utilisée
 			for (cUtil = 0; cUtil < maxPen; cUtil++) {
 				valMax = 0;
-				if (lockState[cUtil] == 0) {
+				if (lockState[cUtil] == 0 && prm.disableState[cUtil] == 0) {
 					for (int i = 0; i < FindMax; i++) {
 						int nbc = 0;
 						for (int y = 0; y < 272; y++)
@@ -242,7 +242,7 @@ namespace ConvImgCpc {
 				for (x = 0; x < maxPen; x++) {
 					if (takeDist) {
 						valMax = 0;
-						if (lockState[x] == 0) {
+						if (lockState[x] == 0 /*&& prm.disableState[x] == 0*/) {
 							for (int i = 0; i < FindMax; i++) {
 								int nbc = 0;
 								for (int y = 0; y < 272; y++)
@@ -256,9 +256,9 @@ namespace ConvImgCpc {
 						}
 					}
 					else {
-						if (lockState[x] == 0 && x != cUtil) {
+						if (lockState[x] == 0 /*&& prm.disableState[x] == 0*/ && x != cUtil) {
 							int dist, oldDist = 0;
-							for (int rech = 4; rech-- > 0; ) {
+							for (int rech = 4; rech-- > 0;) {
 								for (int i = 0; i < FindMax; i++) {
 									int nbc = 0;
 									for (int y = 0; y < 272; y++)
@@ -289,7 +289,7 @@ namespace ConvImgCpc {
 			if (prm.sortPal)
 				for (x = 0; x < maxPen - 1; x++)
 					for (int c = x + 1; c < maxPen; c++)
-						if (lockState[x] == 0 && lockState[c] == 0 && Cpc.Palette[x] > Cpc.Palette[c]) {
+						if (lockState[x] == 0 && lockState[c] == 0 && prm.disableState[x] == 0 && prm.disableState[c] == 0 && Cpc.Palette[x] > Cpc.Palette[c]) {
 							int tmp = Cpc.Palette[x];
 							Cpc.Palette[x] = Cpc.Palette[c];
 							Cpc.Palette[c] = tmp;
