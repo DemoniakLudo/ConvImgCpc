@@ -591,8 +591,10 @@ namespace ConvImgCpc {
 
 				case Main.OutputFormat.Assembler:
 					StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
-					int org = 0xA500 - lg - (Cpc.modeVirtuel == 5 ? 600 : 0);
-					sw.WriteLine("	ORG	#" + org.ToString("X4"));
+					if (main.param.withCode) {
+						int org = 0xA500 - lg - (Cpc.modeVirtuel == 5 ? 600 : 0);
+						sw.WriteLine("	ORG	#" + org.ToString("X4"));
+					}
 					sw.WriteLine("	Nolist");
 					sw.WriteLine("ImageCmp:");
 					SaveAsm.GenereDatas(sw, bufPack, lg, 16);

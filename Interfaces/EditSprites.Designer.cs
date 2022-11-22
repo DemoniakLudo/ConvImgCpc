@@ -67,12 +67,16 @@
 			this.pictEditSprite = new System.Windows.Forms.PictureBox();
 			this.pictTest = new System.Windows.Forms.PictureBox();
 			this.rb28sprite = new System.Windows.Forms.RadioButton();
+			this.bpCopyBank = new System.Windows.Forms.Button();
+			this.bpPasteBank = new System.Windows.Forms.Button();
+			this.numBanks = new System.Windows.Forms.NumericUpDown();
 			((System.ComponentModel.ISupportInitialize)(this.zoomX)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.zoomY)).BeginInit();
 			this.grpEdition.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictAllSprites)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictEditSprite)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictTest)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.numBanks)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// label1
@@ -386,7 +390,7 @@
 			// bpInversePalette
 			// 
 			this.bpInversePalette.Image = global::ConvImgCpc.Properties.Resources.InversePalette;
-			this.bpInversePalette.Location = new System.Drawing.Point(1026, 117);
+			this.bpInversePalette.Location = new System.Drawing.Point(1026, 124);
 			this.bpInversePalette.Name = "bpInversePalette";
 			this.bpInversePalette.Size = new System.Drawing.Size(48, 48);
 			this.bpInversePalette.TabIndex = 30;
@@ -396,7 +400,7 @@
 			// bpGenPal
 			// 
 			this.bpGenPal.Image = global::ConvImgCpc.Properties.Resources.GenPalette;
-			this.bpGenPal.Location = new System.Drawing.Point(972, 116);
+			this.bpGenPal.Location = new System.Drawing.Point(972, 123);
 			this.bpGenPal.Name = "bpGenPal";
 			this.bpGenPal.Size = new System.Drawing.Size(48, 48);
 			this.bpGenPal.TabIndex = 26;
@@ -427,7 +431,7 @@
 			// 
 			this.bpSavePal.Image = global::ConvImgCpc.Properties.Resources.Sprite_Save;
 			this.bpSavePal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.bpSavePal.Location = new System.Drawing.Point(876, 116);
+			this.bpSavePal.Location = new System.Drawing.Point(876, 123);
 			this.bpSavePal.Name = "bpSavePal";
 			this.bpSavePal.Size = new System.Drawing.Size(95, 48);
 			this.bpSavePal.TabIndex = 14;
@@ -440,7 +444,7 @@
 			// 
 			this.bpReadPal.Image = global::ConvImgCpc.Properties.Resources.Sprite_Load;
 			this.bpReadPal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.bpReadPal.Location = new System.Drawing.Point(780, 116);
+			this.bpReadPal.Location = new System.Drawing.Point(780, 123);
 			this.bpReadPal.Name = "bpReadPal";
 			this.bpReadPal.Size = new System.Drawing.Size(95, 48);
 			this.bpReadPal.TabIndex = 14;
@@ -545,11 +549,62 @@
 			this.rb28sprite.Text = "2x8";
 			this.rb28sprite.UseVisualStyleBackColor = true;
 			// 
+			// bpCopyBank
+			// 
+			this.bpCopyBank.Image = global::ConvImgCpc.Properties.Resources.Sprite_Copy;
+			this.bpCopyBank.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.bpCopyBank.Location = new System.Drawing.Point(780, 71);
+			this.bpCopyBank.Name = "bpCopyBank";
+			this.bpCopyBank.Size = new System.Drawing.Size(94, 46);
+			this.bpCopyBank.TabIndex = 32;
+			this.bpCopyBank.Text = "Bank";
+			this.bpCopyBank.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.bpCopyBank.UseVisualStyleBackColor = true;
+			this.bpCopyBank.Click += new System.EventHandler(this.bpCopyBank_Click);
+			// 
+			// bpPasteBank
+			// 
+			this.bpPasteBank.Image = global::ConvImgCpc.Properties.Resources.Sprite_Paste;
+			this.bpPasteBank.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.bpPasteBank.Location = new System.Drawing.Point(877, 71);
+			this.bpPasteBank.Name = "bpPasteBank";
+			this.bpPasteBank.Size = new System.Drawing.Size(94, 46);
+			this.bpPasteBank.TabIndex = 33;
+			this.bpPasteBank.Text = "Bank";
+			this.bpPasteBank.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.bpPasteBank.UseVisualStyleBackColor = true;
+			this.bpPasteBank.Click += new System.EventHandler(this.bpPasteBank_Click);
+			// 
+			// numBanks
+			// 
+			this.numBanks.Location = new System.Drawing.Point(1202, 107);
+			this.numBanks.Maximum = new decimal(new int[] {
+            8,
+            0,
+            0,
+            0});
+			this.numBanks.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.numBanks.Name = "numBanks";
+			this.numBanks.Size = new System.Drawing.Size(28, 20);
+			this.numBanks.TabIndex = 34;
+			this.numBanks.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			// 
 			// EditSprites
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1305, 708);
+			this.Controls.Add(this.numBanks);
+			this.Controls.Add(this.bpPasteBank);
+			this.Controls.Add(this.bpCopyBank);
 			this.Controls.Add(this.rb28sprite);
 			this.Controls.Add(this.bpInversePalette);
 			this.Controls.Add(this.grpEdition);
@@ -599,6 +654,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.pictAllSprites)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictEditSprite)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictTest)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.numBanks)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -649,5 +705,8 @@
 		private System.Windows.Forms.GroupBox grpEdition;
 		private System.Windows.Forms.Button bpInversePalette;
 		private System.Windows.Forms.RadioButton rb28sprite;
+		private System.Windows.Forms.Button bpCopyBank;
+		private System.Windows.Forms.Button bpPasteBank;
+		private System.Windows.Forms.NumericUpDown numBanks;
 	}
 }
