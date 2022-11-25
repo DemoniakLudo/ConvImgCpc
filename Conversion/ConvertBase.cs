@@ -209,91 +209,96 @@ namespace ConvImgCpc {
 		// Recherche les x meilleurs couleurs parmis les n possibles (remplit le tableau Cpc.Palette)
 		//
 		static void RechercheCMax(int maxPen, int[] lockState, Param prm) {
-			int cUtil, x, FindMax = Cpc.cpcPlus ? 4096 : 27, valMax = 0;
-			for (x = 0; x < maxPen; x++)
-				if (lockState[x] > 0)
-					for (int y = 0; y < 272; y++)
-						coulTrouvee[Cpc.Palette[x], y] = 0;
-
-			// Recherche la couleur la plus utilisée
-			for (cUtil = 0; cUtil < maxPen; cUtil++) {
-				valMax = 0;
-				if (lockState[cUtil] == 0 && prm.disableState[cUtil] == 0) {
-					for (int i = 0; i < FindMax; i++) {
-						int nbc = 0;
+			try {
+				int cUtil, x, FindMax = Cpc.cpcPlus ? 4096 : 27, valMax = 0;
+				for (x = 0; x < maxPen; x++)
+					if (lockState[x] > 0)
 						for (int y = 0; y < 272; y++)
-							nbc += coulTrouvee[i, y];
+							coulTrouvee[Cpc.Palette[x], y] = 0;
 
-						if (valMax < nbc) {
-							valMax = nbc;
-							Cpc.Palette[cUtil] = i;
-						}
-					}
-					for (int y = 0; y < 272; y++)
-						coulTrouvee[Cpc.Palette[cUtil], y] = 0;
+				// Recherche la couleur la plus utilisée
+				for (cUtil = 0; cUtil < maxPen; cUtil++) {
+					valMax = 0;
+					if (lockState[cUtil] == 0 && prm.disableState[cUtil] == 0) {
+						for (int i = 0; i < FindMax; i++) {
+							int nbc = 0;
+							for (int y = 0; y < 272; y++)
+								nbc += coulTrouvee[i, y];
 
-					if (prm.newReduc)
-						break; // Première couleur trouvée => sortie
-				}
-			}
-			if (prm.newReduc) {   // Méthode altenative recherche de couleurs : les plus différentes parmis les plus utilisées
-				RvbColor colFirst = Cpc.GetColor(Cpc.Palette[cUtil]);
-				bool takeDist = false;
-				for (x = 0; x < maxPen; x++) {
-					if (takeDist) {
-						valMax = 0;
-						if (lockState[x] == 0 /*&& prm.disableState[x] == 0*/) {
-							for (int i = 0; i < FindMax; i++) {
-								int nbc = 0;
-								for (int y = 0; y < 272; y++)
-									nbc += coulTrouvee[i, y];
-
-								if (valMax < nbc) {
-									valMax = nbc;
-									Cpc.Palette[x] = i;
-								}
+							if (valMax < nbc) {
+								valMax = nbc;
+								Cpc.Palette[cUtil] = i;
 							}
 						}
+						for (int y = 0; y < 272; y++)
+							coulTrouvee[Cpc.Palette[cUtil], y] = 0;
+
+						if (prm.newReduc)
+							break; // Première couleur trouvée => sortie
 					}
-					else {
-						if (lockState[x] == 0 /*&& prm.disableState[x] == 0*/ && x != cUtil) {
-							int dist, oldDist = 0;
-							for (int rech = 4; rech-- > 0;) {
+				}
+				if (prm.newReduc) {   // Méthode altenative recherche de couleurs : les plus différentes parmis les plus utilisées
+					RvbColor colFirst = Cpc.GetColor(Cpc.Palette[cUtil]);
+					bool takeDist = false;
+					for (x = 0; x < maxPen; x++) {
+						if (takeDist) {
+							valMax = 0;
+							if (lockState[x] == 0 /*&& prm.disableState[x] == 0*/) {
 								for (int i = 0; i < FindMax; i++) {
 									int nbc = 0;
 									for (int y = 0; y < 272; y++)
 										nbc += coulTrouvee[i, y];
 
-									if (nbc > valMax >> rech) {
-										RvbColor c = Cpc.GetColor(i);
-										dist = (c.r - colFirst.r) * (c.r - colFirst.r) * prm.coefR + (c.v - colFirst.v) * (c.v - colFirst.v) * prm.coefV + (c.b - colFirst.b) * (c.b - colFirst.b) * prm.coefB;
-										if (dist > oldDist) {
-											oldDist = dist;
-											Cpc.Palette[x] = i;
-										}
+									if (valMax < nbc) {
+										valMax = nbc;
+										Cpc.Palette[x] = i;
 									}
 								}
 							}
-							if (oldDist == 0) {
-								x--;
+						}
+						else {
+							if (lockState[x] == 0 /*&& prm.disableState[x] == 0*/ && x != cUtil) {
+								int dist, oldDist = 0;
+								for (int rech = 4; rech-- > 0; ) {
+									for (int i = 0; i < FindMax; i++) {
+										int nbc = 0;
+										for (int y = 0; y < 272; y++)
+											nbc += coulTrouvee[i, y];
+
+										if (nbc > valMax >> rech) {
+											RvbColor c = Cpc.GetColor(i);
+											dist = (c.r - colFirst.r) * (c.r - colFirst.r) * prm.coefR + (c.v - colFirst.v) * (c.v - colFirst.v) * prm.coefV + (c.b - colFirst.b) * (c.b - colFirst.b) * prm.coefB;
+											if (dist > oldDist) {
+												oldDist = dist;
+												Cpc.Palette[x] = i;
+											}
+										}
+									}
+								}
+								if (oldDist == 0) {
+									x--;
+								}
 							}
 						}
-					}
-					for (int y = 0; y < 272; y++)
-						coulTrouvee[Cpc.Palette[x], y] = 0;
+						for (int y = 0; y < 272; y++)
+							coulTrouvee[Cpc.Palette[x], y] = 0;
 
-					takeDist = !takeDist;
-					cUtil = x;
+						takeDist = !takeDist;
+						cUtil = x;
+					}
 				}
+				if (prm.sortPal)
+					for (x = 0; x < maxPen - 1; x++)
+						for (int c = x + 1; c < maxPen; c++)
+							if (lockState[x] == 0 && lockState[c] == 0 && prm.disableState[x] == 0 && prm.disableState[c] == 0 && Cpc.Palette[x] > Cpc.Palette[c]) {
+								int tmp = Cpc.Palette[x];
+								Cpc.Palette[x] = Cpc.Palette[c];
+								Cpc.Palette[c] = tmp;
+							}
 			}
-			if (prm.sortPal)
-				for (x = 0; x < maxPen - 1; x++)
-					for (int c = x + 1; c < maxPen; c++)
-						if (lockState[x] == 0 && lockState[c] == 0 && prm.disableState[x] == 0 && prm.disableState[c] == 0 && Cpc.Palette[x] > Cpc.Palette[c]) {
-							int tmp = Cpc.Palette[x];
-							Cpc.Palette[x] = Cpc.Palette[c];
-							Cpc.Palette[c] = tmp;
-						}
+			catch (Exception ex) {
+				System.Windows.Forms.MessageBox.Show(ex.StackTrace, ex.Message);
+			}
 		}
 
 		//
