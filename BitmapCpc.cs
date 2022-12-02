@@ -336,7 +336,7 @@ namespace ConvImgCpc {
 								nbLig = 200;
 							}
 							else
-								if (length < 32000) {
+								if (length < 31000) {
 									try {
 										int l = new PackModule().Depack(bmpCpc, 0, bufTmp, Main.PackMethode.Standard);
 										Array.Copy(bufTmp, bmpCpc, l);
