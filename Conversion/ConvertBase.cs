@@ -155,6 +155,30 @@ namespace ConvImgCpc {
 			return p;
 		}
 
+		static private void Filtre(DirectBitmap source, Param prm) {
+			for (int yPix = 0; yPix < Cpc.TailleY; yPix += 2) {
+				int Tx = Cpc.CalcTx(yPix);
+				for (int xPix = 0; xPix < Cpc.TailleX; xPix += Tx) {
+					RvbColor p0 = GetPixel(source, xPix > 0 ? xPix - Tx : 0, yPix > 0 ? yPix - 2 : 0, Tx, prm, 0);
+					RvbColor p1 = GetPixel(source, xPix, yPix > 0 ? yPix - 2 : 0, Tx, prm, 0);
+					//RvbColor p2 = GetPixel(source, xPix + Tx < Cpc.TailleX ? xPix + Tx : xPix, yPix > 0 ? yPix - 2 : 0, Tx, prm, 0);
+					RvbColor p3 = GetPixel(source, xPix > 0 ? xPix - Tx : 0, yPix, Tx, prm, 0);
+					RvbColor p4 = GetPixel(source, xPix, yPix, Tx, prm, 0);
+					//RvbColor p5 = GetPixel(source, xPix + Tx < Cpc.TailleX ? xPix + Tx : xPix, yPix, Tx, prm, 0);
+					//RvbColor p6 = GetPixel(source, xPix > 0 ? xPix - Tx : 0, yPix + 2 < Cpc.TailleY ? yPix + 2 : yPix, Tx, prm, 0);
+					//RvbColor p7 = GetPixel(source, xPix, yPix + 2 < Cpc.TailleY ? yPix + 2 : yPix, Tx, prm, 0);
+					//RvbColor p8 = GetPixel(source, xPix + Tx < Cpc.TailleX ? xPix + Tx : xPix, yPix + 2 < Cpc.TailleY ? yPix + 2 : yPix, Tx, prm, 0);
+					//double r = ((p0.r / 2.0) + (p1.r / 3.0) + (p2.r / 4.0) + (p3.r / 5.0) + p4.r + (p5.r / 6.0) + (p6.r / 7.0) + (p7.r / 8.0) + (p8.r / 9.0)) / 3.0;
+					//double v = ((p0.v / 2.0) + (p1.v / 3.0) + (p2.v / 4.0) + (p3.v / 5.0) + p4.v + (p5.v / 6.0) + (p6.v / 7.0) + (p7.v / 8.0) + (p8.v / 9.0)) / 3.0;
+					//double b = ((p0.b / 2.0) + (p1.b / 3.0) + (p2.b / 4.0) + (p3.b / 5.0) + p4.b + (p5.b / 6.0) + (p6.b / 7.0) + (p7.b / 8.0) + (p8.b / 9.0)) / 3.0;
+					double r = ((p0.r / 3.0) + (p1.r / 3.0) + (p3.r / 3.0) + p4.r) / 2.0;
+					double v = ((p0.v / 3.0) + (p1.v / 3.0) + (p3.v / 3.0) + p4.v) / 2.0;
+					double b = ((p0.b / 3.0) + (p1.b / 3.0) + (p3.b / 3.0) + p4.b) / 2.0;
+					source.SetPixel(xPix, yPix, new RvbColor((byte)r, (byte)v, (byte)b));
+				}
+			}
+		}
+
 		//
 		// Passe 1 : Réduit la palette aux x couleurs de la palette du CPC.
 		// Remplit le tableau coulTrouvee avec ces couleurs
@@ -259,7 +283,7 @@ namespace ConvImgCpc {
 						else {
 							if (lockState[x] == 0 /*&& prm.disableState[x] == 0*/ && x != cUtil) {
 								int dist, oldDist = 0;
-								for (int rech = 4; rech-- > 0; ) {
+								for (int rech = 4; rech-- > 0;) {
 									for (int i = 0; i < FindMax; i++) {
 										int nbc = 0;
 										for (int y = 0; y < 272; y++)

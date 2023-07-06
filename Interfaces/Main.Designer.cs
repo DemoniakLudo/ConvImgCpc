@@ -126,6 +126,7 @@
 			this.label13 = new System.Windows.Forms.Label();
 			this.comboPackMethode = new System.Windows.Forms.ComboBox();
 			this.bpTest = new System.Windows.Forms.Button();
+			this.chkGauss = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -351,7 +352,7 @@
 			this.trackModeX.Maximum = 32;
 			this.trackModeX.Minimum = 1;
 			this.trackModeX.Name = "trackModeX";
-			this.trackModeX.Size = new System.Drawing.Size(126, 42);
+			this.trackModeX.Size = new System.Drawing.Size(126, 45);
 			this.trackModeX.TabIndex = 11;
 			this.trackModeX.Value = 1;
 			this.trackModeX.Visible = false;
@@ -1165,6 +1166,7 @@
 			// 
 			// groupBox2
 			// 
+			this.groupBox2.Controls.Add(this.chkGauss);
 			this.groupBox2.Controls.Add(this.sortPal);
 			this.groupBox2.Controls.Add(this.chkNewReduc);
 			this.groupBox2.Controls.Add(this.label8);
@@ -1287,6 +1289,17 @@
 			this.bpTest.Text = "Test";
 			this.bpTest.UseVisualStyleBackColor = true;
 			this.bpTest.Click += new System.EventHandler(this.bpTest_Click);
+			// 
+			// chkGauss
+			// 
+			this.chkGauss.AutoSize = true;
+			this.chkGauss.Location = new System.Drawing.Point(574, 71);
+			this.chkGauss.Name = "chkGauss";
+			this.chkGauss.Size = new System.Drawing.Size(80, 17);
+			this.chkGauss.TabIndex = 66;
+			this.chkGauss.Text = "checkBox1";
+			this.chkGauss.UseVisualStyleBackColor = true;
+			this.chkGauss.CheckedChanged += new System.EventHandler(this.chkGauss_CheckedChanged);
 			// 
 			// Main
 			// 
@@ -1455,6 +1468,7 @@
 		private System.Windows.Forms.Button bpXMul2;
 		private System.Windows.Forms.Button bpXDiv2;
 		private System.Windows.Forms.Button bpTest;
+		private System.Windows.Forms.CheckBox chkGauss;
 	}
 }
 

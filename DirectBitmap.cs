@@ -52,7 +52,7 @@ namespace ConvImgCpc {
 		public void SetHorLineDouble(int pixelX, int pixelY, int lineLength, int c) {
 			uint color = (uint)c | 0xFF000000;
 			int index = pixelX + (pixelY * Width);
-			for (; lineLength-- > 0; ) {
+			for (; lineLength-- > 0;) {
 				if (index < Length) {
 					tabBits[index] = color;
 					if (index + Width < Length)

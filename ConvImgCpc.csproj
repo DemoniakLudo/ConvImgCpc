@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ConvImgCpc</RootNamespace>
     <AssemblyName>ConvImgCpc</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <StartupObject>
@@ -145,6 +145,7 @@
     <Compile Include="Interfaces\Popup.Designer.cs">
       <DependentUpon>Popup.cs</DependentUpon>
     </Compile>
+    <Compile Include="Conversion\KMeans.cs" />
     <Compile Include="PackModule.cs">
       <SubType>Form</SubType>
     </Compile>
