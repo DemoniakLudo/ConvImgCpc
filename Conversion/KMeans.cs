@@ -11,25 +11,25 @@ namespace ConvImgCpc {
 		public Niveau[] niveaux;
 		private Distance distance;
 		private double seuil;
-		private int k;
+		private int nbCols;
 
-		public KMeans(int _k = 2, Distance _distance = Distance.DISTANCE_MANHATTAN, double _seuil = 1.0 / 255.0) {
-			k = _k;
-			distance = _distance;
-			seuil = _seuil;
+		public KMeans(int c, Distance d, double s) {
+			nbCols = c;
+			distance = d;
+			seuil = s;
 		}
 
 		public void Palettiser(DirectBitmap img) {
-			niveaux = new Niveau[k];
-			for (int n = 0; n < k; n++) {
-				double gris = (n / (double)(k - 1));
+			niveaux = new Niveau[nbCols];
+			for (int n = 0; n < nbCols; n++) {
+				double gris = (n / (double)(nbCols - 1));
 				niveaux[n] = new Niveau(gris, gris, gris);
 			}
 
 			int nbIterations = 0;
 			bool continuer = true;
 			while (continuer) {
-				for (int n = 0; n < k; n++)
+				for (int n = 0; n < nbCols; n++)
 					niveaux[n].Vider();
 
 				for (int x = 0; x < img.Width; x++) {
@@ -39,7 +39,7 @@ namespace ConvImgCpc {
 					}
 				}
 				continuer = false;
-				for (int n = 0; n < k; n++) {
+				for (int n = 0; n < nbCols; n++) {
 					double delta = calculerDistance(niveaux[n].couleurNiveau, niveaux[n].couleurMoyenne);
 					niveaux[n].couleurNiveau = niveaux[n].couleurMoyenne;
 					if (delta > seuil)

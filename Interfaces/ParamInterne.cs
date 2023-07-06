@@ -27,6 +27,13 @@ namespace ConvImgCpc {
 			numericB2.Value = trackB2.Value = main.param.cstB2;
 			numericB3.Value = trackB3.Value = main.param.cstB3;
 			numericB4.Value = trackB4.Value = main.param.cstB4;
+			rbDistanceSup.Checked = main.param.kMeansDist == 0;
+			rbDistanceEuclide.Checked = main.param.kMeansDist == 1;
+			rbDistanceManhattan.Checked = main.param.kMeansDist == 2;
+			numColor.Value = main.param.kMeansColor;
+			numColor.Minimum = 2;
+			numSeuil.Value = main.param.kMeansSeuil;
+			numSeuil.Minimum = 1;
 		}
 
 		private void trackLumR_Scroll(object sender, EventArgs e) {
@@ -299,6 +306,61 @@ namespace ConvImgCpc {
 				main.param.cstB4 = trackB4.Value = (int)numericB4.Value;
 				main.Convert(false);
 				stopModif = false;
+			}
+		}
+
+		private void numColor_ValueChanged(object sender, EventArgs e) {
+			if ( ! stopModif) {
+				Enabled = false;
+				stopModif = true;
+				main.param.kMeansColor = (int)numColor.Value;
+				main.Convert(false);
+				stopModif = false;
+				Enabled = true;
+			}
+		}
+
+		private void numSeuil_ValueChanged(object sender, EventArgs e) {
+			if ( ! stopModif) {
+				Enabled = false;
+				stopModif = true;
+				main.param.kMeansSeuil = (int)numSeuil.Value;
+				main.Convert(false);
+				stopModif = false;
+				Enabled = true;
+			}
+		}
+
+		private void rbDistanceSup_CheckedChanged(object sender, EventArgs e) {
+			if ( ! stopModif) {
+				Enabled = false;
+				stopModif = true;
+				main.param.kMeansDist = 0;
+				main.Convert(false);
+				stopModif = false;
+				Enabled = true;
+			}
+		}
+
+		private void rbDistanceEuclide_CheckedChanged(object sender, EventArgs e) {
+			if (!stopModif) {
+				Enabled = false;
+				stopModif = true;
+				main.param.kMeansDist = 1;
+				main.Convert(false);
+				stopModif = false;
+				Enabled = true;
+			}
+		}
+
+		private void rbDistanceManhattan_CheckedChanged(object sender, EventArgs e) {
+			if (!stopModif) {
+				Enabled = false;
+				stopModif = true;
+				main.param.kMeansDist = 2;
+				main.Convert(false);
+				stopModif = false;
+				Enabled = true;
 			}
 		}
 	}

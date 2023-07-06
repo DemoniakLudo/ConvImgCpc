@@ -1,4 +1,6 @@
-﻿namespace ConvImgCpc {
+﻿using System.Runtime.InteropServices;
+
+namespace ConvImgCpc {
 	[System.Serializable]
 	public class Param {
 		public enum SizeMode { Fit, KeepSmaller, KeepLarger, UserSize, Origin };
@@ -54,5 +56,8 @@
 		public bool modeImpDraw;
 		public int[] disableState = new int[16];
 		public bool filtre;
+		public int kMeansDist;
+		public int kMeansColor;
+		public int kMeansSeuil;
 	}
 }

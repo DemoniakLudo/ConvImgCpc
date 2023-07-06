@@ -119,6 +119,7 @@
 			this.rb6bits = new System.Windows.Forms.RadioButton();
 			this.bpRaz = new System.Windows.Forms.Button();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.chkGauss = new System.Windows.Forms.CheckBox();
 			this.bpEditSprites = new System.Windows.Forms.Button();
 			this.bpFr = new System.Windows.Forms.Button();
 			this.bpEn = new System.Windows.Forms.Button();
@@ -126,7 +127,6 @@
 			this.label13 = new System.Windows.Forms.Label();
 			this.comboPackMethode = new System.Windows.Forms.ComboBox();
 			this.bpTest = new System.Windows.Forms.Button();
-			this.chkGauss = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -1218,6 +1218,17 @@
 			this.groupBox2.TabIndex = 66;
 			this.groupBox2.TabStop = false;
 			// 
+			// chkGauss
+			// 
+			this.chkGauss.AutoSize = true;
+			this.chkGauss.Location = new System.Drawing.Point(574, 71);
+			this.chkGauss.Name = "chkGauss";
+			this.chkGauss.Size = new System.Drawing.Size(65, 17);
+			this.chkGauss.TabIndex = 66;
+			this.chkGauss.Text = "KMeans";
+			this.chkGauss.UseVisualStyleBackColor = true;
+			this.chkGauss.CheckedChanged += new System.EventHandler(this.chkGauss_CheckedChanged);
+			// 
 			// bpEditSprites
 			// 
 			this.bpEditSprites.Location = new System.Drawing.Point(129, 30);
@@ -1289,17 +1300,6 @@
 			this.bpTest.Text = "Test";
 			this.bpTest.UseVisualStyleBackColor = true;
 			this.bpTest.Click += new System.EventHandler(this.bpTest_Click);
-			// 
-			// chkGauss
-			// 
-			this.chkGauss.AutoSize = true;
-			this.chkGauss.Location = new System.Drawing.Point(574, 71);
-			this.chkGauss.Name = "chkGauss";
-			this.chkGauss.Size = new System.Drawing.Size(80, 17);
-			this.chkGauss.TabIndex = 66;
-			this.chkGauss.Text = "checkBox1";
-			this.chkGauss.UseVisualStyleBackColor = true;
-			this.chkGauss.CheckedChanged += new System.EventHandler(this.chkGauss_CheckedChanged);
 			// 
 			// Main
 			// 

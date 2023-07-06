@@ -26,6 +26,9 @@ namespace ConvImgCpc {
 
 		public Main(string[] args) {
 			InitializeComponent();
+			param.kMeansColor = 16;
+			param.kMeansDist = 2;
+			param.kMeansSeuil = 255;
 			imgCpc = new ImageCpc(this, Convert);
 			anim = new Animation(this);
 			paramInterne = new ParamInterne(this);
@@ -290,7 +293,9 @@ namespace ConvImgCpc {
 					g.DrawImage(imgSrc.GetImage, -(posx << 1), -(posy << 1), tx << 1, ty << 1);
 					break;
 			}
-			new KMeans(Cpc.MaxPen(2)).Palettiser(tmp);
+			if (param.filtre)
+				new KMeans(param.kMeansColor, (KMeans.Distance)param.kMeansDist, 1.0 / param.kMeansSeuil).Palettiser(tmp);
+
 			return tmp;
 		}
 
@@ -772,10 +777,10 @@ namespace ConvImgCpc {
 							SavePaletteKit(dlg.FileName, true);
 						else
 							if (Cpc.modeVirtuel == 3 || Cpc.modeVirtuel == 4)
-								imgCpc.SauveEgx(dlg.FileName);
-							else
-								//imgCpc.SauvBump(dlg.FileName, lblInfoVersion.Text);
-								imgCpc.SauveDiffImage(dlg.FileName, lblInfoVersion.Text, false, PackMethode.None);
+							imgCpc.SauveEgx(dlg.FileName);
+						else
+							//imgCpc.SauvBump(dlg.FileName, lblInfoVersion.Text);
+							imgCpc.SauveDiffImage(dlg.FileName, lblInfoVersion.Text, false, PackMethode.None);
 						break;
 				}
 				param.lastSavePath = Path.GetDirectoryName(dlg.FileName);
