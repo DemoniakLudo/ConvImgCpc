@@ -511,7 +511,7 @@
 		#endregion
 
 		private System.Windows.Forms.PictureBox pictureBox;
-		private System.Windows.Forms.CheckBox lockAllPal;
+		public System.Windows.Forms.CheckBox lockAllPal;
 		private System.Windows.Forms.CheckBox modeEdition;
 		private System.Windows.Forms.HScrollBar hScrollBar;
 		private System.Windows.Forms.VScrollBar vScrollBar;

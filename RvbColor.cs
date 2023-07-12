@@ -9,12 +9,16 @@
 		}
 
 		public RvbColor(int value) {
-			r = (byte)(value >> 16);
-			v = (byte)(value >> 8);
-			b = (byte)value;
+			SetColorArgb(value);
 		}
 
 		public int GetColor { get { return b + (v << 8) + (r << 16); } }
 		public int GetColorArgb { get { return b + (v << 8) + (r << 16) + (255 << 24); } }
+
+		public void SetColorArgb(int value) {
+			r = (byte)(value >> 16);
+			v = (byte)(value >> 8);
+			b = (byte)value;
+		}
 	}
 }

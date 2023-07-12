@@ -56,8 +56,8 @@ namespace ConvImgCpc {
 		public bool modeImpDraw;
 		public int[] disableState = new int[16];
 		public bool filtre;
-		public int kMeansDist;
-		public int kMeansColor;
-		public int kMeansSeuil;
+		public int kMeansDist = 0;
+		public int kMeansColor = 16;
+		public int kMeansPass = 16;
 	}
 }

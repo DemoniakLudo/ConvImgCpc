@@ -465,16 +465,5 @@ namespace ConvImgCpc {
 
 			Render(true);
 		}
-
-
-
-
-
-
-
-
-
-
-
 	}
 }

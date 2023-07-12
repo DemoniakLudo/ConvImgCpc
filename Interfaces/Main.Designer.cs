@@ -127,6 +127,7 @@
 			this.label13 = new System.Windows.Forms.Label();
 			this.comboPackMethode = new System.Windows.Forms.ComboBox();
 			this.bpTest = new System.Windows.Forms.Button();
+			this.bpRazAll = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -1166,6 +1167,7 @@
 			// 
 			// groupBox2
 			// 
+			this.groupBox2.Controls.Add(this.bpRazAll);
 			this.groupBox2.Controls.Add(this.chkGauss);
 			this.groupBox2.Controls.Add(this.sortPal);
 			this.groupBox2.Controls.Add(this.chkNewReduc);
@@ -1300,6 +1302,16 @@
 			this.bpTest.Text = "Test";
 			this.bpTest.UseVisualStyleBackColor = true;
 			this.bpTest.Click += new System.EventHandler(this.bpTest_Click);
+			// 
+			// bpRazAll
+			// 
+			this.bpRazAll.Location = new System.Drawing.Point(430, 289);
+			this.bpRazAll.Name = "bpRazAll";
+			this.bpRazAll.Size = new System.Drawing.Size(175, 23);
+			this.bpRazAll.TabIndex = 67;
+			this.bpRazAll.Text = "Raz All";
+			this.bpRazAll.UseVisualStyleBackColor = true;
+			this.bpRazAll.Click += new System.EventHandler(this.bpRazAll_Click);
 			// 
 			// Main
 			// 
@@ -1469,6 +1481,7 @@
 		private System.Windows.Forms.Button bpXDiv2;
 		private System.Windows.Forms.Button bpTest;
 		private System.Windows.Forms.CheckBox chkGauss;
+		private System.Windows.Forms.Button bpRazAll;
 	}
 }
 

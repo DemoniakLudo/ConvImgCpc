@@ -1,9 +1,17 @@
 ﻿using System;
 
+
 namespace ConvImgCpc {
 	public static partial class Conversion {
+		public enum Distance {
+			DISTANCE_SUP = 0,
+			DISTANCE_EUCLIDE = 1,
+			DISTANCE_MANHATTAN = 2,
+		};
+		
 		static private int[,] coulTrouvee = new int[4096, 272];
 		static private byte[] tblContrast = new byte[256];
+		static public Niveau[] niveaux;
 
 		static byte MinMaxByte(double value) {
 			return value >= 0 ? value <= 255 ? (byte)value : (byte)255 : (byte)0;
@@ -36,36 +44,36 @@ namespace ConvImgCpc {
 				}
 				else
 					if (h < 120f) {
-						r = -(h - 120f) * dif / 60f + min;
-						v = max;
-						b = min;
-					}
-					else
+					r = -(h - 120f) * dif / 60f + min;
+					v = max;
+					b = min;
+				}
+				else
 						if (h < 180f) {
-							r = min;
-							v = max;
-							b = (h - 120f) * dif / 60f + min;
-						}
-						else
+					r = min;
+					v = max;
+					b = (h - 120f) * dif / 60f + min;
+				}
+				else
 							if (h < 240f) {
-								r = min;
-								v = -(h - 240f) * dif / 60f + min;
-								b = max;
-							}
-							else
+					r = min;
+					v = -(h - 240f) * dif / 60f + min;
+					b = max;
+				}
+				else
 								if (h < 300f) {
-									r = (h - 240f) * dif / 60f + min;
-									v = min;
-									b = max;
-								}
-								else
+					r = (h - 240f) * dif / 60f + min;
+					v = min;
+					b = max;
+				}
+				else
 									if (h <= 360f) {
-										r = max;
-										v = min;
-										b = -(h - 360f) * dif / 60 + min;
-									}
-									else
-										r = v = b = 0;
+					r = max;
+					v = min;
+					b = -(h - 360f) * dif / 60 + min;
+				}
+				else
+					r = v = b = 0;
 			}
 		}
 
@@ -397,6 +405,10 @@ namespace ConvImgCpc {
 			for (int i = 0; i < 256; i++)
 				tblContrast[i] = MinMaxByte(((((i / 255.0) - 0.5) * c) + 0.5) * 255.0);
 
+			if (prm.filtre)
+				Palettiser(source, prm);
+			//new KMeans(prm).Palettiser(source);
+
 			ConvertPasse1(source, prm);
 
 			// Calculer nbre de couleurs dans l'image
@@ -420,6 +432,66 @@ namespace ConvImgCpc {
 
 			dest.bitmapCpc.isCalc = true;
 			return nbCol;
+		}
+
+
+		static public void Palettiser(DirectBitmap img, Param prm) {
+			int pct = Dither.SetMatDither(prm);
+			niveaux = new Niveau[prm.kMeansColor];
+			for (int n = 0; n < prm.kMeansColor; n++) {
+				byte gris = (byte)(255 * n / (prm.kMeansColor - 1));
+				niveaux[n] = new Niveau(gris, gris, gris);
+			}
+
+			int incY = prm.trameTc ? 4 : 2;
+
+			for (int p = 0; p < prm.kMeansPass; p++) {
+				for (int n =0; n < prm.kMeansColor; n++)
+					niveaux[n].Reset();
+
+				for (int y = 0; y < Cpc.TailleY; y += incY) {
+					int Tx = Cpc.CalcTx(y);
+					for (int x = 0; x < Cpc.TailleX; x += Tx) {
+						RvbColor coul = GetPixel(img, x, y, Tx, prm, pct);
+						//RvbColor coul = img.GetPixelColor(x, y);
+						NiveauAdequat(prm, coul).AjouterCouleur(coul);
+					}
+				}
+				for (int n = 0; n < prm.kMeansColor; n++)
+					niveaux[n].SetNiveauMoyen();
+			}
+
+			for (int y = 0; y < Cpc.TailleY; y += incY) {
+				int Tx = Cpc.CalcTx(y);
+				for (int x = 0; x < Cpc.TailleX; x++)
+					img.SetPixel(x, y, NiveauAdequat(prm, img.GetPixelColor(x,y)).couleurNiveau.GetColorArgb);
+			}
+		}
+
+		static int calculerDistance(Param prm, RvbColor coul1, RvbColor coul2) {
+			switch ((Distance)prm.kMeansDist) {
+				case Distance.DISTANCE_SUP:
+					return Math.Max(Math.Abs(coul1.r - coul2.r), Math.Max(Math.Abs(coul1.v - coul2.v), Math.Abs(coul1.b - coul2.b)));
+
+				case Distance.DISTANCE_EUCLIDE:
+					return (coul1.r - coul2.r) * (coul1.r - coul2.r) + (coul1.v - coul2.v) * (coul1.v - coul2.v) + (coul1.b - coul2.b) * (coul1.b - coul2.b);
+
+				default:
+					return Math.Abs(coul1.r - coul2.r) * prm.coefR + Math.Abs(coul1.v - coul2.v) * prm.coefV + Math.Abs(coul1.b - coul2.b) * prm.coefB;
+			}
+		}
+
+		static public Niveau NiveauAdequat(Param prm, RvbColor coul) {
+			int distanceMinimale = 0x7FFFFFFF;
+			int retNiveau = 0;
+			for (int n = 0; n < niveaux.Length; n++) {
+				int cetteDistance = calculerDistance(prm, coul, niveaux[n].couleurNiveau);
+				if (cetteDistance < distanceMinimale) {
+					retNiveau = n;
+					distanceMinimale = cetteDistance;
+				}
+			}
+			return niveaux[retNiveau];
 		}
 	}
 }

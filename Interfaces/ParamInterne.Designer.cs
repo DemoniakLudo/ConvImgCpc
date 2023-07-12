@@ -73,13 +73,13 @@
 			this.label15 = new System.Windows.Forms.Label();
 			this.trackB3 = new System.Windows.Forms.TrackBar();
 			this.groupBox5 = new System.Windows.Forms.GroupBox();
-			this.rbDistanceSup = new System.Windows.Forms.RadioButton();
-			this.rbDistanceEuclide = new System.Windows.Forms.RadioButton();
-			this.rbDistanceManhattan = new System.Windows.Forms.RadioButton();
-			this.numColor = new System.Windows.Forms.NumericUpDown();
-			this.label16 = new System.Windows.Forms.Label();
 			this.label17 = new System.Windows.Forms.Label();
-			this.numSeuil = new System.Windows.Forms.NumericUpDown();
+			this.numPass = new System.Windows.Forms.NumericUpDown();
+			this.label16 = new System.Windows.Forms.Label();
+			this.numColor = new System.Windows.Forms.NumericUpDown();
+			this.rbDistanceManhattan = new System.Windows.Forms.RadioButton();
+			this.rbDistanceEuclide = new System.Windows.Forms.RadioButton();
+			this.rbDistanceSup = new System.Windows.Forms.RadioButton();
 			((System.ComponentModel.ISupportInitialize)(this.trackLumR)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackLumB)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackLumV)).BeginInit();
@@ -115,8 +115,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.numericB2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackB3)).BeginInit();
 			this.groupBox5.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.numPass)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numColor)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.numSeuil)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// trackLumR
@@ -135,7 +135,7 @@
 			// 
 			this.trackLumB.AutoSize = false;
 			this.trackLumB.LargeChange = 50;
-			this.trackLumB.Location = new System.Drawing.Point(26, 117);
+			this.trackLumB.Location = new System.Drawing.Point(26, 97);
 			this.trackLumB.Maximum = 32767;
 			this.trackLumB.Name = "trackLumB";
 			this.trackLumB.Size = new System.Drawing.Size(743, 41);
@@ -147,7 +147,7 @@
 			// 
 			this.trackLumV.AutoSize = false;
 			this.trackLumV.LargeChange = 50;
-			this.trackLumV.Location = new System.Drawing.Point(27, 66);
+			this.trackLumV.Location = new System.Drawing.Point(27, 59);
 			this.trackLumV.Maximum = 32767;
 			this.trackLumV.Name = "trackLumV";
 			this.trackLumV.Size = new System.Drawing.Size(742, 41);
@@ -158,7 +158,7 @@
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(6, 29);
+			this.label1.Location = new System.Drawing.Point(6, 22);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(15, 13);
 			this.label1.TabIndex = 3;
@@ -167,7 +167,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(7, 78);
+			this.label2.Location = new System.Drawing.Point(7, 64);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(14, 13);
 			this.label2.TabIndex = 4;
@@ -175,7 +175,7 @@
 			// 
 			// numericLumR
 			// 
-			this.numericLumR.Location = new System.Drawing.Point(775, 29);
+			this.numericLumR.Location = new System.Drawing.Point(775, 19);
 			this.numericLumR.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -188,7 +188,7 @@
 			// 
 			// numericLumV
 			// 
-			this.numericLumV.Location = new System.Drawing.Point(775, 74);
+			this.numericLumV.Location = new System.Drawing.Point(775, 58);
 			this.numericLumV.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -201,7 +201,7 @@
 			// 
 			// numericLumB
 			// 
-			this.numericLumB.Location = new System.Drawing.Point(775, 119);
+			this.numericLumB.Location = new System.Drawing.Point(775, 97);
 			this.numericLumB.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -215,7 +215,7 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(6, 127);
+			this.label3.Location = new System.Drawing.Point(6, 101);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(14, 13);
 			this.label3.TabIndex = 8;
@@ -234,7 +234,7 @@
 			this.groupBox1.Controls.Add(this.trackLumV);
 			this.groupBox1.Location = new System.Drawing.Point(12, 12);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(846, 173);
+			this.groupBox1.Size = new System.Drawing.Size(846, 142);
 			this.groupBox1.TabIndex = 9;
 			this.groupBox1.TabStop = false;
 			// 
@@ -252,15 +252,15 @@
 			this.groupBox2.Controls.Add(this.label6);
 			this.groupBox2.Controls.Add(this.label5);
 			this.groupBox2.Controls.Add(this.label4);
-			this.groupBox2.Location = new System.Drawing.Point(12, 191);
+			this.groupBox2.Location = new System.Drawing.Point(12, 153);
 			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(280, 389);
+			this.groupBox2.Size = new System.Drawing.Size(280, 279);
 			this.groupBox2.TabIndex = 10;
 			this.groupBox2.TabStop = false;
 			// 
 			// numericR4
 			// 
-			this.numericR4.Location = new System.Drawing.Point(226, 362);
+			this.numericR4.Location = new System.Drawing.Point(226, 227);
 			this.numericR4.Maximum = new decimal(new int[] {
             511,
             0,
@@ -273,7 +273,7 @@
 			// 
 			// trackR4
 			// 
-			this.trackR4.Location = new System.Drawing.Point(9, 362);
+			this.trackR4.Location = new System.Drawing.Point(9, 227);
 			this.trackR4.Maximum = 511;
 			this.trackR4.Name = "trackR4";
 			this.trackR4.Size = new System.Drawing.Size(211, 45);
@@ -283,7 +283,7 @@
 			// 
 			// numericR3
 			// 
-			this.numericR3.Location = new System.Drawing.Point(223, 259);
+			this.numericR3.Location = new System.Drawing.Point(223, 164);
 			this.numericR3.Maximum = new decimal(new int[] {
             511,
             0,
@@ -296,7 +296,7 @@
 			// 
 			// trackR3
 			// 
-			this.trackR3.Location = new System.Drawing.Point(6, 259);
+			this.trackR3.Location = new System.Drawing.Point(6, 164);
 			this.trackR3.Maximum = 511;
 			this.trackR3.Name = "trackR3";
 			this.trackR3.Size = new System.Drawing.Size(211, 45);
@@ -306,7 +306,7 @@
 			// 
 			// numericR2
 			// 
-			this.numericR2.Location = new System.Drawing.Point(223, 156);
+			this.numericR2.Location = new System.Drawing.Point(223, 101);
 			this.numericR2.Maximum = new decimal(new int[] {
             511,
             0,
@@ -319,7 +319,7 @@
 			// 
 			// trackR2
 			// 
-			this.trackR2.Location = new System.Drawing.Point(6, 156);
+			this.trackR2.Location = new System.Drawing.Point(6, 101);
 			this.trackR2.Maximum = 511;
 			this.trackR2.Name = "trackR2";
 			this.trackR2.Size = new System.Drawing.Size(211, 45);
@@ -329,7 +329,7 @@
 			// 
 			// numericR1
 			// 
-			this.numericR1.Location = new System.Drawing.Point(223, 53);
+			this.numericR1.Location = new System.Drawing.Point(223, 38);
 			this.numericR1.Maximum = new decimal(new int[] {
             511,
             0,
@@ -342,7 +342,7 @@
 			// 
 			// trackR1
 			// 
-			this.trackR1.Location = new System.Drawing.Point(6, 53);
+			this.trackR1.Location = new System.Drawing.Point(6, 38);
 			this.trackR1.Maximum = 511;
 			this.trackR1.Name = "trackR1";
 			this.trackR1.Size = new System.Drawing.Size(211, 45);
@@ -353,34 +353,38 @@
 			// label7
 			// 
 			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(7, 346);
+			this.label7.Location = new System.Drawing.Point(7, 211);
 			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(0, 13);
+			this.label7.Size = new System.Drawing.Size(42, 13);
 			this.label7.TabIndex = 3;
+			this.label7.Text = "#####";
 			// 
 			// label6
 			// 
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(7, 243);
+			this.label6.Location = new System.Drawing.Point(7, 148);
 			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(0, 13);
+			this.label6.Size = new System.Drawing.Size(42, 13);
 			this.label6.TabIndex = 2;
+			this.label6.Text = "#####";
 			// 
 			// label5
 			// 
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(7, 140);
+			this.label5.Location = new System.Drawing.Point(7, 85);
 			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(0, 13);
+			this.label5.Size = new System.Drawing.Size(42, 13);
 			this.label5.TabIndex = 1;
+			this.label5.Text = "#####";
 			// 
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(7, 37);
+			this.label4.Location = new System.Drawing.Point(7, 22);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(0, 13);
+			this.label4.Size = new System.Drawing.Size(42, 13);
 			this.label4.TabIndex = 0;
+			this.label4.Text = "#####";
 			// 
 			// groupBox3
 			// 
@@ -396,15 +400,15 @@
 			this.groupBox3.Controls.Add(this.trackV1);
 			this.groupBox3.Controls.Add(this.trackV2);
 			this.groupBox3.Controls.Add(this.numericV1);
-			this.groupBox3.Location = new System.Drawing.Point(295, 191);
+			this.groupBox3.Location = new System.Drawing.Point(295, 153);
 			this.groupBox3.Name = "groupBox3";
-			this.groupBox3.Size = new System.Drawing.Size(280, 389);
+			this.groupBox3.Size = new System.Drawing.Size(280, 279);
 			this.groupBox3.TabIndex = 11;
 			this.groupBox3.TabStop = false;
 			// 
 			// numericV4
 			// 
-			this.numericV4.Location = new System.Drawing.Point(225, 362);
+			this.numericV4.Location = new System.Drawing.Point(225, 227);
 			this.numericV4.Maximum = new decimal(new int[] {
             511,
             0,
@@ -418,14 +422,15 @@
 			// label11
 			// 
 			this.label11.AutoSize = true;
-			this.label11.Location = new System.Drawing.Point(6, 37);
+			this.label11.Location = new System.Drawing.Point(6, 22);
 			this.label11.Name = "label11";
-			this.label11.Size = new System.Drawing.Size(0, 13);
+			this.label11.Size = new System.Drawing.Size(42, 13);
 			this.label11.TabIndex = 12;
+			this.label11.Text = "#####";
 			// 
 			// trackV4
 			// 
-			this.trackV4.Location = new System.Drawing.Point(8, 362);
+			this.trackV4.Location = new System.Drawing.Point(8, 227);
 			this.trackV4.Maximum = 511;
 			this.trackV4.Name = "trackV4";
 			this.trackV4.Size = new System.Drawing.Size(211, 45);
@@ -436,14 +441,15 @@
 			// label10
 			// 
 			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(6, 140);
+			this.label10.Location = new System.Drawing.Point(6, 85);
 			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(0, 13);
+			this.label10.Size = new System.Drawing.Size(42, 13);
 			this.label10.TabIndex = 13;
+			this.label10.Text = "#####";
 			// 
 			// numericV3
 			// 
-			this.numericV3.Location = new System.Drawing.Point(222, 259);
+			this.numericV3.Location = new System.Drawing.Point(222, 164);
 			this.numericV3.Maximum = new decimal(new int[] {
             511,
             0,
@@ -457,14 +463,15 @@
 			// label9
 			// 
 			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(6, 243);
+			this.label9.Location = new System.Drawing.Point(6, 148);
 			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(0, 13);
+			this.label9.Size = new System.Drawing.Size(42, 13);
 			this.label9.TabIndex = 14;
+			this.label9.Text = "#####";
 			// 
 			// trackV3
 			// 
-			this.trackV3.Location = new System.Drawing.Point(5, 259);
+			this.trackV3.Location = new System.Drawing.Point(5, 164);
 			this.trackV3.Maximum = 511;
 			this.trackV3.Name = "trackV3";
 			this.trackV3.Size = new System.Drawing.Size(211, 45);
@@ -475,14 +482,15 @@
 			// label8
 			// 
 			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(6, 346);
+			this.label8.Location = new System.Drawing.Point(6, 211);
 			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(0, 13);
+			this.label8.Size = new System.Drawing.Size(42, 13);
 			this.label8.TabIndex = 15;
+			this.label8.Text = "#####";
 			// 
 			// numericV2
 			// 
-			this.numericV2.Location = new System.Drawing.Point(222, 156);
+			this.numericV2.Location = new System.Drawing.Point(222, 101);
 			this.numericV2.Maximum = new decimal(new int[] {
             511,
             0,
@@ -495,7 +503,7 @@
 			// 
 			// trackV1
 			// 
-			this.trackV1.Location = new System.Drawing.Point(5, 53);
+			this.trackV1.Location = new System.Drawing.Point(5, 38);
 			this.trackV1.Maximum = 511;
 			this.trackV1.Name = "trackV1";
 			this.trackV1.Size = new System.Drawing.Size(211, 45);
@@ -505,7 +513,7 @@
 			// 
 			// trackV2
 			// 
-			this.trackV2.Location = new System.Drawing.Point(5, 156);
+			this.trackV2.Location = new System.Drawing.Point(5, 101);
 			this.trackV2.Maximum = 511;
 			this.trackV2.Name = "trackV2";
 			this.trackV2.Size = new System.Drawing.Size(211, 45);
@@ -515,7 +523,7 @@
 			// 
 			// numericV1
 			// 
-			this.numericV1.Location = new System.Drawing.Point(222, 53);
+			this.numericV1.Location = new System.Drawing.Point(222, 38);
 			this.numericV1.Maximum = new decimal(new int[] {
             511,
             0,
@@ -540,15 +548,15 @@
 			this.groupBox4.Controls.Add(this.label14);
 			this.groupBox4.Controls.Add(this.label15);
 			this.groupBox4.Controls.Add(this.trackB3);
-			this.groupBox4.Location = new System.Drawing.Point(578, 191);
+			this.groupBox4.Location = new System.Drawing.Point(578, 153);
 			this.groupBox4.Name = "groupBox4";
-			this.groupBox4.Size = new System.Drawing.Size(280, 389);
+			this.groupBox4.Size = new System.Drawing.Size(280, 278);
 			this.groupBox4.TabIndex = 11;
 			this.groupBox4.TabStop = false;
 			// 
 			// numericB4
 			// 
-			this.numericB4.Location = new System.Drawing.Point(225, 362);
+			this.numericB4.Location = new System.Drawing.Point(225, 227);
 			this.numericB4.Maximum = new decimal(new int[] {
             511,
             0,
@@ -562,14 +570,15 @@
 			// label12
 			// 
 			this.label12.AutoSize = true;
-			this.label12.Location = new System.Drawing.Point(6, 37);
+			this.label12.Location = new System.Drawing.Point(6, 22);
 			this.label12.Name = "label12";
-			this.label12.Size = new System.Drawing.Size(0, 13);
+			this.label12.Size = new System.Drawing.Size(42, 13);
 			this.label12.TabIndex = 24;
+			this.label12.Text = "#####";
 			// 
 			// numericB1
 			// 
-			this.numericB1.Location = new System.Drawing.Point(222, 53);
+			this.numericB1.Location = new System.Drawing.Point(222, 38);
 			this.numericB1.Maximum = new decimal(new int[] {
             511,
             0,
@@ -582,7 +591,7 @@
 			// 
 			// trackB4
 			// 
-			this.trackB4.Location = new System.Drawing.Point(8, 362);
+			this.trackB4.Location = new System.Drawing.Point(8, 227);
 			this.trackB4.Maximum = 511;
 			this.trackB4.Name = "trackB4";
 			this.trackB4.Size = new System.Drawing.Size(211, 45);
@@ -592,7 +601,7 @@
 			// 
 			// trackB2
 			// 
-			this.trackB2.Location = new System.Drawing.Point(5, 156);
+			this.trackB2.Location = new System.Drawing.Point(5, 101);
 			this.trackB2.Maximum = 511;
 			this.trackB2.Name = "trackB2";
 			this.trackB2.Size = new System.Drawing.Size(211, 45);
@@ -603,14 +612,15 @@
 			// label13
 			// 
 			this.label13.AutoSize = true;
-			this.label13.Location = new System.Drawing.Point(6, 140);
+			this.label13.Location = new System.Drawing.Point(6, 85);
 			this.label13.Name = "label13";
-			this.label13.Size = new System.Drawing.Size(0, 13);
+			this.label13.Size = new System.Drawing.Size(42, 13);
 			this.label13.TabIndex = 25;
+			this.label13.Text = "#####";
 			// 
 			// trackB1
 			// 
-			this.trackB1.Location = new System.Drawing.Point(5, 53);
+			this.trackB1.Location = new System.Drawing.Point(5, 38);
 			this.trackB1.Maximum = 511;
 			this.trackB1.Name = "trackB1";
 			this.trackB1.Size = new System.Drawing.Size(211, 45);
@@ -620,7 +630,7 @@
 			// 
 			// numericB3
 			// 
-			this.numericB3.Location = new System.Drawing.Point(222, 259);
+			this.numericB3.Location = new System.Drawing.Point(222, 164);
 			this.numericB3.Maximum = new decimal(new int[] {
             511,
             0,
@@ -633,7 +643,7 @@
 			// 
 			// numericB2
 			// 
-			this.numericB2.Location = new System.Drawing.Point(222, 156);
+			this.numericB2.Location = new System.Drawing.Point(222, 101);
 			this.numericB2.Maximum = new decimal(new int[] {
             511,
             0,
@@ -647,22 +657,24 @@
 			// label14
 			// 
 			this.label14.AutoSize = true;
-			this.label14.Location = new System.Drawing.Point(6, 243);
+			this.label14.Location = new System.Drawing.Point(6, 148);
 			this.label14.Name = "label14";
-			this.label14.Size = new System.Drawing.Size(0, 13);
+			this.label14.Size = new System.Drawing.Size(42, 13);
 			this.label14.TabIndex = 26;
+			this.label14.Text = "#####";
 			// 
 			// label15
 			// 
 			this.label15.AutoSize = true;
-			this.label15.Location = new System.Drawing.Point(6, 346);
+			this.label15.Location = new System.Drawing.Point(6, 211);
 			this.label15.Name = "label15";
-			this.label15.Size = new System.Drawing.Size(0, 13);
+			this.label15.Size = new System.Drawing.Size(42, 13);
 			this.label15.TabIndex = 27;
+			this.label15.Text = "#####";
 			// 
 			// trackB3
 			// 
-			this.trackB3.Location = new System.Drawing.Point(5, 259);
+			this.trackB3.Location = new System.Drawing.Point(5, 164);
 			this.trackB3.Maximum = 511;
 			this.trackB3.Name = "trackB3";
 			this.trackB3.Size = new System.Drawing.Size(211, 45);
@@ -673,57 +685,58 @@
 			// groupBox5
 			// 
 			this.groupBox5.Controls.Add(this.label17);
+			this.groupBox5.Controls.Add(this.numPass);
 			this.groupBox5.Controls.Add(this.label16);
-			this.groupBox5.Controls.Add(this.numSeuil);
 			this.groupBox5.Controls.Add(this.numColor);
 			this.groupBox5.Controls.Add(this.rbDistanceManhattan);
 			this.groupBox5.Controls.Add(this.rbDistanceEuclide);
 			this.groupBox5.Controls.Add(this.rbDistanceSup);
-			this.groupBox5.Location = new System.Drawing.Point(12, 604);
+			this.groupBox5.Location = new System.Drawing.Point(12, 439);
 			this.groupBox5.Name = "groupBox5";
-			this.groupBox5.Size = new System.Drawing.Size(846, 130);
+			this.groupBox5.Size = new System.Drawing.Size(846, 94);
 			this.groupBox5.TabIndex = 12;
 			this.groupBox5.TabStop = false;
 			this.groupBox5.Text = "KMeans";
 			// 
-			// rbDistanceSup
+			// label17
 			// 
-			this.rbDistanceSup.AutoSize = true;
-			this.rbDistanceSup.Location = new System.Drawing.Point(131, 45);
-			this.rbDistanceSup.Name = "rbDistanceSup";
-			this.rbDistanceSup.Size = new System.Drawing.Size(89, 17);
-			this.rbDistanceSup.TabIndex = 0;
-			this.rbDistanceSup.Text = "Distance Sup";
-			this.rbDistanceSup.UseVisualStyleBackColor = true;
-			this.rbDistanceSup.CheckedChanged += new System.EventHandler(this.rbDistanceSup_CheckedChanged);
+			this.label17.AutoSize = true;
+			this.label17.Location = new System.Drawing.Point(355, 28);
+			this.label17.Name = "label17";
+			this.label17.Size = new System.Drawing.Size(41, 13);
+			this.label17.TabIndex = 2;
+			this.label17.Text = "Passes";
 			// 
-			// rbDistanceEuclide
+			// numPass
 			// 
-			this.rbDistanceEuclide.AutoSize = true;
-			this.rbDistanceEuclide.Location = new System.Drawing.Point(131, 68);
-			this.rbDistanceEuclide.Name = "rbDistanceEuclide";
-			this.rbDistanceEuclide.Size = new System.Drawing.Size(105, 17);
-			this.rbDistanceEuclide.TabIndex = 0;
-			this.rbDistanceEuclide.Text = "Distance Euclide";
-			this.rbDistanceEuclide.UseVisualStyleBackColor = true;
-			this.rbDistanceEuclide.CheckedChanged += new System.EventHandler(this.rbDistanceEuclide_CheckedChanged);
+			this.numPass.Location = new System.Drawing.Point(408, 25);
+			this.numPass.Maximum = new decimal(new int[] {
+            256,
+            0,
+            0,
+            0});
+			this.numPass.Name = "numPass";
+			this.numPass.Size = new System.Drawing.Size(45, 20);
+			this.numPass.TabIndex = 1;
+			this.numPass.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.numPass.ValueChanged += new System.EventHandler(this.numPass_ValueChanged);
 			// 
-			// rbDistanceManhattan
+			// label16
 			// 
-			this.rbDistanceManhattan.AutoSize = true;
-			this.rbDistanceManhattan.Checked = true;
-			this.rbDistanceManhattan.Location = new System.Drawing.Point(131, 91);
-			this.rbDistanceManhattan.Name = "rbDistanceManhattan";
-			this.rbDistanceManhattan.Size = new System.Drawing.Size(121, 17);
-			this.rbDistanceManhattan.TabIndex = 0;
-			this.rbDistanceManhattan.TabStop = true;
-			this.rbDistanceManhattan.Text = "Distance Manhattan";
-			this.rbDistanceManhattan.UseVisualStyleBackColor = true;
-			this.rbDistanceManhattan.CheckedChanged += new System.EventHandler(this.rbDistanceManhattan_CheckedChanged);
+			this.label16.AutoSize = true;
+			this.label16.Location = new System.Drawing.Point(7, 26);
+			this.label16.Name = "label16";
+			this.label16.Size = new System.Drawing.Size(48, 13);
+			this.label16.TabIndex = 2;
+			this.label16.Text = "Couleurs";
 			// 
 			// numColor
 			// 
-			this.numColor.Location = new System.Drawing.Point(60, 44);
+			this.numColor.Location = new System.Drawing.Point(60, 23);
 			this.numColor.Maximum = new decimal(new int[] {
             256,
             0,
@@ -739,47 +752,46 @@
             0});
 			this.numColor.ValueChanged += new System.EventHandler(this.numColor_ValueChanged);
 			// 
-			// label16
+			// rbDistanceManhattan
 			// 
-			this.label16.AutoSize = true;
-			this.label16.Location = new System.Drawing.Point(7, 47);
-			this.label16.Name = "label16";
-			this.label16.Size = new System.Drawing.Size(48, 13);
-			this.label16.TabIndex = 2;
-			this.label16.Text = "Couleurs";
+			this.rbDistanceManhattan.AutoSize = true;
+			this.rbDistanceManhattan.Checked = true;
+			this.rbDistanceManhattan.Location = new System.Drawing.Point(131, 70);
+			this.rbDistanceManhattan.Name = "rbDistanceManhattan";
+			this.rbDistanceManhattan.Size = new System.Drawing.Size(121, 17);
+			this.rbDistanceManhattan.TabIndex = 0;
+			this.rbDistanceManhattan.TabStop = true;
+			this.rbDistanceManhattan.Text = "Distance Manhattan";
+			this.rbDistanceManhattan.UseVisualStyleBackColor = true;
+			this.rbDistanceManhattan.CheckedChanged += new System.EventHandler(this.rbDistanceManhattan_CheckedChanged);
 			// 
-			// label17
+			// rbDistanceEuclide
 			// 
-			this.label17.AutoSize = true;
-			this.label17.Location = new System.Drawing.Point(407, 49);
-			this.label17.Name = "label17";
-			this.label17.Size = new System.Drawing.Size(30, 13);
-			this.label17.TabIndex = 2;
-			this.label17.Text = "Seuil";
+			this.rbDistanceEuclide.AutoSize = true;
+			this.rbDistanceEuclide.Location = new System.Drawing.Point(131, 47);
+			this.rbDistanceEuclide.Name = "rbDistanceEuclide";
+			this.rbDistanceEuclide.Size = new System.Drawing.Size(105, 17);
+			this.rbDistanceEuclide.TabIndex = 0;
+			this.rbDistanceEuclide.Text = "Distance Euclide";
+			this.rbDistanceEuclide.UseVisualStyleBackColor = true;
+			this.rbDistanceEuclide.CheckedChanged += new System.EventHandler(this.rbDistanceEuclide_CheckedChanged);
 			// 
-			// numSeuil
+			// rbDistanceSup
 			// 
-			this.numSeuil.Location = new System.Drawing.Point(443, 47);
-			this.numSeuil.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-			this.numSeuil.Name = "numSeuil";
-			this.numSeuil.Size = new System.Drawing.Size(45, 20);
-			this.numSeuil.TabIndex = 1;
-			this.numSeuil.Value = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-			this.numSeuil.ValueChanged += new System.EventHandler(this.numSeuil_ValueChanged);
+			this.rbDistanceSup.AutoSize = true;
+			this.rbDistanceSup.Location = new System.Drawing.Point(131, 24);
+			this.rbDistanceSup.Name = "rbDistanceSup";
+			this.rbDistanceSup.Size = new System.Drawing.Size(89, 17);
+			this.rbDistanceSup.TabIndex = 0;
+			this.rbDistanceSup.Text = "Distance Sup";
+			this.rbDistanceSup.UseVisualStyleBackColor = true;
+			this.rbDistanceSup.CheckedChanged += new System.EventHandler(this.rbDistanceSup_CheckedChanged);
 			// 
 			// ParamInterne
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(870, 753);
+			this.ClientSize = new System.Drawing.Size(870, 540);
 			this.ControlBox = false;
 			this.Controls.Add(this.groupBox5);
 			this.Controls.Add(this.groupBox4);
@@ -828,8 +840,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.trackB3)).EndInit();
 			this.groupBox5.ResumeLayout(false);
 			this.groupBox5.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.numPass)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numColor)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.numSeuil)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -889,9 +901,9 @@
 		private System.Windows.Forms.RadioButton rbDistanceManhattan;
 		private System.Windows.Forms.RadioButton rbDistanceEuclide;
 		private System.Windows.Forms.RadioButton rbDistanceSup;
-		private System.Windows.Forms.Label label17;
 		private System.Windows.Forms.Label label16;
 		private System.Windows.Forms.NumericUpDown numColor;
-		private System.Windows.Forms.NumericUpDown numSeuil;
+		private System.Windows.Forms.Label label17;
+		private System.Windows.Forms.NumericUpDown numPass;
 	}
 }

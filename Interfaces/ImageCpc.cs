@@ -631,7 +631,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void lockAllPal_CheckedChanged(object sender, EventArgs e) {
+		public void lockAllPal_CheckedChanged(object sender, EventArgs e) {
 			for (int i = 0; i < 16; i++) {
 				lockColors[i].Checked = lockAllPal.Checked;
 				lockState[i] = lockAllPal.Checked ? 1 : 0;

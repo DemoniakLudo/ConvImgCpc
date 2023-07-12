@@ -259,8 +259,8 @@ namespace ConvImgCpc {
 			dic.Add("EditSprites.label2.EN", "Right bp");
 			dic.Add("EditSprites.bpSave.FR", "bank\r\ncourante");
 			dic.Add("EditSprites.bpSave.EN", "current\n\rbank");
-			dic.Add("EditSprites.bpSaveAll.FR", "'X' banks");
-			dic.Add("EditSprites.bpSaveAll.EN", "'X' banks");
+			dic.Add("EditSprites.bpSaveAll.FR", "toutes\r\nles banks");
+			dic.Add("EditSprites.bpSaveAll.EN", "all banks");
 			dic.Add("EditSprites.chkWithPal.FR", "Avec palette");
 			dic.Add("EditSprites.chkWithPal.EN", "With palette");
 			dic.Add("EditSprites.TxtInfo1.FR", "Modèle sprites");

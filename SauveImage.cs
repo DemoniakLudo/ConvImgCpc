@@ -451,217 +451,209 @@ namespace ConvImgCpc {
 		}
 
 		static public int SauveScr(string fileName, BitmapCpc bitmapCpc, Main main, Main.PackMethode compact, Main.OutputFormat format, string version = null, int[,] colMode5 = null) {
-			try {
-				byte[] bufPack = new byte[0x8000];
-				bool overscan = (Cpc.NbLig * Cpc.NbCol > 0x3F00);
-				if (main.param.withPalette && format != Main.OutputFormat.Assembler) {
-					if (main.param.cpcPlus) {
-						ModePal[0] = (byte)(Cpc.modeVirtuel | 0x8C);
-						int k = 1;
-						for (int i = 0; i < 16; i++) {
-							ModePal[k++] = (byte)(((Cpc.Palette[i] >> 4) & 0x0F) | (Cpc.Palette[i] << 4));
-							ModePal[k++] = (byte)(Cpc.Palette[i] >> 8);
-						}
-					}
-					else {
-						ModePal[0] = (byte)Cpc.modeVirtuel;
-						for (int i = 0; i < 16; i++)
-							ModePal[1 + i] = (byte)Cpc.Palette[i];
-					}
-				}
-
-				if (Cpc.modeVirtuel == 3 || Cpc.modeVirtuel == 4) {
-					int mode = 0x8C01;
-					if (Cpc.modeVirtuel == 4)
-						mode = 0x8D03;
-
-					if (Cpc.yEgx == 2)
-						mode += 0x100;
-
-					codeEgx0[20] = (byte)(mode & 0xFF);
-					codeEgx0[21] = (byte)(mode >> 8);
-				}
-				byte[] imgCpc = bitmapCpc.bmpCpc;
-				if (!overscan) {
-					Buffer.BlockCopy(ModePal, 0, imgCpc, 0x17D0, ModePal.Length);
-					if (main.param.withCode && format != Main.OutputFormat.Assembler) {
-						if (main.param.cpcPlus) {
-							Buffer.BlockCopy(CodeP0, 0, imgCpc, 0x07D0, CodeP0.Length);
-							Buffer.BlockCopy(CodeP1, 0, imgCpc, 0x0FD0, CodeP1.Length);
-							Buffer.BlockCopy(CodeP3, 0, imgCpc, 0x1FD0, CodeP3.Length);
-						}
-						else
-							Buffer.BlockCopy(CodeStd, 0, imgCpc, 0x07D0, CodeStd.Length);
-
-						if (Cpc.modeVirtuel == 3 || Cpc.modeVirtuel == 4) {
-							Buffer.BlockCopy(codeEgx0, 0, imgCpc, 0x37D0, codeEgx0.Length);
-							Buffer.BlockCopy(codeEgx1, 0, imgCpc, 0x2FD0, codeEgx1.Length);
-							imgCpc[0x07F2] = 0xD0;
-							imgCpc[0x07F3] = 0xF7;  //	CALL 0xF7D0
-							imgCpc[0x37FA] = 0xEF;  //	Call 0xEFD0
-						}
+			byte[] bufPack = new byte[0x8000];
+			bool overscan = (Cpc.NbLig * Cpc.NbCol > 0x3F00);
+			if (main.param.withPalette && format != Main.OutputFormat.Assembler) {
+				if (main.param.cpcPlus) {
+					ModePal[0] = (byte)(Cpc.modeVirtuel | 0x8C);
+					int k = 1;
+					for (int i = 0; i < 16; i++) {
+						ModePal[k++] = (byte)(((Cpc.Palette[i] >> 4) & 0x0F) | (Cpc.Palette[i] << 4));
+						ModePal[k++] = (byte)(Cpc.Palette[i] >> 8);
 					}
 				}
 				else {
-					if (Cpc.NbLig * Cpc.NbCol > 0x4000) {
-						Buffer.BlockCopy(ModePal, 0, imgCpc, 0x600, ModePal.Length);
-						if (main.param.withCode && format != Main.OutputFormat.Assembler) {
-							if (main.param.cpcPlus)
-								Buffer.BlockCopy(CodeOvP, 0, imgCpc, 0x621, CodeOvP.Length);
-							else
-								Buffer.BlockCopy(CodeOv, 0, imgCpc, 0x611, CodeOv.Length);
+					ModePal[0] = (byte)Cpc.modeVirtuel;
+					for (int i = 0; i < 16; i++)
+						ModePal[1 + i] = (byte)Cpc.Palette[i];
+				}
+			}
 
-							if (Cpc.modeVirtuel == 3 || Cpc.modeVirtuel == 4) {
-								Buffer.BlockCopy(codeEgx0, 0, imgCpc, 0x1600, codeEgx0.Length);
-								Buffer.BlockCopy(codeEgx1, 0, imgCpc, 0x1640, codeEgx1.Length);
-								if (main.param.cpcPlus) {
-									imgCpc[0x669] = 0xCD;
-									Poke16(imgCpc, 0x66A, 0x1800);  // CALL	#1800
-								}
-								else
-									Poke16(imgCpc, 0x631, 0x1800);  // CALL	#1800
+			if (Cpc.modeVirtuel == 3 || Cpc.modeVirtuel == 4) {
+				int mode = 0x8C01;
+				if (Cpc.modeVirtuel == 4)
+					mode = 0x8D03;
 
-								Poke16(imgCpc, 0x1629, 0x1840); //	CALL	#1840
-							}
-						}
+				if (Cpc.yEgx == 2)
+					mode += 0x100;
+
+				codeEgx0[20] = (byte)(mode & 0xFF);
+				codeEgx0[21] = (byte)(mode >> 8);
+			}
+			byte[] imgCpc = bitmapCpc.bmpCpc;
+			if (!overscan) {
+				Buffer.BlockCopy(ModePal, 0, imgCpc, 0x17D0, ModePal.Length);
+				if (main.param.withCode && format != Main.OutputFormat.Assembler) {
+					if (main.param.cpcPlus) {
+						Buffer.BlockCopy(CodeP0, 0, imgCpc, 0x07D0, CodeP0.Length);
+						Buffer.BlockCopy(CodeP1, 0, imgCpc, 0x0FD0, CodeP1.Length);
+						Buffer.BlockCopy(CodeP3, 0, imgCpc, 0x1FD0, CodeP3.Length);
+					}
+					else
+						Buffer.BlockCopy(CodeStd, 0, imgCpc, 0x07D0, CodeStd.Length);
+
+					if (Cpc.modeVirtuel == 3 || Cpc.modeVirtuel == 4) {
+						Buffer.BlockCopy(codeEgx0, 0, imgCpc, 0x37D0, codeEgx0.Length);
+						Buffer.BlockCopy(codeEgx1, 0, imgCpc, 0x2FD0, codeEgx1.Length);
+						imgCpc[0x07F2] = 0xD0;
+						imgCpc[0x07F3] = 0xF7;  //	CALL 0xF7D0
+						imgCpc[0x37FA] = 0xEF;  //	Call 0xEFD0
 					}
 				}
-
-				short startAdr = (short)(overscan ? 0x200 : 0xC000);
-				short exec = (short)(overscan ? main.param.cpcPlus ? 0x821 : 0x811 : 0xC7D0);
-				CpcAmsdos entete;
-				int lg = Cpc.BitmapSize;
-				if (compact != Main.PackMethode.None) {
-					lg = new PackModule().Pack(bitmapCpc.bmpCpc, lg, bufPack, 0, compact);
+			}
+			else {
+				if (Cpc.NbLig * Cpc.NbCol > 0x4000) {
+					Buffer.BlockCopy(ModePal, 0, imgCpc, 0x600, ModePal.Length);
 					if (main.param.withCode && format != Main.OutputFormat.Assembler) {
-						short newExec;
-						switch (compact) {
-							case Main.PackMethode.Standard:
-								Buffer.BlockCopy(codeDepack, 0, bufPack, lg, codeDepack.Length);
-								Poke16(bufPack, lg + 0x04, startAdr);
-								startAdr = (short)(0xA657 - (lg + codeDepack.Length));
-								Poke16(bufPack, lg + 0x01, startAdr);
-								Poke16(bufPack, lg + 0x20, exec);
-								lg += codeDepack.Length;
-								exec = (short)(0xA657 - codeDepack.Length);
-								break;
-
-							case Main.PackMethode.ZX0:
-								newExec = (short)(0xA657 - codeDZX0.Length);
-								Buffer.BlockCopy(codeDZX0, 0, bufPack, lg, codeDZX0.Length);
-								Poke16(bufPack, lg + 0x04, startAdr);
-								Poke16(bufPack, lg + 0x0E, (short)(newExec + 0x3F));
-								Poke16(bufPack, lg + 0x16, (short)(newExec + 0x3F));
-								Poke16(bufPack, lg + 0x23, (short)(newExec + 0x3F));
-								Poke16(bufPack, lg + 0x3A, (short)(newExec + 0x47));
-								startAdr = (short)(0xA657 - (lg + codeDZX0.Length));
-								Poke16(bufPack, lg + 0x01, startAdr);
-								Poke16(bufPack, lg + 0x2A, exec);
-								lg += codeDZX0.Length;
-								exec = newExec;
-								break;
-
-							case Main.PackMethode.ZX1:
-								newExec = (short)(0xA657 - codeDZX1.Length);
-								Buffer.BlockCopy(codeDZX1, 0, bufPack, lg, codeDZX1.Length);
-								Poke16(bufPack, lg + 0x04, startAdr);
-								Poke16(bufPack, lg + 0x0D, (short)(newExec + 0x3B));
-								Poke16(bufPack, lg + 0x15, (short)(newExec + 0x3B));
-								Poke16(bufPack, lg + 0x36, (short)(newExec + 0x3B));
-								startAdr = (short)(0xA657 - (lg + codeDZX1.Length));
-								Poke16(bufPack, lg + 0x01, startAdr);
-								Poke16(bufPack, lg + 0x30, exec);
-								lg += codeDZX1.Length;
-								exec = newExec;
-								break;
-						}
-					}
-					else {
-						startAdr = (short)(0xA657 - lg);
-						exec = 0;
-					}
-				}
-				switch (format) {
-					case Main.OutputFormat.Binary:
-						entete = Cpc.CreeEntete(fileName, startAdr, (short)lg, exec);
-						BinaryWriter fp = new BinaryWriter(new FileStream(fileName, FileMode.Create));
-						fp.Write(Cpc.AmsdosToByte(entete));
-						fp.Write(compact != Main.PackMethode.None ? bufPack : bitmapCpc.bmpCpc, 0, lg);
-						fp.Close();
-						break;
-
-					case Main.OutputFormat.Assembler:
-						StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
-						if (main.param.withCode) {
-							int org = 0xA500 - lg - (Cpc.modeVirtuel == 5 ? 600 : 0);
-							sw.WriteLine("	ORG	#" + org.ToString("X4"));
-						}
-						sw.WriteLine("	Nolist");
-						sw.WriteLine("ImageCmp:");
-						SaveAsm.GenereDatas(sw, bufPack, lg, 16);
-						sw.WriteLine("	List");
-						if (main.param.withCode) {
-							sw.WriteLine("	RUN	$");
-							sw.WriteLine("_StartDepack:");
-							if (Cpc.modeVirtuel == 3 || Cpc.modeVirtuel == 4)
-								SaveAsm.GenereAfficheModeEgx(sw, Cpc.Palette, overscan, compact);
-							else {
-								if (Cpc.modeVirtuel == 5)
-									SaveAsm.GenereAfficheModeX(sw, colMode5, overscan, compact);
-								else
-									SaveAsm.GenereAfficheStd(sw, main.imgCpc, Cpc.modeVirtuel, Cpc.Palette, overscan, compact);
-							}
-						}
-						if ((main.param.withPalette || main.param.withCode) && (Cpc.modeVirtuel < 3 || Cpc.modeVirtuel > 5))
-							SaveAsm.GenerePalette(sw, true);
-
-						SaveAsm.CloseAsm(sw);
-						break;
-
-					case Main.OutputFormat.DSK:
-						if (File.Exists(fileName))
-							main.dsk.Load(fileName);
+						if (main.param.cpcPlus)
+							Buffer.BlockCopy(CodeOvP, 0, imgCpc, 0x621, CodeOvP.Length);
 						else
-							main.dsk.FormatDsk();
+							Buffer.BlockCopy(CodeOv, 0, imgCpc, 0x611, CodeOv.Length);
 
-						MemoryStream ms = new MemoryStream();
-						entete = Cpc.CreeEntete(fileName, startAdr, (short)lg, exec);
-						BinaryWriter fpm = new BinaryWriter(ms);
-						fpm.Write(Cpc.AmsdosToByte(entete));
-						fpm.Write(compact != Main.PackMethode.None ? bufPack : bitmapCpc.bmpCpc, 0, lg);
-						fpm.Close();
-						byte[] fic = ms.ToArray();
-						GestDSK.DskError err = GestDSK.DskError.ERR_NO_ERR;
-						for (int i = 0; i < 100; i++) {
-							string nom = "CNVIMG" + i.ToString("00") + (compact == Main.PackMethode.None ? ".SCR" : ".CMP");
-							err = main.dsk.CopieFichier(fic, nom, fic.Length, 178, 0);
-							if (err == GestDSK.DskError.ERR_NO_ERR) {
-								main.SetInfo(main.multilingue.GetString("Main.prg.TxtInfo33") + nom);
-								break;
+						if (Cpc.modeVirtuel == 3 || Cpc.modeVirtuel == 4) {
+							Buffer.BlockCopy(codeEgx0, 0, imgCpc, 0x1600, codeEgx0.Length);
+							Buffer.BlockCopy(codeEgx1, 0, imgCpc, 0x1640, codeEgx1.Length);
+							if (main.param.cpcPlus) {
+								imgCpc[0x669] = 0xCD;
+								Poke16(imgCpc, 0x66A, 0x1800);  // CALL	#1800
 							}
-						}
-						if (err == GestDSK.DskError.ERR_NO_ERR)
-							main.dsk.Save(fileName);
-						else {
-							switch (err) {
-								case GestDSK.DskError.ERR_FILE_EXIST:
-								case GestDSK.DskError.ERR_NO_DIRENTRY:
-									MessageBox.Show(main.multilingue.GetString("Main.prg.TxtInfo34"));
-									break;
+							else
+								Poke16(imgCpc, 0x631, 0x1800);  // CALL	#1800
 
-								case GestDSK.DskError.ERR_NO_BLOCK:
-									MessageBox.Show(main.multilingue.GetString("Main.prg.TxtInfo35"));
-									break;
-							}
+							Poke16(imgCpc, 0x1629, 0x1840); //	CALL	#1840
 						}
-						break;
+					}
 				}
-				return (lg);
 			}
-			catch (Exception ex) {
-				MessageBox.Show(ex.StackTrace, ex.Message);
-				return 0;
+
+			short startAdr = (short)(overscan ? 0x200 : 0xC000);
+			short exec = (short)(overscan ? main.param.cpcPlus ? 0x821 : 0x811 : 0xC7D0);
+			CpcAmsdos entete;
+			int lg = Cpc.BitmapSize;
+			if (compact != Main.PackMethode.None) {
+				lg = new PackModule().Pack(bitmapCpc.bmpCpc, lg, bufPack, 0, compact);
+				if (main.param.withCode && format != Main.OutputFormat.Assembler) {
+					short newExec;
+					switch (compact) {
+						case Main.PackMethode.Standard:
+							Buffer.BlockCopy(codeDepack, 0, bufPack, lg, codeDepack.Length);
+							Poke16(bufPack, lg + 0x04, startAdr);
+							startAdr = (short)(0xA657 - (lg + codeDepack.Length));
+							Poke16(bufPack, lg + 0x01, startAdr);
+							Poke16(bufPack, lg + 0x20, exec);
+							lg += codeDepack.Length;
+							exec = (short)(0xA657 - codeDepack.Length);
+							break;
+
+						case Main.PackMethode.ZX0:
+							newExec = (short)(0xA657 - codeDZX0.Length);
+							Buffer.BlockCopy(codeDZX0, 0, bufPack, lg, codeDZX0.Length);
+							Poke16(bufPack, lg + 0x04, startAdr);
+							Poke16(bufPack, lg + 0x0E, (short)(newExec + 0x3F));
+							Poke16(bufPack, lg + 0x16, (short)(newExec + 0x3F));
+							Poke16(bufPack, lg + 0x23, (short)(newExec + 0x3F));
+							Poke16(bufPack, lg + 0x3A, (short)(newExec + 0x47));
+							startAdr = (short)(0xA657 - (lg + codeDZX0.Length));
+							Poke16(bufPack, lg + 0x01, startAdr);
+							Poke16(bufPack, lg + 0x2A, exec);
+							lg += codeDZX0.Length;
+							exec = newExec;
+							break;
+
+						case Main.PackMethode.ZX1:
+							newExec = (short)(0xA657 - codeDZX1.Length);
+							Buffer.BlockCopy(codeDZX1, 0, bufPack, lg, codeDZX1.Length);
+							Poke16(bufPack, lg + 0x04, startAdr);
+							Poke16(bufPack, lg + 0x0D, (short)(newExec + 0x3B));
+							Poke16(bufPack, lg + 0x15, (short)(newExec + 0x3B));
+							Poke16(bufPack, lg + 0x36, (short)(newExec + 0x3B));
+							startAdr = (short)(0xA657 - (lg + codeDZX1.Length));
+							Poke16(bufPack, lg + 0x01, startAdr);
+							Poke16(bufPack, lg + 0x30, exec);
+							lg += codeDZX1.Length;
+							exec = newExec;
+							break;
+					}
+				}
+				else {
+					startAdr = (short)(0xA657 - lg);
+					exec = 0;
+				}
 			}
+			switch (format) {
+				case Main.OutputFormat.Binary:
+					entete = Cpc.CreeEntete(fileName, startAdr, (short)lg, exec);
+					BinaryWriter fp = new BinaryWriter(new FileStream(fileName, FileMode.Create));
+					fp.Write(Cpc.AmsdosToByte(entete));
+					fp.Write(compact != Main.PackMethode.None ? bufPack : bitmapCpc.bmpCpc, 0, lg);
+					fp.Close();
+					break;
+
+				case Main.OutputFormat.Assembler:
+					StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
+					int org = 0xA500 - lg - (Cpc.modeVirtuel == 5 ? 600 : 0);
+					sw.WriteLine("	ORG	#" + org.ToString("X4"));
+					sw.WriteLine("	Nolist");
+					sw.WriteLine("ImageCmp:");
+					SaveAsm.GenereDatas(sw, bufPack, lg, 16);
+					sw.WriteLine("	List");
+					if (main.param.withCode) {
+						sw.WriteLine("	RUN	$");
+						sw.WriteLine("_StartDepack:");
+						if (Cpc.modeVirtuel == 3 || Cpc.modeVirtuel == 4)
+							SaveAsm.GenereAfficheModeEgx(sw, Cpc.Palette, overscan, compact);
+						else {
+							if (Cpc.modeVirtuel == 5)
+								SaveAsm.GenereAfficheModeX(sw, colMode5, overscan, compact);
+							else
+								SaveAsm.GenereAfficheStd(sw, main.imgCpc, Cpc.modeVirtuel, Cpc.Palette, overscan, compact);
+						}
+					}
+					if ((main.param.withPalette || main.param.withCode) && (Cpc.modeVirtuel < 3 || Cpc.modeVirtuel > 5))
+						SaveAsm.GenerePalette(sw, true);
+
+					SaveAsm.CloseAsm(sw);
+					break;
+
+				case Main.OutputFormat.DSK:
+					if (File.Exists(fileName))
+						main.dsk.Load(fileName);
+					else
+						main.dsk.FormatDsk();
+
+					MemoryStream ms = new MemoryStream();
+					entete = Cpc.CreeEntete(fileName, startAdr, (short)lg, exec);
+					BinaryWriter fpm = new BinaryWriter(ms);
+					fpm.Write(Cpc.AmsdosToByte(entete));
+					fpm.Write(compact != Main.PackMethode.None ? bufPack : bitmapCpc.bmpCpc, 0, lg);
+					fpm.Close();
+					byte[] fic = ms.ToArray();
+					GestDSK.DskError err = GestDSK.DskError.ERR_NO_ERR;
+					for (int i = 0; i < 100; i++) {
+						string nom = "CNVIMG" + i.ToString("00") + (compact == Main.PackMethode.None ? ".SCR" : ".CMP");
+						err = main.dsk.CopieFichier(fic, nom, fic.Length, 178, 0);
+						if (err == GestDSK.DskError.ERR_NO_ERR) {
+							main.SetInfo(main.multilingue.GetString("Main.prg.TxtInfo33") + nom);
+							break;
+						}
+					}
+					if (err == GestDSK.DskError.ERR_NO_ERR)
+						main.dsk.Save(fileName);
+					else {
+						switch (err) {
+							case GestDSK.DskError.ERR_FILE_EXIST:
+							case GestDSK.DskError.ERR_NO_DIRENTRY:
+								MessageBox.Show(main.multilingue.GetString("Main.prg.TxtInfo34"));
+								break;
+
+							case GestDSK.DskError.ERR_NO_BLOCK:
+								MessageBox.Show(main.multilingue.GetString("Main.prg.TxtInfo35"));
+								break;
+						}
+					}
+					break;
+			}
+			return (lg);
 		}
 
 		static public void SauvePalette(string NomFic, ImageCpc bitmapCpc, Param param) {
