@@ -145,7 +145,6 @@
     <Compile Include="Interfaces\Popup.Designer.cs">
       <DependentUpon>Popup.cs</DependentUpon>
     </Compile>
-    <Compile Include="Conversion\KMeans.cs" />
     <Compile Include="PackModule.cs">
       <SubType>Form</SubType>
     </Compile>

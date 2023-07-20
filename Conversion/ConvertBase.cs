@@ -1,4 +1,5 @@
 ﻿using System;
+using static ConvImgCpc.Conversion;
 
 
 namespace ConvImgCpc {
@@ -407,7 +408,6 @@ namespace ConvImgCpc {
 
 			if (prm.filtre)
 				Palettiser(source, prm);
-			//new KMeans(prm).Palettiser(source);
 
 			ConvertPasse1(source, prm);
 
@@ -434,7 +434,6 @@ namespace ConvImgCpc {
 			return nbCol;
 		}
 
-
 		static public void Palettiser(DirectBitmap img, Param prm) {
 			int pct = Dither.SetMatDither(prm);
 			niveaux = new Niveau[prm.kMeansColor];
@@ -452,9 +451,9 @@ namespace ConvImgCpc {
 				for (int y = 0; y < Cpc.TailleY; y += incY) {
 					int Tx = Cpc.CalcTx(y);
 					for (int x = 0; x < Cpc.TailleX; x += Tx) {
-						RvbColor coul = GetPixel(img, x, y, Tx, prm, pct);
-						//RvbColor coul = img.GetPixelColor(x, y);
-						NiveauAdequat(prm, coul).AjouterCouleur(coul);
+						//RvbColor coul = GetPixel(img, x, y, Tx, prm, pct);
+						RvbColor coul = img.GetPixelColor(x, y);
+						NiveauAdequat(prm, coul);
 					}
 				}
 				for (int n = 0; n < prm.kMeansColor; n++)
@@ -468,30 +467,56 @@ namespace ConvImgCpc {
 			}
 		}
 
-		static int calculerDistance(Param prm, RvbColor coul1, RvbColor coul2) {
-			switch ((Distance)prm.kMeansDist) {
-				case Distance.DISTANCE_SUP:
-					return Math.Max(Math.Abs(coul1.r - coul2.r), Math.Max(Math.Abs(coul1.v - coul2.v), Math.Abs(coul1.b - coul2.b)));
-
-				case Distance.DISTANCE_EUCLIDE:
-					return (coul1.r - coul2.r) * (coul1.r - coul2.r) + (coul1.v - coul2.v) * (coul1.v - coul2.v) + (coul1.b - coul2.b) * (coul1.b - coul2.b);
-
-				default:
-					return Math.Abs(coul1.r - coul2.r) * prm.coefR + Math.Abs(coul1.v - coul2.v) * prm.coefV + Math.Abs(coul1.b - coul2.b) * prm.coefB;
-			}
-		}
-
 		static public Niveau NiveauAdequat(Param prm, RvbColor coul) {
-			int distanceMinimale = 0x7FFFFFFF;
-			int retNiveau = 0;
+			int minDist = 0x7FFFFFFF;
+			int ret = 0;
+			byte r = coul.r;
+			byte v = coul.v;
+			byte b = coul.b;
 			for (int n = 0; n < niveaux.Length; n++) {
-				int cetteDistance = calculerDistance(prm, coul, niveaux[n].couleurNiveau);
-				if (cetteDistance < distanceMinimale) {
-					retNiveau = n;
-					distanceMinimale = cetteDistance;
+				RvbColor cNiv = niveaux[n].couleurNiveau;
+				int dist;
+				switch ((Distance)prm.kMeansDist) {
+					case Distance.DISTANCE_EUCLIDE:
+						dist = (r - cNiv.r) * (r - cNiv.r) + (v - cNiv.v) * (v - cNiv.v) + (b - cNiv.b) * (b - cNiv.b);
+						break;
+					case Distance.DISTANCE_SUP:
+						dist = Math.Max(Math.Abs(r - cNiv.r), Math.Max(Math.Abs(v - cNiv.v), Math.Abs(b - cNiv.b)));
+						break;
+					default:
+						dist = Math.Abs(r - cNiv.r) + Math.Abs(v - cNiv.v) + Math.Abs(b - cNiv.b);
+						break;
+				}
+				if (dist < minDist) {
+					ret = n;
+					minDist = dist;
 				}
 			}
-			return niveaux[retNiveau];
+			niveaux[ret].nbR += r;
+			niveaux[ret].nbV += v;
+			niveaux[ret].nbB += b;
+			niveaux[ret].nbPixels++;
+			return niveaux[ret];
+		}
+	}
+
+	public class Niveau {
+		public RvbColor couleurNiveau;
+		public int nbR, nbV, nbB, nbPixels;
+
+		public Niveau(byte r, byte v, byte b) {
+			couleurNiveau = new RvbColor(r, v, b);
+			Reset();
+		}
+
+		public void Reset() {
+			nbR = nbV = nbB = nbPixels = 0;
+		}
+
+		public void SetNiveauMoyen() {
+			couleurNiveau.r = nbPixels > 0 ? (byte)(nbR / nbPixels) : (byte)0;
+			couleurNiveau.v = nbPixels > 0 ? (byte)(nbV / nbPixels) : (byte)0;
+			couleurNiveau.b = nbPixels > 0 ? (byte)(nbB / nbPixels) : (byte)0;
 		}
 	}
 }
