@@ -1,6 +1,4 @@
 ﻿using System;
-using static ConvImgCpc.Conversion;
-
 
 namespace ConvImgCpc {
 	public static partial class Conversion {
