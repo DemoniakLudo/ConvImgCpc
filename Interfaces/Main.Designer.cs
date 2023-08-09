@@ -1286,7 +1286,8 @@
 			this.comboPackMethode.Items.AddRange(new object[] {
             "ZX0",
             "ZX1",
-            "Standard"});
+            "Standard",
+			"ZX0Ovs"});
 			this.comboPackMethode.Location = new System.Drawing.Point(145, 166);
 			this.comboPackMethode.Name = "comboPackMethode";
 			this.comboPackMethode.Size = new System.Drawing.Size(90, 21);
