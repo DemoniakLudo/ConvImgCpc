@@ -379,9 +379,10 @@ namespace ConvImgCpc {
 			else {
 				sw.WriteLine("Palette:");
 				string line = "\tDB\t";
-				for (int i = 0; i < 17; i++)
-					line += "#" + ((int)Cpc.CpcVGA[Cpc.Palette[i < Cpc.MaxPen() ? i : 0]]).ToString("X2") + ",";
-
+				for (int i = 0; i < 17; i++) {
+					int k = Cpc.Palette[i < Cpc.MaxPen() ? i : 0];
+					line += "#" + ((int)Cpc.CpcVGA[k < 27 ? k : 0]).ToString("X2") + ",";
+				}
 				line += "#" + ((Cpc.modeVirtuel == 7 ? 1 : Cpc.modeVirtuel & 3) | 0x8C).ToString("X2");
 				sw.WriteLine(line);
 			}
@@ -454,7 +455,7 @@ namespace ConvImgCpc {
 					sw.WriteLine("Boucle2:");
 				}
 				else
-					sw.WriteLine("	JR	Z,Debut");
+					sw.WriteLine("	RET	Z");
 			}
 			if (delai) {
 				sw.WriteLine("	LD	A,(IX+2)");
