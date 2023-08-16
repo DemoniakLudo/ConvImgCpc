@@ -54,6 +54,7 @@ namespace ConvImgCpc {
 					break;
 
 				case Main.PackMethode.ZX0:
+				case Main.PackMethode.ZX0Ovs:
 					GenereDZX0(sw, jumpLabel);
 					break;
 
@@ -348,12 +349,10 @@ namespace ConvImgCpc {
 			sw.WriteLine("	INC	HL");
 			sw.WriteLine("	DEC	C");
 			sw.WriteLine("	JR	NZ,Unlock");
-			sw.WriteLine("	LD	BC,#7FA0");
-			sw.WriteLine("	LD	A,(Palette)");
-			sw.WriteLine("	OUT	(C),A");
-			sw.WriteLine("	OUT	(C),C");
 			sw.WriteLine("	LD	BC,#7FB8");
+			sw.WriteLine("	LD	A,(Palette)");
 			sw.WriteLine("	OUT	(C),C");
+			sw.WriteLine("	OUT	(C),A");
 			sw.WriteLine("	LD	HL,Palette+1");
 			sw.WriteLine("	LD	DE,#6400");
 			sw.WriteLine("	LD	BC,#0022");
@@ -963,11 +962,31 @@ namespace ConvImgCpc {
 				GenereInitOld(sw);
 
 			GenereFormatEcran(sw);
-			sw.WriteLine("	LD	HL,ImageCmp");
-			sw.WriteLine("	LD	DE,#" + (overscan ? "0200" : "C000"));
-			sw.WriteLine("	CALL	Depack");
+			if (pkMethode != Main.PackMethode.None) {
+				sw.WriteLine("	LD	HL,ImageCmp");
+				sw.WriteLine("	LD	DE,#" + (overscan ? "0200" : "C000"));
+				sw.WriteLine("	CALL	Depack");
+			}
+			if (pkMethode == Main.PackMethode.ZX0Ovs) {
+				sw.WriteLine("	EX	DE,HL");
+				sw.WriteLine("	DEC	HL");
+				sw.WriteLine("	LD	IX,Zones");
+				sw.WriteLine("LoopDepack:");
+				sw.WriteLine("	LD	A,(IX+1)");
+				sw.WriteLine("	AND	A");
+				sw.WriteLine("	JR	Z,TstSpace");
+				sw.WriteLine("	LD	D,A");
+				sw.WriteLine("	LD	E,(IX+0)");
+				sw.WriteLine("	LD	B,(IX+3)");
+				sw.WriteLine("	LD	C,(IX+2)");
+				sw.WriteLine("	LDDR");
+				sw.WriteLine("	INC	IX");
+				sw.WriteLine("	INC	IX");
+				sw.WriteLine("	INC	IX");
+				sw.WriteLine("	INC	IX");
+				sw.WriteLine("	JR	LoopDepack");
+			}
 			GenereTspace(sw, true, true);
-
 			sw.WriteLine("	LD	BC,#BC0C");
 			sw.WriteLine("	LD	A,#30");
 			sw.WriteLine("	OUT	(C),C");
@@ -976,6 +995,12 @@ namespace ConvImgCpc {
 			sw.WriteLine("	EI");
 			sw.WriteLine("	RET");
 			GenereDepack(sw, pkMethode);
+			if (pkMethode == Main.PackMethode.ZX0Ovs) {
+				sw.WriteLine("Zones:");
+				sw.WriteLine("	DW	#7EBF,#6C0,#76BF,#6C0,#6EBF,#6C0,#66BF,#6C0,#5EBF,#6C0,#56BF,#6C0,#4EBF,#6C0,#46BF,#CC0");
+				sw.WriteLine("	DW	#37FF,#600,#2FFF,#600,#27FF,#600,#1FFF,#600,#17FF,#600,#0FFF,#600 ;,#07FF,#600	; Si decompactage en #200, pas necessaire");
+				sw.WriteLine("	DW	#0");
+			}
 		}
 
 		static public void GenereAfficheModeX(StreamWriter sw, int[,] colMode5, bool isOverscan, Main.PackMethode pkMethode) {

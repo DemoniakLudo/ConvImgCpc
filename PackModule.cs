@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 
 namespace ConvImgCpc {
 	public partial class PackModule : Form {
@@ -51,38 +52,38 @@ namespace ConvImgCpc {
 					}
 					else
 						if ((a & 0x40) != 0) {
-							longueur = 2;
-							delta = bufIn[inBytes++] & 0x3f;
-							delta++;
-						}
-						else
+						longueur = 2;
+						delta = bufIn[inBytes++] & 0x3f;
+						delta++;
+					}
+					else
 							if ((a & 0x20) != 0) {
-								longueur = 2 + (bufIn[inBytes++] & 31);
-								delta = bufIn[inBytes++];
-								delta++;
-							}
-							else
+						longueur = 2 + (bufIn[inBytes++] & 31);
+						delta = bufIn[inBytes++];
+						delta++;
+					}
+					else
 								if ((a & 0x10) != 0) {
-									delta = (bufIn[inBytes++] & 15) << 8;
-									delta |= bufIn[inBytes++];
-									longueur = bufIn[inBytes++] + 1;
-									delta++;
-								}
-								else {
-									if (bufIn[inBytes] == 15) {
-										longueur = delta = bufIn[inBytes + 1] + 1;
-										inBytes += 2;
-									}
-									else {
-										if (bufIn[inBytes] > 1)
-											longueur = delta = bufIn[inBytes];
-										else
-											longueur = delta = 256;
+						delta = (bufIn[inBytes++] & 15) << 8;
+						delta |= bufIn[inBytes++];
+						longueur = bufIn[inBytes++] + 1;
+						delta++;
+					}
+					else {
+						if (bufIn[inBytes] == 15) {
+							longueur = delta = bufIn[inBytes + 1] + 1;
+							inBytes += 2;
+						}
+						else {
+							if (bufIn[inBytes] > 1)
+								longueur = delta = bufIn[inBytes];
+							else
+								longueur = delta = 256;
 
-										inBytes++;
-									}
-								}
-					for (; longueur-- > 0; ) {
+							inBytes++;
+						}
+					}
+					for (; longueur-- > 0;) {
 						bufOut[outBytes] = bufOut[outBytes - delta];
 						outBytes++;
 					}
@@ -435,19 +436,19 @@ namespace ConvImgCpc {
 				}
 				else
 					if (optimal.offset == last_offset) {
-						write_bit(0, output_data);
-						write_interlaced_elias_gammaZX0(optimal.length, output_data);
-						input_index += optimal.length;
-					}
-					else {
-						write_bit(1, output_data);
-						write_interlaced_elias_gammaZX0((optimal.offset - 1) / 128 + 1, output_data);
-						output_data[output_index++] = (byte)((255 - ((optimal.offset - 1) % 128)) << 1);
-						backtrack = true;
-						write_interlaced_elias_gammaZX0(optimal.length - 1, output_data);
-						input_index += optimal.length;
-						last_offset = optimal.offset;
-					}
+					write_bit(0, output_data);
+					write_interlaced_elias_gammaZX0(optimal.length, output_data);
+					input_index += optimal.length;
+				}
+				else {
+					write_bit(1, output_data);
+					write_interlaced_elias_gammaZX0((optimal.offset - 1) / 128 + 1, output_data);
+					output_data[output_index++] = (byte)((255 - ((optimal.offset - 1) % 128)) << 1);
+					backtrack = true;
+					write_interlaced_elias_gammaZX0(optimal.length - 1, output_data);
+					input_index += optimal.length;
+					last_offset = optimal.offset;
+				}
 			}
 			write_bit(1, output_data);
 			write_interlaced_elias_gammaZX0(256, output_data);
@@ -546,23 +547,23 @@ namespace ConvImgCpc {
 				}
 				else
 					if (optimal.offset == last_offset) {
-						write_bit(0, output_data);
-						write_interlaced_elias_gammaZX1(optimal.length, output_data);
-						input_index += optimal.length;
+					write_bit(0, output_data);
+					write_interlaced_elias_gammaZX1(optimal.length, output_data);
+					input_index += optimal.length;
+				}
+				else {
+					write_bit(1, output_data);
+					if (optimal.offset > 128) {
+						output_data[output_index++] = (byte)(255 - ((optimal.offset - 1) & 254));
+						output_data[output_index++] = (byte)(252 - (optimal.offset - 1) / 256 * 2 + optimal.offset % 2);
 					}
-					else {
-						write_bit(1, output_data);
-						if (optimal.offset > 128) {
-							output_data[output_index++] = (byte)(255 - ((optimal.offset - 1) & 254));
-							output_data[output_index++] = (byte)(252 - (optimal.offset - 1) / 256 * 2 + optimal.offset % 2);
-						}
-						else
-							output_data[output_index++] = (byte)(256 - optimal.offset * 2);
+					else
+						output_data[output_index++] = (byte)(256 - optimal.offset * 2);
 
-						write_interlaced_elias_gammaZX1(optimal.length - 1, output_data);
-						input_index += optimal.length;
-						last_offset = optimal.offset;
-					}
+					write_interlaced_elias_gammaZX1(optimal.length - 1, output_data);
+					input_index += optimal.length;
+					last_offset = optimal.offset;
+				}
 			}
 			write_bit(1, output_data);
 			output_data[output_index++] = 255;
@@ -589,6 +590,20 @@ namespace ConvImgCpc {
 
 				case Main.PackMethode.ZX1:
 					ret = PackZX1(bufIn, lengthIn, bufOut, lengthOut);
+					break;
+
+				case Main.PackMethode.ZX0Ovs:
+					byte[] bufTmp = new byte[0x8000];
+					int posIn = 0, posOut = 0;
+					for (int i = 0; i < 15; i++) {
+						//Console.WriteLine("PosIn:" + (posIn + 0x200).ToString("X4") + ", posOut:" + (posOut + 0x200).ToString("X4"));
+						int lIn = i < 7 ? 0x600 : i == 7 ? 0xCC0 : 0x6C0;
+						Array.Copy(bufIn, posIn, bufTmp, posOut, lIn);
+						posIn += i != 7 ? 0x800 : 0xE00;
+						posOut += lIn;
+					}
+					//Console.WriteLine("Final - PosIn:" + (posIn + 0x200).ToString("X4") + ", posOut:" + (posOut + 0x200).ToString("X4"));
+					ret = PackZX0(bufTmp, posOut, bufOut, lengthOut);
 					break;
 			}
 			return ret;

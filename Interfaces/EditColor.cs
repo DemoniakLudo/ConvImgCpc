@@ -91,9 +91,9 @@ namespace ConvImgCpc {
 
 		private void NewColor() {
 			try {
-				int r = GetCompValue(tabVal[0].Text);
-				int v = GetCompValue(tabVal[1].Text);
-				int b = GetCompValue(tabVal[2].Text);
+				int r = tabVal[0] != null ? GetCompValue(tabVal[0].Text) : 0;
+				int v = tabVal[1] != null ? GetCompValue(tabVal[1].Text) : 0;
+				int b = tabVal[2] != null ? GetCompValue(tabVal[2].Text) : 0;
 				valColor = (v << 8) + (b << 4) + r;
 				selColor.BackColor = Color.FromArgb(r * 17, v * 17, b * 17);
 			}

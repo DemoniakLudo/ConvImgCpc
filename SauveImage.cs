@@ -530,6 +530,9 @@ namespace ConvImgCpc {
 			short exec = (short)(overscan ? main.param.cpcPlus ? 0x821 : 0x811 : 0xC7D0);
 			CpcAmsdos entete;
 			int lg = Cpc.BitmapSize;
+			if (compact == Main.PackMethode.ZX0Ovs && (Cpc.NbLig != 272 || Cpc.NbCol != 96))
+				compact = Main.PackMethode.ZX0;
+
 			if (compact != Main.PackMethode.None) {
 				lg = new PackModule().Pack(bitmapCpc.bmpCpc, lg, bufPack, 0, compact);
 				if (main.param.withCode && format != Main.OutputFormat.Assembler) {
@@ -700,7 +703,7 @@ namespace ConvImgCpc {
 					if (param.cpcPlus) {
 						for (int i = 0; i < 16; i++) {
 							int r = 0, v = 0, b = 0;
-							for (int k = 26; k-- > 0; ) {
+							for (int k = 26; k-- > 0;) {
 								if (pal[3 + i * 12] == (byte)Cpc.CpcVGA[k])
 									r = (26 - k) << 4;
 
