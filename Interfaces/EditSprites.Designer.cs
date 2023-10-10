@@ -70,6 +70,7 @@
 			this.bpCopyBank = new System.Windows.Forms.Button();
 			this.bpPasteBank = new System.Windows.Forms.Button();
 			this.numBanks = new System.Windows.Forms.NumericUpDown();
+			this.rbPosSpr = new System.Windows.Forms.RadioButton();
 			((System.ComponentModel.ISupportInitialize)(this.zoomX)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.zoomY)).BeginInit();
 			this.grpEdition.SuspendLayout();
@@ -137,7 +138,7 @@
 			// rb2Sprite
 			// 
 			this.rb2Sprite.AutoSize = true;
-			this.rb2Sprite.Location = new System.Drawing.Point(832, 176);
+			this.rb2Sprite.Location = new System.Drawing.Point(831, 176);
 			this.rb2Sprite.Name = "rb2Sprite";
 			this.rb2Sprite.Size = new System.Drawing.Size(42, 17);
 			this.rb2Sprite.TabIndex = 9;
@@ -147,7 +148,7 @@
 			// rb4Sprite
 			// 
 			this.rb4Sprite.AutoSize = true;
-			this.rb4Sprite.Location = new System.Drawing.Point(880, 176);
+			this.rb4Sprite.Location = new System.Drawing.Point(878, 176);
 			this.rb4Sprite.Name = "rb4Sprite";
 			this.rb4Sprite.Size = new System.Drawing.Size(42, 17);
 			this.rb4Sprite.TabIndex = 9;
@@ -156,9 +157,9 @@
 			// 
 			// bpTest
 			// 
-			this.bpTest.Location = new System.Drawing.Point(1229, 172);
+			this.bpTest.Location = new System.Drawing.Point(1262, 172);
 			this.bpTest.Name = "bpTest";
-			this.bpTest.Size = new System.Drawing.Size(75, 23);
+			this.bpTest.Size = new System.Drawing.Size(42, 23);
 			this.bpTest.TabIndex = 10;
 			this.bpTest.Text = "Test !";
 			this.bpTest.UseVisualStyleBackColor = true;
@@ -166,7 +167,7 @@
 			// 
 			// zoomX
 			// 
-			this.zoomX.Location = new System.Drawing.Point(1097, 174);
+			this.zoomX.Location = new System.Drawing.Point(1133, 174);
 			this.zoomX.Maximum = new decimal(new int[] {
             3,
             0,
@@ -188,7 +189,7 @@
 			// 
 			// zoomY
 			// 
-			this.zoomY.Location = new System.Drawing.Point(1186, 174);
+			this.zoomY.Location = new System.Drawing.Point(1219, 174);
 			this.zoomY.Maximum = new decimal(new int[] {
             3,
             0,
@@ -211,7 +212,7 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(1053, 178);
+			this.label3.Location = new System.Drawing.Point(1089, 178);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(44, 13);
 			this.label3.TabIndex = 12;
@@ -220,7 +221,7 @@
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(1142, 178);
+			this.label4.Location = new System.Drawing.Point(1175, 178);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(44, 13);
 			this.label4.TabIndex = 12;
@@ -292,7 +293,7 @@
 			// rb42Sprite
 			// 
 			this.rb42Sprite.AutoSize = true;
-			this.rb42Sprite.Location = new System.Drawing.Point(928, 176);
+			this.rb42Sprite.Location = new System.Drawing.Point(925, 176);
 			this.rb42Sprite.Name = "rb42Sprite";
 			this.rb42Sprite.Size = new System.Drawing.Size(53, 17);
 			this.rb42Sprite.TabIndex = 27;
@@ -538,11 +539,17 @@
 			this.pictTest.Size = new System.Drawing.Size(512, 512);
 			this.pictTest.TabIndex = 8;
 			this.pictTest.TabStop = false;
+			this.pictTest.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictTest_MouseDown);
+			this.pictTest.MouseEnter += new System.EventHandler(this.pictTest_MouseEnter);
+			this.pictTest.MouseLeave += new System.EventHandler(this.pictTest_MouseLeave);
+			this.pictTest.MouseHover += new System.EventHandler(this.pictTest_MouseHover);
+			this.pictTest.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictTest_MouseMove);
+			this.pictTest.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictTest_MouseUp);
 			// 
 			// rb28sprite
 			// 
 			this.rb28sprite.AutoSize = true;
-			this.rb28sprite.Location = new System.Drawing.Point(987, 176);
+			this.rb28sprite.Location = new System.Drawing.Point(983, 176);
 			this.rb28sprite.Name = "rb28sprite";
 			this.rb28sprite.Size = new System.Drawing.Size(42, 17);
 			this.rb28sprite.TabIndex = 31;
@@ -597,11 +604,22 @@
             0,
             0});
 			// 
+			// rbPosSpr
+			// 
+			this.rbPosSpr.AutoSize = true;
+			this.rbPosSpr.Location = new System.Drawing.Point(1028, 176);
+			this.rbPosSpr.Name = "rbPosSpr";
+			this.rbPosSpr.Size = new System.Drawing.Size(59, 17);
+			this.rbPosSpr.TabIndex = 35;
+			this.rbPosSpr.Text = "SetPos";
+			this.rbPosSpr.UseVisualStyleBackColor = true;
+			// 
 			// EditSprites
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1305, 708);
+			this.Controls.Add(this.rbPosSpr);
 			this.Controls.Add(this.numBanks);
 			this.Controls.Add(this.bpPasteBank);
 			this.Controls.Add(this.bpCopyBank);
@@ -708,5 +726,6 @@
 		private System.Windows.Forms.Button bpCopyBank;
 		private System.Windows.Forms.Button bpPasteBank;
 		private System.Windows.Forms.NumericUpDown numBanks;
+		private System.Windows.Forms.RadioButton rbPosSpr;
 	}
 }

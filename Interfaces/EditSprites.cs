@@ -16,6 +16,8 @@ namespace ConvImgCpc {
 		private Label lblRectSelSprite = new Label();
 		private int tickTimer;
 		private int lineStartX = -1, lineStartY = -1;
+		private int[] posXSprite = new int[16];
+		private int[] posYSprite = new int[16];
 
 		public EditSprites(Main m, Main.PackMethode pk) {
 			InitializeComponent();
@@ -135,7 +137,7 @@ namespace ConvImgCpc {
 			bpSuiv.Visible = numSprite < 15 || numBank < 7;
 			for (int y = 0; y < 16; y++) {
 				for (int x = 0; x < 16; x++) {
-					int col = Cpc.paletteSprite[Cpc.spritesHard[numBank, numSprite, x, y]&0x0F];
+					int col = Cpc.paletteSprite[Cpc.spritesHard[numBank, numSprite, x, y] & 0x0F];
 					RvbColor c = Cpc.GetColor(col);
 					for (int zx = 0; zx < 38; zx++)
 						for (int zy = 0; zy < 38; zy++)
@@ -146,7 +148,7 @@ namespace ConvImgCpc {
 		}
 
 		private void SetPixelSprite(int x, int y) {
-			int col = Cpc.paletteSprite[Cpc.spritesHard[numBank, numSprite, x, y]&0x0F];
+			int col = Cpc.paletteSprite[Cpc.spritesHard[numBank, numSprite, x, y] & 0x0F];
 			RvbColor c = Cpc.GetColor(col);
 			for (int zx = 0; zx < 38; zx++)
 				for (int zy = 0; zy < 38; zy++)
@@ -326,36 +328,36 @@ namespace ConvImgCpc {
 					}
 					else
 						if (lineStartX == -1 && lineStartY == -1) {
-							lineStartX = x;
-							lineStartY = y;
-							for (x = 0; x < 16; x++)
-								for (y = 0; y < 16; y++)
-									tempSprite[x + 16 * y, 0] = Cpc.spritesHard[numBank, numSprite, x, y];
-						}
-						else {
-							for (int x1 = 0; x1 < 16; x1++)
-								for (int y1 = 0; y1 < 16; y1++)
-									Cpc.spritesHard[numBank, numSprite, x1, y1] = tempSprite[x1 + 16 * y1, 0];
+						lineStartX = x;
+						lineStartY = y;
+						for (x = 0; x < 16; x++)
+							for (y = 0; y < 16; y++)
+								tempSprite[x + 16 * y, 0] = Cpc.spritesHard[numBank, numSprite, x, y];
+					}
+					else {
+						for (int x1 = 0; x1 < 16; x1++)
+							for (int y1 = 0; y1 < 16; y1++)
+								Cpc.spritesHard[numBank, numSprite, x1, y1] = tempSprite[x1 + 16 * y1, 0];
 
-							DrawLine(lineStartX, lineStartY, x, y);
-						}
+						DrawLine(lineStartX, lineStartY, x, y);
+					}
 				}
 				else
 					if (e.Button == MouseButtons.Right) {
-						Cpc.spritesHard[numBank, numSprite, x, y] = 0;
-						SetPixelSprite(x, y);
-					}
-					else
+					Cpc.spritesHard[numBank, numSprite, x, y] = 0;
+					SetPixelSprite(x, y);
+				}
+				else
 						if (lineStartX != -1 && lineStartY != -1) {
-							for (int x1 = 0; x1 < 16; x1++)
-								for (int y1 = 0; y1 < 16; y1++)
-									Cpc.spritesHard[numBank, numSprite, x1, y1] = tempSprite[x1 + 16 * y1, 0];
+					for (int x1 = 0; x1 < 16; x1++)
+						for (int y1 = 0; y1 < 16; y1++)
+							Cpc.spritesHard[numBank, numSprite, x1, y1] = tempSprite[x1 + 16 * y1, 0];
 
-							DrawLine(lineStartX, lineStartY, x, y, true);
-							lineStartX = lineStartY = -1;
-						}
+					DrawLine(lineStartX, lineStartY, x, y, true);
+					lineStartX = lineStartY = -1;
+				}
 
-				lblRectSelColor.Location = new Point(726, 70 + col * 40);		// Mise en évidence couleur sous la souris
+				lblRectSelColor.Location = new Point(726, 70 + col * 40);       // Mise en évidence couleur sous la souris
 			}
 			else
 				lblRectSelColor.Location = new Point(1200, 1200);
@@ -479,7 +481,7 @@ namespace ConvImgCpc {
 				Enabled = false;
 				try {
 					int maxSprite = GetLastSprite(allBank);
-					int size = allBank ? Convert.ToInt32(numBanks.Value) * 0x1000: 0x1000;
+					int size = allBank ? Convert.ToInt32(numBanks.Value) * 0x1000 : 0x1000;
 					byte[] buffer = new byte[size];
 					int pos = 0;
 					int startBank = allBank ? 0 : numBank;
@@ -662,7 +664,7 @@ namespace ConvImgCpc {
 					for (int zx = 0; zx < taillex; zx++)
 						for (int zy = 0; zy < tailley; zy++) {
 							if (zx + (x * taillex) + ofsx < 512 && zy + (y * tailley) + ofsy < 512) {
-								int col = Cpc.paletteSprite[Cpc.spritesHard[numBank, spr, x, y]&0x0F];
+								int col = Cpc.paletteSprite[Cpc.spritesHard[numBank, spr, x, y] & 0x0F];
 								RvbColor c = Cpc.GetColor(col);
 								bmp.SetPixel(zx + (x * taillex) + ofsx, zy + (y * tailley) + ofsy, c);
 							}
@@ -682,7 +684,10 @@ namespace ConvImgCpc {
 				for (int x = 0; x < 512; x++)
 					bmpTest.SetPixel(x, y, 0);
 
-			if (rb28sprite.Checked) {
+			if (rbPosSpr.Checked) {
+			}
+			else
+				if (rb28sprite.Checked) {
 				for (int y = 0; y < 2; y++)
 					for (int x = 0; x < 4; x++)
 						DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
@@ -692,26 +697,89 @@ namespace ConvImgCpc {
 						DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
 			}
 			else
-				if (rb42Sprite.Checked) {
-					for (int y = 0; y < 4; y++)
-						for (int x = 0; x < 2; x++)
-							DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
+					if (rb42Sprite.Checked) {
+				for (int y = 0; y < 4; y++)
+					for (int x = 0; x < 2; x++)
+						DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
 
-					for (int y = 0; y < 4; y++)
-						for (int x = 2; x < 4; x++)
-							DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
-				}
-				else {
-					for (int y = 0; y < nb; y++)
-						for (int x = 0; x < nb; x++)
-							DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
-				}
+				for (int y = 0; y < 4; y++)
+					for (int x = 2; x < 4; x++)
+						DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
+			}
+			else {
+				for (int y = 0; y < nb; y++)
+					for (int x = 0; x < nb; x++)
+						DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
+			}
 			pictTest.Refresh();
 		}
 
 		private void bpGenPal_Click(object sender, EventArgs e) {
 			GenPalette g = new GenPalette(Cpc.paletteSprite, 1, DoGenPal);
 			g.ShowDialog();
+		}
+
+		int oldPosx = -1, oldPosy = -1;
+
+		private void pictTest_MouseEnter(object sender, EventArgs e) {
+			//if (rbPosSpr.Checked) {
+			//	//selSprite = -1;
+
+			//	if (oldPosx != -1 && oldPosy != -1) {
+
+			//	}
+			//}
+
+		}
+
+		private void pictTest_MouseMove(object sender, MouseEventArgs e) {
+			if (rbPosSpr.Checked) {
+				int taillex = (1 << (int)zoomX.Value) << 4;
+				int tailley = (2 << (int)zoomY.Value) << 4;
+				int posx = (e.X / taillex) * taillex;
+				int posy = (e.Y / tailley) * tailley;
+				Graphics g = Graphics.FromImage(pictTest.Image);
+				if (oldPosx > -1 && oldPosy > -1) {
+					XorDrawing.DrawXorRectangle(g, (Bitmap)pictTest.Image, oldPosx, oldPosy, oldPosx + taillex, oldPosy + tailley);
+				}
+				oldPosx = posx;
+				oldPosy = posy;
+				XorDrawing.DrawXorRectangle(g, (Bitmap)pictTest.Image, oldPosx, oldPosy, oldPosx + taillex, oldPosy + tailley);
+				pictTest.Refresh();
+			}
+		}
+
+		private void pictTest_MouseLeave(object sender, EventArgs e) {
+			if (rbPosSpr.Checked) {
+				Graphics g = Graphics.FromImage(pictTest.Image);
+				int taillex = (1 << (int)zoomX.Value) << 4;
+				int tailley = (2 << (int)zoomY.Value) << 4;
+				if (oldPosx > -1 && oldPosy > -1) {
+					XorDrawing.DrawXorRectangle(g, (Bitmap)pictTest.Image, oldPosx, oldPosy, oldPosx + taillex, oldPosy + tailley);
+					pictTest.Refresh();
+					oldPosx = oldPosy = -1;
+				}
+			}
+		}
+
+		private void pictTest_MouseDown(object sender, MouseEventArgs e) {
+			if (rbPosSpr.Checked) {
+				Graphics g = Graphics.FromImage(pictTest.Image);
+				int taillex = (1 << (int)zoomX.Value) << 4;
+				int tailley = (2 << (int)zoomY.Value) << 4;
+				XorDrawing.DrawXorRectangle(g, (Bitmap)pictTest.Image, oldPosx, oldPosy, oldPosx + taillex, oldPosy + tailley);
+				pictTest.Refresh();
+				DrawSpriteTest(bmpTest, numSprite, oldPosx, oldPosy);
+				oldPosx = oldPosy = -1;
+			}
+		}
+
+		private void pictTest_MouseUp(object sender, MouseEventArgs e) {
+
+		}
+
+		private void pictTest_MouseHover(object sender, EventArgs e) {
+
 		}
 
 		private void DoGenPal() {
@@ -762,7 +830,7 @@ namespace ConvImgCpc {
 		}
 
 		private void bpPasteBank_Click(object sender, EventArgs e) {
-			for (int s = 0; s<16; s++)
+			for (int s = 0; s < 16; s++)
 				for (int y = 0; y < 16; y++)
 					for (int x = 0; x < 16; x++)
 						Cpc.spritesHard[numBank, s, x, y] = tempSprite[x + y * 16, s];
