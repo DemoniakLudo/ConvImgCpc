@@ -26,14 +26,17 @@ namespace ConvImgCpc {
 
 		private void trkStartR_Scroll(object sender, EventArgs e) {
 			txbStartR.Text = trkStartR.Value.ToString();
+			CalcPalette();
 		}
 
 		private void trkStartV_Scroll(object sender, EventArgs e) {
 			txbStartV.Text = trkStartV.Value.ToString();
+			CalcPalette();
 		}
 
 		private void trkStartB_Scroll(object sender, EventArgs e) {
 			txbStartB.Text = trkStartB.Value.ToString();
+			CalcPalette();
 		}
 
 		private void txbStartR_TextChanged(object sender, EventArgs e) {
