@@ -306,6 +306,24 @@ namespace ConvImgCpc {
 			return ret;
 		}
 
+		private byte[] MakeWin() {
+			byte[] ret = new byte[(imgMotif.Width * imgMotif.Height) >> 4];
+			Array.Clear(ret, 0, ret.Length);
+			for (int y = 0; y < imgMotif.Height; y += 2) {
+				int tx = Cpc.CalcTx(y);
+				for (int x = 0; x < imgMotif.Width; x += 8) {
+					byte octet = 0;
+					for (int p = 0; p < 8; p++)
+						if ((p % tx) == 0) {
+							int pen = Cpc.GetPenColor(imgMotif, x + p, y);
+							octet |= (byte)(Cpc.tabOctetMode[pen] >> (p / tx));
+						}
+					ret[(x >> 3) + (y >> 1) * (imgMotif.Width >> 3)] = octet;
+				}
+			}
+			return ret;
+		}
+
 		public void SauveSprite(string fileName, string version) {
 			byte[] ret = MakeSprite();
 			StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
@@ -748,7 +766,19 @@ namespace ConvImgCpc {
 			SaveFileDialog dlg = new SaveFileDialog();
 			dlg.Filter = " (*.win)|*.win";
 			if (dlg.ShowDialog() == DialogResult.OK) {
-
+				FileStream fileScr = new FileStream(dlg.FileName, FileMode.Create, FileAccess.Write);
+				byte[] bWin = MakeWin();
+				int l = bWin.Length + 4;
+				CpcAmsdos entete = Cpc.CreeEntete(dlg.FileName, 0x4000, (short)l, -13622);
+				fileScr.Write(Cpc.AmsdosToByte(entete), 0, 128);
+				fileScr.Write(bWin, 0, bWin.Length);
+				byte[] endFile = new byte[4];
+				endFile[0] = (byte)(imgMotif.Width & 0xFF);
+				endFile[1] = (byte)(imgMotif.Width >> 8);
+				endFile[2] = (byte)((imgMotif.Height>> 1 ) & 0xFF);
+				endFile[3] = (byte)(imgMotif.Height >> 9);
+				fileScr.Write(endFile, 0, 4);
+				fileScr.Close();
 			}
 			Enabled = true;
 		}
