@@ -93,7 +93,7 @@ namespace ConvImgCpc {
 		private void modeCaptureSprites_CheckedChanged(object sender, EventArgs e) {
 			if (modeCaptureSprites.Checked) {
 				main.Enabled = false;
-				fenetreCapture = new Capture(main);
+				fenetreCapture = new Capture(main, this);
 				fenetreCapture.Show();
 			}
 			else {

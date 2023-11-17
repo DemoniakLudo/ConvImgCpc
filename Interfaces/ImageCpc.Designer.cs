@@ -530,7 +530,7 @@
 		private System.Windows.Forms.Label undrawColor;
 		private System.Windows.Forms.RadioButton rbCopy;
 		private System.Windows.Forms.Label lblInfoPos;
-		private System.Windows.Forms.CheckBox modeCaptureSprites;
+		public System.Windows.Forms.CheckBox modeCaptureSprites;
 		private System.Windows.Forms.Button bpCopyPal;
 		private System.Windows.Forms.PictureBox pictImpDraw;
 		private System.Windows.Forms.Button bpHorFlip;

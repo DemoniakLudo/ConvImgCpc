@@ -182,7 +182,6 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(800, 535);
-			this.ControlBox = false;
 			this.Controls.Add(this.txbNbY);
 			this.Controls.Add(this.txbNbX);
 			this.Controls.Add(this.lblNbY);
@@ -204,6 +203,7 @@
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Capture sprites hard";
+			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Capture_FormClosed);
 			((System.ComponentModel.ISupportInitialize)(this.pictCapture)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numSprite)).EndInit();
 			this.ResumeLayout(false);
