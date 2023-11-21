@@ -558,7 +558,7 @@ namespace ConvImgCpc {
 		}
 
 		public void LirePalette(string fileName, Param param) {
-			if (SauveImage.LirePalette(fileName, this, param)) {
+			if (SauveImage.LirePalette(fileName, param)) {
 				UpdatePalette();
 				main.SetInfo("Lecture palette ok.");
 			}
@@ -569,7 +569,7 @@ namespace ConvImgCpc {
 		}
 
 		public void LirePaletteKit(string fileName, Param param) {
-			if (SauveImage.LirePaletteKit(fileName, this, param)) {
+			if (SauveImage.LirePaletteKit(fileName)) {
 				UpdatePalette();
 				main.SetInfo("Lecture palette ok.");
 			}
@@ -580,7 +580,7 @@ namespace ConvImgCpc {
 		}
 
 		public void SauvePalette(string fileName, Param param) {
-			SauveImage.SauvePalette(fileName, this, param);
+			SauveImage.SauvePalette(fileName, param);
 			main.SetInfo("Sauvegarde palette ok.");
 		}
 
@@ -775,7 +775,7 @@ namespace ConvImgCpc {
 				byte[] endFile = new byte[4];
 				endFile[0] = (byte)(imgMotif.Width & 0xFF);
 				endFile[1] = (byte)(imgMotif.Width >> 8);
-				endFile[2] = (byte)((imgMotif.Height>> 1 ) & 0xFF);
+				endFile[2] = (byte)((imgMotif.Height >> 1) & 0xFF);
 				endFile[3] = (byte)(imgMotif.Height >> 9);
 				fileScr.Write(endFile, 0, 4);
 				fileScr.Close();

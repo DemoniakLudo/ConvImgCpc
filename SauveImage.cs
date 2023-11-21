@@ -659,18 +659,19 @@ namespace ConvImgCpc {
 			return (lg);
 		}
 
-		static public void SauvePalette(string NomFic, ImageCpc bitmapCpc, Param param) {
+		static public void SauvePalette(string NomFic, Param param) {
 			int i;
 			byte[] pal = new byte[239];
 
 			pal[0] = (byte)param.modeVirtuel;
 			int indexPal = 3;
 			if (param.cpcPlus) {
-				for (i = 0; i < 16; i++) {
-					pal[indexPal++] = (byte)Cpc.CpcVGA[26 - ((Cpc.Palette[i] >> 4) & 0x0F)];
-					pal[indexPal++] = (byte)Cpc.CpcVGA[26 - (Cpc.Palette[i] & 0x0F)];
-					pal[indexPal++] = (byte)Cpc.CpcVGA[26 - ((Cpc.Palette[i] >> 8) & 0x0F)];
-				}
+				for (i = 0; i < 16; i++)
+					for (int j = 0; j < 4; j++) {
+						pal[indexPal++] = (byte)Cpc.CpcVGA[26 - ((Cpc.Palette[i] >> 4) & 0x0F)];
+						pal[indexPal++] = (byte)Cpc.CpcVGA[26 - (Cpc.Palette[i] & 0x0F)];
+						pal[indexPal++] = (byte)Cpc.CpcVGA[26 - ((Cpc.Palette[i] >> 8) & 0x0F)];
+					}
 				pal[195] = pal[3];
 				pal[196] = pal[4];
 				pal[197] = pal[5];
@@ -690,7 +691,7 @@ namespace ConvImgCpc {
 			fp.Close();
 		}
 
-		static public bool LirePalette(string NomFic, ImageCpc bitmapCpc, Param param) {
+		static public bool LirePalette(string NomFic, Param param) {
 			byte[] entete = new byte[0x80];
 			byte[] pal = new byte[239];
 
@@ -728,7 +729,7 @@ namespace ConvImgCpc {
 			return (false);
 		}
 
-		static public bool LirePaletteKit(string NomFic, ImageCpc bitmapCpc, Param param) {
+		static public bool LirePaletteKit(string NomFic) {
 			if (File.Exists(NomFic)) {
 				FileStream fileScr = new FileStream(NomFic, FileMode.Open, FileAccess.Read);
 				byte[] tabBytes = new byte[fileScr.Length];
