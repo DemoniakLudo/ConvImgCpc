@@ -450,7 +450,7 @@ namespace ConvImgCpc {
 			tabMem[offset + 1] = (byte)(value >> 8);
 		}
 
-		static public int SauveScr(string fileName, BitmapCpc bitmapCpc, Main main, Main.PackMethode compact, Main.OutputFormat format, string version = null, int[,] colMode5 = null) {
+		static public int SauveScr(string fileName, BitmapCpc bitmapCpc, Main main, Main.PackMethode compact, Main.OutputFormat format, Param param, string version = null, int[,] colMode5 = null) {
 			byte[] bufPack = new byte[0x8000];
 			bool overscan = (Cpc.NbLig * Cpc.NbCol > 0x3F00);
 			if (main.param.withPalette && format != Main.OutputFormat.Assembler) {
@@ -613,7 +613,7 @@ namespace ConvImgCpc {
 						}
 					}
 					if ((main.param.withPalette || main.param.withCode) && (Cpc.modeVirtuel < 3 || Cpc.modeVirtuel > 5))
-						SaveAsm.GenerePalette(sw, true);
+						SaveAsm.GenerePalette(sw,param,  true);
 
 					SaveAsm.CloseAsm(sw);
 					break;

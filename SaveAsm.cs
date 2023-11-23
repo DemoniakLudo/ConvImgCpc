@@ -361,26 +361,27 @@ namespace ConvImgCpc {
 			sw.WriteLine("	OUT	(C),C");
 		}
 
-		static public void GenerePalette(StreamWriter sw, bool withUnlockAsic) {
+		static public void GenerePalette(StreamWriter sw, Param p, bool withUnlockAsic) {
 			if (Cpc.cpcPlus) {
 				if (withUnlockAsic) {
 					sw.WriteLine("UnlockAsic:");
 					sw.WriteLine("	DB	#FF,#00,#FF,#77,#B3,#51,#A8,#D4,#62,#39,#9C,#46,#2B,#15,#8A,#CD,#EE");
 				}
 				sw.WriteLine("Palette:");
-				string line = "\tDB\t#" + ((Cpc.modeVirtuel == 7 ? 1 : Cpc.modeVirtuel & 3) | 0x8C).ToString("X2");
+				sw.WriteLine("\tDB\t#" + ((Cpc.modeVirtuel == 7 ? 1 : Cpc.modeVirtuel & 3) | 0x8C).ToString("X2"));
+				string line = "	DW	";
 				for (int i = 0; i < 17; i++) {
-					int c = Cpc.Palette[i < Cpc.MaxPen() ? i : 0];
-					line += ",#" + ((byte)(((c >> 4) & 0x0F) | (c << 4))).ToString("X2") + ",#" + ((byte)(c >> 8)).ToString("X2");
+					int c = i >= 16 || p.lockState[i] == 0 ? Cpc.Palette[i < Cpc.MaxPen() ? i : 0] : 0xFFFF;
+					line += "#" + ((byte)(c >> 8)).ToString("X1") + ((byte)(((c >> 4) & 0x0F) | (c << 4))).ToString("X2") + ",";
 				}
-				sw.WriteLine(line);
+				sw.WriteLine(line.Substring(0, line.Length - 1));
 			}
 			else {
 				sw.WriteLine("Palette:");
 				string line = "\tDB\t";
 				for (int i = 0; i < 17; i++) {
-					int k = Cpc.Palette[i < Cpc.MaxPen() ? i : 0];
-					line += "#" + ((int)Cpc.CpcVGA[k < 27 ? k : 0]).ToString("X2") + ",";
+					int k = i >= 16 || p.lockState[i] == 0 ? Cpc.Palette[i < Cpc.MaxPen() ? i : 0] : -1;
+					line += "#" + (k == -1 ? "FF" : ((int)Cpc.CpcVGA[k < 27 ? k : 0]).ToString("X2")) + ",";
 				}
 				line += "#" + ((Cpc.modeVirtuel == 7 ? 1 : Cpc.modeVirtuel & 3) | 0x8C).ToString("X2");
 				sw.WriteLine(line);
@@ -644,7 +645,7 @@ namespace ConvImgCpc {
 			}
 			else
 				if (frameO)
-					sw.WriteLine("	LD	HL,Buffer");
+				sw.WriteLine("	LD	HL,Buffer");
 
 			if (!frameD) {
 				sw.WriteLine("	LD	BC," + (overscan ? "#0200" : "#C000"));

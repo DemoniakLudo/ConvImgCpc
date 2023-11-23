@@ -114,10 +114,10 @@ namespace ConvImgCpc {
 										string fs = f.Substring(0, f.IndexOf(Path.GetExtension(f))) + (isAsm ? ".ASM" : pkMethode == PackMethode.None ? ".SCR" : ".CMP");
 										info.SetInfos("Sauvegarde " + fs);
 										if (!isAsm && pkMethode == PackMethode.None)
-											imgCpc.SauveScr(fs, OutputFormat.Binary);
+											imgCpc.SauveScr(fs, OutputFormat.Binary, param);
 										else {
 											OutputFormat format = isAsm ? OutputFormat.Assembler : OutputFormat.Binary;
-											imgCpc.SauveCmp(fs, pkMethode, format, lblInfoVersion.Text);
+											imgCpc.SauveCmp(fs, pkMethode, format, param, lblInfoVersion.Text);
 										}
 									}
 									if (lockFirst) {
@@ -394,46 +394,46 @@ namespace ConvImgCpc {
 					}
 					else
 						if (isScrImp) {
-							BitmapCpc bmp = new BitmapCpc(tabBytes, 0x110);
-							if (singlePicture)
-								imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap, imgCpc.selImage);
-							else {
-								doNotReset = true;
-								Cpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = tabBytes[0x94] - 0x0E;
-								Cpc.TailleX = 768;
-								nbLignes.Value = param.nbLignes = Cpc.NbLig;
-								Cpc.TailleY = 544;
-								nbCols.Value = param.nbCols = Cpc.NbCol;
-								Cpc.cpcPlus = tabBytes[0xBC] != 0;
-								if (Cpc.cpcPlus) {
-									// Palette en 0x0711;
-									for (int i = 0; i < 16; i++)
-										Cpc.Palette[i] = ((tabBytes[0x0711 + (i << 1)] << 4) & 0xF0) + (tabBytes[0x0711 + (i << 1)] >> 4) + (tabBytes[0x0712 + (i << 1)] << 8);
-								}
-								else {
-									// Palette en 0x7E10
-									for (int i = 0; i < 16; i++)
-										Cpc.Palette[i] = Cpc.CpcVGA.IndexOf((char)tabBytes[0x7E10 + i]);
-								}
-								imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap);
-							}
-						}
+						BitmapCpc bmp = new BitmapCpc(tabBytes, 0x110);
+						if (singlePicture)
+							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap, imgCpc.selImage);
 						else {
-							BitmapCpc bmp = new BitmapCpc(tabBytes, 0x80);
-							if (singlePicture)
-								imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap, imgCpc.selImage);
-							else {
-								doNotReset = true;
-								imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap);
-								nbCols.Value = param.nbCols = Cpc.NbCol;
-								Cpc.TailleX = param.nbCols << 3;
-								nbLignes.Value = param.nbLignes = Cpc.NbLig;
-								Cpc.TailleY = param.nbLignes << 1;
-								param.modeVirtuel = mode.SelectedIndex = Cpc.modeVirtuel;
-								modePlus.Checked = Cpc.cpcPlus;
+							doNotReset = true;
+							Cpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = tabBytes[0x94] - 0x0E;
+							Cpc.TailleX = 768;
+							nbLignes.Value = param.nbLignes = Cpc.NbLig;
+							Cpc.TailleY = 544;
+							nbCols.Value = param.nbCols = Cpc.NbCol;
+							Cpc.cpcPlus = tabBytes[0xBC] != 0;
+							if (Cpc.cpcPlus) {
+								// Palette en 0x0711;
+								for (int i = 0; i < 16; i++)
+									Cpc.Palette[i] = ((tabBytes[0x0711 + (i << 1)] << 4) & 0xF0) + (tabBytes[0x0711 + (i << 1)] >> 4) + (tabBytes[0x0712 + (i << 1)] << 8);
 							}
-							SetInfo(multilingue.GetString("Main.prg.TxtInfo3"));
+							else {
+								// Palette en 0x7E10
+								for (int i = 0; i < 16; i++)
+									Cpc.Palette[i] = Cpc.CpcVGA.IndexOf((char)tabBytes[0x7E10 + i]);
+							}
+							imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap);
 						}
+					}
+					else {
+						BitmapCpc bmp = new BitmapCpc(tabBytes, 0x80);
+						if (singlePicture)
+							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap, imgCpc.selImage);
+						else {
+							doNotReset = true;
+							imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap);
+							nbCols.Value = param.nbCols = Cpc.NbCol;
+							Cpc.TailleX = param.nbCols << 3;
+							nbLignes.Value = param.nbLignes = Cpc.NbLig;
+							Cpc.TailleY = param.nbLignes << 1;
+							param.modeVirtuel = mode.SelectedIndex = Cpc.modeVirtuel;
+							modePlus.Checked = Cpc.cpcPlus;
+						}
+						SetInfo(multilingue.GetString("Main.prg.TxtInfo3"));
+					}
 				}
 				else {
 					imageStream = new MemoryStream(tabBytes);
@@ -712,11 +712,11 @@ namespace ConvImgCpc {
 				imgCpc.ResetGrille();
 				switch (dlg.FilterIndex) {
 					case 1:
-						imgCpc.SauveScr(dlg.FileName, OutputFormat.Binary);
+						imgCpc.SauveScr(dlg.FileName, OutputFormat.Binary, param);
 						break;
 
 					case 2:
-						imgCpc.SauvePng(dlg.FileName);
+						imgCpc.SauvePng(dlg.FileName, param);
 						break;
 
 					case 3:
@@ -728,19 +728,19 @@ namespace ConvImgCpc {
 						break;
 
 					case 5:
-						imgCpc.SauveCmp(dlg.FileName, pkMethode, OutputFormat.Binary);
+						imgCpc.SauveCmp(dlg.FileName, pkMethode, OutputFormat.Binary, param);
 						break;
 
 					case 6:
-						imgCpc.SauveCmp(dlg.FileName, pkMethode, OutputFormat.Assembler, lblInfoVersion.Text);
+						imgCpc.SauveCmp(dlg.FileName, pkMethode, OutputFormat.Assembler, param, lblInfoVersion.Text);
 						break;
 
 					case 7:
-						imgCpc.SauveScr(dlg.FileName, OutputFormat.DSK);
+						imgCpc.SauveScr(dlg.FileName, OutputFormat.DSK, param);
 						break;
 
 					case 8:
-						imgCpc.SauveCmp(dlg.FileName, pkMethode, OutputFormat.DSK);
+						imgCpc.SauveCmp(dlg.FileName, pkMethode, OutputFormat.DSK, param);
 						break;
 
 					case 9:
@@ -777,10 +777,10 @@ namespace ConvImgCpc {
 							SavePaletteKit(dlg.FileName, true);
 						else
 							if (Cpc.modeVirtuel == 3 || Cpc.modeVirtuel == 4)
-								imgCpc.SauveEgx(dlg.FileName);
-							else
-								//imgCpc.SauvBump(dlg.FileName, lblInfoVersion.Text);
-								imgCpc.SauveDiffImage(dlg.FileName, lblInfoVersion.Text, false, PackMethode.None);
+							imgCpc.SauveEgx(dlg.FileName, param);
+						else
+							//imgCpc.SauvBump(dlg.FileName, lblInfoVersion.Text);
+							imgCpc.SauveDiffImage(dlg.FileName, lblInfoVersion.Text, false, PackMethode.None);
 						break;
 				}
 				param.lastSavePath = Path.GetDirectoryName(dlg.FileName);
@@ -901,7 +901,7 @@ namespace ConvImgCpc {
 						ymin = y;
 				}
 				// Calcule xMax
-				for (int x = bmp.Width; --x > 0; ) {
+				for (int x = bmp.Width; --x > 0;) {
 					for (int y = 0; y < bmp.Height; y++) {
 						if ((bmp.GetPixel(x, y).ToArgb() & 0xFFFFFF) > 0) {
 							y = bmp.Height;
@@ -912,7 +912,7 @@ namespace ConvImgCpc {
 						xmax = x;
 				}
 				// Calcule yMax;
-				for (int y = bmp.Height; --y > 0; ) {
+				for (int y = bmp.Height; --y > 0;) {
 					for (int x = 0; x < bmp.Width; x++) {
 						if ((bmp.GetPixel(x, y).ToArgb() & 0xFFFFFF) > 0) {
 							y = 0;
@@ -1438,7 +1438,7 @@ namespace ConvImgCpc {
 			dlg.Filter = filter;
 			if (dlg.ShowDialog() == DialogResult.OK) {
 				imgCpc.ResetGrille();
-				imgCpc.SauveMatrice(dlg.FileName, lblInfoVersion.Text, pkMethode);
+				imgCpc.SauveMatrice(dlg.FileName, lblInfoVersion.Text, param, pkMethode);
 				param.lastSavePath = Path.GetDirectoryName(dlg.FileName);
 			}
 			Enabled = true;
