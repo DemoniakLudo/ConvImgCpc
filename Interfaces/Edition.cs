@@ -103,26 +103,26 @@ namespace ConvImgCpc {
 			}
 			else
 				if (e.Button == MouseButtons.Right) {
-				if (!unZoom) {
-					unZoom = true;
-					if (zoom >= 2)
-						zoom >>= 1;
+					if (!unZoom) {
+						unZoom = true;
+						if (zoom >= 2)
+							zoom >>= 1;
 
-					DoZoom();
-				}
-			}
-			else {
-				unZoom = false;
-				if (setZoomRect) {
-					setZoomRect = false;
-					if (zoomRectw != 0 && zoomRecth != 0) {
-						Graphics g = Graphics.FromImage(pictureBox.Image);
-						XorDrawing.DrawXorRectangle(g, (Bitmap)pictureBox.Image, zoomRectx, zoomRecty, zoomRectx + zoomRectw, zoomRecty + zoomRecth);
-						zoom = Math.Max(1, Math.Min(Math.Abs(768 / zoomRectw), Math.Abs(544 / zoomRecth)) & 0x7E);
 						DoZoom();
 					}
 				}
-			}
+				else {
+					unZoom = false;
+					if (setZoomRect) {
+						setZoomRect = false;
+						if (zoomRectw != 0 && zoomRecth != 0) {
+							Graphics g = Graphics.FromImage(pictureBox.Image);
+							XorDrawing.DrawXorRectangle(g, (Bitmap)pictureBox.Image, zoomRectx, zoomRecty, zoomRectx + zoomRectw, zoomRecty + zoomRecth);
+							zoom = Math.Max(1, Math.Min(Math.Abs(768 / zoomRectw), Math.Abs(544 / zoomRecth)) & 0x7E);
+							DoZoom();
+						}
+					}
+				}
 		}
 
 		private void DrawCopy(MouseEventArgs e) {
@@ -143,6 +143,9 @@ namespace ConvImgCpc {
 			int yReel = ((e.Y / (zoom * (chkX2.Checked ? 2 : 1))) & 0xFFE) * zoom;
 			int tx = Cpc.CalcTx(yReel);
 			int xReel = ((e.X / (zoom * (chkX2.Checked ? 2 : 1))) & -tx) * zoom;
+			if (e.Button == MouseButtons.Right && imgMotif != null) 
+				ReleaseMotif();
+
 			if (e.Button == MouseButtons.Left && xReel >= 0 && yReel >= 0) {
 				if (imgMotif != null) {
 					for (int y = 0; y < imgMotif.Height; y += 2) {
@@ -179,7 +182,7 @@ namespace ConvImgCpc {
 				}
 			}
 			else {
-				if (setCopyRect) {
+				if (setCopyRect && e.Button == MouseButtons.None) {
 					setCopyRect = false;
 					if (copyRectw != 0 && copyRecth != 0) {
 						Graphics g = Graphics.FromImage(pictureBox.Image);
