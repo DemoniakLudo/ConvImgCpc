@@ -45,7 +45,7 @@ namespace ConvImgCpc {
 			param.withCode = withCode.Checked;
 			param.withPalette = withPalette.Checked;
 			lblInfoVersion.Text = "V " + version.ToString() + " - " + new DateTime(2000, 1, 1).AddDays(version.Build).ToShortDateString();
-			radioUserSize_CheckedChanged(null, null);
+			RadioUserSize_CheckedChanged(null, null);
 			string configDetault = "ConvImgCpc.xml";
 			if (File.Exists(configDetault))
 				ReadParam(configDetault);
@@ -650,7 +650,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void bpLoad_Click(object sender, EventArgs e) {
+		private void BpLoad_Click(object sender, EventArgs e) {
 			Enabled = false;
 			OpenFileDialog dlg = new OpenFileDialog();
 			dlg.Filter = multilingue.GetString("Main.prg.TxtInfo16") + " (*.bmp, *.gif, *.png, *.jpg,*.jpeg, *.jfif, *.scr, *.imp)|*.bmp;*.gif;*.png;*.jpg;*.jpeg;*.jfif;*.scr;*.imp|"
@@ -684,10 +684,9 @@ namespace ConvImgCpc {
 			Enabled = true;
 		}
 
-		private void bpSave_Click(object sender, EventArgs e) {
+		private void BpSave_Click(object sender, EventArgs e) {
 			Enabled = false;
-			SaveFileDialog dlg = new SaveFileDialog();
-			dlg.InitialDirectory = param.lastSavePath;
+			SaveFileDialog dlg = new SaveFileDialog { InitialDirectory = param.lastSavePath };
 			string filter = multilingue.GetString("Main.prg.TxtInfo20") + " (*.scr)|*.scr|Bitmap (.png)|*.png|"             //	1 & 2
 							+ multilingue.GetString("Main.prg.TxtInfo21") + " (.asm)|*.asm|"                                //	3
 							+ multilingue.GetString("Main.prg.TxtInfo22") + " (.asm)|*.asm|"                                //	4
@@ -788,7 +787,7 @@ namespace ConvImgCpc {
 			Enabled = true;
 		}
 
-		private void nbCols_ValueChanged(object sender, EventArgs e) {
+		private void NbCols_ValueChanged(object sender, EventArgs e) {
 			param.nbCols = (int)nbCols.Value;
 			if (!doNotReset) {
 				Cpc.TailleX = param.nbCols << 3;
@@ -797,7 +796,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void nbLignes_ValueChanged(object sender, EventArgs e) {
+		private void NbLignes_ValueChanged(object sender, EventArgs e) {
 			param.nbLignes = (int)nbLignes.Value;
 			if (!doNotReset) {
 				Cpc.TailleY = param.nbLignes << 1;
@@ -806,7 +805,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void mode_SelectedIndexChanged(object sender, EventArgs e) {
+		private void Mode_SelectedIndexChanged(object sender, EventArgs e) {
 			Cpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex;
 			trackModeX.Visible = mode.SelectedIndex == 5 || mode.SelectedIndex == 6;
 			bpEditTrame.Visible = mode.SelectedIndex == 7;
@@ -825,7 +824,7 @@ namespace ConvImgCpc {
 				chkDiffErr.Checked = methode.SelectedItem.ToString() == "Floyd-Steinberg (2x2)";
 
 			if (radioUserSize.Checked) {
-				int x = 0, y = 0;
+				int x, y;
 				if (int.TryParse(tbxSizeX.Text, out x) && int.TryParse(tbxSizeY.Text, out y)) {
 					bpXDiv2.Enabled = x >= 16;
 					bpXMul2.Enabled = x <= 1920;
@@ -842,18 +841,18 @@ namespace ConvImgCpc {
 			Convert(false);
 		}
 
-		private void pctTrame_ValueChanged(object sender, EventArgs e) {
+		private void PctTrame_ValueChanged(object sender, EventArgs e) {
 			param.pct = (int)pctTrame.Value;
 			Convert(false);
 		}
 
-		private void withCode_CheckedChanged(object sender, EventArgs e) {
+		private void WithCode_CheckedChanged(object sender, EventArgs e) {
 			param.withCode = withCode.Checked;
 			if (withCode.Checked)
 				withPalette.Checked = true;
 		}
 
-		private void radioUserSize_CheckedChanged(object sender, EventArgs e) {
+		private void RadioUserSize_CheckedChanged(object sender, EventArgs e) {
 			tbxPosX.Visible = tbxPosY.Visible = tbxSizeX.Visible = tbxSizeY.Visible = label5.Visible = label7.Visible = radioUserSize.Checked || radioOrigin.Checked;
 			bpXDiv2.Visible = bpXMul2.Visible = bpYDiv2.Visible = bpYMul2.Visible = radioUserSize.Checked;
 			if (radioOrigin.Checked || (radioUserSize.Checked && tbxSizeX.Text == "" && tbxSizeY.Text == ""))
@@ -864,17 +863,17 @@ namespace ConvImgCpc {
 			Convert(false);
 		}
 
-		private void bpOverscan_Click(object sender, EventArgs e) {
+		private void BpOverscan_Click(object sender, EventArgs e) {
 			nbLignes.Value = 272;
 			nbCols.Value = 96;
 		}
 
-		private void bpStandard_Click(object sender, EventArgs e) {
+		private void BpStandard_Click(object sender, EventArgs e) {
 			nbLignes.Value = 200;
 			nbCols.Value = 80;
 		}
 
-		private void bpCalcSprite_Click(object sender, EventArgs e) {
+		private void BpCalcSprite_Click(object sender, EventArgs e) {
 			Bitmap bmp = imgSrc.GetImage;
 			if (bmp != null) {
 				int xmin = 0, ymin = 0, xmax = 0, ymax = 0;
@@ -933,22 +932,22 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void withPalette_CheckedChanged(object sender, EventArgs e) {
+		private void WithPalette_CheckedChanged(object sender, EventArgs e) {
 			param.withPalette = withPalette.Checked;
 		}
 
-		private void bpEditTrame_Click(object sender, EventArgs e) {
+		private void BpEditTrame_Click(object sender, EventArgs e) {
 			EditTrameAscii dg = new EditTrameAscii(this, imgSrc, imgCpc, param);
 			dg.ShowDialog();
 			Convert(false);
 		}
 
-		private void bpEditSprites_Click(object sender, EventArgs e) {
+		private void BpEditSprites_Click(object sender, EventArgs e) {
 			EditSprites dg = new EditSprites(this, pkMethode);
 			dg.ShowDialog();
 		}
 
-		private void chkInfo_CheckedChanged(object sender, EventArgs e) {
+		private void ChkInfo_CheckedChanged(object sender, EventArgs e) {
 			if (chkInfo.Checked)
 				info.Show();
 			else
@@ -972,17 +971,18 @@ namespace ConvImgCpc {
 					break;
 
 				default:
+					imgCpc.ResetX2();
 					ReadScreen(files[0]);
 					break;
 			}
 		}
 
-		private void chkAllPics_CheckedChanged(object sender, EventArgs e) {
+		private void ChkAllPics_CheckedChanged(object sender, EventArgs e) {
 			if (chkAllPics.Checked)
 				autoRecalc.Checked = false;
 		}
 
-		private void chkParamInterne_CheckedChanged(object sender, EventArgs e) {
+		private void ChkParamInterne_CheckedChanged(object sender, EventArgs e) {
 			if (chkParamInterne.Checked) {
 				paramInterne.Text = chkParamInterne.Text;
 				ChangeLanguage(paramInterne.Controls, "ParamInterne");
@@ -992,7 +992,7 @@ namespace ConvImgCpc {
 				paramInterne.Hide();
 		}
 
-		private void chkImpDraw_CheckedChanged(object sender, EventArgs e) {
+		private void ChkImpDraw_CheckedChanged(object sender, EventArgs e) {
 			param.modeImpDraw = chkImpDraw.Checked;
 			if (Enabled)
 				Convert(false);
@@ -1279,15 +1279,15 @@ namespace ConvImgCpc {
 			imgCpc.BringToFront();
 		}
 
-		private void bpFr_Click(object sender, EventArgs e) {
+		private void BpFr_Click(object sender, EventArgs e) {
 			ChangeLanguage("FR");
 		}
 
-		private void bpEn_Click(object sender, EventArgs e) {
+		private void BpEn_Click(object sender, EventArgs e) {
 			ChangeLanguage("EN");
 		}
 
-		private void comboPackMethode_SelectedIndexChanged(object sender, EventArgs e) {
+		private void ComboPackMethode_SelectedIndexChanged(object sender, EventArgs e) {
 			switch (comboPackMethode.SelectedItem.ToString()) {
 				case "Standard":
 					pkMethode = PackMethode.Standard;
@@ -1369,7 +1369,7 @@ namespace ConvImgCpc {
 			Enabled = true;
 		}
 
-		private void bpCheckMaj_Click(object sender, EventArgs e) {
+		private void BpCheckMaj_Click(object sender, EventArgs e) {
 			CheckMaj();
 			/*
 			string output = "AdrEcr";
@@ -1393,12 +1393,12 @@ namespace ConvImgCpc {
 			*/
 		}
 
-		private void chkSwapEGX_CheckedChanged(object sender, EventArgs e) {
+		private void ChkSwapEGX_CheckedChanged(object sender, EventArgs e) {
 			Cpc.yEgx = chkSwapEgx.Checked ? 2 : 0;
 			Convert(false);
 		}
 
-		private void bpXDiv2_Click(object sender, EventArgs e) {
+		private void BpXDiv2_Click(object sender, EventArgs e) {
 			int v = 0;
 			if (int.TryParse(tbxSizeX.Text, out v)) {
 				tbxSizeX.Text = (v >> 1).ToString();
@@ -1406,7 +1406,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void bpXMul2_Click(object sender, EventArgs e) {
+		private void BpXMul2_Click(object sender, EventArgs e) {
 			int v = 0;
 			if (int.TryParse(tbxSizeX.Text, out v)) {
 				tbxSizeX.Text = (v << 1).ToString();
@@ -1414,7 +1414,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void bpYDiv2_Click(object sender, EventArgs e) {
+		private void BpYDiv2_Click(object sender, EventArgs e) {
 			int v = 0;
 			if (int.TryParse(tbxSizeY.Text, out v)) {
 				tbxSizeY.Text = (v >> 1).ToString();
@@ -1422,7 +1422,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void bpYMul2_Click(object sender, EventArgs e) {
+		private void BpYMul2_Click(object sender, EventArgs e) {
 			int v = 0;
 			if (int.TryParse(tbxSizeY.Text, out v)) {
 				tbxSizeY.Text = (v << 1).ToString();
@@ -1430,7 +1430,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void bpTest_Click(object sender, EventArgs e) {
+		private void BpTest_Click(object sender, EventArgs e) {
 			Enabled = false;
 			SaveFileDialog dlg = new SaveFileDialog();
 			dlg.InitialDirectory = param.lastSavePath;
@@ -1444,7 +1444,7 @@ namespace ConvImgCpc {
 			Enabled = true;
 		}
 
-		private void chkGauss_CheckedChanged(object sender, EventArgs e) {
+		private void ChkGauss_CheckedChanged(object sender, EventArgs e) {
 			param.filtre = chkGauss.Checked;
 			Convert(false);
 		}

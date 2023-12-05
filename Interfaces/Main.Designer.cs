@@ -151,7 +151,7 @@
 			this.bpLoad.Size = new System.Drawing.Size(108, 23);
 			this.bpLoad.TabIndex = 2;
 			this.bpLoad.UseVisualStyleBackColor = true;
-			this.bpLoad.Click += new System.EventHandler(this.bpLoad_Click);
+			this.bpLoad.Click += new System.EventHandler(this.BpLoad_Click);
 			// 
 			// bpConvert
 			// 
@@ -183,7 +183,7 @@
             0,
             0,
             0});
-			this.nbCols.ValueChanged += new System.EventHandler(this.nbCols_ValueChanged);
+			this.nbCols.ValueChanged += new System.EventHandler(this.NbCols_ValueChanged);
 			// 
 			// nbLignes
 			// 
@@ -206,7 +206,7 @@
             0,
             0,
             0});
-			this.nbLignes.ValueChanged += new System.EventHandler(this.nbLignes_ValueChanged);
+			this.nbLignes.ValueChanged += new System.EventHandler(this.NbLignes_ValueChanged);
 			// 
 			// label1
 			// 
@@ -232,7 +232,7 @@
 			this.mode.Name = "mode";
 			this.mode.Size = new System.Drawing.Size(82, 21);
 			this.mode.TabIndex = 7;
-			this.mode.SelectedIndexChanged += new System.EventHandler(this.mode_SelectedIndexChanged);
+			this.mode.SelectedIndexChanged += new System.EventHandler(this.Mode_SelectedIndexChanged);
 			// 
 			// label3
 			// 
@@ -272,7 +272,7 @@
             0,
             0});
 			this.pctTrame.Visible = false;
-			this.pctTrame.ValueChanged += new System.EventHandler(this.pctTrame_ValueChanged);
+			this.pctTrame.ValueChanged += new System.EventHandler(this.PctTrame_ValueChanged);
 			// 
 			// resoCPC
 			// 
@@ -305,7 +305,7 @@
 			this.chkSwapEgx.Text = "swapEGX";
 			this.chkSwapEgx.UseVisualStyleBackColor = true;
 			this.chkSwapEgx.Visible = false;
-			this.chkSwapEgx.CheckedChanged += new System.EventHandler(this.chkSwapEGX_CheckedChanged);
+			this.chkSwapEgx.CheckedChanged += new System.EventHandler(this.ChkSwapEGX_CheckedChanged);
 			// 
 			// bpCalcSprite
 			// 
@@ -315,7 +315,7 @@
 			this.bpCalcSprite.TabIndex = 13;
 			this.bpCalcSprite.UseVisualStyleBackColor = true;
 			this.bpCalcSprite.Visible = false;
-			this.bpCalcSprite.Click += new System.EventHandler(this.bpCalcSprite_Click);
+			this.bpCalcSprite.Click += new System.EventHandler(this.BpCalcSprite_Click);
 			// 
 			// bpEditTrame
 			// 
@@ -325,7 +325,7 @@
 			this.bpEditTrame.TabIndex = 12;
 			this.bpEditTrame.UseVisualStyleBackColor = true;
 			this.bpEditTrame.Visible = false;
-			this.bpEditTrame.Click += new System.EventHandler(this.bpEditTrame_Click);
+			this.bpEditTrame.Click += new System.EventHandler(this.BpEditTrame_Click);
 			// 
 			// bpStandard
 			// 
@@ -335,7 +335,7 @@
 			this.bpStandard.TabIndex = 10;
 			this.bpStandard.Text = "Standard";
 			this.bpStandard.UseVisualStyleBackColor = true;
-			this.bpStandard.Click += new System.EventHandler(this.bpStandard_Click);
+			this.bpStandard.Click += new System.EventHandler(this.BpStandard_Click);
 			// 
 			// bpOverscan
 			// 
@@ -345,7 +345,7 @@
 			this.bpOverscan.TabIndex = 10;
 			this.bpOverscan.Text = "Overscan";
 			this.bpOverscan.UseVisualStyleBackColor = true;
-			this.bpOverscan.Click += new System.EventHandler(this.bpOverscan_Click);
+			this.bpOverscan.Click += new System.EventHandler(this.BpOverscan_Click);
 			// 
 			// trackModeX
 			// 
@@ -383,7 +383,7 @@
 			this.chkImpDraw.Size = new System.Drawing.Size(15, 14);
 			this.chkImpDraw.TabIndex = 69;
 			this.chkImpDraw.UseVisualStyleBackColor = true;
-			this.chkImpDraw.CheckedChanged += new System.EventHandler(this.chkImpDraw_CheckedChanged);
+			this.chkImpDraw.CheckedChanged += new System.EventHandler(this.ChkImpDraw_CheckedChanged);
 			// 
 			// chkDiffErr
 			// 
@@ -532,7 +532,7 @@
 			this.bpYMul2.TabIndex = 50;
 			this.bpYMul2.Text = "*2";
 			this.bpYMul2.UseVisualStyleBackColor = true;
-			this.bpYMul2.Click += new System.EventHandler(this.bpYMul2_Click);
+			this.bpYMul2.Click += new System.EventHandler(this.BpYMul2_Click);
 			// 
 			// bpYDiv2
 			// 
@@ -542,7 +542,7 @@
 			this.bpYDiv2.TabIndex = 49;
 			this.bpYDiv2.Text = "/2";
 			this.bpYDiv2.UseVisualStyleBackColor = true;
-			this.bpYDiv2.Click += new System.EventHandler(this.bpYDiv2_Click);
+			this.bpYDiv2.Click += new System.EventHandler(this.BpYDiv2_Click);
 			// 
 			// bpXMul2
 			// 
@@ -552,7 +552,7 @@
 			this.bpXMul2.TabIndex = 48;
 			this.bpXMul2.Text = "*2";
 			this.bpXMul2.UseVisualStyleBackColor = true;
-			this.bpXMul2.Click += new System.EventHandler(this.bpXMul2_Click);
+			this.bpXMul2.Click += new System.EventHandler(this.BpXMul2_Click);
 			// 
 			// bpXDiv2
 			// 
@@ -562,7 +562,7 @@
 			this.bpXDiv2.TabIndex = 47;
 			this.bpXDiv2.Text = "/2";
 			this.bpXDiv2.UseVisualStyleBackColor = true;
-			this.bpXDiv2.Click += new System.EventHandler(this.bpXDiv2_Click);
+			this.bpXDiv2.Click += new System.EventHandler(this.BpXDiv2_Click);
 			// 
 			// radioOrigin
 			// 
@@ -575,7 +575,7 @@
 			this.radioOrigin.TabStop = true;
 			this.radioOrigin.Text = "OriginalSize";
 			this.radioOrigin.UseVisualStyleBackColor = true;
-			this.radioOrigin.CheckedChanged += new System.EventHandler(this.radioUserSize_CheckedChanged);
+			this.radioOrigin.CheckedChanged += new System.EventHandler(this.RadioUserSize_CheckedChanged);
 			// 
 			// label5
 			// 
@@ -630,7 +630,7 @@
 			this.radioUserSize.TabStop = true;
 			this.radioUserSize.Text = "User size";
 			this.radioUserSize.UseVisualStyleBackColor = true;
-			this.radioUserSize.CheckedChanged += new System.EventHandler(this.radioUserSize_CheckedChanged);
+			this.radioUserSize.CheckedChanged += new System.EventHandler(this.RadioUserSize_CheckedChanged);
 			// 
 			// label7
 			// 
@@ -648,7 +648,7 @@
 			this.bpSave.Size = new System.Drawing.Size(108, 23);
 			this.bpSave.TabIndex = 52;
 			this.bpSave.UseVisualStyleBackColor = true;
-			this.bpSave.Click += new System.EventHandler(this.bpSave_Click);
+			this.bpSave.Click += new System.EventHandler(this.BpSave_Click);
 			// 
 			// lblInfoVersion
 			// 
@@ -668,7 +668,7 @@
 			this.withCode.Size = new System.Drawing.Size(15, 14);
 			this.withCode.TabIndex = 52;
 			this.withCode.UseVisualStyleBackColor = true;
-			this.withCode.CheckedChanged += new System.EventHandler(this.withCode_CheckedChanged);
+			this.withCode.CheckedChanged += new System.EventHandler(this.WithCode_CheckedChanged);
 			// 
 			// withPalette
 			// 
@@ -680,7 +680,7 @@
 			this.withPalette.Size = new System.Drawing.Size(15, 14);
 			this.withPalette.TabIndex = 52;
 			this.withPalette.UseVisualStyleBackColor = true;
-			this.withPalette.CheckedChanged += new System.EventHandler(this.withPalette_CheckedChanged);
+			this.withPalette.CheckedChanged += new System.EventHandler(this.WithPalette_CheckedChanged);
 			// 
 			// chkAllPics
 			// 
@@ -691,7 +691,7 @@
 			this.chkAllPics.TabIndex = 57;
 			this.chkAllPics.UseVisualStyleBackColor = true;
 			this.chkAllPics.Visible = false;
-			this.chkAllPics.CheckedChanged += new System.EventHandler(this.chkAllPics_CheckedChanged);
+			this.chkAllPics.CheckedChanged += new System.EventHandler(this.ChkAllPics_CheckedChanged);
 			// 
 			// bpImport
 			// 
@@ -721,7 +721,7 @@
 			this.chkInfo.TabIndex = 61;
 			this.chkInfo.Text = "Informations";
 			this.chkInfo.UseVisualStyleBackColor = true;
-			this.chkInfo.CheckedChanged += new System.EventHandler(this.chkInfo_CheckedChanged);
+			this.chkInfo.CheckedChanged += new System.EventHandler(this.ChkInfo_CheckedChanged);
 			// 
 			// chkParamInterne
 			// 
@@ -731,7 +731,7 @@
 			this.chkParamInterne.Size = new System.Drawing.Size(15, 14);
 			this.chkParamInterne.TabIndex = 63;
 			this.chkParamInterne.UseVisualStyleBackColor = true;
-			this.chkParamInterne.CheckedChanged += new System.EventHandler(this.chkParamInterne_CheckedChanged);
+			this.chkParamInterne.CheckedChanged += new System.EventHandler(this.ChkParamInterne_CheckedChanged);
 			// 
 			// reducPal4
 			// 
@@ -1229,7 +1229,7 @@
 			this.chkGauss.TabIndex = 66;
 			this.chkGauss.Text = "KMeans";
 			this.chkGauss.UseVisualStyleBackColor = true;
-			this.chkGauss.CheckedChanged += new System.EventHandler(this.chkGauss_CheckedChanged);
+			this.chkGauss.CheckedChanged += new System.EventHandler(this.ChkGauss_CheckedChanged);
 			// 
 			// bpEditSprites
 			// 
@@ -1239,7 +1239,7 @@
 			this.bpEditSprites.TabIndex = 67;
 			this.bpEditSprites.UseVisualStyleBackColor = true;
 			this.bpEditSprites.Visible = false;
-			this.bpEditSprites.Click += new System.EventHandler(this.bpEditSprites_Click);
+			this.bpEditSprites.Click += new System.EventHandler(this.BpEditSprites_Click);
 			// 
 			// bpFr
 			// 
@@ -1249,7 +1249,7 @@
 			this.bpFr.Size = new System.Drawing.Size(80, 42);
 			this.bpFr.TabIndex = 68;
 			this.bpFr.UseVisualStyleBackColor = true;
-			this.bpFr.Click += new System.EventHandler(this.bpFr_Click);
+			this.bpFr.Click += new System.EventHandler(this.BpFr_Click);
 			// 
 			// bpEn
 			// 
@@ -1260,7 +1260,7 @@
 			this.bpEn.Size = new System.Drawing.Size(80, 42);
 			this.bpEn.TabIndex = 68;
 			this.bpEn.UseVisualStyleBackColor = true;
-			this.bpEn.Click += new System.EventHandler(this.bpEn_Click);
+			this.bpEn.Click += new System.EventHandler(this.BpEn_Click);
 			// 
 			// bpCheckMaj
 			// 
@@ -1269,7 +1269,7 @@
 			this.bpCheckMaj.Size = new System.Drawing.Size(122, 23);
 			this.bpCheckMaj.TabIndex = 70;
 			this.bpCheckMaj.UseVisualStyleBackColor = true;
-			this.bpCheckMaj.Click += new System.EventHandler(this.bpCheckMaj_Click);
+			this.bpCheckMaj.Click += new System.EventHandler(this.BpCheckMaj_Click);
 			// 
 			// label13
 			// 
@@ -1292,7 +1292,7 @@
 			this.comboPackMethode.Name = "comboPackMethode";
 			this.comboPackMethode.Size = new System.Drawing.Size(90, 21);
 			this.comboPackMethode.TabIndex = 66;
-			this.comboPackMethode.SelectedIndexChanged += new System.EventHandler(this.comboPackMethode_SelectedIndexChanged);
+			this.comboPackMethode.SelectedIndexChanged += new System.EventHandler(this.ComboPackMethode_SelectedIndexChanged);
 			// 
 			// bpTest
 			// 
@@ -1302,7 +1302,7 @@
 			this.bpTest.TabIndex = 71;
 			this.bpTest.Text = "Test";
 			this.bpTest.UseVisualStyleBackColor = true;
-			this.bpTest.Click += new System.EventHandler(this.bpTest_Click);
+			this.bpTest.Click += new System.EventHandler(this.BpTest_Click);
 			// 
 			// bpRazAll
 			// 
