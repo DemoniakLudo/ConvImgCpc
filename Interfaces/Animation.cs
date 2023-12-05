@@ -100,31 +100,37 @@ namespace ConvImgCpc {
 		}
 
 		private void bpSaveGif_Click(object sender, EventArgs e) {
-			SaveFileDialog dlg = new SaveFileDialog();
-			dlg.Filter = "Gif anim (*.gif)|*.gif";
-			if (dlg.ShowDialog() == DialogResult.OK) {
-				byte[] GifAnimation = { 33, 255, 11, 78, 69, 84, 83, 67, 65, 80, 69, 50, 46, 48, 3, 1, 0, 0, 0 };
-				MemoryStream ms = new MemoryStream();
-				BinaryWriter bWr = new BinaryWriter(new FileStream(dlg.FileName, FileMode.Create));
-				Bitmap b = GetBitmap(main.imgCpc.tabBmpLock[0].Bitmap);
-				b.Save(ms, ImageFormat.Gif);
-				b.Dispose();
-				byte[] tabByte = ms.ToArray();
-				tabByte[10] = (byte)(tabByte[10] & 0X78); //No global color table
-				bWr.Write(tabByte, 0, 13);
-				bWr.Write(GifAnimation);
-				WriteGifImg(tabByte, bWr);
-				for (int i = 1; i <= numImage.Maximum; i++) {
-					ms.SetLength(0);
-					b = GetBitmap(main.imgCpc.tabBmpLock[i].Bitmap);
+			try {
+				SaveFileDialog dlg = new SaveFileDialog();
+				dlg.Filter = "Gif anim (*.gif)|*.gif";
+				if (dlg.ShowDialog() == DialogResult.OK) {
+					byte[] GifAnimation = { 33, 255, 11, 78, 69, 84, 83, 67, 65, 80, 69, 50, 46, 48, 3, 1, 0, 0, 0 };
+					MemoryStream ms = new MemoryStream();
+					BinaryWriter bWr = new BinaryWriter(new FileStream(dlg.FileName, FileMode.Create));
+					Bitmap b = GetBitmap(main.imgCpc.tabBmpLock[0].Bitmap);
 					b.Save(ms, ImageFormat.Gif);
-					tabByte = ms.ToArray();
-					WriteGifImg(tabByte, bWr);
 					b.Dispose();
+					byte[] tabByte = ms.ToArray();
+					tabByte[10] = (byte)(tabByte[10] & 0X78); //No global color table
+					bWr.Write(tabByte, 0, 13);
+					bWr.Write(GifAnimation);
+					WriteGifImg(tabByte, bWr);
+					for (int i = 1; i <= numImage.Maximum; i++) {
+						ms.SetLength(0);
+						b = GetBitmap(main.imgCpc.tabBmpLock[i].Bitmap);
+						b.Save(ms, ImageFormat.Gif);
+						tabByte = ms.ToArray();
+						WriteGifImg(tabByte, bWr);
+						b.Dispose();
+					}
+					bWr.Write(tabByte[tabByte.Length - 1]);
+					bWr.Close();
+					ms.Dispose();
 				}
-				bWr.Write(tabByte[tabByte.Length - 1]);
-				bWr.Close();
-				ms.Dispose();
+			}
+			catch(Exception ex) {
+				main.DisplayErreur("Erreur lors de la sauvegarde du gif.");
+
 			}
 		}
 
