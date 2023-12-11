@@ -182,6 +182,7 @@
 			// 
 			// bpSaveWin
 			// 
+			this.bpSaveWin.Enabled = false;
 			this.bpSaveWin.Location = new System.Drawing.Point(68, 113);
 			this.bpSaveWin.Name = "bpSaveWin";
 			this.bpSaveWin.Size = new System.Drawing.Size(75, 23);
@@ -203,6 +204,7 @@
 			// 
 			// bpLoadWin
 			// 
+			this.bpLoadWin.Enabled = false;
 			this.bpLoadWin.Location = new System.Drawing.Point(68, 91);
 			this.bpLoadWin.Name = "bpLoadWin";
 			this.bpLoadWin.Size = new System.Drawing.Size(75, 23);

@@ -307,18 +307,21 @@ namespace ConvImgCpc {
 		}
 
 		private byte[] MakeWin() {
-			byte[] ret = new byte[(imgMotif.Width * imgMotif.Height) >> 4];
+			int realWidth = (imgMotif.Width >> 3) + ((imgMotif.Width % 8) > 0 ? 1 : 0);
+			byte[] ret = new byte[(realWidth * imgMotif.Height) >> 1];
 			Array.Clear(ret, 0, ret.Length);
 			for (int y = 0; y < imgMotif.Height; y += 2) {
+				int maxLen = imgMotif.Width;
 				int tx = Cpc.CalcTx(y);
-				for (int x = 0; x < imgMotif.Width; x += 8) {
+				for (int x = 0; x < realWidth; x++) {
 					byte octet = 0;
-					for (int p = 0; p < 8; p++)
+					for (int p = 0; p < Math.Min(8, maxLen); p++)
 						if ((p % tx) == 0) {
-							int pen = Cpc.GetPenColor(imgMotif, x + p, y);
+							int pen = Cpc.GetPenColor(imgMotif, (x << 3) + p, y);
 							octet |= (byte)(Cpc.tabOctetMode[pen] >> (p / tx));
 						}
-					ret[(x >> 3) + (y >> 1) * (imgMotif.Width >> 3)] = octet;
+					ret[x + (y >> 1) * realWidth] = octet;
+					maxLen -= 8;
 				}
 			}
 			return ret;
@@ -794,7 +797,9 @@ namespace ConvImgCpc {
 				fileScr.Read(tabRead, 0, l);
 				fileScr.Close();
 				if (Cpc.CheckAmsdos(tabRead)) {
-					imgMotif = new BitmapCpc(tabRead, 128).DrawBitmap((tabRead[l - 4] + (tabRead[l - 3] << 8)) >> 3, tabRead[l - 2], true);
+					int width = tabRead[l - 4] + (tabRead[l - 3] << 8);
+					int realWidth = (width >> 3) + ((width % 8) > 0 ? 1 : 0);
+					imgMotif = new BitmapCpc(tabRead, 128).DrawBitmap(realWidth, tabRead[l - 2], width, true);
 					if (zoom != 1) {
 						zoom = 1;
 						DoZoom();

@@ -378,24 +378,29 @@ namespace ConvImgCpc {
 		}
 
 		private void rbDraw_CheckedChanged(object sender, EventArgs e) {
+			bpLoadWin.Enabled = bpSaveWin.Enabled = false;
 			ReleaseMotif();
 			editToolMode = EditTool.Draw;
 		}
 
 		private void rbZoom_CheckedChanged(object sender, EventArgs e) {
+			bpLoadWin.Enabled = bpSaveWin.Enabled = false;
 			ReleaseMotif();
 			editToolMode = EditTool.Zoom;
 		}
 
 		private void rbCopy_CheckedChanged(object sender, EventArgs e) {
+			bpLoadWin.Enabled = bpSaveWin.Enabled = true;
 			editToolMode = EditTool.Copy;
 		}
 
 		private void rbPickColor_CheckedChanged(object sender, EventArgs e) {
+			bpLoadWin.Enabled = bpSaveWin.Enabled = false;
 			editToolMode = EditTool.Pick;
 		}
 
 		private void rbFill_CheckedChanged(object sender, EventArgs e) {
+			bpLoadWin.Enabled = bpSaveWin.Enabled = false;
 			editToolMode = EditTool.Fill;
 		}
 
