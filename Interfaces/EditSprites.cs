@@ -328,34 +328,34 @@ namespace ConvImgCpc {
 					}
 					else
 						if (lineStartX == -1 && lineStartY == -1) {
-						lineStartX = x;
-						lineStartY = y;
-						for (x = 0; x < 16; x++)
-							for (y = 0; y < 16; y++)
-								tempSprite[x + 16 * y, 0] = Cpc.spritesHard[numBank, numSprite, x, y];
-					}
-					else {
-						for (int x1 = 0; x1 < 16; x1++)
-							for (int y1 = 0; y1 < 16; y1++)
-								Cpc.spritesHard[numBank, numSprite, x1, y1] = tempSprite[x1 + 16 * y1, 0];
+							lineStartX = x;
+							lineStartY = y;
+							for (x = 0; x < 16; x++)
+								for (y = 0; y < 16; y++)
+									tempSprite[x + 16 * y, 0] = Cpc.spritesHard[numBank, numSprite, x, y];
+						}
+						else {
+							for (int x1 = 0; x1 < 16; x1++)
+								for (int y1 = 0; y1 < 16; y1++)
+									Cpc.spritesHard[numBank, numSprite, x1, y1] = tempSprite[x1 + 16 * y1, 0];
 
-						DrawLine(lineStartX, lineStartY, x, y);
-					}
+							DrawLine(lineStartX, lineStartY, x, y);
+						}
 				}
 				else
 					if (e.Button == MouseButtons.Right) {
-					Cpc.spritesHard[numBank, numSprite, x, y] = 0;
-					SetPixelSprite(x, y);
-				}
-				else
+						Cpc.spritesHard[numBank, numSprite, x, y] = 0;
+						SetPixelSprite(x, y);
+					}
+					else
 						if (lineStartX != -1 && lineStartY != -1) {
-					for (int x1 = 0; x1 < 16; x1++)
-						for (int y1 = 0; y1 < 16; y1++)
-							Cpc.spritesHard[numBank, numSprite, x1, y1] = tempSprite[x1 + 16 * y1, 0];
+							for (int x1 = 0; x1 < 16; x1++)
+								for (int y1 = 0; y1 < 16; y1++)
+									Cpc.spritesHard[numBank, numSprite, x1, y1] = tempSprite[x1 + 16 * y1, 0];
 
-					DrawLine(lineStartX, lineStartY, x, y, true);
-					lineStartX = lineStartY = -1;
-				}
+							DrawLine(lineStartX, lineStartY, x, y, true);
+							lineStartX = lineStartY = -1;
+						}
 
 				lblRectSelColor.Location = new Point(726, 70 + col * 40);       // Mise en évidence couleur sous la souris
 			}
@@ -476,13 +476,15 @@ namespace ConvImgCpc {
 			SaveFileDialog dlg = new SaveFileDialog();
 			dlg.Filter = main.multilingue.GetString("EditSprites.TxtInfo1") + " (.spr)|*.spr|"
 						+ main.multilingue.GetString("EditSprites.TxtInfo3") + " (.asm)|*.asm|"
-						+ main.multilingue.GetString("EditSprites.TxtInfo4") + " (.asm)|*.asm";
+						+ main.multilingue.GetString("EditSprites.TxtInfo4") + " (.asm)|*.asm|"
+						+ main.multilingue.GetString("EditSprites.TxtInfo8") + " (.asm)|*.asm";
 			if (dlg.ShowDialog() == DialogResult.OK) {
 				Enabled = false;
 				try {
 					int maxSprite = GetLastSprite(allBank);
 					int size = allBank ? Convert.ToInt32(numBanks.Value) * 0x1000 : 0x1000;
 					byte[] buffer = new byte[size];
+					byte[] sprPk = new byte[512 * maxSprite];
 					int pos = 0;
 					int startBank = allBank ? 0 : numBank;
 					int endBank = allBank ? Convert.ToInt32(numBanks.Value) : numBank + 1;
@@ -518,10 +520,9 @@ namespace ConvImgCpc {
 
 						case 3:
 							// Sauvegarde assembleur compacté 
-							StreamWriter sw2 = SaveAsm.OpenAsm(dlg.FileName, "");
 							int numSpr = 0;
+							StreamWriter sw2 = SaveAsm.OpenAsm(dlg.FileName, "");
 							byte[] spr = new byte[256];
-							byte[] sprPk = new byte[512];
 							for (int bank = startBank; bank < endBank; bank++)
 								for (int i = 0; i < 16; i++) {
 									Array.Copy(buffer, numSpr * 256, spr, 0, 256);
@@ -554,6 +555,20 @@ namespace ConvImgCpc {
 								SavePaletteKitAsm(sw2);
 
 							SaveAsm.CloseAsm(sw2);
+							break;
+
+						case 4:
+							// Sauvegarde assembleur compacté full
+							StreamWriter sw3 = SaveAsm.OpenAsm(dlg.FileName, "");
+							int lt = new PackModule().Pack(buffer, 256 * (maxSprite + 1), sprPk, 0, pkMethod);
+							sw3.WriteLine("; " + (maxSprite + 1).ToString()+" sprites");
+							sw3.WriteLine("SpriteHardFull");
+							SaveAsm.GenereDatas(sw3, sprPk, lt, 16);
+
+							if (chkWithPal.Checked)
+								SavePaletteKitAsm(sw3);
+
+							SaveAsm.CloseAsm(sw3);
 							break;
 					}
 				}
@@ -688,29 +703,29 @@ namespace ConvImgCpc {
 			}
 			else
 				if (rb28sprite.Checked) {
-				for (int y = 0; y < 2; y++)
-					for (int x = 0; x < 4; x++)
-						DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
+					for (int y = 0; y < 2; y++)
+						for (int x = 0; x < 4; x++)
+							DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
 
-				for (int y = 0; y < 2; y++)
-					for (int x = 4; x < 8; x++)
-						DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
-			}
-			else
+					for (int y = 0; y < 2; y++)
+						for (int x = 4; x < 8; x++)
+							DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
+				}
+				else
 					if (rb42Sprite.Checked) {
-				for (int y = 0; y < 4; y++)
-					for (int x = 0; x < 2; x++)
-						DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
+						for (int y = 0; y < 4; y++)
+							for (int x = 0; x < 2; x++)
+								DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
 
-				for (int y = 0; y < 4; y++)
-					for (int x = 2; x < 4; x++)
-						DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
-			}
-			else {
-				for (int y = 0; y < nb; y++)
-					for (int x = 0; x < nb; x++)
-						DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
-			}
+						for (int y = 0; y < 4; y++)
+							for (int x = 2; x < 4; x++)
+								DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
+					}
+					else {
+						for (int y = 0; y < nb; y++)
+							for (int x = 0; x < nb; x++)
+								DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
+					}
 			pictTest.Refresh();
 		}
 

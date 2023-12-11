@@ -59,5 +59,6 @@ namespace ConvImgCpc {
 		public int kMeansDist = 0;
 		public int kMeansColor = 16;
 		public int kMeansPass = 16;
+		public bool autoRecalc;
 	}
 }

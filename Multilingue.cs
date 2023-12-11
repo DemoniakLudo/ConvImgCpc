@@ -277,6 +277,8 @@ namespace ConvImgCpc {
 			dic.Add("EditSprites.TxtInfo6.EN", "Unable to read palette.");
 			dic.Add("EditSprites.TxtInfo7.FR", "Impossible de sauver la palette.");
 			dic.Add("EditSprites.TxtInfo7.EN", "Unable to save palette.");
+			dic.Add("EditSprites.TxtInfo8.FR", "Fichier assembleur avec tous les sprites compactés");
+			dic.Add("EditSprites.TxtInfo8.EN", "Assembler file with packed sprites full");
 
 			// EditTrameAscii
 			dic.Add("EditTrameAscii.bpPrev.FR", "Précédente");

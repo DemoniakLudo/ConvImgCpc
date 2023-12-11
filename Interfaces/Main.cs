@@ -503,6 +503,7 @@ namespace ConvImgCpc {
 				param = (Param)new XmlSerializer(typeof(Param)).Deserialize(fileParam);
 				// Initialisation paramètres...
 				bool lissage = param.lissage;
+				autoRecalc.Checked = param.autoRecalc;
 				int trkModeX = param.trackModeX;
 				methode.SelectedItem = param.methode;
 				param.lissage = chkLissage.Checked = lissage;
@@ -838,6 +839,7 @@ namespace ConvImgCpc {
 			param.methode = methode.SelectedItem.ToString();
 			param.lissage = chkLissage.Checked;
 			param.trackModeX = trackModeX.Value;
+			param.autoRecalc = autoRecalc.Checked;
 			Convert(false);
 		}
 

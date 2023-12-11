@@ -371,7 +371,7 @@ namespace ConvImgCpc {
 				sw.WriteLine("\tDB\t#" + ((Cpc.modeVirtuel == 7 ? 1 : Cpc.modeVirtuel & 3) | 0x8C).ToString("X2"));
 				string line = "	DW	";
 				for (int i = 0; i < 17; i++) {
-					int c = i >= 16 || p.lockState[i] == 0 ? Cpc.Palette[i < Cpc.MaxPen() ? i : 0] : 0xFFFF;
+					int c = i >= 16 || p.disableState[i] == 0 ? Cpc.Palette[i < Cpc.MaxPen() ? i : 0] : 0xFFFF;
 					line += "#" + ((byte)(c >> 8)).ToString("X1") + ((byte)(((c >> 4) & 0x0F) | (c << 4))).ToString("X2") + ",";
 				}
 				sw.WriteLine(line.Substring(0, line.Length - 1));
@@ -380,7 +380,7 @@ namespace ConvImgCpc {
 				sw.WriteLine("Palette:");
 				string line = "\tDB\t";
 				for (int i = 0; i < 17; i++) {
-					int k = i >= 16 || p.lockState[i] == 0 ? Cpc.Palette[i < Cpc.MaxPen() ? i : 0] : -1;
+					int k = i >= 16 || p.disableState[i] == 0 ? Cpc.Palette[i < Cpc.MaxPen() ? i : 0] : -1;
 					line += "#" + (k == -1 ? "FF" : ((int)Cpc.CpcVGA[k < 27 ? k : 0]).ToString("X2")) + ",";
 				}
 				line += "#" + ((Cpc.modeVirtuel == 7 ? 1 : Cpc.modeVirtuel & 3) | 0x8C).ToString("X2");
