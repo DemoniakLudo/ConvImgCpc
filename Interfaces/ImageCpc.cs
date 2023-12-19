@@ -329,7 +329,7 @@ namespace ConvImgCpc {
 
 		public void SauveSprite(string fileName, string version) {
 			byte[] ret = MakeSprite();
-			StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
+			StreamWriter sw = SaveAsm.OpenAsm(fileName, version, true);
 			SaveAsm.GenereDatas(sw, ret, ret.Length, Cpc.TailleX >> (Cpc.TailleX <= 320 ? 3 : 4));
 			SaveAsm.CloseAsm(sw);
 			main.SetInfo("Sauvegarde sprite assembleur ok.");
@@ -339,7 +339,7 @@ namespace ConvImgCpc {
 			byte[] ret = MakeSprite();
 			byte[] sprCmp = new byte[ret.Length];
 			int l = new PackModule().Pack(ret, ret.Length, sprCmp, 0, pkMethode);
-			StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
+			StreamWriter sw = SaveAsm.OpenAsm(fileName, version, true);
 			SaveAsm.GenereDatas(sw, sprCmp, l, 16);
 			SaveAsm.CloseAsm(sw);
 			main.SetInfo("Sauvegarde sprite assembleur compacté ok.");
@@ -516,7 +516,7 @@ namespace ConvImgCpc {
 			main.Enabled = main.anim.Enabled = Enabled = false;
 			int nbImages = main.GetMaxImages();
 			byte[] bufOut = new byte[0x10000];
-			StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
+			StreamWriter sw = SaveAsm.OpenAsm(fileName, version, true);
 			sw.WriteLine("\tnolist");
 			for (int i = 0; i < nbImages; i++) {
 				main.SelectImage(i, true);
@@ -554,7 +554,7 @@ namespace ConvImgCpc {
 					}
 				}
 			}
-			StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
+			StreamWriter sw = SaveAsm.OpenAsm(fileName, version, true);
 			SaveAsm.GenereDatas(sw, bump, bump.Length, 16);
 			SaveAsm.CloseAsm(sw);
 			main.SetInfo("Sauvegarde bump ok.");

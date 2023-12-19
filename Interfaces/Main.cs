@@ -350,7 +350,7 @@ namespace ConvImgCpc {
 		}
 
 		private void ReadScreen(string fileName, bool singlePicture = false) {
-			try {
+			//try {
 				FileStream fileScr = new FileStream(fileName, FileMode.Open, FileAccess.Read);
 				byte[] tabBytes = new byte[fileScr.Length];
 				fileScr.Read(tabBytes, 0, tabBytes.Length);
@@ -472,10 +472,10 @@ namespace ConvImgCpc {
 
 				Convert(false);
 				doNotReset = false;
-			}
-			catch {
-				DisplayErreur(multilingue.GetString("Main.prg.TxtInfo6"));
-			}
+			//}
+			//catch {
+			//	DisplayErreur(multilingue.GetString("Main.prg.TxtInfo6"));
+			//}
 		}
 
 		public void SelectImage(int n, bool noInfo = false) {

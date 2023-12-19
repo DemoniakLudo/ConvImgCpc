@@ -593,7 +593,7 @@ namespace ConvImgCpc {
 					break;
 
 				case Main.OutputFormat.Assembler:
-					StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
+					StreamWriter sw = SaveAsm.OpenAsm(fileName, version, true);
 					int org = 0xA500 - lg - (Cpc.modeVirtuel == 5 ? 600 : 0);
 					sw.WriteLine("	ORG	#" + org.ToString("X4"));
 					sw.WriteLine("	Nolist");

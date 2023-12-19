@@ -403,7 +403,7 @@ namespace ConvImgCpc {
 			}
 
 			// Sauvegarde
-			StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
+			StreamWriter sw = SaveAsm.OpenAsm(fileName, version, true);
 			if (param.withCode && !chkDataBrut.Checked) {
 				SaveAsm.GenereEntete(sw, adrDeb);
 				if (Cpc.cpcPlus)
