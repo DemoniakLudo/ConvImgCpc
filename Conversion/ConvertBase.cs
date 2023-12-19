@@ -7,7 +7,7 @@ namespace ConvImgCpc {
 			DISTANCE_EUCLIDE = 1,
 			DISTANCE_MANHATTAN = 2,
 		};
-		
+
 		static private int[,] coulTrouvee = new int[4096, 272];
 		static private byte[] tblContrast = new byte[256];
 		static public Niveau[] niveaux;
@@ -443,7 +443,7 @@ namespace ConvImgCpc {
 			int incY = prm.trameTc ? 4 : 2;
 
 			for (int p = 0; p < prm.kMeansPass; p++) {
-				for (int n =0; n < prm.kMeansColor; n++)
+				for (int n = 0; n < prm.kMeansColor; n++)
 					niveaux[n].Reset();
 
 				for (int y = 0; y < Cpc.TailleY; y += incY) {
@@ -461,7 +461,7 @@ namespace ConvImgCpc {
 			for (int y = 0; y < Cpc.TailleY; y += incY) {
 				int Tx = Cpc.CalcTx(y);
 				for (int x = 0; x < Cpc.TailleX; x++)
-					img.SetPixel(x, y, NiveauAdequat(prm, img.GetPixelColor(x,y)).couleurNiveau.GetColorArgb);
+					img.SetPixel(x, y, NiveauAdequat(prm, img.GetPixelColor(x, y)).couleurNiveau.GetColorArgb);
 			}
 		}
 
@@ -476,13 +476,13 @@ namespace ConvImgCpc {
 				int dist;
 				switch ((Distance)prm.kMeansDist) {
 					case Distance.DISTANCE_EUCLIDE:
-						dist = (r - cNiv.r) * (r - cNiv.r) + (v - cNiv.v) * (v - cNiv.v) + (b - cNiv.b) * (b - cNiv.b);
+						dist = (r - cNiv.r) * (r - cNiv.r) * prm.coefR + (v - cNiv.v) * (v - cNiv.v) * prm.coefV + (b - cNiv.b) * (b - cNiv.b) * prm.coefB;
 						break;
 					case Distance.DISTANCE_SUP:
 						dist = Math.Max(Math.Abs(r - cNiv.r), Math.Max(Math.Abs(v - cNiv.v), Math.Abs(b - cNiv.b)));
 						break;
 					default:
-						dist = Math.Abs(r - cNiv.r) + Math.Abs(v - cNiv.v) + Math.Abs(b - cNiv.b);
+						dist = Math.Abs(r - cNiv.r) * prm.coefR + Math.Abs(v - cNiv.v) * prm.coefV + Math.Abs(b - cNiv.b) * prm.coefB;
 						break;
 				}
 				if (dist < minDist) {

@@ -265,7 +265,7 @@ namespace ConvImgCpc {
 		// Rendu d'une image CPC dans un bitmap PC
 		public DirectBitmap DrawBitmap(int nbCol, int nbLig, int realWidth = 0, bool isSprite = false, ImageCpc imgCpc = null) {
 			int width = realWidth !=0 ? realWidth : nbCol << 3;
-			DirectBitmap loc = new DirectBitmap(realWidth, nbLig << 1);
+			DirectBitmap loc = new DirectBitmap(width, nbLig << 1);
 			for (int y = 0; y < nbLig << 1; y += 2) {
 				int mode = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == yEgx ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
 				int adrCPC = isSprite ? nbCol * (y >> 1) : GetAdrCpc(y);
