@@ -484,7 +484,7 @@ namespace ConvImgCpc {
 					int maxSprite = GetLastSprite(allBank);
 					int size = allBank ? Convert.ToInt32(numBanks.Value) * 0x1000 : 0x1000;
 					byte[] buffer = new byte[size];
-					byte[] sprPk = new byte[512 * maxSprite];
+					byte[] sprPk = new byte[512 * (maxSprite + 1)];
 					int pos = 0;
 					int startBank = allBank ? 0 : numBank;
 					int endBank = allBank ? Convert.ToInt32(numBanks.Value) : numBank + 1;
@@ -572,7 +572,7 @@ namespace ConvImgCpc {
 							break;
 					}
 				}
-				catch {
+				catch (Exception ex) {
 					main.DisplayErreur(main.multilingue.GetString("EditSprites.TxtInfo5"));
 				}
 				Enabled = true;
@@ -618,13 +618,12 @@ namespace ConvImgCpc {
 
 		private void SavePaletteKitAsm(StreamWriter sw) {
 			sw.WriteLine("PaletteSprites");
-			string s = "	DB	";
-			for (int i = 0; i < 15; i++) {
-				int kit = Cpc.paletteSprite[i + 1];
-				byte c1 = (byte)(((kit & 0x0F) << 4) + ((kit & 0xF0) >> 4));
-				byte c2 = (byte)(kit >> 8);
-				s += "#" + c1.ToString("X2") + ",#" + c2.ToString("X2");
-				if (i < 14)
+			string s = "	DW	";
+			for (int i = 1; i < 16; i++) {
+				int kit = Cpc.paletteSprite[i];
+				int col = (kit & 0xF00) + ((kit & 0x0F) << 4) + ((kit & 0xF0) >> 4);
+				s +=  "#"+col.ToString("X3");
+				if (i < 15)
 					s += ",";
 			}
 			sw.WriteLine(s);
