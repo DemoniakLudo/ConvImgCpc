@@ -108,6 +108,8 @@ namespace ConvImgCpc {
 			for (int c = 0; c < 16; c++)
 				Cpc.paletteSprite[c] = Cpc.Palette[c];
 
+			numSprite.Value = numSpr;
+			comboBanque.SelectedIndex = numBank;
 			MessageBox.Show("Capture Ok.");
 		}
 
