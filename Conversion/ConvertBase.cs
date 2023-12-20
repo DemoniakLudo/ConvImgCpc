@@ -239,7 +239,10 @@ namespace ConvImgCpc {
 		// Recherche les x meilleurs couleurs parmis les n possibles (remplit le tableau Cpc.Palette)
 		//
 		static void RechercheCMax(int maxPen, int[] lockState, Param prm) {
-			Array.Clear(Cpc.Palette, 0, Cpc.Palette.Length);
+			for (int i = 0; i < 16; i++)
+				if (prm.lockState[i] == 0)
+					Cpc.Palette[i] = 0;
+
 			try {
 				int cUtil, x, FindMax = Cpc.cpcPlus ? 4096 : 27, valMax = 0;
 				for (x = 0; x < maxPen; x++)
