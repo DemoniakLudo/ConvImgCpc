@@ -2,11 +2,7 @@
 
 namespace ConvImgCpc {
 	public static partial class Conversion {
-		public enum Distance {
-			DISTANCE_SUP = 0,
-			DISTANCE_EUCLIDE = 1,
-			DISTANCE_MANHATTAN = 2,
-		};
+		public enum Distance { DISTANCE_SUP = 0, DISTANCE_EUCLIDE = 1, DISTANCE_MANHATTAN = 2 };
 
 		static private int[,] coulTrouvee = new int[4096, 272];
 		static private byte[] tblContrast = new byte[256];
@@ -162,6 +158,7 @@ namespace ConvImgCpc {
 			return p;
 		}
 
+		/*
 		static private void Filtre(DirectBitmap source, Param prm) {
 			for (int yPix = 0; yPix < Cpc.TailleY; yPix += 2) {
 				int Tx = Cpc.CalcTx(yPix);
@@ -185,6 +182,7 @@ namespace ConvImgCpc {
 				}
 			}
 		}
+		*/
 
 		//
 		// Passe 1 : Réduit la palette aux x couleurs de la palette du CPC.
@@ -192,6 +190,7 @@ namespace ConvImgCpc {
 		// Effectue également un traitement de l'erreur (tramage) si demandé.
 		//
 		static private void ConvertPasse1(DirectBitmap source, Param prm) {
+			Array.Clear(coulTrouvee, 0, coulTrouvee.Length);
 			int pct = Dither.SetMatDither(prm);
 			RvbColor p = new RvbColor(0), choix, n1, n2;
 			int indexChoix = 0;
@@ -240,6 +239,7 @@ namespace ConvImgCpc {
 		// Recherche les x meilleurs couleurs parmis les n possibles (remplit le tableau Cpc.Palette)
 		//
 		static void RechercheCMax(int maxPen, int[] lockState, Param prm) {
+			Array.Clear(Cpc.Palette, 0, Cpc.Palette.Length);
 			try {
 				int cUtil, x, FindMax = Cpc.cpcPlus ? 4096 : 27, valMax = 0;
 				for (x = 0; x < maxPen; x++)
@@ -339,7 +339,6 @@ namespace ConvImgCpc {
 			RvbColor[,] tabCol = new RvbColor[16, 272];
 			int[] MemoLockState = new int[16];
 			int i;
-			int Tx = Cpc.CalcTx();
 			int maxPen = Cpc.MaxPen(2);
 			for (i = 0; i < 16; i++)
 				MemoLockState[i] = prm.lockState[i];
