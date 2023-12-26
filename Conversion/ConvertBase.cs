@@ -39,36 +39,36 @@ namespace ConvImgCpc {
 				}
 				else
 					if (h < 120f) {
-					r = -(h - 120f) * dif / 60f + min;
-					v = max;
-					b = min;
-				}
-				else
+						r = -(h - 120f) * dif / 60f + min;
+						v = max;
+						b = min;
+					}
+					else
 						if (h < 180f) {
-					r = min;
-					v = max;
-					b = (h - 120f) * dif / 60f + min;
-				}
-				else
+							r = min;
+							v = max;
+							b = (h - 120f) * dif / 60f + min;
+						}
+						else
 							if (h < 240f) {
-					r = min;
-					v = -(h - 240f) * dif / 60f + min;
-					b = max;
-				}
-				else
+								r = min;
+								v = -(h - 240f) * dif / 60f + min;
+								b = max;
+							}
+							else
 								if (h < 300f) {
-					r = (h - 240f) * dif / 60f + min;
-					v = min;
-					b = max;
-				}
-				else
+									r = (h - 240f) * dif / 60f + min;
+									v = min;
+									b = max;
+								}
+								else
 									if (h <= 360f) {
-					r = max;
-					v = min;
-					b = -(h - 360f) * dif / 60 + min;
-				}
-				else
-					r = v = b = 0;
+										r = max;
+										v = min;
+										b = -(h - 360f) * dif / 60 + min;
+									}
+									else
+										r = v = b = 0;
 			}
 		}
 
@@ -241,7 +241,7 @@ namespace ConvImgCpc {
 		static void RechercheCMax(int maxPen, int[] lockState, Param prm) {
 			for (int i = 0; i < 16; i++)
 				if (prm.lockState[i] == 0)
-					Cpc.Palette[i] = 0;
+					Cpc.Palette[i] = 0xFFFF;
 
 			try {
 				int cUtil, x, FindMax = Cpc.cpcPlus ? 4096 : 27, valMax = 0;
@@ -265,7 +265,8 @@ namespace ConvImgCpc {
 							}
 						}
 						for (int y = 0; y < 272; y++)
-							coulTrouvee[Cpc.Palette[cUtil], y] = 0;
+							if (Cpc.Palette[cUtil] < 0xFFFF)
+								coulTrouvee[Cpc.Palette[cUtil], y] = 0;
 
 						if (prm.newReduc)
 							break; // Première couleur trouvée => sortie
@@ -293,7 +294,7 @@ namespace ConvImgCpc {
 						else {
 							if (lockState[x] == 0 /*&& prm.disableState[x] == 0*/ && x != cUtil) {
 								int dist, oldDist = 0;
-								for (int rech = 4; rech-- > 0;) {
+								for (int rech = 4; rech-- > 0; ) {
 									for (int i = 0; i < FindMax; i++) {
 										int nbc = 0;
 										for (int y = 0; y < 272; y++)
