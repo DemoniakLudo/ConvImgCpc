@@ -241,14 +241,15 @@ namespace ConvImgCpc {
 		static void RechercheCMax(int maxPen, int[] lockState, Param prm) {
 			for (int i = 0; i < 16; i++)
 				if (prm.lockState[i] == 0)
-					Cpc.Palette[i] = 0xFFFF;
+					Cpc.Palette[i] = 0x7FFFFFFF;
 
 			try {
 				int cUtil, x, FindMax = Cpc.cpcPlus ? 4096 : 27, valMax = 0;
 				for (x = 0; x < maxPen; x++)
 					if (lockState[x] > 0)
 						for (int y = 0; y < 272; y++)
-							coulTrouvee[Cpc.Palette[x], y] = 0;
+							if (Cpc.Palette[x] != 0x7FFFFFF)
+								coulTrouvee[Cpc.Palette[x], y] = 0;
 
 				// Recherche la couleur la plus utilisée
 				for (cUtil = 0; cUtil < maxPen; cUtil++) {

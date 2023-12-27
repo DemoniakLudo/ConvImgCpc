@@ -214,7 +214,10 @@ namespace ConvImgCpc {
 		}
 
 		static public RvbColor GetColor(int c) {
-			return cpcPlus ? new RvbColor((byte)((c & 0x0F) * 17), (byte)(((c & 0xF00) >> 8) * 17), (byte)(((c & 0xF0) >> 4) * 17)) : RgbCPC[c >= 0 && c < 27 ? c : 0];
+			if ( c < 0xFFFF )
+				return cpcPlus ? new RvbColor((byte)((c & 0x0F) * 17), (byte)(((c & 0xF00) >> 8) * 17), (byte)(((c & 0xF0) >> 4) * 17)) : RgbCPC[c >= 0 && c < 27 ? c : 0];
+
+			return new RvbColor(0);
 		}
 	}
 
