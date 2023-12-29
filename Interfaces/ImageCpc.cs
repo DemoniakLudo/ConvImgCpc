@@ -306,22 +306,40 @@ namespace ConvImgCpc {
 			return ret;
 		}
 
-		private byte[] MakeWin() {
+		private byte[] MakeWin(bool rowMode = false) {
 			int realWidth = (imgMotif.Width >> 3) + ((imgMotif.Width % 8) > 0 ? 1 : 0);
 			byte[] ret = new byte[(realWidth * imgMotif.Height) >> 1];
 			Array.Clear(ret, 0, ret.Length);
-			for (int y = 0; y < imgMotif.Height; y += 2) {
-				int maxLen = imgMotif.Width;
-				int tx = Cpc.CalcTx(y);
+			if (rowMode) {
 				for (int x = 0; x < realWidth; x++) {
-					byte octet = 0;
-					for (int p = 0; p < Math.Min(8, maxLen); p++)
-						if ((p % tx) == 0) {
-							int pen = Cpc.GetPenColor(imgMotif, (x << 3) + p, y);
-							octet |= (byte)(Cpc.tabOctetMode[pen] >> (p / tx));
-						}
-					ret[x + (y >> 1) * realWidth] = octet;
+					int maxLen = imgMotif.Width;
+					for (int y = 0; y < imgMotif.Height; y += 2) {
+						int tx = Cpc.CalcTx(y);
+						byte octet = 0;
+						for (int p = 0; p < Math.Min(8, maxLen); p++)
+							if ((p % tx) == 0) {
+								int pen = Cpc.GetPenColor(imgMotif, (x << 3) + p, y);
+								octet |= (byte)(Cpc.tabOctetMode[pen] >> (p / tx));
+							}
+						ret[x + (y >> 1) * realWidth] = octet;
+					}
 					maxLen -= 8;
+				}
+			}
+			else {
+				for (int y = 0; y < imgMotif.Height; y += 2) {
+					int maxLen = imgMotif.Width;
+					int tx = Cpc.CalcTx(y);
+					for (int x = 0; x < realWidth; x++) {
+						byte octet = 0;
+						for (int p = 0; p < Math.Min(8, maxLen); p++)
+							if ((p % tx) == 0) {
+								int pen = Cpc.GetPenColor(imgMotif, (x << 3) + p, y);
+								octet |= (byte)(Cpc.tabOctetMode[pen] >> (p / tx));
+							}
+						ret[x + (y >> 1) * realWidth] = octet;
+						maxLen -= 8;
+					}
 				}
 			}
 			return ret;
@@ -674,9 +692,9 @@ namespace ConvImgCpc {
 			}
 			palTxt += "\r\n";
 			if (Cpc.cpcPlus)
-				palTxt += ";ASIC Values : ";
+				palTxt += ";ASIC Values :\r\n	DW	";
 			else
-				palTxt += ";Gate Array Values : ";
+				palTxt += ";Gate Array Values :\r\n	DB	";
 
 			for (i = 0; i < maxPen; i++) {
 				int val = Cpc.Palette[i];
@@ -767,20 +785,30 @@ namespace ConvImgCpc {
 		private void bpSaveWin_Click(object sender, EventArgs e) {
 			Enabled = false;
 			SaveFileDialog dlg = new SaveFileDialog();
-			dlg.Filter = " (*.win)|*.win";
+			dlg.Filter = " (.win)|*.win| Raw assembler data (.asm)|*.asm | Raw assembler data in column order (.asm)|*.asm";
 			if (dlg.ShowDialog() == DialogResult.OK) {
 				FileStream fileScr = new FileStream(dlg.FileName, FileMode.Create, FileAccess.Write);
-				byte[] bWin = MakeWin();
-				int l = bWin.Length + 4;
-				CpcAmsdos entete = Cpc.CreeEntete(dlg.FileName, 0x4000, (short)l, -13622);
-				fileScr.Write(Cpc.AmsdosToByte(entete), 0, 128);
-				fileScr.Write(bWin, 0, bWin.Length);
-				byte[] endFile = new byte[4];
-				endFile[0] = (byte)(imgMotif.Width & 0xFF);
-				endFile[1] = (byte)(imgMotif.Width >> 8);
-				endFile[2] = (byte)((imgMotif.Height >> 1) & 0xFF);
-				endFile[3] = (byte)(imgMotif.Height >> 9);
-				fileScr.Write(endFile, 0, 4);
+				switch (dlg.FilterIndex) {
+					case 1:
+						byte[] bWin = MakeWin();
+						int l = bWin.Length + 4;
+						CpcAmsdos entete = Cpc.CreeEntete(dlg.FileName, 0x4000, (short)l, -13622);
+						fileScr.Write(Cpc.AmsdosToByte(entete), 0, 128);
+						fileScr.Write(bWin, 0, bWin.Length);
+						byte[] endFile = new byte[4];
+						endFile[0] = (byte)(imgMotif.Width & 0xFF);
+						endFile[1] = (byte)(imgMotif.Width >> 8);
+						endFile[2] = (byte)((imgMotif.Height >> 1) & 0xFF);
+						endFile[3] = (byte)(imgMotif.Height >> 9);
+						fileScr.Write(endFile, 0, 4);
+						break;
+
+					case 2:
+						break;
+
+					case 3:
+						break;
+				}
 				fileScr.Close();
 			}
 			Enabled = true;

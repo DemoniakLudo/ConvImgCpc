@@ -77,15 +77,14 @@ namespace ConvImgCpc {
 
 		private void DepactOCP() {
 			int PosIn = 0, PosOut = 0;
-			int LgOut, CntBlock = 0;
 
 			bmpCpc.CopyTo(bufTmp, 0x10000);
 			while (PosOut < 0x4000) {
 				if (bufTmp[PosIn] == 'M' && bufTmp[PosIn + 1] == 'J' && bufTmp[PosIn + 2] == 'H') {
 					PosIn += 3;
-					LgOut = bufTmp[PosIn++];
+					int LgOut = bufTmp[PosIn++];
 					LgOut += (bufTmp[PosIn++] << 8);
-					CntBlock = 0;
+					int CntBlock = 0;
 					while (CntBlock < LgOut) {
 						if (bufTmp[PosIn] == 'M' && bufTmp[PosIn + 1] == 'J' && bufTmp[PosIn + 2] == 'H')
 							break;

@@ -351,49 +351,49 @@ namespace ConvImgCpc {
 
 		private void ReadScreen(string fileName, bool singlePicture = false) {
 			//try {
-				FileStream fileScr = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-				byte[] tabBytes = new byte[fileScr.Length];
-				fileScr.Read(tabBytes, 0, tabBytes.Length);
-				fileScr.Close();
-				int nbImg = 0;
-				bool isImp = false, isScrImp = false;
-				if (Cpc.CheckAmsdos(tabBytes)) {
-					int nbImages = 1, width = 1, height = 1;
-					CpcAmsdos enteteAms = Cpc.GetAmsdos(tabBytes);
-					// Vérifier si type scr imp
-					isScrImp = (enteteAms.FileName.EndsWith("SCR") && enteteAms.FileType == 0 && enteteAms.Adress == 0x170);
-					if (!isScrImp) {
-						// Vérifier si type imp
-						if (enteteAms.FileName.EndsWith("IMP")) {
-							int l = tabBytes.Length;
-							nbImages = tabBytes[l - 3];
-							width = tabBytes[l - 2];
-							height = tabBytes[l - 1];
-							int animSize = nbImages * width * height;
-							isImp = l - 131 == animSize; // 131 + 128 (Amsdos) + 3 (imp)
-						}
+			FileStream fileScr = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+			byte[] tabBytes = new byte[fileScr.Length];
+			fileScr.Read(tabBytes, 0, tabBytes.Length);
+			fileScr.Close();
+			int nbImg = 0;
+			bool isImp = false, isScrImp = false;
+			if (Cpc.CheckAmsdos(tabBytes)) {
+				int nbImages = 1, width = 1, height = 1;
+				CpcAmsdos enteteAms = Cpc.GetAmsdos(tabBytes);
+				// Vérifier si type scr imp
+				isScrImp = (enteteAms.FileName.EndsWith("SCR") && enteteAms.FileType == 0 && enteteAms.Adress == 0x170);
+				if (!isScrImp) {
+					// Vérifier si type imp
+					if (enteteAms.FileName.EndsWith("IMP")) {
+						int l = tabBytes.Length;
+						nbImages = tabBytes[l - 3];
+						width = tabBytes[l - 2];
+						height = tabBytes[l - 1];
+						int animSize = nbImages * width * height;
+						isImp = l - 131 == animSize; // 131 + 128 (Amsdos) + 3 (imp)
 					}
-					if (isImp) {
-						imgCpc.InitBitmapCpc(nbImages, imgSrc.tpsFrame);
-						imgSrc.InitBitmap(nbImages);
-						anim.SetNbImgs(nbImages, imgSrc.tpsFrame);
-						SetInfo(multilingue.GetString("Main.Prg.TxtInfo2") + nbImages + " images.");
-						Cpc.TailleX = width << 3;
-						Cpc.TailleY = height << 1;
-						int x = Cpc.NbCol;
-						int y = Cpc.NbLig;
-						int posData = 128; // Entête Amsdos
-						for (int i = 0; i < nbImages; i++) {
-							SelectImage(i, true);
-							byte[] tempData = new byte[width * height];
-							Array.Copy(tabBytes, posData, tempData, 0, tempData.Length);
-							posData += tempData.Length;
-							BitmapCpc bmp = new BitmapCpc(tempData, width << 3, height << 1);
-							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, true, imgCpc).Bitmap, i);
-						}
+				}
+				if (isImp) {
+					imgCpc.InitBitmapCpc(nbImages, imgSrc.tpsFrame);
+					imgSrc.InitBitmap(nbImages);
+					anim.SetNbImgs(nbImages, imgSrc.tpsFrame);
+					SetInfo(multilingue.GetString("Main.Prg.TxtInfo2") + nbImages + " images.");
+					Cpc.TailleX = width << 3;
+					Cpc.TailleY = height << 1;
+					int x = Cpc.NbCol;
+					int y = Cpc.NbLig;
+					int posData = 128; // Entête Amsdos
+					for (int i = 0; i < nbImages; i++) {
+						SelectImage(i, true);
+						byte[] tempData = new byte[width * height];
+						Array.Copy(tabBytes, posData, tempData, 0, tempData.Length);
+						posData += tempData.Length;
+						BitmapCpc bmp = new BitmapCpc(tempData, width << 3, height << 1);
+						imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, true, imgCpc).Bitmap, i);
 					}
-					else
-						if (isScrImp) {
+				}
+				else
+					if (isScrImp) {
 						BitmapCpc bmp = new BitmapCpc(tabBytes, 0x110);
 						if (singlePicture)
 							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap, imgCpc.selImage);
@@ -434,44 +434,44 @@ namespace ConvImgCpc {
 						}
 						SetInfo(multilingue.GetString("Main.prg.TxtInfo3"));
 					}
+			}
+			else {
+				imageStream = new MemoryStream(tabBytes);
+				imageStream.Position = 0;
+				if (!singlePicture) {
+					imgSrc.InitBitmap(imageStream);
+					nbImg = imgSrc.NbImg;
+					anim.SetNbImgs(nbImg, imgSrc.tpsFrame);
+					chkAllPics.Visible = nbImg > 1;
+					SetInfo(multilingue.GetString("Main.prg.TxtInfo4") + (nbImg > 0 ? (multilingue.GetString("Main.prg.TxtInfo5") + nbImg + " images.") : "."));
 				}
 				else {
-					imageStream = new MemoryStream(tabBytes);
-					imageStream.Position = 0;
-					if (!singlePicture) {
-						imgSrc.InitBitmap(imageStream);
-						nbImg = imgSrc.NbImg;
-						anim.SetNbImgs(nbImg, imgSrc.tpsFrame);
-						chkAllPics.Visible = nbImg > 1;
-						SetInfo(multilingue.GetString("Main.prg.TxtInfo4") + (nbImg > 0 ? (multilingue.GetString("Main.prg.TxtInfo5") + nbImg + " images.") : "."));
-					}
-					else {
-						imgSrc.ImportBitmap(new Bitmap(imageStream), imgCpc.selImage);
-						SetInfo(multilingue.GetString("Main.prg.TxtInfo4"));
-					}
-
-				}
-				radioUserSize.Enabled = radioOrigin.Enabled = true;
-				Text = "ConvImgCPC - " + Path.GetFileName(fileName);
-				if (radioOrigin.Checked) {
-					tbxSizeX.Text = imgSrc.GetImage.Width.ToString();
-					tbxSizeY.Text = imgSrc.GetImage.Height.ToString();
-					tbxPosX.Text = "0";
-					tbxPosY.Text = "0";
+					imgSrc.ImportBitmap(new Bitmap(imageStream), imgCpc.selImage);
+					SetInfo(multilingue.GetString("Main.prg.TxtInfo4"));
 				}
 
-				if (!doNotReset) {
-					if (!singlePicture && !isImp)
-						imgCpc.InitBitmapCpc(nbImg, imgSrc.tpsFrame);
+			}
+			radioUserSize.Enabled = radioOrigin.Enabled = true;
+			Text = "ConvImgCPC - " + Path.GetFileName(fileName);
+			if (radioOrigin.Checked) {
+				tbxSizeX.Text = imgSrc.GetImage.Width.ToString();
+				tbxSizeY.Text = imgSrc.GetImage.Height.ToString();
+				tbxPosX.Text = "0";
+				tbxPosY.Text = "0";
+			}
 
-					SelectImage(0);
-					imgCpc.Reset(true);
-				}
-				else
-					imgCpc.Reset(false);
+			if (!doNotReset) {
+				if (!singlePicture && !isImp)
+					imgCpc.InitBitmapCpc(nbImg, imgSrc.tpsFrame);
 
-				Convert(false);
-				doNotReset = false;
+				SelectImage(0);
+				imgCpc.Reset(true);
+			}
+			else
+				imgCpc.Reset(false);
+
+			Convert(false);
+			doNotReset = false;
 			//}
 			//catch {
 			//	DisplayErreur(multilingue.GetString("Main.prg.TxtInfo6"));
@@ -524,7 +524,7 @@ namespace ConvImgCpc {
 				radioKeepLarger.Checked = param.sMode == Param.SizeMode.KeepLarger;
 				radioKeepSmaller.Checked = param.sMode == Param.SizeMode.KeepSmaller;
 				radioOrigin.Checked = param.sMode == Param.SizeMode.Origin;
-				sortPal.Checked = param.sortPal;
+				sortPal.Checked = (param.sortPal & 1) != 0;
 				radioUserSize.Checked = param.sMode == Param.SizeMode.UserSize;
 				nbCols.Value = param.nbCols;
 				nbLignes.Value = param.nbLignes;
@@ -777,10 +777,10 @@ namespace ConvImgCpc {
 							SavePaletteKit(dlg.FileName, true);
 						else
 							if (Cpc.modeVirtuel == 3 || Cpc.modeVirtuel == 4)
-							imgCpc.SauveEgx(dlg.FileName, param);
-						else
-							//imgCpc.SauvBump(dlg.FileName, lblInfoVersion.Text);
-							imgCpc.SauveDiffImage(dlg.FileName, lblInfoVersion.Text, false, PackMethode.None);
+								imgCpc.SauveEgx(dlg.FileName, param);
+							else
+								//imgCpc.SauvBump(dlg.FileName, lblInfoVersion.Text);
+								imgCpc.SauveDiffImage(dlg.FileName, lblInfoVersion.Text, false, PackMethode.None);
 						break;
 				}
 				param.lastSavePath = Path.GetDirectoryName(dlg.FileName);
@@ -902,7 +902,7 @@ namespace ConvImgCpc {
 						ymin = y;
 				}
 				// Calcule xMax
-				for (int x = bmp.Width; --x > 0;) {
+				for (int x = bmp.Width; --x > 0; ) {
 					for (int y = 0; y < bmp.Height; y++) {
 						if ((bmp.GetPixel(x, y).ToArgb() & 0xFFFFFF) > 0) {
 							y = bmp.Height;
@@ -913,7 +913,7 @@ namespace ConvImgCpc {
 						xmax = x;
 				}
 				// Calcule yMax;
-				for (int y = bmp.Height; --y > 0;) {
+				for (int y = bmp.Height; --y > 0; ) {
 					for (int x = 0; x < bmp.Width; x++) {
 						if ((bmp.GetPixel(x, y).ToArgb() & 0xFFFFFF) > 0) {
 							y = 0;
@@ -1128,7 +1128,10 @@ namespace ConvImgCpc {
 		}
 
 		private void sortPal_CheckedChanged(object sender, EventArgs e) {
-			param.sortPal = sortPal.Checked;
+			param.sortPal++;
+			if (param.sortPal > 3)
+				param.sortPal = 0;
+
 			Convert(false);
 		}
 

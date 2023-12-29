@@ -19,7 +19,7 @@ namespace ConvImgCpc {
 		public bool reductPal2;
 		public bool reductPal3;
 		public bool reductPal4;
-		public bool sortPal;
+		public byte sortPal;
 		public int nbCols, nbLignes;
 		public int modeVirtuel;
 		public bool withCode;

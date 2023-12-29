@@ -4,9 +4,6 @@ using System.Runtime.InteropServices;
 
 namespace ConvImgCpc {
 	public partial class Cpc {
-		private const int maxColsCpc = 96;
-		private const int maxLignesCpc = 272;
-
 		static public int[] Palette = { 1, 24, 20, 6, 26, 0, 2, 7, 10, 12, 14, 16, 18, 22, 1, 14, 1 };
 		static public int[] tabOctetMode = { 0x00, 0x80, 0x08, 0x88, 0x20, 0xA0, 0x28, 0xA8, 0x02, 0x82, 0x0A, 0x8A, 0x22, 0xA2, 0x2A, 0xAA };
 		public const int Lum0 = 0x00;

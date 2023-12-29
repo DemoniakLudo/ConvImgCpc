@@ -158,32 +158,6 @@ namespace ConvImgCpc {
 			return p;
 		}
 
-		/*
-		static private void Filtre(DirectBitmap source, Param prm) {
-			for (int yPix = 0; yPix < Cpc.TailleY; yPix += 2) {
-				int Tx = Cpc.CalcTx(yPix);
-				for (int xPix = 0; xPix < Cpc.TailleX; xPix += Tx) {
-					RvbColor p0 = GetPixel(source, xPix > 0 ? xPix - Tx : 0, yPix > 0 ? yPix - 2 : 0, Tx, prm, 0);
-					RvbColor p1 = GetPixel(source, xPix, yPix > 0 ? yPix - 2 : 0, Tx, prm, 0);
-					//RvbColor p2 = GetPixel(source, xPix + Tx < Cpc.TailleX ? xPix + Tx : xPix, yPix > 0 ? yPix - 2 : 0, Tx, prm, 0);
-					RvbColor p3 = GetPixel(source, xPix > 0 ? xPix - Tx : 0, yPix, Tx, prm, 0);
-					RvbColor p4 = GetPixel(source, xPix, yPix, Tx, prm, 0);
-					//RvbColor p5 = GetPixel(source, xPix + Tx < Cpc.TailleX ? xPix + Tx : xPix, yPix, Tx, prm, 0);
-					//RvbColor p6 = GetPixel(source, xPix > 0 ? xPix - Tx : 0, yPix + 2 < Cpc.TailleY ? yPix + 2 : yPix, Tx, prm, 0);
-					//RvbColor p7 = GetPixel(source, xPix, yPix + 2 < Cpc.TailleY ? yPix + 2 : yPix, Tx, prm, 0);
-					//RvbColor p8 = GetPixel(source, xPix + Tx < Cpc.TailleX ? xPix + Tx : xPix, yPix + 2 < Cpc.TailleY ? yPix + 2 : yPix, Tx, prm, 0);
-					//double r = ((p0.r / 2.0) + (p1.r / 3.0) + (p2.r / 4.0) + (p3.r / 5.0) + p4.r + (p5.r / 6.0) + (p6.r / 7.0) + (p7.r / 8.0) + (p8.r / 9.0)) / 3.0;
-					//double v = ((p0.v / 2.0) + (p1.v / 3.0) + (p2.v / 4.0) + (p3.v / 5.0) + p4.v + (p5.v / 6.0) + (p6.v / 7.0) + (p7.v / 8.0) + (p8.v / 9.0)) / 3.0;
-					//double b = ((p0.b / 2.0) + (p1.b / 3.0) + (p2.b / 4.0) + (p3.b / 5.0) + p4.b + (p5.b / 6.0) + (p6.b / 7.0) + (p7.b / 8.0) + (p8.b / 9.0)) / 3.0;
-					double r = ((p0.r / 3.0) + (p1.r / 3.0) + (p3.r / 3.0) + p4.r) / 2.0;
-					double v = ((p0.v / 3.0) + (p1.v / 3.0) + (p3.v / 3.0) + p4.v) / 2.0;
-					double b = ((p0.b / 3.0) + (p1.b / 3.0) + (p3.b / 3.0) + p4.b) / 2.0;
-					source.SetPixel(xPix, yPix, new RvbColor((byte)r, (byte)v, (byte)b));
-				}
-			}
-		}
-		*/
-
 		//
 		// Passe 1 : Réduit la palette aux x couleurs de la palette du CPC.
 		// Remplit le tableau coulTrouvee avec ces couleurs
@@ -241,14 +215,14 @@ namespace ConvImgCpc {
 		static void RechercheCMax(int maxPen, int[] lockState, Param prm) {
 			for (int i = 0; i < 16; i++)
 				if (prm.lockState[i] == 0)
-					Cpc.Palette[i] = 0x7FFFFFFF;
+					Cpc.Palette[i] = 0xFFFF;
 
 			try {
 				int cUtil, x, FindMax = Cpc.cpcPlus ? 4096 : 27, valMax = 0;
 				for (x = 0; x < maxPen; x++)
 					if (lockState[x] > 0)
 						for (int y = 0; y < 272; y++)
-							if (Cpc.Palette[x] != 0x7FFFFFF)
+							if (Cpc.Palette[x] < 0xFFFF)
 								coulTrouvee[Cpc.Palette[x], y] = 0;
 
 				// Recherche la couleur la plus utilisée
@@ -323,10 +297,11 @@ namespace ConvImgCpc {
 						cUtil = x;
 					}
 				}
-				if (prm.sortPal)
+				if ((prm.sortPal & 1) == 1)
 					for (x = 0; x < maxPen - 1; x++)
 						for (int c = x + 1; c < maxPen; c++)
-							if (lockState[x] == 0 && lockState[c] == 0 && prm.disableState[x] == 0 && prm.disableState[c] == 0 && Cpc.Palette[x] > Cpc.Palette[c]) {
+							if ((lockState[x] == 0 && lockState[c] == 0 && prm.disableState[x] == 0 && prm.disableState[c] == 0)
+								&& ((Cpc.Palette[x] > Cpc.Palette[c] && (prm.sortPal & 2) == 0) || (Cpc.Palette[x] < Cpc.Palette[c] && (prm.sortPal & 2) != 0))) {
 								int tmp = Cpc.Palette[x];
 								Cpc.Palette[x] = Cpc.Palette[c];
 								Cpc.Palette[c] = tmp;
@@ -437,15 +412,12 @@ namespace ConvImgCpc {
 		}
 
 		static public void Palettiser(DirectBitmap img, Param prm) {
-			int pct = Dither.SetMatDither(prm);
 			niveaux = new Niveau[prm.kMeansColor];
 			for (int n = 0; n < prm.kMeansColor; n++) {
 				byte gris = (byte)(255 * n / (prm.kMeansColor - 1));
 				niveaux[n] = new Niveau(gris, gris, gris);
 			}
-
 			int incY = prm.trameTc ? 4 : 2;
-
 			for (int p = 0; p < prm.kMeansPass; p++) {
 				for (int n = 0; n < prm.kMeansColor; n++)
 					niveaux[n].Reset();
@@ -453,7 +425,6 @@ namespace ConvImgCpc {
 				for (int y = 0; y < Cpc.TailleY; y += incY) {
 					int Tx = Cpc.CalcTx(y);
 					for (int x = 0; x < Cpc.TailleX; x += Tx) {
-						//RvbColor coul = GetPixel(img, x, y, Tx, prm, pct);
 						RvbColor coul = img.GetPixelColor(x, y);
 						NiveauAdequat(prm, coul);
 					}
@@ -462,11 +433,9 @@ namespace ConvImgCpc {
 					niveaux[n].SetNiveauMoyen();
 			}
 
-			for (int y = 0; y < Cpc.TailleY; y += incY) {
-				int Tx = Cpc.CalcTx(y);
+			for (int y = 0; y < Cpc.TailleY; y += incY) 
 				for (int x = 0; x < Cpc.TailleX; x++)
 					img.SetPixel(x, y, NiveauAdequat(prm, img.GetPixelColor(x, y)).couleurNiveau.GetColorArgb);
-			}
 		}
 
 		static public Niveau NiveauAdequat(Param prm, RvbColor coul) {

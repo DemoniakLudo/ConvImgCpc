@@ -5,7 +5,7 @@ namespace ConvImgCpc {
 	public class UndoRedo {
 		public List<MemoPoint> lstUndoRedo = new List<MemoPoint>();
 		int numRedo = 0, maxNum = 0, numPt = 0;
-		public int NumRedo { get { return numRedo; } }
+		//public int NumRedo { get { return numRedo; } }
 
 		public bool CanUndo { get { return numRedo > 0; } }
 		public bool CanRedo { get { return numRedo < maxNum; } }
