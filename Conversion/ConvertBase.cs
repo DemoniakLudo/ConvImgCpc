@@ -39,39 +39,40 @@ namespace ConvImgCpc {
 				}
 				else
 					if (h < 120f) {
-						r = -(h - 120f) * dif / 60f + min;
-						v = max;
-						b = min;
-					}
-					else
+					r = -(h - 120f) * dif / 60f + min;
+					v = max;
+					b = min;
+				}
+				else
 						if (h < 180f) {
-							r = min;
-							v = max;
-							b = (h - 120f) * dif / 60f + min;
-						}
-						else
+					r = min;
+					v = max;
+					b = (h - 120f) * dif / 60f + min;
+				}
+				else
 							if (h < 240f) {
-								r = min;
-								v = -(h - 240f) * dif / 60f + min;
-								b = max;
-							}
-							else
+					r = min;
+					v = -(h - 240f) * dif / 60f + min;
+					b = max;
+				}
+				else
 								if (h < 300f) {
-									r = (h - 240f) * dif / 60f + min;
-									v = min;
-									b = max;
-								}
-								else
+					r = (h - 240f) * dif / 60f + min;
+					v = min;
+					b = max;
+				}
+				else
 									if (h <= 360f) {
-										r = max;
-										v = min;
-										b = -(h - 360f) * dif / 60 + min;
-									}
-									else
-										r = v = b = 0;
+					r = max;
+					v = min;
+					b = -(h - 360f) * dif / 60 + min;
+				}
+				else
+					r = v = b = 0;
 			}
 		}
 
+		// Retourne la couleur CPC (0-26) la plus proche
 		static private int GetNumColorPixelCpc(Param prm, RvbColor p) {
 			int indexChoix = 0;
 
@@ -214,7 +215,7 @@ namespace ConvImgCpc {
 		//
 		static void RechercheCMax(int maxPen, int[] lockState, Param prm) {
 			for (int i = 0; i < 16; i++)
-				if (prm.lockState[i] == 0)
+				if (prm.lockState[i] == 0 && lockState[i] == 0)
 					Cpc.Palette[i] = 0xFFFF;
 
 			try {
@@ -269,7 +270,7 @@ namespace ConvImgCpc {
 						else {
 							if (lockState[x] == 0 /*&& prm.disableState[x] == 0*/ && x != cUtil) {
 								int dist, oldDist = 0;
-								for (int rech = 4; rech-- > 0; ) {
+								for (int rech = 4; rech-- > 0;) {
 									for (int i = 0; i < FindMax; i++) {
 										int nbc = 0;
 										for (int y = 0; y < 272; y++)
@@ -433,7 +434,7 @@ namespace ConvImgCpc {
 					niveaux[n].SetNiveauMoyen();
 			}
 
-			for (int y = 0; y < Cpc.TailleY; y += incY) 
+			for (int y = 0; y < Cpc.TailleY; y += incY)
 				for (int x = 0; x < Cpc.TailleX; x++)
 					img.SetPixel(x, y, NiveauAdequat(prm, img.GetPixelColor(x, y)).couleurNiveau.GetColorArgb);
 		}
