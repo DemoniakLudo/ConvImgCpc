@@ -701,7 +701,7 @@
 			this.bpImport.TabIndex = 58;
 			this.bpImport.Text = "Import";
 			this.bpImport.UseVisualStyleBackColor = true;
-			this.bpImport.Click += new System.EventHandler(this.bpImport_Click);
+			this.bpImport.Click += new System.EventHandler(this.BpImport_Click);
 			// 
 			// bpCreate
 			// 
@@ -710,7 +710,7 @@
 			this.bpCreate.Size = new System.Drawing.Size(108, 23);
 			this.bpCreate.TabIndex = 59;
 			this.bpCreate.UseVisualStyleBackColor = true;
-			this.bpCreate.Click += new System.EventHandler(this.bpCreate_Click);
+			this.bpCreate.Click += new System.EventHandler(this.BpCreate_Click);
 			// 
 			// chkInfo
 			// 
@@ -741,7 +741,7 @@
 			this.reducPal4.Size = new System.Drawing.Size(15, 14);
 			this.reducPal4.TabIndex = 60;
 			this.reducPal4.UseVisualStyleBackColor = true;
-			this.reducPal4.CheckedChanged += new System.EventHandler(this.reducPal4_CheckedChanged);
+			this.reducPal4.CheckedChanged += new System.EventHandler(this.ReducPal4_CheckedChanged);
 			// 
 			// bpBmoins
 			// 
@@ -751,7 +751,7 @@
 			this.bpBmoins.TabIndex = 59;
 			this.bpBmoins.Text = "-";
 			this.bpBmoins.UseVisualStyleBackColor = true;
-			this.bpBmoins.Click += new System.EventHandler(this.bpBmoins_Click);
+			this.bpBmoins.Click += new System.EventHandler(this.BpBmoins_Click);
 			// 
 			// bpVmoins
 			// 
@@ -761,7 +761,7 @@
 			this.bpVmoins.TabIndex = 59;
 			this.bpVmoins.Text = "-";
 			this.bpVmoins.UseVisualStyleBackColor = true;
-			this.bpVmoins.Click += new System.EventHandler(this.bpVmoins_Click);
+			this.bpVmoins.Click += new System.EventHandler(this.BpVmoins_Click);
 			// 
 			// bpRmoins
 			// 
@@ -771,7 +771,7 @@
 			this.bpRmoins.TabIndex = 59;
 			this.bpRmoins.Text = "-";
 			this.bpRmoins.UseVisualStyleBackColor = true;
-			this.bpRmoins.Click += new System.EventHandler(this.bpRmoins_Click);
+			this.bpRmoins.Click += new System.EventHandler(this.BpRmoins_Click);
 			// 
 			// label12
 			// 
@@ -809,7 +809,7 @@
 			this.blue.Size = new System.Drawing.Size(575, 24);
 			this.blue.TabIndex = 57;
 			this.blue.Value = 100;
-			this.blue.ValueChanged += new System.EventHandler(this.blue_ValueChanged);
+			this.blue.ValueChanged += new System.EventHandler(this.Blue_ValueChanged);
 			// 
 			// green
 			// 
@@ -820,7 +820,7 @@
 			this.green.Size = new System.Drawing.Size(575, 24);
 			this.green.TabIndex = 57;
 			this.green.Value = 100;
-			this.green.ValueChanged += new System.EventHandler(this.green_ValueChanged);
+			this.green.ValueChanged += new System.EventHandler(this.Green_ValueChanged);
 			// 
 			// red
 			// 
@@ -831,7 +831,7 @@
 			this.red.Size = new System.Drawing.Size(575, 24);
 			this.red.TabIndex = 57;
 			this.red.Value = 100;
-			this.red.ValueChanged += new System.EventHandler(this.red_ValueChanged);
+			this.red.ValueChanged += new System.EventHandler(this.Red_ValueChanged);
 			// 
 			// bpCtrstMoins
 			// 
@@ -841,7 +841,7 @@
 			this.bpCtrstMoins.TabIndex = 55;
 			this.bpCtrstMoins.Text = "-";
 			this.bpCtrstMoins.UseVisualStyleBackColor = true;
-			this.bpCtrstMoins.Click += new System.EventHandler(this.bpCtrstMoins_Click);
+			this.bpCtrstMoins.Click += new System.EventHandler(this.BpCtrstMoins_Click);
 			// 
 			// bpBplus
 			// 
@@ -851,7 +851,7 @@
 			this.bpBplus.TabIndex = 56;
 			this.bpBplus.Text = "+";
 			this.bpBplus.UseVisualStyleBackColor = true;
-			this.bpBplus.Click += new System.EventHandler(this.bpBplus_Click);
+			this.bpBplus.Click += new System.EventHandler(this.BpBplus_Click);
 			// 
 			// bpVplus
 			// 
@@ -861,7 +861,7 @@
 			this.bpVplus.TabIndex = 56;
 			this.bpVplus.Text = "+";
 			this.bpVplus.UseVisualStyleBackColor = true;
-			this.bpVplus.Click += new System.EventHandler(this.bpVplus_Click);
+			this.bpVplus.Click += new System.EventHandler(this.BpVplus_Click);
 			// 
 			// bpRplus
 			// 
@@ -871,7 +871,7 @@
 			this.bpRplus.TabIndex = 56;
 			this.bpRplus.Text = "+";
 			this.bpRplus.UseVisualStyleBackColor = true;
-			this.bpRplus.Click += new System.EventHandler(this.bpRplus_Click);
+			this.bpRplus.Click += new System.EventHandler(this.BpRplus_Click);
 			// 
 			// bpCtrstPlus
 			// 
@@ -891,7 +891,7 @@
 			this.bpSatMoins.TabIndex = 53;
 			this.bpSatMoins.Text = "-";
 			this.bpSatMoins.UseVisualStyleBackColor = true;
-			this.bpSatMoins.Click += new System.EventHandler(this.bpSatMoins_Click);
+			this.bpSatMoins.Click += new System.EventHandler(this.BpSatMoins_Click);
 			// 
 			// bpSatPlus
 			// 
@@ -901,7 +901,7 @@
 			this.bpSatPlus.TabIndex = 54;
 			this.bpSatPlus.Text = "+";
 			this.bpSatPlus.UseVisualStyleBackColor = true;
-			this.bpSatPlus.Click += new System.EventHandler(this.bpSatPlus_Click);
+			this.bpSatPlus.Click += new System.EventHandler(this.BpSatPlus_Click);
 			// 
 			// bpLumMoins
 			// 
@@ -911,7 +911,7 @@
 			this.bpLumMoins.TabIndex = 52;
 			this.bpLumMoins.Text = "-";
 			this.bpLumMoins.UseVisualStyleBackColor = true;
-			this.bpLumMoins.Click += new System.EventHandler(this.bpLumMoins_Click);
+			this.bpLumMoins.Click += new System.EventHandler(this.BpLumMoins_Click);
 			// 
 			// bpLumPlus
 			// 
@@ -921,7 +921,7 @@
 			this.bpLumPlus.TabIndex = 52;
 			this.bpLumPlus.Text = "+";
 			this.bpLumPlus.UseVisualStyleBackColor = true;
-			this.bpLumPlus.Click += new System.EventHandler(this.bpLumPlus_Click);
+			this.bpLumPlus.Click += new System.EventHandler(this.BpLumPlus_Click);
 			// 
 			// modePlus
 			// 
@@ -932,7 +932,7 @@
 			this.modePlus.TabIndex = 8;
 			this.modePlus.Text = "CPC+";
 			this.modePlus.UseVisualStyleBackColor = true;
-			this.modePlus.CheckedChanged += new System.EventHandler(this.modePlus_CheckedChanged);
+			this.modePlus.CheckedChanged += new System.EventHandler(this.ModePlus_CheckedChanged);
 			// 
 			// nb
 			// 
@@ -942,7 +942,7 @@
 			this.nb.Size = new System.Drawing.Size(15, 14);
 			this.nb.TabIndex = 51;
 			this.nb.UseVisualStyleBackColor = true;
-			this.nb.CheckedChanged += new System.EventHandler(this.nb_CheckedChanged);
+			this.nb.CheckedChanged += new System.EventHandler(this.Nb_CheckedChanged);
 			// 
 			// sortPal
 			// 
@@ -992,7 +992,7 @@
 			this.bpRazContrast.TabIndex = 43;
 			this.bpRazContrast.Text = "Raz";
 			this.bpRazContrast.UseVisualStyleBackColor = true;
-			this.bpRazContrast.Click += new System.EventHandler(this.bpRazContrast_Click);
+			this.bpRazContrast.Click += new System.EventHandler(this.BpRazContrast_Click);
 			// 
 			// reducPal3
 			// 
@@ -1002,7 +1002,7 @@
 			this.reducPal3.Size = new System.Drawing.Size(15, 14);
 			this.reducPal3.TabIndex = 47;
 			this.reducPal3.UseVisualStyleBackColor = true;
-			this.reducPal3.CheckedChanged += new System.EventHandler(this.reducPal3_CheckedChanged);
+			this.reducPal3.CheckedChanged += new System.EventHandler(this.ReducPal3_CheckedChanged);
 			// 
 			// contrast
 			// 
@@ -1013,7 +1013,7 @@
 			this.contrast.Size = new System.Drawing.Size(575, 24);
 			this.contrast.TabIndex = 42;
 			this.contrast.Value = 100;
-			this.contrast.ValueChanged += new System.EventHandler(this.contrast_ValueChanged);
+			this.contrast.ValueChanged += new System.EventHandler(this.Contrast_ValueChanged);
 			// 
 			// reducPal2
 			// 
@@ -1033,7 +1033,7 @@
 			this.reducPal1.Size = new System.Drawing.Size(15, 14);
 			this.reducPal1.TabIndex = 46;
 			this.reducPal1.UseVisualStyleBackColor = true;
-			this.reducPal1.CheckedChanged += new System.EventHandler(this.reducPal1_CheckedChanged);
+			this.reducPal1.CheckedChanged += new System.EventHandler(this.ReducPal1_CheckedChanged);
 			// 
 			// bpRazSat
 			// 
@@ -1043,7 +1043,7 @@
 			this.bpRazSat.TabIndex = 14;
 			this.bpRazSat.Text = "Raz";
 			this.bpRazSat.UseVisualStyleBackColor = true;
-			this.bpRazSat.Click += new System.EventHandler(this.bpRazSat_Click);
+			this.bpRazSat.Click += new System.EventHandler(this.BpRazSat_Click);
 			// 
 			// newMethode
 			// 
@@ -1053,7 +1053,7 @@
 			this.newMethode.Size = new System.Drawing.Size(15, 14);
 			this.newMethode.TabIndex = 45;
 			this.newMethode.UseVisualStyleBackColor = true;
-			this.newMethode.CheckedChanged += new System.EventHandler(this.newMethode_CheckedChanged);
+			this.newMethode.CheckedChanged += new System.EventHandler(this.NewMethode_CheckedChanged);
 			// 
 			// bpRazLumi
 			// 
@@ -1063,7 +1063,7 @@
 			this.bpRazLumi.TabIndex = 14;
 			this.bpRazLumi.Text = "Raz";
 			this.bpRazLumi.UseVisualStyleBackColor = true;
-			this.bpRazLumi.Click += new System.EventHandler(this.bpRazLumi_Click);
+			this.bpRazLumi.Click += new System.EventHandler(this.BpRazLumi_Click);
 			// 
 			// label10
 			// 
@@ -1083,7 +1083,7 @@
 			this.lumi.Size = new System.Drawing.Size(575, 24);
 			this.lumi.TabIndex = 12;
 			this.lumi.Value = 100;
-			this.lumi.ValueChanged += new System.EventHandler(this.lumi_ValueChanged);
+			this.lumi.ValueChanged += new System.EventHandler(this.Lumi_ValueChanged);
 			// 
 			// label9
 			// 
@@ -1103,7 +1103,7 @@
 			this.sat.Size = new System.Drawing.Size(575, 24);
 			this.sat.TabIndex = 12;
 			this.sat.Value = 100;
-			this.sat.ValueChanged += new System.EventHandler(this.sat_ValueChanged);
+			this.sat.ValueChanged += new System.EventHandler(this.Sat_ValueChanged);
 			// 
 			// label8
 			// 
@@ -1124,7 +1124,7 @@
 			this.rb24bits.TabIndex = 61;
 			this.rb24bits.TabStop = true;
 			this.rb24bits.UseVisualStyleBackColor = true;
-			this.rb24bits.CheckedChanged += new System.EventHandler(this.rb24bits_CheckedChanged);
+			this.rb24bits.CheckedChanged += new System.EventHandler(this.Rb24bits_CheckedChanged);
 			// 
 			// rb12bits
 			// 
@@ -1134,7 +1134,7 @@
 			this.rb12bits.Size = new System.Drawing.Size(14, 13);
 			this.rb12bits.TabIndex = 62;
 			this.rb12bits.UseVisualStyleBackColor = true;
-			this.rb12bits.CheckedChanged += new System.EventHandler(this.rb12bits_CheckedChanged);
+			this.rb12bits.CheckedChanged += new System.EventHandler(this.Rb12bits_CheckedChanged);
 			// 
 			// rb9bits
 			// 
@@ -1144,7 +1144,7 @@
 			this.rb9bits.Size = new System.Drawing.Size(14, 13);
 			this.rb9bits.TabIndex = 63;
 			this.rb9bits.UseVisualStyleBackColor = true;
-			this.rb9bits.CheckedChanged += new System.EventHandler(this.rb9bits_CheckedChanged);
+			this.rb9bits.CheckedChanged += new System.EventHandler(this.Rb9bits_CheckedChanged);
 			// 
 			// rb6bits
 			// 
@@ -1154,7 +1154,7 @@
 			this.rb6bits.Size = new System.Drawing.Size(14, 13);
 			this.rb6bits.TabIndex = 64;
 			this.rb6bits.UseVisualStyleBackColor = true;
-			this.rb6bits.CheckedChanged += new System.EventHandler(this.rb6bits_CheckedChanged);
+			this.rb6bits.CheckedChanged += new System.EventHandler(this.Rb6bits_CheckedChanged);
 			// 
 			// bpRaz
 			// 
@@ -1163,7 +1163,7 @@
 			this.bpRaz.Size = new System.Drawing.Size(162, 23);
 			this.bpRaz.TabIndex = 65;
 			this.bpRaz.UseVisualStyleBackColor = true;
-			this.bpRaz.Click += new System.EventHandler(this.bpRaz_Click);
+			this.bpRaz.Click += new System.EventHandler(this.BpRaz_Click);
 			// 
 			// groupBox2
 			// 
@@ -1312,7 +1312,7 @@
 			this.bpRazAll.TabIndex = 67;
 			this.bpRazAll.Text = "Raz All";
 			this.bpRazAll.UseVisualStyleBackColor = true;
-			this.bpRazAll.Click += new System.EventHandler(this.bpRazAll_Click);
+			this.bpRazAll.Click += new System.EventHandler(this.BpRazAll_Click);
 			// 
 			// Main
 			// 
