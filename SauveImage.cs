@@ -482,7 +482,9 @@ namespace ConvImgCpc {
 			}
 			byte[] imgCpc = bitmapCpc.bmpCpc;
 			if (!overscan) {
-				Buffer.BlockCopy(ModePal, 0, imgCpc, 0x17D0, ModePal.Length);
+				if (main.param.withPalette && format != Main.OutputFormat.Assembler)
+					Buffer.BlockCopy(ModePal, 0, imgCpc, 0x17D0, ModePal.Length);
+
 				if (main.param.withCode && format != Main.OutputFormat.Assembler) {
 					if (main.param.cpcPlus) {
 						Buffer.BlockCopy(CodeP0, 0, imgCpc, 0x07D0, CodeP0.Length);
@@ -613,7 +615,7 @@ namespace ConvImgCpc {
 						}
 					}
 					if ((main.param.withPalette || main.param.withCode) && (Cpc.modeVirtuel < 3 || Cpc.modeVirtuel > 5))
-						SaveAsm.GenerePalette(sw,param,  true);
+						SaveAsm.GenerePalette(sw, param, true);
 
 					SaveAsm.CloseAsm(sw);
 					break;
