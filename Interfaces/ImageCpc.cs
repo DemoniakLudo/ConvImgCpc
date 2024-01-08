@@ -28,18 +28,22 @@ namespace ConvImgCpc {
 			main = m;
 			for (int i = 0; i < 16; i++) {
 				// Générer les contrôles de "couleurs"
-				colors[i] = new Label();
-				colors[i].BorderStyle = BorderStyle.FixedSingle;
-				colors[i].Location = new Point(168 + i * 48, 568 - 564);
-				colors[i].Size = new Size(40, 32);
-				colors[i].Tag = i;
+				colors[i] = new Label {
+					BorderStyle = BorderStyle.FixedSingle,
+					Location = new Point(168 + i * 48, 568 - 564),
+					Size = new Size(40, 32),
+					Tag = i,
+					TextAlign = ContentAlignment.MiddleCenter,
+					Text = i.ToString()
+				};
 				colors[i].MouseDown += ClickColor;
 				Controls.Add(colors[i]);
 				// Générer les contrôles de "bloquage couleur"
-				lockColors[i] = new CheckBox();
-				lockColors[i].Location = new Point(180 + i * 48, 600 - 564);
-				lockColors[i].Size = new Size(20, 20);
-				lockColors[i].Tag = i;
+				lockColors[i] = new CheckBox {
+					Location = new Point(180 + i * 48, 600 - 564),
+					Size = new Size(20, 20),
+					Tag = i
+				};
 				lockColors[i].Click += ClickLock;
 				Controls.Add(lockColors[i]);
 				lockColors[i].Update();
@@ -665,7 +669,9 @@ namespace ConvImgCpc {
 
 		private void UpdatePalette() {
 			for (int i = 0; i < 16; i++) {
-				colors[i].BackColor = Color.FromArgb(bitmapCpc.GetColorPal(i).GetColorArgb);
+				RvbColor col = bitmapCpc.GetColorPal(i);
+				colors[i].BackColor = Color.FromArgb(col.GetColorArgb);
+				colors[i].ForeColor = (col.r * 9798 + col.v * 19235 + col.b * 3735) > 0x400000 ? Color.Black : Color.White;
 				colors[i].Refresh();
 			}
 		}
@@ -775,6 +781,7 @@ namespace ConvImgCpc {
 				int v = (((col & 0xF00) >> 8) * 17);
 				int b = (((col & 0xF0) >> 4) * 17);
 				colors[c].BackColor = Color.FromArgb(r, v, b);
+				colors[c].ForeColor = (r * 9798 + v * 19235 + b * 3735) > 0x400000 ? Color.Black : Color.White;
 				colors[c].Refresh();
 				lockColors[c].Checked = true;
 				lockState[c] = 1;
