@@ -87,7 +87,7 @@
 			this.pictureBox1.TabIndex = 60;
 			this.pictureBox1.TabStop = false;
 			this.pictureBox1.Tag = "0";
-			this.pictureBox1.Click += new System.EventHandler(this.pictureBox_Click);
+			this.pictureBox1.Click += new System.EventHandler(this.PictureBox_Click);
 			// 
 			// pictureBox2
 			// 
@@ -98,7 +98,7 @@
 			this.pictureBox2.TabIndex = 61;
 			this.pictureBox2.TabStop = false;
 			this.pictureBox2.Tag = "1";
-			this.pictureBox2.Click += new System.EventHandler(this.pictureBox_Click);
+			this.pictureBox2.Click += new System.EventHandler(this.PictureBox_Click);
 			// 
 			// pictureBox3
 			// 
@@ -109,7 +109,7 @@
 			this.pictureBox3.TabIndex = 62;
 			this.pictureBox3.TabStop = false;
 			this.pictureBox3.Tag = "2";
-			this.pictureBox3.Click += new System.EventHandler(this.pictureBox_Click);
+			this.pictureBox3.Click += new System.EventHandler(this.PictureBox_Click);
 			// 
 			// pictureBox4
 			// 
@@ -120,7 +120,7 @@
 			this.pictureBox4.TabIndex = 63;
 			this.pictureBox4.TabStop = false;
 			this.pictureBox4.Tag = "3";
-			this.pictureBox4.Click += new System.EventHandler(this.pictureBox_Click);
+			this.pictureBox4.Click += new System.EventHandler(this.PictureBox_Click);
 			// 
 			// pictureBox5
 			// 
@@ -131,7 +131,7 @@
 			this.pictureBox5.TabIndex = 64;
 			this.pictureBox5.TabStop = false;
 			this.pictureBox5.Tag = "4";
-			this.pictureBox5.Click += new System.EventHandler(this.pictureBox_Click);
+			this.pictureBox5.Click += new System.EventHandler(this.PictureBox_Click);
 			// 
 			// hScrollBar1
 			// 
@@ -142,7 +142,7 @@
 			this.hScrollBar1.Size = new System.Drawing.Size(714, 20);
 			this.hScrollBar1.TabIndex = 65;
 			this.hScrollBar1.Visible = false;
-			this.hScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar1_Scroll);
+			this.hScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HScrollBar1_Scroll);
 			// 
 			// bpSup1
 			// 
@@ -153,7 +153,7 @@
 			this.bpSup1.Tag = "0";
 			this.bpSup1.UseVisualStyleBackColor = true;
 			this.bpSup1.Visible = false;
-			this.bpSup1.Click += new System.EventHandler(this.bpSup_Click);
+			this.bpSup1.Click += new System.EventHandler(this.BpSup_Click);
 			// 
 			// bpSup2
 			// 
@@ -164,7 +164,7 @@
 			this.bpSup2.Tag = "1";
 			this.bpSup2.UseVisualStyleBackColor = true;
 			this.bpSup2.Visible = false;
-			this.bpSup2.Click += new System.EventHandler(this.bpSup_Click);
+			this.bpSup2.Click += new System.EventHandler(this.BpSup_Click);
 			// 
 			// bpSup3
 			// 
@@ -175,7 +175,7 @@
 			this.bpSup3.Tag = "2";
 			this.bpSup3.UseVisualStyleBackColor = true;
 			this.bpSup3.Visible = false;
-			this.bpSup3.Click += new System.EventHandler(this.bpSup_Click);
+			this.bpSup3.Click += new System.EventHandler(this.BpSup_Click);
 			// 
 			// bpSup4
 			// 
@@ -186,7 +186,7 @@
 			this.bpSup4.Tag = "3";
 			this.bpSup4.UseVisualStyleBackColor = true;
 			this.bpSup4.Visible = false;
-			this.bpSup4.Click += new System.EventHandler(this.bpSup_Click);
+			this.bpSup4.Click += new System.EventHandler(this.BpSup_Click);
 			// 
 			// bpSup5
 			// 
@@ -197,7 +197,7 @@
 			this.bpSup5.Tag = "4";
 			this.bpSup5.UseVisualStyleBackColor = true;
 			this.bpSup5.Visible = false;
-			this.bpSup5.Click += new System.EventHandler(this.bpSup_Click);
+			this.bpSup5.Click += new System.EventHandler(this.BpSup_Click);
 			// 
 			// numImage
 			// 
@@ -211,7 +211,7 @@
 			this.numImage.Size = new System.Drawing.Size(59, 20);
 			this.numImage.TabIndex = 54;
 			this.numImage.Visible = false;
-			this.numImage.ValueChanged += new System.EventHandler(this.numImage_ValueChanged);
+			this.numImage.ValueChanged += new System.EventHandler(this.NumImage_ValueChanged);
 			// 
 			// rbSource
 			// 
@@ -223,7 +223,7 @@
 			this.rbSource.TabIndex = 67;
 			this.rbSource.TabStop = true;
 			this.rbSource.UseVisualStyleBackColor = true;
-			this.rbSource.CheckedChanged += new System.EventHandler(this.rbSource_CheckedChanged);
+			this.rbSource.CheckedChanged += new System.EventHandler(this.RbSource_CheckedChanged);
 			// 
 			// rvCalculee
 			// 
@@ -233,7 +233,7 @@
 			this.rvCalculee.Size = new System.Drawing.Size(14, 13);
 			this.rvCalculee.TabIndex = 68;
 			this.rvCalculee.UseVisualStyleBackColor = true;
-			this.rvCalculee.CheckedChanged += new System.EventHandler(this.rvCalculee_CheckedChanged);
+			this.rvCalculee.CheckedChanged += new System.EventHandler(this.RvCalculee_CheckedChanged);
 			// 
 			// bpSaveGif
 			// 
@@ -253,7 +253,7 @@
 			this.txbTps1.TabIndex = 70;
 			this.txbTps1.Tag = "0";
 			this.txbTps1.Visible = false;
-			this.txbTps1.TextChanged += new System.EventHandler(this.txbTps_TextChanged);
+			this.txbTps1.TextChanged += new System.EventHandler(this.TxbTps_TextChanged);
 			// 
 			// txbTps2
 			// 
@@ -263,7 +263,7 @@
 			this.txbTps2.TabIndex = 70;
 			this.txbTps2.Tag = "1";
 			this.txbTps2.Visible = false;
-			this.txbTps2.TextChanged += new System.EventHandler(this.txbTps_TextChanged);
+			this.txbTps2.TextChanged += new System.EventHandler(this.TxbTps_TextChanged);
 			// 
 			// txbTps3
 			// 
@@ -273,7 +273,7 @@
 			this.txbTps3.TabIndex = 70;
 			this.txbTps3.Tag = "2";
 			this.txbTps3.Visible = false;
-			this.txbTps3.TextChanged += new System.EventHandler(this.txbTps_TextChanged);
+			this.txbTps3.TextChanged += new System.EventHandler(this.TxbTps_TextChanged);
 			// 
 			// txbTps4
 			// 
@@ -283,7 +283,7 @@
 			this.txbTps4.TabIndex = 70;
 			this.txbTps4.Tag = "3";
 			this.txbTps4.Visible = false;
-			this.txbTps4.TextChanged += new System.EventHandler(this.txbTps_TextChanged);
+			this.txbTps4.TextChanged += new System.EventHandler(this.TxbTps_TextChanged);
 			// 
 			// txbTps5
 			// 
@@ -293,7 +293,7 @@
 			this.txbTps5.TabIndex = 70;
 			this.txbTps5.Tag = "4";
 			this.txbTps5.Visible = false;
-			this.txbTps5.TextChanged += new System.EventHandler(this.txbTps_TextChanged);
+			this.txbTps5.TextChanged += new System.EventHandler(this.TxbTps_TextChanged);
 			// 
 			// bpPlay
 			// 
@@ -303,7 +303,7 @@
 			this.bpPlay.Size = new System.Drawing.Size(112, 23);
 			this.bpPlay.TabIndex = 71;
 			this.bpPlay.UseVisualStyleBackColor = true;
-			this.bpPlay.Click += new System.EventHandler(this.bpPlay_Click);
+			this.bpPlay.Click += new System.EventHandler(this.BpPlay_Click);
 			// 
 			// bpStop
 			// 
@@ -313,12 +313,12 @@
 			this.bpStop.Size = new System.Drawing.Size(112, 23);
 			this.bpStop.TabIndex = 71;
 			this.bpStop.UseVisualStyleBackColor = true;
-			this.bpStop.Click += new System.EventHandler(this.bpStop_Click);
+			this.bpStop.Click += new System.EventHandler(this.BpStop_Click);
 			// 
 			// timer1
 			// 
 			this.timer1.Interval = 10;
-			this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+			this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
 			// 
 			// bpDel1_2
 			// 
@@ -328,7 +328,7 @@
 			this.bpDel1_2.TabIndex = 72;
 			this.bpDel1_2.UseVisualStyleBackColor = true;
 			this.bpDel1_2.Visible = false;
-			this.bpDel1_2.Click += new System.EventHandler(this.bpDel1_2_Click);
+			this.bpDel1_2.Click += new System.EventHandler(this.BpDel1_2_Click);
 			// 
 			// Animation
 			// 

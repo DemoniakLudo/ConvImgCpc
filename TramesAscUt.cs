@@ -1,7 +1,7 @@
 ﻿namespace ConvImgCpc {
-    public partial class Cpc {
+	public partial class Cpc {
 
-        static public byte[,,,] TramesAscUt = {
+		static public byte[,,,] TramesAscUt = {
 {
 {{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
 {{1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}},
@@ -148,14 +148,14 @@
 },
 };
 
-        static public void CopyTrame(int index) {
-            int max = TramesAscUt.GetLength(0);
-            if (index >= 0 && index < max) {
-                for (int i = 0; i < 16; i++)
-                    for (int y = 0; y < 4; y++)
-                        for (int x = 0; x < 4; x++)
-                            trameM1[i, x, y] = TramesAscUt[index, i, x, y];
-            }
-        }
-    }
+		static public void CopyTrame(int index) {
+			int max = TramesAscUt.GetLength(0);
+			if (index >= 0 && index < max) {
+				for (int i = 0; i < 16; i++)
+					for (int y = 0; y < 4; y++)
+						for (int x = 0; x < 4; x++)
+							trameM1[i, x, y] = TramesAscUt[index, i, x, y];
+			}
+		}
+	}
 }

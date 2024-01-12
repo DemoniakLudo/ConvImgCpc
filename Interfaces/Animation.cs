@@ -58,19 +58,19 @@ namespace ConvImgCpc {
 			lockTps = false;
 		}
 
-		private void numImage_ValueChanged(object sender, EventArgs e) {
+		private void NumImage_ValueChanged(object sender, EventArgs e) {
 			main.SelectImage((int)numImage.Value);
 			hScrollBar1.Value = (int)numImage.Value;
 			main.imgCpc.SetImgCopy();
 			main.Convert(false);
-	//		main.imgCpc.Render(true);
+			//		main.imgCpc.Render(true);
 		}
 
-		private void hScrollBar1_Scroll(object sender, ScrollEventArgs e) {
+		private void HScrollBar1_Scroll(object sender, ScrollEventArgs e) {
 			numImage.Value = hScrollBar1.Value;
 		}
 
-		private void bpSup_Click(object sender, EventArgs e) {
+		private void BpSup_Click(object sender, EventArgs e) {
 			int num = (int)numImage.Value;
 			int index = Convert.ToInt32(((Button)sender).Tag) + num;
 			main.imgSrc.DeleteImage(index);
@@ -80,20 +80,20 @@ namespace ConvImgCpc {
 			main.SelectImage(num > main.imgSrc.NbImg - 1 ? main.imgSrc.NbImg - 1 : num);
 		}
 
-		private void pictureBox_Click(object sender, EventArgs e) {
+		private void PictureBox_Click(object sender, EventArgs e) {
 			int num = (int)numImage.Value;
 			int index = Convert.ToInt32(((PictureBox)sender).Tag) + num;
 			if (index <= numImage.Maximum)
 				numImage.Value = index;
 		}
 
-		private void rbSource_CheckedChanged(object sender, EventArgs e) {
+		private void RbSource_CheckedChanged(object sender, EventArgs e) {
 			bpSaveGif.Visible = false;
 			displaySrc = true;
 			DrawImages(main.imgCpc.selImage);
 		}
 
-		private void rvCalculee_CheckedChanged(object sender, EventArgs e) {
+		private void RvCalculee_CheckedChanged(object sender, EventArgs e) {
 			bpSaveGif.Visible = numImage.Maximum > 0;
 			displaySrc = false;
 			DrawImages(main.imgCpc.selImage);
@@ -101,8 +101,7 @@ namespace ConvImgCpc {
 
 		private void bpSaveGif_Click(object sender, EventArgs e) {
 			try {
-				SaveFileDialog dlg = new SaveFileDialog();
-				dlg.Filter = "Gif anim (*.gif)|*.gif";
+				SaveFileDialog dlg = new SaveFileDialog { Filter = "Gif anim (*.gif)|*.gif" };
 				if (dlg.ShowDialog() == DialogResult.OK) {
 					byte[] GifAnimation = { 33, 255, 11, 78, 69, 84, 83, 67, 65, 80, 69, 50, 46, 48, 3, 1, 0, 0, 0 };
 					MemoryStream ms = new MemoryStream();
@@ -128,7 +127,7 @@ namespace ConvImgCpc {
 					ms.Dispose();
 				}
 			}
-			catch(Exception ex) {
+			catch (Exception ex) {
 				main.DisplayErreur("Erreur lors de la sauvegarde du gif.");
 
 			}
@@ -151,7 +150,7 @@ namespace ConvImgCpc {
 			bWr.Write(tabByte, 799, tabByte.Length - 800);
 		}
 
-		private void txbTps_TextChanged(object sender, EventArgs e) {
+		private void TxbTps_TextChanged(object sender, EventArgs e) {
 			if (!lockTps) {
 				int v = 0;
 				TextBox t = (TextBox)sender;
@@ -164,7 +163,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void bpPlay_Click(object sender, EventArgs e) {
+		private void BpPlay_Click(object sender, EventArgs e) {
 			main.Enabled = main.imgCpc.Enabled = false;
 			bpPlay.Enabled = false;
 			bpStop.Enabled = timer1.Enabled = true;
@@ -172,13 +171,13 @@ namespace ConvImgCpc {
 			numImage.Value = 0;
 		}
 
-		private void bpStop_Click(object sender, EventArgs e) {
+		private void BpStop_Click(object sender, EventArgs e) {
 			bpPlay.Enabled = true;
 			bpStop.Enabled = timer1.Enabled = false;
 			main.Enabled = main.imgCpc.Enabled = true;
 		}
 
-		private void bpDel1_2_Click(object sender, EventArgs e) {
+		private void BpDel1_2_Click(object sender, EventArgs e) {
 			for (int i = main.imgSrc.NbImg - 1; i > 0; i = i - 2) {
 				main.imgSrc.DeleteImage(i);
 				numImage.Maximum = main.imgSrc.NbImg - 1;
@@ -194,7 +193,7 @@ namespace ConvImgCpc {
 			e.Cancel = true;
 		}
 
-		private void timer1_Tick(object sender, EventArgs e) {
+		private void Timer1_Tick(object sender, EventArgs e) {
 			int i = (int)numImage.Value;
 			int tpsWait = tempsAffiche[i];
 			if (Environment.TickCount - tpsStart > tpsWait) {

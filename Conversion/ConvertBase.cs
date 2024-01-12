@@ -301,7 +301,7 @@ namespace ConvImgCpc {
 				if ((prm.newSortPal & 1) == 1)
 					for (x = 0; x < maxPen - 1; x++)
 						for (int c = x + 1; c < maxPen; c++)
-							if ((lockState[x] == 0 && lockState[c] == 0 && prm.disableState[x] == 0 && prm.disableState[c] == 0)
+							if ((lockState[x] == 0 && lockState[c] == 0 && prm.disableState[x] == 0 && prm.disableState[c] == 0 && Cpc.Palette[x] != 0xFFFF && Cpc.Palette[c] != 0xFFFF)
 								&& ((Cpc.Palette[x] > Cpc.Palette[c] && (prm.newSortPal & 2) == 0) || (Cpc.Palette[x] < Cpc.Palette[c] && (prm.newSortPal & 2) != 0))) {
 								int tmp = Cpc.Palette[x];
 								Cpc.Palette[x] = Cpc.Palette[c];
