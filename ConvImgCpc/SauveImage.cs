@@ -739,11 +739,13 @@ namespace ConvImgCpc {
 				byte[] tabBytes = new byte[fileScr.Length];
 				fileScr.Read(tabBytes, 0, tabBytes.Length);
 				fileScr.Close();
-				if (tabBytes.Length == 160 && Cpc.CheckAmsdos(tabBytes)) {
-					for (int i = 0; i < 16; i++) {
-						int kit = tabBytes[128 + (i << 1)] + (tabBytes[129 + (i << 1)] << 8);
+				if (Cpc.CheckAmsdos(tabBytes) && (tabBytes.Length == 158 || tabBytes.Length == 160)) {
+					int start = 128;
+					for (int i = tabBytes.Length == 160 ? 0 : 1; i < 16; i++) {
+						int kit = tabBytes[start] + (tabBytes[start + 1] << 8);
 						int col = (kit & 0xF00) + ((kit & 0x0F) << 4) + ((kit & 0xF0) >> 4);
 						Cpc.Palette[i] = col;
+						start += 2;
 					}
 					return true;
 				}
