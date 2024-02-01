@@ -1187,6 +1187,17 @@ namespace ConvImgCpc {
 				for (int i = 0; i < 16; i++) {
 					memoLock[i] = imgCpc.lockState[i];
 					imgCpc.lockState[i] = 0;
+					int rvb = Cpc.Palette[i];
+					RvbColor col = new RvbColor((byte)((rvb & 0x0F) * 17), (byte)((rvb >> 8) * 17), (byte)(((rvb >> 4) & 0x0F) * 17));
+					int maxDelta = 0x7FFFFFF, penSel = 0;
+					for (int p = 0; p < 27; p++) {
+						int delta = Math.Abs(col.r - Cpc.RgbCPC[p].r) + Math.Abs(col.v - Cpc.RgbCPC[p].v) + Math.Abs(col.b - Cpc.RgbCPC[p].b);
+						if (delta < maxDelta) {
+							maxDelta = delta;
+							penSel = p;
+						}
+					}
+					Cpc.Palette[i] = penSel;
 				}
 				Convert(false);
 				for (int i = 0; i < 16; i++)

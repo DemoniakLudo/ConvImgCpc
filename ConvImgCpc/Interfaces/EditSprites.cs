@@ -634,8 +634,7 @@ namespace ConvImgCpc {
 		}
 
 		private void bpReadPal_Click(object sender, EventArgs e) {
-			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.Filter = "Palette CPC+ (.kit)|*.kit";
+			OpenFileDialog dlg = new OpenFileDialog { Filter = "Palette CPC+ (.kit)|*.kit" };
 			if (dlg.ShowDialog() == DialogResult.OK) {
 				try {
 					main.ReadPaletteSprite(dlg.FileName, lblColors);
@@ -648,8 +647,7 @@ namespace ConvImgCpc {
 		}
 
 		private void bpSavePal_Click(object sender, EventArgs e) {
-			SaveFileDialog dlg = new SaveFileDialog();
-			dlg.Filter = "Palette CPC+ (.kit)|*.kit";
+			SaveFileDialog dlg = new SaveFileDialog { Filter = "Palette CPC+ (.kit)|*.kit" };
 			if (dlg.ShowDialog() == DialogResult.OK) {
 				try {
 					main.SavePaletteKit(dlg.FileName);
