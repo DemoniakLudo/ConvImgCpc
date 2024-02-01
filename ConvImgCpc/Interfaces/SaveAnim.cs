@@ -34,6 +34,42 @@ namespace ConvImgCpc {
 		}
 
 		#region Méthodes de compactage
+
+		private int PackBlock(byte[] bufOut, ref int sizeDepack, bool razDiff) {
+			if (razDiff)
+				Array.Clear(BufPrec, 0, BufPrec.Length);
+
+			int pos = 0;
+			byte[] tabBlock = new byte[8 * 2];
+
+			for (int ligne = 0; ligne < 25; ligne++) {
+				for (int col = 0; col < 80; col++) {
+					bool modif = false;
+					for (int y = 0; y < 8; y++) {
+						for (int x = 0; x < 2; x++) {
+							int adr = Cpc.GetAdrCpc((ligne << 4) + (y << 1));
+							byte oct = img.bitmapCpc.bmpCpc[adr];
+							tabBlock[x + y * 2] = oct;
+							if (oct != BufPrec[adr])
+								modif = true;
+
+							BufPrec[adr] = oct;
+						}
+					}
+					if (modif) {
+						bLigne[pos++] = (byte)col;
+						bLigne[pos++] = (byte)ligne;
+						for (int i = 0; i < tabBlock.Length; i++)
+							bLigne[pos++] = tabBlock[i];
+					}
+				}
+			}
+
+			int lpack = pos > 0 ? pk.Pack(bLigne, pos, bufOut, 0, pkMethode) : 0;
+			sizeDepack = lpack + 2;
+			return lpack;
+		}
+
 		private int PackWinDC(byte[] bufOut, ref int sizeDepack, int topBottom, bool razDiff, int modeLigne, bool optimSpeed) {
 			int xFin = 0;
 			int xDeb = Cpc.NbCol;
@@ -343,7 +379,8 @@ namespace ConvImgCpc {
 			}
 			else
 				if (chkDirecMem.Checked)
-				return PackDirectMem(bufOut, ref sizeDepack, true, razDiff);
+				//return PackDirectMem(bufOut, ref sizeDepack, true, razDiff);
+				return PackBlock(bufOut, ref sizeDepack, razDiff);
 			else
 				return PackWinDC(bufOut, ref sizeDepack, topBottom, razDiff, modeLigne, optimSpeed);
 		}
