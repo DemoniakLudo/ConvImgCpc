@@ -561,7 +561,7 @@ namespace ConvImgCpc {
 							// Sauvegarde assembleur compacté full
 							StreamWriter sw3 = SaveAsm.OpenAsm(dlg.FileName, "");
 							int lt = new PackModule().Pack(buffer, 256 * (maxSprite + 1), sprPk, 0, pkMethod);
-							sw3.WriteLine("; " + (maxSprite + 1).ToString()+" sprites");
+							sw3.WriteLine("; " + (maxSprite + 1).ToString() + " sprites");
 							sw3.WriteLine("SpriteHardFull");
 							SaveAsm.GenereDatas(sw3, sprPk, lt, 16);
 
@@ -622,7 +622,7 @@ namespace ConvImgCpc {
 			for (int i = 1; i < 16; i++) {
 				int kit = Cpc.paletteSprite[i];
 				int col = (kit & 0xF00) + ((kit & 0x0F) << 4) + ((kit & 0xF0) >> 4);
-				s +=  "#"+col.ToString("X3");
+				s += "#" + col.ToString("X3");
 				if (i < 15)
 					s += ",";
 			}
