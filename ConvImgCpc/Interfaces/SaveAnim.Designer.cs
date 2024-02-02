@@ -30,7 +30,6 @@
 			this.txbAdrDeb = new System.Windows.Forms.TextBox();
 			this.chkMaxMem = new System.Windows.Forms.CheckBox();
 			this.tbxAdrMax = new System.Windows.Forms.TextBox();
-			this.chkDirecMem = new System.Windows.Forms.CheckBox();
 			this.chkDelai = new System.Windows.Forms.CheckBox();
 			this.rb1L = new System.Windows.Forms.RadioButton();
 			this.rb2L = new System.Windows.Forms.RadioButton();
@@ -45,6 +44,7 @@
 			this.rbFrameD = new System.Windows.Forms.RadioButton();
 			this.rbFrameO = new System.Windows.Forms.RadioButton();
 			this.chkDataBrut = new System.Windows.Forms.CheckBox();
+			this.comboMethode = new System.Windows.Forms.ComboBox();
 			this.grpGenereLigne.SuspendLayout();
 			this.grpAscii.SuspendLayout();
 			this.SuspendLayout();
@@ -115,16 +115,6 @@
 			this.tbxAdrMax.Text = "#A600";
 			this.tbxAdrMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.tbxAdrMax.Visible = false;
-			// 
-			// chkDirecMem
-			// 
-			this.chkDirecMem.AutoSize = true;
-			this.chkDirecMem.Location = new System.Drawing.Point(25, 81);
-			this.chkDirecMem.Name = "chkDirecMem";
-			this.chkDirecMem.Size = new System.Drawing.Size(15, 14);
-			this.chkDirecMem.TabIndex = 8;
-			this.chkDirecMem.UseVisualStyleBackColor = true;
-			this.chkDirecMem.CheckedChanged += new System.EventHandler(this.chkDirecMem_CheckedChanged);
 			// 
 			// chkDelai
 			// 
@@ -265,11 +255,25 @@
 			this.chkDataBrut.UseVisualStyleBackColor = true;
 			this.chkDataBrut.CheckedChanged += new System.EventHandler(this.chkDataBrut_CheckedChanged);
 			// 
+			// comboMethode
+			// 
+			this.comboMethode.FormattingEnabled = true;
+			this.comboMethode.Items.AddRange(new object[] {
+            "Standard",
+            "DirectMemory",
+            "Blocks"});
+			this.comboMethode.Location = new System.Drawing.Point(25, 78);
+			this.comboMethode.Name = "comboMethode";
+			this.comboMethode.Size = new System.Drawing.Size(121, 21);
+			this.comboMethode.TabIndex = 23;
+			this.comboMethode.SelectedIndexChanged += new System.EventHandler(this.comboMethode_SelectedIndexChanged);
+			// 
 			// SaveAnim
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(487, 235);
+			this.Controls.Add(this.comboMethode);
 			this.Controls.Add(this.chkDataBrut);
 			this.Controls.Add(this.grpAscii);
 			this.Controls.Add(this.grpGenereLigne);
@@ -277,7 +281,6 @@
 			this.Controls.Add(this.chkZoneVert);
 			this.Controls.Add(this.chk2Zone);
 			this.Controls.Add(this.chkDelai);
-			this.Controls.Add(this.chkDirecMem);
 			this.Controls.Add(this.tbxAdrMax);
 			this.Controls.Add(this.chkMaxMem);
 			this.Controls.Add(this.txbAdrDeb);
@@ -308,7 +311,6 @@
 		private System.Windows.Forms.TextBox txbAdrDeb;
 		private System.Windows.Forms.CheckBox chkMaxMem;
 		private System.Windows.Forms.TextBox tbxAdrMax;
-		private System.Windows.Forms.CheckBox chkDirecMem;
 		private System.Windows.Forms.CheckBox chkDelai;
 		private System.Windows.Forms.RadioButton rb1L;
 		private System.Windows.Forms.RadioButton rb2L;
@@ -323,5 +325,6 @@
 		private System.Windows.Forms.RadioButton rbFrameD;
 		private System.Windows.Forms.RadioButton rbFrameO;
 		private System.Windows.Forms.CheckBox chkDataBrut;
+		private System.Windows.Forms.ComboBox comboMethode;
 	}
 }

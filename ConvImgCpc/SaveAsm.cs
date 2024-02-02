@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Security.Cryptography;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace ConvImgCpc {
 	public class SaveAsm {
@@ -635,6 +637,54 @@ namespace ConvImgCpc {
 			sw.WriteLine("	Nolist");
 		}
 
+		static public void GenereDrawBlock(StreamWriter sw, int height, bool delai, bool gest128K) {
+			sw.WriteLine("	LD	HL,buffer");
+			sw.WriteLine("	LD	A,(HL)");
+			sw.WriteLine("	INC	HL");
+			sw.WriteLine("	LD	(TailleBlock1+1),A");
+			sw.WriteLine("	LD	C,A");
+			sw.WriteLine("	XOR	A");
+			sw.WriteLine("	SUB	C");
+			sw.WriteLine("	LD	(TailleBlock2+1),A");
+			sw.WriteLine("LoopBlock:");
+			sw.WriteLine("	LD	A,(HL)");
+			sw.WriteLine("	AND	A");
+			sw.WriteLine("	JR	Z,FinBlock");
+			sw.WriteLine("	LD	D,A");
+			sw.WriteLine("	INC	HL");
+			sw.WriteLine("	LD	E,(HL)		; Adresse écran");
+			sw.WriteLine("	INC	HL");
+			sw.WriteLine("	LD	A," + height.ToString());
+			sw.WriteLine("TailleBlock1:");
+			sw.WriteLine("	LD	BC,4");
+			sw.WriteLine("	LDIR");
+			sw.WriteLine("	EX	DE,HL");
+			sw.WriteLine("TailleBlock2:");
+			sw.WriteLine("	LD	BC,#7FF");
+			sw.WriteLine("	ADD	HL,BC");
+			if (height != 8) {
+				sw.WriteLine("	JR	NC,BlockOK");
+				sw.WriteLine("	LD	BC,#C0" + Cpc.NbCol.ToString("X2"));
+				sw.WriteLine("	ADD	HL,BC");
+				sw.WriteLine("BlockOk:");
+			}
+			sw.WriteLine("	EX	DE,HL");
+			sw.WriteLine("	DEC	A");
+			sw.WriteLine("	JR	NZ,TailleBlock1");
+			sw.WriteLine("	JR	LoopBlock");
+			sw.WriteLine("FinBlock:");
+			sw.WriteLine("	INC	IX");
+			sw.WriteLine("	INC	IX");
+			if (delai)
+				sw.WriteLine("	INC	IX");
+
+			if (gest128K)
+				sw.WriteLine("	INC	IX");
+
+			sw.WriteLine("	JP	Boucle" + Environment.NewLine);
+			sw.WriteLine("	Nolist");
+		}
+
 		static public void GenereDrawAscii(StreamWriter sw, bool frameFull, bool frameO, bool frameD, bool gest128K, bool imageMode, bool withSpeed) {
 			bool overscan = Cpc.NbLig * Cpc.NbCol > 0x4000;
 			if (frameFull && !imageMode) {
@@ -647,7 +697,7 @@ namespace ConvImgCpc {
 			}
 			else
 				if (frameO)
-					sw.WriteLine("	LD	HL,Buffer");
+				sw.WriteLine("	LD	HL,Buffer");
 
 			if (!frameD) {
 				sw.WriteLine("	LD	BC," + (overscan ? "#0200" : "#C000"));
