@@ -29,44 +29,61 @@ namespace ConvImgCpc {
 			pkMethode = pm;
 			InitializeComponent();
 			m.ChangeLanguage(Controls, "SaveAnim");
-			grpGenereLigne.Visible = chk2Zone.Visible = chkDirecMem.Visible = chkCol.Visible = Cpc.modeVirtuel < 7;
+			grpGenereLigne.Visible = chk2Zone.Visible = comboMethode.Visible = chkCol.Visible = Cpc.modeVirtuel < 7;
 			grpAscii.Visible = Cpc.modeVirtuel >= 7;
+			comboMethode.SelectedIndex = 0;
 		}
 
 		#region Méthodes de compactage
-
-		private int PackBlock(byte[] bufOut, ref int sizeDepack, bool razDiff) {
-			if (razDiff)
-				Array.Clear(BufPrec, 0, BufPrec.Length);
-
-			int pos = 0;
-			byte[] tabBlock = new byte[8 * 2];
-
-			for (int ligne = 0; ligne < 25; ligne++) {
-				for (int col = 0; col < 80; col++) {
+		private int TryPackBlock(int width, int height, byte[] bufOut, ref int sizeDepack) {
+			byte[] tabBlock = new byte[width * height];
+			int adr, pos = 0;
+			bLigne[pos++] = (byte)width;
+			for (int ligne = 0; ligne < (Cpc.NbLig / height); ligne++) {
+				for (int col = 0; col < (Cpc.NbCol / width); col++) {
 					bool modif = false;
-					for (int y = 0; y < 8; y++) {
-						for (int x = 0; x < 2; x++) {
-							int adr = Cpc.GetAdrCpc((ligne << 4) + (y << 1));
-							byte oct = img.bitmapCpc.bmpCpc[adr];
-							tabBlock[x + y * 2] = oct;
-							if (oct != BufPrec[adr])
+					for (int y = 0; y < height; y++) {
+						for (int x = 0; x < width; x++) {
+							adr = Cpc.GetAdrCpc((ligne * height + y) << 1) + x + col * width;
+							tabBlock[x + y * width] = img.bitmapCpc.bmpCpc[adr];
+							if (img.bitmapCpc.bmpCpc[adr] != BufPrec[adr])
 								modif = true;
-
-							BufPrec[adr] = oct;
 						}
 					}
 					if (modif) {
-						bLigne[pos++] = (byte)col;
-						bLigne[pos++] = (byte)ligne;
+						adr = Cpc.GetAdrCpc((ligne * height) << 1) + col * width;
+						bLigne[pos++] = (byte)((adr >> 8) | 0xC0);      // Adresse inversée pour poids fort==0 => fini
+						bLigne[pos++] = (byte)(adr & 0xFF);
 						for (int i = 0; i < tabBlock.Length; i++)
 							bLigne[pos++] = tabBlock[i];
 					}
 				}
 			}
-
-			int lpack = pos > 0 ? pk.Pack(bLigne, pos, bufOut, 0, pkMethode) : 0;
+			bLigne[pos++] = 0;
+			int lpack = pk.Pack(bLigne, pos, bufOut, 0, pkMethode);
 			sizeDepack = lpack + 2;
+			return lpack;
+		}
+
+		private int PackBlock(byte[] bufOut, int height, ref int sizeDepack, bool razDiff) {
+			if (razDiff)
+				Array.Clear(BufPrec, 0, BufPrec.Length);
+
+			// Copier l'image cpc dans le buffer de travail
+			img.bitmapCpc.CreeBmpCpc(img.BmpLock, null);
+
+			int lpack, lmin = 0xFFFF, passOk = 0;
+			for (int pass = 0; pass < 3; pass++) {
+				int width = 1 << pass;
+				lpack = TryPackBlock(width, height, bufOut, ref sizeDepack);
+				if (lpack < lmin) {
+					lmin = lpack;
+					passOk = pass;
+				}
+			}
+
+			lpack = TryPackBlock(1 << passOk, height, bufOut, ref sizeDepack);
+			Array.Copy(img.bitmapCpc.bmpCpc, BufPrec, BufPrec.Length);
 			return lpack;
 		}
 
@@ -369,7 +386,8 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private int PackFrame(byte[] bufOut, ref int sizeDepack, bool razDiff, bool firstFrame, int topBottom, int modeLigne, bool imageMode, bool optimSpeed) {
+		private int PackFrame(byte[] bufOut, ref int sizeDepack, bool razDiff, bool firstFrame, int topBottom, int modeLigne, bool imageMode, bool optimSpeed, int height) {
+			int ret = 0;
 			if (chkDataBrut.Checked)
 				return PackDataBrut(bufOut, ref sizeDepack);
 
@@ -377,17 +395,25 @@ namespace ConvImgCpc {
 				img.bitmapCpc.ConvertAscii(img.BmpLock);
 				return PackAscii(bufOut, ref sizeDepack, razDiff, firstFrame, imageMode);
 			}
-			else
-				if (chkDirecMem.Checked)
-				//return PackDirectMem(bufOut, ref sizeDepack, true, razDiff);
-				return PackBlock(bufOut, ref sizeDepack, razDiff);
-			else
-				return PackWinDC(bufOut, ref sizeDepack, topBottom, razDiff, modeLigne, optimSpeed);
+			switch (comboMethode.SelectedIndex) {
+				case 0:
+					ret = PackWinDC(bufOut, ref sizeDepack, topBottom, razDiff, modeLigne, optimSpeed);
+					break;
+
+				case 1:
+					ret = PackDirectMem(bufOut, ref sizeDepack, true, razDiff);
+					break;
+
+				case 2:
+					ret = PackBlock(bufOut, height, ref sizeDepack, razDiff);
+					break;
+			}
+			return ret;
 		}
 		#endregion
 
 		// Sauvegarde de l'animation
-		private void SauveDeltaPack(int adrDeb, int adrMax, bool withDelai, int modeLigne, bool imageMode, bool optimSpeed, Main.PackMethode methode) {
+		private void SauveDeltaPack(int adrDeb, int adrMax, bool withDelai, int modeLigne, bool imageMode, bool optimSpeed, Main.PackMethode methode, int height) {
 			int sizeDepack = 0;
 			int nbImages = img.main.GetMaxImages();
 			byte[][] bufOut = new byte[1 + (nbImages << 1)][];
@@ -407,7 +433,7 @@ namespace ConvImgCpc {
 			if (chkBoucle.Checked) {
 				img.main.SelectImage(nbImages - 1, true);
 				img.Convert(!img.bitmapCpc.isCalc, true);
-				lg[posPack] = PackFrame(bufOut[0], ref sizeDepack, true, false, -1, modeLigne, imageMode, optimSpeed);
+				lg[posPack] = PackFrame(bufOut[0], ref sizeDepack, true, false, -1, modeLigne, imageMode, optimSpeed, height);
 				speed[posPack] = img.BmpLock.Tps;
 				if (lg[posPack] > 0)
 					ltot += lg[posPack++];
@@ -423,16 +449,16 @@ namespace ConvImgCpc {
 				Application.DoEvents();
 				speed[posPack] = img.BmpLock.Tps;
 				if (chk2Zone.Checked) {
-					lg[posPack] = PackFrame(bufOut[posPack], ref sizeDepack, i == 0 && !chkBoucle.Checked, i == 0 && !chkBoucle.Checked, 0, modeLigne, imageMode, optimSpeed);
+					lg[posPack] = PackFrame(bufOut[posPack], ref sizeDepack, i == 0 && !chkBoucle.Checked, i == 0 && !chkBoucle.Checked, 0, modeLigne, imageMode, optimSpeed, height);
 					if (lg[posPack] > 0)
 						ltot += lg[posPack++];
 
-					lg[posPack] = PackFrame(bufOut[posPack], ref sizeDepack, i == 0 && !chkBoucle.Checked, i == 0 && !chkBoucle.Checked, 1, modeLigne, imageMode, optimSpeed);
+					lg[posPack] = PackFrame(bufOut[posPack], ref sizeDepack, i == 0 && !chkBoucle.Checked, i == 0 && !chkBoucle.Checked, 1, modeLigne, imageMode, optimSpeed, height);
 					if (lg[posPack] > 0)
 						ltot += lg[posPack++];
 				}
 				else {
-					lg[posPack] = PackFrame(bufOut[posPack], ref sizeDepack, i == 0 && !chkBoucle.Checked, i == 0 && !chkBoucle.Checked, -1, modeLigne, imageMode, optimSpeed);
+					lg[posPack] = PackFrame(bufOut[posPack], ref sizeDepack, i == 0 && !chkBoucle.Checked, i == 0 && !chkBoucle.Checked, -1, modeLigne, imageMode, optimSpeed, height);
 					if (lg[posPack] > 0)
 						ltot += lg[posPack++];
 				}
@@ -457,10 +483,18 @@ namespace ConvImgCpc {
 				if (Cpc.modeVirtuel >= 7)
 					SaveAsm.GenereDrawAscii(sw, rbFrameFull.Checked, rbFrameO.Checked, rbFrameD.Checked, gest128K, imageMode, withDelai);
 				else
-					if (chkDirecMem.Checked)
-					SaveAsm.GenereDrawDirect(sw, gest128K);
-				else
-					SaveAsm.GenereDrawDC(sw, withDelai, chkCol.Checked, gest128K, modeLigne == 8 ? 0x3F : modeLigne == 4 ? 0x1F : modeLigne == 2 ? 0xF : 0x7, optimSpeed);
+					switch (comboMethode.SelectedIndex) {
+						case 0:
+							SaveAsm.GenereDrawDC(sw, withDelai, chkCol.Checked, gest128K, modeLigne == 8 ? 0x3F : modeLigne == 4 ? 0x1F : modeLigne == 2 ? 0xF : 0x7, optimSpeed);
+							break;
+						case 1:
+							SaveAsm.GenereDrawDirect(sw, gest128K);
+							break;
+						case 2:
+							SaveAsm.GenereDrawBlock(sw, height, withDelai, gest128K);
+							break;
+
+					}
 			}
 			if ((param.withPalette || param.withCode) && !chkDataBrut.Checked)
 				SaveAsm.GenerePalette(sw, param, true);
@@ -524,13 +558,13 @@ namespace ConvImgCpc {
 			tbxAdrMax.Visible = chkMaxMem.Visible = chk128Ko.Checked;
 		}
 
-		private void chkDirecMem_CheckedChanged(object sender, EventArgs e) {
-			chk2Zone.Visible = chkZoneVert.Visible = grpGenereLigne.Visible = !chkDirecMem.Checked && Cpc.modeVirtuel < 7;
+		private void comboMethode_SelectedIndexChanged(object sender, EventArgs e) {
+			chk2Zone.Visible = chkZoneVert.Visible = grpGenereLigne.Visible = comboMethode.SelectedIndex == 0 && Cpc.modeVirtuel < 7;
 			chkZoneVert.Visible = chk2Zone.Visible && chk2Zone.Checked;
 		}
 
 		private void chkDataBrut_CheckedChanged(object sender, EventArgs e) {
-			chk128Ko.Enabled = chk2Zone.Enabled = chkBoucle.Enabled = chkCol.Enabled = chkDelai.Enabled = chkDirecMem.Enabled = chkMaxMem.Enabled = !chkDataBrut.Checked;
+			chk128Ko.Enabled = chk2Zone.Enabled = chkBoucle.Enabled = chkCol.Enabled = chkDelai.Enabled = comboMethode.Enabled = chkMaxMem.Enabled = !chkDataBrut.Checked;
 		}
 
 		private void chk2Zone_CheckedChanged(object sender, EventArgs e) {
@@ -561,7 +595,7 @@ namespace ConvImgCpc {
 				img.WindowState = FormWindowState.Minimized;
 				img.Show();
 				img.WindowState = FormWindowState.Normal;
-				SauveDeltaPack(adrDeb, adrMax, chkDelai.Checked, modeLigne, imageMode, optimSpeed, pkMethode);
+				SauveDeltaPack(adrDeb, adrMax, chkDelai.Checked, modeLigne, imageMode, optimSpeed, pkMethode, 8);
 			}
 		}
 
