@@ -596,8 +596,8 @@ namespace ConvImgCpc {
 
 				case Main.OutputFormat.Assembler:
 					StreamWriter sw = SaveAsm.OpenAsm(fileName, version, true);
-					int org = 0xA500 - lg - (Cpc.modeVirtuel == 5 ? 600 : 0);
 					if (main.param.withCode) {
+						int org = 0xA500 - lg - (Cpc.modeVirtuel == 5 ? 600 : 0);
 						sw.WriteLine("	ORG	#" + org.ToString("X4"));
 						sw.WriteLine("	Nolist");
 						sw.WriteLine("ImageCmp:");
@@ -616,8 +616,8 @@ namespace ConvImgCpc {
 								SaveAsm.GenereAfficheStd(sw, main.imgCpc, Cpc.modeVirtuel, Cpc.Palette, overscan, compact);
 						}
 					}
-					if ((main.param.withPalette || main.param.withCode) && (Cpc.modeVirtuel < 3 || Cpc.modeVirtuel > 5))
-						SaveAsm.GenerePalette(sw, param, main.param.withCode);
+					if (Cpc.modeVirtuel < 3 || Cpc.modeVirtuel > 5)
+						SaveAsm.GenerePalette(sw, param, main.param.withCode, main.param.withCode);
 
 					SaveAsm.CloseAsm(sw);
 					break;

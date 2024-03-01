@@ -36,6 +36,7 @@
 			this.lblNbY = new System.Windows.Forms.Label();
 			this.txbNbX = new System.Windows.Forms.TextBox();
 			this.txbNbY = new System.Windows.Forms.TextBox();
+			this.chkAutoCapture = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.pictCapture)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numSprite)).BeginInit();
 			this.SuspendLayout();
@@ -177,11 +178,22 @@
 			this.txbNbY.Visible = false;
 			this.txbNbY.TextChanged += new System.EventHandler(this.txbNbY_TextChanged);
 			// 
+			// chkAutoCapture
+			// 
+			this.chkAutoCapture.AutoSize = true;
+			this.chkAutoCapture.Location = new System.Drawing.Point(41, 383);
+			this.chkAutoCapture.Name = "chkAutoCapture";
+			this.chkAutoCapture.Size = new System.Drawing.Size(88, 17);
+			this.chkAutoCapture.TabIndex = 21;
+			this.chkAutoCapture.Text = "Capture Auto";
+			this.chkAutoCapture.UseVisualStyleBackColor = true;
+			// 
 			// Capture
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(800, 535);
+			this.Controls.Add(this.chkAutoCapture);
 			this.Controls.Add(this.txbNbY);
 			this.Controls.Add(this.txbNbX);
 			this.Controls.Add(this.lblNbY);
@@ -226,5 +238,6 @@
 		private System.Windows.Forms.Label lblNbY;
 		private System.Windows.Forms.TextBox txbNbX;
 		private System.Windows.Forms.TextBox txbNbY;
+		private System.Windows.Forms.CheckBox chkAutoCapture;
 	}
 }

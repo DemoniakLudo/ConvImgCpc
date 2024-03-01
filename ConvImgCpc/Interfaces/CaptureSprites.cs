@@ -6,6 +6,7 @@ namespace ConvImgCpc {
 	public partial class ImageCpc : Form {
 		private Capture fenetreCapture;
 		private int captx = -1, capty = -1;
+		private bool memoClick = false;
 
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData) {
 			if (modeCaptureSprites.Checked) {
@@ -39,8 +40,10 @@ namespace ConvImgCpc {
 					if (captx > -1 && capty > -1) {
 						Cursor.Position = new Point(Cursor.Position.X + incx, Cursor.Position.Y + incy);
 						XorDrawing.DrawXorRectangle(g, (Bitmap)pictureBox.Image, captx, capty, captx + sprSizeX, capty + sprSizeY);
-						if (sel)
-							fenetreCapture.SetCapture(BmpLock, captx, capty);
+						if (sel) {
+							main.SetInfo("Touche Espace=>Appel fenetreCapture.SetCapture");
+							fenetreCapture.SetCapture(captx, capty);
+						}
 					}
 					captx += incx;
 					capty += incy;
@@ -58,8 +61,13 @@ namespace ConvImgCpc {
 			Graphics g = Graphics.FromImage(pictureBox.Image);
 			if (captx > -1 && capty > -1) {
 				XorDrawing.DrawXorRectangle(g, (Bitmap)pictureBox.Image, captx, capty, captx + sprSizeX, capty + sprSizeY);
-				if (e.Button == MouseButtons.Left)
-					fenetreCapture.SetCapture(BmpLock, captx, capty);
+				if (e.Button == MouseButtons.Left) {
+					main.SetInfo("Click=>appel fenetreCapture.SetCapture (true)");
+					fenetreCapture.SetCapture(captx, capty, !memoClick);
+					memoClick = true;
+				}
+				else
+					memoClick = false;
 			}
 			captx = e.X / (chkX2.Checked ? 2 : 1) & 0xFFE;
 			capty = e.Y / (chkX2.Checked ? 2 : 1) & 0xFFE;

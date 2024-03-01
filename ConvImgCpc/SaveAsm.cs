@@ -365,14 +365,16 @@ namespace ConvImgCpc {
 			sw.WriteLine("	OUT	(C),C");
 		}
 
-		static public void GenerePalette(StreamWriter sw, Param p, bool withUnlockAsic) {
+		static public void GenerePalette(StreamWriter sw, Param p, bool withUnlockAsic, bool withMode) {
 			if (Cpc.cpcPlus) {
 				if (withUnlockAsic) {
 					sw.WriteLine("UnlockAsic:");
 					sw.WriteLine("	DB	#FF,#00,#FF,#77,#B3,#51,#A8,#D4,#62,#39,#9C,#46,#2B,#15,#8A,#CD,#EE");
 				}
 				sw.WriteLine("Palette:");
-				sw.WriteLine("\tDB\t#" + ((Cpc.modeVirtuel == 7 ? 1 : Cpc.modeVirtuel & 3) | 0x8C).ToString("X2"));
+				if (withMode)
+					sw.WriteLine("\tDB\t#" + ((Cpc.modeVirtuel == 7 ? 1 : Cpc.modeVirtuel & 3) | 0x8C).ToString("X2"));
+
 				string line = "	DW	";
 				for (int i = 0; i < 17; i++) {
 					int c = i >= 16 || p.disableState[i] == 0 ? Cpc.Palette[i < Cpc.MaxPen() ? i : 0] : 0xFFFF;
@@ -387,7 +389,11 @@ namespace ConvImgCpc {
 					int k = i >= 16 || p.disableState[i] == 0 ? Cpc.Palette[i < Cpc.MaxPen() ? i : 0] : -1;
 					line += "#" + (k == -1 ? "FF" : ((int)Cpc.CpcVGA[k < 27 ? k : 0]).ToString("X2")) + ",";
 				}
-				line += "#" + ((Cpc.modeVirtuel == 7 ? 1 : Cpc.modeVirtuel & 3) | 0x8C).ToString("X2");
+				if (withMode)
+					line += "#" + ((Cpc.modeVirtuel == 7 ? 1 : Cpc.modeVirtuel & 3) | 0x8C).ToString("X2");
+				else
+					line = line.Substring(0, line.Length - 1);
+
 				sw.WriteLine(line);
 			}
 		}

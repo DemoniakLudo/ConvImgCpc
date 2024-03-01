@@ -497,8 +497,8 @@ namespace ConvImgCpc {
 					}
 			}
 			if ((param.withPalette || param.withCode) && !chkDataBrut.Checked)
-				SaveAsm.GenerePalette(sw, param, true);
-			;
+				SaveAsm.GenerePalette(sw, param, true, param.withCode);
+
 
 			int endBank0 = 0;
 			int lbank = 0, numBank = 0xC0;

@@ -27,9 +27,13 @@ namespace ConvImgCpc {
 			pictCapture.Refresh();
 		}
 
-		public void SetCapture(DirectBitmap src, int posx, int posy) {
+		// Capture d'un sprite
+		public void SetCapture(int posx, int posy, bool withClick = false) {
 			main.imgCpc.CaptureSprite(captSizeX, captSizeY, posx, posy, bmp);
+			main.SetInfo("Capture sprite posx:" + posx.ToString() + ",posy:" + posy.ToString() + " withClick=" + withClick.ToString());
 			pictCapture.Refresh();
+			if (withClick && chkAutoCapture.Checked)
+				bpCapture_Click(null, null);
 		}
 
 		private void GetCaptSizeX() {
@@ -92,6 +96,7 @@ namespace ConvImgCpc {
 		private void bpCapture_Click(object sender, EventArgs e) {
 			int numSpr = (int)numSprite.Value;
 			int numBank = comboBanque.SelectedIndex;
+			main.SetInfo("Copie sprite n°" + numSpr.ToString() + ",Bank" + numBank.ToString());
 			for (int spry = 0; spry < captSizeY; spry++)
 				for (int sprx = 0; sprx < captSizeX; sprx++) {
 					for (int y = 0; y < 16; y++)
@@ -111,9 +116,8 @@ namespace ConvImgCpc {
 			if (numSprite.Maximum < numSpr)
 				numSprite.Maximum = numSpr;
 
-            numSprite.Value = numSpr;
+			numSprite.Value = numSpr;
 			comboBanque.SelectedIndex = numBank;
-			MessageBox.Show("Capture Ok.");
 		}
 
 		private void Capture_FormClosed(object sender, FormClosedEventArgs e) {

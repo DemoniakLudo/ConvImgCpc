@@ -519,7 +519,7 @@ namespace ConvImgCpc {
 			byte[] retCmp = new byte[maxSize];
 			int l = new PackModule().Pack(ret, ret.Length, retCmp, 0, pkMethode);
 			StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
-			SaveAsm.GenerePalette(sw, param, false);
+			SaveAsm.GenerePalette(sw, param, false, false);
 			sw.WriteLine("Mat64x64Cmp");
 			SaveAsm.GenereDatas(sw, retCmp, l, 16);
 			SaveAsm.CloseAsm(sw);
