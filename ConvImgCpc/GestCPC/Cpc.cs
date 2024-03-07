@@ -202,7 +202,7 @@ namespace ConvImgCpc {
 			}
 			else {
 				for (pen = 0; pen < 16; pen++) {
-					RvbColor fixedCol = RgbCPC[Palette[pen]];
+					RvbColor fixedCol = RgbCPC[Palette[pen] != 0xFFFF ? Palette[pen] : 0];
 					if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
 						break;
 				}

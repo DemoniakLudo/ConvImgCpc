@@ -9,7 +9,8 @@ namespace ConvImgCpc {
 		public DirectBitmap[] tabBmpLock;
 		public DirectBitmap BmpLock { get { return tabBmpLock[selImage]; } }
 		private DirectBitmap tmpLock;
-		private Label[] colors = new Label[16];
+		private Label[] lblColors = new Label[16];
+		private Label[] lblUsedColors = new Label[16];
 		private CheckBox[] lockColors = new CheckBox[16];
 		public int[] lockState = new int[16];
 		private Image imgOrigine;
@@ -28,7 +29,7 @@ namespace ConvImgCpc {
 			main = m;
 			for (int i = 0; i < 16; i++) {
 				// Générer les contrôles de "couleurs"
-				colors[i] = new Label {
+				lblColors[i] = new Label {
 					BorderStyle = BorderStyle.FixedSingle,
 					Location = new Point(168 + i * 48, 568 - 564),
 					Size = new Size(40, 32),
@@ -36,8 +37,8 @@ namespace ConvImgCpc {
 					TextAlign = ContentAlignment.MiddleCenter,
 					Text = i.ToString()
 				};
-				colors[i].MouseDown += ClickColor;
-				Controls.Add(colors[i]);
+				lblColors[i].MouseDown += ClickColor;
+				Controls.Add(lblColors[i]);
 				// Générer les contrôles de "bloquage couleur"
 				lockColors[i] = new CheckBox {
 					Location = new Point(180 + i * 48, 600 - 564),
@@ -47,6 +48,13 @@ namespace ConvImgCpc {
 				lockColors[i].Click += ClickLock;
 				Controls.Add(lockColors[i]);
 				lockColors[i].Update();
+
+				lblUsedColors[i] = new Label {
+					Location = new Point(168 + i * 48, 568 - 564),
+					Size = new Size(8, 8)
+				};
+				Controls.Add(lblUsedColors[i]);
+				lblUsedColors[i].BringToFront();
 			}
 			InitBitmapCpc(1, 100);
 			Reset();
@@ -87,7 +95,7 @@ namespace ConvImgCpc {
 			int tx = Cpc.CalcTx();
 			int maxPen = Cpc.MaxPen(Cpc.yEgx ^ 2);
 			for (int i = 0; i < 16; i++)
-				colors[i].Visible = lockColors[i].Visible = i < maxPen;
+				lblColors[i].Visible = lockColors[i].Visible = lblUsedColors[i].Visible = i < maxPen;
 
 			ToolModeDraw(null);
 		}
@@ -103,6 +111,22 @@ namespace ConvImgCpc {
 
 		public void SetImpDrawMode(bool impDrawMode) {
 			modeImpDraw = pictImpDraw.Visible = Cpc.TailleY == 544 && Cpc.TailleX == 768 && impDrawMode;
+		}
+
+		private void RefreshUsedColor() {
+			byte[] col = new byte[16];
+			for (int i = 0; i < 16; i++)
+				col[i] = 0;
+
+			for (int y = 0; y < imgOrigine.Height; y += 2) {
+				int tx = Cpc.CalcTx(y);
+				for (int x = 0; x < imgOrigine.Width; x += tx) {
+					int pen = Cpc.GetPenColor(BmpLock, x, y);
+					col[pen & 0x0F] = 1;
+				}
+			}
+			for (int i = 0; i < 16; i++)
+				lblUsedColors[i].BackColor = col[i] == 0 ? Color.Red : Color.Green;
 		}
 
 		public void Render(bool forceDrawZoom = false, bool withSpriteGrid = false) {
@@ -160,6 +184,7 @@ namespace ConvImgCpc {
 				fenetreRendu.SetImage(BmpLock.Bitmap);
 				fenetreRendu.Picture.Refresh();
 			}
+			RefreshUsedColor();
 		}
 
 		public void CaptureSprite(int captSizeX, int captSizeY, int posx, int posy, DirectBitmap bmp) {
@@ -310,45 +335,6 @@ namespace ConvImgCpc {
 			return ret;
 		}
 
-		private byte[] MakeWin(bool rowMode = false) {
-			int realWidth = (imgMotif.Width >> 3) + ((imgMotif.Width % 8) > 0 ? 1 : 0);
-			byte[] ret = new byte[(realWidth * imgMotif.Height) >> 1];
-			Array.Clear(ret, 0, ret.Length);
-			if (rowMode) {
-				for (int x = 0; x < realWidth; x++) {
-					int maxLen = imgMotif.Width;
-					for (int y = 0; y < imgMotif.Height; y += 2) {
-						int tx = Cpc.CalcTx(y);
-						byte octet = 0;
-						for (int p = 0; p < Math.Min(8, maxLen); p++)
-							if ((p % tx) == 0) {
-								int pen = Cpc.GetPenColor(imgMotif, (x << 3) + p, y);
-								octet |= (byte)(Cpc.tabOctetMode[pen] >> (p / tx));
-							}
-						ret[x + (y >> 1) * realWidth] = octet;
-					}
-					maxLen -= 8;
-				}
-			}
-			else {
-				for (int y = 0; y < imgMotif.Height; y += 2) {
-					int maxLen = imgMotif.Width;
-					int tx = Cpc.CalcTx(y);
-					for (int x = 0; x < realWidth; x++) {
-						byte octet = 0;
-						for (int p = 0; p < Math.Min(8, maxLen); p++)
-							if ((p % tx) == 0) {
-								int pen = Cpc.GetPenColor(imgMotif, (x << 3) + p, y);
-								octet |= (byte)(Cpc.tabOctetMode[pen] >> (p / tx));
-							}
-						ret[x + (y >> 1) * realWidth] = octet;
-						maxLen -= 8;
-					}
-				}
-			}
-			return ret;
-		}
-
 		public void SauveSprite(string fileName, string version) {
 			byte[] ret = MakeSprite();
 			StreamWriter sw = SaveAsm.OpenAsm(fileName, version, true);
@@ -360,9 +346,8 @@ namespace ConvImgCpc {
 		public void SauveSpriteCmp(string fileName, string version, Main.PackMethode pkMethode) {
 			byte[] ret = MakeSprite();
 			byte[] sprCmp = new byte[ret.Length];
-			int l = new PackModule().Pack(ret, ret.Length, sprCmp, 0, pkMethode);
 			StreamWriter sw = SaveAsm.OpenAsm(fileName, version, true);
-			SaveAsm.GenereDatas(sw, sprCmp, l, 16);
+			SaveAsm.GenereDatas(sw, sprCmp, new PackModule().Pack(ret, ret.Length, sprCmp, 0, pkMethode), 16);
 			SaveAsm.CloseAsm(sw);
 			main.SetInfo("Sauvegarde sprite assembleur compacté ok.");
 		}
@@ -517,11 +502,10 @@ namespace ConvImgCpc {
 				}
 			}
 			byte[] retCmp = new byte[maxSize];
-			int l = new PackModule().Pack(ret, ret.Length, retCmp, 0, pkMethode);
 			StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
 			SaveAsm.GenerePalette(sw, param, false, false);
 			sw.WriteLine("Mat64x64Cmp");
-			SaveAsm.GenereDatas(sw, retCmp, l, 16);
+			SaveAsm.GenereDatas(sw, retCmp, new PackModule().Pack(ret, ret.Length, retCmp, 0, pkMethode), 16);
 			SaveAsm.CloseAsm(sw);
 			main.SetInfo("Sauvegarde matrice assembleur ok.");
 		}
@@ -670,9 +654,9 @@ namespace ConvImgCpc {
 		private void UpdatePalette() {
 			for (int i = 0; i < 16; i++) {
 				RvbColor col = bitmapCpc.GetColorPal(i);
-				colors[i].BackColor = Color.FromArgb(col.GetColorArgb);
-				colors[i].ForeColor = (col.r * 9798 + col.v * 19235 + col.b * 3735) > 0x400000 ? Color.Black : Color.White;
-				colors[i].Refresh();
+				lblColors[i].BackColor = Color.FromArgb(col.GetColorArgb);
+				lblColors[i].ForeColor = (col.r * 9798 + col.v * 19235 + col.b * 3735) > 0x400000 ? Color.Black : Color.White;
+				lblColors[i].Refresh();
 			}
 		}
 
@@ -780,26 +764,55 @@ namespace ConvImgCpc {
 				int r = ((col & 0x0F) * 17);
 				int v = (((col & 0xF00) >> 8) * 17);
 				int b = (((col & 0xF0) >> 4) * 17);
-				colors[c].BackColor = Color.FromArgb(r, v, b);
-				colors[c].ForeColor = (r * 9798 + v * 19235 + b * 3735) > 0x400000 ? Color.Black : Color.White;
-				colors[c].Refresh();
+				lblColors[c].BackColor = Color.FromArgb(r, v, b);
+				lblColors[c].ForeColor = (r * 9798 + v * 19235 + b * 3735) > 0x400000 ? Color.Black : Color.White;
+				lblColors[c].Refresh();
 				lockColors[c].Checked = true;
 				lockState[c] = 1;
 			}
 			Convert(false);
 		}
 
+		private byte CalcOctet(int x, int y, int maxLen) {
+			byte octet = 0;
+			int tx = Cpc.CalcTx(y);
+			for (int p = 0; p < Math.Min(8, maxLen); p++)
+				if ((p % tx) == 0) {
+					int pen = Cpc.GetPenColor(imgMotif, (x << 3) + p, y);
+					octet |= (byte)(Cpc.tabOctetMode[pen] >> (p / tx));
+				}
+			return octet;
+		}
+
+		private byte[] MakeWin(bool rowMode = false) {
+			int realWidth = (imgMotif.Width >> 3) + ((imgMotif.Width % 8) > 0 ? 1 : 0);
+			byte[] ret = new byte[(realWidth * imgMotif.Height) >> 1];
+			int pos = 0;
+			if (rowMode) {
+				for (int x = 0; x < realWidth; x++)
+					for (int y = 0; y < imgMotif.Height; y += 2)
+						ret[pos++] = CalcOctet(x, y, imgMotif.Width);
+			}
+			else {
+				for (int y = 0; y < imgMotif.Height; y += 2)
+					for (int x = 0; x < realWidth; x++)
+						ret[pos++] = CalcOctet(x, y, imgMotif.Width - (x << 3));
+			}
+			return ret;
+		}
+
 		private void bpSaveWin_Click(object sender, EventArgs e) {
 			Enabled = false;
 			SaveFileDialog dlg = new SaveFileDialog();
-			dlg.Filter = " (.win)|*.win| Raw assembler data (.asm)|*.asm | Raw assembler data in column order (.asm)|*.asm";
+			dlg.Filter = " (.win)|*.win| Raw assembler data (.asm)|*.asm|Raw assembler data in column order (.asm)|*.asm";
 			if (dlg.ShowDialog() == DialogResult.OK) {
-				FileStream fileScr = new FileStream(dlg.FileName, FileMode.Create, FileAccess.Write);
+				byte[] bWin;
+				string fileName = dlg.FileName;
 				switch (dlg.FilterIndex) {
 					case 1:
-						byte[] bWin = MakeWin();
-						int l = bWin.Length + 4;
-						CpcAmsdos entete = Cpc.CreeEntete(dlg.FileName, 0x4000, (short)l, -13622);
+						bWin = MakeWin();
+						FileStream fileScr = new FileStream(fileName, FileMode.Create, FileAccess.Write);
+						CpcAmsdos entete = Cpc.CreeEntete(fileName, 0x4000, (short)(bWin.Length + 4), -13622);
 						fileScr.Write(Cpc.AmsdosToByte(entete), 0, 128);
 						fileScr.Write(bWin, 0, bWin.Length);
 						byte[] endFile = new byte[4];
@@ -808,15 +821,23 @@ namespace ConvImgCpc {
 						endFile[2] = (byte)((imgMotif.Height >> 1) & 0xFF);
 						endFile[3] = (byte)(imgMotif.Height >> 9);
 						fileScr.Write(endFile, 0, 4);
+						fileScr.Close();
 						break;
 
 					case 2:
+						bWin = MakeWin();
+						StreamWriter sw1 = SaveAsm.OpenAsm(fileName, main.lblInfoVersion.Text);
+						SaveAsm.GenereDatas(sw1, bWin, bWin.Length, (imgMotif.Width + 7) >> 3);
+						SaveAsm.CloseAsm(sw1);
 						break;
 
 					case 3:
+						bWin = MakeWin(true);
+						StreamWriter sw2 = SaveAsm.OpenAsm(fileName, main.lblInfoVersion.Text);
+						SaveAsm.GenereDatas(sw2, bWin, bWin.Length, imgMotif.Height >> 1);
+						SaveAsm.CloseAsm(sw2);
 						break;
 				}
-				fileScr.Close();
 			}
 			Enabled = true;
 		}
@@ -846,6 +867,7 @@ namespace ConvImgCpc {
 				}
 			}
 			Enabled = true;
+			bpSaveWin.Enabled = imgMotif != null;
 		}
 
 		private void bpCopyImage_Click(object sender, EventArgs e) {

@@ -1441,7 +1441,7 @@
 		private System.Windows.Forms.RadioButton radioFit;
 		private System.Windows.Forms.GroupBox groupBox1;
 		private System.Windows.Forms.Button bpSave;
-		private System.Windows.Forms.Label lblInfoVersion;
+		public System.Windows.Forms.Label lblInfoVersion;
 		private System.Windows.Forms.RadioButton radioUserSize;
 		private System.Windows.Forms.TextBox tbxSizeY;
 		private System.Windows.Forms.TextBox tbxPosX;

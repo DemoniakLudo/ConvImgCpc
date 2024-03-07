@@ -103,26 +103,26 @@ namespace ConvImgCpc {
 			}
 			else
 				if (e.Button == MouseButtons.Right) {
-					if (!unZoom) {
-						unZoom = true;
-						if (zoom >= 2)
-							zoom >>= 1;
+				if (!unZoom) {
+					unZoom = true;
+					if (zoom >= 2)
+						zoom >>= 1;
 
+					DoZoom();
+				}
+			}
+			else {
+				unZoom = false;
+				if (setZoomRect) {
+					setZoomRect = false;
+					if (zoomRectw != 0 && zoomRecth != 0) {
+						Graphics g = Graphics.FromImage(pictureBox.Image);
+						XorDrawing.DrawXorRectangle(g, (Bitmap)pictureBox.Image, zoomRectx, zoomRecty, zoomRectx + zoomRectw, zoomRecty + zoomRecth);
+						zoom = Math.Max(1, Math.Min(Math.Abs(768 / zoomRectw), Math.Abs(544 / zoomRecth)) & 0x7E);
 						DoZoom();
 					}
 				}
-				else {
-					unZoom = false;
-					if (setZoomRect) {
-						setZoomRect = false;
-						if (zoomRectw != 0 && zoomRecth != 0) {
-							Graphics g = Graphics.FromImage(pictureBox.Image);
-							XorDrawing.DrawXorRectangle(g, (Bitmap)pictureBox.Image, zoomRectx, zoomRecty, zoomRectx + zoomRectw, zoomRecty + zoomRecth);
-							zoom = Math.Max(1, Math.Min(Math.Abs(768 / zoomRectw), Math.Abs(544 / zoomRecth)) & 0x7E);
-							DoZoom();
-						}
-					}
-				}
+			}
 		}
 
 		private void DrawCopy(MouseEventArgs e) {
@@ -143,7 +143,7 @@ namespace ConvImgCpc {
 			int yReel = ((e.Y / (zoom * (chkX2.Checked ? 2 : 1))) & 0xFFE) * zoom;
 			int tx = Cpc.CalcTx(yReel);
 			int xReel = ((e.X / (zoom * (chkX2.Checked ? 2 : 1))) & -tx) * zoom;
-			if (e.Button == MouseButtons.Right && imgMotif != null) 
+			if (e.Button == MouseButtons.Right && imgMotif != null)
 				ReleaseMotif();
 
 			if (e.Button == MouseButtons.Left && xReel >= 0 && yReel >= 0) {
@@ -188,6 +188,7 @@ namespace ConvImgCpc {
 						Graphics g = Graphics.FromImage(pictureBox.Image);
 						XorDrawing.DrawXorRectangle(g, (Bitmap)pictureBox.Image, copyRectx, copyRecty, copyRectx + copyRectw, copyRecty + copyRecth);
 						imgMotif = new DirectBitmap(Math.Abs(copyRectw / zoom), Math.Abs(copyRecth / zoom));
+						bpSaveWin.Enabled = imgMotif != null;
 						if (copyRectw < 0)
 							copyRectx += copyRectw;
 
@@ -280,6 +281,7 @@ namespace ConvImgCpc {
 			if (imgMotif != null) {
 				imgMotif.Dispose();
 				imgMotif = null;
+				bpSaveWin.Enabled = false;
 			}
 			pictureBox.Image = tmpLock != null ? tmpLock.Bitmap : BmpLock.Bitmap;
 		}
@@ -290,39 +292,39 @@ namespace ConvImgCpc {
 				CaptureSprites(e);      // Capture de sprites hard
 			else
 				if (modeEdition.Checked) {
-					int incY = Cpc.modeVirtuel >= 8 && Cpc.modeVirtuel < 11 ? 8 : 2;
-					int yReel = (((offsetY + (e.Y / (zoom * (chkX2.Checked ? 2 : 1)))) & -incY) >> 1) - (modeImpDraw ? 1 : 0);
-					int tx = Cpc.CalcTx(yReel);
-					int xReel = (offsetX + (e.X / (zoom * (chkX2.Checked ? 2 : 1)))) & -tx;
-					lblInfoPos.Text = "x:" + xReel.ToString("000") + " y:" + yReel.ToString("000") + " - @:" + ((xReel >> 3) + Cpc.GetAdrCpc(yReel * 2)).ToString("X4");
-					switch (editToolMode) {
-						case EditTool.Draw:
-							ToolModeDraw(e);
-							break;
+				int incY = Cpc.modeVirtuel >= 8 && Cpc.modeVirtuel < 11 ? 8 : 2;
+				int yReel = (((offsetY + (e.Y / (zoom * (chkX2.Checked ? 2 : 1)))) & -incY) >> 1) - (modeImpDraw ? 1 : 0);
+				int tx = Cpc.CalcTx(yReel);
+				int xReel = (offsetX + (e.X / (zoom * (chkX2.Checked ? 2 : 1)))) & -tx;
+				lblInfoPos.Text = "x:" + xReel.ToString("000") + " y:" + yReel.ToString("000") + " - @:" + ((xReel >> 3) + Cpc.GetAdrCpc(yReel * 2)).ToString("X4");
+				switch (editToolMode) {
+					case EditTool.Draw:
+						ToolModeDraw(e);
+						break;
 
-						case EditTool.Zoom:
-							ToolModeZoom(e);
-							break;
+					case EditTool.Zoom:
+						ToolModeZoom(e);
+						break;
 
-						case EditTool.Copy:
-							ToolModeCopy(e);
-							break;
+					case EditTool.Copy:
+						ToolModeCopy(e);
+						break;
 
-						case EditTool.Pick:
-							ToolModePick(e);
-							break;
+					case EditTool.Pick:
+						ToolModePick(e);
+						break;
 
-						case EditTool.Fill:
-							ToolModeFill(e);
-							break;
-					}
-					if (e.Button == MouseButtons.None) {
-						bpUndo.Enabled = undo.CanUndo;
-						bpRedo.Enabled = undo.CanRedo;
-					}
+					case EditTool.Fill:
+						ToolModeFill(e);
+						break;
 				}
-				else
-					MoveOrSize(e);      // Déplacement/Zoom image
+				if (e.Button == MouseButtons.None) {
+					bpUndo.Enabled = undo.CanUndo;
+					bpRedo.Enabled = undo.CanRedo;
+				}
+			}
+			else
+				MoveOrSize(e);      // Déplacement/Zoom image
 		}
 
 		private void vScrollBar_Scroll(object sender, ScrollEventArgs e) {
@@ -390,7 +392,8 @@ namespace ConvImgCpc {
 		}
 
 		private void rbCopy_CheckedChanged(object sender, EventArgs e) {
-			bpLoadWin.Enabled = bpSaveWin.Enabled = true;
+			bpLoadWin.Enabled = true;
+			bpSaveWin.Enabled = imgMotif != null;
 			editToolMode = EditTool.Copy;
 		}
 

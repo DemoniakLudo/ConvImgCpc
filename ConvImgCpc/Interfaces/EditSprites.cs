@@ -17,8 +17,6 @@ namespace ConvImgCpc {
 		private Label lblRectSelSprite = new Label();
 		private int tickTimer;
 		private int lineStartX = -1, lineStartY = -1;
-		private int[] posXSprite = new int[16];
-		private int[] posYSprite = new int[16];
 
 		public EditSprites(Main m, Main.PackMethode pk) {
 			InitializeComponent();
