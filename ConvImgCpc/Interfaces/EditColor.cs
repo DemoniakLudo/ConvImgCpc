@@ -64,7 +64,6 @@ namespace ConvImgCpc {
 				lblValColor.Text = "=" + val;
 				Controls.Add(lblValColor);
 			}
-			chkDisable.Checked = main.param.disableState[numColor] == 1;
 		}
 
 		private void ClickColor(object sender, System.EventArgs e) {
@@ -121,10 +120,6 @@ namespace ConvImgCpc {
 
 		private void bpAnnule_Click(object sender, System.EventArgs e) {
 			Close();
-		}
-
-		private void chkDisable_CheckedChanged(object sender, System.EventArgs e) {
-			main.param.disableState[numColor] = chkDisable.Checked ? 1 : 0;
 		}
 	}
 }

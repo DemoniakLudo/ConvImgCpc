@@ -61,6 +61,7 @@
 			this.bpGenPal = new System.Windows.Forms.Button();
 			this.chkGrilleSprite = new System.Windows.Forms.CheckBox();
 			this.bpCopyImage = new System.Windows.Forms.Button();
+			this.label2 = new System.Windows.Forms.Label();
 			this.grpEdition.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictImpDraw)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
@@ -69,7 +70,7 @@
 			// lockAllPal
 			// 
 			this.lockAllPal.AutoSize = true;
-			this.lockAllPal.Location = new System.Drawing.Point(12, 12);
+			this.lockAllPal.Location = new System.Drawing.Point(12, 20);
 			this.lockAllPal.Name = "lockAllPal";
 			this.lockAllPal.Size = new System.Drawing.Size(15, 14);
 			this.lockAllPal.TabIndex = 1;
@@ -470,12 +471,22 @@
 			this.bpCopyImage.UseVisualStyleBackColor = true;
 			this.bpCopyImage.Click += new System.EventHandler(this.bpCopyImage_Click);
 			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(122, 2);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(42, 13);
+			this.label2.TabIndex = 30;
+			this.label2.Text = "Disable";
+			// 
 			// ImageCpc
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(957, 676);
 			this.ControlBox = false;
+			this.Controls.Add(this.label2);
 			this.Controls.Add(this.bpCopyImage);
 			this.Controls.Add(this.chkGrilleSprite);
 			this.Controls.Add(this.bpGenPal);
@@ -550,5 +561,6 @@
 		private System.Windows.Forms.Button bpCopyImage;
 		private System.Windows.Forms.RadioButton rbFill;
 		private System.Windows.Forms.Button bpSaveWin;
+		private System.Windows.Forms.Label label2;
 	}
 }

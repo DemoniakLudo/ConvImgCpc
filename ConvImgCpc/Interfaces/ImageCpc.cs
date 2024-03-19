@@ -12,6 +12,7 @@ namespace ConvImgCpc {
 		private Label[] lblColors = new Label[16];
 		private Label[] lblUsedColors = new Label[16];
 		private CheckBox[] lockColors = new CheckBox[16];
+		private CheckBox[] disableColors = new CheckBox[16];
 		public int[] lockState = new int[16];
 		private Image imgOrigine;
 		public delegate void ConvertDelegate(bool doConvert, bool noInfo = false);
@@ -31,30 +32,37 @@ namespace ConvImgCpc {
 				// Générer les contrôles de "couleurs"
 				lblColors[i] = new Label {
 					BorderStyle = BorderStyle.FixedSingle,
-					Location = new Point(168 + i * 48, 568 - 564),
-					Size = new Size(40, 32),
+					Location = new Point(168 + i * 48, 18),
+					Size = new Size(40, 27),
 					Tag = i,
 					TextAlign = ContentAlignment.MiddleCenter,
 					Text = i.ToString()
 				};
 				lblColors[i].MouseDown += ClickColor;
 				Controls.Add(lblColors[i]);
+				lblUsedColors[i] = new Label {
+					Location = new Point(168 + i * 48, 18),
+					Size = new Size(8, 8)
+				};
+				Controls.Add(lblUsedColors[i]);
+				lblUsedColors[i].BringToFront();
 				// Générer les contrôles de "bloquage couleur"
 				lockColors[i] = new CheckBox {
-					Location = new Point(180 + i * 48, 600 - 564),
+					Location = new Point(180 + i * 48, 44),
 					Size = new Size(20, 20),
 					Tag = i
 				};
 				lockColors[i].Click += ClickLock;
 				Controls.Add(lockColors[i]);
 				lockColors[i].Update();
-
-				lblUsedColors[i] = new Label {
-					Location = new Point(168 + i * 48, 568 - 564),
-					Size = new Size(8, 8)
+				// Générer les contrôles de désactivation couleur
+				disableColors[i] = new CheckBox {
+					Location = new Point(180 + i * 48, 0),
+					Size = new Size(20, 20),
+					Tag = i
 				};
-				Controls.Add(lblUsedColors[i]);
-				lblUsedColors[i].BringToFront();
+				disableColors[i].Click += DisableColor;
+				Controls.Add(disableColors[i]);
 			}
 			InitBitmapCpc(1, 100);
 			Reset();
@@ -651,11 +659,19 @@ namespace ConvImgCpc {
 			}
 		}
 
+		private void DisableColor(object sender, EventArgs e) {
+			CheckBox chkDisable = sender as CheckBox;
+			int numLock = chkDisable.Tag != null ? (int)chkDisable.Tag : 0;
+			main.param.disableState[numLock] = chkDisable.Checked ? 1 : 0;
+			UpdatePalette();
+		}
+
 		private void UpdatePalette() {
 			for (int i = 0; i < 16; i++) {
 				RvbColor col = bitmapCpc.GetColorPal(i);
 				lblColors[i].BackColor = Color.FromArgb(col.GetColorArgb);
 				lblColors[i].ForeColor = (col.r * 9798 + col.v * 19235 + col.b * 3735) > 0x400000 ? Color.Black : Color.White;
+				lblColors[i].Visible = lblUsedColors[i].Visible = main.param.disableState[i] == 0;
 				lblColors[i].Refresh();
 			}
 		}
