@@ -12,6 +12,7 @@ namespace ConvImgCpc {
 		}
 
 		public void InitValues() {
+			stopModif = true;
 			numericLumR.Value = trackLumR.Value = main.param.coefR;
 			numericLumV.Value = trackLumV.Value = main.param.coefV;
 			numericLumB.Value = trackLumB.Value = main.param.coefB;
@@ -30,10 +31,10 @@ namespace ConvImgCpc {
 			rbDistanceSup.Checked = main.param.kMeansDist == 0;
 			rbDistanceEuclide.Checked = main.param.kMeansDist == 1;
 			rbDistanceManhattan.Checked = main.param.kMeansDist == 2;
-			numColor.Value = main.param.kMeansColor >=2 ? main.param.kMeansColor : 16;
+			numColor.Value = main.param.kMeansColor >= 2 ? main.param.kMeansColor : 16;
 			numColor.Minimum = 2;
-			numPass.Value=main.param.kMeansPass>=1?main.param.kMeansPass:1;
-			numPass.Minimum=1;
+			numPass.Value = main.param.kMeansPass >= 1 ? main.param.kMeansPass : 1;
+			numPass.Minimum = 1;
 		}
 
 		private void trackLumR_Scroll(object sender, EventArgs e) {
@@ -355,12 +356,12 @@ namespace ConvImgCpc {
 
 		private void numPass_ValueChanged(object sender, EventArgs e) {
 			if (!stopModif) {
-				Enabled=false;
-				stopModif=true;
-				main.param.kMeansPass=(int)numPass.Value;
+				Enabled = false;
+				stopModif = true;
+				main.param.kMeansPass = (int)numPass.Value;
 				main.Convert(false);
-				stopModif=false;
-				Enabled=true;
+				stopModif = false;
+				Enabled = true;
 			}
 		}
 	}

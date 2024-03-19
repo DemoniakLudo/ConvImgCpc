@@ -52,6 +52,7 @@ namespace ConvImgCpc {
 			else
 				paramInterne.InitValues();
 
+			imgSrc.Init();
 			anim.Show();
 			imgCpc.Show();
 			Show();

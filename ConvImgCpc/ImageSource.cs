@@ -7,12 +7,15 @@ using System.IO;
 namespace ConvImgCpc {
 	public partial class ImageSource {
 		private List<Bitmap> tabImage = new List<Bitmap>();
-		public Bitmap GetImage { get { return tabImage[imageSel < tabImage.Count ? imageSel : tabImage.Count - 1]; } }
+		public Bitmap GetImage { get { return tabImage.Count == 0 ? null : tabImage[imageSel < tabImage.Count ? imageSel : tabImage.Count - 1]; } }
 		public int NbImg { get { return tabImage.Count; } }
 		private int imageSel = 0;
 		public int tpsFrame = 0;
 
 		public ImageSource() {
+		}
+
+		public void Init() {
 			tabImage.Add(new Bitmap(768, 544));
 		}
 
