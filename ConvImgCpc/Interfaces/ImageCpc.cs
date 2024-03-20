@@ -100,11 +100,7 @@ namespace ConvImgCpc {
 					}
 				}
 			}
-			int tx = Cpc.CalcTx();
-			int maxPen = Cpc.MaxPen(Cpc.yEgx ^ 2);
-			for (int i = 0; i < 16; i++)
-				lblColors[i].Visible = lockColors[i].Visible = lblUsedColors[i].Visible = i < maxPen;
-
+			UpdatePalette();
 			ToolModeDraw(null);
 		}
 
@@ -663,15 +659,17 @@ namespace ConvImgCpc {
 			CheckBox chkDisable = sender as CheckBox;
 			int numLock = chkDisable.Tag != null ? (int)chkDisable.Tag : 0;
 			main.param.disableState[numLock] = chkDisable.Checked ? 1 : 0;
-			UpdatePalette();
+			Convert(false);
 		}
 
 		private void UpdatePalette() {
+			int maxPen = Cpc.MaxPen(Cpc.yEgx ^ 2);
 			for (int i = 0; i < 16; i++) {
 				RvbColor col = bitmapCpc.GetColorPal(i);
 				lblColors[i].BackColor = Color.FromArgb(col.GetColorArgb);
 				lblColors[i].ForeColor = (col.r * 9798 + col.v * 19235 + col.b * 3735) > 0x400000 ? Color.Black : Color.White;
-				lblColors[i].Visible = lblUsedColors[i].Visible = main.param.disableState[i] == 0;
+				lockColors[i].Visible = lblColors[i].Visible = lblUsedColors[i].Visible = main.param.disableState[i] == 0 && i < maxPen;
+				disableColors[i].Visible = i < maxPen;
 				lblColors[i].Refresh();
 			}
 		}

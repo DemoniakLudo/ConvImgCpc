@@ -35,6 +35,7 @@ namespace ConvImgCpc {
 			numColor.Minimum = 2;
 			numPass.Value = main.param.kMeansPass >= 1 ? main.param.kMeansPass : 1;
 			numPass.Minimum = 1;
+			stopModif = false;
 		}
 
 		private void trackLumR_Scroll(object sender, EventArgs e) {
