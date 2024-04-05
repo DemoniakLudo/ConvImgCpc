@@ -504,12 +504,12 @@ namespace ConvImgCpc {
 				Enabled = false;
 				try {
 					int maxSprite = GetLastSprite(allBank);
-					int size = allBank ? Convert.ToInt32(numBanks.Value) * 0x1000 : 0x1000;
+					int size = allBank ? ((maxSprite + 15) >> 4) * 0x1000 : 0x1000;
 					byte[] buffer = new byte[size];
 					byte[] sprPk = new byte[512 * (maxSprite + 1)];
 					int pos = 0;
 					int startBank = allBank ? 0 : numBank;
-					int endBank = allBank ? Convert.ToInt32(numBanks.Value) : numBank + 1;
+					int endBank = allBank ? ((maxSprite + 15) >> 4) : numBank + 1;
 					for (int bank = startBank; bank < endBank; bank++)
 						for (int i = 0; i < 16; i++) {
 							for (int y = 0; y < 16; y++) {
