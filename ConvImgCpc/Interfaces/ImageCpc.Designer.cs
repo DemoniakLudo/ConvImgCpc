@@ -116,6 +116,7 @@
 			this.drawColor.Name = "drawColor";
 			this.drawColor.Size = new System.Drawing.Size(70, 70);
 			this.drawColor.TabIndex = 7;
+			this.drawColor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// lblPenColor
 			// 
@@ -271,6 +272,7 @@
 			this.undrawColor.Name = "undrawColor";
 			this.undrawColor.Size = new System.Drawing.Size(70, 70);
 			this.undrawColor.TabIndex = 15;
+			this.undrawColor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// lblZoom
 			// 

@@ -29,9 +29,17 @@ namespace ConvImgCpc {
 			int incY = Cpc.modeVirtuel >= 8 && Cpc.modeVirtuel < 11 ? 8 : 2;
 			int yReel = e != null ? (offsetY + (e.Y / (zoom * (chkX2.Checked ? 2 : 1)))) & -incY : 0;
 			int tx = Cpc.CalcTx(yReel);
-			drawColor.BackColor = Color.FromArgb(bitmapCpc.GetColorPal(drawCol % (Cpc.modeVirtuel == 6 || Cpc.modeVirtuel == 11 ? 16 : 1 << tx)).GetColorArgb);
-			undrawColor.BackColor = Color.FromArgb(bitmapCpc.GetColorPal(undrawCol % (Cpc.modeVirtuel == 6 || Cpc.modeVirtuel == 11 ? 16 : 1 << tx)).GetColorArgb);
+			int penDraw = drawCol % (Cpc.modeVirtuel == 6 || Cpc.modeVirtuel == 11 ? 16 : 1 << tx);
+			RvbColor colDraw = bitmapCpc.GetColorPal(penDraw);
+			int penUndraw = undrawCol % (Cpc.modeVirtuel == 6 || Cpc.modeVirtuel == 11 ? 16 : 1 << tx);
+			RvbColor colUndraw = bitmapCpc.GetColorPal(penUndraw);
+			drawColor.BackColor = Color.FromArgb(colDraw.GetColorArgb);
+			drawColor.Text = penDraw.ToString();
+			drawColor.ForeColor = (colDraw.r * 9798 + colDraw.v * 19235 + colDraw.b * 3735) > 0x400000 ? Color.Black : Color.White;
+			undrawColor.BackColor = Color.FromArgb(colUndraw.GetColorArgb);
 			drawColor.Width = undrawColor.Width = 35 * Math.Min(tx, 4);
+			undrawColor.Text = penUndraw.ToString();
+			undrawColor.ForeColor = (colUndraw.r * 9798 + colUndraw.v * 19235 + colUndraw.b * 3735) > 0x400000 ? Color.Black : Color.White;
 			drawColor.Refresh();
 			undrawColor.Refresh();
 			if (e == null || e.Button == MouseButtons.None) {
@@ -226,10 +234,14 @@ namespace ConvImgCpc {
 			if (e.Button == MouseButtons.Left) {
 				drawCol = pen;
 				drawColor.BackColor = Color.FromArgb(col.r, col.v, col.b);
+				drawColor.Text = pen.ToString();
+				drawColor.ForeColor = (col.r * 9798 + col.v * 19235 + col.b * 3735) > 0x400000 ? Color.Black : Color.White;
 			}
 			if (e.Button == MouseButtons.Right) {
 				undrawCol = pen;
 				undrawColor.BackColor = Color.FromArgb(col.r, col.v, col.b);
+				undrawColor.Text = pen.ToString();
+				undrawColor.ForeColor = (col.r * 9798 + col.v * 19235 + col.b * 3735) > 0x400000 ? Color.Black : Color.White;
 			}
 		}
 

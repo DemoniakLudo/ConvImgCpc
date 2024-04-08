@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Security.Cryptography;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace ConvImgCpc {
 	public class SaveAsm {

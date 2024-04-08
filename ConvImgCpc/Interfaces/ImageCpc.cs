@@ -647,10 +647,14 @@ namespace ConvImgCpc {
 				if (e.Button == MouseButtons.Left) {
 					drawCol = pen;
 					drawColor.BackColor = Color.FromArgb(col.r, col.v, col.b);
+					drawColor.Text = pen.ToString();
+					drawColor.ForeColor = (col.r * 9798 + col.v * 19235 + col.b * 3735) > 0x400000 ? Color.Black : Color.White;
 				}
 				else {
 					undrawCol = pen;
 					undrawColor.BackColor = Color.FromArgb(col.r, col.v, col.b);
+					undrawColor.Text = pen.ToString();
+					undrawColor.ForeColor = (col.r * 9798 + col.v * 19235 + col.b * 3735) > 0x400000 ? Color.Black : Color.White;
 				}
 			}
 		}
