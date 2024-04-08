@@ -210,6 +210,17 @@ namespace ConvImgCpc {
 			}
 		}
 
+		static private int GetValColor(int c, Param prm) {
+			if (prm.cpcPlus) {
+				int v = c >> 8;
+				int r = (c >> 4) & 0x0F;
+				int b = c & 0x0F;
+				return r * r * prm.coefR + v * v * prm.coefV + b * b * prm.coefB;
+			}
+			else
+				return c;
+		}
+
 		//
 		// Recherche les x meilleurs couleurs parmis les n possibles (remplit le tableau Cpc.Palette)
 		//
@@ -302,7 +313,8 @@ namespace ConvImgCpc {
 					for (x = 0; x < maxPen - 1; x++)
 						for (int c = x + 1; c < maxPen; c++)
 							if ((lockState[x] == 0 && lockState[c] == 0 && prm.disableState[x] == 0 && prm.disableState[c] == 0 && Cpc.Palette[x] != 0xFFFF && Cpc.Palette[c] != 0xFFFF)
-								&& ((Cpc.Palette[x] > Cpc.Palette[c] && (prm.newSortPal & 2) == 0) || (Cpc.Palette[x] < Cpc.Palette[c] && (prm.newSortPal & 2) != 0))) {
+								&& ((GetValColor(Cpc.Palette[x], prm) > GetValColor(Cpc.Palette[c], prm) && (prm.newSortPal & 2) == 0)
+								|| (GetValColor(Cpc.Palette[x], prm) < GetValColor(Cpc.Palette[c], prm) && (prm.newSortPal & 2) != 0))) {
 								int tmp = Cpc.Palette[x];
 								Cpc.Palette[x] = Cpc.Palette[c];
 								Cpc.Palette[c] = tmp;
