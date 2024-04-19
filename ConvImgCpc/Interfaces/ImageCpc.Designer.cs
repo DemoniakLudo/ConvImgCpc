@@ -101,7 +101,7 @@
 			// vScrollBar
 			// 
 			this.vScrollBar.LargeChange = 32;
-			this.vScrollBar.Location = new System.Drawing.Point(939, 61);
+			this.vScrollBar.Location = new System.Drawing.Point(1195, 61);
 			this.vScrollBar.Name = "vScrollBar";
 			this.vScrollBar.Size = new System.Drawing.Size(16, 544);
 			this.vScrollBar.SmallChange = 8;
@@ -434,7 +434,7 @@
 			// 
 			this.pictureBox.Location = new System.Drawing.Point(168, 61);
 			this.pictureBox.Name = "pictureBox";
-			this.pictureBox.Size = new System.Drawing.Size(768, 544);
+			this.pictureBox.Size = new System.Drawing.Size(1024, 544);
 			this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.pictureBox.TabIndex = 0;
 			this.pictureBox.TabStop = false;
@@ -486,7 +486,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(957, 676);
+			this.ClientSize = new System.Drawing.Size(1216, 676);
 			this.ControlBox = false;
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.bpCopyImage);

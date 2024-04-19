@@ -165,16 +165,8 @@
 			// nbCols
 			// 
 			this.nbCols.Location = new System.Drawing.Point(91, 16);
-			this.nbCols.Maximum = new decimal(new int[] {
-            96,
-            0,
-            0,
-            0});
-			this.nbCols.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+			this.nbCols.Maximum = new decimal(new int[] {128,0,0,0});
+			this.nbCols.Minimum = new decimal(new int[] {1,0,0,0});
 			this.nbCols.Name = "nbCols";
 			this.nbCols.Size = new System.Drawing.Size(44, 20);
 			this.nbCols.TabIndex = 4;

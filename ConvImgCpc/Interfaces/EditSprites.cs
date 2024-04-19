@@ -41,14 +41,20 @@ namespace ConvImgCpc {
 					BorderStyle = BorderStyle.FixedSingle,
 					Location = new Point(730, 74 + c * 40),
 					Size = new Size(40, 32),
-					Tag = c
+					Tag = c,
+					TextAlign = ContentAlignment.MiddleCenter,
+					Text = c.ToString()
 				};
 				lblColors[c].MouseDown += ClickColor;
 				if (!paletteSpriteOk)
 					Cpc.paletteSprite[c] = Cpc.Palette[c];
 
 				int col = Cpc.paletteSprite[c];
-				lblColors[c].BackColor = Color.FromArgb((col & 0x0F) * 17, ((col & 0xF00) >> 8) * 17, ((col & 0xF0) >> 4) * 17);
+				byte r = (byte)((col & 0x0F) * 17);
+				byte v = (byte)(((col & 0xF00) >> 8) * 17);
+				byte b = (byte)(((col & 0xF0) >> 4) * 17);
+				lblColors[c].BackColor = Color.FromArgb(r, v, b);
+				lblColors[c].ForeColor = (r * 9798 + v * 19235 + b * 3735) > 0x400000 ? Color.Black : Color.White;
 				Controls.Add(lblColors[c]);
 				lblColors[c].BringToFront();
 
@@ -103,6 +109,7 @@ namespace ConvImgCpc {
 					int v = (((col & 0xF00) >> 8) * 17);
 					int b = (((col & 0xF0) >> 4) * 17);
 					lblColors[pen].BackColor = Color.FromArgb(r, v, b);
+					lblColors[pen].ForeColor = (r * 9798 + v * 19235 + b * 3735) > 0x400000 ? Color.Black : Color.White;
 					lblColors[pen].Refresh();
 					DrawMatrice();
 				}
@@ -520,10 +527,12 @@ namespace ConvImgCpc {
 					switch (dlg.FilterIndex) {
 						case 1:
 							CpcAmsdos entete = Cpc.CreeEntete(Path.GetFileName(dlg.FileName), 0x4000, (short)size, 0);
-							BinaryWriter fp = new BinaryWriter(new FileStream(dlg.FileName, FileMode.Create));
+							FileStream fs = new FileStream(dlg.FileName, FileMode.Create);
+							BinaryWriter fp = new BinaryWriter(fs);
 							fp.Write(Cpc.AmsdosToByte(entete));
 							fp.Write(buffer);
 							fp.Close();
+							fs.Close();
 							// Sauvegarde palette au format .KIT
 							if (chkWithPal.Checked)
 								main.SavePaletteKit(Path.ChangeExtension(dlg.FileName, "kit"));
@@ -823,6 +832,7 @@ namespace ConvImgCpc {
 				int v = (((col & 0xF00) >> 8) * 17);
 				int b = (((col & 0xF0) >> 4) * 17);
 				lblColors[c].BackColor = Color.FromArgb(r, v, b);
+				lblColors[c].ForeColor = (r * 9798 + v * 19235 + b * 3735) > 0x400000 ? Color.Black : Color.White;
 				lblColors[c].Refresh();
 			}
 			DrawMatrice();
@@ -851,6 +861,7 @@ namespace ConvImgCpc {
 				int v = (((col & 0xF00) >> 8) * 17);
 				int b = (((col & 0xF0) >> 4) * 17);
 				lblColors[i].BackColor = Color.FromArgb(r, v, b);
+				lblColors[i].ForeColor = (r * 9798 + v * 19235 + b * 3735) > 0x400000 ? Color.Black : Color.White;
 			}
 			DrawMatrice();
 			DrawSprite();

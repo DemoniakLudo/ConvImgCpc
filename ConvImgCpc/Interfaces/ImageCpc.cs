@@ -339,10 +339,13 @@ namespace ConvImgCpc {
 			return ret;
 		}
 
-		public void SauveSprite(string fileName, string version) {
+		public void SauveSprite(string fileName, string version, Param param) {
 			byte[] ret = MakeSprite();
 			StreamWriter sw = SaveAsm.OpenAsm(fileName, version, true);
-			SaveAsm.GenereDatas(sw, ret, ret.Length, Cpc.TailleX >> (Cpc.TailleX <= 320 ? 3 : 4));
+			SaveAsm.GenereDatas(sw, ret, ret.Length, Cpc.TailleX >> (Cpc.TailleX <= 320 ? 3 : Cpc.TailleX <= 640 ? 4 : 5));
+			if (param.withPalette)
+				SaveAsm.GenerePalette(sw, param, false, false);
+
 			SaveAsm.CloseAsm(sw);
 			main.SetInfo("Sauvegarde sprite assembleur ok.");
 		}
@@ -366,7 +369,8 @@ namespace ConvImgCpc {
 			}
 			l += 3; // 3 octets de fin de fichier
 			CpcAmsdos entete = Cpc.CreeEntete(fileName, 0x4000, (short)l, -13622);
-			BinaryWriter fp = new BinaryWriter(new FileStream(fileName, FileMode.Create));
+			FileStream s = new FileStream(fileName, FileMode.Create);
+			BinaryWriter fp = new BinaryWriter(s);
 			fp.Write(Cpc.AmsdosToByte(entete));
 			for (int i = 0; i < nbImages; i++) {
 				main.SelectImage(i, true);
@@ -376,6 +380,7 @@ namespace ConvImgCpc {
 			byte[] endData = { (byte)(Cpc.TailleX >> 3), (byte)(Cpc.TailleY >> 1), (byte)nbImages };
 			fp.Write(endData, 0, endData.Length);
 			fp.Close();
+			s.Close();
 		}
 
 		public void SauveTiles(string fileName, int tailleX, int tailleY, Param param) {
@@ -419,7 +424,8 @@ namespace ConvImgCpc {
 				main.SetInfo("Nbre de tiles:" + nbImages);
 				l += 3; // 3 octets de fin de fichier
 				CpcAmsdos entete = Cpc.CreeEntete(fileName, 0x4000, (short)l, -13622);
-				BinaryWriter fp = new BinaryWriter(new FileStream(fileName, FileMode.Create));
+				FileStream fs = new FileStream(fileName, FileMode.Create);
+				BinaryWriter fp = new BinaryWriter(fs);
 				fp.Write(Cpc.AmsdosToByte(entete));
 				for (int i = 0; i < nbImages; i++) {
 					byte[] sprite = lstTiles[i];
@@ -428,14 +434,17 @@ namespace ConvImgCpc {
 				byte[] endData = { (byte)(tailleX >> 3), (byte)(tailleY >> 1), (byte)nbImages };
 				fp.Write(endData, 0, endData.Length);
 				fp.Close();
+				fs.Close();
 
 				// Ecriture fichier .TIL
 				string s = fileName.Substring(0, fileName.Length - 3) + "TIL";
 				entete = Cpc.CreeEntete(s, 0x4000, (short)l, -13622);
-				fp = new BinaryWriter(new FileStream(s, FileMode.Create));
+				fs = new FileStream(s, FileMode.Create);
+				fp = new BinaryWriter(fs);
 				fp.Write(Cpc.AmsdosToByte(entete));
 				fp.Write(tabTiles, 0, nbTiles);
 				fp.Close();
+				fs.Close();
 
 				// Ecriture fichier palette
 				if (param.cpcPlus)

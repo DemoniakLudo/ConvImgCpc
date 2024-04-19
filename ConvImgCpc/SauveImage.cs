@@ -588,10 +588,12 @@ namespace ConvImgCpc {
 			switch (format) {
 				case Main.OutputFormat.Binary:
 					entete = Cpc.CreeEntete(fileName, startAdr, (short)lg, exec);
-					BinaryWriter fp = new BinaryWriter(new FileStream(fileName, FileMode.Create));
+					FileStream s = new FileStream(fileName, FileMode.Create);
+					BinaryWriter fp = new BinaryWriter(s);
 					fp.Write(Cpc.AmsdosToByte(entete));
 					fp.Write(compact != Main.PackMethode.None ? bufPack : bitmapCpc.bmpCpc, 0, lg);
 					fp.Close();
+					s.Close();
 					break;
 
 				case Main.OutputFormat.Assembler:
@@ -689,17 +691,21 @@ namespace ConvImgCpc {
 					pal[indexPal++] = pal[i + 3];
 			}
 			CpcAmsdos entete = Cpc.CreeEntete(NomFic, (short)-30711, (short)pal.Length, (short)-30711);
-			BinaryWriter fp = new BinaryWriter(new FileStream(NomFic, FileMode.Create));
+			FileStream s = new FileStream(NomFic, FileMode.Create);
+			BinaryWriter fp = new BinaryWriter(s);
 			fp.Write(Cpc.AmsdosToByte(entete));
 			fp.Write(pal, 0, pal.Length);
 			fp.Close();
+			s.Close();
 		}
 
 		static public bool LirePalette(string NomFic, Param param) {
 			byte[] entete = new byte[0x80];
 			byte[] pal = new byte[239];
+			bool ret = false;
 
-			BinaryReader fp = new BinaryReader(new FileStream(NomFic, FileMode.Open));
+			FileStream s = new FileStream(NomFic, FileMode.Open);
+			BinaryReader fp = new BinaryReader(s);
 			if (fp != null) {
 				fp.Read(entete, 0, entete.Length);
 				fp.Read(pal, 0, pal.Length);
@@ -727,10 +733,11 @@ namespace ConvImgCpc {
 								if (pal[3 + i * 12] == (byte)Cpc.CpcVGA[j])
 									Cpc.Palette[i] = j;
 					}
-					return (true);
+					ret = true;
 				}
 			}
-			return (false);
+			s.Close();
+			return ret;
 		}
 
 		static public bool LirePaletteKit(string NomFic) {

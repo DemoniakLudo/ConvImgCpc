@@ -109,7 +109,7 @@ namespace ConvImgCpc {
 									if (isAsm && pkMethode == PackMethode.None) {
 										string fs = f.Substring(0, f.IndexOf(Path.GetExtension(f))) + ".ASM";
 										info.SetInfos("Sauvegarde " + fs);
-										imgCpc.SauveSprite(fs, lblInfoVersion.Text);
+										imgCpc.SauveSprite(fs, lblInfoVersion.Text, param);
 									}
 									else {
 										string fs = f.Substring(0, f.IndexOf(Path.GetExtension(f))) + (isAsm ? ".ASM" : pkMethode == PackMethode.None ? ".SCR" : ".CMP");
@@ -607,7 +607,8 @@ namespace ConvImgCpc {
 
 		public void SavePaletteKit(string fileName, bool isImage = false) {
 			CpcAmsdos entete = Cpc.CreeEntete(Path.GetFileName(fileName), -32768, 30, 0);
-			BinaryWriter fp = new BinaryWriter(new FileStream(fileName, FileMode.Create));
+			FileStream s = new FileStream(fileName, FileMode.Create);
+			BinaryWriter fp = new BinaryWriter(s);
 			fp.Write(Cpc.AmsdosToByte(entete));
 			for (int i = isImage ? 0 : 1; i < 16; i++) {
 				int kit = isImage ? Cpc.Palette[i] : Cpc.paletteSprite[i];
@@ -617,6 +618,7 @@ namespace ConvImgCpc {
 				fp.Write(c2);
 			}
 			fp.Close();
+			s.Close();
 			SetInfo(multilingue.GetString("Main.prg.TxtInfo13"));
 		}
 
@@ -722,7 +724,7 @@ namespace ConvImgCpc {
 						break;
 
 					case 3:
-						imgCpc.SauveSprite(dlg.FileName, lblInfoVersion.Text);
+						imgCpc.SauveSprite(dlg.FileName, lblInfoVersion.Text, param);
 						break;
 
 					case 4:

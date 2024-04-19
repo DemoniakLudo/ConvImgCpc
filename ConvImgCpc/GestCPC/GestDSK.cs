@@ -331,7 +331,8 @@ namespace ConvImgCpc {
 
 		public void Save(string fileName) {
 			try {
-				BinaryWriter wr = new BinaryWriter(new FileStream(fileName, FileMode.OpenOrCreate));
+				FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate);
+				BinaryWriter wr = new BinaryWriter(fs);
 				wr.Write(Encoding.ASCII.GetBytes(Infos.id));
 				wr.Write(Infos.NbTracks);
 				wr.Write(Infos.NbHeads);
@@ -377,6 +378,7 @@ namespace ConvImgCpc {
 					}
 				}
 				wr.Close();
+				fs.Close();
 			}
 			catch {
 				MessageBox.Show(main.multilingue.GetString("GestDSK.TxtInfo1"));
@@ -386,7 +388,8 @@ namespace ConvImgCpc {
 		public void Load(string fileName) {
 			try {
 				NomFic = fileName;
-				BinaryReader br = new BinaryReader(new FileStream(fileName, FileMode.Open));
+				FileStream fs = new FileStream(fileName, FileMode.Open);
+				BinaryReader br = new BinaryReader(fs);
 				Infos.id = Encoding.UTF8.GetString(br.ReadBytes(0x30));
 				Infos.NbTracks = br.ReadByte();
 				Infos.NbHeads = br.ReadByte();
@@ -440,6 +443,7 @@ namespace ConvImgCpc {
 							break;
 					}
 				br.Close();
+				fs.Close();
 			}
 			catch {
 				MessageBox.Show(main.multilingue.GetString("GestDSK.TxtInfo2"));

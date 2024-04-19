@@ -105,7 +105,8 @@ namespace ConvImgCpc {
 				if (dlg.ShowDialog() == DialogResult.OK) {
 					byte[] GifAnimation = { 33, 255, 11, 78, 69, 84, 83, 67, 65, 80, 69, 50, 46, 48, 3, 1, 0, 0, 0 };
 					MemoryStream ms = new MemoryStream();
-					BinaryWriter bWr = new BinaryWriter(new FileStream(dlg.FileName, FileMode.Create));
+					FileStream s = new FileStream(dlg.FileName, FileMode.Create);
+					BinaryWriter bWr = new BinaryWriter(s);
 					Bitmap b = GetBitmap(main.imgCpc.tabBmpLock[0].Bitmap);
 					b.Save(ms, ImageFormat.Gif);
 					b.Dispose();
@@ -125,6 +126,7 @@ namespace ConvImgCpc {
 					bWr.Write(tabByte[tabByte.Length - 1]);
 					bWr.Close();
 					ms.Dispose();
+					s.Close();
 				}
 			}
 			catch (Exception ex) {
