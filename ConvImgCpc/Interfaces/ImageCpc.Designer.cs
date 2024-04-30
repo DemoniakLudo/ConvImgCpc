@@ -92,7 +92,7 @@
 			this.hScrollBar.LargeChange = 32;
 			this.hScrollBar.Location = new System.Drawing.Point(168, 608);
 			this.hScrollBar.Name = "hScrollBar";
-			this.hScrollBar.Size = new System.Drawing.Size(768, 16);
+			this.hScrollBar.Size = new System.Drawing.Size(1024, 16);
 			this.hScrollBar.SmallChange = 8;
 			this.hScrollBar.TabIndex = 1;
 			this.hScrollBar.Visible = false;

@@ -729,19 +729,19 @@ namespace ConvImgCpc {
 
 		private void chkX2_CheckedChanged(object sender, EventArgs e) {
 			if (chkX2.Checked) {
-				Width = 973 + 768;
+				Width = 1232 + 1024;
 				Height = 668 + 544;
-				pictureBox.Width = 1536;
+				pictureBox.Width = 2048;
 				pictureBox.Height = 1088;
-				vScrollBar.Left = 939 + 768;
+				vScrollBar.Left = 1195 + 1024;
 				hScrollBar.Top = 608 + 544;
 			}
 			else {
-				Width = 973;
+				Width = 1232;
 				Height = 715;
-				pictureBox.Width = 768;
+				pictureBox.Width = 1024;
 				pictureBox.Height = 544;
-				vScrollBar.Left = 939;
+				vScrollBar.Left = 1195;
 				hScrollBar.Top = 608;
 			}
 			pictureBox.Refresh();

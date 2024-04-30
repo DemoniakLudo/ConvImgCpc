@@ -202,7 +202,7 @@ namespace ConvImgCpc {
 			}
 			else {
 				for (pen = 0; pen < 16; pen++) {
-					RvbColor fixedCol = RgbCPC[Palette[pen] != 0xFFFF ? Palette[pen] : 0];
+					RvbColor fixedCol = RgbCPC[Palette[pen] != 0xFFFF && Palette[pen] < 27 ? Palette[pen] : 0];
 					if (fixedCol.r == col.r && fixedCol.b == col.b && fixedCol.v == col.v)
 						break;
 				}
@@ -211,7 +211,7 @@ namespace ConvImgCpc {
 		}
 
 		static public RvbColor GetColor(int c) {
-			if ( c < 0xFFFF )
+			if (c < 0xFFFF)
 				return cpcPlus ? new RvbColor((byte)((c & 0x0F) * 17), (byte)(((c & 0xF00) >> 8) * 17), (byte)(((c & 0xF0) >> 4) * 17)) : RgbCPC[c >= 0 && c < 27 ? c : 0];
 
 			return new RvbColor(0);
