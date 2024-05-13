@@ -54,6 +54,7 @@ namespace ConvImgCpc {
 
 			imgSrc.Init();
 			anim.Show();
+			anim.Hide();
 			imgCpc.Show();
 			Show();
 			if (args.Length > 0) {
@@ -350,16 +351,15 @@ namespace ConvImgCpc {
 			SetInfo("Erreur - " + msg);
 		}
 
-		private void ReadScreen(string fileName, bool singlePicture = false) {
+		private int ReadScreen(string fileName, bool singlePicture = false) {
+			int nbImages = 1, width = 1, height = 1;
 			try {
 				FileStream fileScr = new FileStream(fileName, FileMode.Open, FileAccess.Read);
 				byte[] tabBytes = new byte[fileScr.Length];
 				fileScr.Read(tabBytes, 0, tabBytes.Length);
 				fileScr.Close();
-				int nbImg = 0;
 				bool isImp = false, isScrImp = false;
 				if (Cpc.CheckAmsdos(tabBytes)) {
-					int nbImages = 1, width = 1, height = 1;
 					CpcAmsdos enteteAms = Cpc.GetAmsdos(tabBytes);
 					// Vérifier si type scr imp
 					isScrImp = (enteteAms.FileName.EndsWith("SCR") && enteteAms.FileType == 0 && enteteAms.Adress == 0x170);
@@ -441,10 +441,10 @@ namespace ConvImgCpc {
 					imageStream.Position = 0;
 					if (!singlePicture) {
 						imgSrc.InitBitmap(imageStream);
-						nbImg = imgSrc.NbImg;
-						anim.SetNbImgs(nbImg, imgSrc.tpsFrame);
-						chkAllPics.Visible = nbImg > 1;
-						SetInfo(multilingue.GetString("Main.prg.TxtInfo4") + (nbImg > 0 ? (multilingue.GetString("Main.prg.TxtInfo5") + nbImg + " images.") : "."));
+						nbImages = imgSrc.NbImg;
+						anim.SetNbImgs(nbImages, imgSrc.tpsFrame);
+						chkAllPics.Visible = nbImages > 1;
+						SetInfo(multilingue.GetString("Main.prg.TxtInfo4") + (nbImages > 0 ? (multilingue.GetString("Main.prg.TxtInfo5") + nbImages + " images.") : "."));
 					}
 					else {
 						imgSrc.ImportBitmap(new Bitmap(imageStream), imgCpc.selImage);
@@ -463,7 +463,7 @@ namespace ConvImgCpc {
 
 				if (!doNotReset) {
 					if (!singlePicture && !isImp)
-						imgCpc.InitBitmapCpc(nbImg, imgSrc.tpsFrame);
+						imgCpc.InitBitmapCpc(nbImages, imgSrc.tpsFrame);
 
 					SelectImage(0);
 					imgCpc.Reset(true);
@@ -477,6 +477,7 @@ namespace ConvImgCpc {
 			catch {
 				DisplayErreur(multilingue.GetString("Main.prg.TxtInfo6"));
 			}
+			return nbImages;
 		}
 
 		public void SelectImage(int n, bool noInfo = false) {
@@ -628,11 +629,14 @@ namespace ConvImgCpc {
 			int nbImages = dlg.NbImages;
 			if (nbImages != -1) {
 				imgSrc.InitBitmap(nbImages);
-				if (nbImages == 1)
+				if (nbImages == 1) {
 					SetInfo(multilingue.GetString("Main.prg.TxtInfo14"));
+					anim.Hide();
+				}
 				else {
 					anim.SetNbImgs(nbImages, 100);
 					SetInfo(multilingue.GetString("Main.prg.TxtInfo15") + nbImages + " images.");
+					anim.Show();
 				}
 				chkAllPics.Visible = nbImages > 1;
 				imgCpc.InitBitmapCpc(nbImages, 100);
@@ -649,13 +653,18 @@ namespace ConvImgCpc {
 			dlg.InitialDirectory = param.lastReadPath;
 			if (dlg.ShowDialog() == DialogResult.OK) {
 				imgCpc.ResetX2();
-				ReadScreen(dlg.FileName, true);
+				int nbImages = ReadScreen(dlg.FileName, true);
 				param.lastReadPath = Path.GetDirectoryName(dlg.FileName);
+				if (nbImages > 1)
+					anim.Show();
+				else
+					anim.Hide();
 			}
 		}
 
 		private void BpLoad_Click(object sender, EventArgs e) {
 			Enabled = false;
+			int nbImages = 0;
 			OpenFileDialog dlg = new OpenFileDialog {
 				Filter = multilingue.GetString("Main.prg.TxtInfo16") + " (*.bmp, *.gif, *.png, *.jpg,*.jpeg, *.jfif, *.scr, *.imp)|*.bmp;*.gif;*.png;*.jpg;*.jpeg;*.jfif;*.scr;*.imp|"
 						+ multilingue.GetString("Main.prg.TxtInfo18") + " (*.pal)|*.pal|"
@@ -673,7 +682,7 @@ namespace ConvImgCpc {
 						if (dlg.FilterIndex == 4 && Cpc.cpcPlus)
 							imgCpc.LirePaletteKit(dlg.FileName, param);
 						else
-							ReadScreen(dlg.FileName);
+							nbImages = ReadScreen(dlg.FileName);
 						break;
 
 					case 2:
@@ -687,6 +696,10 @@ namespace ConvImgCpc {
 				param.lastReadPath = Path.GetDirectoryName(dlg.FileName);
 			}
 			Enabled = true;
+			if (nbImages > 1)
+				anim.Show();
+			else
+				anim.Hide();
 		}
 
 		private void BpSave_Click(object sender, EventArgs e) {
@@ -966,6 +979,7 @@ namespace ConvImgCpc {
 		}
 
 		private void Main_DragDrop(object sender, DragEventArgs e) {
+			int nbImages = 0;
 			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 			switch (Path.GetExtension(files[0]).ToLower()) {
 				case ".pal":
@@ -978,9 +992,13 @@ namespace ConvImgCpc {
 
 				default:
 					imgCpc.ResetX2();
-					ReadScreen(files[0]);
+					nbImages =ReadScreen(files[0]);
 					break;
 			}
+			if (nbImages > 1)
+				anim.Show();
+			else
+				anim.Hide();
 		}
 
 		private void ChkAllPics_CheckedChanged(object sender, EventArgs e) {
