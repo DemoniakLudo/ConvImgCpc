@@ -13,6 +13,7 @@ namespace ConvImgCpc {
 		private Label[] lblUsedColors = new Label[16];
 		private CheckBox[] lockColors = new CheckBox[16];
 		private CheckBox[] disableColors = new CheckBox[16];
+		private Label lblBorder;
 		public int[] lockState = new int[16];
 		private Image imgOrigine;
 		public delegate void ConvertDelegate(bool doConvert, bool noInfo = false);
@@ -28,6 +29,13 @@ namespace ConvImgCpc {
 		public ImageCpc(Main m, ConvertDelegate fctConvert) {
 			InitializeComponent();
 			main = m;
+			lblBorder = new Label {
+				BorderStyle = BorderStyle.FixedSingle,
+				Location = new Point(168, 58),
+				Size = new Size(1024, 4),
+			BackColor= Color.Black
+			};
+			Controls.Add(lblBorder);
 			for (int i = 0; i < 16; i++) {
 				// Générer les contrôles de "couleurs"
 				lblColors[i] = new Label {
@@ -48,7 +56,7 @@ namespace ConvImgCpc {
 				lblUsedColors[i].BringToFront();
 				// Générer les contrôles de "bloquage couleur"
 				lockColors[i] = new CheckBox {
-					Location = new Point(180 + i * 48, 44),
+					Location = new Point(180 + i * 48, 42),
 					Size = new Size(20, 20),
 					Tag = i
 				};
@@ -731,7 +739,7 @@ namespace ConvImgCpc {
 			if (chkX2.Checked) {
 				Width = 1232 + 1024;
 				Height = 668 + 544;
-				pictureBox.Width = 2048;
+				lblBorder.Width = pictureBox.Width = 2048;
 				pictureBox.Height = 1088;
 				vScrollBar.Left = 1195 + 1024;
 				hScrollBar.Top = 608 + 544;
@@ -739,7 +747,7 @@ namespace ConvImgCpc {
 			else {
 				Width = 1232;
 				Height = 715;
-				pictureBox.Width = 1024;
+				lblBorder.Width = pictureBox.Width = 1024;
 				pictureBox.Height = 544;
 				vScrollBar.Left = 1195;
 				hScrollBar.Top = 608;

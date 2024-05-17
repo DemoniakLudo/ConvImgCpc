@@ -266,7 +266,7 @@
 			// lblColSelR
 			// 
 			this.lblColSelR.AutoSize = true;
-			this.lblColSelR.Location = new System.Drawing.Point(53, 153);
+			this.lblColSelR.Location = new System.Drawing.Point(53, 170);
 			this.lblColSelR.Name = "lblColSelR";
 			this.lblColSelR.Size = new System.Drawing.Size(30, 13);
 			this.lblColSelR.TabIndex = 23;
@@ -275,7 +275,7 @@
 			// lblColSelV
 			// 
 			this.lblColSelV.AutoSize = true;
-			this.lblColSelV.Location = new System.Drawing.Point(53, 170);
+			this.lblColSelV.Location = new System.Drawing.Point(53, 153);
 			this.lblColSelV.Name = "lblColSelV";
 			this.lblColSelV.Size = new System.Drawing.Size(29, 13);
 			this.lblColSelV.TabIndex = 24;

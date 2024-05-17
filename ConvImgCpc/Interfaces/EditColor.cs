@@ -36,8 +36,20 @@ namespace ConvImgCpc {
 					tabTrack[i].Scroll += track_Scroll;
 					tabTrack[i].Maximum = 15;
 					tabVal[i].Tag = tabTrack[i].Tag = i;
-					tabLabel[i].Text = "RVB".Substring(i, 1);
-					tabVal[i].Text = (((rgbColor >> (2 - i) * 8) & 0xFF) / 17).ToString();
+					tabLabel[i].Text = "VRB".Substring(i, 1);
+					switch (i) {
+						case 0:
+							tabVal[i].Text = (Color.FromArgb(rgbColor).G / 17).ToString();
+							break;
+
+						case 1:
+							tabVal[i].Text = (Color.FromArgb(rgbColor).R / 17).ToString();
+							break;
+
+						case 2:
+							tabVal[i].Text = (Color.FromArgb(rgbColor).B / 17).ToString();
+							break;
+					}
 					tabVal[i].MaxLength = 2;
 					Controls.Add(tabLabel[i]);
 					Controls.Add(tabTrack[i]);
@@ -90,8 +102,8 @@ namespace ConvImgCpc {
 
 		private void NewColor() {
 			try {
-				int r = tabVal[0] != null ? GetCompValue(tabVal[0].Text) : 0;
-				int v = tabVal[1] != null ? GetCompValue(tabVal[1].Text) : 0;
+				int v = tabVal[0] != null ? GetCompValue(tabVal[0].Text) : 0;
+				int r = tabVal[1] != null ? GetCompValue(tabVal[1].Text) : 0;
 				int b = tabVal[2] != null ? GetCompValue(tabVal[2].Text) : 0;
 				valColor = (v << 8) + (b << 4) + r;
 				selColor.BackColor = Color.FromArgb(r * 17, v * 17, b * 17);

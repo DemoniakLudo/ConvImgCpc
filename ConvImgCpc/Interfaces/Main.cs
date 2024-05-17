@@ -653,9 +653,9 @@ namespace ConvImgCpc {
 			dlg.InitialDirectory = param.lastReadPath;
 			if (dlg.ShowDialog() == DialogResult.OK) {
 				imgCpc.ResetX2();
-				int nbImages = ReadScreen(dlg.FileName, true);
+				ReadScreen(dlg.FileName, true);
 				param.lastReadPath = Path.GetDirectoryName(dlg.FileName);
-				if (nbImages > 1)
+				if (anim.MaxImage > 1)
 					anim.Show();
 				else
 					anim.Hide();
@@ -992,7 +992,7 @@ namespace ConvImgCpc {
 
 				default:
 					imgCpc.ResetX2();
-					nbImages =ReadScreen(files[0]);
+					nbImages = ReadScreen(files[0]);
 					break;
 			}
 			if (nbImages > 1)

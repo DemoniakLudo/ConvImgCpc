@@ -119,6 +119,7 @@
 			this.rb6bits = new System.Windows.Forms.RadioButton();
 			this.bpRaz = new System.Windows.Forms.Button();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.bpRazAll = new System.Windows.Forms.Button();
 			this.chkGauss = new System.Windows.Forms.CheckBox();
 			this.bpEditSprites = new System.Windows.Forms.Button();
 			this.bpFr = new System.Windows.Forms.Button();
@@ -127,7 +128,7 @@
 			this.label13 = new System.Windows.Forms.Label();
 			this.comboPackMethode = new System.Windows.Forms.ComboBox();
 			this.bpTest = new System.Windows.Forms.Button();
-			this.bpRazAll = new System.Windows.Forms.Button();
+			this.chk17K = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -165,8 +166,16 @@
 			// nbCols
 			// 
 			this.nbCols.Location = new System.Drawing.Point(91, 16);
-			this.nbCols.Maximum = new decimal(new int[] {128,0,0,0});
-			this.nbCols.Minimum = new decimal(new int[] {1,0,0,0});
+			this.nbCols.Maximum = new decimal(new int[] {
+            128,
+            0,
+            0,
+            0});
+			this.nbCols.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
 			this.nbCols.Name = "nbCols";
 			this.nbCols.Size = new System.Drawing.Size(44, 20);
 			this.nbCols.TabIndex = 4;
@@ -1212,6 +1221,16 @@
 			this.groupBox2.TabIndex = 66;
 			this.groupBox2.TabStop = false;
 			// 
+			// bpRazAll
+			// 
+			this.bpRazAll.Location = new System.Drawing.Point(430, 289);
+			this.bpRazAll.Name = "bpRazAll";
+			this.bpRazAll.Size = new System.Drawing.Size(175, 23);
+			this.bpRazAll.TabIndex = 67;
+			this.bpRazAll.Text = "Raz All";
+			this.bpRazAll.UseVisualStyleBackColor = true;
+			this.bpRazAll.Click += new System.EventHandler(this.BpRazAll_Click);
+			// 
 			// chkGauss
 			// 
 			this.chkGauss.AutoSize = true;
@@ -1279,7 +1298,7 @@
             "ZX0",
             "ZX1",
             "Standard",
-			"ZX0Ovs"});
+            "ZX0Ovs"});
 			this.comboPackMethode.Location = new System.Drawing.Point(145, 166);
 			this.comboPackMethode.Name = "comboPackMethode";
 			this.comboPackMethode.Size = new System.Drawing.Size(90, 21);
@@ -1296,15 +1315,15 @@
 			this.bpTest.UseVisualStyleBackColor = true;
 			this.bpTest.Click += new System.EventHandler(this.BpTest_Click);
 			// 
-			// bpRazAll
+			// chk17K
 			// 
-			this.bpRazAll.Location = new System.Drawing.Point(430, 289);
-			this.bpRazAll.Name = "bpRazAll";
-			this.bpRazAll.Size = new System.Drawing.Size(175, 23);
-			this.bpRazAll.TabIndex = 67;
-			this.bpRazAll.Text = "Raz All";
-			this.bpRazAll.UseVisualStyleBackColor = true;
-			this.bpRazAll.Click += new System.EventHandler(this.BpRazAll_Click);
+			this.chk17K.AutoSize = true;
+			this.chk17K.Location = new System.Drawing.Point(121, 103);
+			this.chk17K.Name = "chk17K";
+			this.chk17K.Size = new System.Drawing.Size(63, 17);
+			this.chk17K.TabIndex = 72;
+			this.chk17K.Text = "<=17Ko";
+			this.chk17K.UseVisualStyleBackColor = true;
 			// 
 			// Main
 			// 
@@ -1312,6 +1331,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(723, 571);
+			this.Controls.Add(this.chk17K);
 			this.Controls.Add(this.bpTest);
 			this.Controls.Add(this.comboPackMethode);
 			this.Controls.Add(this.label13);
@@ -1475,6 +1495,7 @@
 		private System.Windows.Forms.Button bpTest;
 		private System.Windows.Forms.CheckBox chkGauss;
 		private System.Windows.Forms.Button bpRazAll;
+		public System.Windows.Forms.CheckBox chk17K;
 	}
 }
 
