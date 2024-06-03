@@ -181,6 +181,12 @@
     <Compile Include="RvbColor.cs" />
     <Compile Include="SauveImage.cs" />
     <Compile Include="SaveAsm.cs" />
+    <Compile Include="SaveSprites.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SaveSprites.Designer.cs">
+      <DependentUpon>SaveSprites.cs</DependentUpon>
+    </Compile>
     <Compile Include="TramesAscUt.cs" />
     <Compile Include="UndoRedo.cs" />
     <Compile Include="XorDrawing.cs" />
@@ -235,6 +241,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Interfaces\Rendu.resx">
       <DependentUpon>Rendu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SaveSprites.resx">
+      <DependentUpon>SaveSprites.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Docs\ConvImgCpc_En.docx" />
     <None Include="Docs\ConvImgCpc_Fr.docx" />

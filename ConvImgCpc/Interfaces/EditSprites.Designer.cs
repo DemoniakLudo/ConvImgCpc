@@ -71,6 +71,7 @@
 			this.bpPasteBank = new System.Windows.Forms.Button();
 			this.numBanks = new System.Windows.Forms.NumericUpDown();
 			this.rbPosSpr = new System.Windows.Forms.RadioButton();
+			this.rbFill = new System.Windows.Forms.RadioButton();
 			((System.ComponentModel.ISupportInitialize)(this.zoomX)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.zoomY)).BeginInit();
 			this.grpEdition.SuspendLayout();
@@ -324,6 +325,7 @@
 			// 
 			// grpEdition
 			// 
+			this.grpEdition.Controls.Add(this.rbFill);
 			this.grpEdition.Controls.Add(this.rbLine);
 			this.grpEdition.Controls.Add(this.rbPt);
 			this.grpEdition.Controls.Add(this.bpVerticalFlip);
@@ -333,7 +335,7 @@
 			this.grpEdition.Controls.Add(this.bpCopySprite);
 			this.grpEdition.Location = new System.Drawing.Point(-1, 282);
 			this.grpEdition.Name = "grpEdition";
-			this.grpEdition.Size = new System.Drawing.Size(79, 314);
+			this.grpEdition.Size = new System.Drawing.Size(79, 366);
 			this.grpEdition.TabIndex = 29;
 			this.grpEdition.TabStop = false;
 			this.grpEdition.Text = "Edition";
@@ -528,6 +530,7 @@
 			this.pictEditSprite.Size = new System.Drawing.Size(640, 640);
 			this.pictEditSprite.TabIndex = 0;
 			this.pictEditSprite.TabStop = false;
+			this.pictEditSprite.Click += new System.EventHandler(this.pictEditSprite_Click);
 			this.pictEditSprite.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictEditMatrice_MouseMove);
 			this.pictEditSprite.MouseLeave += new System.EventHandler(this.pictEditSprite_MouseLeave);
 			this.pictEditSprite.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictEditMatrice_MouseMove);
@@ -613,6 +616,17 @@
 			this.rbPosSpr.TabIndex = 35;
 			this.rbPosSpr.Text = "SetPos";
 			this.rbPosSpr.UseVisualStyleBackColor = true;
+			// 
+			// rbFill
+			// 
+			this.rbFill.AutoSize = true;
+			this.rbFill.Location = new System.Drawing.Point(8, 311);
+			this.rbFill.Name = "rbFill";
+			this.rbFill.Size = new System.Drawing.Size(37, 17);
+			this.rbFill.TabIndex = 29;
+			this.rbFill.TabStop = true;
+			this.rbFill.Text = "Fill";
+			this.rbFill.UseVisualStyleBackColor = true;
 			// 
 			// EditSprites
 			// 
@@ -727,5 +741,6 @@
 		private System.Windows.Forms.Button bpPasteBank;
 		private System.Windows.Forms.NumericUpDown numBanks;
 		private System.Windows.Forms.RadioButton rbPosSpr;
+		private System.Windows.Forms.RadioButton rbFill;
 	}
 }

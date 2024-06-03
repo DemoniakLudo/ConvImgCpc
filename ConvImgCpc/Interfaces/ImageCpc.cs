@@ -725,6 +725,8 @@ namespace ConvImgCpc {
 				int val = Cpc.Palette[i];
 				if (Cpc.cpcPlus)
 					val = (val & 0xF00) + ((val & 0x0F) << 4) + ((val & 0xF0) >> 4);
+				if (val == 0xFFFF)
+					val = 0;
 
 				string valStr = "#" + (Cpc.cpcPlus ? val.ToString("X3") : ((byte)(Cpc.CpcVGA[val])).ToString("X2"));
 				palTxt += valStr + (i < maxPen - 1 ? "," : "");

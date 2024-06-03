@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using static System.Net.WebRequestMethods;
 
 namespace ConvImgCpc {
 	public partial class EditSprites : Form {
@@ -351,25 +353,44 @@ namespace ConvImgCpc {
 			if (x >= 0 && y >= 0 && x < 16 && y < 16) {
 				byte col = Cpc.spritesHard[numBank, numSprite, x, y];
 				if (e.Button == MouseButtons.Left) {
-					if (rbPt.Checked) {
-						Cpc.spritesHard[numBank, numSprite, x, y] = penLeft;
-						SetPixelSprite(x, y);
+					if (rbFill.Checked) {
+						Stack<Point> pixels = new Stack<Point>();
+						int old = Cpc.spritesHard[numBank, numSprite, x, y];
+						if (old != penLeft) {
+							pixels.Push(new Point(x, y));
+							while (pixels.Count > 0) {
+								Point a = pixels.Pop();
+								if (a.X < 16 && a.X >= 0 && a.Y < 16 && a.Y >= 0 && Cpc.spritesHard[numBank, numSprite, a.X, a.Y] == old) {
+									Cpc.spritesHard[numBank, numSprite, a.X, a.Y] = penLeft;
+									SetPixelSprite(a.X, a.Y);
+									pixels.Push(new Point(a.X - 1, a.Y));
+									pixels.Push(new Point(a.X + 1, a.Y));
+									pixels.Push(new Point(a.X, a.Y - 1));
+									pixels.Push(new Point(a.X, a.Y + 1));
+								}
+							}
+						}
 					}
 					else
-						if (lineStartX == -1 && lineStartY == -1) {
-						lineStartX = x;
-						lineStartY = y;
-						for (x = 0; x < 16; x++)
-							for (y = 0; y < 16; y++)
-								tempSprite[x + 16 * y, 0] = Cpc.spritesHard[numBank, numSprite, x, y];
-					}
-					else {
-						for (int x1 = 0; x1 < 16; x1++)
-							for (int y1 = 0; y1 < 16; y1++)
-								Cpc.spritesHard[numBank, numSprite, x1, y1] = tempSprite[x1 + 16 * y1, 0];
+						if (rbPt.Checked) {
+							Cpc.spritesHard[numBank, numSprite, x, y] = penLeft;
+							SetPixelSprite(x, y);
+						}
+						else
+							if (lineStartX == -1 && lineStartY == -1) {
+								lineStartX = x;
+								lineStartY = y;
+								for (x = 0; x < 16; x++)
+									for (y = 0; y < 16; y++)
+										tempSprite[x + 16 * y, 0] = Cpc.spritesHard[numBank, numSprite, x, y];
+							}
+							else {
+								for (int x1 = 0; x1 < 16; x1++)
+									for (int y1 = 0; y1 < 16; y1++)
+										Cpc.spritesHard[numBank, numSprite, x1, y1] = tempSprite[x1 + 16 * y1, 0];
 
-						DrawLine(lineStartX, lineStartY, x, y);
-					}
+								DrawLine(lineStartX, lineStartY, x, y);
+							}
 				}
 				else
 					if (e.Button == MouseButtons.Right) {
@@ -377,15 +398,14 @@ namespace ConvImgCpc {
 					SetPixelSprite(x, y);
 				}
 				else
-						if (lineStartX != -1 && lineStartY != -1) {
-					for (int x1 = 0; x1 < 16; x1++)
-						for (int y1 = 0; y1 < 16; y1++)
-							Cpc.spritesHard[numBank, numSprite, x1, y1] = tempSprite[x1 + 16 * y1, 0];
+					if (lineStartX != -1 && lineStartY != -1) {
+						for (int x1 = 0; x1 < 16; x1++)
+							for (int y1 = 0; y1 < 16; y1++)
+								Cpc.spritesHard[numBank, numSprite, x1, y1] = tempSprite[x1 + 16 * y1, 0];
 
-					DrawLine(lineStartX, lineStartY, x, y, true);
-					lineStartX = lineStartY = -1;
-				}
-
+						DrawLine(lineStartX, lineStartY, x, y, true);
+						lineStartX = lineStartY = -1;
+					}
 				lblRectSelColor.Location = new Point(726, 70 + col * 40);       // Mise en évidence couleur sous la souris
 			}
 			else
@@ -524,6 +544,7 @@ namespace ConvImgCpc {
 									buffer[pos++] = Cpc.spritesHard[bank, i, x, y];
 							}
 						}
+					SaveSprites dlgSave = new SaveSprites(Path.GetFileNameWithoutExtension(dlg.FileName), dlg.FilterIndex == 3);
 					switch (dlg.FilterIndex) {
 						case 1:
 							CpcAmsdos entete = Cpc.CreeEntete(Path.GetFileName(dlg.FileName), 0x4000, (short)size, 0);
@@ -541,65 +562,79 @@ namespace ConvImgCpc {
 
 						case 2:
 							// Sauvegarde assembleur
-							StreamWriter sw = SaveAsm.OpenAsm(dlg.FileName, "");
-							SaveAsm.GenereDatas(sw, buffer, (maxSprite + 1) * 256, 16, 16, "SpriteHard");
-							if (chkWithPal.Checked)
-								SavePaletteKitAsm(sw);
+							dlgSave.ShowDialog();
+							if (dlgSave.saveSpritesOk) {
+								StreamWriter sw = SaveAsm.OpenAsm(dlg.FileName, "");
+								SaveAsm.GenereDatas(sw, buffer, (maxSprite + 1) * 256, 16, 16, dlgSave.LabelSpr);
+								if (chkWithPal.Checked)
+									SavePaletteKitAsm(sw, dlgSave.LabelPal);
 
-							SaveAsm.CloseAsm(sw);
+								SaveAsm.CloseAsm(sw);
+							}
 							break;
 
 						case 3:
 							// Sauvegarde assembleur compacté 
-							int numSpr = 0;
-							StreamWriter sw2 = SaveAsm.OpenAsm(dlg.FileName, "");
-							byte[] spr = new byte[256];
-							for (int bank = startBank; bank < endBank; bank++)
-								for (int i = 0; i < 16; i++) {
-									Array.Copy(buffer, numSpr * 256, spr, 0, 256);
-									int l = new PackModule().Pack(spr, 256, sprPk, 0, pkMethod);
-									sw2.WriteLine("SpriteHardPk" + numSpr.ToString("00"));
-									SaveAsm.GenereDatas(sw2, sprPk, l, 16);
-									if (numSpr++ >= maxSprite) {
-										bank = endBank;
-										i = 16;
+							dlgSave.ShowDialog();
+							if (dlgSave.saveSpritesOk) {
+								int numSpr = 0;
+								StreamWriter sw2 = SaveAsm.OpenAsm(dlg.FileName, "");
+								byte[] spr = new byte[256];
+								for (int bank = startBank; bank < endBank; bank++)
+									for (int i = 0; i < 16; i++) {
+										Array.Copy(buffer, numSpr * 256, spr, 0, 256);
+										int l = new PackModule().Pack(spr, 256, sprPk, 0, pkMethod);
+										sw2.WriteLine(dlgSave.LabelSpr + numSpr.ToString("00"));
+										SaveAsm.GenereDatas(sw2, sprPk, l, 16);
+										if (numSpr++ >= maxSprite) {
+											bank = endBank;
+											i = 16;
+										}
 									}
+								// Ajout table des pointeurs
+								sw2.WriteLine("\r\n" + dlgSave.LabelPtr);
+								string s = "	DW	";
+								int nbWord = 0;
+								for (int i = 0; i < numSpr; i++) {
+									s += dlgSave.LabelSpr + i.ToString("00");
+									if (++nbWord > 3) {
+										nbWord = 0;
+										sw2.WriteLine(s);
+										s = "	DW	";
+									}
+									else
+										s += ",";
 								}
-							// Ajout table des pointeurs
-							sw2.WriteLine("\r\nSpriteHardPtr");
-							string s = "	DW	";
-							int nbWord = 0;
-							for (int i = 0; i < numSpr; i++) {
-								s += "SpriteHardPk" + i.ToString("00");
-								if (++nbWord > 3) {
-									nbWord = 0;
-									sw2.WriteLine(s);
-									s = "	DW	";
+								if (s != "	DW	")
+									sw2.WriteLine(s.Substring(0, s.Length - 1));
+
+								if (dlgSave.ZeroPtr)
+									sw2.WriteLine("	DW	0");
+
+								if (chkWithPal.Checked) {
+									sw2.WriteLine("");
+									SavePaletteKitAsm(sw2, dlgSave.LabelPal);
 								}
-								else
-									s += ",";
+
+								SaveAsm.CloseAsm(sw2);
 							}
-							if (s != "	DW	")
-								sw2.WriteLine(s.Substring(0, s.Length - 1));
-
-							if (chkWithPal.Checked)
-								SavePaletteKitAsm(sw2);
-
-							SaveAsm.CloseAsm(sw2);
 							break;
 
 						case 4:
 							// Sauvegarde assembleur compacté full
-							StreamWriter sw3 = SaveAsm.OpenAsm(dlg.FileName, "");
-							int lt = new PackModule().Pack(buffer, 256 * (maxSprite + 1), sprPk, 0, pkMethod);
-							sw3.WriteLine("; " + (maxSprite + 1).ToString() + " sprites");
-							sw3.WriteLine("SpriteHardFull");
-							SaveAsm.GenereDatas(sw3, sprPk, lt, 16);
+							dlgSave.ShowDialog();
+							if (dlgSave.saveSpritesOk) {
+								StreamWriter sw3 = SaveAsm.OpenAsm(dlg.FileName, "");
+								int lt = new PackModule().Pack(buffer, 256 * (maxSprite + 1), sprPk, 0, pkMethod);
+								sw3.WriteLine("; " + (maxSprite + 1).ToString() + " sprites");
+								sw3.WriteLine(dlgSave.LabelSpr);
+								SaveAsm.GenereDatas(sw3, sprPk, lt, 16);
 
-							if (chkWithPal.Checked)
-								SavePaletteKitAsm(sw3);
+								if (chkWithPal.Checked)
+									SavePaletteKitAsm(sw3, dlgSave.LabelPal);
 
-							SaveAsm.CloseAsm(sw3);
+								SaveAsm.CloseAsm(sw3);
+							}
 							break;
 					}
 				}
@@ -637,7 +672,7 @@ namespace ConvImgCpc {
 							}
 					}
 					string filePalette = Path.ChangeExtension(dlg.FileName, "kit");
-					if (File.Exists(filePalette))
+					if (System.IO.File.Exists(filePalette))
 						main.ReadPaletteSprite(filePalette, lblColors);
 				}
 				catch {
@@ -647,8 +682,8 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void SavePaletteKitAsm(StreamWriter sw) {
-			sw.WriteLine("PaletteSprites");
+		private void SavePaletteKitAsm(StreamWriter sw, string label) {
+			sw.WriteLine(label);
 			string s = "	DW	";
 			for (int i = 1; i < 16; i++) {
 				int kit = Cpc.paletteSprite[i];
@@ -818,6 +853,10 @@ namespace ConvImgCpc {
 		}
 
 		private void pictTest_MouseUp(object sender, MouseEventArgs e) {
+
+		}
+
+		private void pictEditSprite_Click(object sender, EventArgs e) {
 
 		}
 
