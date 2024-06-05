@@ -358,11 +358,14 @@ namespace ConvImgCpc {
 			main.SetInfo("Sauvegarde sprite assembleur ok.");
 		}
 
-		public void SauveSpriteCmp(string fileName, string version, Main.PackMethode pkMethode) {
+		public void SauveSpriteCmp(string fileName, string version,Param param, Main.PackMethode pkMethode) {
 			byte[] ret = MakeSprite();
 			byte[] sprCmp = new byte[ret.Length];
 			StreamWriter sw = SaveAsm.OpenAsm(fileName, version, true);
 			SaveAsm.GenereDatas(sw, sprCmp, new PackModule().Pack(ret, ret.Length, sprCmp, 0, pkMethode), 16);
+			if (param.withPalette)
+				SaveAsm.GenerePalette(sw, param, false, false);
+
 			SaveAsm.CloseAsm(sw);
 			main.SetInfo("Sauvegarde sprite assembleur compacté ok.");
 		}

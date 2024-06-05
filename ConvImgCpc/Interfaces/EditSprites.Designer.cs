@@ -335,7 +335,7 @@
 			this.grpEdition.Controls.Add(this.bpCopySprite);
 			this.grpEdition.Location = new System.Drawing.Point(-1, 282);
 			this.grpEdition.Name = "grpEdition";
-			this.grpEdition.Size = new System.Drawing.Size(79, 366);
+			this.grpEdition.Size = new System.Drawing.Size(79, 335);
 			this.grpEdition.TabIndex = 29;
 			this.grpEdition.TabStop = false;
 			this.grpEdition.Text = "Edition";

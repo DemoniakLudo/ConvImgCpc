@@ -6,7 +6,9 @@ namespace ConvImgCpc {
 		#region Code assembleur général
 		static public StreamWriter OpenAsm(string fileName, string version, bool withTaille = false) {
 			StreamWriter sw = File.CreateText(fileName);
-			sw.WriteLine("; Généré par ConvImgCpc" + version.Replace('\n', ' ') + " - le " + DateTime.Now.ToString("dd/MM/yyyy (HH mm ss)"));
+			if (version != null)
+				sw.WriteLine("; Généré par ConvImgCpc" + version.Replace('\n', ' ') + " - le " + DateTime.Now.ToString("dd/MM/yyyy (HH mm ss)"));
+
 			sw.WriteLine("; Mode écran - " + Cpc.modesVirtuels[Cpc.modeVirtuel]);
 			if (withTaille)
 				sw.WriteLine("; Taille (nbColsxNbLignes) " + Cpc.NbCol.ToString() + "x" + Cpc.NbLig.ToString());

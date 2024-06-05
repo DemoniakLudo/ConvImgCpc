@@ -741,7 +741,7 @@ namespace ConvImgCpc {
 						break;
 
 					case 4:
-						imgCpc.SauveSpriteCmp(dlg.FileName, lblInfoVersion.Text, pkMethode);
+						imgCpc.SauveSpriteCmp(dlg.FileName, lblInfoVersion.Text, param, pkMethode);
 						break;
 
 					case 5:
