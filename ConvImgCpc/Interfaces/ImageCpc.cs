@@ -33,7 +33,7 @@ namespace ConvImgCpc {
 				BorderStyle = BorderStyle.FixedSingle,
 				Location = new Point(168, 58),
 				Size = new Size(1024, 4),
-			BackColor= Color.Black
+				BackColor = Color.Black
 			};
 			Controls.Add(lblBorder);
 			for (int i = 0; i < 16; i++) {
@@ -349,25 +349,33 @@ namespace ConvImgCpc {
 
 		public void SauveSprite(string fileName, string version, Param param) {
 			byte[] ret = MakeSprite();
-			StreamWriter sw = SaveAsm.OpenAsm(fileName, version, true);
-			SaveAsm.GenereDatas(sw, ret, ret.Length, Cpc.TailleX >> (Cpc.TailleX <= 320 ? 3 : Cpc.TailleX <= 640 ? 4 : 5));
-			if (param.withPalette)
-				SaveAsm.GenerePalette(sw, param, false, false);
+			SaveMedia dlgSave = new SaveMedia("Soft sprite", Path.GetFileNameWithoutExtension(fileName));
+			dlgSave.ShowDialog();
+			if (dlgSave.saveMediaOk) {
+				StreamWriter sw = SaveAsm.OpenAsm(fileName, version, true);
+				SaveAsm.GenereDatas(sw, ret, ret.Length, Cpc.TailleX >> (Cpc.TailleX <= 320 ? 3 : Cpc.TailleX <= 640 ? 4 : 5), 0, dlgSave.LabelMedia);
+				if (param.withPalette)
+					SaveAsm.GenerePalette(sw, param, false, false, dlgSave.LabelPal);
 
-			SaveAsm.CloseAsm(sw);
-			main.SetInfo("Sauvegarde sprite assembleur ok.");
+				SaveAsm.CloseAsm(sw);
+				main.SetInfo("Sauvegarde sprite assembleur ok.");
+			}
 		}
 
-		public void SauveSpriteCmp(string fileName, string version,Param param, Main.PackMethode pkMethode) {
+		public void SauveSpriteCmp(string fileName, string version, Param param, Main.PackMethode pkMethode) {
 			byte[] ret = MakeSprite();
-			byte[] sprCmp = new byte[ret.Length];
-			StreamWriter sw = SaveAsm.OpenAsm(fileName, version, true);
-			SaveAsm.GenereDatas(sw, sprCmp, new PackModule().Pack(ret, ret.Length, sprCmp, 0, pkMethode), 16);
-			if (param.withPalette)
-				SaveAsm.GenerePalette(sw, param, false, false);
+			SaveMedia dlgSave = new SaveMedia("Soft sprite", Path.GetFileNameWithoutExtension(fileName));
+			dlgSave.ShowDialog();
+			if (dlgSave.saveMediaOk) {
+				byte[] sprCmp = new byte[ret.Length];
+				StreamWriter sw = SaveAsm.OpenAsm(fileName, version, true);
+				SaveAsm.GenereDatas(sw, sprCmp, new PackModule().Pack(ret, ret.Length, sprCmp, 0, pkMethode), 16, 0, dlgSave.LabelMedia);
+				if (param.withPalette)
+					SaveAsm.GenerePalette(sw, param, false, false, dlgSave.LabelPal);
 
-			SaveAsm.CloseAsm(sw);
-			main.SetInfo("Sauvegarde sprite assembleur compacté ok.");
+				SaveAsm.CloseAsm(sw);
+				main.SetInfo("Sauvegarde sprite assembleur compacté ok.");
+			}
 		}
 
 		public void SauveImp(string fileName) {
@@ -527,7 +535,7 @@ namespace ConvImgCpc {
 			}
 			byte[] retCmp = new byte[maxSize];
 			StreamWriter sw = SaveAsm.OpenAsm(fileName, version);
-			SaveAsm.GenerePalette(sw, param, false, false);
+			SaveAsm.GenerePalette(sw, param, false, false, "Palette");
 			sw.WriteLine("Mat64x64Cmp");
 			SaveAsm.GenereDatas(sw, retCmp, new PackModule().Pack(ret, ret.Length, retCmp, 0, pkMethode), 16);
 			SaveAsm.CloseAsm(sw);

@@ -455,49 +455,53 @@ namespace ConvImgCpc {
 			StreamWriter sw;
 			bool with2file = main.chk17K.Checked && compact != Main.PackMethode.None && !main.param.withCode && lg > 16384;
 			string fileName2 = null;
-			if (with2file) {
-				string dir = Path.GetDirectoryName(fileName);
-				string name = Path.GetFileNameWithoutExtension(fileName);
-				string ext = Path.GetExtension(fileName);
-				fileName = dir + "\\" + name + "_01" + ext;
-				fileName2 = dir + "\\" + name + "_02" + ext;
-			}
-			sw = SaveAsm.OpenAsm(fileName, version, true);
-
-			if (main.param.withCode) {
-				int org = 0xA500 - lg - (Cpc.modeVirtuel == 5 ? 600 : 0);
-				sw.WriteLine("	ORG	#" + org.ToString("X4"));
-				sw.WriteLine("	Nolist");
-				sw.WriteLine("ImageCmp:");
-			}
-			if (with2file) {
-				SaveAsm.GenereDatas(sw, bufPack, 16384, 16);
-				sw.Close();
-				byte[] rest = new byte[lg - 16384];
-				Array.Copy(bufPack, 16384, rest, 0, lg - 16384);
-				sw = SaveAsm.OpenAsm(fileName2, version, true);
-				SaveAsm.GenereDatas(sw, rest, lg - 16384, 16);
-			}
-			else
-				SaveAsm.GenereDatas(sw, bufPack, lg, 16);
-
-			if (main.param.withCode) {
-				sw.WriteLine("	List");
-				sw.WriteLine("	RUN	$");
-				sw.WriteLine("_StartDepack:");
-				if (Cpc.modeVirtuel == 3 || Cpc.modeVirtuel == 4)
-					SaveAsm.GenereAfficheModeEgx(sw, Cpc.Palette, overscan, compact);
-				else {
-					if (Cpc.modeVirtuel == 5)
-						SaveAsm.GenereAfficheModeX(sw, colMode5, overscan, compact);
-					else
-						SaveAsm.GenereAfficheStd(sw, main.imgCpc, Cpc.modeVirtuel, Cpc.Palette, overscan, compact);
+			SaveMedia dlgSave = new SaveMedia("Image", Path.GetFileNameWithoutExtension(fileName));
+			dlgSave.ShowDialog();
+			if (dlgSave.saveMediaOk) {
+				if (with2file) {
+					string dir = Path.GetDirectoryName(fileName);
+					string name = Path.GetFileNameWithoutExtension(fileName);
+					string ext = Path.GetExtension(fileName);
+					fileName = dir + "\\" + name + "_01" + ext;
+					fileName2 = dir + "\\" + name + "_02" + ext;
 				}
-			}
-			if (Cpc.modeVirtuel < 3 || Cpc.modeVirtuel > 5)
-				SaveAsm.GenerePalette(sw, param, main.param.withCode, main.param.withCode);
+				sw = SaveAsm.OpenAsm(fileName, version, true);
 
-			SaveAsm.CloseAsm(sw);
+				if (main.param.withCode) {
+					int org = 0xA500 - lg - (Cpc.modeVirtuel == 5 ? 600 : 0);
+					sw.WriteLine("	ORG	#" + org.ToString("X4"));
+					sw.WriteLine("	Nolist");
+					sw.WriteLine("ImageCmp:");
+				}
+				if (with2file) {
+					SaveAsm.GenereDatas(sw, bufPack, 16384, 16);
+					sw.Close();
+					byte[] rest = new byte[lg - 16384];
+					Array.Copy(bufPack, 16384, rest, 0, lg - 16384);
+					sw = SaveAsm.OpenAsm(fileName2, version, true);
+					SaveAsm.GenereDatas(sw, rest, lg - 16384, 16);
+				}
+				else
+					SaveAsm.GenereDatas(sw, bufPack, lg, 16, 0, dlgSave.LabelMedia);
+
+				if (main.param.withCode) {
+					sw.WriteLine("	List");
+					sw.WriteLine("	RUN	$");
+					sw.WriteLine("_StartDepack:");
+					if (Cpc.modeVirtuel == 3 || Cpc.modeVirtuel == 4)
+						SaveAsm.GenereAfficheModeEgx(sw, Cpc.Palette, overscan, compact);
+					else {
+						if (Cpc.modeVirtuel == 5)
+							SaveAsm.GenereAfficheModeX(sw, colMode5, overscan, compact);
+						else
+							SaveAsm.GenereAfficheStd(sw, main.imgCpc, Cpc.modeVirtuel, Cpc.Palette, overscan, compact);
+					}
+				}
+				if (Cpc.modeVirtuel < 3 || Cpc.modeVirtuel > 5)
+					SaveAsm.GenerePalette(sw, param, main.param.withCode, main.param.withCode, dlgSave.LabelPal);
+
+				SaveAsm.CloseAsm(sw);
+			}
 		}
 
 		static public int SauveScr(string fileName, BitmapCpc bitmapCpc, Main main, Main.PackMethode compact, Main.OutputFormat format, Param param, string version = null, int[,] colMode5 = null) {

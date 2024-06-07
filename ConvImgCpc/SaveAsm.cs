@@ -24,8 +24,8 @@ namespace ConvImgCpc {
 		static public void GenereDatas(StreamWriter sw, byte[] tabByte, int length, int nbOctetsLigne, int ligneSepa = 0, string labelSepa = null) {
 			string line = "\tDB\t";
 			int nbOctets = 0, nbLigne = 0, indiceLabel = 0;
-			if (labelSepa != null) {
-				sw.WriteLine(labelSepa + indiceLabel.ToString("00"));
+			if (!string.IsNullOrEmpty(labelSepa)) {
+				sw.WriteLine(labelSepa + (ligneSepa != 0 ? indiceLabel.ToString("00") : ""));
 				indiceLabel++;
 			}
 			for (int i = 0; i < length; i++) {
@@ -365,13 +365,15 @@ namespace ConvImgCpc {
 			sw.WriteLine("	OUT	(C),C");
 		}
 
-		static public void GenerePalette(StreamWriter sw, Param p, bool withUnlockAsic, bool withMode) {
+		static public void GenerePalette(StreamWriter sw, Param p, bool withUnlockAsic, bool withMode, string label) {
 			if (Cpc.cpcPlus) {
 				if (withUnlockAsic) {
 					sw.WriteLine("UnlockAsic:");
 					sw.WriteLine("	DB	#FF,#00,#FF,#77,#B3,#51,#A8,#D4,#62,#39,#9C,#46,#2B,#15,#8A,#CD,#EE");
 				}
-				sw.WriteLine("Palette:");
+				if (!string.IsNullOrEmpty(label))
+					sw.WriteLine(label);
+
 				if (withMode)
 					sw.WriteLine("\tDB\t#" + ((Cpc.modeVirtuel == 7 ? 1 : Cpc.modeVirtuel & 3) | 0x8C).ToString("X2"));
 
@@ -383,7 +385,9 @@ namespace ConvImgCpc {
 				sw.WriteLine(line.Substring(0, line.Length - 1));
 			}
 			else {
-				sw.WriteLine("Palette:");
+				if (!string.IsNullOrEmpty(label))
+					sw.WriteLine(label);
+
 				string line = "\tDB\t";
 				for (int i = 0; i < 17; i++) {
 					int k = i >= 16 || p.disableState[i] == 0 ? Cpc.Palette[i < Cpc.MaxPen() ? i : 0] : -1;
