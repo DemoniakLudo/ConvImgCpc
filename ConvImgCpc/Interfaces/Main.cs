@@ -353,6 +353,7 @@ namespace ConvImgCpc {
 
 		private int ReadScreen(string fileName, bool singlePicture = false) {
 			int nbImages = 1, width = 1, height = 1;
+			imgCpc.chkAfficheSH.Checked = false;
 			try {
 				FileStream fileScr = new FileStream(fileName, FileMode.Open, FileAccess.Read);
 				byte[] tabBytes = new byte[fileScr.Length];
@@ -1412,26 +1413,21 @@ namespace ConvImgCpc {
 
 		private void BpCheckMaj_Click(object sender, EventArgs e) {
 			CheckMaj();
-			/*
-			string output = "AdrEcr";
-			int nbWord = 0;
-			for (int y = 0; y < 544; y += 2) {
+		
+			byte[] tabAdr = new byte[512];
+			for (int y = 0; y < 512; y += 2) {
 				int adrCPC = (y >> 4) * 96 + (y & 14) * 0x400;
 				if (y > 255)
 					adrCPC += 0x3800;
 
-				adrCPC += 0x200;
-				if (nbWord++ == 0)
-					output += "\n\tDW\t";
-
-				output += "#" + adrCPC.ToString("X4");
-				if (nbWord < 8)
-					output += ",";
-				else
-					nbWord = 0;
+				adrCPC += 0x8200;
+				tabAdr[y] = (byte)(adrCPC & 0xFF);
+				tabAdr[y+1] = (byte)(adrCPC >> 8);
 			}
-			File.WriteAllText("C:\\temp\\AdrEcr.asm", output);
-			*/
+			StreamWriter sw = SaveAsm.OpenAsm("C:\\Temp\\AdrEcr2.asm", null);
+			SaveAsm.GenereDatas(sw, tabAdr, 512, 16);
+			SaveAsm.CloseAsm(sw);
+		
 		}
 
 		private void ChkSwapEGX_CheckedChanged(object sender, EventArgs e) {

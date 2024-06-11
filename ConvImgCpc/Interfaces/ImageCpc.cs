@@ -142,6 +142,7 @@ namespace ConvImgCpc {
 		}
 
 		public void Render(bool forceDrawZoom = false, bool withSpriteGrid = false) {
+			groupBoxPosSprite.Visible = Cpc.cpcPlus && Cpc.modeVirtuel <= 2;
 			bpGenPal.Visible = Cpc.cpcPlus;
 			UpdatePalette();
 			modeCaptureSprites.Visible = chkGrilleSprite.Visible = Cpc.modeVirtuel == 11;
@@ -158,6 +159,7 @@ namespace ConvImgCpc {
 				bpRedo.Enabled = undo.CanRedo;
 				Enabled = true;
 			}
+
 			if (zoom != 1) {
 				if (tmpLock == null)
 					tmpLock = new DirectBitmap(imgOrigine.Width, imgOrigine.Height);
@@ -191,6 +193,10 @@ namespace ConvImgCpc {
 				for (int y = 0; y < Cpc.TailleY; y += 32)
 					XorDrawing.DrawXorLine(g, (Bitmap)pictureBox.Image, 0, y, Cpc.TailleX, y, false);
 			}
+
+			if (chkAfficheSH.Checked)
+				DrawSpritesHard();
+
 			pictureBox.Refresh();
 			if (fenetreRendu != null) {
 				fenetreRendu.SetImage(BmpLock.Bitmap);
@@ -242,14 +248,20 @@ namespace ConvImgCpc {
 			}
 			else {
 				if (e.Button == MouseButtons.Right) {
-					if (!moveSize) {
-						main.GetSizePos(ref posx, ref posy, ref sizex, ref sizey);
-						moveSize = true;
-						memoMouseX = e.X;
-						memoMouseY = e.Y;
+					if (chkAfficheSH.Checked && e.X / (chkX2.Checked ? 2 : 1) < Cpc.TailleX && e.Y / (chkX2.Checked ? 4 : 2) < Cpc.TailleY) {
+						numPosX.Value = e.X / (chkX2.Checked ? 2 : 1);
+						numPosY.Value = e.Y / (chkX2.Checked ? 4 : 2);
 					}
 					else {
-						main.SetSizePos(posx, posy, sizex - memoMouseX + e.X, sizey - memoMouseY + e.Y, true);
+						if (!moveSize) {
+							main.GetSizePos(ref posx, ref posy, ref sizex, ref sizey);
+							moveSize = true;
+							memoMouseX = e.X;
+							memoMouseY = e.Y;
+						}
+						else {
+							main.SetSizePos(posx, posy, sizex - memoMouseX + e.X, sizey - memoMouseY + e.Y, true);
+						}
 					}
 				}
 				else
@@ -890,7 +902,7 @@ namespace ConvImgCpc {
 			Enabled = true;
 		}
 
-		private void bpLoadWin_Click(object sender, EventArgs e) {
+		private void BpLoadWin_Click(object sender, EventArgs e) {
 			Enabled = false;
 			OpenFileDialog dlg = new OpenFileDialog();
 			dlg.Filter = " (*.win)|*.win";
@@ -918,14 +930,22 @@ namespace ConvImgCpc {
 			bpSaveWin.Enabled = imgMotif != null;
 		}
 
-		private void bpCopyImage_Click(object sender, EventArgs e) {
+		private void BpCopyImage_Click(object sender, EventArgs e) {
 			DirectBitmap bmpTmp = new DirectBitmap(Cpc.TailleX, Cpc.TailleY);
 			for (int x = 0; x < Cpc.TailleX; x++)
 				for (int y = 0; y < Cpc.TailleY; y++)
 					bmpTmp.SetPixel(x, y, BmpLock.GetPixel(x, y));
 
-			Clipboard.SetImage(bmpTmp.Bitmap);
+			if (chkAfficheSH.Checked) {
+				Bitmap newBmp = DrawSpritesHard(bmpTmp.Bitmap);
+				Clipboard.SetImage(newBmp);
+				newBmp.Dispose();
+			}
+			else
+				Clipboard.SetImage(bmpTmp.Bitmap);
+
 			bmpTmp.Dispose();
+			Render();
 		}
 	}
 }

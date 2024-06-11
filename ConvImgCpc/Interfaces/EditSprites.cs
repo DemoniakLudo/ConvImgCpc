@@ -19,6 +19,8 @@ namespace ConvImgCpc {
 		private Label lblRectSelSprite = new Label();
 		private int tickTimer;
 		private int lineStartX = -1, lineStartY = -1;
+		private int oldPosx = -1, oldPosy = -1;
+
 
 		public EditSprites(Main m, Main.PackMethode pk) {
 			InitializeComponent();
@@ -753,7 +755,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void bpTest_Click(object sender, EventArgs e) {
+		private void BpTest_Click(object sender, EventArgs e) {
 			int nb = rb1Sprite.Checked ? 1 : rb2Sprite.Checked ? 2 : 4;
 			int mask = rb1Sprite.Checked ? 0xF : rb2Sprite.Checked ? 0x0c : 0x00;
 			int taillex = (1 << (int)zoomX.Value) << 4;
@@ -794,25 +796,12 @@ namespace ConvImgCpc {
 			pictTest.Refresh();
 		}
 
-		private void bpGenPal_Click(object sender, EventArgs e) {
+		private void BpGenPal_Click(object sender, EventArgs e) {
 			GenPalette g = new GenPalette(Cpc.paletteSprite, 1, DoGenPal);
 			g.ShowDialog();
 		}
 
-		int oldPosx = -1, oldPosy = -1;
-
-		private void pictTest_MouseEnter(object sender, EventArgs e) {
-			//if (rbPosSpr.Checked) {
-			//	//selSprite = -1;
-
-			//	if (oldPosx != -1 && oldPosy != -1) {
-
-			//	}
-			//}
-
-		}
-
-		private void pictTest_MouseMove(object sender, MouseEventArgs e) {
+		private void PictTest_MouseMove(object sender, MouseEventArgs e) {
 			if (rbPosSpr.Checked) {
 				int taillex = (1 << (int)zoomX.Value) << 4;
 				int tailley = (2 << (int)zoomY.Value) << 4;
@@ -829,7 +818,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void pictTest_MouseLeave(object sender, EventArgs e) {
+		private void PictTest_MouseLeave(object sender, EventArgs e) {
 			if (rbPosSpr.Checked) {
 				Graphics g = Graphics.FromImage(pictTest.Image);
 				int taillex = (1 << (int)zoomX.Value) << 4;
@@ -842,7 +831,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void pictTest_MouseDown(object sender, MouseEventArgs e) {
+		private void PictTest_MouseDown(object sender, MouseEventArgs e) {
 			if (rbPosSpr.Checked) {
 				Graphics g = Graphics.FromImage(pictTest.Image);
 				int taillex = (1 << (int)zoomX.Value) << 4;
@@ -852,18 +841,6 @@ namespace ConvImgCpc {
 				DrawSpriteTest(bmpTest, numSprite, oldPosx, oldPosy);
 				oldPosx = oldPosy = -1;
 			}
-		}
-
-		private void pictTest_MouseUp(object sender, MouseEventArgs e) {
-
-		}
-
-		private void pictEditSprite_Click(object sender, EventArgs e) {
-
-		}
-
-		private void pictTest_MouseHover(object sender, EventArgs e) {
-
 		}
 
 		private void DoGenPal() {
@@ -880,7 +857,7 @@ namespace ConvImgCpc {
 			DrawSprite();
 		}
 
-		private void timer1_Tick(object sender, EventArgs e) {
+		private void Timer1_Tick(object sender, EventArgs e) {
 			if (tickTimer++ == 1) {
 				tickTimer = 0;
 				lblRectSelSprite.BackColor = Color.Black;
@@ -890,7 +867,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void bpInversePalette_Click(object sender, EventArgs e) {
+		private void BpInversePalette_Click(object sender, EventArgs e) {
 			int[] tempPalette = new int[16];
 			for (int i = 1; i < 16; i++)
 				tempPalette[i] = Cpc.paletteSprite[i];
@@ -908,14 +885,14 @@ namespace ConvImgCpc {
 			DrawSprite();
 		}
 
-		private void bpCopyBank_Click(object sender, EventArgs e) {
+		private void BpCopyBank_Click(object sender, EventArgs e) {
 			for (int s = 0; s < 16; s++)
 				for (int y = 0; y < 16; y++)
 					for (int x = 0; x < 16; x++)
 						tempSprite[x + y * 16, s] = Cpc.spritesHard[numBank, s, x, y];
 		}
 
-		private void bpPasteBank_Click(object sender, EventArgs e) {
+		private void BpPasteBank_Click(object sender, EventArgs e) {
 			for (int s = 0; s < 16; s++)
 				for (int y = 0; y < 16; y++)
 					for (int x = 0; x < 16; x++)

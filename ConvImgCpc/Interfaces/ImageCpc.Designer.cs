@@ -62,9 +62,31 @@
 			this.chkGrilleSprite = new System.Windows.Forms.CheckBox();
 			this.bpCopyImage = new System.Windows.Forms.Button();
 			this.label2 = new System.Windows.Forms.Label();
+			this.groupBoxPosSprite = new System.Windows.Forms.GroupBox();
+			this.bpSaveCoord = new System.Windows.Forms.Button();
+			this.bpReadCoord = new System.Windows.Forms.Button();
+			this.bpCopiePosSprites = new System.Windows.Forms.Button();
+			this.chkAfficheSH = new System.Windows.Forms.CheckBox();
+			this.numPosY = new System.Windows.Forms.NumericUpDown();
+			this.numPosX = new System.Windows.Forms.NumericUpDown();
+			this.label8 = new System.Windows.Forms.Label();
+			this.numZoomY = new System.Windows.Forms.NumericUpDown();
+			this.label7 = new System.Windows.Forms.Label();
+			this.label6 = new System.Windows.Forms.Label();
+			this.numZoomX = new System.Windows.Forms.NumericUpDown();
+			this.label5 = new System.Windows.Forms.Label();
+			this.label3 = new System.Windows.Forms.Label();
+			this.numSprite = new System.Windows.Forms.NumericUpDown();
+			this.chkCopyZoom = new System.Windows.Forms.CheckBox();
 			this.grpEdition.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictImpDraw)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
+			this.groupBoxPosSprite.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.numPosY)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.numPosX)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.numZoomY)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.numZoomX)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.numSprite)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// lockAllPal
@@ -213,7 +235,7 @@
 			this.bpLoadWin.TabIndex = 20;
 			this.bpLoadWin.Text = "Load Win";
 			this.bpLoadWin.UseVisualStyleBackColor = true;
-			this.bpLoadWin.Click += new System.EventHandler(this.bpLoadWin_Click);
+			this.bpLoadWin.Click += new System.EventHandler(this.BpLoadWin_Click);
 			// 
 			// rbPickColor
 			// 
@@ -466,12 +488,12 @@
 			// bpCopyImage
 			// 
 			this.bpCopyImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.bpCopyImage.Location = new System.Drawing.Point(445, 627);
+			this.bpCopyImage.Location = new System.Drawing.Point(168, 631);
 			this.bpCopyImage.Name = "bpCopyImage";
 			this.bpCopyImage.Size = new System.Drawing.Size(106, 44);
 			this.bpCopyImage.TabIndex = 29;
 			this.bpCopyImage.UseVisualStyleBackColor = true;
-			this.bpCopyImage.Click += new System.EventHandler(this.bpCopyImage_Click);
+			this.bpCopyImage.Click += new System.EventHandler(this.BpCopyImage_Click);
 			// 
 			// label2
 			// 
@@ -482,12 +504,198 @@
 			this.label2.TabIndex = 30;
 			this.label2.Text = "Disable";
 			// 
+			// groupBoxPosSprite
+			// 
+			this.groupBoxPosSprite.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.groupBoxPosSprite.Controls.Add(this.chkCopyZoom);
+			this.groupBoxPosSprite.Controls.Add(this.bpSaveCoord);
+			this.groupBoxPosSprite.Controls.Add(this.bpReadCoord);
+			this.groupBoxPosSprite.Controls.Add(this.bpCopiePosSprites);
+			this.groupBoxPosSprite.Controls.Add(this.chkAfficheSH);
+			this.groupBoxPosSprite.Controls.Add(this.numPosY);
+			this.groupBoxPosSprite.Controls.Add(this.numPosX);
+			this.groupBoxPosSprite.Controls.Add(this.label8);
+			this.groupBoxPosSprite.Controls.Add(this.numZoomY);
+			this.groupBoxPosSprite.Controls.Add(this.label7);
+			this.groupBoxPosSprite.Controls.Add(this.label6);
+			this.groupBoxPosSprite.Controls.Add(this.numZoomX);
+			this.groupBoxPosSprite.Controls.Add(this.label5);
+			this.groupBoxPosSprite.Controls.Add(this.label3);
+			this.groupBoxPosSprite.Controls.Add(this.numSprite);
+			this.groupBoxPosSprite.Location = new System.Drawing.Point(280, 633);
+			this.groupBoxPosSprite.Name = "groupBoxPosSprite";
+			this.groupBoxPosSprite.Size = new System.Drawing.Size(889, 64);
+			this.groupBoxPosSprite.TabIndex = 31;
+			this.groupBoxPosSprite.TabStop = false;
+			this.groupBoxPosSprite.Text = "Affichage sprites hard sur image";
+			// 
+			// bpSaveCoord
+			// 
+			this.bpSaveCoord.Location = new System.Drawing.Point(611, 12);
+			this.bpSaveCoord.Name = "bpSaveCoord";
+			this.bpSaveCoord.Size = new System.Drawing.Size(60, 23);
+			this.bpSaveCoord.TabIndex = 7;
+			this.bpSaveCoord.Text = "Save";
+			this.bpSaveCoord.UseVisualStyleBackColor = true;
+			this.bpSaveCoord.Click += new System.EventHandler(this.BpSaveCoord_Click);
+			// 
+			// bpReadCoord
+			// 
+			this.bpReadCoord.Location = new System.Drawing.Point(611, 41);
+			this.bpReadCoord.Name = "bpReadCoord";
+			this.bpReadCoord.Size = new System.Drawing.Size(60, 23);
+			this.bpReadCoord.TabIndex = 7;
+			this.bpReadCoord.Text = "Read";
+			this.bpReadCoord.UseVisualStyleBackColor = true;
+			this.bpReadCoord.Click += new System.EventHandler(this.bpReadCoord_Click);
+			// 
+			// bpCopiePosSprites
+			// 
+			this.bpCopiePosSprites.Location = new System.Drawing.Point(696, 18);
+			this.bpCopiePosSprites.Name = "bpCopiePosSprites";
+			this.bpCopiePosSprites.Size = new System.Drawing.Size(187, 23);
+			this.bpCopiePosSprites.TabIndex = 6;
+			this.bpCopiePosSprites.Text = "Copier positions dans presse-papier";
+			this.bpCopiePosSprites.UseVisualStyleBackColor = true;
+			this.bpCopiePosSprites.Click += new System.EventHandler(this.BpCopiePosSprites_Click);
+			// 
+			// chkAfficheSH
+			// 
+			this.chkAfficheSH.AutoSize = true;
+			this.chkAfficheSH.Location = new System.Drawing.Point(6, 25);
+			this.chkAfficheSH.Name = "chkAfficheSH";
+			this.chkAfficheSH.Size = new System.Drawing.Size(59, 17);
+			this.chkAfficheSH.TabIndex = 5;
+			this.chkAfficheSH.Text = "Activer";
+			this.chkAfficheSH.UseVisualStyleBackColor = true;
+			this.chkAfficheSH.CheckedChanged += new System.EventHandler(this.ChkAfficheSH_CheckedChanged);
+			// 
+			// numPosY
+			// 
+			this.numPosY.Location = new System.Drawing.Point(501, 38);
+			this.numPosY.Maximum = new decimal(new int[] {
+            272,
+            0,
+            0,
+            0});
+			this.numPosY.Name = "numPosY";
+			this.numPosY.Size = new System.Drawing.Size(39, 20);
+			this.numPosY.TabIndex = 4;
+			this.numPosY.ValueChanged += new System.EventHandler(this.NumPosY_ValueChanged);
+			// 
+			// numPosX
+			// 
+			this.numPosX.Location = new System.Drawing.Point(501, 18);
+			this.numPosX.Maximum = new decimal(new int[] {
+            768,
+            0,
+            0,
+            0});
+			this.numPosX.Name = "numPosX";
+			this.numPosX.Size = new System.Drawing.Size(39, 20);
+			this.numPosX.TabIndex = 4;
+			this.numPosX.ValueChanged += new System.EventHandler(this.NumPosX_ValueChanged);
+			// 
+			// label8
+			// 
+			this.label8.AutoSize = true;
+			this.label8.Location = new System.Drawing.Point(460, 42);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(35, 13);
+			this.label8.TabIndex = 2;
+			this.label8.Text = "Pos Y";
+			// 
+			// numZoomY
+			// 
+			this.numZoomY.Location = new System.Drawing.Point(262, 40);
+			this.numZoomY.Maximum = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+			this.numZoomY.Name = "numZoomY";
+			this.numZoomY.Size = new System.Drawing.Size(26, 20);
+			this.numZoomY.TabIndex = 3;
+			this.numZoomY.ValueChanged += new System.EventHandler(this.NumZoomY_ValueChanged);
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(460, 22);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(35, 13);
+			this.label7.TabIndex = 2;
+			this.label7.Text = "Pos X";
+			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Location = new System.Drawing.Point(216, 44);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(44, 13);
+			this.label6.TabIndex = 2;
+			this.label6.Text = "Zoom Y";
+			// 
+			// numZoomX
+			// 
+			this.numZoomX.Location = new System.Drawing.Point(262, 20);
+			this.numZoomX.Maximum = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+			this.numZoomX.Name = "numZoomX";
+			this.numZoomX.Size = new System.Drawing.Size(26, 20);
+			this.numZoomX.TabIndex = 3;
+			this.numZoomX.ValueChanged += new System.EventHandler(this.NumZoomX_ValueChanged);
+			// 
+			// label5
+			// 
+			this.label5.AutoSize = true;
+			this.label5.Location = new System.Drawing.Point(215, 24);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(44, 13);
+			this.label5.TabIndex = 2;
+			this.label5.Text = "Zoom X";
+			// 
+			// label3
+			// 
+			this.label3.AutoSize = true;
+			this.label3.Location = new System.Drawing.Point(114, 22);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(46, 13);
+			this.label3.TabIndex = 1;
+			this.label3.Text = "N°Sprite";
+			// 
+			// numSprite
+			// 
+			this.numSprite.Location = new System.Drawing.Point(166, 20);
+			this.numSprite.Maximum = new decimal(new int[] {
+            15,
+            0,
+            0,
+            0});
+			this.numSprite.Name = "numSprite";
+			this.numSprite.Size = new System.Drawing.Size(37, 20);
+			this.numSprite.TabIndex = 0;
+			this.numSprite.ValueChanged += new System.EventHandler(this.NumSprite_ValueChanged);
+			// 
+			// chkCopyZoom
+			// 
+			this.chkCopyZoom.Location = new System.Drawing.Point(309, 25);
+			this.chkCopyZoom.Name = "chkCopyZoom";
+			this.chkCopyZoom.Size = new System.Drawing.Size(125, 35);
+			this.chkCopyZoom.TabIndex = 8;
+			this.chkCopyZoom.Text = "Recopier zoom aux autres sprites";
+			this.chkCopyZoom.UseVisualStyleBackColor = true;
+			// 
 			// ImageCpc
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1216, 676);
+			this.ClientSize = new System.Drawing.Size(1216, 699);
 			this.ControlBox = false;
+			this.Controls.Add(this.groupBoxPosSprite);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.bpCopyImage);
 			this.Controls.Add(this.chkGrilleSprite);
@@ -518,6 +726,13 @@
 			this.grpEdition.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictImpDraw)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
+			this.groupBoxPosSprite.ResumeLayout(false);
+			this.groupBoxPosSprite.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.numPosY)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.numPosX)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.numZoomY)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.numZoomX)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.numSprite)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -564,5 +779,21 @@
 		private System.Windows.Forms.RadioButton rbFill;
 		private System.Windows.Forms.Button bpSaveWin;
 		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.GroupBox groupBoxPosSprite;
+		private System.Windows.Forms.NumericUpDown numZoomX;
+		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.NumericUpDown numSprite;
+		private System.Windows.Forms.NumericUpDown numPosY;
+		private System.Windows.Forms.NumericUpDown numPosX;
+		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.NumericUpDown numZoomY;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.Label label6;
+		public System.Windows.Forms.CheckBox chkAfficheSH;
+		private System.Windows.Forms.Button bpCopiePosSprites;
+		private System.Windows.Forms.Button bpSaveCoord;
+		private System.Windows.Forms.Button bpReadCoord;
+		private System.Windows.Forms.CheckBox chkCopyZoom;
 	}
 }
