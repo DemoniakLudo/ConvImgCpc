@@ -868,8 +868,12 @@ namespace ConvImgCpc {
 
 		private void WithCode_CheckedChanged(object sender, EventArgs e) {
 			param.withCode = withCode.Checked;
-			if (withCode.Checked)
+			if (withCode.Checked) {
+				withPalette.Enabled = false;
 				withPalette.Checked = true;
+			}
+			else
+				withPalette.Enabled = true;
 		}
 
 		private void RadioUserSize_CheckedChanged(object sender, EventArgs e) {

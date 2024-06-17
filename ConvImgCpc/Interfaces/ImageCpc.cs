@@ -361,7 +361,7 @@ namespace ConvImgCpc {
 
 		public void SauveSprite(string fileName, string version, Param param) {
 			byte[] ret = MakeSprite();
-			SaveMedia dlgSave = new SaveMedia("Soft sprite", Path.GetFileNameWithoutExtension(fileName));
+			SaveMedia dlgSave = new SaveMedia("Soft sprite", Path.GetFileNameWithoutExtension(fileName), param.withPalette);
 			dlgSave.ShowDialog();
 			if (dlgSave.saveMediaOk) {
 				StreamWriter sw = SaveAsm.OpenAsm(fileName, version, true);
@@ -376,7 +376,7 @@ namespace ConvImgCpc {
 
 		public void SauveSpriteCmp(string fileName, string version, Param param, Main.PackMethode pkMethode) {
 			byte[] ret = MakeSprite();
-			SaveMedia dlgSave = new SaveMedia("Soft sprite", Path.GetFileNameWithoutExtension(fileName));
+			SaveMedia dlgSave = new SaveMedia("Soft sprite", Path.GetFileNameWithoutExtension(fileName),param.withPalette);
 			dlgSave.ShowDialog();
 			if (dlgSave.saveMediaOk) {
 				byte[] sprCmp = new byte[ret.Length];

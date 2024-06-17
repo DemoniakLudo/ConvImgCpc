@@ -244,7 +244,7 @@
 			this.comboBanque.Name = "comboBanque";
 			this.comboBanque.Size = new System.Drawing.Size(61, 21);
 			this.comboBanque.TabIndex = 13;
-			this.comboBanque.SelectedIndexChanged += new System.EventHandler(this.comboBanque_SelectedIndexChanged);
+			this.comboBanque.SelectedIndexChanged += new System.EventHandler(this.ComboBanque_SelectedIndexChanged);
 			// 
 			// chkWithPal
 			// 
@@ -348,7 +348,7 @@
 			this.bpVerticalFlip.Size = new System.Drawing.Size(75, 48);
 			this.bpVerticalFlip.TabIndex = 22;
 			this.bpVerticalFlip.UseVisualStyleBackColor = true;
-			this.bpVerticalFlip.Click += new System.EventHandler(this.bpVerticalFlip_Click);
+			this.bpVerticalFlip.Click += new System.EventHandler(this.BpVerticalFlip_Click);
 			// 
 			// bpHorizontalFlip
 			// 
@@ -358,7 +358,7 @@
 			this.bpHorizontalFlip.Size = new System.Drawing.Size(75, 48);
 			this.bpHorizontalFlip.TabIndex = 21;
 			this.bpHorizontalFlip.UseVisualStyleBackColor = true;
-			this.bpHorizontalFlip.Click += new System.EventHandler(this.bpHorizontalFlip_Click);
+			this.bpHorizontalFlip.Click += new System.EventHandler(this.BpHorizontalFlip_Click);
 			// 
 			// bpRotateSprite
 			// 
@@ -368,7 +368,7 @@
 			this.bpRotateSprite.Size = new System.Drawing.Size(75, 48);
 			this.bpRotateSprite.TabIndex = 20;
 			this.bpRotateSprite.UseVisualStyleBackColor = true;
-			this.bpRotateSprite.Click += new System.EventHandler(this.bpRotateSprite_Click);
+			this.bpRotateSprite.Click += new System.EventHandler(this.BpRotateSprite_Click);
 			// 
 			// bpPasteSprite
 			// 
@@ -378,7 +378,7 @@
 			this.bpPasteSprite.Size = new System.Drawing.Size(75, 48);
 			this.bpPasteSprite.TabIndex = 18;
 			this.bpPasteSprite.UseVisualStyleBackColor = true;
-			this.bpPasteSprite.Click += new System.EventHandler(this.bpPasteSprite_Click);
+			this.bpPasteSprite.Click += new System.EventHandler(this.BpPasteSprite_Click);
 			// 
 			// bpCopySprite
 			// 
@@ -388,7 +388,7 @@
 			this.bpCopySprite.Size = new System.Drawing.Size(75, 48);
 			this.bpCopySprite.TabIndex = 17;
 			this.bpCopySprite.UseVisualStyleBackColor = true;
-			this.bpCopySprite.Click += new System.EventHandler(this.bpCopySprite_Click);
+			this.bpCopySprite.Click += new System.EventHandler(this.BpCopySprite_Click);
 			// 
 			// bpInversePalette
 			// 
@@ -418,7 +418,7 @@
 			this.bpClearSprite.Size = new System.Drawing.Size(75, 48);
 			this.bpClearSprite.TabIndex = 19;
 			this.bpClearSprite.UseVisualStyleBackColor = true;
-			this.bpClearSprite.Click += new System.EventHandler(this.bpClearSprite_Click);
+			this.bpClearSprite.Click += new System.EventHandler(this.BpClearSprite_Click);
 			// 
 			// bpClearBank
 			// 
@@ -428,7 +428,7 @@
 			this.bpClearBank.Size = new System.Drawing.Size(75, 52);
 			this.bpClearBank.TabIndex = 16;
 			this.bpClearBank.UseVisualStyleBackColor = true;
-			this.bpClearBank.Click += new System.EventHandler(this.bpClearBank_Click);
+			this.bpClearBank.Click += new System.EventHandler(this.BpClearBank_Click);
 			// 
 			// bpSavePal
 			// 
@@ -441,7 +441,7 @@
 			this.bpSavePal.Text = "palette";
 			this.bpSavePal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.bpSavePal.UseVisualStyleBackColor = true;
-			this.bpSavePal.Click += new System.EventHandler(this.bpSavePal_Click);
+			this.bpSavePal.Click += new System.EventHandler(this.BpSavePal_Click);
 			// 
 			// bpReadPal
 			// 
@@ -454,7 +454,7 @@
 			this.bpReadPal.Text = "palette";
 			this.bpReadPal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.bpReadPal.UseVisualStyleBackColor = true;
-			this.bpReadPal.Click += new System.EventHandler(this.bpReadPal_Click);
+			this.bpReadPal.Click += new System.EventHandler(this.BpReadPal_Click);
 			// 
 			// bpSaveAll
 			// 
@@ -466,7 +466,7 @@
 			this.bpSaveAll.TabIndex = 6;
 			this.bpSaveAll.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.bpSaveAll.UseVisualStyleBackColor = true;
-			this.bpSaveAll.Click += new System.EventHandler(this.bpSaveAll_Click);
+			this.bpSaveAll.Click += new System.EventHandler(this.BpSaveAll_Click);
 			// 
 			// bpSave
 			// 
@@ -478,7 +478,7 @@
 			this.bpSave.TabIndex = 6;
 			this.bpSave.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.bpSave.UseVisualStyleBackColor = true;
-			this.bpSave.Click += new System.EventHandler(this.bpSave_Click);
+			this.bpSave.Click += new System.EventHandler(this.BpSave_Click);
 			// 
 			// bpRead
 			// 
@@ -491,7 +491,7 @@
 			this.bpRead.Text = "sprites";
 			this.bpRead.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.bpRead.UseVisualStyleBackColor = true;
-			this.bpRead.Click += new System.EventHandler(this.bpRead_Click);
+			this.bpRead.Click += new System.EventHandler(this.BpRead_Click);
 			// 
 			// bpSuiv
 			// 
@@ -501,7 +501,7 @@
 			this.bpSuiv.Size = new System.Drawing.Size(40, 40);
 			this.bpSuiv.TabIndex = 2;
 			this.bpSuiv.UseVisualStyleBackColor = true;
-			this.bpSuiv.Click += new System.EventHandler(this.bpSuiv_Click);
+			this.bpSuiv.Click += new System.EventHandler(this.BpSuiv_Click);
 			// 
 			// bpPrev
 			// 
@@ -512,7 +512,7 @@
 			this.bpPrev.TabIndex = 2;
 			this.bpPrev.UseVisualStyleBackColor = true;
 			this.bpPrev.Visible = false;
-			this.bpPrev.Click += new System.EventHandler(this.bpPrev_Click);
+			this.bpPrev.Click += new System.EventHandler(this.BpPrev_Click);
 			// 
 			// pictAllSprites
 			// 
@@ -521,7 +521,7 @@
 			this.pictAllSprites.Size = new System.Drawing.Size(1024, 64);
 			this.pictAllSprites.TabIndex = 1;
 			this.pictAllSprites.TabStop = false;
-			this.pictAllSprites.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictAllMatrice_MouseDown);
+			this.pictAllSprites.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictAllMatrice_MouseDown);
 			// 
 			// pictEditSprite
 			// 
@@ -530,9 +530,9 @@
 			this.pictEditSprite.Size = new System.Drawing.Size(640, 640);
 			this.pictEditSprite.TabIndex = 0;
 			this.pictEditSprite.TabStop = false;
-			this.pictEditSprite.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictEditMatrice_MouseMove);
-			this.pictEditSprite.MouseLeave += new System.EventHandler(this.pictEditSprite_MouseLeave);
-			this.pictEditSprite.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictEditMatrice_MouseMove);
+			this.pictEditSprite.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictEditMatrice_MouseMove);
+			this.pictEditSprite.MouseLeave += new System.EventHandler(this.PictEditSprite_MouseLeave);
+			this.pictEditSprite.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictEditMatrice_MouseMove);
 			// 
 			// pictTest
 			// 

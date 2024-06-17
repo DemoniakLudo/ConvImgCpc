@@ -84,7 +84,7 @@
 			this.chkLabelMedia.Size = new System.Drawing.Size(15, 14);
 			this.chkLabelMedia.TabIndex = 6;
 			this.chkLabelMedia.UseVisualStyleBackColor = true;
-			this.chkLabelMedia.CheckedChanged += new System.EventHandler(this.chkLabelMedia_CheckedChanged);
+			this.chkLabelMedia.CheckedChanged += new System.EventHandler(this.ChkLabelMedia_CheckedChanged);
 			// 
 			// chkLabelPalette
 			// 
@@ -96,7 +96,7 @@
 			this.chkLabelPalette.Size = new System.Drawing.Size(15, 14);
 			this.chkLabelPalette.TabIndex = 6;
 			this.chkLabelPalette.UseVisualStyleBackColor = true;
-			this.chkLabelPalette.CheckedChanged += new System.EventHandler(this.chkLabelPalette_CheckedChanged);
+			this.chkLabelPalette.CheckedChanged += new System.EventHandler(this.ChkLabelPalette_CheckedChanged);
 			// 
 			// chkLabelPtr
 			// 
@@ -108,7 +108,7 @@
 			this.chkLabelPtr.Size = new System.Drawing.Size(15, 14);
 			this.chkLabelPtr.TabIndex = 6;
 			this.chkLabelPtr.UseVisualStyleBackColor = true;
-			this.chkLabelPtr.CheckedChanged += new System.EventHandler(this.chkLabelPtr_CheckedChanged);
+			this.chkLabelPtr.CheckedChanged += new System.EventHandler(this.ChkLabelPtr_CheckedChanged);
 			// 
 			// SaveMedia
 			// 

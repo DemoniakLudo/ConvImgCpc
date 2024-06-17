@@ -1017,7 +1017,7 @@ namespace ConvImgCpc {
 		}
 
 		// #### A revoir...
-		static public void GenereAfficheStd(StreamWriter sw, ImageCpc img, int mode, int[] palette, bool overscan, Main.PackMethode pkMethode) {
+		static public void GenereAfficheStd(StreamWriter sw, bool overscan, Main.PackMethode pkMethode) {
 			sw.WriteLine("	DI");
 			if (Cpc.cpcPlus)
 				GenereInitPlus(sw);

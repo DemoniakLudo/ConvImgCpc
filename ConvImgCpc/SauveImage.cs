@@ -453,9 +453,9 @@ namespace ConvImgCpc {
 		static private void SaveImgAsm(Main main, Main.PackMethode compact, Param param, string fileName, string version, byte[] bufPack, int lg, int[,] colMode5) {
 			bool overscan = (Cpc.NbLig * Cpc.NbCol > 0x3F00);
 			StreamWriter sw;
-			bool with2file = main.chk17K.Checked && compact != Main.PackMethode.None && !main.param.withCode && lg > 16384;
+			bool with2file = main.chk17K.Checked && compact != Main.PackMethode.None && !param.withCode && lg > 16384;
 			string fileName2 = null;
-			SaveMedia dlgSave = new SaveMedia("Image", Path.GetFileNameWithoutExtension(fileName));
+			SaveMedia dlgSave = new SaveMedia("Image", Path.GetFileNameWithoutExtension(fileName), param.withPalette);
 			dlgSave.ShowDialog();
 			if (dlgSave.saveMediaOk) {
 				if (with2file) {
@@ -467,7 +467,7 @@ namespace ConvImgCpc {
 				}
 				sw = SaveAsm.OpenAsm(fileName, version, true);
 
-				if (main.param.withCode) {
+				if (param.withCode) {
 					int org = 0xA500 - lg - (Cpc.modeVirtuel == 5 ? 600 : 0);
 					sw.WriteLine("	ORG	#" + org.ToString("X4"));
 					sw.WriteLine("	Nolist");
@@ -484,7 +484,7 @@ namespace ConvImgCpc {
 				else
 					SaveAsm.GenereDatas(sw, bufPack, lg, 16, 0, dlgSave.LabelMedia);
 
-				if (main.param.withCode) {
+				if (param.withCode) {
 					sw.WriteLine("	List");
 					sw.WriteLine("	RUN	$");
 					sw.WriteLine("_StartDepack:");
@@ -494,11 +494,11 @@ namespace ConvImgCpc {
 						if (Cpc.modeVirtuel == 5)
 							SaveAsm.GenereAfficheModeX(sw, colMode5, overscan, compact);
 						else
-							SaveAsm.GenereAfficheStd(sw, main.imgCpc, Cpc.modeVirtuel, Cpc.Palette, overscan, compact);
+							SaveAsm.GenereAfficheStd(sw, overscan, compact);
 					}
 				}
-				if (Cpc.modeVirtuel < 3 || Cpc.modeVirtuel > 5)
-					SaveAsm.GenerePalette(sw, param, main.param.withCode, main.param.withCode, dlgSave.LabelPal);
+				if (param.withPalette && (Cpc.modeVirtuel < 3 || Cpc.modeVirtuel > 5))
+					SaveAsm.GenerePalette(sw, param, param.withCode, param.withCode, dlgSave.LabelPal);
 
 				SaveAsm.CloseAsm(sw);
 			}
@@ -507,8 +507,8 @@ namespace ConvImgCpc {
 		static public int SauveScr(string fileName, BitmapCpc bitmapCpc, Main main, Main.PackMethode compact, Main.OutputFormat format, Param param, string version = null, int[,] colMode5 = null) {
 			byte[] bufPack = new byte[0x8000];
 			bool overscan = (Cpc.NbLig * Cpc.NbCol > 0x3F00);
-			if (main.param.withPalette && format != Main.OutputFormat.Assembler) {
-				if (main.param.cpcPlus) {
+			if (param.withPalette && format != Main.OutputFormat.Assembler) {
+				if (param.cpcPlus) {
 					ModePal[0] = (byte)(Cpc.modeVirtuel | 0x8C);
 					int k = 1;
 					for (int i = 0; i < 16; i++) {
@@ -536,11 +536,11 @@ namespace ConvImgCpc {
 			}
 			byte[] imgCpc = bitmapCpc.bmpCpc;
 			if (!overscan) {
-				if (main.param.withPalette && format != Main.OutputFormat.Assembler)
+				if (param.withPalette && format != Main.OutputFormat.Assembler)
 					Buffer.BlockCopy(ModePal, 0, imgCpc, 0x17D0, ModePal.Length);
 
-				if (main.param.withCode && format != Main.OutputFormat.Assembler) {
-					if (main.param.cpcPlus) {
+				if (param.withCode && format != Main.OutputFormat.Assembler) {
+					if (param.cpcPlus) {
 						Buffer.BlockCopy(CodeP0, 0, imgCpc, 0x07D0, CodeP0.Length);
 						Buffer.BlockCopy(CodeP1, 0, imgCpc, 0x0FD0, CodeP1.Length);
 						Buffer.BlockCopy(CodeP3, 0, imgCpc, 0x1FD0, CodeP3.Length);
@@ -560,8 +560,8 @@ namespace ConvImgCpc {
 			else {
 				if (Cpc.NbLig * Cpc.NbCol > 0x4000) {
 					Buffer.BlockCopy(ModePal, 0, imgCpc, 0x600, ModePal.Length);
-					if (main.param.withCode && format != Main.OutputFormat.Assembler) {
-						if (main.param.cpcPlus)
+					if (param.withCode && format != Main.OutputFormat.Assembler) {
+						if (param.cpcPlus)
 							Buffer.BlockCopy(CodeOvP, 0, imgCpc, 0x621, CodeOvP.Length);
 						else
 							Buffer.BlockCopy(CodeOv, 0, imgCpc, 0x611, CodeOv.Length);
@@ -569,7 +569,7 @@ namespace ConvImgCpc {
 						if (Cpc.modeVirtuel == 3 || Cpc.modeVirtuel == 4) {
 							Buffer.BlockCopy(codeEgx0, 0, imgCpc, 0x1600, codeEgx0.Length);
 							Buffer.BlockCopy(codeEgx1, 0, imgCpc, 0x1640, codeEgx1.Length);
-							if (main.param.cpcPlus) {
+							if (param.cpcPlus) {
 								imgCpc[0x669] = 0xCD;
 								Poke16(imgCpc, 0x66A, 0x1800);  // CALL	#1800
 							}
@@ -583,7 +583,7 @@ namespace ConvImgCpc {
 			}
 
 			short startAdr = (short)(overscan ? 0x200 : 0xC000);
-			short exec = (short)(overscan ? main.param.cpcPlus ? 0x821 : 0x811 : 0xC7D0);
+			short exec = (short)(overscan ? param.cpcPlus ? 0x821 : 0x811 : 0xC7D0);
 			CpcAmsdos entete;
 			int lg = Cpc.BitmapSize;
 			if (compact == Main.PackMethode.ZX0Ovs && (Cpc.NbLig != 272 || Cpc.NbCol != 96))
@@ -591,7 +591,7 @@ namespace ConvImgCpc {
 
 			if (compact != Main.PackMethode.None) {
 				lg = new PackModule().Pack(bitmapCpc.bmpCpc, lg, bufPack, 0, compact);
-				if (main.param.withCode && format != Main.OutputFormat.Assembler) {
+				if (param.withCode && format != Main.OutputFormat.Assembler) {
 					short newExec;
 					switch (compact) {
 						case Main.PackMethode.Standard:

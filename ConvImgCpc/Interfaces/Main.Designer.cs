@@ -676,6 +676,7 @@
 			this.withPalette.AutoSize = true;
 			this.withPalette.Checked = true;
 			this.withPalette.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.withPalette.Enabled = false;
 			this.withPalette.Location = new System.Drawing.Point(6, 147);
 			this.withPalette.Name = "withPalette";
 			this.withPalette.Size = new System.Drawing.Size(15, 14);
