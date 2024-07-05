@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection.Emit;
 
 namespace ConvImgCpc {
 	public class SaveAsm {
@@ -331,8 +332,8 @@ namespace ConvImgCpc {
 			}
 		}
 
-		static public void GenereInitOld(StreamWriter sw) {
-			sw.WriteLine("	LD	HL,Palette");
+		static public void GenereInitOld(StreamWriter sw, string labelPalette) {
+			sw.WriteLine("	LD	HL," + labelPalette);
 			sw.WriteLine("	LD	B,#7F");
 			sw.WriteLine("	XOR	A");
 			sw.WriteLine("SetPal:");
@@ -344,7 +345,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("	JR	C,SetPal");
 		}
 
-		static public void GenereInitPlus(StreamWriter sw) {
+		static public void GenereInitPlus(StreamWriter sw, string labelPalette) {
 			sw.WriteLine("	LD	BC,#BC11");
 			sw.WriteLine("	LD	HL,UnlockAsic");
 			sw.WriteLine("Unlock:");
@@ -354,10 +355,10 @@ namespace ConvImgCpc {
 			sw.WriteLine("	DEC	C");
 			sw.WriteLine("	JR	NZ,Unlock");
 			sw.WriteLine("	LD	BC,#7FB8");
-			sw.WriteLine("	LD	A,(Palette)");
+			sw.WriteLine("	LD	A,(" + labelPalette + ")");
 			sw.WriteLine("	OUT	(C),C");
 			sw.WriteLine("	OUT	(C),A");
-			sw.WriteLine("	LD	HL,Palette+1");
+			sw.WriteLine("	LD	HL," + labelPalette + "+1");
 			sw.WriteLine("	LD	DE,#6400");
 			sw.WriteLine("	LD	BC,#0022");
 			sw.WriteLine("	LDIR");
@@ -1017,16 +1018,16 @@ namespace ConvImgCpc {
 		}
 
 		// #### A revoir...
-		static public void GenereAfficheStd(StreamWriter sw, bool overscan, Main.PackMethode pkMethode) {
+		static public void GenereAfficheStd(StreamWriter sw, bool overscan, Main.PackMethode pkMethode, string labelMedia, string labelPalette) {
 			sw.WriteLine("	DI");
 			if (Cpc.cpcPlus)
-				GenereInitPlus(sw);
+				GenereInitPlus(sw, labelPalette);
 			else
-				GenereInitOld(sw);
+				GenereInitOld(sw, labelPalette);
 
 			GenereFormatEcran(sw);
 			if (pkMethode != Main.PackMethode.None) {
-				sw.WriteLine("	LD	HL,ImageCmp");
+				sw.WriteLine("	LD	HL," + labelMedia);
 				sw.WriteLine("	LD	DE,#" + (overscan ? "0200" : "C000"));
 				sw.WriteLine("	CALL	Depack");
 			}
@@ -1066,8 +1067,8 @@ namespace ConvImgCpc {
 			}
 		}
 
-		static public void GenereAfficheModeX(StreamWriter sw, int[,] colMode5, bool isOverscan, Main.PackMethode pkMethode) {
-			sw.WriteLine("	LD	HL,ImageCmp");
+		static public void GenereAfficheModeX(StreamWriter sw, int[,] colMode5, bool isOverscan, Main.PackMethode pkMethode, string labelMedia) {
+			sw.WriteLine("	LD	HL," + labelMedia);
 			sw.WriteLine("	LD	DE,#" + (isOverscan ? "0200" : "C000"));
 			sw.WriteLine("	CALL	Depack");
 			sw.WriteLine("	DI");
@@ -1157,13 +1158,13 @@ namespace ConvImgCpc {
 				sw.WriteLine(line + "'");
 		}
 
-		static public void GenereAfficheModeEgx(StreamWriter sw, int[] palette, bool overscan, Main.PackMethode pkMethode) {
-			sw.WriteLine("	LD	HL,Palette");
+		static public void GenereAfficheModeEgx(StreamWriter sw, int[] palette, bool overscan, Main.PackMethode pkMethode, string labelMedia, string labelPalette) {
+			sw.WriteLine("	LD	HL," + labelPalette);
 			sw.WriteLine("	LD	B,(HL)");
 			sw.WriteLine("	LD	C,B");
 			sw.WriteLine("	CALL	#BC38");
 			sw.WriteLine("	XOR	A");
-			sw.WriteLine("	LD	HL,Palette");
+			sw.WriteLine("	LD	HL," + labelPalette);
 			sw.WriteLine("SetPalette:");
 			sw.WriteLine("	LD	B,(HL)");
 			sw.WriteLine("	LD	C,B");
@@ -1178,7 +1179,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("	JR	NZ,SetPalette");
 
 			GenereFormatEcran(sw);
-			sw.WriteLine("	LD	HL,ImageCmp");
+			sw.WriteLine("	LD	HL," + labelMedia);
 			sw.WriteLine("	LD	DE,#" + (overscan ? "0200" : "C000"));
 			sw.WriteLine("	CALL	Depack");
 
@@ -1233,7 +1234,7 @@ namespace ConvImgCpc {
 			for (int y = 0; y < 16; y++)
 				line += palette[y].ToString() + ",";
 
-			sw.WriteLine("Palette:");
+			sw.WriteLine(labelPalette);
 			sw.WriteLine(line.Substring(0, line.Length - 1));
 		}
 		#endregion

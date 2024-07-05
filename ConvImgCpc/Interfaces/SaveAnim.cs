@@ -413,7 +413,7 @@ namespace ConvImgCpc {
 		#endregion
 
 		// Sauvegarde de l'animation
-		private void SauveDeltaPack(int adrDeb, int adrMax, bool withDelai, int modeLigne, bool imageMode, bool optimSpeed, Main.PackMethode methode, int height) {
+		private void SauveDeltaPack(int adrDeb, int adrMax, bool withDelai, int modeLigne, bool imageMode, bool optimSpeed, Main.PackMethode methode, int height, string labelPalette) {
 			int sizeDepack = 0;
 			int nbImages = img.main.GetMaxImages();
 			byte[][] bufOut = new byte[1 + (nbImages << 1)][];
@@ -470,9 +470,9 @@ namespace ConvImgCpc {
 			if (param.withCode && !chkDataBrut.Checked) {
 				SaveAsm.GenereEntete(sw, adrDeb);
 				if (Cpc.cpcPlus)
-					SaveAsm.GenereInitPlus(sw);
+					SaveAsm.GenereInitPlus(sw, labelPalette);
 				else
-					SaveAsm.GenereInitOld(sw);
+					SaveAsm.GenereInitOld(sw, labelPalette);
 			}
 			bool gest128K = chk128Ko.Checked;
 			if ((ltot + adrDeb < adrMax) && (ltot + adrDeb < 0xBE00 - maxDepack))
@@ -497,7 +497,7 @@ namespace ConvImgCpc {
 					}
 			}
 			if ((param.withPalette || param.withCode) && !chkDataBrut.Checked)
-				SaveAsm.GenerePalette(sw, param, true, param.withCode,"Palette");
+				SaveAsm.GenerePalette(sw, param, true, param.withCode, "Palette");
 
 
 			int endBank0 = 0;
@@ -571,7 +571,7 @@ namespace ConvImgCpc {
 			chkZoneVert.Visible = chk2Zone.Checked;
 		}
 
-		public void DoSave(bool imageMode, Main.PackMethode pkMethode) {
+		public void DoSave(bool imageMode, Main.PackMethode pkMethode, string labelPalette) {
 			string adrTxt = txbAdrDeb.Text;
 			int adrDeb = 0, adrMax = 0;
 			try {
@@ -595,13 +595,14 @@ namespace ConvImgCpc {
 				img.WindowState = FormWindowState.Minimized;
 				img.Show();
 				img.WindowState = FormWindowState.Normal;
-				SauveDeltaPack(adrDeb, adrMax, chkDelai.Checked, modeLigne, imageMode, optimSpeed, pkMethode, 8);
+				SauveDeltaPack(adrDeb, adrMax, chkDelai.Checked, modeLigne, imageMode, optimSpeed, pkMethode, 8, labelPalette);
 			}
 		}
 
 		private void bpSave_Click(object sender, EventArgs e) {
 			Hide();
-			DoSave(false, pkMethode);
+			string labelPalette = "Palette";
+			DoSave(false, pkMethode, labelPalette);
 			Close();
 		}
 	}

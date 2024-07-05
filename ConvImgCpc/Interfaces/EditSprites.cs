@@ -52,12 +52,7 @@ namespace ConvImgCpc {
 				if (!paletteSpriteOk)
 					Cpc.paletteSprite[c] = Cpc.Palette[c];
 
-				int col = Cpc.paletteSprite[c];
-				byte r = (byte)((col & 0x0F) * 17);
-				byte v = (byte)(((col & 0xF00) >> 8) * 17);
-				byte b = (byte)(((col & 0xF0) >> 4) * 17);
-				lblColors[c].BackColor = Color.FromArgb(r, v, b);
-				lblColors[c].ForeColor = (r * 9798 + v * 19235 + b * 3735) > 0x400000 ? Color.Black : Color.White;
+				SetLblColor(c, Cpc.paletteSprite[c]);
 				Controls.Add(lblColors[c]);
 				lblColors[c].BringToFront();
 
@@ -78,6 +73,14 @@ namespace ConvImgCpc {
 			comboBanque.SelectedIndex = 0;
 			DrawPens();
 			DrawSprite();
+		}
+
+		private void SetLblColor(int i, int col) {
+			byte r = (byte)((col & 0x0F) * 17);
+			byte v = (byte)(((col & 0xF00) >> 8) * 17);
+			byte b = (byte)(((col & 0xF0) >> 4) * 17);
+			lblColors[i].BackColor = Color.FromArgb(r, v, b);
+			lblColors[i].ForeColor = (r * 9798 + v * 19235 + b * 3735) > 0x400000 ? Color.Black : Color.White;
 		}
 
 		// Touches du clavier
@@ -107,12 +110,7 @@ namespace ConvImgCpc {
 				ed.ShowDialog(this);
 				if (ed.isValide) {
 					Cpc.paletteSprite[pen] = ed.ValColor;
-					col = ed.ValColor;
-					int r = ((col & 0x0F) * 17);
-					int v = (((col & 0xF00) >> 8) * 17);
-					int b = (((col & 0xF0) >> 4) * 17);
-					lblColors[pen].BackColor = Color.FromArgb(r, v, b);
-					lblColors[pen].ForeColor = (r * 9798 + v * 19235 + b * 3735) > 0x400000 ? Color.Black : Color.White;
+					SetLblColor(pen, ed.ValColor);
 					lblColors[pen].Refresh();
 					DrawMatrice();
 				}
@@ -138,18 +136,18 @@ namespace ConvImgCpc {
 
 		private void SetBmpSprite(int x, int y, int pixCol) {
 			pixCol &= 0x0F;
-			RvbColor c = Cpc.GetColor(Cpc.paletteSprite[pixCol & 0x0F]);
+			RvbColor c = Cpc.GetColor(Cpc.paletteSprite[pixCol]);
 			RvbColor damier = Cpc.GetColor(Cpc.paletteSprite[0]);
 			for (int zx = 0; zx < 38; zx++) {
-				for (int zy = 0; zy < 38; zy++) {
-					bmpSprite.SetPixel(zx + (x * 40), zy + (y * 40), pixCol == 0 ? damier : c);
-					damier.r ^= 255;
-					damier.v ^= 255;
-					damier.b ^= 255;
-				}
 				damier.r ^= 255;
 				damier.v ^= 255;
 				damier.b ^= 255;
+				for (int zy = 0; zy < 38; zy++) {
+					damier.r ^= 255;
+					damier.v ^= 255;
+					damier.b ^= 255;
+					bmpSprite.SetPixel(zx + (x * 40), zy + (y * 40), pixCol == 0 ? damier : c);
+				}
 			}
 		}
 
@@ -181,7 +179,7 @@ namespace ConvImgCpc {
 
 			for (int y = 0; y < 16; y++)
 				for (int x = 0; x < 16; x++)
-					SetBmpSprite(x, y, Cpc.spritesHard[numBank, numSprite, x, y] & 0x0F);
+					SetBmpSprite(x, y, Cpc.spritesHard[numBank, numSprite, x, y]);
 
 			RefreshUsedColor();
 			pictEditSprite.Refresh();
@@ -189,8 +187,7 @@ namespace ConvImgCpc {
 
 		private void SetPixelSprite(int x, int y) {
 			int pixCol = Cpc.spritesHard[numBank, numSprite, x, y] & 0x0F;
-			int col = Cpc.paletteSprite[pixCol];
-			RvbColor c = Cpc.GetColor(col);
+			RvbColor c = Cpc.GetColor(Cpc.paletteSprite[pixCol]);
 			SetBmpSprite(x, y, pixCol);
 
 			for (int zx = 0; zx < (x == 15 ? 3 : 4); zx++)
@@ -330,12 +327,7 @@ namespace ConvImgCpc {
 
 		private void DoGenPal() {
 			for (int c = 0; c < 16; c++) {
-				int col = Cpc.paletteSprite[c];
-				int r = ((col & 0x0F) * 17);
-				int v = (((col & 0xF00) >> 8) * 17);
-				int b = (((col & 0xF0) >> 4) * 17);
-				lblColors[c].BackColor = Color.FromArgb(r, v, b);
-				lblColors[c].ForeColor = (r * 9798 + v * 19235 + b * 3735) > 0x400000 ? Color.Black : Color.White;
+				SetLblColor(c, Cpc.paletteSprite[c]);
 				lblColors[c].Refresh();
 			}
 			DrawMatrice();
@@ -351,8 +343,7 @@ namespace ConvImgCpc {
 						for (int zy = 0; zy < tailley; zy++) {
 							if (zx + (x * taillex) + ofsx < 512 && zy + (y * tailley) + ofsy < 512) {
 								int col = Cpc.paletteSprite[Cpc.spritesHard[numBank, spr, x, y] & 0x0F];
-								RvbColor c = Cpc.GetColor(col);
-								bmp.SetPixel(zx + (x * taillex) + ofsx, zy + (y * tailley) + ofsy, c);
+								bmp.SetPixel(zx + (x * taillex) + ofsx, zy + (y * tailley) + ofsy, Cpc.GetColor(col));
 							}
 						}
 				}
@@ -660,12 +651,7 @@ namespace ConvImgCpc {
 
 			for (int i = 1; i < 16; i++) {
 				Cpc.paletteSprite[i] = tempPalette[16 - i];
-				int col = Cpc.paletteSprite[i];
-				int r = ((col & 0x0F) * 17);
-				int v = (((col & 0xF00) >> 8) * 17);
-				int b = (((col & 0xF0) >> 4) * 17);
-				lblColors[i].BackColor = Color.FromArgb(r, v, b);
-				lblColors[i].ForeColor = (r * 9798 + v * 19235 + b * 3735) > 0x400000 ? Color.Black : Color.White;
+				SetLblColor(i, Cpc.paletteSprite[i]);
 			}
 			DrawMatrice();
 			DrawSprite();
@@ -694,9 +680,8 @@ namespace ConvImgCpc {
 				tickTimer = 0;
 				lblRectSelSprite.BackColor = Color.Black;
 			}
-			else {
+			else
 				lblRectSelSprite.BackColor = Color.Red;
-			}
 		}
 
 		#region Gestion Lecture/Sauvegarde
@@ -753,7 +738,7 @@ namespace ConvImgCpc {
 							break;
 
 						case 3:
-							// Sauvegarde assembleur compacté 
+							// Sauvegarde assembleur compacté
 							dlgSave.ShowDialog();
 							if (dlgSave.saveMediaOk) {
 								int numSpr = 0;
@@ -762,8 +747,8 @@ namespace ConvImgCpc {
 								for (int bank = startBank; bank < endBank; bank++)
 									for (int i = 0; i < 16; i++) {
 										Array.Copy(buffer, numSpr * 256, spr, 0, 256);
-										int l = new PackModule().Pack(spr, 256, sprPk, 0, pkMethod);
 										sw2.WriteLine(dlgSave.LabelMedia + numSpr.ToString("00"));
+										int l = new PackModule().Pack(spr, 256, sprPk, 0, pkMethod);
 										SaveAsm.GenereDatas(sw2, sprPk, l, 16);
 										if (numSpr++ >= maxSprite) {
 											bank = endBank;
@@ -804,9 +789,9 @@ namespace ConvImgCpc {
 							dlgSave.ShowDialog();
 							if (dlgSave.saveMediaOk) {
 								StreamWriter sw3 = SaveAsm.OpenAsm(dlg.FileName, "");
-								int lt = new PackModule().Pack(buffer, 256 * (maxSprite + 1), sprPk, 0, pkMethod);
 								sw3.WriteLine("; " + (maxSprite + 1).ToString() + " sprites");
 								sw3.WriteLine(dlgSave.LabelMedia);
+								int lt = new PackModule().Pack(buffer, 256 * (maxSprite + 1), sprPk, 0, pkMethod);
 								SaveAsm.GenereDatas(sw3, sprPk, lt, 16);
 
 								if (chkWithPal.Checked)
@@ -866,8 +851,10 @@ namespace ConvImgCpc {
 							}
 					}
 					string filePalette = Path.ChangeExtension(dlg.FileName, "kit");
-					if (File.Exists(filePalette))
+					if (File.Exists(filePalette)) {
 						main.ReadPaletteSprite(filePalette, lblColors);
+						DoGenPal();
+					}
 				}
 				catch {
 					main.DisplayErreur(main.multilingue.GetString("EditSprites.TxtInfo2"));

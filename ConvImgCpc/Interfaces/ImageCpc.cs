@@ -328,7 +328,8 @@ namespace ConvImgCpc {
 			bitmapCpc.CreeBmpCpc(BmpLock, colMode5);
 			if (Cpc.modeVirtuel >= 7 && version != null) {
 				SaveAnim sa = new SaveAnim(main, fileName, version, pkMethode);
-				sa.DoSave(true, pkMethode);
+				string labelPalette = "Palette";
+				sa.DoSave(true, pkMethode, labelPalette);
 				sa.Dispose();
 			}
 			else
