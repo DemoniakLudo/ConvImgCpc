@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Reflection.Emit;
 
 namespace ConvImgCpc {
 	public class SaveAsm {

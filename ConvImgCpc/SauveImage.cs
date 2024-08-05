@@ -467,7 +467,7 @@ namespace ConvImgCpc {
 				}
 				sw = SaveAsm.OpenAsm(fileName, version, true);
 
-				string labelMedia = string.IsNullOrEmpty(dlgSave.LabelMedia) ? "ImageCmp" : dlgSave.LabelMedia;
+				string labelMedia = string.IsNullOrEmpty(dlgSave.LabelMedia) && param.withCode ? "ImageCmp" : dlgSave.LabelMedia;
 				string labelPalette = string.IsNullOrEmpty(dlgSave.LabelPal) ? "Palette" : dlgSave.LabelPal;
 				if (param.withCode) {
 					int org = 0xA500 - lg - (Cpc.modeVirtuel == 5 ? 600 : 0);

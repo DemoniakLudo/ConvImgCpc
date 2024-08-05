@@ -327,17 +327,17 @@ namespace ConvImgCpc {
 		}
 
 		public void GetSizePos(ref int posx, ref int posy, ref int sizex, ref int sizey) {
-			int.TryParse(tbxPosX.Text, out posx);
-			int.TryParse(tbxPosY.Text, out posy);
-			int.TryParse(tbxSizeX.Text, out sizex);
-			int.TryParse(tbxSizeY.Text, out sizey);
+			posx = (int)numPosX.Value;
+			posy = (int)numPosY.Value;
+			sizex = (int)numSizeX.Value;
+			sizey = (int)numSizeY.Value;
 		}
 
 		public void SetSizePos(int posx, int posy, int sizex, int sizey, bool doConvert = false) {
-			tbxPosX.Text = posx.ToString();
-			tbxPosY.Text = posy.ToString();
-			tbxSizeX.Text = sizex.ToString();
-			tbxSizeY.Text = sizey.ToString();
+			numPosX.Value = posx;
+			numPosY.Value = posy;
+			numSizeX.Value = sizex;
+			numSizeY.Value = sizey;
 			if (doConvert)
 				Convert(false);
 		}
@@ -456,10 +456,10 @@ namespace ConvImgCpc {
 				radioUserSize.Enabled = radioOrigin.Enabled = true;
 				Text = "ConvImgCPC - " + Path.GetFileName(fileName);
 				if (radioOrigin.Checked) {
-					tbxSizeX.Text = imgSrc.GetImage.Width.ToString();
-					tbxSizeY.Text = imgSrc.GetImage.Height.ToString();
-					tbxPosX.Text = "0";
-					tbxPosY.Text = "0";
+					numSizeX.Value = imgSrc.GetImage.Width;
+					numSizeY.Value = imgSrc.GetImage.Height;
+					numPosX.Value = 0;
+					numPosY.Value = 0;
 				}
 
 				if (!doNotReset) {
@@ -515,10 +515,10 @@ namespace ConvImgCpc {
 				chkGauss.Checked = param.filtre;
 				imgCpc.lockState = param.lockState;
 				if (param.sMode == Param.SizeMode.UserSize) {
-					tbxPosX.Text = param.posx.ToString();
-					tbxPosY.Text = param.posy.ToString();
-					tbxSizeX.Text = param.sizex.ToString();
-					tbxSizeY.Text = param.sizey.ToString();
+					numPosX.Value = param.posx;
+					numPosY.Value = param.posy;
+					numSizeX.Value = param.sizex;
+					numSizeY.Value = param.sizey;
 				}
 				for (int i = 0; i < 16; i++)
 					param.lockState[i] = 0;
@@ -843,13 +843,10 @@ namespace ConvImgCpc {
 				chkDiffErr.Checked = methode.SelectedItem.ToString() == "Floyd-Steinberg (2x2)";
 
 			if (radioUserSize.Checked) {
-				int x, y;
-				if (int.TryParse(tbxSizeX.Text, out x) && int.TryParse(tbxSizeY.Text, out y)) {
-					bpXDiv2.Enabled = x >= 16;
-					bpXMul2.Enabled = x <= 1920;
-					bpYDiv2.Enabled = y >= 16;
-					bpYMul2.Enabled = y <= 1080;
-				}
+				bpXDiv2.Enabled = numSizeX.Value >= 16;
+				bpXMul2.Enabled = numSizeX.Value <= 1920;
+				bpYDiv2.Enabled = numSizeY.Value >= 16;
+				bpYMul2.Enabled = numSizeY.Value <= 1080;
 			}
 
 			bpSave.Enabled = !autoRecalc.Checked;
@@ -877,12 +874,12 @@ namespace ConvImgCpc {
 		}
 
 		private void RadioUserSize_CheckedChanged(object sender, EventArgs e) {
-			tbxPosX.Visible = tbxPosY.Visible = tbxSizeX.Visible = tbxSizeY.Visible = label5.Visible = label7.Visible = radioUserSize.Checked || radioOrigin.Checked;
+			numPosX.Visible = numPosY.Visible = numSizeX.Visible = numSizeY.Visible = label5.Visible = label7.Visible = radioUserSize.Checked || radioOrigin.Checked;
 			bpXDiv2.Visible = bpXMul2.Visible = bpYDiv2.Visible = bpYMul2.Visible = radioUserSize.Checked;
-			if (radioOrigin.Checked || (radioUserSize.Checked && tbxSizeX.Text == "" && tbxSizeY.Text == ""))
+			if (radioOrigin.Checked || (radioUserSize.Checked/* && tbxSizeX.Text == "" && tbxSizeY.Text == ""*/))
 				SetSizePos(0, 0, imgSrc.GetImage.Width, imgSrc.GetImage.Height);
 
-			tbxSizeX.Enabled = tbxSizeY.Enabled = tbxPosX.Enabled = tbxPosY.Enabled = !radioOrigin.Checked;
+			numSizeX.Enabled = numSizeY.Enabled = numPosX.Enabled = numPosY.Enabled = !radioOrigin.Checked;
 			//bpCalcSprite.Visible = radioUserSize.Checked;
 			Convert(false);
 		}
@@ -1417,21 +1414,21 @@ namespace ConvImgCpc {
 
 		private void BpCheckMaj_Click(object sender, EventArgs e) {
 			CheckMaj();
-		
-			byte[] tabAdr = new byte[512];
-			for (int y = 0; y < 512; y += 2) {
+
+			byte[] tabAdr = new byte[544];
+			for (int y = 0; y < 544; y += 2) {
 				int adrCPC = (y >> 4) * 96 + (y & 14) * 0x400;
 				if (y > 255)
 					adrCPC += 0x3800;
 
 				adrCPC += 0x8200;
 				tabAdr[y] = (byte)(adrCPC & 0xFF);
-				tabAdr[y+1] = (byte)(adrCPC >> 8);
+				tabAdr[y + 1] = (byte)(adrCPC >> 8);
 			}
 			StreamWriter sw = SaveAsm.OpenAsm("C:\\Temp\\AdrEcr2.asm", null);
-			SaveAsm.GenereDatas(sw, tabAdr, 512, 16);
+			SaveAsm.GenereDatas(sw, tabAdr, 544, 16);
 			SaveAsm.CloseAsm(sw);
-		
+
 		}
 
 		private void ChkSwapEGX_CheckedChanged(object sender, EventArgs e) {
@@ -1440,35 +1437,23 @@ namespace ConvImgCpc {
 		}
 
 		private void BpXDiv2_Click(object sender, EventArgs e) {
-			int v = 0;
-			if (int.TryParse(tbxSizeX.Text, out v)) {
-				tbxSizeX.Text = (v >> 1).ToString();
-				InterfaceChange(sender, e);
-			}
+			numSizeX.Value = numSizeX.Value / 2;
+			InterfaceChange(sender, e);
 		}
 
 		private void BpXMul2_Click(object sender, EventArgs e) {
-			int v = 0;
-			if (int.TryParse(tbxSizeX.Text, out v)) {
-				tbxSizeX.Text = (v << 1).ToString();
-				InterfaceChange(sender, e);
-			}
+			numSizeX.Value = numSizeX.Value * 2;
+			InterfaceChange(sender, e);
 		}
 
 		private void BpYDiv2_Click(object sender, EventArgs e) {
-			int v = 0;
-			if (int.TryParse(tbxSizeY.Text, out v)) {
-				tbxSizeY.Text = (v >> 1).ToString();
-				InterfaceChange(sender, e);
-			}
+			numSizeY.Value = numSizeY.Value / 2;
+			InterfaceChange(sender, e);
 		}
 
 		private void BpYMul2_Click(object sender, EventArgs e) {
-			int v = 0;
-			if (int.TryParse(tbxSizeY.Text, out v)) {
-				tbxSizeY.Text = (v << 1).ToString();
-				InterfaceChange(sender, e);
-			}
+			numSizeY.Value = numSizeY.Value * 2;
+			InterfaceChange(sender, e);
 		}
 
 		private void BpTest_Click(object sender, EventArgs e) {
@@ -1488,6 +1473,18 @@ namespace ConvImgCpc {
 		private void ChkGauss_CheckedChanged(object sender, EventArgs e) {
 			param.filtre = chkGauss.Checked;
 			Convert(false);
+		}
+
+		private void bpTunnel_Click(object sender, EventArgs e) {
+			Enabled = false;
+			SaveFileDialog dlg = new SaveFileDialog();
+			dlg.InitialDirectory = param.lastSavePath;
+			dlg.Filter = "Totem raster assembleur (.asm)|*.asm";
+			DialogResult result = dlg.ShowDialog();
+			if (result == System.Windows.Forms.DialogResult.OK) {
+				imgCpc.SauveTunnel(dlg.FileName);
+			}
+			Enabled = true;
 		}
 	}
 }

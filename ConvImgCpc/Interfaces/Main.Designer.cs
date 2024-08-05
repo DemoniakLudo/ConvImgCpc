@@ -54,16 +54,16 @@
 			this.radioKeepSmaller = new System.Windows.Forms.RadioButton();
 			this.radioFit = new System.Windows.Forms.RadioButton();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.numPosY = new System.Windows.Forms.NumericUpDown();
+			this.numPosX = new System.Windows.Forms.NumericUpDown();
+			this.numSizeY = new System.Windows.Forms.NumericUpDown();
+			this.numSizeX = new System.Windows.Forms.NumericUpDown();
 			this.bpYMul2 = new System.Windows.Forms.Button();
 			this.bpYDiv2 = new System.Windows.Forms.Button();
 			this.bpXMul2 = new System.Windows.Forms.Button();
 			this.bpXDiv2 = new System.Windows.Forms.Button();
 			this.radioOrigin = new System.Windows.Forms.RadioButton();
 			this.label5 = new System.Windows.Forms.Label();
-			this.tbxPosY = new System.Windows.Forms.TextBox();
-			this.tbxSizeY = new System.Windows.Forms.TextBox();
-			this.tbxPosX = new System.Windows.Forms.TextBox();
-			this.tbxSizeX = new System.Windows.Forms.TextBox();
 			this.radioUserSize = new System.Windows.Forms.RadioButton();
 			this.label7 = new System.Windows.Forms.Label();
 			this.bpSave = new System.Windows.Forms.Button();
@@ -129,6 +129,7 @@
 			this.comboPackMethode = new System.Windows.Forms.ComboBox();
 			this.bpTest = new System.Windows.Forms.Button();
 			this.chk17K = new System.Windows.Forms.CheckBox();
+			this.bpTunnel = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -136,6 +137,10 @@
 			((System.ComponentModel.ISupportInitialize)(this.trackModeX)).BeginInit();
 			this.tramage.SuspendLayout();
 			this.groupBox1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.numPosY)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.numPosX)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.numSizeY)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.numSizeX)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.blue)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.green)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.red)).BeginInit();
@@ -504,16 +509,16 @@
 			// 
 			// groupBox1
 			// 
+			this.groupBox1.Controls.Add(this.numPosY);
+			this.groupBox1.Controls.Add(this.numPosX);
+			this.groupBox1.Controls.Add(this.numSizeY);
+			this.groupBox1.Controls.Add(this.numSizeX);
 			this.groupBox1.Controls.Add(this.bpYMul2);
 			this.groupBox1.Controls.Add(this.bpYDiv2);
 			this.groupBox1.Controls.Add(this.bpXMul2);
 			this.groupBox1.Controls.Add(this.bpXDiv2);
 			this.groupBox1.Controls.Add(this.radioOrigin);
 			this.groupBox1.Controls.Add(this.label5);
-			this.groupBox1.Controls.Add(this.tbxPosY);
-			this.groupBox1.Controls.Add(this.tbxSizeY);
-			this.groupBox1.Controls.Add(this.tbxPosX);
-			this.groupBox1.Controls.Add(this.tbxSizeX);
 			this.groupBox1.Controls.Add(this.radioUserSize);
 			this.groupBox1.Controls.Add(this.radioFit);
 			this.groupBox1.Controls.Add(this.radioKeepSmaller);
@@ -524,6 +529,68 @@
 			this.groupBox1.Size = new System.Drawing.Size(176, 181);
 			this.groupBox1.TabIndex = 49;
 			this.groupBox1.TabStop = false;
+			// 
+			// numPosY
+			// 
+			this.numPosY.Location = new System.Drawing.Point(116, 157);
+			this.numPosY.Maximum = new decimal(new int[] {
+            1080,
+            0,
+            0,
+            0});
+			this.numPosY.Minimum = new decimal(new int[] {
+            1080,
+            0,
+            0,
+            -2147483648});
+			this.numPosY.Name = "numPosY";
+			this.numPosY.Size = new System.Drawing.Size(58, 20);
+			this.numPosY.TabIndex = 53;
+			this.numPosY.ValueChanged += new System.EventHandler(this.InterfaceChange);
+			// 
+			// numPosX
+			// 
+			this.numPosX.Location = new System.Drawing.Point(51, 157);
+			this.numPosX.Maximum = new decimal(new int[] {
+            1920,
+            0,
+            0,
+            0});
+			this.numPosX.Minimum = new decimal(new int[] {
+            1920,
+            0,
+            0,
+            -2147483648});
+			this.numPosX.Name = "numPosX";
+			this.numPosX.Size = new System.Drawing.Size(58, 20);
+			this.numPosX.TabIndex = 53;
+			this.numPosX.ValueChanged += new System.EventHandler(this.InterfaceChange);
+			// 
+			// numSizeY
+			// 
+			this.numSizeY.Location = new System.Drawing.Point(116, 133);
+			this.numSizeY.Maximum = new decimal(new int[] {
+            1080,
+            0,
+            0,
+            0});
+			this.numSizeY.Name = "numSizeY";
+			this.numSizeY.Size = new System.Drawing.Size(58, 20);
+			this.numSizeY.TabIndex = 52;
+			this.numSizeY.ValueChanged += new System.EventHandler(this.InterfaceChange);
+			// 
+			// numSizeX
+			// 
+			this.numSizeX.Location = new System.Drawing.Point(51, 134);
+			this.numSizeX.Maximum = new decimal(new int[] {
+            1920,
+            0,
+            0,
+            0});
+			this.numSizeX.Name = "numSizeX";
+			this.numSizeX.Size = new System.Drawing.Size(58, 20);
+			this.numSizeX.TabIndex = 51;
+			this.numSizeX.ValueChanged += new System.EventHandler(this.InterfaceChange);
 			// 
 			// bpYMul2
 			// 
@@ -585,40 +652,6 @@
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(0, 13);
 			this.label5.TabIndex = 45;
-			// 
-			// tbxPosY
-			// 
-			this.tbxPosY.Location = new System.Drawing.Point(115, 157);
-			this.tbxPosY.Name = "tbxPosY";
-			this.tbxPosY.Size = new System.Drawing.Size(58, 20);
-			this.tbxPosY.TabIndex = 46;
-			this.tbxPosY.Text = "0";
-			this.tbxPosY.Validating += new System.ComponentModel.CancelEventHandler(this.InterfaceChange);
-			// 
-			// tbxSizeY
-			// 
-			this.tbxSizeY.Location = new System.Drawing.Point(115, 133);
-			this.tbxSizeY.Name = "tbxSizeY";
-			this.tbxSizeY.Size = new System.Drawing.Size(58, 20);
-			this.tbxSizeY.TabIndex = 44;
-			this.tbxSizeY.Validating += new System.ComponentModel.CancelEventHandler(this.InterfaceChange);
-			// 
-			// tbxPosX
-			// 
-			this.tbxPosX.Location = new System.Drawing.Point(50, 157);
-			this.tbxPosX.Name = "tbxPosX";
-			this.tbxPosX.Size = new System.Drawing.Size(59, 20);
-			this.tbxPosX.TabIndex = 45;
-			this.tbxPosX.Text = "0";
-			this.tbxPosX.Validating += new System.ComponentModel.CancelEventHandler(this.InterfaceChange);
-			// 
-			// tbxSizeX
-			// 
-			this.tbxSizeX.Location = new System.Drawing.Point(50, 133);
-			this.tbxSizeX.Name = "tbxSizeX";
-			this.tbxSizeX.Size = new System.Drawing.Size(60, 20);
-			this.tbxSizeX.TabIndex = 43;
-			this.tbxSizeX.Validating += new System.ComponentModel.CancelEventHandler(this.InterfaceChange);
 			// 
 			// radioUserSize
 			// 
@@ -1326,6 +1359,17 @@
 			this.chk17K.Text = "<=17Ko";
 			this.chk17K.UseVisualStyleBackColor = true;
 			// 
+			// bpTunnel
+			// 
+			this.bpTunnel.Location = new System.Drawing.Point(644, 523);
+			this.bpTunnel.Name = "bpTunnel";
+			this.bpTunnel.Size = new System.Drawing.Size(75, 23);
+			this.bpTunnel.TabIndex = 71;
+			this.bpTunnel.Text = "Tunnel";
+			this.bpTunnel.UseVisualStyleBackColor = true;
+			this.bpTunnel.Visible = false;
+			this.bpTunnel.Click += new System.EventHandler(this.bpTunnel_Click);
+			// 
 			// Main
 			// 
 			this.AllowDrop = true;
@@ -1333,6 +1377,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(723, 571);
 			this.Controls.Add(this.chk17K);
+			this.Controls.Add(this.bpTunnel);
 			this.Controls.Add(this.bpTest);
 			this.Controls.Add(this.comboPackMethode);
 			this.Controls.Add(this.label13);
@@ -1373,6 +1418,10 @@
 			this.tramage.PerformLayout();
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.numPosY)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.numPosX)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.numSizeY)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.numSizeX)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.blue)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.green)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.red)).EndInit();
@@ -1456,10 +1505,6 @@
 		private System.Windows.Forms.Button bpSave;
 		public System.Windows.Forms.Label lblInfoVersion;
 		private System.Windows.Forms.RadioButton radioUserSize;
-		private System.Windows.Forms.TextBox tbxSizeY;
-		private System.Windows.Forms.TextBox tbxPosX;
-		private System.Windows.Forms.TextBox tbxSizeX;
-		private System.Windows.Forms.TextBox tbxPosY;
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.CheckBox withCode;
@@ -1497,6 +1542,11 @@
 		private System.Windows.Forms.CheckBox chkGauss;
 		private System.Windows.Forms.Button bpRazAll;
 		public System.Windows.Forms.CheckBox chk17K;
+		private System.Windows.Forms.Button bpTunnel;
+		private System.Windows.Forms.NumericUpDown numSizeX;
+		private System.Windows.Forms.NumericUpDown numSizeY;
+		private System.Windows.Forms.NumericUpDown numPosY;
+		private System.Windows.Forms.NumericUpDown numPosX;
 	}
 }
 
