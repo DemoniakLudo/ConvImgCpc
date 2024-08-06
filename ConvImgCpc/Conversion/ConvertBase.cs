@@ -309,16 +309,23 @@ namespace ConvImgCpc {
 						cUtil = x;
 					}
 				}
-				if ((prm.newSortPal & 1) == 1)
-					for (x = 0; x < maxPen - 1; x++)
-						for (int c = x + 1; c < maxPen; c++)
-							if ((lockState[x] == 0 && lockState[c] == 0 && prm.disableState[x] == 0 && prm.disableState[c] == 0 && Cpc.Palette[x] != 0xFFFF && Cpc.Palette[c] != 0xFFFF)
-								&& ((GetValColor(Cpc.Palette[x], prm) > GetValColor(Cpc.Palette[c], prm) && (prm.newSortPal & 2) == 0)
-								|| (GetValColor(Cpc.Palette[x], prm) < GetValColor(Cpc.Palette[c], prm) && (prm.newSortPal & 2) != 0))) {
-								int tmp = Cpc.Palette[x];
-								Cpc.Palette[x] = Cpc.Palette[c];
-								Cpc.Palette[c] = tmp;
+				if ((prm.newSortPal & 1) == 1) {
+					bool sensPal = (prm.newSortPal & 2) == 0;
+					for (x = 0; x < maxPen - 1; x++) {
+						if (lockState[x] == 0 && prm.disableState[x] == 0 && Cpc.Palette[x] != 0xFFFF) {
+							for (int c = x + 1; c < maxPen; c++) {
+								if (lockState[c] == 0 && prm.disableState[c] == 0 && Cpc.Palette[c] != 0xFFFF) {
+									if ((GetValColor(Cpc.Palette[x], prm) > GetValColor(Cpc.Palette[c], prm) && sensPal)
+										|| (GetValColor(Cpc.Palette[x], prm) < GetValColor(Cpc.Palette[c], prm) && !sensPal)) {
+										int tmp = Cpc.Palette[x];
+										Cpc.Palette[x] = Cpc.Palette[c];
+										Cpc.Palette[c] = tmp;
+									}
+								}
 							}
+						}
+					}
+				}
 			}
 			catch (Exception ex) {
 				System.Windows.Forms.MessageBox.Show(ex.StackTrace, ex.Message);

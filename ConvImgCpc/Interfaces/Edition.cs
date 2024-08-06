@@ -304,36 +304,38 @@ namespace ConvImgCpc {
 				CaptureSprites(e);      // Capture de sprites hard
 			else
 				if (modeEdition.Checked) {
-				int incY = Cpc.modeVirtuel >= 8 && Cpc.modeVirtuel < 11 ? 8 : 2;
-				int yReel = (((offsetY + (e.Y / (zoom * (chkX2.Checked ? 2 : 1)))) & -incY) >> 1) - (modeImpDraw ? 1 : 0);
-				int tx = Cpc.CalcTx(yReel);
-				int xReel = (offsetX + (e.X / (zoom * (chkX2.Checked ? 2 : 1)))) & -tx;
-				lblInfoPos.Text = "x:" + xReel.ToString("000") + " y:" + yReel.ToString("000") + " - @:" + ((xReel >> 3) + Cpc.GetAdrCpc(yReel * 2)).ToString("X4");
-				switch (editToolMode) {
-					case EditTool.Draw:
-						ToolModeDraw(e);
-						break;
+					int incY = Cpc.modeVirtuel >= 8 && Cpc.modeVirtuel < 11 ? 8 : 2;
+					int yReel = (((offsetY + (e.Y / (zoom * (chkX2.Checked ? 2 : 1)))) & -incY) >> 1) - (modeImpDraw ? 1 : 0);
+					int tx = Cpc.CalcTx(yReel);
+					int xReel = (offsetX + (e.X / (zoom * (chkX2.Checked ? 2 : 1)))) & -tx;
+					lblInfoPos.Text = "x:" + xReel.ToString("000") + " y:" + yReel.ToString("000") + " - @:" + ((xReel >> 3) + Cpc.GetAdrCpc(yReel * 2)).ToString("X4");
+					if (xReel >= 0 && yReel >= 0) {
+						switch (editToolMode) {
+							case EditTool.Draw:
+								ToolModeDraw(e);
+								break;
 
-					case EditTool.Zoom:
-						ToolModeZoom(e);
-						break;
+							case EditTool.Zoom:
+								ToolModeZoom(e);
+								break;
 
-					case EditTool.Copy:
-						ToolModeCopy(e);
-						break;
+							case EditTool.Copy:
+								ToolModeCopy(e);
+								break;
 
-					case EditTool.Pick:
-						ToolModePick(e);
-						break;
+							case EditTool.Pick:
+								ToolModePick(e);
+								break;
 
-					case EditTool.Fill:
-						ToolModeFill(e);
-						break;
-				}
-				if (e.Button == MouseButtons.None) {
-					bpUndo.Enabled = undo.CanUndo;
-					bpRedo.Enabled = undo.CanRedo;
-				}
+							case EditTool.Fill:
+								ToolModeFill(e);
+								break;
+						}
+					}
+					if (e.Button == MouseButtons.None) {
+						bpUndo.Enabled = undo.CanUndo;
+						bpRedo.Enabled = undo.CanRedo;
+					}
 			}
 			else
 				MoveOrSize(e);      // Déplacement/Zoom image
@@ -364,6 +366,7 @@ namespace ConvImgCpc {
 				grpEdition.Visible = tailleCrayon.Enabled = true;
 				bpUndo.Enabled = bpRedo.Enabled = false;
 				tailleCrayon_SelectedIndexChanged(null, null);
+				main.param.autoRecalc = main.autoRecalc.Checked = false;
 			}
 			else {
 				CloseRendu();

@@ -203,6 +203,8 @@ namespace ConvImgCpc {
 				fenetreRendu.Picture.Refresh();
 			}
 			RefreshUsedColor();
+			if (chkAutoCopy.Checked)
+				CopyToClipBoard();
 		}
 
 		public void CaptureSprite(int captSizeX, int captSizeY, int posx, int posy, DirectBitmap bmp) {
@@ -377,7 +379,7 @@ namespace ConvImgCpc {
 
 		public void SauveSpriteCmp(string fileName, string version, Param param, Main.PackMethode pkMethode) {
 			byte[] ret = MakeSprite();
-			SaveMedia dlgSave = new SaveMedia("Soft sprite", Path.GetFileNameWithoutExtension(fileName),param.withPalette);
+			SaveMedia dlgSave = new SaveMedia("Soft sprite", Path.GetFileNameWithoutExtension(fileName), param.withPalette);
 			dlgSave.ShowDialog();
 			if (dlgSave.saveMediaOk) {
 				byte[] sprCmp = new byte[ret.Length];
@@ -977,7 +979,7 @@ namespace ConvImgCpc {
 			bpSaveWin.Enabled = imgMotif != null;
 		}
 
-		private void BpCopyImage_Click(object sender, EventArgs e) {
+		private void CopyToClipBoard() {
 			DirectBitmap bmpTmp = new DirectBitmap(Cpc.TailleX, Cpc.TailleY);
 			for (int x = 0; x < Cpc.TailleX; x++)
 				for (int y = 0; y < Cpc.TailleY; y++)
@@ -992,6 +994,10 @@ namespace ConvImgCpc {
 				Clipboard.SetImage(bmpTmp.Bitmap);
 
 			bmpTmp.Dispose();
+		}
+
+		private void BpCopyImage_Click(object sender, EventArgs e) {
+			CopyToClipBoard();
 			Render();
 		}
 	}

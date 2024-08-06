@@ -1497,7 +1497,7 @@
 		private System.Windows.Forms.GroupBox tramage;
 		private System.Windows.Forms.Label lblPct;
 		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.CheckBox autoRecalc;
+		public System.Windows.Forms.CheckBox autoRecalc;
 		private System.Windows.Forms.RadioButton radioKeepLarger;
 		private System.Windows.Forms.RadioButton radioKeepSmaller;
 		private System.Windows.Forms.RadioButton radioFit;

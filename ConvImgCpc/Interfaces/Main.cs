@@ -876,7 +876,7 @@ namespace ConvImgCpc {
 		private void RadioUserSize_CheckedChanged(object sender, EventArgs e) {
 			numPosX.Visible = numPosY.Visible = numSizeX.Visible = numSizeY.Visible = label5.Visible = label7.Visible = radioUserSize.Checked || radioOrigin.Checked;
 			bpXDiv2.Visible = bpXMul2.Visible = bpYDiv2.Visible = bpYMul2.Visible = radioUserSize.Checked;
-			if (radioOrigin.Checked || (radioUserSize.Checked/* && tbxSizeX.Text == "" && tbxSizeY.Text == ""*/))
+			if (radioOrigin.Checked || (radioUserSize.Checked && numSizeX.Value == 0 && numSizeY.Value == 0))
 				SetSizePos(0, 0, imgSrc.GetImage.Width, imgSrc.GetImage.Height);
 
 			numSizeX.Enabled = numSizeY.Enabled = numPosX.Enabled = numPosY.Enabled = !radioOrigin.Checked;

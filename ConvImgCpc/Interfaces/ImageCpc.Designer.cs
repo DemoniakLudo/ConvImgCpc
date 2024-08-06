@@ -63,6 +63,7 @@
 			this.bpCopyImage = new System.Windows.Forms.Button();
 			this.label2 = new System.Windows.Forms.Label();
 			this.groupBoxPosSprite = new System.Windows.Forms.GroupBox();
+			this.chkCopyZoom = new System.Windows.Forms.CheckBox();
 			this.bpSaveCoord = new System.Windows.Forms.Button();
 			this.bpReadCoord = new System.Windows.Forms.Button();
 			this.bpCopiePosSprites = new System.Windows.Forms.Button();
@@ -77,7 +78,7 @@
 			this.label5 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
 			this.numSprite = new System.Windows.Forms.NumericUpDown();
-			this.chkCopyZoom = new System.Windows.Forms.CheckBox();
+			this.chkAutoCopy = new System.Windows.Forms.CheckBox();
 			this.grpEdition.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictImpDraw)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
@@ -529,6 +530,15 @@
 			this.groupBoxPosSprite.TabStop = false;
 			this.groupBoxPosSprite.Text = "Affichage sprites hard sur image";
 			// 
+			// chkCopyZoom
+			// 
+			this.chkCopyZoom.Location = new System.Drawing.Point(309, 25);
+			this.chkCopyZoom.Name = "chkCopyZoom";
+			this.chkCopyZoom.Size = new System.Drawing.Size(125, 35);
+			this.chkCopyZoom.TabIndex = 8;
+			this.chkCopyZoom.Text = "Recopier zoom aux autres sprites";
+			this.chkCopyZoom.UseVisualStyleBackColor = true;
+			// 
 			// bpSaveCoord
 			// 
 			this.bpSaveCoord.Location = new System.Drawing.Point(611, 12);
@@ -680,14 +690,15 @@
 			this.numSprite.TabIndex = 0;
 			this.numSprite.ValueChanged += new System.EventHandler(this.NumSprite_ValueChanged);
 			// 
-			// chkCopyZoom
+			// chkAutoCopy
 			// 
-			this.chkCopyZoom.Location = new System.Drawing.Point(309, 25);
-			this.chkCopyZoom.Name = "chkCopyZoom";
-			this.chkCopyZoom.Size = new System.Drawing.Size(125, 35);
-			this.chkCopyZoom.TabIndex = 8;
-			this.chkCopyZoom.Text = "Recopier zoom aux autres sprites";
-			this.chkCopyZoom.UseVisualStyleBackColor = true;
+			this.chkAutoCopy.AutoSize = true;
+			this.chkAutoCopy.Location = new System.Drawing.Point(168, 681);
+			this.chkAutoCopy.Name = "chkAutoCopy";
+			this.chkAutoCopy.Size = new System.Drawing.Size(61, 17);
+			this.chkAutoCopy.TabIndex = 32;
+			this.chkAutoCopy.Text = "AllCopy";
+			this.chkAutoCopy.UseVisualStyleBackColor = true;
 			// 
 			// ImageCpc
 			// 
@@ -695,6 +706,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1216, 699);
 			this.ControlBox = false;
+			this.Controls.Add(this.chkAutoCopy);
 			this.Controls.Add(this.groupBoxPosSprite);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.bpCopyImage);
@@ -795,5 +807,6 @@
 		private System.Windows.Forms.Button bpSaveCoord;
 		private System.Windows.Forms.Button bpReadCoord;
 		private System.Windows.Forms.CheckBox chkCopyZoom;
+		private System.Windows.Forms.CheckBox chkAutoCopy;
 	}
 }
