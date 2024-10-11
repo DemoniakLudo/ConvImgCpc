@@ -629,16 +629,16 @@ namespace ConvImgCpc {
 			dlg.ShowDialog();
 			int nbImages = dlg.NbImages;
 			if (nbImages != -1) {
-				if (nbImages > 1) {
+				imgSrc.InitBitmap(nbImages);
+				if (nbImages == 1) {
+					SetInfo(multilingue.GetString("Main.prg.TxtInfo14"));
+					anim.Hide();
+				}
+				else {
 					anim.SetNbImgs(nbImages, 100);
 					SetInfo(multilingue.GetString("Main.prg.TxtInfo15") + nbImages + " images.");
 					anim.Show();
 				}
-				else {
-					SetInfo(multilingue.GetString("Main.prg.TxtInfo14"));
-					anim.Hide();
-				}
-				imgSrc.InitBitmap(nbImages);
 				chkAllPics.Visible = nbImages > 1;
 				imgCpc.InitBitmapCpc(nbImages, 100);
 				SelectImage(0);
@@ -965,7 +965,7 @@ namespace ConvImgCpc {
 
 		private void BpEditSprites_Click(object sender, EventArgs e) {
 			EditSprites dg = new EditSprites(this, pkMethode);
-			dg.ShowDialog();
+			dg.Show();
 		}
 
 		private void ChkInfo_CheckedChanged(object sender, EventArgs e) {

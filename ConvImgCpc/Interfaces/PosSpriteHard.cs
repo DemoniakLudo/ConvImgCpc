@@ -91,9 +91,9 @@ namespace ConvImgCpc {
 			string posTxt = "";
 			for (int i = 0; i < 16; i++) {
 				posTxt += ";\tSprite " + i.ToString() + Environment.NewLine;
-				posTxt += ";\tPosition x:" + posSprite.posXSprite[i].ToString() + Environment.NewLine;
-				posTxt += ";\tPosition y:" + posSprite.posYSprite[i].ToString() + Environment.NewLine;
-				posTxt += ";\tZoom:" + (posSprite.zoomXSprite[i] * 4 + posSprite.zoomYSprite[i]).ToString() + Environment.NewLine;
+				posTxt += "\tDW\t" + posSprite.posXSprite[i].ToString() + "," + posSprite.posYSprite[i].ToString() + "\t\t; position" + Environment.NewLine;
+				string z = (posSprite.zoomXSprite[i] * 4 + posSprite.zoomYSprite[i]).ToString();
+				posTxt += "\tDB\t" + z + "," + z + "," + z + "," + z + "\t\t; zoom" + Environment.NewLine;
 			}
 			Clipboard.SetText(posTxt);
 			MessageBox.Show("Position des sprites copié(es) dans le presse-papier");

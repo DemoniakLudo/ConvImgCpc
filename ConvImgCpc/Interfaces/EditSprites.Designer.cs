@@ -47,6 +47,7 @@
 			this.rbPt = new System.Windows.Forms.RadioButton();
 			this.rbLine = new System.Windows.Forms.RadioButton();
 			this.grpEdition = new System.Windows.Forms.GroupBox();
+			this.rbFill = new System.Windows.Forms.RadioButton();
 			this.bpVerticalFlip = new System.Windows.Forms.Button();
 			this.bpHorizontalFlip = new System.Windows.Forms.Button();
 			this.bpRotateSprite = new System.Windows.Forms.Button();
@@ -71,7 +72,6 @@
 			this.bpPasteBank = new System.Windows.Forms.Button();
 			this.numBanks = new System.Windows.Forms.NumericUpDown();
 			this.rbPosSpr = new System.Windows.Forms.RadioButton();
-			this.rbFill = new System.Windows.Forms.RadioButton();
 			((System.ComponentModel.ISupportInitialize)(this.zoomX)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.zoomY)).BeginInit();
 			this.grpEdition.SuspendLayout();
@@ -339,6 +339,17 @@
 			this.grpEdition.TabIndex = 29;
 			this.grpEdition.TabStop = false;
 			this.grpEdition.Text = "Edition";
+			// 
+			// rbFill
+			// 
+			this.rbFill.AutoSize = true;
+			this.rbFill.Location = new System.Drawing.Point(8, 311);
+			this.rbFill.Name = "rbFill";
+			this.rbFill.Size = new System.Drawing.Size(37, 17);
+			this.rbFill.TabIndex = 29;
+			this.rbFill.TabStop = true;
+			this.rbFill.Text = "Fill";
+			this.rbFill.UseVisualStyleBackColor = true;
 			// 
 			// bpVerticalFlip
 			// 
@@ -612,17 +623,6 @@
 			this.rbPosSpr.TabIndex = 35;
 			this.rbPosSpr.Text = "SetPos";
 			this.rbPosSpr.UseVisualStyleBackColor = true;
-			// 
-			// rbFill
-			// 
-			this.rbFill.AutoSize = true;
-			this.rbFill.Location = new System.Drawing.Point(8, 311);
-			this.rbFill.Name = "rbFill";
-			this.rbFill.Size = new System.Drawing.Size(37, 17);
-			this.rbFill.TabIndex = 29;
-			this.rbFill.TabStop = true;
-			this.rbFill.Text = "Fill";
-			this.rbFill.UseVisualStyleBackColor = true;
 			// 
 			// EditSprites
 			// 

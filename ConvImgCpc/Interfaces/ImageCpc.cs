@@ -661,6 +661,7 @@ namespace ConvImgCpc {
 
 		public void LirePalette(string fileName, Param param) {
 			if (SauveImage.LirePalette(fileName, param)) {
+				lockAllPal.Checked = true;
 				UpdatePalette();
 				main.SetInfo("Lecture palette ok.");
 			}
@@ -672,6 +673,7 @@ namespace ConvImgCpc {
 
 		public void LirePaletteKit(string fileName, Param param) {
 			if (SauveImage.LirePaletteKit(fileName)) {
+				lockAllPal.Checked = true;
 				UpdatePalette();
 				main.SetInfo("Lecture palette ok.");
 			}

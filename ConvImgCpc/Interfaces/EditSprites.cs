@@ -139,13 +139,13 @@ namespace ConvImgCpc {
 			RvbColor c = Cpc.GetColor(Cpc.paletteSprite[pixCol]);
 			RvbColor damier = Cpc.GetColor(Cpc.paletteSprite[0]);
 			for (int zx = 0; zx < 38; zx++) {
-				damier.r ^= 255;
-				damier.v ^= 255;
-				damier.b ^= 255;
+				//					damier.r ^= 255;
+				//					damier.v ^= 255;
+				//					damier.b ^= 255;
 				for (int zy = 0; zy < 38; zy++) {
-					damier.r ^= 255;
-					damier.v ^= 255;
-					damier.b ^= 255;
+					//				damier.r ^= 255;
+					//				damier.v ^= 255;
+					//				damier.b ^= 255;
 					bmpSprite.SetPixel(zx + (x * 40), zy + (y * 40), pixCol == 0 ? damier : c);
 				}
 			}
@@ -738,7 +738,7 @@ namespace ConvImgCpc {
 							break;
 
 						case 3:
-							// Sauvegarde assembleur compacté
+							// Sauvegarde assembleur compacté 
 							dlgSave.ShowDialog();
 							if (dlgSave.saveMediaOk) {
 								int numSpr = 0;
@@ -789,9 +789,10 @@ namespace ConvImgCpc {
 							dlgSave.ShowDialog();
 							if (dlgSave.saveMediaOk) {
 								StreamWriter sw3 = SaveAsm.OpenAsm(dlg.FileName, "");
-								sw3.WriteLine("; " + (maxSprite + 1).ToString() + " sprites");
+								int nbSpt = maxSprite + 1 - (startBank << 4);
+								sw3.WriteLine("; " + nbSpt.ToString() + " sprites");
 								sw3.WriteLine(dlgSave.LabelMedia);
-								int lt = new PackModule().Pack(buffer, 256 * (maxSprite + 1), sprPk, 0, pkMethod);
+								int lt = new PackModule().Pack(buffer, nbSpt << 8, sprPk, 0, pkMethod);
 								SaveAsm.GenereDatas(sw3, sprPk, lt, 16);
 
 								if (chkWithPal.Checked)

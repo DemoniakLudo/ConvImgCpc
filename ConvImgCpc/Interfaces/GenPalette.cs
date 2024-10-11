@@ -22,6 +22,7 @@ namespace ConvImgCpc {
 			txbEndV.Text = (ce >> 8).ToString();
 			txbEndB.Text = ((ce & 0xF0) >> 4).ToString();
 			FctToDo = a;
+			lblError.Text = "";
 		}
 
 		private void trkStartR_Scroll(object sender, EventArgs e) {
@@ -109,6 +110,7 @@ namespace ConvImgCpc {
 		}
 
 		private void CalcPalette() {
+			lblError.Text = "";
 			int start = 0, end = 0;
 			double rs = 0, vs = 0, bs = 0, re = 0, ve = 0, be = 0;
 			if (int.TryParse(txbFrom.Text, out start) && int.TryParse(txbTo.Text, out end) && start >= minStart && end <= 15 && start < end) {
@@ -134,6 +136,13 @@ namespace ConvImgCpc {
 					}
 				}
 			}
+			// Vérifier pas 2 fois la même couleur
+			for ( int i = 0; i < 16; i++)
+				for ( int j = i+1; j < 16; j++)
+					if (palette[i] == palette[j]) {
+						lblError.Text = "Color " + i.ToString() + " is the same of color " + j.ToString();
+						break;
+					}
 			if (FctToDo != null)
 				FctToDo();
 		}

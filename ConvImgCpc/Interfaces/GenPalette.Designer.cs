@@ -51,6 +51,7 @@
 			this.label5 = new System.Windows.Forms.Label();
 			this.label6 = new System.Windows.Forms.Label();
 			this.bpGetCol = new System.Windows.Forms.Button();
+			this.lblError = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.trkStartR)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.trkEndV)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.trkEndR)).BeginInit();
@@ -253,7 +254,7 @@
 			// 
 			// bpGenerate
 			// 
-			this.bpGenerate.Location = new System.Drawing.Point(183, 316);
+			this.bpGenerate.Location = new System.Drawing.Point(183, 340);
 			this.bpGenerate.Name = "bpGenerate";
 			this.bpGenerate.Size = new System.Drawing.Size(75, 23);
 			this.bpGenerate.TabIndex = 10;
@@ -325,11 +326,21 @@
 			this.bpGetCol.UseVisualStyleBackColor = true;
 			this.bpGetCol.Click += new System.EventHandler(this.bpGetCol_Click);
 			// 
+			// lblError
+			// 
+			this.lblError.AutoSize = true;
+			this.lblError.Location = new System.Drawing.Point(35, 314);
+			this.lblError.Name = "lblError";
+			this.lblError.Size = new System.Drawing.Size(39, 13);
+			this.lblError.TabIndex = 15;
+			this.lblError.Text = "lblError";
+			// 
 			// GenPalette
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(445, 351);
+			this.ClientSize = new System.Drawing.Size(445, 365);
+			this.Controls.Add(this.lblError);
 			this.Controls.Add(this.bpGetCol);
 			this.Controls.Add(this.label6);
 			this.Controls.Add(this.label5);
@@ -405,5 +416,6 @@
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.Button bpGetCol;
+		private System.Windows.Forms.Label lblError;
 	}
 }
