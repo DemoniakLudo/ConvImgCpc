@@ -130,6 +130,7 @@
 			this.bpTest = new System.Windows.Forms.Button();
 			this.chk17K = new System.Windows.Forms.CheckBox();
 			this.bpTunnel = new System.Windows.Forms.Button();
+			this.bpRasterPlus = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -1202,6 +1203,7 @@
 			// 
 			// groupBox2
 			// 
+			this.groupBox2.Controls.Add(this.bpRasterPlus);
 			this.groupBox2.Controls.Add(this.bpRazAll);
 			this.groupBox2.Controls.Add(this.chkGauss);
 			this.groupBox2.Controls.Add(this.sortPal);
@@ -1369,6 +1371,17 @@
 			this.bpTunnel.UseVisualStyleBackColor = true;
 			this.bpTunnel.Visible = false;
 			this.bpTunnel.Click += new System.EventHandler(this.bpTunnel_Click);
+			// 
+			// bpRasterPlus
+			// 
+			this.bpRasterPlus.Location = new System.Drawing.Point(273, 14);
+			this.bpRasterPlus.Name = "bpRasterPlus";
+			this.bpRasterPlus.Size = new System.Drawing.Size(75, 23);
+			this.bpRasterPlus.TabIndex = 68;
+			this.bpRasterPlus.Text = "Raster+";
+			this.bpRasterPlus.UseVisualStyleBackColor = true;
+			this.bpRasterPlus.Visible = false;
+			this.bpRasterPlus.Click += new System.EventHandler(this.bpRasterPlus_Click);
 			// 
 			// Main
 			// 
@@ -1547,6 +1560,7 @@
 		private System.Windows.Forms.NumericUpDown numSizeY;
 		private System.Windows.Forms.NumericUpDown numPosY;
 		private System.Windows.Forms.NumericUpDown numPosX;
+		private System.Windows.Forms.Button bpRasterPlus;
 	}
 }
 

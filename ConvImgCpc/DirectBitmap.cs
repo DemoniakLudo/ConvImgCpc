@@ -19,8 +19,27 @@ namespace ConvImgCpc {
 			CreateBitmap(width, height);
 		}
 
+		public DirectBitmap(string fileName) {
+			CreateBitmap(fileName);
+		}
+
 		public void CopyBits(DirectBitmap source) {
 			Array.Copy(source.tabBits, tabBits, tabBits.Length);
+		}
+
+		private void CreateBitmap(string fileName) {
+			Bitmap tmp = new Bitmap(fileName);
+			Width = tmp.Width;
+			Height = tmp.Height;
+			tabBits = new uint[tmp.Width * tmp.Height];
+			BitsHandle = GCHandle.Alloc(tabBits, GCHandleType.Pinned);
+			for (int x = 0; x < tmp.Width; x++)
+				for (int y = 0; y < tmp.Height; y++) {
+					Color c = tmp.GetPixel(x, y);
+					SetPixel(x, y, c.ToArgb());
+				}
+			Bitmap = new Bitmap(tmp.Width, tmp.Height);
+			tmp.Dispose();
 		}
 
 		private void CreateBitmap(int width, int height) {

@@ -813,6 +813,7 @@ namespace ConvImgCpc {
 				imgCpc.Reset(true);
 				Convert(false);
 			}
+			bpRasterPlus.Visible = nbLignes.Value == 272 && nbCols.Value == 96 && modePlus.Checked;
 		}
 
 		private void NbLignes_ValueChanged(object sender, EventArgs e) {
@@ -822,6 +823,7 @@ namespace ConvImgCpc {
 				imgCpc.Reset(true);
 				Convert(false);
 			}
+			bpRasterPlus.Visible = nbLignes.Value == 272 && nbCols.Value == 96 && modePlus.Checked;
 		}
 
 		private void Mode_SelectedIndexChanged(object sender, EventArgs e) {
@@ -1200,6 +1202,7 @@ namespace ConvImgCpc {
 		}
 
 		private void ModePlus_CheckedChanged(object sender, EventArgs e) {
+			bpRasterPlus.Visible = nbLignes.Value == 272 && nbCols.Value == 96 && modePlus.Checked;
 			bpEditSprites.Visible = modePlus.Checked;
 			Cpc.cpcPlus = modePlus.Checked;
 			newMethode.Visible = !modePlus.Checked;
@@ -1485,6 +1488,11 @@ namespace ConvImgCpc {
 				imgCpc.SauveTunnel(dlg.FileName);
 			}
 			Enabled = true;
+		}
+
+		private void bpRasterPlus_Click(object sender, EventArgs e) {
+			RasterTablePlus rs = new RasterTablePlus(imgCpc.BmpLock);
+			rs.Show();
 		}
 	}
 }

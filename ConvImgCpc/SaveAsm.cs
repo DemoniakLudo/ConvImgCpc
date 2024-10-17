@@ -4,7 +4,7 @@ using System.IO;
 namespace ConvImgCpc {
 	public class SaveAsm {
 		#region Code assembleur général
-		static public StreamWriter OpenAsm(string fileName, string version, bool withTaille = false) {
+		static public StreamWriter OpenAsm(string fileName, string version = null, bool withTaille = false) {
 			StreamWriter sw = File.CreateText(fileName);
 			if (version != null)
 				sw.WriteLine("; Généré par ConvImgCpc" + version.Replace('\n', ' ') + " - le " + DateTime.Now.ToString("dd/MM/yyyy (HH mm ss)"));
@@ -19,6 +19,42 @@ namespace ConvImgCpc {
 		static public void CloseAsm(StreamWriter sw) {
 			sw.Close();
 			sw.Dispose();
+		}
+
+		static public void WriteDatas(StreamWriter sw, int[] tabCol, int start, int end, int nbMotsLigne, int ligneSepa = 0, string labelSepa = null) {
+			sw.Write(GenereDatas(tabCol, start, end, nbMotsLigne, ligneSepa, labelSepa));
+		}
+
+		static public string GenereDatas(int[] tabCol, int start, int end, int nbMotsLigne, int ligneSepa = 0, string labelSepa = null) {
+			string ret = "";
+			string line = "\tDW\t";
+			int nbOctets = 0, nbLigne = 0, indiceLabel = 0;
+			if (labelSepa != null) {
+				ret += labelSepa + indiceLabel.ToString("00") + "\r\n";
+				indiceLabel++;
+			}
+			for (int i = start; i <= end; i++) {
+				line += "#" + tabCol[i].ToString("X3") + ",";
+				if (++nbOctets >= Math.Min(nbMotsLigne, 16)) {
+					ret += line.Substring(0, line.Length - 1) + "\r\n";
+					line = "\tDW\t";
+					nbOctets = 0;
+					if (i < end - 1 && ++nbLigne >= ligneSepa && ligneSepa > 0) {
+						nbLigne = 0;
+						if (labelSepa != null) {
+							ret += labelSepa + indiceLabel.ToString("00") + "\r\n";
+							indiceLabel++;
+						}
+						else
+							line += "\r\n";
+					}
+				}
+			}
+			if (nbOctets > 0)
+				ret += line.Substring(0, line.Length - 1) + "\r\n";
+
+			ret += "; Taille totale " + (end - start + 1).ToString() + " mots\r\n";
+			return ret;
 		}
 
 		static public void GenereDatas(StreamWriter sw, byte[] tabByte, int length, int nbOctetsLigne, int ligneSepa = 0, string labelSepa = null) {

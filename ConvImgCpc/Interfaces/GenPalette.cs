@@ -6,7 +6,10 @@ namespace ConvImgCpc {
 	public partial class GenPalette : Form {
 		private int[] palette;
 		private int minStart;
-		Action FctToDo;
+		Action FctToDo = null;
+		public bool done = false;
+		public int start = 0, end = 0;
+		private bool modeRaster = false;
 
 		public GenPalette(int[] p, int ms, Action a) {
 			InitializeComponent();
@@ -23,6 +26,25 @@ namespace ConvImgCpc {
 			txbEndB.Text = ((ce & 0xF0) >> 4).ToString();
 			FctToDo = a;
 			lblError.Text = "";
+		}
+
+		public GenPalette(ref int[] p, int ms, int me, RvbColor oldCol) {
+			InitializeComponent();
+			palette = p;
+			txbFrom.Text = ms.ToString();
+			txbTo.Text = me.ToString();
+			txbStartR.Text = (oldCol.r & 0x0F).ToString();
+			txbStartV.Text = (oldCol.v >> 4).ToString();
+			txbStartB.Text = ((oldCol.b & 0xF0) >> 4).ToString();
+			modeRaster = true;
+		}
+
+		public static void SetCompValue(string lblComp, ref TrackBar modComp, TrackBar r, TrackBar v, TrackBar b, Label lblColor) {
+			int i = -1;
+			if (int.TryParse(lblComp, out i) && i >= 0 && i <= 15) {
+				modComp.Value = i;
+				lblColor.BackColor = Color.FromArgb(r.Value * 17, v.Value * 17, b.Value * 17);
+			}
 		}
 
 		private void trkStartR_Scroll(object sender, EventArgs e) {
@@ -105,13 +127,22 @@ namespace ConvImgCpc {
 
 		private void bpGenerate_Click(object sender, EventArgs e) {
 			CalcPalette();
+
 			if (FctToDo == null)
 				Close();
+
+			done = true;
 		}
 
 		private void CalcPalette() {
+			if (modeRaster)
+				CalcPaletteRaster();
+			else
+				CalcPaletteStd();
+		}
+
+		private void CalcPaletteStd() {
 			lblError.Text = "";
-			int start = 0, end = 0;
 			double rs = 0, vs = 0, bs = 0, re = 0, ve = 0, be = 0;
 			if (int.TryParse(txbFrom.Text, out start) && int.TryParse(txbTo.Text, out end) && start >= minStart && end <= 15 && start < end) {
 				if (double.TryParse(txbStartR.Text, out rs) && double.TryParse(txbStartV.Text, out vs) && double.TryParse(txbStartB.Text, out bs)
@@ -137,14 +168,37 @@ namespace ConvImgCpc {
 				}
 			}
 			// Vérifier pas 2 fois la même couleur
-			for ( int i = 0; i < 16; i++)
-				for ( int j = i+1; j < 16; j++)
+			for (int i = 0; i < 16; i++)
+				for (int j = i + 1; j < 16; j++)
 					if (palette[i] == palette[j]) {
 						lblError.Text = "Color " + i.ToString() + " is the same of color " + j.ToString();
 						break;
 					}
 			if (FctToDo != null)
 				FctToDo();
+		}
+
+		private void CalcPaletteRaster() {
+			if (int.TryParse(txbFrom.Text, out start) && int.TryParse(txbTo.Text, out end) && start >= 0 && start < 272 && end >= 0 && end < 272 && start != end) {
+				double rs = 0, vs = 0, bs = 0, re = 0, ve = 0, be = 0;
+				if (double.TryParse(txbStartR.Text, out rs) && double.TryParse(txbStartV.Text, out vs) && double.TryParse(txbStartB.Text, out bs)
+					&& double.TryParse(txbEndR.Text, out re) && double.TryParse(txbEndV.Text, out ve) && double.TryParse(txbEndB.Text, out be)) {
+					if (rs >= 0 && vs >= 0 && bs >= 0 && re >= 0 && ve >= 0 && be >= 0 && rs < 16 && vs < 16 && bs < 16 && re < 16 && ve < 16 && be < 16) {
+						int sens = start < end ? 1 : -1;
+						double kr = (re - rs) / (end - start) * sens;
+						double kv = (ve - vs) / (end - start) * sens;
+						double kb = (be - bs) / (end - start) * sens;
+						for (int i = start; i != end + sens; i += sens) {
+							palette[i] = ((int)(bs) + ((int)(rs) << 4) + ((int)(vs) << 8));
+							rs += kr;
+							bs += kb;
+							vs += kv;
+						}
+						palette[end] = ((int)(be) + ((int)(re) << 4) + ((int)(ve) << 8));
+						done = true;
+					}
+				}
+			}
 		}
 
 		private void bpGetCol_Click(object sender, EventArgs e) {
