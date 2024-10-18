@@ -23,6 +23,7 @@ namespace ConvImgCpc {
 		public GestDSK dsk;
 		public enum OutputFormat { Binary = 0, Assembler, DSK, SNA };
 		private bool doNotReset = false;
+		public RasterTablePlus rasterPlus = null;
 
 		public Main(string[] args) {
 			InitializeComponent();
@@ -324,6 +325,8 @@ namespace ConvImgCpc {
 			}
 			imgCpc.SetImpDrawMode(param.modeImpDraw);
 			imgCpc.Render();
+			if (rasterPlus != null)
+				rasterPlus.DrawLines();
 		}
 
 		public void GetSizePos(ref int posx, ref int posy, ref int sizex, ref int sizey) {
@@ -1491,8 +1494,10 @@ namespace ConvImgCpc {
 		}
 
 		private void bpRasterPlus_Click(object sender, EventArgs e) {
-			RasterTablePlus rs = new RasterTablePlus(imgCpc.BmpLock);
-			rs.Show();
+			if (rasterPlus == null) {
+				rasterPlus = new RasterTablePlus(this, imgCpc.BmpLock);
+				rasterPlus.Show();
+			}
 		}
 	}
 }

@@ -58,8 +58,8 @@
 			this.bpVPlus = new System.Windows.Forms.Button();
 			this.bpRPlus = new System.Windows.Forms.Button();
 			this.bpBMoins = new System.Windows.Forms.Button();
-			this.bpVMoins = new System.Windows.Forms.Button();
 			this.bpRMoins = new System.Windows.Forms.Button();
+			this.bpVMoins = new System.Windows.Forms.Button();
 			this.bpImportImage = new System.Windows.Forms.Button();
 			this.lblLine = new System.Windows.Forms.Label();
 			this.bpLoad = new System.Windows.Forms.Button();
@@ -455,17 +455,6 @@
 			this.bpBMoins.UseVisualStyleBackColor = true;
 			this.bpBMoins.Click += new System.EventHandler(this.BpBMoins_Click);
 			// 
-			// bpVMoins
-			// 
-			this.bpVMoins.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.bpVMoins.Location = new System.Drawing.Point(21, 74);
-			this.bpVMoins.Name = "bpVMoins";
-			this.bpVMoins.Size = new System.Drawing.Size(30, 23);
-			this.bpVMoins.TabIndex = 30;
-			this.bpVMoins.Text = "-";
-			this.bpVMoins.UseVisualStyleBackColor = true;
-			this.bpVMoins.Click += new System.EventHandler(this.BpVMoins_Click);
-			// 
 			// bpRMoins
 			// 
 			this.bpRMoins.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -476,6 +465,17 @@
 			this.bpRMoins.Text = "-";
 			this.bpRMoins.UseVisualStyleBackColor = true;
 			this.bpRMoins.Click += new System.EventHandler(this.BpRMoins_Click);
+			// 
+			// bpVMoins
+			// 
+			this.bpVMoins.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.bpVMoins.Location = new System.Drawing.Point(21, 74);
+			this.bpVMoins.Name = "bpVMoins";
+			this.bpVMoins.Size = new System.Drawing.Size(30, 23);
+			this.bpVMoins.TabIndex = 30;
+			this.bpVMoins.Text = "-";
+			this.bpVMoins.UseVisualStyleBackColor = true;
+			this.bpVMoins.Click += new System.EventHandler(this.BpVMoins_Click);
 			// 
 			// bpImportImage
 			// 
@@ -579,6 +579,7 @@
 			this.Name = "RasterTablePlus";
 			this.ShowIcon = false;
 			this.Text = "RasterTablePlus";
+			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.RasterTablePlus_FormClosed);
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();

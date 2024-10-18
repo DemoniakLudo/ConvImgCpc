@@ -12,10 +12,12 @@ namespace ConvImgCpc {
 		DirectBitmap bmpFond = null;
 		private int selColor = -1;
 		private Raster raster = new Raster();
+		private Main main;
 
-		public RasterTablePlus(DirectBitmap bmp) {
+		public RasterTablePlus(Main m, DirectBitmap bmp) {
 			InitializeComponent();
 			bmpFond = bmp;
+			main = m;
 			bmpImage = new DirectBitmap(pictureBox.Width, pictureBox.Height);
 			pictureBox.Image = bmpImage.Bitmap;
 			SelectColor sel = new SelectColor();
@@ -32,7 +34,8 @@ namespace ConvImgCpc {
 
 		private void BpImportImage_Click(object sender, EventArgs e) {
 		}
-		private void DrawLines() {
+
+		public void DrawLines() {
 			txbStart.Text = newStart.ToString();
 			if (bmpFond == null || selColor == -1) {
 				for (int i = 0; i < 272; i++)
@@ -314,6 +317,10 @@ namespace ConvImgCpc {
 					SaveAsm.CloseAsm(sw);
 				}
 			}
+		}
+
+		private void RasterTablePlus_FormClosed(object sender, FormClosedEventArgs e) {
+			main.rasterPlus = null;
 		}
 	}
 }
