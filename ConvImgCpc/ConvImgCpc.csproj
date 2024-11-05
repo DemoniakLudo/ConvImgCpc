@@ -310,6 +310,10 @@
     <Content Include="Icones\Fr.png" />
     <Content Include="Icones\PickColor.png" />
     <None Include="Resources\InversePalette.png" />
+    <None Include="Resources\SmallDown.png" />
+    <None Include="Resources\SmallLeft.png" />
+    <None Include="Resources\SmallRight.png" />
+    <None Include="Resources\SmallUP.png" />
     <None Include="Icones\GenPalette.png" />
     <None Include="Icones\Next.png" />
     <None Include="Icones\Prev.png" />

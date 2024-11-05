@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace ConvImgCpc {
@@ -25,6 +26,22 @@ namespace ConvImgCpc {
 		public int[,] colMode5 = new int[272, 16];
 		private int startGrille, tailleGrille;
 		private bool drawGrille = false;
+
+		const int WM_LBUTTONUP = 0x0202;
+		const int PM_REMOVE = 0x0001;
+
+		[StructLayout(LayoutKind.Sequential)]
+		public struct NativeMessage {
+			public IntPtr handle;
+			public uint msg;
+			public IntPtr wParam;
+			public IntPtr lParam;
+			public uint time;
+			public System.Drawing.Point p;
+		}
+
+		[DllImport("user32.dll")]
+		public static extern int PeekMessage(out NativeMessage lpMsg, IntPtr window, uint wMsgFilterMin, uint wMsgFilterMax, uint wRemoveMsg);
 
 		public ImageCpc(Main m, ConvertDelegate fctConvert) {
 			InitializeComponent();
@@ -979,6 +996,7 @@ namespace ConvImgCpc {
 			}
 			Enabled = true;
 			bpSaveWin.Enabled = imgMotif != null;
+			while (PeekMessage(out NativeMessage msg, (System.IntPtr)0, WM_LBUTTONUP, WM_LBUTTONUP, PM_REMOVE) != 0) ;
 		}
 
 		private void CopyToClipBoard() {

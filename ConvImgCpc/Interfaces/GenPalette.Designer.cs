@@ -333,7 +333,6 @@
 			this.lblError.Name = "lblError";
 			this.lblError.Size = new System.Drawing.Size(39, 13);
 			this.lblError.TabIndex = 15;
-			this.lblError.Text = "lblError";
 			// 
 			// GenPalette
 			// 

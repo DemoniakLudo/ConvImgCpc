@@ -53,6 +53,15 @@
 			this.bpRotateSprite = new System.Windows.Forms.Button();
 			this.bpPasteSprite = new System.Windows.Forms.Button();
 			this.bpCopySprite = new System.Windows.Forms.Button();
+			this.rb28sprite = new System.Windows.Forms.RadioButton();
+			this.numBanks = new System.Windows.Forms.NumericUpDown();
+			this.rbPosSpr = new System.Windows.Forms.RadioButton();
+			this.bpScrDown = new System.Windows.Forms.Button();
+			this.bpScrUp = new System.Windows.Forms.Button();
+			this.bpScrRight = new System.Windows.Forms.Button();
+			this.bpScrLeft = new System.Windows.Forms.Button();
+			this.bpPasteBank = new System.Windows.Forms.Button();
+			this.bpCopyBank = new System.Windows.Forms.Button();
 			this.bpInversePalette = new System.Windows.Forms.Button();
 			this.bpGenPal = new System.Windows.Forms.Button();
 			this.bpClearSprite = new System.Windows.Forms.Button();
@@ -67,18 +76,13 @@
 			this.pictAllSprites = new System.Windows.Forms.PictureBox();
 			this.pictEditSprite = new System.Windows.Forms.PictureBox();
 			this.pictTest = new System.Windows.Forms.PictureBox();
-			this.rb28sprite = new System.Windows.Forms.RadioButton();
-			this.bpCopyBank = new System.Windows.Forms.Button();
-			this.bpPasteBank = new System.Windows.Forms.Button();
-			this.numBanks = new System.Windows.Forms.NumericUpDown();
-			this.rbPosSpr = new System.Windows.Forms.RadioButton();
 			((System.ComponentModel.ISupportInitialize)(this.zoomX)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.zoomY)).BeginInit();
 			this.grpEdition.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.numBanks)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictAllSprites)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictEditSprite)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictTest)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.numBanks)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// label1
@@ -401,6 +405,114 @@
 			this.bpCopySprite.UseVisualStyleBackColor = true;
 			this.bpCopySprite.Click += new System.EventHandler(this.BpCopySprite_Click);
 			// 
+			// rb28sprite
+			// 
+			this.rb28sprite.AutoSize = true;
+			this.rb28sprite.Location = new System.Drawing.Point(983, 176);
+			this.rb28sprite.Name = "rb28sprite";
+			this.rb28sprite.Size = new System.Drawing.Size(42, 17);
+			this.rb28sprite.TabIndex = 31;
+			this.rb28sprite.Text = "2x8";
+			this.rb28sprite.UseVisualStyleBackColor = true;
+			// 
+			// numBanks
+			// 
+			this.numBanks.Location = new System.Drawing.Point(1202, 107);
+			this.numBanks.Maximum = new decimal(new int[] {
+            8,
+            0,
+            0,
+            0});
+			this.numBanks.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.numBanks.Name = "numBanks";
+			this.numBanks.Size = new System.Drawing.Size(28, 20);
+			this.numBanks.TabIndex = 34;
+			this.numBanks.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			// 
+			// rbPosSpr
+			// 
+			this.rbPosSpr.AutoSize = true;
+			this.rbPosSpr.Location = new System.Drawing.Point(1028, 176);
+			this.rbPosSpr.Name = "rbPosSpr";
+			this.rbPosSpr.Size = new System.Drawing.Size(59, 17);
+			this.rbPosSpr.TabIndex = 35;
+			this.rbPosSpr.Text = "SetPos";
+			this.rbPosSpr.UseVisualStyleBackColor = true;
+			// 
+			// bpScrDown
+			// 
+			this.bpScrDown.Image = global::ConvImgCpc.Properties.Resources.SmallDown;
+			this.bpScrDown.Location = new System.Drawing.Point(29, 636);
+			this.bpScrDown.Name = "bpScrDown";
+			this.bpScrDown.Size = new System.Drawing.Size(18, 18);
+			this.bpScrDown.TabIndex = 40;
+			this.bpScrDown.UseVisualStyleBackColor = true;
+			this.bpScrDown.Click += new System.EventHandler(this.bpScrDown_Click);
+			// 
+			// bpScrUp
+			// 
+			this.bpScrUp.Image = global::ConvImgCpc.Properties.Resources.SmallUP;
+			this.bpScrUp.Location = new System.Drawing.Point(29, 617);
+			this.bpScrUp.Name = "bpScrUp";
+			this.bpScrUp.Size = new System.Drawing.Size(18, 18);
+			this.bpScrUp.TabIndex = 39;
+			this.bpScrUp.UseVisualStyleBackColor = true;
+			this.bpScrUp.Click += new System.EventHandler(this.bpScrUp_Click);
+			// 
+			// bpScrRight
+			// 
+			this.bpScrRight.Image = global::ConvImgCpc.Properties.Resources.SmallRight1;
+			this.bpScrRight.Location = new System.Drawing.Point(47, 628);
+			this.bpScrRight.Name = "bpScrRight";
+			this.bpScrRight.Size = new System.Drawing.Size(18, 18);
+			this.bpScrRight.TabIndex = 38;
+			this.bpScrRight.UseVisualStyleBackColor = true;
+			this.bpScrRight.Click += new System.EventHandler(this.bpScrRight_Click);
+			// 
+			// bpScrLeft
+			// 
+			this.bpScrLeft.Image = global::ConvImgCpc.Properties.Resources.SmallLeft;
+			this.bpScrLeft.Location = new System.Drawing.Point(11, 628);
+			this.bpScrLeft.Name = "bpScrLeft";
+			this.bpScrLeft.Size = new System.Drawing.Size(18, 18);
+			this.bpScrLeft.TabIndex = 36;
+			this.bpScrLeft.UseVisualStyleBackColor = true;
+			this.bpScrLeft.Click += new System.EventHandler(this.bpScrLeft_Click);
+			// 
+			// bpPasteBank
+			// 
+			this.bpPasteBank.Image = global::ConvImgCpc.Properties.Resources.Sprite_Paste;
+			this.bpPasteBank.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.bpPasteBank.Location = new System.Drawing.Point(877, 71);
+			this.bpPasteBank.Name = "bpPasteBank";
+			this.bpPasteBank.Size = new System.Drawing.Size(94, 46);
+			this.bpPasteBank.TabIndex = 33;
+			this.bpPasteBank.Text = "Bank";
+			this.bpPasteBank.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.bpPasteBank.UseVisualStyleBackColor = true;
+			this.bpPasteBank.Click += new System.EventHandler(this.BpPasteBank_Click);
+			// 
+			// bpCopyBank
+			// 
+			this.bpCopyBank.Image = global::ConvImgCpc.Properties.Resources.Sprite_Copy;
+			this.bpCopyBank.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.bpCopyBank.Location = new System.Drawing.Point(780, 71);
+			this.bpCopyBank.Name = "bpCopyBank";
+			this.bpCopyBank.Size = new System.Drawing.Size(94, 46);
+			this.bpCopyBank.TabIndex = 32;
+			this.bpCopyBank.Text = "Bank";
+			this.bpCopyBank.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.bpCopyBank.UseVisualStyleBackColor = true;
+			this.bpCopyBank.Click += new System.EventHandler(this.BpCopyBank_Click);
+			// 
 			// bpInversePalette
 			// 
 			this.bpInversePalette.Image = global::ConvImgCpc.Properties.Resources.InversePalette;
@@ -556,79 +668,15 @@
 			this.pictTest.MouseLeave += new System.EventHandler(this.PictTest_MouseLeave);
 			this.pictTest.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictTest_MouseMove);
 			// 
-			// rb28sprite
-			// 
-			this.rb28sprite.AutoSize = true;
-			this.rb28sprite.Location = new System.Drawing.Point(983, 176);
-			this.rb28sprite.Name = "rb28sprite";
-			this.rb28sprite.Size = new System.Drawing.Size(42, 17);
-			this.rb28sprite.TabIndex = 31;
-			this.rb28sprite.Text = "2x8";
-			this.rb28sprite.UseVisualStyleBackColor = true;
-			// 
-			// bpCopyBank
-			// 
-			this.bpCopyBank.Image = global::ConvImgCpc.Properties.Resources.Sprite_Copy;
-			this.bpCopyBank.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.bpCopyBank.Location = new System.Drawing.Point(780, 71);
-			this.bpCopyBank.Name = "bpCopyBank";
-			this.bpCopyBank.Size = new System.Drawing.Size(94, 46);
-			this.bpCopyBank.TabIndex = 32;
-			this.bpCopyBank.Text = "Bank";
-			this.bpCopyBank.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			this.bpCopyBank.UseVisualStyleBackColor = true;
-			this.bpCopyBank.Click += new System.EventHandler(this.BpCopyBank_Click);
-			// 
-			// bpPasteBank
-			// 
-			this.bpPasteBank.Image = global::ConvImgCpc.Properties.Resources.Sprite_Paste;
-			this.bpPasteBank.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.bpPasteBank.Location = new System.Drawing.Point(877, 71);
-			this.bpPasteBank.Name = "bpPasteBank";
-			this.bpPasteBank.Size = new System.Drawing.Size(94, 46);
-			this.bpPasteBank.TabIndex = 33;
-			this.bpPasteBank.Text = "Bank";
-			this.bpPasteBank.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			this.bpPasteBank.UseVisualStyleBackColor = true;
-			this.bpPasteBank.Click += new System.EventHandler(this.BpPasteBank_Click);
-			// 
-			// numBanks
-			// 
-			this.numBanks.Location = new System.Drawing.Point(1202, 107);
-			this.numBanks.Maximum = new decimal(new int[] {
-            8,
-            0,
-            0,
-            0});
-			this.numBanks.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-			this.numBanks.Name = "numBanks";
-			this.numBanks.Size = new System.Drawing.Size(28, 20);
-			this.numBanks.TabIndex = 34;
-			this.numBanks.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-			// 
-			// rbPosSpr
-			// 
-			this.rbPosSpr.AutoSize = true;
-			this.rbPosSpr.Location = new System.Drawing.Point(1028, 176);
-			this.rbPosSpr.Name = "rbPosSpr";
-			this.rbPosSpr.Size = new System.Drawing.Size(59, 17);
-			this.rbPosSpr.TabIndex = 35;
-			this.rbPosSpr.Text = "SetPos";
-			this.rbPosSpr.UseVisualStyleBackColor = true;
-			// 
 			// EditSprites
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1305, 708);
+			this.Controls.Add(this.bpScrDown);
+			this.Controls.Add(this.bpScrUp);
+			this.Controls.Add(this.bpScrRight);
+			this.Controls.Add(this.bpScrLeft);
 			this.Controls.Add(this.rbPosSpr);
 			this.Controls.Add(this.numBanks);
 			this.Controls.Add(this.bpPasteBank);
@@ -679,10 +727,10 @@
 			((System.ComponentModel.ISupportInitialize)(this.zoomY)).EndInit();
 			this.grpEdition.ResumeLayout(false);
 			this.grpEdition.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.numBanks)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictAllSprites)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictEditSprite)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictTest)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.numBanks)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -738,5 +786,9 @@
 		private System.Windows.Forms.NumericUpDown numBanks;
 		private System.Windows.Forms.RadioButton rbPosSpr;
 		private System.Windows.Forms.RadioButton rbFill;
+		private System.Windows.Forms.Button bpScrLeft;
+		private System.Windows.Forms.Button bpScrRight;
+		private System.Windows.Forms.Button bpScrUp;
+		private System.Windows.Forms.Button bpScrDown;
 	}
 }

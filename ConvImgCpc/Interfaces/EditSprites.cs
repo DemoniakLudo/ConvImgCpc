@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using static ConvImgCpc.ImageCpc;
 
 namespace ConvImgCpc {
 	public partial class EditSprites : Form {
@@ -20,6 +21,8 @@ namespace ConvImgCpc {
 		private int lineStartX = -1, lineStartY = -1;
 		private int oldPosx = -1, oldPosy = -1;
 
+		const int WM_LBUTTONUP = 0x0202;
+		const int PM_REMOVE = 0x0001;
 
 		public EditSprites(Main m, Main.PackMethode pk) {
 			InitializeComponent();
@@ -417,39 +420,39 @@ namespace ConvImgCpc {
 					}
 					else
 						if (rbPt.Checked) {
-						Cpc.spritesHard[numBank, numSprite, x, y] = penLeft;
-						SetPixelSprite(x, y);
-					}
-					else
+							Cpc.spritesHard[numBank, numSprite, x, y] = penLeft;
+							SetPixelSprite(x, y);
+						}
+						else
 							if (lineStartX == -1 && lineStartY == -1) {
-						lineStartX = x;
-						lineStartY = y;
-						for (x = 0; x < 16; x++)
-							for (y = 0; y < 16; y++)
-								tempSprite[x + 16 * y, 0] = Cpc.spritesHard[numBank, numSprite, x, y];
-					}
-					else {
-						for (int x1 = 0; x1 < 16; x1++)
-							for (int y1 = 0; y1 < 16; y1++)
-								Cpc.spritesHard[numBank, numSprite, x1, y1] = tempSprite[x1 + 16 * y1, 0];
+								lineStartX = x;
+								lineStartY = y;
+								for (x = 0; x < 16; x++)
+									for (y = 0; y < 16; y++)
+										tempSprite[x + 16 * y, 0] = Cpc.spritesHard[numBank, numSprite, x, y];
+							}
+							else {
+								for (int x1 = 0; x1 < 16; x1++)
+									for (int y1 = 0; y1 < 16; y1++)
+										Cpc.spritesHard[numBank, numSprite, x1, y1] = tempSprite[x1 + 16 * y1, 0];
 
-						DrawLine(lineStartX, lineStartY, x, y);
-					}
+								DrawLine(lineStartX, lineStartY, x, y);
+							}
 				}
 				else
 					if (e.Button == MouseButtons.Right) {
-					Cpc.spritesHard[numBank, numSprite, x, y] = 0;
-					SetPixelSprite(x, y);
-				}
-				else
-					if (lineStartX != -1 && lineStartY != -1) {
-					for (int x1 = 0; x1 < 16; x1++)
-						for (int y1 = 0; y1 < 16; y1++)
-							Cpc.spritesHard[numBank, numSprite, x1, y1] = tempSprite[x1 + 16 * y1, 0];
+						Cpc.spritesHard[numBank, numSprite, x, y] = 0;
+						SetPixelSprite(x, y);
+					}
+					else
+						if (lineStartX != -1 && lineStartY != -1) {
+							for (int x1 = 0; x1 < 16; x1++)
+								for (int y1 = 0; y1 < 16; y1++)
+									Cpc.spritesHard[numBank, numSprite, x1, y1] = tempSprite[x1 + 16 * y1, 0];
 
-					DrawLine(lineStartX, lineStartY, x, y, true);
-					lineStartX = lineStartY = -1;
-				}
+							DrawLine(lineStartX, lineStartY, x, y, true);
+							lineStartX = lineStartY = -1;
+						}
 				lblRectSelColor.Location = new Point(726, 70 + col * 40);       // Mise en évidence couleur sous la souris
 			}
 			else
@@ -571,29 +574,29 @@ namespace ConvImgCpc {
 			}
 			else
 				if (rb28sprite.Checked) {
-				for (int y = 0; y < 2; y++)
-					for (int x = 0; x < 4; x++)
-						DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
+					for (int y = 0; y < 2; y++)
+						for (int x = 0; x < 4; x++)
+							DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
 
-				for (int y = 0; y < 2; y++)
-					for (int x = 4; x < 8; x++)
-						DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
-			}
-			else
+					for (int y = 0; y < 2; y++)
+						for (int x = 4; x < 8; x++)
+							DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
+				}
+				else
 					if (rb42Sprite.Checked) {
-				for (int y = 0; y < 4; y++)
-					for (int x = 0; x < 2; x++)
-						DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
+						for (int y = 0; y < 4; y++)
+							for (int x = 0; x < 2; x++)
+								DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
 
-				for (int y = 0; y < 4; y++)
-					for (int x = 2; x < 4; x++)
-						DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
-			}
-			else {
-				for (int y = 0; y < nb; y++)
-					for (int x = 0; x < nb; x++)
-						DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
-			}
+						for (int y = 0; y < 4; y++)
+							for (int x = 2; x < 4; x++)
+								DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
+					}
+					else {
+						for (int y = 0; y < nb; y++)
+							for (int x = 0; x < nb; x++)
+								DrawSpriteTest(bmpTest, start++, x * taillex, y * tailley);
+					}
 			pictTest.Refresh();
 		}
 
@@ -826,6 +829,7 @@ namespace ConvImgCpc {
 		}
 
 		private void BpRead_Click(object sender, EventArgs e) {
+			Enabled = false;
 			OpenFileDialog dlg = new OpenFileDialog();
 			dlg.Filter = main.multilingue.GetString("EditSprites.TxtInfo1") + " (.spr)|*.spr";
 			if (dlg.ShowDialog() == DialogResult.OK) {
@@ -862,6 +866,8 @@ namespace ConvImgCpc {
 				}
 				DrawMatrice();
 			}
+			Enabled = true;
+			while (PeekMessage(out NativeMessage msg, (System.IntPtr)0, WM_LBUTTONUP, WM_LBUTTONUP, PM_REMOVE) != 0) ;
 		}
 
 		private void BpSave_Click(object sender, EventArgs e) {
@@ -897,5 +903,66 @@ namespace ConvImgCpc {
 			SauveSprites(true);
 		}
 		#endregion
+
+		private void bpScrUp_Click(object sender, EventArgs e) {
+			byte[] tmp = new byte[16];
+				for (int x = 0; x < 16; x++)
+					tmp[x ] = Cpc.spritesHard[numBank, numSprite, x, 0];
+
+			for (int y = 1; y < 16; y++)
+				for (int x = 0; x < 16; x++)
+					Cpc.spritesHard[numBank, numSprite, x, y-1] = Cpc.spritesHard[numBank, numSprite, x, y];
+
+			for (int x = 0; x < 16; x++)
+					 Cpc.spritesHard[numBank, numSprite, x, 15]=tmp[x];
+
+			DrawMatrice();
+		}
+
+		private void bpScrDown_Click(object sender, EventArgs e) {
+			byte[] tmp = new byte[16];
+			for (int x = 0; x < 16; x++)
+				tmp[x] = Cpc.spritesHard[numBank, numSprite, x, 15];
+
+			for (int y = 15; y >0; y--)
+				for (int x = 0; x < 16; x++)
+					Cpc.spritesHard[numBank, numSprite, x, y ] = Cpc.spritesHard[numBank, numSprite, x, y-1];
+
+			for (int x = 0; x < 16; x++)
+				Cpc.spritesHard[numBank, numSprite, x, 0] = tmp[x];
+
+			DrawMatrice();
+		}
+
+		private void bpScrLeft_Click(object sender, EventArgs e) {
+			byte[] tmp = new byte[16];
+			for (int y = 0; y < 16; y++)
+				tmp[y] = Cpc.spritesHard[numBank, numSprite, 0, y];
+
+			for (int x = 1; x < 16; x++)
+				for (int y = 0; y < 16; y++)
+					Cpc.spritesHard[numBank, numSprite, x-1, y] = Cpc.spritesHard[numBank, numSprite, x, y];
+
+			for (int y = 0; y < 16; y++)
+				Cpc.spritesHard[numBank, numSprite, 15,y] = tmp[y];
+
+			DrawMatrice();
+
+		}
+
+		private void bpScrRight_Click(object sender, EventArgs e) {
+			byte[] tmp = new byte[16];
+			for (int y = 0; y < 16; y++)
+				tmp[y] = Cpc.spritesHard[numBank, numSprite, 15,y];
+
+			for (int x = 15; x > 0; x--)
+				for (int y = 0; y < 16; y++)
+					Cpc.spritesHard[numBank, numSprite, x, y] = Cpc.spritesHard[numBank, numSprite, x-1,y];
+
+			for (int y = 0; y < 16; y++)
+				Cpc.spritesHard[numBank, numSprite, 0,y] = tmp[y];
+
+			DrawMatrice();
+		}
 	}
 }

@@ -692,6 +692,7 @@
 			// 
 			// chkAutoCopy
 			// 
+			this.chkAutoCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.chkAutoCopy.AutoSize = true;
 			this.chkAutoCopy.Location = new System.Drawing.Point(168, 681);
 			this.chkAutoCopy.Name = "chkAutoCopy";

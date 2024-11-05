@@ -135,14 +135,22 @@ namespace ConvImgCpc {
 		}
 
 		private void CalcPalette() {
+			lblError.Text = "";
 			if (modeRaster)
 				CalcPaletteRaster();
 			else
 				CalcPaletteStd();
+
+			// Vérifier pas 2 fois la même couleur
+			for (int i = 0; i < 16; i++)
+				for (int j = i + 1; j < 16; j++)
+					if (palette[i] == palette[j]) {
+						lblError.Text = "Color " + i.ToString() + " is the same of color " + j.ToString();
+						break;
+					}
 		}
 
 		private void CalcPaletteStd() {
-			lblError.Text = "";
 			double rs = 0, vs = 0, bs = 0, re = 0, ve = 0, be = 0;
 			if (int.TryParse(txbFrom.Text, out start) && int.TryParse(txbTo.Text, out end) && start >= minStart && end <= 15 && start < end) {
 				if (double.TryParse(txbStartR.Text, out rs) && double.TryParse(txbStartV.Text, out vs) && double.TryParse(txbStartB.Text, out bs)
@@ -167,13 +175,6 @@ namespace ConvImgCpc {
 					}
 				}
 			}
-			// Vérifier pas 2 fois la même couleur
-			for (int i = 0; i < 16; i++)
-				for (int j = i + 1; j < 16; j++)
-					if (palette[i] == palette[j]) {
-						lblError.Text = "Color " + i.ToString() + " is the same of color " + j.ToString();
-						break;
-					}
 			if (FctToDo != null)
 				FctToDo();
 		}
