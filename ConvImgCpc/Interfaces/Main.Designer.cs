@@ -119,18 +119,19 @@
 			this.rb6bits = new System.Windows.Forms.RadioButton();
 			this.bpRaz = new System.Windows.Forms.Button();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.bpRasterPlus = new System.Windows.Forms.Button();
 			this.bpRazAll = new System.Windows.Forms.Button();
 			this.chkGauss = new System.Windows.Forms.CheckBox();
 			this.bpEditSprites = new System.Windows.Forms.Button();
-			this.bpFr = new System.Windows.Forms.Button();
-			this.bpEn = new System.Windows.Forms.Button();
 			this.bpCheckMaj = new System.Windows.Forms.Button();
 			this.label13 = new System.Windows.Forms.Label();
 			this.comboPackMethode = new System.Windows.Forms.ComboBox();
 			this.bpTest = new System.Windows.Forms.Button();
 			this.chk17K = new System.Windows.Forms.CheckBox();
 			this.bpTunnel = new System.Windows.Forms.Button();
-			this.bpRasterPlus = new System.Windows.Forms.Button();
+			this.bpEditSplit = new System.Windows.Forms.Button();
+			this.bpEn = new System.Windows.Forms.Button();
+			this.bpFr = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nbLignes)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pctTrame)).BeginInit();
@@ -1203,6 +1204,7 @@
 			// 
 			// groupBox2
 			// 
+			this.groupBox2.Controls.Add(this.bpEditSplit);
 			this.groupBox2.Controls.Add(this.bpRasterPlus);
 			this.groupBox2.Controls.Add(this.bpRazAll);
 			this.groupBox2.Controls.Add(this.chkGauss);
@@ -1257,6 +1259,17 @@
 			this.groupBox2.TabIndex = 66;
 			this.groupBox2.TabStop = false;
 			// 
+			// bpRasterPlus
+			// 
+			this.bpRasterPlus.Location = new System.Drawing.Point(273, 14);
+			this.bpRasterPlus.Name = "bpRasterPlus";
+			this.bpRasterPlus.Size = new System.Drawing.Size(75, 23);
+			this.bpRasterPlus.TabIndex = 68;
+			this.bpRasterPlus.Text = "Raster+";
+			this.bpRasterPlus.UseVisualStyleBackColor = true;
+			this.bpRasterPlus.Visible = false;
+			this.bpRasterPlus.Click += new System.EventHandler(this.bpRasterPlus_Click);
+			// 
 			// bpRazAll
 			// 
 			this.bpRazAll.Location = new System.Drawing.Point(430, 289);
@@ -1287,27 +1300,6 @@
 			this.bpEditSprites.UseVisualStyleBackColor = true;
 			this.bpEditSprites.Visible = false;
 			this.bpEditSprites.Click += new System.EventHandler(this.BpEditSprites_Click);
-			// 
-			// bpFr
-			// 
-			this.bpFr.Image = global::ConvImgCpc.Properties.Resources.Fr;
-			this.bpFr.Location = new System.Drawing.Point(475, 513);
-			this.bpFr.Name = "bpFr";
-			this.bpFr.Size = new System.Drawing.Size(80, 42);
-			this.bpFr.TabIndex = 68;
-			this.bpFr.UseVisualStyleBackColor = true;
-			this.bpFr.Click += new System.EventHandler(this.BpFr_Click);
-			// 
-			// bpEn
-			// 
-			this.bpEn.Image = global::ConvImgCpc.Properties.Resources.En;
-			this.bpEn.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.bpEn.Location = new System.Drawing.Point(562, 513);
-			this.bpEn.Name = "bpEn";
-			this.bpEn.Size = new System.Drawing.Size(80, 42);
-			this.bpEn.TabIndex = 68;
-			this.bpEn.UseVisualStyleBackColor = true;
-			this.bpEn.Click += new System.EventHandler(this.BpEn_Click);
 			// 
 			// bpCheckMaj
 			// 
@@ -1372,16 +1364,37 @@
 			this.bpTunnel.Visible = false;
 			this.bpTunnel.Click += new System.EventHandler(this.bpTunnel_Click);
 			// 
-			// bpRasterPlus
+			// bpEditSplit
 			// 
-			this.bpRasterPlus.Location = new System.Drawing.Point(273, 14);
-			this.bpRasterPlus.Name = "bpRasterPlus";
-			this.bpRasterPlus.Size = new System.Drawing.Size(75, 23);
-			this.bpRasterPlus.TabIndex = 68;
-			this.bpRasterPlus.Text = "Raster+";
-			this.bpRasterPlus.UseVisualStyleBackColor = true;
-			this.bpRasterPlus.Visible = false;
-			this.bpRasterPlus.Click += new System.EventHandler(this.bpRasterPlus_Click);
+			this.bpEditSplit.Location = new System.Drawing.Point(279, 13);
+			this.bpEditSplit.Name = "bpEditSplit";
+			this.bpEditSplit.Size = new System.Drawing.Size(75, 23);
+			this.bpEditSplit.TabIndex = 69;
+			this.bpEditSplit.Text = "SplitEditor";
+			this.bpEditSplit.UseVisualStyleBackColor = true;
+			this.bpEditSplit.Visible = false;
+			this.bpEditSplit.Click += new System.EventHandler(this.bpSplitEditor_Click);
+			// 
+			// bpEn
+			// 
+			this.bpEn.Image = global::ConvImgCpc.Properties.Resources.En;
+			this.bpEn.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+			this.bpEn.Location = new System.Drawing.Point(562, 513);
+			this.bpEn.Name = "bpEn";
+			this.bpEn.Size = new System.Drawing.Size(80, 42);
+			this.bpEn.TabIndex = 68;
+			this.bpEn.UseVisualStyleBackColor = true;
+			this.bpEn.Click += new System.EventHandler(this.BpEn_Click);
+			// 
+			// bpFr
+			// 
+			this.bpFr.Image = global::ConvImgCpc.Properties.Resources.Fr;
+			this.bpFr.Location = new System.Drawing.Point(475, 513);
+			this.bpFr.Name = "bpFr";
+			this.bpFr.Size = new System.Drawing.Size(80, 42);
+			this.bpFr.TabIndex = 68;
+			this.bpFr.UseVisualStyleBackColor = true;
+			this.bpFr.Click += new System.EventHandler(this.BpFr_Click);
 			// 
 			// Main
 			// 
@@ -1561,6 +1574,7 @@
 		private System.Windows.Forms.NumericUpDown numPosY;
 		private System.Windows.Forms.NumericUpDown numPosX;
 		private System.Windows.Forms.Button bpRasterPlus;
+		private System.Windows.Forms.Button bpEditSplit;
 	}
 }
 

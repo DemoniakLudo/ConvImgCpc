@@ -222,6 +222,12 @@ namespace ConvImgCpc {
 			RefreshUsedColor();
 			if (chkAutoCopy.Checked)
 				CopyToClipBoard();
+
+			if (main.rasterPlus != null)
+				main.rasterPlus.DrawLines();
+
+			if (main.editSplit != null)
+				main.editSplit.UpdateScrSplit(BmpLock);
 		}
 
 		public void CaptureSprite(int captSizeX, int captSizeY, int posx, int posy, DirectBitmap bmp) {

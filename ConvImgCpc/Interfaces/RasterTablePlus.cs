@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
 namespace ConvImgCpc {
 	public partial class RasterTablePlus : Form {
-		DirectBitmap bmpImage;
-		int newStart = 0, newEnd = 15, lastAddConstat = 0;
-		RvbColor oldCol = new RvbColor(0);
-		DirectBitmap bmpFond = null;
+		private DirectBitmap bmpImage;
+		private DirectBitmap bmpFond = null;
+		private RvbColor oldCol = new RvbColor(0);
+		private int newStart = 0, newEnd = 15, lastAddConstat = 0;
 		private int selColor = -1;
 		private Raster raster = new Raster();
 		private Main main;

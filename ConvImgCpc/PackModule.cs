@@ -345,7 +345,7 @@ namespace ConvImgCpc {
 			write_bit(0, output_data);
 		}
 
-		private int PackZX0(byte[] input_data, int input_size, byte[] output_data, int output_size) {
+		public int PackZX0(byte[] input_data, int input_size, byte[] output_data, int output_size) {
 			Show();
 			int bits, length;
 			int max_offset = input_size - 1 > MAX_OFFSET_ZX0 ? MAX_OFFSET_ZX0 : input_size - 1 < 1 ? 1 : input_size - 1;

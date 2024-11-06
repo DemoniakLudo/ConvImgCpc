@@ -8,6 +8,11 @@ namespace ConvImgCpc {
 		static private byte[] bufTmp = new byte[0x10000];
 		public byte[] bmpCpc = new byte[0x10000];
 		public byte[] imgAscii = new byte[0x1000];
+		public int[] tabMode = new int[272];
+
+		public SplitEcran splitEcran = new SplitEcran();
+		public int[,,] splitPalette = new int[96, 272, 17];
+		public const int retardMin = -4; // ### 4;
 
 		public bool isCalc = false;
 
@@ -24,6 +29,71 @@ namespace ConvImgCpc {
 			TailleY = ty;
 		}
 
+		public BitmapCpc(int tx, int ty, int mode) {
+			nbCol = tx >> 3;
+			nbLig = ty >> 1;
+			for (int y = 0; y < 272; y++) {
+				tabMode[y] = mode;
+				LigneSplit l = new LigneSplit();
+				l.retard = retardMin;
+				for (int j = 0; j < 7; j++)
+					l.ListeSplit.Add(new Split());
+
+				splitEcran.LignesSplit.Add(l);
+				for (int x = 0; x < 96; x++)
+					for (int i = 0; i < 16; i++)
+						splitPalette[x, y, i] = Palette[i]; // ### a reconstruire avec les splits ?
+			}
+		}
+
+		private int AppliquePalette(int x, int y, int xpos, int[] curPal) {
+			for (; x < xpos; x++)
+				for (int i = 0; i < 16; i++)
+					splitPalette[x, y, i] = curPal[i];
+
+			return x;
+		}
+
+
+		public void CalcPaletteSplit() {
+			int[] curPal = new int[16];
+			for (int i = 0; i < 16; i++)
+				curPal[i] = splitPalette[0, 0, i];
+
+			// Raz splits
+			for (int y = 0; y < 272; y++)
+				for (int x = 0; x < 96; x++)
+					for (int i = 0; i < 16; i++)
+						splitPalette[x, y, i] = curPal[i];
+
+			int numCol = 0;
+			for (int y = 0; y < 272; y++) {
+				LigneSplit lSpl = splitEcran.LignesSplit[y];
+				numCol = lSpl.numPen;
+				int xpos = lSpl.retard >> 2;
+				// de x à xpos => faire palette = curPal
+				int x = AppliquePalette(0, y, xpos, curPal);
+				for (int ns = 0; ns < 7; ns++) {
+					Split s = lSpl.GetSplit(ns);
+					if (s.enable) {
+						xpos += s.longueur >> 2;
+						curPal[numCol] = s.couleur;
+						if (xpos > 96)
+							xpos = 96;
+
+						// de x à xpos => faire palette = curPal
+						x = AppliquePalette(x, y, xpos, curPal);
+					}
+					else
+						break;
+				}
+				// Terminer ligne
+				AppliquePalette(x, y, 96, curPal);
+				if (y < 271 && lSpl.changeMode)
+					tabMode[y + 1] = lSpl.newMode;
+			}
+		}
+
 		public RvbColor GetColorPal(int palEntry) {
 			return GetColor(Palette[palEntry]);
 		}
@@ -33,6 +103,11 @@ namespace ConvImgCpc {
 			for (int i = 0; i < 16; i++)
 				Palette[i] = plus ? ((palStart[startAdr + 1 + (i << 1)] << 4) & 0xF0) + (palStart[startAdr + 1 + (i << 1)] >> 4) + (palStart[startAdr + 2 + (i << 1)] << 8) : palStart[startAdr + i + 1];
 		}
+
+		public RvbColor GetPaletteColor(int x, int y, int col) {
+			return RgbCPC[splitPalette[x, y, col] < 27 ? splitPalette[x, y, col] : 0];
+		}
+
 
 		private bool InitDatas() {
 			bool Ret = false;
@@ -320,6 +395,44 @@ namespace ConvImgCpc {
 				imgCpc.Render();
 			}
 			return (loc);
+		}
+
+		public DirectBitmap Render(DirectBitmap bmp, int offsetX, int offsetY, bool getPalMode) {
+			for (int y = 0; y < (nbLig << 1); y += 2) {
+				int adrCPC = (y >> 4) * nbCol + (y & 14) * 0x400;
+				if (y > 255 && (nbCol * nbLig > 0x3FFF))
+					adrCPC += 0x3800;
+
+				adrCPC += offsetX >> 3;
+				int xBitmap = 0;
+				for (int x = 0; x < nbCol; x++) {
+					byte octet = bmpCpc[adrCPC + x];
+					switch (tabMode[y >> 1]) {
+						case 0:
+							bmp.SetHorLineDouble(xBitmap, y, 4, GetPalCPC(splitPalette[x, y >> 1, (octet >> 7) + ((octet & 0x20) >> 3) + ((octet & 0x08) >> 2) + ((octet & 0x02) << 2)]));
+							bmp.SetHorLineDouble(xBitmap + 4, y, 4, GetPalCPC(splitPalette[x, y >> 1, ((octet & 0x40) >> 6) + ((octet & 0x10) >> 2) + ((octet & 0x04) >> 1) + ((octet & 0x01) << 3)]));
+							xBitmap += 8;
+							break;
+
+						case 1:
+						case 3:
+							bmp.SetHorLineDouble(xBitmap, y, 2, GetPalCPC(splitPalette[x, y >> 1, ((octet >> 7) & 1) + ((octet >> 2) & 2)]));
+							bmp.SetHorLineDouble(xBitmap + 2, y, 2, GetPalCPC(splitPalette[x, y >> 1, ((octet >> 6) & 1) + ((octet >> 1) & 2)]));
+							bmp.SetHorLineDouble(xBitmap + 4, y, 2, GetPalCPC(splitPalette[x, y >> 1, ((octet >> 5) & 1) + ((octet >> 0) & 2)]));
+							bmp.SetHorLineDouble(xBitmap + 6, y, 2, GetPalCPC(splitPalette[x, y >> 1, ((octet >> 4) & 1) + ((octet << 1) & 2)]));
+							xBitmap += 8;
+							break;
+
+						case 2:
+							for (int i = 8; i-- > 0;) {
+								bmp.SetPixel(xBitmap, y, GetPalCPC(splitPalette[x, y >> 1, (octet >> i) & 1]));
+								bmp.SetPixel(xBitmap++, y + 1, GetPalCPC(splitPalette[x, y >> 1, (octet >> i) & 1]));
+							}
+							break;
+					}
+				}
+			}
+			return bmp;
 		}
 
 		public DirectBitmap CreateImageFromCpc(int length, Param par, Main.PackMethode pkMethode, bool isSprite = false, ImageCpc imgCpc = null) {

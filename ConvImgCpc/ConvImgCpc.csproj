@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DiffAnim.cs" />
+    <Compile Include="GenSplitAsm.cs" />
     <Compile Include="GestCPC\Cpc.cs" />
     <Compile Include="Conversion\ConvertAscii.cs" />
     <Compile Include="Conversion\ConvertAscUt.cs" />
@@ -68,6 +69,12 @@
     <Compile Include="Conversion\ConvertModeX.cs" />
     <Compile Include="Conversion\ConvertSplit.cs" />
     <Compile Include="Conversion\ConvertStd.cs" />
+    <Compile Include="Interfaces\EditSplit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interfaces\EditSplit.Designer.cs">
+      <DependentUpon>EditSplit.cs</DependentUpon>
+    </Compile>
     <Compile Include="Interfaces\GenPalette.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -98,6 +105,12 @@
       <DependentUpon>Animation.cs</DependentUpon>
     </Compile>
     <Compile Include="BitmapCpc.cs" />
+    <Compile Include="Interfaces\ImportSplit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interfaces\ImportSplit.Designer.cs">
+      <DependentUpon>ImportSplit.cs</DependentUpon>
+    </Compile>
     <Compile Include="Interfaces\Informations.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -133,6 +146,7 @@
       <DependentUpon>ImageCpc.cs</DependentUpon>
     </Compile>
     <Compile Include="ImageSource.cs" />
+    <Compile Include="LigneSplit.cs" />
     <Compile Include="Interfaces\Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -206,6 +220,9 @@
     <Compile Include="TramesAscUt.cs" />
     <Compile Include="UndoRedo.cs" />
     <Compile Include="XorDrawing.cs" />
+    <EmbeddedResource Include="Interfaces\EditSplit.resx">
+      <DependentUpon>EditSplit.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Interfaces\GenPalette.resx">
       <DependentUpon>GenPalette.cs</DependentUpon>
     </EmbeddedResource>

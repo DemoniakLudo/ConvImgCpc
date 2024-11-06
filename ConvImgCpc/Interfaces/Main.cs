@@ -24,6 +24,7 @@ namespace ConvImgCpc {
 		public enum OutputFormat { Binary = 0, Assembler, DSK, SNA };
 		private bool doNotReset = false;
 		public RasterTablePlus rasterPlus = null;
+		public EditSplit editSplit = null;
 
 		public Main(string[] args) {
 			InitializeComponent();
@@ -325,8 +326,6 @@ namespace ConvImgCpc {
 			}
 			imgCpc.SetImpDrawMode(param.modeImpDraw);
 			imgCpc.Render();
-			if (rasterPlus != null)
-				rasterPlus.DrawLines();
 		}
 
 		public void GetSizePos(ref int posx, ref int posy, ref int sizex, ref int sizey) {
@@ -399,46 +398,46 @@ namespace ConvImgCpc {
 					}
 					else
 						if (isScrImp) {
-							BitmapCpc bmp = new BitmapCpc(tabBytes, 0x110);
-							if (singlePicture)
-								imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap, imgCpc.selImage);
-							else {
-								doNotReset = true;
-								Cpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = tabBytes[0x94] - 0x0E;
-								Cpc.TailleX = 768;
-								nbLignes.Value = param.nbLignes = Cpc.NbLig;
-								Cpc.TailleY = 544;
-								nbCols.Value = param.nbCols = Cpc.NbCol;
-								Cpc.cpcPlus = tabBytes[0xBC] != 0;
-								if (Cpc.cpcPlus) {
-									// Palette en 0x0711;
-									for (int i = 0; i < 16; i++)
-										Cpc.Palette[i] = ((tabBytes[0x0711 + (i << 1)] << 4) & 0xF0) + (tabBytes[0x0711 + (i << 1)] >> 4) + (tabBytes[0x0712 + (i << 1)] << 8);
-								}
-								else {
-									// Palette en 0x7E10
-									for (int i = 0; i < 16; i++)
-										Cpc.Palette[i] = Cpc.CpcVGA.IndexOf((char)tabBytes[0x7E10 + i]);
-								}
-								imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap);
-							}
-						}
+						BitmapCpc bmp = new BitmapCpc(tabBytes, 0x110);
+						if (singlePicture)
+							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap, imgCpc.selImage);
 						else {
-							BitmapCpc bmp = new BitmapCpc(tabBytes, 0x80);
-							if (singlePicture)
-								imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap, imgCpc.selImage);
-							else {
-								doNotReset = true;
-								imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap);
-								nbCols.Value = param.nbCols = Cpc.NbCol;
-								Cpc.TailleX = param.nbCols << 3;
-								nbLignes.Value = param.nbLignes = Cpc.NbLig;
-								Cpc.TailleY = param.nbLignes << 1;
-								param.modeVirtuel = mode.SelectedIndex = Cpc.modeVirtuel;
-								modePlus.Checked = Cpc.cpcPlus;
+							doNotReset = true;
+							Cpc.modeVirtuel = param.modeVirtuel = mode.SelectedIndex = tabBytes[0x94] - 0x0E;
+							Cpc.TailleX = 768;
+							nbLignes.Value = param.nbLignes = Cpc.NbLig;
+							Cpc.TailleY = 544;
+							nbCols.Value = param.nbCols = Cpc.NbCol;
+							Cpc.cpcPlus = tabBytes[0xBC] != 0;
+							if (Cpc.cpcPlus) {
+								// Palette en 0x0711;
+								for (int i = 0; i < 16; i++)
+									Cpc.Palette[i] = ((tabBytes[0x0711 + (i << 1)] << 4) & 0xF0) + (tabBytes[0x0711 + (i << 1)] >> 4) + (tabBytes[0x0712 + (i << 1)] << 8);
 							}
-							SetInfo(multilingue.GetString("Main.prg.TxtInfo3"));
+							else {
+								// Palette en 0x7E10
+								for (int i = 0; i < 16; i++)
+									Cpc.Palette[i] = Cpc.CpcVGA.IndexOf((char)tabBytes[0x7E10 + i]);
+							}
+							imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap);
 						}
+					}
+					else {
+						BitmapCpc bmp = new BitmapCpc(tabBytes, 0x80);
+						if (singlePicture)
+							imgSrc.ImportBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap, imgCpc.selImage);
+						else {
+							doNotReset = true;
+							imgSrc.InitBitmap(bmp.CreateImageFromCpc(tabBytes.Length - 0x80, param, pkMethode, false, imgCpc).Bitmap);
+							nbCols.Value = param.nbCols = Cpc.NbCol;
+							Cpc.TailleX = param.nbCols << 3;
+							nbLignes.Value = param.nbLignes = Cpc.NbLig;
+							Cpc.TailleY = param.nbLignes << 1;
+							param.modeVirtuel = mode.SelectedIndex = Cpc.modeVirtuel;
+							modePlus.Checked = Cpc.cpcPlus;
+						}
+						SetInfo(multilingue.GetString("Main.prg.TxtInfo3"));
+					}
 				}
 				else {
 					imageStream = new MemoryStream(tabBytes);
@@ -798,10 +797,10 @@ namespace ConvImgCpc {
 							SavePaletteKit(dlg.FileName, true);
 						else
 							if (Cpc.modeVirtuel == 3 || Cpc.modeVirtuel == 4)
-								imgCpc.SauveEgx(dlg.FileName, param);
-							else
-								//imgCpc.SauvBump(dlg.FileName, lblInfoVersion.Text);
-								imgCpc.SauveDiffImage(dlg.FileName, lblInfoVersion.Text, false, PackMethode.None);
+							imgCpc.SauveEgx(dlg.FileName, param);
+						else
+							//imgCpc.SauvBump(dlg.FileName, lblInfoVersion.Text);
+							imgCpc.SauveDiffImage(dlg.FileName, lblInfoVersion.Text, false, PackMethode.None);
 						break;
 				}
 				param.lastSavePath = Path.GetDirectoryName(dlg.FileName);
@@ -817,6 +816,7 @@ namespace ConvImgCpc {
 				Convert(false);
 			}
 			bpRasterPlus.Visible = nbLignes.Value == 272 && nbCols.Value == 96 && modePlus.Checked;
+			bpEditSplit.Visible = nbLignes.Value == 272 && nbCols.Value == 96 && !modePlus.Checked && Cpc.modeVirtuel == 1;
 		}
 
 		private void NbLignes_ValueChanged(object sender, EventArgs e) {
@@ -827,6 +827,7 @@ namespace ConvImgCpc {
 				Convert(false);
 			}
 			bpRasterPlus.Visible = nbLignes.Value == 272 && nbCols.Value == 96 && modePlus.Checked;
+			bpEditSplit.Visible = nbLignes.Value == 272 && nbCols.Value == 96 && !modePlus.Checked && Cpc.modeVirtuel == 1;
 		}
 
 		private void Mode_SelectedIndexChanged(object sender, EventArgs e) {
@@ -926,7 +927,7 @@ namespace ConvImgCpc {
 						ymin = y;
 				}
 				// Calcule xMax
-				for (int x = bmp.Width; --x > 0; ) {
+				for (int x = bmp.Width; --x > 0;) {
 					for (int y = 0; y < bmp.Height; y++) {
 						if ((bmp.GetPixel(x, y).ToArgb() & 0xFFFFFF) > 0) {
 							y = bmp.Height;
@@ -937,7 +938,7 @@ namespace ConvImgCpc {
 						xmax = x;
 				}
 				// Calcule yMax;
-				for (int y = bmp.Height; --y > 0; ) {
+				for (int y = bmp.Height; --y > 0;) {
 					for (int x = 0; x < bmp.Width; x++) {
 						if ((bmp.GetPixel(x, y).ToArgb() & 0xFFFFFF) > 0) {
 							y = 0;
@@ -1206,6 +1207,7 @@ namespace ConvImgCpc {
 
 		private void ModePlus_CheckedChanged(object sender, EventArgs e) {
 			bpRasterPlus.Visible = nbLignes.Value == 272 && nbCols.Value == 96 && modePlus.Checked;
+			bpEditSplit.Visible = nbLignes.Value == 272 && nbCols.Value == 96 && !modePlus.Checked && Cpc.modeVirtuel == 1;
 			bpEditSprites.Visible = modePlus.Checked;
 			Cpc.cpcPlus = modePlus.Checked;
 			newMethode.Visible = !modePlus.Checked;
@@ -1379,7 +1381,7 @@ namespace ConvImgCpc {
 			byte[] buffer = new byte[0x4000];
 			string url = "http://ldeplanque.free.fr/ConvImgCpc/new/ConvImgCpc.exe";
 			WebRequest objRequest = WebRequest.Create(url);
-				bool found = false;
+			bool found = false;
 			try {
 				WebResponse objResponse = objRequest.GetResponse();
 				Stream input = objResponse.GetResponseStream();
@@ -1499,6 +1501,13 @@ namespace ConvImgCpc {
 			if (rasterPlus == null) {
 				rasterPlus = new RasterTablePlus(this, imgCpc.BmpLock);
 				rasterPlus.Show();
+			}
+		}
+
+		private void bpSplitEditor_Click(object sender, EventArgs e) {
+			if (editSplit == null) {
+				editSplit = new EditSplit(this, imgCpc.BmpLock);
+				editSplit.Show();
 			}
 		}
 	}
