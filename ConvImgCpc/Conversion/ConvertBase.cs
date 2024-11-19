@@ -229,12 +229,12 @@ namespace ConvImgCpc {
 				if (prm.lockState[i] == 0 && lockState[i] == 0)
 					Cpc.Palette[i] = 0xFFFF;
 
-			try {
+	//		try {
 				int cUtil, x, FindMax = Cpc.cpcPlus ? 4096 : 27, valMax = 0;
 				for (x = 0; x < maxPen; x++)
 					if (lockState[x] > 0)
 						for (int y = 0; y < 272; y++)
-							if (Cpc.Palette[x] < 0xFFFF)
+							if (Cpc.Palette[x] < 4096)
 								coulTrouvee[Cpc.Palette[x], y] = 0;
 
 				// Recherche la couleur la plus utilisée
@@ -326,10 +326,10 @@ namespace ConvImgCpc {
 						}
 					}
 				}
-			}
-			catch (Exception ex) {
-				System.Windows.Forms.MessageBox.Show(ex.StackTrace, ex.Message);
-			}
+			//}
+			//catch (Exception ex) {
+			//	System.Windows.Forms.MessageBox.Show(ex.StackTrace, ex.Message);
+			//}
 		}
 
 		//

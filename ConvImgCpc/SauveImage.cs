@@ -716,7 +716,7 @@ namespace ConvImgCpc {
 			else {
 				for (i = 0; i < 16; i++)
 					for (int j = 0; j < 12; j++)
-						pal[indexPal++] = (byte)Cpc.CpcVGA[Cpc.Palette[i]];
+						pal[indexPal++] = (byte)Cpc.CpcVGA[Cpc.Palette[i] < Cpc.CpcVGA.Length ? Cpc.Palette[i] : 0];
 
 				for (i = 0; i < 12; i++)
 					pal[indexPal++] = pal[i + 3];
@@ -742,28 +742,16 @@ namespace ConvImgCpc {
 				fp.Read(pal, 0, pal.Length);
 				fp.Close();
 				if (Cpc.CheckAmsdos(entete) && pal[0] < 11) {
-					if (param.cpcPlus) {
-						for (int i = 0; i < 16; i++) {
-							int r = 0, v = 0, b = 0;
-							for (int k = 26; k-- > 0;) {
-								if (pal[3 + i * 12] == (byte)Cpc.CpcVGA[k])
-									r = (26 - k) << 4;
-
-								if (pal[4 + i * 12] == (byte)Cpc.CpcVGA[k])
-									b = 26 - k;
-
-								if (pal[5 + i * 12] == (byte)Cpc.CpcVGA[k])
-									v = (26 - k) << 8;
-							}
-							Cpc.Palette[i] = r + v + b;
-						}
-					}
-					else {
-						for (int i = 0; i < 16; i++)
-							for (int j = 0; j < 27; j++)
-								if (pal[3 + i * 12] == (byte)Cpc.CpcVGA[j])
+					for (int i = 0; i < 16; i++)
+						for (int j = 0; j < 27; j++)
+							if (pal[3 + i * 12] == (byte)Cpc.CpcVGA[j]) {
+								if (param.cpcPlus) {
+									RvbColor col = Cpc.RgbCPC[j];
+									Cpc.Palette[i] = ((col.b >> 4) << 4) + ((col.v >> 4) << 8) + (col.r >> 4);
+								}
+								else
 									Cpc.Palette[i] = j;
-					}
+							}
 					ret = true;
 				}
 			}

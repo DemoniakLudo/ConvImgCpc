@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 namespace ConvImgCpc {
 	public partial class RasterTablePlus : Form {
 		private DirectBitmap bmpImage;
-		private DirectBitmap bmpFond = null;
+		private DirectBitmap bmpFond;
 		private RvbColor oldCol = new RvbColor(0);
 		private int newStart = 0, newEnd = 15, lastAddConstat = 0;
 		private int selColor = -1;
@@ -31,25 +31,16 @@ namespace ConvImgCpc {
 			DrawLines();
 		}
 
-		private void BpImportImage_Click(object sender, EventArgs e) {
-		}
-
 		public void DrawLines() {
 			txbStart.Text = newStart.ToString();
-			if (bmpFond == null || selColor == -1) {
-				for (int i = 0; i < 272; i++)
-					bmpImage.SetHorLineDouble(0, i * 2, pictureBox.Width, ((raster.line[i] & 0x0F) * 17) + (((raster.line[i] >> 8) * 17) << 8) + ((((raster.line[i] & 0xF0) >> 4) * 17) << 16));
-			}
-			else {
-				for (int i = 0; i < 272; i++)
-					for (int x = 0; x < 768; x += 2) {
-						int c = bmpFond.GetPixel(x, i * 2);
-						if (c == selColor)
-							bmpImage.SetHorLineDouble(x, i * 2, 2, ((raster.line[i] & 0x0F) * 17) + (((raster.line[i] >> 8) * 17) << 8) + ((((raster.line[i] & 0xF0) >> 4) * 17) << 16));
-						else
-							bmpImage.SetHorLineDouble(x, i * 2, 2, c);
-					}
-			}
+			for (int i = 0; i < 272; i++)
+				for (int x = 0; x < 768; x += 2) {
+					int c = bmpFond.GetPixel(x, i * 2);
+					if (selColor == c || selColor == -1)
+						c = ((raster.line[i] & 0x0F) * 17) + (((raster.line[i] >> 8) * 17) << 8) + ((((raster.line[i] & 0xF0) >> 4) * 17) << 16);
+
+					bmpImage.SetHorLineDouble(x, i * 2, 2, c);
+				}
 			txbLineStart.Text = raster.minLine.ToString();
 			txbLineEnd.Text = raster.maxLine.ToString();
 			bpGenerate.Enabled = raster.minLine < raster.maxLine;
@@ -271,8 +262,7 @@ namespace ConvImgCpc {
 			if (int.TryParse(txbLineStart.Text, out start) && int.TryParse(txbLineEnd.Text, out end) && start < end && start >= 0 && end < 272) {
 				raster.minLine = start;
 				raster.maxLine = end;
-				SaveFileDialog dlg = new SaveFileDialog();
-				dlg.Filter = "Assembler file (.asm)|*.asm";
+				SaveFileDialog dlg = new SaveFileDialog { Filter = "Assembler file (.asm)|*.asm" };
 				if (dlg.ShowDialog() == DialogResult.OK) {
 					StreamWriter sw = SaveAsm.OpenAsm(dlg.FileName);
 					SaveAsm.WriteDatas(sw, raster.line, start, end, 16);
@@ -286,8 +276,7 @@ namespace ConvImgCpc {
 			if (int.TryParse(txbLineStart.Text, out start) && int.TryParse(txbLineEnd.Text, out end) && start < end && start >= 0 && end < 272) {
 				raster.minLine = start;
 				raster.maxLine = end;
-				SaveFileDialog dlg = new SaveFileDialog();
-				dlg.Filter = "Assembler file (.asm)|*.asm";
+				SaveFileDialog dlg = new SaveFileDialog { Filter = "Assembler file (.asm)|*.asm" };
 				if (dlg.ShowDialog() == DialogResult.OK) {
 					int[][] tabFade = new int[16][];
 					for (int i = 0; i < 16; i++)
@@ -321,5 +310,11 @@ namespace ConvImgCpc {
 		private void RasterTablePlus_FormClosed(object sender, FormClosedEventArgs e) {
 			main.rasterPlus = null;
 		}
+	}
+
+	[Serializable]
+	public class Raster {
+		public int[] line = new int[272];
+		public int minLine = 0, maxLine = 0;
 	}
 }

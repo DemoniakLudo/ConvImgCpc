@@ -816,7 +816,7 @@ namespace ConvImgCpc {
 				Convert(false);
 			}
 			bpRasterPlus.Visible = nbLignes.Value == 272 && nbCols.Value == 96 && modePlus.Checked;
-			bpEditSplit.Visible = nbLignes.Value == 272 && nbCols.Value == 96 && !modePlus.Checked && Cpc.modeVirtuel == 1;
+			bpEditSplit.Visible = nbLignes.Value == 272 && nbCols.Value == 96 && !modePlus.Checked;
 		}
 
 		private void NbLignes_ValueChanged(object sender, EventArgs e) {
@@ -827,7 +827,7 @@ namespace ConvImgCpc {
 				Convert(false);
 			}
 			bpRasterPlus.Visible = nbLignes.Value == 272 && nbCols.Value == 96 && modePlus.Checked;
-			bpEditSplit.Visible = nbLignes.Value == 272 && nbCols.Value == 96 && !modePlus.Checked && Cpc.modeVirtuel == 1;
+			bpEditSplit.Visible = nbLignes.Value == 272 && nbCols.Value == 96 && !modePlus.Checked;
 		}
 
 		private void Mode_SelectedIndexChanged(object sender, EventArgs e) {
@@ -1207,7 +1207,7 @@ namespace ConvImgCpc {
 
 		private void ModePlus_CheckedChanged(object sender, EventArgs e) {
 			bpRasterPlus.Visible = nbLignes.Value == 272 && nbCols.Value == 96 && modePlus.Checked;
-			bpEditSplit.Visible = nbLignes.Value == 272 && nbCols.Value == 96 && !modePlus.Checked && Cpc.modeVirtuel == 1;
+			bpEditSplit.Visible = nbLignes.Value == 272 && nbCols.Value == 96 && !modePlus.Checked;
 			bpEditSprites.Visible = modePlus.Checked;
 			Cpc.cpcPlus = modePlus.Checked;
 			newMethode.Visible = !modePlus.Checked;

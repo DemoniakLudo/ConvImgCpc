@@ -235,7 +235,7 @@
 			// txbTo
 			// 
 			this.txbTo.Location = new System.Drawing.Point(371, 6);
-			this.txbTo.MaxLength = 2;
+			this.txbTo.MaxLength = 3;
 			this.txbTo.Name = "txbTo";
 			this.txbTo.Size = new System.Drawing.Size(30, 20);
 			this.txbTo.TabIndex = 8;
@@ -331,7 +331,7 @@
 			this.lblError.AutoSize = true;
 			this.lblError.Location = new System.Drawing.Point(35, 314);
 			this.lblError.Name = "lblError";
-			this.lblError.Size = new System.Drawing.Size(39, 13);
+			this.lblError.Size = new System.Drawing.Size(0, 13);
 			this.lblError.TabIndex = 15;
 			// 
 			// GenPalette

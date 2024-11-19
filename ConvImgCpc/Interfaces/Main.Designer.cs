@@ -119,6 +119,7 @@
 			this.rb6bits = new System.Windows.Forms.RadioButton();
 			this.bpRaz = new System.Windows.Forms.Button();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.bpEditSplit = new System.Windows.Forms.Button();
 			this.bpRasterPlus = new System.Windows.Forms.Button();
 			this.bpRazAll = new System.Windows.Forms.Button();
 			this.chkGauss = new System.Windows.Forms.CheckBox();
@@ -129,7 +130,6 @@
 			this.bpTest = new System.Windows.Forms.Button();
 			this.chk17K = new System.Windows.Forms.CheckBox();
 			this.bpTunnel = new System.Windows.Forms.Button();
-			this.bpEditSplit = new System.Windows.Forms.Button();
 			this.bpEn = new System.Windows.Forms.Button();
 			this.bpFr = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.nbCols)).BeginInit();
@@ -319,7 +319,7 @@
 			// 
 			this.bpCalcSprite.Location = new System.Drawing.Point(8, 92);
 			this.bpCalcSprite.Name = "bpCalcSprite";
-			this.bpCalcSprite.Size = new System.Drawing.Size(126, 23);
+			this.bpCalcSprite.Size = new System.Drawing.Size(127, 23);
 			this.bpCalcSprite.TabIndex = 13;
 			this.bpCalcSprite.UseVisualStyleBackColor = true;
 			this.bpCalcSprite.Visible = false;
@@ -347,11 +347,11 @@
 			// 
 			// bpOverscan
 			// 
-			this.bpOverscan.Location = new System.Drawing.Point(73, 66);
+			this.bpOverscan.Location = new System.Drawing.Point(71, 66);
 			this.bpOverscan.Name = "bpOverscan";
-			this.bpOverscan.Size = new System.Drawing.Size(62, 22);
+			this.bpOverscan.Size = new System.Drawing.Size(64, 22);
 			this.bpOverscan.TabIndex = 10;
-			this.bpOverscan.Text = "Overscan";
+			this.bpOverscan.Text = "Fullscreen";
 			this.bpOverscan.UseVisualStyleBackColor = true;
 			this.bpOverscan.Click += new System.EventHandler(this.BpOverscan_Click);
 			// 
@@ -572,7 +572,7 @@
 			// 
 			this.numSizeY.Location = new System.Drawing.Point(116, 133);
 			this.numSizeY.Maximum = new decimal(new int[] {
-            1080,
+            4000,
             0,
             0,
             0});
@@ -585,7 +585,7 @@
 			// 
 			this.numSizeX.Location = new System.Drawing.Point(51, 134);
 			this.numSizeX.Maximum = new decimal(new int[] {
-            1920,
+            6000,
             0,
             0,
             0});
@@ -1259,6 +1259,17 @@
 			this.groupBox2.TabIndex = 66;
 			this.groupBox2.TabStop = false;
 			// 
+			// bpEditSplit
+			// 
+			this.bpEditSplit.Location = new System.Drawing.Point(279, 13);
+			this.bpEditSplit.Name = "bpEditSplit";
+			this.bpEditSplit.Size = new System.Drawing.Size(75, 23);
+			this.bpEditSplit.TabIndex = 69;
+			this.bpEditSplit.Text = "SplitEditor";
+			this.bpEditSplit.UseVisualStyleBackColor = true;
+			this.bpEditSplit.Visible = false;
+			this.bpEditSplit.Click += new System.EventHandler(this.bpSplitEditor_Click);
+			// 
 			// bpRasterPlus
 			// 
 			this.bpRasterPlus.Location = new System.Drawing.Point(273, 14);
@@ -1363,17 +1374,6 @@
 			this.bpTunnel.UseVisualStyleBackColor = true;
 			this.bpTunnel.Visible = false;
 			this.bpTunnel.Click += new System.EventHandler(this.bpTunnel_Click);
-			// 
-			// bpEditSplit
-			// 
-			this.bpEditSplit.Location = new System.Drawing.Point(279, 13);
-			this.bpEditSplit.Name = "bpEditSplit";
-			this.bpEditSplit.Size = new System.Drawing.Size(75, 23);
-			this.bpEditSplit.TabIndex = 69;
-			this.bpEditSplit.Text = "SplitEditor";
-			this.bpEditSplit.UseVisualStyleBackColor = true;
-			this.bpEditSplit.Visible = false;
-			this.bpEditSplit.Click += new System.EventHandler(this.bpSplitEditor_Click);
 			// 
 			// bpEn
 			// 

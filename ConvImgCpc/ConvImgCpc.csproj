@@ -207,7 +207,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Raster.cs" />
     <Compile Include="RvbColor.cs" />
     <Compile Include="SauveImage.cs" />
     <Compile Include="SaveAsm.cs" />

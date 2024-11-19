@@ -60,7 +60,6 @@
 			this.bpBMoins = new System.Windows.Forms.Button();
 			this.bpRMoins = new System.Windows.Forms.Button();
 			this.bpVMoins = new System.Windows.Forms.Button();
-			this.bpImportImage = new System.Windows.Forms.Button();
 			this.lblLine = new System.Windows.Forms.Label();
 			this.bpLoad = new System.Windows.Forms.Button();
 			this.bpSave = new System.Windows.Forms.Button();
@@ -477,16 +476,6 @@
 			this.bpVMoins.UseVisualStyleBackColor = true;
 			this.bpVMoins.Click += new System.EventHandler(this.BpVMoins_Click);
 			// 
-			// bpImportImage
-			// 
-			this.bpImportImage.Location = new System.Drawing.Point(5, 65);
-			this.bpImportImage.Name = "bpImportImage";
-			this.bpImportImage.Size = new System.Drawing.Size(154, 23);
-			this.bpImportImage.TabIndex = 31;
-			this.bpImportImage.Text = "Import background image";
-			this.bpImportImage.UseVisualStyleBackColor = true;
-			this.bpImportImage.Click += new System.EventHandler(this.BpImportImage_Click);
-			// 
 			// lblLine
 			// 
 			this.lblLine.AutoSize = true;
@@ -566,7 +555,6 @@
 			this.Controls.Add(this.bpSave);
 			this.Controls.Add(this.bpLoad);
 			this.Controls.Add(this.lblLine);
-			this.Controls.Add(this.bpImportImage);
 			this.Controls.Add(this.groupBox2);
 			this.Controls.Add(this.bpClearAll);
 			this.Controls.Add(this.groupBox1);
@@ -626,7 +614,6 @@
 		private System.Windows.Forms.Button bpVMoins;
 		private System.Windows.Forms.Button bpBPlus;
 		private System.Windows.Forms.Button bpVPlus;
-		private System.Windows.Forms.Button bpImportImage;
 		private System.Windows.Forms.Label lblLine;
 		private System.Windows.Forms.Button bpLoad;
 		private System.Windows.Forms.Button bpSave;

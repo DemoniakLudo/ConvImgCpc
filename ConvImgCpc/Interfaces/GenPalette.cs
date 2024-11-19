@@ -152,7 +152,7 @@ namespace ConvImgCpc {
 
 		private void CalcPaletteStd() {
 			double rs = 0, vs = 0, bs = 0, re = 0, ve = 0, be = 0;
-			if (int.TryParse(txbFrom.Text, out start) && int.TryParse(txbTo.Text, out end) && start >= minStart && end <= 15 && start < end) {
+			if (int.TryParse(txbFrom.Text, out start) && int.TryParse(txbTo.Text, out end) && start >= minStart && start < end && end < 272) {
 				if (double.TryParse(txbStartR.Text, out rs) && double.TryParse(txbStartV.Text, out vs) && double.TryParse(txbStartB.Text, out bs)
 					&& double.TryParse(txbEndR.Text, out re) && double.TryParse(txbEndV.Text, out ve) && double.TryParse(txbEndB.Text, out be)) {
 					if (rs >= 0 && vs >= 0 && bs >= 0 && re >= 0 && ve >= 0 && be >= 0 && rs < 16 && vs < 16 && bs < 16 && re < 16 && ve < 16 && be < 16) {

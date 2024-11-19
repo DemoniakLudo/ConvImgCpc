@@ -27,7 +27,7 @@ namespace ConvImgCpc {
 			bitmapZoom = new DirectBitmap(pictureZoom.Width >> 3, pictureZoom.Height >> 3);
 			bmpLock = new DirectBitmap(tx, ty);
 			pictureBox.Image = bmpLock.Bitmap;
-			bitmapCpc = new BitmapCpc(taillex << 1, tailley << 1, mode); // ###
+			bitmapCpc = new BitmapCpc(taillex << 1, tailley << 1, Cpc.modeVirtuel); // ###
 
 			retard.Minimum = BitmapCpc.retardMin;
 			retard.Maximum = BitmapCpc.retardMin + 32;

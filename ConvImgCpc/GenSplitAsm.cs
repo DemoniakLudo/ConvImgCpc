@@ -15,8 +15,6 @@ namespace ConvImgCpc {
 			wr.WriteLine("	LD	HL,ImageCmp");
 			wr.WriteLine("	LD	DE,#0200");
 			wr.WriteLine("	CALL	Depack");
-			wr.WriteLine("	LD	HL,(#38)");
-			wr.WriteLine("	LD	(RestoreIrq+1),HL");
 			wr.WriteLine("	LD	HL,#C9FB");
 			wr.WriteLine("	LD	(#38),HL");
 			wr.WriteLine("	LD	HL,Overscan");
@@ -49,24 +47,6 @@ namespace ConvImgCpc {
 			wr.WriteLine("	IN	A,(C)");
 			wr.WriteLine("	RRA");
 			wr.WriteLine("	JR	NC,WaitVbl");
-			wr.WriteLine("	LD	BC,#F40E");
-			wr.WriteLine("	OUT	(C),C");
-			wr.WriteLine("	LD	BC,#F6C0");
-			wr.WriteLine("	OUT	(C),C");
-			wr.WriteLine("	DB	#ED,#71			; OUT	(C),0");
-			wr.WriteLine("	LD	BC,#F792");
-			wr.WriteLine("	OUT	(C),C");
-			wr.WriteLine("	LD	BC,#F645");
-			wr.WriteLine("	OUT	(C),C");
-			wr.WriteLine("	LD	B,#F4");
-			wr.WriteLine("	IN	A,(C)");
-			wr.WriteLine("	LD	bc,#F782");
-			wr.WriteLine("	OUT	(C),C");
-			wr.WriteLine("	DEC	B");
-			wr.WriteLine("	DB	#ED,#71			; OUT	(C),0");
-			wr.WriteLine("	INC	A");
-			wr.WriteLine("	JP	NZ,RestoreIrq");
-			wr.WriteLine("	ADD\tHL,BC			; (3 NOPs)");
 			wr.WriteLine("	EI");
 			wr.WriteLine("	HALT");
 			wr.WriteLine("	DI");
@@ -219,11 +199,6 @@ namespace ConvImgCpc {
 		static private void WriteEndFile(StreamWriter wr, int[,,] palette) {
 			wr.WriteLine("	JP	Boucle");
 			wr.WriteLine("");
-			wr.WriteLine("RestoreIrq:");
-			wr.WriteLine("	LD	HL,0");
-			wr.WriteLine("	LD	(#38),HL");
-			wr.WriteLine("	EI");
-			wr.WriteLine("	RET");
 			GenereDZX0(wr);
 			wr.WriteLine("");
 			wr.WriteLine("	List");
