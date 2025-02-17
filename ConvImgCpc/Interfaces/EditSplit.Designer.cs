@@ -717,7 +717,7 @@
             0,
             0,
             0});
-			this.retard.ValueChanged += new System.EventHandler(this.retard_ValueChanged);
+			this.retard.ValueChanged += new System.EventHandler(this.Retard_ValueChanged);
 			// 
 			// label15
 			// 

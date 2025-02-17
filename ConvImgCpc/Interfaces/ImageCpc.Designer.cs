@@ -98,7 +98,7 @@
 			this.lockAllPal.Size = new System.Drawing.Size(15, 14);
 			this.lockAllPal.TabIndex = 1;
 			this.lockAllPal.UseVisualStyleBackColor = true;
-			this.lockAllPal.CheckedChanged += new System.EventHandler(this.lockAllPal_CheckedChanged);
+			this.lockAllPal.CheckedChanged += new System.EventHandler(this.LockAllPal_CheckedChanged);
 			// 
 			// modeEdition
 			// 
@@ -214,7 +214,7 @@
 			this.bpSaveWin.TabIndex = 22;
 			this.bpSaveWin.Text = "Save Win";
 			this.bpSaveWin.UseVisualStyleBackColor = true;
-			this.bpSaveWin.Click += new System.EventHandler(this.bpSaveWin_Click);
+			this.bpSaveWin.Click += new System.EventHandler(this.BpSaveWin_Click);
 			// 
 			// rbFill
 			// 
@@ -412,7 +412,7 @@
 			this.chkGrille.TabIndex = 14;
 			this.chkGrille.Text = "Afficher grille verticale";
 			this.chkGrille.UseVisualStyleBackColor = true;
-			this.chkGrille.CheckedChanged += new System.EventHandler(this.chkGrille_CheckedChanged);
+			this.chkGrille.CheckedChanged += new System.EventHandler(this.ChkGrille_CheckedChanged);
 			// 
 			// modeCaptureSprites
 			// 
@@ -432,7 +432,7 @@
 			this.bpCopyPal.Size = new System.Drawing.Size(107, 48);
 			this.bpCopyPal.TabIndex = 11;
 			this.bpCopyPal.UseVisualStyleBackColor = true;
-			this.bpCopyPal.Click += new System.EventHandler(this.bpCopyPal_Click);
+			this.bpCopyPal.Click += new System.EventHandler(this.BpCopyPal_Click);
 			// 
 			// chkX2
 			// 
@@ -443,7 +443,7 @@
 			this.chkX2.TabIndex = 13;
 			this.chkX2.Text = "X2";
 			this.chkX2.UseVisualStyleBackColor = true;
-			this.chkX2.CheckedChanged += new System.EventHandler(this.chkX2_CheckedChanged);
+			this.chkX2.CheckedChanged += new System.EventHandler(this.ChkX2_CheckedChanged);
 			// 
 			// pictImpDraw
 			// 
@@ -473,7 +473,7 @@
 			this.bpGenPal.Size = new System.Drawing.Size(48, 48);
 			this.bpGenPal.TabIndex = 27;
 			this.bpGenPal.UseVisualStyleBackColor = true;
-			this.bpGenPal.Click += new System.EventHandler(this.bpGenPal_Click);
+			this.bpGenPal.Click += new System.EventHandler(this.BpGenPal_Click);
 			// 
 			// chkGrilleSprite
 			// 

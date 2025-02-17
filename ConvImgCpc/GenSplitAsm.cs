@@ -3,8 +3,8 @@ using System.IO;
 
 namespace ConvImgCpc {
 	static public class GenSplitAsm {
-		static private string CpcVGA = "TDU\\X]LEMVFW^@_NGORBSZY[JCK";
-		static private byte[] bufPack = new byte[0x8000];
+		private static string CpcVGA = "TDU\\X]LEMVFW^@_NGORBSZY[JCK";
+		private static byte[] bufPack = new byte[0x8000];
 
 		// Code d'initialisation
 		static private void WriteDebFile(StreamWriter wr) {
@@ -231,7 +231,7 @@ namespace ConvImgCpc {
 			for (int i = 0x44C0; i < 0x4600; i++)
 				bmp[i] = bmp[i + 0x800] = bmp[i + 0x1000] = bmp[i + 0x1800] = bmp[i + 0x2000] = bmp[i + 0x2800] = bmp[i + 0x3000] = bmp[i + 0x3800] = 0;
 
-			int lgPack = p.PackZX0(bmp, 0x7CC0, bufPack, 0);
+			int lgPack = p.PackZX0(bmp, 0x7CC0, bufPack);
 
 			wr.WriteLine("	ORG	#" + (0x8400 - lgPack).ToString("X4"));
 			wr.WriteLine("	Nolist");
@@ -272,7 +272,6 @@ namespace ConvImgCpc {
 					int c4 = CpcVGA[lSpl.ListeSplit[4].couleur];
 					if (hlMod || ((c3 != oldc3 || c4 != oldc4) && (lSpl.ListeSplit[3].enable || lSpl.ListeSplit[4].enable))) {
 						wr.WriteLine("	LD	HL,#" + c3.ToString("X2") + c4.ToString("X2") + "		; (3 NOPs)");
-						hlMod = false;
 					}
 					else
 						retSameCol += 24;
@@ -284,7 +283,7 @@ namespace ConvImgCpc {
 						retSameCol += 16;
 
 					if (retSameCol > 0)
-						hlMod |= GenereRetard(wr, retSameCol, false, !lSpl.ListeSplit[3].enable && !lSpl.ListeSplit[4].enable);
+						GenereRetard(wr, retSameCol, false, !lSpl.ListeSplit[3].enable && !lSpl.ListeSplit[4].enable);
 
 					wr.WriteLine("	OUT	(C),C			; (4 NOPs)");
 					int tpsLine = (retard >> 3) + 20;
@@ -301,35 +300,35 @@ namespace ConvImgCpc {
 								wr.WriteLine("	LD	C,#" + c6.ToString("X2") + "			; (2 NOPs)");
 								lg -= 16;
 							}
-							hlMod |= GenereRetard(wr, lg, false, !lSpl.ListeSplit[3].enable && !lSpl.ListeSplit[4].enable);
+							GenereRetard(wr, lg, false, !lSpl.ListeSplit[3].enable && !lSpl.ListeSplit[4].enable);
 							lg = 0;
 						}
 						wr.WriteLine("	OUT	(C),D			; (4 NOPs)");
 						tpsLine += 4;
 						if (lSpl.ListeSplit[2].enable) {
 							int lgs = lSpl.ListeSplit[1].longueur - 32;
-							hlMod |= GenereRetard(wr, lgs, false, !lSpl.ListeSplit[3].enable && !lSpl.ListeSplit[4].enable);
+							GenereRetard(wr, lgs, false, !lSpl.ListeSplit[3].enable && !lSpl.ListeSplit[4].enable);
 							wr.WriteLine("	OUT	(C),E			; (4 NOPs)");
 							tpsLine += 4 + (lgs >> 3);
 							if (lSpl.ListeSplit[3].enable) {
 								lgs = lSpl.ListeSplit[2].longueur - 32;
-								hlMod |= GenereRetard(wr, lgs);
+								GenereRetard(wr, lgs);
 								wr.WriteLine("	OUT	(C),H			; (4 NOPs)");
 								tpsLine += 4 + (lgs >> 3);
 								if (lSpl.ListeSplit[4].enable) {
 									lgs = lSpl.ListeSplit[3].longueur - 32;
-									hlMod |= GenereRetard(wr, lgs);
+									GenereRetard(wr, lgs);
 									wr.WriteLine("	OUT	(C),L			; (4 NOPs)");
 									tpsLine += 4 + (lgs >> 3);
 									if (lSpl.ListeSplit[5].enable) {
 										lgs = lSpl.ListeSplit[4].longueur - 32;
-										hlMod |= GenereRetard(wr, lgs);
+										GenereRetard(wr, lgs);
 										wr.WriteLine("	OUT	(C),A			; (4 NOPs)");
 										tpsLine += 4 + (lgs >> 3);
 									}
 									if (lSpl.ListeSplit[6].enable && c6 != 0) {
 										lgs = lSpl.ListeSplit[5].longueur - 32;
-										hlMod |= GenereRetard(wr, lgs);
+										GenereRetard(wr, lgs);
 										wr.WriteLine("	OUT	(C),C			; (4 NOPs)");
 										tpsLine += 4 + (lgs >> 3);
 									}

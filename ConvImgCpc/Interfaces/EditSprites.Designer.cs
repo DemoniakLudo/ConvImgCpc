@@ -455,7 +455,7 @@
 			this.bpScrDown.Size = new System.Drawing.Size(18, 18);
 			this.bpScrDown.TabIndex = 40;
 			this.bpScrDown.UseVisualStyleBackColor = true;
-			this.bpScrDown.Click += new System.EventHandler(this.bpScrDown_Click);
+			this.bpScrDown.Click += new System.EventHandler(this.BpScrDown_Click);
 			// 
 			// bpScrUp
 			// 
@@ -465,7 +465,7 @@
 			this.bpScrUp.Size = new System.Drawing.Size(18, 18);
 			this.bpScrUp.TabIndex = 39;
 			this.bpScrUp.UseVisualStyleBackColor = true;
-			this.bpScrUp.Click += new System.EventHandler(this.bpScrUp_Click);
+			this.bpScrUp.Click += new System.EventHandler(this.BpScrUp_Click);
 			// 
 			// bpScrRight
 			// 
@@ -475,7 +475,7 @@
 			this.bpScrRight.Size = new System.Drawing.Size(18, 18);
 			this.bpScrRight.TabIndex = 38;
 			this.bpScrRight.UseVisualStyleBackColor = true;
-			this.bpScrRight.Click += new System.EventHandler(this.bpScrRight_Click);
+			this.bpScrRight.Click += new System.EventHandler(this.BpScrRight_Click);
 			// 
 			// bpScrLeft
 			// 
@@ -485,7 +485,7 @@
 			this.bpScrLeft.Size = new System.Drawing.Size(18, 18);
 			this.bpScrLeft.TabIndex = 36;
 			this.bpScrLeft.UseVisualStyleBackColor = true;
-			this.bpScrLeft.Click += new System.EventHandler(this.bpScrLeft_Click);
+			this.bpScrLeft.Click += new System.EventHandler(this.BpScrLeft_Click);
 			// 
 			// bpPasteBank
 			// 
