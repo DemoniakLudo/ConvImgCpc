@@ -12,7 +12,6 @@ namespace ConvImgCpc {
 		private byte penLeft = 1, penRight = 0;
 		private DirectBitmap bmpTrame;
 		private ImageCpc imgCpc;
-		private ImageSource imgSrc;
 		private Param param;
 		private Main main;
 
@@ -20,7 +19,6 @@ namespace ConvImgCpc {
 			InitializeComponent();
 			main = m;
 			main.ChangeLanguage(Controls, "EditTrameAscii");
-			imgSrc = s;
 			imgCpc = i;
 			bmpCpc = i.bitmapCpc;
 			param = p;
@@ -66,7 +64,7 @@ namespace ConvImgCpc {
 			lblPenRight.BackColor = Color.FromArgb(bmpCpc.GetColorPal(penRight).GetColorArgb);
 		}
 
-		private void pictAllMatrice_MouseDown(object sender, MouseEventArgs e) {
+		private void PictAllMatrice_MouseDown(object sender, MouseEventArgs e) {
 			int y = e.X / 32;
 			if (y >= 0 && y < 16) {
 				numTrame = y;
@@ -74,7 +72,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void pictEditMatrice_MouseMove(object sender, MouseEventArgs e) {
+		private void PictEditMatrice_MouseMove(object sender, MouseEventArgs e) {
 			int x = e.X / 80;
 			int y = e.Y / 80;
 			if (x >= 0 && y >= 0 && x < 4 && y < 4) {
@@ -92,17 +90,17 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void bpPrev_Click(object sender, EventArgs e) {
+		private void BpPrev_Click(object sender, EventArgs e) {
 			numTrame--;
 			DrawTrame();
 		}
 
-		private void bpSuiv_Click(object sender, EventArgs e) {
+		private void BpSuiv_Click(object sender, EventArgs e) {
 			numTrame++;
 			DrawTrame();
 		}
 
-		private void lblPen0_Click(object sender, MouseEventArgs e) {
+		private void LblPen0_Click(object sender, MouseEventArgs e) {
 			if (e.Button == MouseButtons.Left)
 				penLeft = 0;
 			else
@@ -111,7 +109,7 @@ namespace ConvImgCpc {
 			DrawPens();
 		}
 
-		private void lblPen1_Click(object sender, MouseEventArgs e) {
+		private void LblPen1_Click(object sender, MouseEventArgs e) {
 			if (e.Button == MouseButtons.Left)
 				penLeft = 1;
 			else
@@ -120,7 +118,7 @@ namespace ConvImgCpc {
 			DrawPens();
 		}
 
-		private void lblPen2_Click(object sender, MouseEventArgs e) {
+		private void LblPen2_Click(object sender, MouseEventArgs e) {
 			if (e.Button == MouseButtons.Left)
 				penLeft = 2;
 			else
@@ -129,7 +127,7 @@ namespace ConvImgCpc {
 			DrawPens();
 		}
 
-		private void lblPen3_Click(object sender, MouseEventArgs e) {
+		private void LblPen3_Click(object sender, MouseEventArgs e) {
 			if (e.Button == MouseButtons.Left)
 				penLeft = 3;
 			else
@@ -138,9 +136,8 @@ namespace ConvImgCpc {
 			DrawPens();
 		}
 
-		private void bpRead_Click(object sender, EventArgs e) {
-			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.Filter = "Modèle trames (.xml)|*.xml";
+		private void BpRead_Click(object sender, EventArgs e) {
+			OpenFileDialog dlg = new OpenFileDialog { Filter = "Modèle trames (.xml)|*.xml" };
 			if (dlg.ShowDialog() == DialogResult.OK) {
 				FileStream fileParam = File.Open(dlg.FileName, FileMode.Open);
 				try {
@@ -161,9 +158,8 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void bpSave_Click(object sender, EventArgs e) {
-			SaveFileDialog dlg = new SaveFileDialog();
-			dlg.Filter = "Modèle trames (.xml)|*.xml";
+		private void BpSave_Click(object sender, EventArgs e) {
+			SaveFileDialog dlg = new SaveFileDialog { Filter = "Modèle trames (.xml)|*.xml" };
 			if (dlg.ShowDialog() == DialogResult.OK) {
 				byte[] trame = new byte[256];
 				int pos = 0;
@@ -183,7 +179,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void bpAutoGene_Click(object sender, EventArgs e) {
+		private void BpAutoGene_Click(object sender, EventArgs e) {
 			Enabled = false;
 			int nbImages = main.GetMaxImages();
 			List<TrameM1> lstTrame = new List<TrameM1>();
@@ -205,13 +201,13 @@ namespace ConvImgCpc {
 			Enabled = true;
 		}
 
-		private void bpCopyTrame_Click(object sender, EventArgs e) {
+		private void BpCopyTrame_Click(object sender, EventArgs e) {
 			Cpc.CopyTrame((int)numTabTrame.Value);
 			DrawMatrice();
 			DrawTrame();
 		}
 
-		private void bpForceCalc_Click(object sender, EventArgs e) {
+		private void BpForceCalc_Click(object sender, EventArgs e) {
 			Enabled = false;
 			main.Convert(true);
 			Enabled = true;

@@ -34,8 +34,7 @@ namespace ConvImgCpc {
 			nbLig = ty >> 1;
 			for (int y = 0; y < 272; y++) {
 				tabMode[y] = mode;
-				LigneSplit l = new LigneSplit();
-				l.retard = retardMin;
+				LigneSplit l = new LigneSplit { retard = retardMin };
 				for (int j = 0; j < 7; j++)
 					l.ListeSplit.Add(new Split());
 
@@ -66,10 +65,9 @@ namespace ConvImgCpc {
 					for (int i = 0; i < 16; i++)
 						splitPalette[x, y, i] = curPal[i];
 
-			int numCol = 0;
 			for (int y = 0; y < 272; y++) {
 				LigneSplit lSpl = splitEcran.LignesSplit[y];
-				numCol = lSpl.numPen;
+				int numCol = lSpl.numPen;
 				int xpos = lSpl.retard >> 2;
 				// de x à xpos => faire palette = curPal
 				int x = AppliquePalette(0, y, xpos, curPal);
@@ -123,30 +121,30 @@ namespace ConvImgCpc {
 			else
 				// CPC +, écran standard
 				if (bmpCpc[0x7D0] == 0xF3 && bmpCpc[0x7D1] == 0x01 && bmpCpc[0x7D2] == 0x11 && bmpCpc[0x7D3] == 0xBC) {
-					cpcPlus = true;
-					nbCol = 80;
-					nbLig = 200;
-					SetPalette(bmpCpc, 0x17D0, cpcPlus);
-					Ret = true;
-				}
-				else
+				cpcPlus = true;
+				nbCol = 80;
+				nbLig = 200;
+				SetPalette(bmpCpc, 0x17D0, cpcPlus);
+				Ret = true;
+			}
+			else
 					// CPC OLD, écran overscan
 					if (bmpCpc[0x611] == 0x21 && bmpCpc[0x612] == 0x47 && bmpCpc[0x613] == 0x08 && bmpCpc[0x614] == 0xCD) {
-						cpcPlus = false;
-						nbCol = maxColsCpc;
-						nbLig = maxLignesCpc;
-						SetPalette(bmpCpc, 0x600, cpcPlus);
-						Ret = true;
-					}
-					else
+				cpcPlus = false;
+				nbCol = maxColsCpc;
+				nbLig = maxLignesCpc;
+				SetPalette(bmpCpc, 0x600, cpcPlus);
+				Ret = true;
+			}
+			else
 						// CPC +, écran overscan
 						if (bmpCpc[0x621] == 0xF3 && bmpCpc[0x622] == 0x01 && bmpCpc[0x623] == 0x11 && bmpCpc[0x624] == 0xBC) {
-							cpcPlus = true;
-							nbCol = maxColsCpc;
-							nbLig = maxLignesCpc;
-							SetPalette(bmpCpc, 0x600, cpcPlus);
-							Ret = true;
-						}
+				cpcPlus = true;
+				nbCol = maxColsCpc;
+				nbLig = maxLignesCpc;
+				SetPalette(bmpCpc, 0x600, cpcPlus);
+				Ret = true;
+			}
 			return (Ret);
 		}
 
@@ -232,12 +230,11 @@ namespace ConvImgCpc {
 			}
 		}
 
-		public void CreeBmpCpc(DirectBitmap bmpLock, int[,] colMode5, bool egx = false, int lignestart = 0) {
+		public void CreeBmpCpc(DirectBitmap bmpLock, bool egx = false, int lignestart = 0) {
 			Array.Clear(bmpCpc, 0, bmpCpc.Length);
 			for (int y = 0; y < TailleY; y += 2) {
 				int adrCPC = GetAdrCpc(y);
 				int tx = CalcTx(y);
-				int maxPen = MaxPen(y);
 				for (int x = 0; x < TailleX; x += 8) {
 					byte octet = 0, decal = 0;
 					if (!egx || ((y >> 1) & 1) == lignestart) {
@@ -258,7 +255,7 @@ namespace ConvImgCpc {
 				int tx = CalcTx(y);
 				int maxPen = MaxPen(y);
 				for (int x = 0; x < TailleX; x += 8) {
-					byte pen = 0, octet = 0, decal = 0;
+					byte pen, octet = 0, decal = 0;
 					for (int p = 0; p < 8; p += tx) {
 						RvbColor col = bmpLock.GetPixelColor(x + p, y);
 						for (pen = 0; pen < maxPen; pen++) {
@@ -338,7 +335,7 @@ namespace ConvImgCpc {
 
 		// Rendu d'une image CPC dans un bitmap PC
 		public DirectBitmap DrawBitmap(int nbCol, int nbLig, int realWidth = 0, bool isSprite = false, ImageCpc imgCpc = null) {
-			int width = realWidth !=0 ? realWidth : nbCol << 3;
+			int width = realWidth != 0 ? realWidth : nbCol << 3;
 			DirectBitmap loc = new DirectBitmap(width, nbLig << 1);
 			for (int y = 0; y < nbLig << 1; y += 2) {
 				int mode = (modeVirtuel >= 5 ? 1 : modeVirtuel >= 3 ? (y & 2) == yEgx ? modeVirtuel - 2 : modeVirtuel - 3 : modeVirtuel);
@@ -379,12 +376,11 @@ namespace ConvImgCpc {
 							break;
 
 						case 2:
-							for (int i = 8; i-- > 0; ) {
+							for (int i = 8; i-- > 0;) {
 								p0 = (octet >> i) & 1;
 								loc.SetPixel(xBitmap, y, GetPalCPC(Palette[p0]));
 								loc.SetPixel(xBitmap++, y + 1, GetPalCPC(Palette[p0]));
-								if (imgCpc != null)
-									imgCpc.SetPixelCpc(xBitmap, y, p0, 1);
+								imgCpc?.SetPixelCpc(xBitmap, y, p0, 1);
 							}
 							break;
 					}
@@ -397,7 +393,7 @@ namespace ConvImgCpc {
 			return (loc);
 		}
 
-		public DirectBitmap Render(DirectBitmap bmp, int offsetX, int offsetY, bool getPalMode) {
+		public DirectBitmap Render(DirectBitmap bmp, int offsetX) {
 			for (int y = 0; y < (nbLig << 1); y += 2) {
 				int adrCPC = (y >> 4) * nbCol + (y & 14) * 0x400;
 				if (y > 255 && (nbCol * nbLig > 0x3FFF))
@@ -441,35 +437,35 @@ namespace ConvImgCpc {
 					DepactOCP();
 				else
 					if (bmpCpc[0] == 'P' && bmpCpc[1] == 'K' && (bmpCpc[2] == 'O' || bmpCpc[2] == 'V' || bmpCpc[2] == 'S'))
-						DepactPK(pkMethode);
-					else {
-						if (!InitDatas()) {
-							if (length == 16384) {
-								nbCol = 80;
-								nbLig = 200;
+					DepactPK(pkMethode);
+				else {
+					if (!InitDatas()) {
+						if (length == 16384) {
+							nbCol = 80;
+							nbLig = 200;
+						}
+						else
+							if (length < 31000) {
+							try {
+								int l = new PackModule().Depack(bmpCpc, 0, bufTmp, Main.PackMethode.Standard);
+								Array.Copy(bufTmp, bmpCpc, l);
 							}
-							else
-								if (length < 31000) {
-									try {
-										int l = new PackModule().Depack(bmpCpc, 0, bufTmp, Main.PackMethode.Standard);
-										Array.Copy(bufTmp, bmpCpc, l);
-									}
-									catch (Exception) { }
-									if (!InitDatas()) {
-										cpcPlus = false;
-										nbCol = maxColsCpc;
-										nbLig = maxLignesCpc;
-										SetPalette(bmpCpc, 0x600, cpcPlus);
-									}
-								}
-								else {
-									if (length > 0x4000) {
-										nbCol = maxColsCpc;
-										nbLig = maxLignesCpc;
-									}
-								}
+							catch (Exception) { }
+							if (!InitDatas()) {
+								cpcPlus = false;
+								nbCol = maxColsCpc;
+								nbLig = maxLignesCpc;
+								SetPalette(bmpCpc, 0x600, cpcPlus);
+							}
+						}
+						else {
+							if (length > 0x4000) {
+								nbCol = maxColsCpc;
+								nbLig = maxLignesCpc;
+							}
 						}
 					}
+				}
 			}
 			par.cpcPlus = cpcPlus;
 			return DrawBitmap(nbCol, nbLig, 0, isSprite, imgCpc);

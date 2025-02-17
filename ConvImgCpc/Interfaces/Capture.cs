@@ -33,12 +33,11 @@ namespace ConvImgCpc {
 			main.SetInfo("Capture sprite posx:" + posx.ToString() + ",posy:" + posy.ToString() + " withClick=" + withClick.ToString());
 			pictCapture.Refresh();
 			if (withClick && chkAutoCapture.Checked)
-				bpCapture_Click(null, null);
+				BpCapture_Click(null, null);
 		}
 
 		private void GetCaptSizeX() {
-			int v = 0;
-			int.TryParse(txbNbX.Text, out v);
+			int.TryParse(txbNbX.Text, out int v);
 			int numBank = comboBanque.SelectedIndex;
 			if (v > 0 && v <= 16 && v * captSizeY <= 16 * (7 - numBank)) {
 				captSizeX = v;
@@ -48,8 +47,7 @@ namespace ConvImgCpc {
 		}
 
 		private void GetCaptSizeY() {
-			int v = 0;
-			int.TryParse(txbNbY.Text, out v);
+			int.TryParse(txbNbY.Text, out int v);
 			int numBank = comboBanque.SelectedIndex;
 			if (v > 0 && v <= 16 && v * captSizeX <= 16 * (7 - numBank)) {
 				captSizeY = v;
@@ -58,42 +56,42 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void rbCapt1_CheckedChanged(object sender, EventArgs e) {
+		private void RbCapt1_CheckedChanged(object sender, EventArgs e) {
 			lblNbX.Visible = lblNbY.Visible = txbNbX.Visible = txbNbY.Visible = false;
 			captSizeX = captSizeY = 1;
 			numSprite.Maximum = 15;
 			RazCapture();
 		}
 
-		private void rbCapt2_CheckedChanged(object sender, EventArgs e) {
+		private void RbCapt2_CheckedChanged(object sender, EventArgs e) {
 			lblNbX.Visible = lblNbY.Visible = txbNbX.Visible = txbNbY.Visible = false;
 			captSizeX = captSizeY = 2;
 			numSprite.Maximum = 12;
 			RazCapture();
 		}
 
-		private void rbCapt4_CheckedChanged(object sender, EventArgs e) {
+		private void RbCapt4_CheckedChanged(object sender, EventArgs e) {
 			lblNbX.Visible = lblNbY.Visible = txbNbX.Visible = txbNbY.Visible = false;
 			captSizeX = captSizeY = 4;
 			numSprite.Maximum = 0;
 			RazCapture();
 		}
 
-		private void rbCaptUser_CheckedChanged(object sender, EventArgs e) {
+		private void RbCaptUser_CheckedChanged(object sender, EventArgs e) {
 			lblNbX.Visible = lblNbY.Visible = txbNbX.Visible = txbNbY.Visible = true;
 			GetCaptSizeX();
 			GetCaptSizeY();
 		}
 
-		private void txbNbX_TextChanged(object sender, EventArgs e) {
+		private void TxbNbX_TextChanged(object sender, EventArgs e) {
 			GetCaptSizeX();
 		}
 
-		private void txbNbY_TextChanged(object sender, EventArgs e) {
+		private void TxbNbY_TextChanged(object sender, EventArgs e) {
 			GetCaptSizeY();
 		}
 
-		private void bpCapture_Click(object sender, EventArgs e) {
+		private void BpCapture_Click(object sender, EventArgs e) {
 			int numSpr = (int)numSprite.Value;
 			int numBank = comboBanque.SelectedIndex;
 			main.SetInfo("Copie sprite n°" + numSpr.ToString() + ",Bank" + numBank.ToString());

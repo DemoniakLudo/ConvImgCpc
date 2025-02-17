@@ -6,7 +6,7 @@
 			RvbColor pix;
 			for (int y = 0; y < Cpc.TailleY; y += incY) {
 				int Tx = Cpc.CalcTx(y);
-				maxPen = Cpc.MaxPen(y);
+				//maxPen = Cpc.MaxPen(y);
 				for (int x = 0; x < Cpc.TailleX; x += Tx) {
 					int oldDist = 0x7FFFFFFF;
 					int r = 0, v = 0, b = 0;

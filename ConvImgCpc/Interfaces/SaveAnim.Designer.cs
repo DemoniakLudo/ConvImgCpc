@@ -56,7 +56,7 @@
 			this.bpSave.Size = new System.Drawing.Size(75, 23);
 			this.bpSave.TabIndex = 1;
 			this.bpSave.UseVisualStyleBackColor = true;
-			this.bpSave.Click += new System.EventHandler(this.bpSave_Click);
+			this.bpSave.Click += new System.EventHandler(this.BpSave_Click);
 			// 
 			// chk128Ko
 			// 
@@ -66,7 +66,7 @@
 			this.chk128Ko.Size = new System.Drawing.Size(15, 14);
 			this.chk128Ko.TabIndex = 2;
 			this.chk128Ko.UseVisualStyleBackColor = true;
-			this.chk128Ko.CheckedChanged += new System.EventHandler(this.chk128Ko_CheckedChanged);
+			this.chk128Ko.CheckedChanged += new System.EventHandler(this.Chk128Ko_CheckedChanged);
 			// 
 			// chkBoucle
 			// 
@@ -103,7 +103,7 @@
 			this.chkMaxMem.TabIndex = 6;
 			this.chkMaxMem.UseVisualStyleBackColor = true;
 			this.chkMaxMem.Visible = false;
-			this.chkMaxMem.CheckedChanged += new System.EventHandler(this.chkMaxMem_CheckedChanged);
+			this.chkMaxMem.CheckedChanged += new System.EventHandler(this.ChkMaxMem_CheckedChanged);
 			// 
 			// tbxAdrMax
 			// 
@@ -172,7 +172,7 @@
 			this.chk2Zone.Size = new System.Drawing.Size(15, 14);
 			this.chk2Zone.TabIndex = 16;
 			this.chk2Zone.UseVisualStyleBackColor = true;
-			this.chk2Zone.CheckedChanged += new System.EventHandler(this.chk2Zone_CheckedChanged);
+			this.chk2Zone.CheckedChanged += new System.EventHandler(this.Chk2Zone_CheckedChanged);
 			// 
 			// chkZoneVert
 			// 
@@ -253,7 +253,7 @@
 			this.chkDataBrut.Size = new System.Drawing.Size(15, 14);
 			this.chkDataBrut.TabIndex = 22;
 			this.chkDataBrut.UseVisualStyleBackColor = true;
-			this.chkDataBrut.CheckedChanged += new System.EventHandler(this.chkDataBrut_CheckedChanged);
+			this.chkDataBrut.CheckedChanged += new System.EventHandler(this.ChkDataBrut_CheckedChanged);
 			// 
 			// comboMethode
 			// 
@@ -266,7 +266,7 @@
 			this.comboMethode.Name = "comboMethode";
 			this.comboMethode.Size = new System.Drawing.Size(121, 21);
 			this.comboMethode.TabIndex = 23;
-			this.comboMethode.SelectedIndexChanged += new System.EventHandler(this.comboMethode_SelectedIndexChanged);
+			this.comboMethode.SelectedIndexChanged += new System.EventHandler(this.ComboMethode_SelectedIndexChanged);
 			// 
 			// SaveAnim
 			// 

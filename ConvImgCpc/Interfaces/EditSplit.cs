@@ -10,7 +10,7 @@ namespace ConvImgCpc {
 		public BitmapCpc bitmapCpc;
 		private int offsetX = 0, offsetY = 0;
 		private int numCol = 0;
-		private int mode = 1;
+		//private int mode = 1;
 		private int taillex = 384; // Résolution image horizontale en pixels mode 1
 		private int tailley = 272; // Résolution image verticale en pixels
 		private LigneSplit curLigneSplit;
@@ -34,11 +34,12 @@ namespace ConvImgCpc {
 
 			for (int i = 0; i < 16; i++) {
 				// Générer les contrôles de "couleurs"
-				colors[i] = new Label();
-				colors[i].BorderStyle = BorderStyle.FixedSingle;
-				colors[i].Location = new Point(4 + i * 48, 20);
-				colors[i].Size = new Size(40, 32);
-				colors[i].Tag = i;
+				colors[i] = new Label {
+					BorderStyle = BorderStyle.FixedSingle,
+					Location = new Point(4 + i * 48, 20),
+					Size = new Size(40, 32),
+					Tag = i
+				};
 				colors[i].Click += ClickColor;
 				groupPal.Controls.Add(colors[i]);
 			}
@@ -52,7 +53,7 @@ namespace ConvImgCpc {
 				colors[numCol].BackColor = Color.FromArgb(bitmapCpc.GetPaletteColor(0, 0, numCol).GetColorArgb);
 				colors[numCol].Refresh();
 			}
-			bitmapCpc.CreeBmpCpc(img, null);
+			bitmapCpc.CreeBmpCpc(img);
 			DisplayLigne();
 		}
 
@@ -120,7 +121,7 @@ namespace ConvImgCpc {
 		public void Render() {
 			if (doRender) {
 				bitmapCpc.CalcPaletteSplit();
-				bitmapCpc.Render(bmpLock, offsetX, offsetY, false);
+				bitmapCpc.Render(bmpLock, offsetX);
 				DrawZoomPicture();
 				if (chkChgt.Checked) {
 					LigneSplit lSpl = bitmapCpc.splitEcran.GetLigne((int)numLigne.Value);
@@ -156,9 +157,7 @@ namespace ConvImgCpc {
 					bitmapZoom.SetPixel(x, y, bmpLock.GetPixelColor(x + hScrollZoom.Value, y + posy).GetColorArgb);
 
 			Bitmap zoomed = (Bitmap)pictureZoom.Image;
-			if (zoomed != null)
-				zoomed.Dispose();
-
+			zoomed?.Dispose();
 			zoomed = new Bitmap(bitmapZoom.Width << 3, bitmapZoom.Height << 3);
 			using (Graphics g = Graphics.FromImage(zoomed)) {
 				g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
@@ -218,7 +217,7 @@ namespace ConvImgCpc {
 			curLigneSplit.numPen = (int)numPen.Value;
 		}
 
-		private void retard_ValueChanged(object sender, EventArgs e) {
+		private void Retard_ValueChanged(object sender, EventArgs e) {
 			curLigneSplit.retard = (int)retard.Value;
 			DisplayLigne();
 		}

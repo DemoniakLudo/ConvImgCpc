@@ -53,8 +53,8 @@
 			this.pictEditMatrice.Size = new System.Drawing.Size(320, 320);
 			this.pictEditMatrice.TabIndex = 0;
 			this.pictEditMatrice.TabStop = false;
-			this.pictEditMatrice.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictEditMatrice_MouseMove);
-			this.pictEditMatrice.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictEditMatrice_MouseMove);
+			this.pictEditMatrice.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictEditMatrice_MouseMove);
+			this.pictEditMatrice.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictEditMatrice_MouseMove);
 			// 
 			// pictAllMatrice
 			// 
@@ -63,7 +63,7 @@
 			this.pictAllMatrice.Size = new System.Drawing.Size(512, 32);
 			this.pictAllMatrice.TabIndex = 1;
 			this.pictAllMatrice.TabStop = false;
-			this.pictAllMatrice.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictAllMatrice_MouseDown);
+			this.pictAllMatrice.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictAllMatrice_MouseDown);
 			// 
 			// bpPrev
 			// 
@@ -73,7 +73,7 @@
 			this.bpPrev.TabIndex = 2;
 			this.bpPrev.UseVisualStyleBackColor = true;
 			this.bpPrev.Visible = false;
-			this.bpPrev.Click += new System.EventHandler(this.bpPrev_Click);
+			this.bpPrev.Click += new System.EventHandler(this.BpPrev_Click);
 			// 
 			// bpSuiv
 			// 
@@ -82,7 +82,7 @@
 			this.bpSuiv.Size = new System.Drawing.Size(75, 23);
 			this.bpSuiv.TabIndex = 2;
 			this.bpSuiv.UseVisualStyleBackColor = true;
-			this.bpSuiv.Click += new System.EventHandler(this.bpSuiv_Click);
+			this.bpSuiv.Click += new System.EventHandler(this.BpSuiv_Click);
 			// 
 			// lblPen0
 			// 
@@ -91,7 +91,7 @@
 			this.lblPen0.Name = "lblPen0";
 			this.lblPen0.Size = new System.Drawing.Size(48, 48);
 			this.lblPen0.TabIndex = 3;
-			this.lblPen0.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lblPen0_Click);
+			this.lblPen0.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LblPen0_Click);
 			// 
 			// lblPen1
 			// 
@@ -100,7 +100,7 @@
 			this.lblPen1.Name = "lblPen1";
 			this.lblPen1.Size = new System.Drawing.Size(48, 48);
 			this.lblPen1.TabIndex = 3;
-			this.lblPen1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lblPen1_Click);
+			this.lblPen1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LblPen1_Click);
 			// 
 			// lblPen2
 			// 
@@ -109,7 +109,7 @@
 			this.lblPen2.Name = "lblPen2";
 			this.lblPen2.Size = new System.Drawing.Size(48, 48);
 			this.lblPen2.TabIndex = 3;
-			this.lblPen2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lblPen2_Click);
+			this.lblPen2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LblPen2_Click);
 			// 
 			// lblPen3
 			// 
@@ -118,7 +118,7 @@
 			this.lblPen3.Name = "lblPen3";
 			this.lblPen3.Size = new System.Drawing.Size(48, 48);
 			this.lblPen3.TabIndex = 3;
-			this.lblPen3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lblPen3_Click);
+			this.lblPen3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LblPen3_Click);
 			// 
 			// label1
 			// 
@@ -159,7 +159,7 @@
 			this.bpRead.Size = new System.Drawing.Size(85, 23);
 			this.bpRead.TabIndex = 6;
 			this.bpRead.UseVisualStyleBackColor = true;
-			this.bpRead.Click += new System.EventHandler(this.bpRead_Click);
+			this.bpRead.Click += new System.EventHandler(this.BpRead_Click);
 			// 
 			// bpSave
 			// 
@@ -168,7 +168,7 @@
 			this.bpSave.Size = new System.Drawing.Size(85, 23);
 			this.bpSave.TabIndex = 6;
 			this.bpSave.UseVisualStyleBackColor = true;
-			this.bpSave.Click += new System.EventHandler(this.bpSave_Click);
+			this.bpSave.Click += new System.EventHandler(this.BpSave_Click);
 			// 
 			// bpAutoGene
 			// 
@@ -177,7 +177,7 @@
 			this.bpAutoGene.Size = new System.Drawing.Size(119, 45);
 			this.bpAutoGene.TabIndex = 7;
 			this.bpAutoGene.UseVisualStyleBackColor = true;
-			this.bpAutoGene.Click += new System.EventHandler(this.bpAutoGene_Click);
+			this.bpAutoGene.Click += new System.EventHandler(this.BpAutoGene_Click);
 			// 
 			// bpCopyTrame
 			// 
@@ -186,7 +186,7 @@
 			this.bpCopyTrame.Size = new System.Drawing.Size(93, 41);
 			this.bpCopyTrame.TabIndex = 8;
 			this.bpCopyTrame.UseVisualStyleBackColor = true;
-			this.bpCopyTrame.Click += new System.EventHandler(this.bpCopyTrame_Click);
+			this.bpCopyTrame.Click += new System.EventHandler(this.BpCopyTrame_Click);
 			// 
 			// numTabTrame
 			// 
@@ -202,7 +202,7 @@
 			this.bpForceCalc.Size = new System.Drawing.Size(119, 28);
 			this.bpForceCalc.TabIndex = 11;
 			this.bpForceCalc.UseVisualStyleBackColor = true;
-			this.bpForceCalc.Click += new System.EventHandler(this.bpForceCalc_Click);
+			this.bpForceCalc.Click += new System.EventHandler(this.BpForceCalc_Click);
 			// 
 			// EditTrameAscii
 			// 

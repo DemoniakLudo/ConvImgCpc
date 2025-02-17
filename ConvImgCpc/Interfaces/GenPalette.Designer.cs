@@ -84,7 +84,7 @@
 			this.trkStartR.Name = "trkStartR";
 			this.trkStartR.Size = new System.Drawing.Size(104, 45);
 			this.trkStartR.TabIndex = 2;
-			this.trkStartR.Scroll += new System.EventHandler(this.trkStartR_Scroll);
+			this.trkStartR.Scroll += new System.EventHandler(this.TrkStartR_Scroll);
 			// 
 			// trkEndV
 			// 
@@ -93,7 +93,7 @@
 			this.trkEndV.Name = "trkEndV";
 			this.trkEndV.Size = new System.Drawing.Size(104, 45);
 			this.trkEndV.TabIndex = 3;
-			this.trkEndV.Scroll += new System.EventHandler(this.trkEndV_Scroll);
+			this.trkEndV.Scroll += new System.EventHandler(this.TrkEndV_Scroll);
 			// 
 			// trkEndR
 			// 
@@ -102,7 +102,7 @@
 			this.trkEndR.Name = "trkEndR";
 			this.trkEndR.Size = new System.Drawing.Size(104, 45);
 			this.trkEndR.TabIndex = 4;
-			this.trkEndR.Scroll += new System.EventHandler(this.trkEndR_Scroll);
+			this.trkEndR.Scroll += new System.EventHandler(this.TrkEndR_Scroll);
 			// 
 			// trkEndB
 			// 
@@ -111,7 +111,7 @@
 			this.trkEndB.Name = "trkEndB";
 			this.trkEndB.Size = new System.Drawing.Size(104, 45);
 			this.trkEndB.TabIndex = 5;
-			this.trkEndB.Scroll += new System.EventHandler(this.trkEndB_Scroll);
+			this.trkEndB.Scroll += new System.EventHandler(this.TrkEndB_Scroll);
 			// 
 			// trkStartB
 			// 
@@ -120,7 +120,7 @@
 			this.trkStartB.Name = "trkStartB";
 			this.trkStartB.Size = new System.Drawing.Size(104, 45);
 			this.trkStartB.TabIndex = 6;
-			this.trkStartB.Scroll += new System.EventHandler(this.trkStartB_Scroll);
+			this.trkStartB.Scroll += new System.EventHandler(this.TrkStartB_Scroll);
 			// 
 			// trkStartV
 			// 
@@ -129,7 +129,7 @@
 			this.trkStartV.Name = "trkStartV";
 			this.trkStartV.Size = new System.Drawing.Size(104, 45);
 			this.trkStartV.TabIndex = 7;
-			this.trkStartV.Scroll += new System.EventHandler(this.trkStartV_Scroll);
+			this.trkStartV.Scroll += new System.EventHandler(this.TrkStartV_Scroll);
 			// 
 			// lblEndText
 			// 
@@ -157,7 +157,7 @@
 			this.txbStartR.TabIndex = 8;
 			this.txbStartR.Text = "0";
 			this.txbStartR.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.txbStartR.TextChanged += new System.EventHandler(this.txbStartR_TextChanged);
+			this.txbStartR.TextChanged += new System.EventHandler(this.TxbStartR_TextChanged);
 			// 
 			// txbStartV
 			// 
@@ -168,7 +168,7 @@
 			this.txbStartV.TabIndex = 8;
 			this.txbStartV.Text = "0";
 			this.txbStartV.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.txbStartV.TextChanged += new System.EventHandler(this.txbStartV_TextChanged);
+			this.txbStartV.TextChanged += new System.EventHandler(this.TxbStartV_TextChanged);
 			// 
 			// txbStartB
 			// 
@@ -179,7 +179,7 @@
 			this.txbStartB.TabIndex = 8;
 			this.txbStartB.Text = "0";
 			this.txbStartB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.txbStartB.TextChanged += new System.EventHandler(this.txbStartB_TextChanged);
+			this.txbStartB.TextChanged += new System.EventHandler(this.TxbStartB_TextChanged);
 			// 
 			// txbEndB
 			// 
@@ -190,7 +190,7 @@
 			this.txbEndB.TabIndex = 8;
 			this.txbEndB.Text = "0";
 			this.txbEndB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.txbEndB.TextChanged += new System.EventHandler(this.txbEndB_TextChanged);
+			this.txbEndB.TextChanged += new System.EventHandler(this.TxbEndB_TextChanged);
 			// 
 			// txbEndV
 			// 
@@ -201,7 +201,7 @@
 			this.txbEndV.TabIndex = 8;
 			this.txbEndV.Text = "0";
 			this.txbEndV.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.txbEndV.TextChanged += new System.EventHandler(this.txbEndV_TextChanged);
+			this.txbEndV.TextChanged += new System.EventHandler(this.TxbEndV_TextChanged);
 			// 
 			// txbEndR
 			// 
@@ -212,7 +212,7 @@
 			this.txbEndR.TabIndex = 8;
 			this.txbEndR.Text = "0";
 			this.txbEndR.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.txbEndR.TextChanged += new System.EventHandler(this.txbEndR_TextChanged);
+			this.txbEndR.TextChanged += new System.EventHandler(this.TxbEndR_TextChanged);
 			// 
 			// lblFrom
 			// 
@@ -260,7 +260,7 @@
 			this.bpGenerate.TabIndex = 10;
 			this.bpGenerate.Text = "Generate";
 			this.bpGenerate.UseVisualStyleBackColor = true;
-			this.bpGenerate.Click += new System.EventHandler(this.bpGenerate_Click);
+			this.bpGenerate.Click += new System.EventHandler(this.BpGenerate_Click);
 			// 
 			// label1
 			// 
@@ -324,7 +324,7 @@
 			this.bpGetCol.TabIndex = 14;
 			this.bpGetCol.Text = "Get color";
 			this.bpGetCol.UseVisualStyleBackColor = true;
-			this.bpGetCol.Click += new System.EventHandler(this.bpGetCol_Click);
+			this.bpGetCol.Click += new System.EventHandler(this.BpGetCol_Click);
 			// 
 			// lblError
 			// 

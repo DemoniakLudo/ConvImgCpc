@@ -75,7 +75,7 @@ namespace ConvImgCpc {
 			pictureBox.Refresh();
 		}
 
-		private void pictureBox_MouseLeave(object sender, EventArgs e) {
+		private void PictureBox_MouseLeave(object sender, EventArgs e) {
 			if (fenetreCapture != null) {
 				int sprSizeX = fenetreCapture.CaptSizeX << 5;
 				int sprSizeY = fenetreCapture.CaptSizeY << 5;
@@ -98,7 +98,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void modeCaptureSprites_CheckedChanged(object sender, EventArgs e) {
+		private void ModeCaptureSprites_CheckedChanged(object sender, EventArgs e) {
 			if (modeCaptureSprites.Checked) {
 				main.Enabled = false;
 				fenetreCapture = new Capture(main, this);
@@ -110,7 +110,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void chkGrilleSprite_CheckedChanged(object sender, EventArgs e) {
+		private void ChkGrilleSprite_CheckedChanged(object sender, EventArgs e) {
 			main.Enabled = !chkGrilleSprite.Checked;
 			Render(true);
 			if (!chkGrilleSprite.Checked)

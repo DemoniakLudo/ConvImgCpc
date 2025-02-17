@@ -106,8 +106,7 @@ namespace ConvImgCpc {
 			tabBmpLock = new DirectBitmap[nbImage];
 			for (int i = 0; i < nbImage; i++) {
 				TabBitmapCpc[i] = new BitmapCpc();
-				tabBmpLock[i] = new DirectBitmap(pictureBox.Width, pictureBox.Height);
-				tabBmpLock[i].Tps = tps;
+				tabBmpLock[i] = new DirectBitmap(pictureBox.Width, pictureBox.Height) { Tps = tps };
 			}
 		}
 
@@ -212,7 +211,7 @@ namespace ConvImgCpc {
 			}
 
 			if (chkAfficheSH.Checked)
-				DrawSpritesHard();
+				DrawSpritesHard(pictureBox);
 
 			pictureBox.Refresh();
 			if (fenetreRendu != null) {
@@ -223,11 +222,8 @@ namespace ConvImgCpc {
 			if (chkAutoCopy.Checked)
 				CopyToClipBoard();
 
-			if (main.rasterPlus != null)
-				main.rasterPlus.DrawLines();
-
-			if (main.editSplit != null)
-				main.editSplit.UpdateScrSplit(BmpLock);
+			main.rasterPlus?.DrawLines();
+			main.editSplit?.UpdateScrSplit(BmpLock);
 		}
 
 		public void CaptureSprite(int captSizeX, int captSizeY, int posx, int posy, DirectBitmap bmp) {
@@ -260,37 +256,39 @@ namespace ConvImgCpc {
 
 		// Déplacement/Zoom image
 		private void MoveOrSize(MouseEventArgs e) {
-			if (e.Button == MouseButtons.Left) {
-				if (!movePos) {
-					main.GetSizePos(ref posx, ref posy, ref sizex, ref sizey);
-					movePos = true;
-					memoMouseX = e.X;
-					memoMouseY = e.Y;
-				}
-				else {
-					main.SetSizePos(posx + memoMouseX - e.X, posy + memoMouseY - e.Y, sizex, sizey, true);
-				}
-			}
-			else {
-				if (e.Button == MouseButtons.Right) {
-					if (chkAfficheSH.Checked && e.X / (chkX2.Checked ? 2 : 1) < Cpc.TailleX && e.Y / (chkX2.Checked ? 4 : 2) < Cpc.TailleY) {
-						numPosX.Value = e.X / (chkX2.Checked ? 2 : 1);
-						numPosY.Value = e.Y / (chkX2.Checked ? 4 : 2);
+			if (e.X >= 0 && e.Y >= 0 && e.Y < Cpc.TailleY && e.X < Cpc.TailleX) {
+				if (e.Button == MouseButtons.Left) {
+					if (!movePos) {
+						main.GetSizePos(ref posx, ref posy, ref sizex, ref sizey);
+						movePos = true;
+						memoMouseX = e.X;
+						memoMouseY = e.Y;
 					}
 					else {
-						if (!moveSize) {
-							main.GetSizePos(ref posx, ref posy, ref sizex, ref sizey);
-							moveSize = true;
-							memoMouseX = e.X;
-							memoMouseY = e.Y;
-						}
-						else {
-							main.SetSizePos(posx, posy, sizex - memoMouseX + e.X, sizey - memoMouseY + e.Y, true);
-						}
+						main.SetSizePos(posx + memoMouseX - e.X, posy + memoMouseY - e.Y, sizex, sizey, true);
 					}
 				}
-				else
-					movePos = moveSize = false;
+				else {
+					if (e.Button == MouseButtons.Right) {
+						if (chkAfficheSH.Checked && e.X / (chkX2.Checked ? 2 : 1) < Cpc.TailleX && e.Y / (chkX2.Checked ? 4 : 2) < Cpc.TailleY) {
+							numPosX.Value = e.X / (chkX2.Checked ? 2 : 1);
+							numPosY.Value = e.Y / (chkX2.Checked ? 4 : 2);
+						}
+						else {
+							if (!moveSize) {
+								main.GetSizePos(ref posx, ref posy, ref sizex, ref sizey);
+								moveSize = true;
+								memoMouseX = e.X;
+								memoMouseY = e.Y;
+							}
+							else {
+								main.SetSizePos(posx, posy, sizex - memoMouseX + e.X, sizey - memoMouseY + e.Y, true);
+							}
+						}
+					}
+					else
+						movePos = moveSize = false;
+				}
 			}
 		}
 
@@ -344,13 +342,13 @@ namespace ConvImgCpc {
 		}
 
 		public void SauveScr(string fileName, Main.OutputFormat format, Param param) {
-			bitmapCpc.CreeBmpCpc(BmpLock, colMode5);
+			bitmapCpc.CreeBmpCpc(BmpLock);
 			SauveImage.SauveScr(fileName, bitmapCpc, main, Main.PackMethode.None, format, param);
 			main.SetInfo("Sauvegarde image CPC ok.");
 		}
 
 		public void SauveCmp(string fileName, Main.PackMethode pkMethode, Main.OutputFormat format, Param param, string version = null) {
-			bitmapCpc.CreeBmpCpc(BmpLock, colMode5);
+			bitmapCpc.CreeBmpCpc(BmpLock);
 			if (Cpc.modeVirtuel >= 7 && version != null) {
 				SaveAnim sa = new SaveAnim(main, fileName, version, pkMethode);
 				string labelPalette = "Palette";
@@ -564,8 +562,8 @@ namespace ConvImgCpc {
 			Array.Clear(ret, 0, ret.Length);
 			int posRet = 0;
 			for (int y = 0; y < Cpc.TailleY; y += 8) {
-				int adrCPC = Cpc.GetAdrCpc(y);
-				int tx = Cpc.CalcTx(y);
+				//int adrCPC = Cpc.GetAdrCpc(y);
+				//int tx = Cpc.CalcTx(y);
 				for (int x = 0; x < Cpc.TailleX; x += 8) {
 					byte pen = (byte)Cpc.GetPenColor(BmpLock, x, y);
 					ret[posRet++] = (byte)(Cpc.tabOctetMode[pen] + (Cpc.tabOctetMode[pen] >> 1));
@@ -598,7 +596,7 @@ namespace ConvImgCpc {
 				main.SelectImage(i, true);
 				Convert(!bitmapCpc.isCalc, true);
 				Application.DoEvents();
-				bitmapCpc.CreeBmpCpc(BmpLock, null);
+				bitmapCpc.CreeBmpCpc(BmpLock);
 				byte[] src = bitmapCpc.bmpCpc;
 				if (i == 0)
 					Buffer.BlockCopy(src, 0, bufOut, 0, src.Length);
@@ -620,7 +618,7 @@ namespace ConvImgCpc {
 		}
 
 		public void SauvBump(string fileName, string version) {
-			RvbColor c2 = new RvbColor(0);
+			//RvbColor c2 = new RvbColor(0);
 			int pos = 0;
 			byte[] bump = new byte[Cpc.TailleY * Cpc.TailleX / 64];
 			for (int y = 0; y < Cpc.TailleY; y += 16) {
@@ -719,10 +717,10 @@ namespace ConvImgCpc {
 			if (fileName.ToUpper().EndsWith(".SCR"))
 				fileName = fileName.Substring(0, fileName.Length - 4);
 
-			bitmapCpc.CreeBmpCpc(BmpLock, colMode5, true, 0);
+			bitmapCpc.CreeBmpCpc(BmpLock, true, 0);
 			SauveImage.SauveScr(fileName + "0.SCR", bitmapCpc, main, Main.PackMethode.None, Main.OutputFormat.Binary, param);
 			Cpc.modeVirtuel = model2;
-			bitmapCpc.CreeBmpCpc(BmpLock, colMode5, true, 1);
+			bitmapCpc.CreeBmpCpc(BmpLock, true, 1);
 			SauveImage.SauveScr(fileName + "1.SCR", bitmapCpc, main, Main.PackMethode.None, Main.OutputFormat.Binary, param);
 			main.SetInfo("Sauvegarde des deux images CPC ok.");
 			Cpc.modeVirtuel = mode;
@@ -792,7 +790,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		public void lockAllPal_CheckedChanged(object sender, EventArgs e) {
+		public void LockAllPal_CheckedChanged(object sender, EventArgs e) {
 			for (int i = 0; i < 16; i++) {
 				lockColors[i].Checked = lockAllPal.Checked;
 				lockState[i] = lockAllPal.Checked ? 1 : 0;
@@ -801,7 +799,7 @@ namespace ConvImgCpc {
 		}
 
 		// Copier la palette dans le presse-papier
-		private void bpCopyPal_Click(object sender, EventArgs e) {
+		private void BpCopyPal_Click(object sender, EventArgs e) {
 			string palTxt = "";
 			int i, maxPen = Cpc.MaxPen(Cpc.yEgx ^ 2);
 			for (i = 0; i < maxPen; i++) {
@@ -834,7 +832,7 @@ namespace ConvImgCpc {
 		}
 		#endregion
 
-		private void chkX2_CheckedChanged(object sender, EventArgs e) {
+		private void ChkX2_CheckedChanged(object sender, EventArgs e) {
 			if (chkX2.Checked) {
 				Width = 1232 + 1024;
 				Height = 668 + 544;
@@ -862,7 +860,7 @@ namespace ConvImgCpc {
 			e.Cancel = true;
 		}
 
-		private void chkGrille_CheckedChanged(object sender, EventArgs e) {
+		private void ChkGrille_CheckedChanged(object sender, EventArgs e) {
 			if (chkGrille.Checked) {
 				if (int.TryParse(txbStartNop.Text, out startGrille) && int.TryParse(txbTailleNop.Text, out tailleGrille)) {
 					if (tailleGrille > 0 && tailleGrille <= 16 && startGrille + tailleGrille < 64) {
@@ -887,7 +885,7 @@ namespace ConvImgCpc {
 			chkGrille.Checked = false;
 		}
 
-		private void bpGenPal_Click(object sender, EventArgs e) {
+		private void BpGenPal_Click(object sender, EventArgs e) {
 			GenPalette g = new GenPalette(Cpc.Palette, 0, DoGenPal);
 			g.ShowDialog();
 		}
@@ -935,10 +933,9 @@ namespace ConvImgCpc {
 			return ret;
 		}
 
-		private void bpSaveWin_Click(object sender, EventArgs e) {
+		private void BpSaveWin_Click(object sender, EventArgs e) {
 			Enabled = false;
-			SaveFileDialog dlg = new SaveFileDialog();
-			dlg.Filter = " (.win)|*.win| Raw assembler data (.asm)|*.asm|Raw assembler data in column order (.asm)|*.asm";
+			SaveFileDialog dlg = new SaveFileDialog { Filter = " (.win)|*.win| Raw assembler data (.asm)|*.asm|Raw assembler data in column order (.asm)|*.asm" };
 			if (dlg.ShowDialog() == DialogResult.OK) {
 				byte[] bWin;
 				string fileName = dlg.FileName;
@@ -978,8 +975,7 @@ namespace ConvImgCpc {
 
 		private void BpLoadWin_Click(object sender, EventArgs e) {
 			Enabled = false;
-			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.Filter = " (*.win)|*.win";
+			OpenFileDialog dlg = new OpenFileDialog { Filter = " (*.win)|*.win" };
 			if (dlg.ShowDialog() == DialogResult.OK) {
 				FileStream fileScr = new FileStream(dlg.FileName, FileMode.Open, FileAccess.Read);
 				int l = (int)fileScr.Length;
@@ -1002,7 +998,8 @@ namespace ConvImgCpc {
 			}
 			Enabled = true;
 			bpSaveWin.Enabled = imgMotif != null;
-			while (PeekMessage(out NativeMessage msg, (System.IntPtr)0, WM_LBUTTONUP, WM_LBUTTONUP, PM_REMOVE) != 0) ;
+			while (PeekMessage(out NativeMessage msg, (System.IntPtr)0, WM_LBUTTONUP, WM_LBUTTONUP, PM_REMOVE) != 0)
+				;
 		}
 
 		private void CopyToClipBoard() {
@@ -1012,7 +1009,7 @@ namespace ConvImgCpc {
 					bmpTmp.SetPixel(x, y, BmpLock.GetPixel(x, y));
 
 			if (chkAfficheSH.Checked) {
-				Bitmap newBmp = DrawSpritesHard(bmpTmp.Bitmap);
+				Bitmap newBmp = DrawSpritesHard(pictureBox, bmpTmp.Bitmap);
 				Clipboard.SetImage(newBmp);
 				newBmp.Dispose();
 			}

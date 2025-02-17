@@ -129,7 +129,7 @@
 			this.trackLumR.Size = new System.Drawing.Size(742, 41);
 			this.trackLumR.TabIndex = 0;
 			this.trackLumR.TickStyle = System.Windows.Forms.TickStyle.None;
-			this.trackLumR.Scroll += new System.EventHandler(this.trackLumR_Scroll);
+			this.trackLumR.Scroll += new System.EventHandler(this.TrackLumR_Scroll);
 			// 
 			// trackLumB
 			// 
@@ -141,7 +141,7 @@
 			this.trackLumB.Size = new System.Drawing.Size(743, 41);
 			this.trackLumB.TabIndex = 1;
 			this.trackLumB.TickStyle = System.Windows.Forms.TickStyle.None;
-			this.trackLumB.Scroll += new System.EventHandler(this.trackLumB_Scroll);
+			this.trackLumB.Scroll += new System.EventHandler(this.TrackLumB_Scroll);
 			// 
 			// trackLumV
 			// 
@@ -153,7 +153,7 @@
 			this.trackLumV.Size = new System.Drawing.Size(742, 41);
 			this.trackLumV.TabIndex = 2;
 			this.trackLumV.TickStyle = System.Windows.Forms.TickStyle.None;
-			this.trackLumV.Scroll += new System.EventHandler(this.trackLumV_Scroll);
+			this.trackLumV.Scroll += new System.EventHandler(this.TrackLumV_Scroll);
 			// 
 			// label1
 			// 
@@ -184,7 +184,7 @@
 			this.numericLumR.Name = "numericLumR";
 			this.numericLumR.Size = new System.Drawing.Size(65, 20);
 			this.numericLumR.TabIndex = 5;
-			this.numericLumR.ValueChanged += new System.EventHandler(this.numericLumR_ValueChanged);
+			this.numericLumR.ValueChanged += new System.EventHandler(this.NumericLumR_ValueChanged);
 			// 
 			// numericLumV
 			// 
@@ -197,7 +197,7 @@
 			this.numericLumV.Name = "numericLumV";
 			this.numericLumV.Size = new System.Drawing.Size(65, 20);
 			this.numericLumV.TabIndex = 6;
-			this.numericLumV.ValueChanged += new System.EventHandler(this.numericLumV_ValueChanged);
+			this.numericLumV.ValueChanged += new System.EventHandler(this.NumericLumV_ValueChanged);
 			// 
 			// numericLumB
 			// 
@@ -210,7 +210,7 @@
 			this.numericLumB.Name = "numericLumB";
 			this.numericLumB.Size = new System.Drawing.Size(65, 20);
 			this.numericLumB.TabIndex = 7;
-			this.numericLumB.ValueChanged += new System.EventHandler(this.numericLumB_ValueChanged);
+			this.numericLumB.ValueChanged += new System.EventHandler(this.NumericLumB_ValueChanged);
 			// 
 			// label3
 			// 
@@ -269,7 +269,7 @@
 			this.numericR4.Name = "numericR4";
 			this.numericR4.Size = new System.Drawing.Size(51, 20);
 			this.numericR4.TabIndex = 8;
-			this.numericR4.ValueChanged += new System.EventHandler(this.numericR4_ValueChanged);
+			this.numericR4.ValueChanged += new System.EventHandler(this.NumericR4_ValueChanged);
 			// 
 			// trackR4
 			// 
@@ -279,7 +279,7 @@
 			this.trackR4.Size = new System.Drawing.Size(211, 45);
 			this.trackR4.TabIndex = 9;
 			this.trackR4.TickStyle = System.Windows.Forms.TickStyle.None;
-			this.trackR4.Scroll += new System.EventHandler(this.trackR4_Scroll);
+			this.trackR4.Scroll += new System.EventHandler(this.TrackR4_Scroll);
 			// 
 			// numericR3
 			// 
@@ -292,7 +292,7 @@
 			this.numericR3.Name = "numericR3";
 			this.numericR3.Size = new System.Drawing.Size(51, 20);
 			this.numericR3.TabIndex = 6;
-			this.numericR3.ValueChanged += new System.EventHandler(this.numericR3_ValueChanged);
+			this.numericR3.ValueChanged += new System.EventHandler(this.NumericR3_ValueChanged);
 			// 
 			// trackR3
 			// 
@@ -302,7 +302,7 @@
 			this.trackR3.Size = new System.Drawing.Size(211, 45);
 			this.trackR3.TabIndex = 7;
 			this.trackR3.TickStyle = System.Windows.Forms.TickStyle.None;
-			this.trackR3.Scroll += new System.EventHandler(this.trackR3_Scroll);
+			this.trackR3.Scroll += new System.EventHandler(this.TrackR3_Scroll);
 			// 
 			// numericR2
 			// 
@@ -315,7 +315,7 @@
 			this.numericR2.Name = "numericR2";
 			this.numericR2.Size = new System.Drawing.Size(51, 20);
 			this.numericR2.TabIndex = 4;
-			this.numericR2.ValueChanged += new System.EventHandler(this.numericR2_ValueChanged);
+			this.numericR2.ValueChanged += new System.EventHandler(this.NumericR2_ValueChanged);
 			// 
 			// trackR2
 			// 
@@ -325,7 +325,7 @@
 			this.trackR2.Size = new System.Drawing.Size(211, 45);
 			this.trackR2.TabIndex = 5;
 			this.trackR2.TickStyle = System.Windows.Forms.TickStyle.None;
-			this.trackR2.Scroll += new System.EventHandler(this.trackR2_Scroll);
+			this.trackR2.Scroll += new System.EventHandler(this.TrackR2_Scroll);
 			// 
 			// numericR1
 			// 
@@ -338,7 +338,7 @@
 			this.numericR1.Name = "numericR1";
 			this.numericR1.Size = new System.Drawing.Size(51, 20);
 			this.numericR1.TabIndex = 0;
-			this.numericR1.ValueChanged += new System.EventHandler(this.numericR1_ValueChanged);
+			this.numericR1.ValueChanged += new System.EventHandler(this.NumericR1_ValueChanged);
 			// 
 			// trackR1
 			// 
@@ -348,7 +348,7 @@
 			this.trackR1.Size = new System.Drawing.Size(211, 45);
 			this.trackR1.TabIndex = 0;
 			this.trackR1.TickStyle = System.Windows.Forms.TickStyle.None;
-			this.trackR1.Scroll += new System.EventHandler(this.trackR1_Scroll);
+			this.trackR1.Scroll += new System.EventHandler(this.TrackR1_Scroll);
 			// 
 			// label7
 			// 
@@ -417,7 +417,7 @@
 			this.numericV4.Name = "numericV4";
 			this.numericV4.Size = new System.Drawing.Size(51, 20);
 			this.numericV4.TabIndex = 20;
-			this.numericV4.ValueChanged += new System.EventHandler(this.numericV4_ValueChanged);
+			this.numericV4.ValueChanged += new System.EventHandler(this.NumericV4_ValueChanged);
 			// 
 			// label11
 			// 
@@ -436,7 +436,7 @@
 			this.trackV4.Size = new System.Drawing.Size(211, 45);
 			this.trackV4.TabIndex = 21;
 			this.trackV4.TickStyle = System.Windows.Forms.TickStyle.None;
-			this.trackV4.Scroll += new System.EventHandler(this.trackV4_Scroll);
+			this.trackV4.Scroll += new System.EventHandler(this.TrackV4_Scroll);
 			// 
 			// label10
 			// 
@@ -458,7 +458,7 @@
 			this.numericV3.Name = "numericV3";
 			this.numericV3.Size = new System.Drawing.Size(51, 20);
 			this.numericV3.TabIndex = 18;
-			this.numericV3.ValueChanged += new System.EventHandler(this.numericV3_ValueChanged);
+			this.numericV3.ValueChanged += new System.EventHandler(this.NumericV3_ValueChanged);
 			// 
 			// label9
 			// 
@@ -477,7 +477,7 @@
 			this.trackV3.Size = new System.Drawing.Size(211, 45);
 			this.trackV3.TabIndex = 19;
 			this.trackV3.TickStyle = System.Windows.Forms.TickStyle.None;
-			this.trackV3.Scroll += new System.EventHandler(this.trackV3_Scroll);
+			this.trackV3.Scroll += new System.EventHandler(this.TrackV3_Scroll);
 			// 
 			// label8
 			// 
@@ -499,7 +499,7 @@
 			this.numericV2.Name = "numericV2";
 			this.numericV2.Size = new System.Drawing.Size(51, 20);
 			this.numericV2.TabIndex = 16;
-			this.numericV2.ValueChanged += new System.EventHandler(this.numericV2_ValueChanged);
+			this.numericV2.ValueChanged += new System.EventHandler(this.NumericV2_ValueChanged);
 			// 
 			// trackV1
 			// 
@@ -509,7 +509,7 @@
 			this.trackV1.Size = new System.Drawing.Size(211, 45);
 			this.trackV1.TabIndex = 11;
 			this.trackV1.TickStyle = System.Windows.Forms.TickStyle.None;
-			this.trackV1.Scroll += new System.EventHandler(this.trackV1_Scroll);
+			this.trackV1.Scroll += new System.EventHandler(this.TrackV1_Scroll);
 			// 
 			// trackV2
 			// 
@@ -519,7 +519,7 @@
 			this.trackV2.Size = new System.Drawing.Size(211, 45);
 			this.trackV2.TabIndex = 17;
 			this.trackV2.TickStyle = System.Windows.Forms.TickStyle.None;
-			this.trackV2.Scroll += new System.EventHandler(this.trackV2_Scroll);
+			this.trackV2.Scroll += new System.EventHandler(this.TrackV2_Scroll);
 			// 
 			// numericV1
 			// 
@@ -532,7 +532,7 @@
 			this.numericV1.Name = "numericV1";
 			this.numericV1.Size = new System.Drawing.Size(51, 20);
 			this.numericV1.TabIndex = 10;
-			this.numericV1.ValueChanged += new System.EventHandler(this.numericV1_ValueChanged);
+			this.numericV1.ValueChanged += new System.EventHandler(this.NumericV1_ValueChanged);
 			// 
 			// groupBox4
 			// 
@@ -565,7 +565,7 @@
 			this.numericB4.Name = "numericB4";
 			this.numericB4.Size = new System.Drawing.Size(51, 20);
 			this.numericB4.TabIndex = 32;
-			this.numericB4.ValueChanged += new System.EventHandler(this.numericB4_ValueChanged);
+			this.numericB4.ValueChanged += new System.EventHandler(this.NumericB4_ValueChanged);
 			// 
 			// label12
 			// 
@@ -587,7 +587,7 @@
 			this.numericB1.Name = "numericB1";
 			this.numericB1.Size = new System.Drawing.Size(51, 20);
 			this.numericB1.TabIndex = 22;
-			this.numericB1.ValueChanged += new System.EventHandler(this.numericB1_ValueChanged);
+			this.numericB1.ValueChanged += new System.EventHandler(this.NumericB1_ValueChanged);
 			// 
 			// trackB4
 			// 
@@ -597,7 +597,7 @@
 			this.trackB4.Size = new System.Drawing.Size(211, 45);
 			this.trackB4.TabIndex = 33;
 			this.trackB4.TickStyle = System.Windows.Forms.TickStyle.None;
-			this.trackB4.Scroll += new System.EventHandler(this.trackB4_Scroll);
+			this.trackB4.Scroll += new System.EventHandler(this.TrackB4_Scroll);
 			// 
 			// trackB2
 			// 
@@ -607,7 +607,7 @@
 			this.trackB2.Size = new System.Drawing.Size(211, 45);
 			this.trackB2.TabIndex = 29;
 			this.trackB2.TickStyle = System.Windows.Forms.TickStyle.None;
-			this.trackB2.Scroll += new System.EventHandler(this.trackB2_Scroll);
+			this.trackB2.Scroll += new System.EventHandler(this.TrackB2_Scroll);
 			// 
 			// label13
 			// 
@@ -626,7 +626,7 @@
 			this.trackB1.Size = new System.Drawing.Size(211, 45);
 			this.trackB1.TabIndex = 23;
 			this.trackB1.TickStyle = System.Windows.Forms.TickStyle.None;
-			this.trackB1.Scroll += new System.EventHandler(this.trackB1_Scroll);
+			this.trackB1.Scroll += new System.EventHandler(this.TrackB1_Scroll);
 			// 
 			// numericB3
 			// 
@@ -639,7 +639,7 @@
 			this.numericB3.Name = "numericB3";
 			this.numericB3.Size = new System.Drawing.Size(51, 20);
 			this.numericB3.TabIndex = 30;
-			this.numericB3.ValueChanged += new System.EventHandler(this.numericB3_ValueChanged);
+			this.numericB3.ValueChanged += new System.EventHandler(this.NumericB3_ValueChanged);
 			// 
 			// numericB2
 			// 
@@ -652,7 +652,7 @@
 			this.numericB2.Name = "numericB2";
 			this.numericB2.Size = new System.Drawing.Size(51, 20);
 			this.numericB2.TabIndex = 28;
-			this.numericB2.ValueChanged += new System.EventHandler(this.numericB2_ValueChanged);
+			this.numericB2.ValueChanged += new System.EventHandler(this.NumericB2_ValueChanged);
 			// 
 			// label14
 			// 
@@ -680,7 +680,7 @@
 			this.trackB3.Size = new System.Drawing.Size(211, 45);
 			this.trackB3.TabIndex = 31;
 			this.trackB3.TickStyle = System.Windows.Forms.TickStyle.None;
-			this.trackB3.Scroll += new System.EventHandler(this.trackB3_Scroll);
+			this.trackB3.Scroll += new System.EventHandler(this.TrackB3_Scroll);
 			// 
 			// groupBox5
 			// 
@@ -723,7 +723,7 @@
             0,
             0,
             0});
-			this.numPass.ValueChanged += new System.EventHandler(this.numPass_ValueChanged);
+			this.numPass.ValueChanged += new System.EventHandler(this.NumPass_ValueChanged);
 			// 
 			// label16
 			// 
@@ -750,7 +750,7 @@
             0,
             0,
             0});
-			this.numColor.ValueChanged += new System.EventHandler(this.numColor_ValueChanged);
+			this.numColor.ValueChanged += new System.EventHandler(this.NumColor_ValueChanged);
 			// 
 			// rbDistanceManhattan
 			// 
@@ -763,7 +763,7 @@
 			this.rbDistanceManhattan.TabStop = true;
 			this.rbDistanceManhattan.Text = "Distance Manhattan";
 			this.rbDistanceManhattan.UseVisualStyleBackColor = true;
-			this.rbDistanceManhattan.CheckedChanged += new System.EventHandler(this.rbDistanceManhattan_CheckedChanged);
+			this.rbDistanceManhattan.CheckedChanged += new System.EventHandler(this.RbDistanceManhattan_CheckedChanged);
 			// 
 			// rbDistanceEuclide
 			// 
@@ -774,7 +774,7 @@
 			this.rbDistanceEuclide.TabIndex = 0;
 			this.rbDistanceEuclide.Text = "Distance Euclide";
 			this.rbDistanceEuclide.UseVisualStyleBackColor = true;
-			this.rbDistanceEuclide.CheckedChanged += new System.EventHandler(this.rbDistanceEuclide_CheckedChanged);
+			this.rbDistanceEuclide.CheckedChanged += new System.EventHandler(this.RbDistanceEuclide_CheckedChanged);
 			// 
 			// rbDistanceSup
 			// 
@@ -785,7 +785,7 @@
 			this.rbDistanceSup.TabIndex = 0;
 			this.rbDistanceSup.Text = "Distance Sup";
 			this.rbDistanceSup.UseVisualStyleBackColor = true;
-			this.rbDistanceSup.CheckedChanged += new System.EventHandler(this.rbDistanceSup_CheckedChanged);
+			this.rbDistanceSup.CheckedChanged += new System.EventHandler(this.RbDistanceSup_CheckedChanged);
 			// 
 			// ParamInterne
 			// 

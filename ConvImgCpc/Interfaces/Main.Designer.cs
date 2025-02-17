@@ -168,7 +168,7 @@
 			this.bpConvert.Size = new System.Drawing.Size(108, 23);
 			this.bpConvert.TabIndex = 3;
 			this.bpConvert.UseVisualStyleBackColor = true;
-			this.bpConvert.Click += new System.EventHandler(this.bpConvert_Click);
+			this.bpConvert.Click += new System.EventHandler(this.BpConvert_Click);
 			// 
 			// nbCols
 			// 
@@ -918,7 +918,7 @@
 			this.bpCtrstPlus.TabIndex = 56;
 			this.bpCtrstPlus.Text = "+";
 			this.bpCtrstPlus.UseVisualStyleBackColor = true;
-			this.bpCtrstPlus.Click += new System.EventHandler(this.bpCtrstPlus_Click);
+			this.bpCtrstPlus.Click += new System.EventHandler(this.BpCtrstPlus_Click);
 			// 
 			// bpSatMoins
 			// 
@@ -989,7 +989,7 @@
 			this.sortPal.Size = new System.Drawing.Size(15, 14);
 			this.sortPal.TabIndex = 50;
 			this.sortPal.UseVisualStyleBackColor = true;
-			this.sortPal.CheckedChanged += new System.EventHandler(this.sortPal_CheckedChanged);
+			this.sortPal.CheckedChanged += new System.EventHandler(this.SortPal_CheckedChanged);
 			// 
 			// RazB
 			// 
@@ -1060,7 +1060,7 @@
 			this.reducPal2.Size = new System.Drawing.Size(15, 14);
 			this.reducPal2.TabIndex = 46;
 			this.reducPal2.UseVisualStyleBackColor = true;
-			this.reducPal2.CheckedChanged += new System.EventHandler(this.reducPal2_CheckedChanged);
+			this.reducPal2.CheckedChanged += new System.EventHandler(this.ReducPal2_CheckedChanged);
 			// 
 			// reducPal1
 			// 
@@ -1268,7 +1268,7 @@
 			this.bpEditSplit.Text = "SplitEditor";
 			this.bpEditSplit.UseVisualStyleBackColor = true;
 			this.bpEditSplit.Visible = false;
-			this.bpEditSplit.Click += new System.EventHandler(this.bpSplitEditor_Click);
+			this.bpEditSplit.Click += new System.EventHandler(this.BpSplitEditor_Click);
 			// 
 			// bpRasterPlus
 			// 
@@ -1279,7 +1279,7 @@
 			this.bpRasterPlus.Text = "Raster+";
 			this.bpRasterPlus.UseVisualStyleBackColor = true;
 			this.bpRasterPlus.Visible = false;
-			this.bpRasterPlus.Click += new System.EventHandler(this.bpRasterPlus_Click);
+			this.bpRasterPlus.Click += new System.EventHandler(this.BpRasterPlus_Click);
 			// 
 			// bpRazAll
 			// 
@@ -1373,7 +1373,7 @@
 			this.bpTunnel.Text = "Tunnel";
 			this.bpTunnel.UseVisualStyleBackColor = true;
 			this.bpTunnel.Visible = false;
-			this.bpTunnel.Click += new System.EventHandler(this.bpTunnel_Click);
+			this.bpTunnel.Click += new System.EventHandler(this.BpTunnel_Click);
 			// 
 			// bpEn
 			// 

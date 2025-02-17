@@ -70,7 +70,7 @@ namespace ConvImgCpc {
 				Array.Clear(BufPrec, 0, BufPrec.Length);
 
 			// Copier l'image cpc dans le buffer de travail
-			img.bitmapCpc.CreeBmpCpc(img.BmpLock, null);
+			img.bitmapCpc.CreeBmpCpc(img.BmpLock);
 
 			int lpack, lmin = 0xFFFF, passOk = 0;
 			for (int pass = 0; pass < 3; pass++) {
@@ -98,7 +98,7 @@ namespace ConvImgCpc {
 				Array.Clear(BufPrec, 0, BufPrec.Length);
 
 			// Copier l'image cpc dans le buffer de travail
-			img.bitmapCpc.CreeBmpCpc(img.BmpLock, null);
+			img.bitmapCpc.CreeBmpCpc(img.BmpLock);
 
 			if (chkZoneVert.Checked) {
 				xStart = topBottom < 1 ? 0 : Cpc.NbCol >> 1;
@@ -175,14 +175,13 @@ namespace ConvImgCpc {
 				Array.Clear(BufPrec, 0, BufPrec.Length);
 
 			// Copier l'image cpc dans le buffer de travail
-			img.bitmapCpc.CreeBmpCpc(img.BmpLock, null);
+			img.bitmapCpc.CreeBmpCpc(img.BmpLock);
 			byte[] src = img.bitmapCpc.bmpCpc;
 
 			int maxSize = (Cpc.NbCol) + ((Cpc.NbLig - 1) >> 3) * (Cpc.NbCol) + ((Cpc.NbLig - 1) & 7) * 0x800;
 			if (maxSize >= 0x4000)
 				maxSize += 0x3800;
 
-			int maxDelta = newMethode ? 127 : 255;
 			// Recherche les "coordonnées" de l'image différente par rapport à la précédente
 			int bc = 0, posDiff = 0;
 			byte deltaAdr = 0;
@@ -229,14 +228,13 @@ namespace ConvImgCpc {
 			for (int y = 0; y < Cpc.TailleY; y += 2) {
 				int tx = Cpc.CalcTx(y);
 				for (int x = 0; x < Cpc.TailleX; x += 8) {
-					byte pen = 0, octet = 0;
+					byte octet = 0;
 					for (int p = 0; p < 8; p++)
 						if ((p % tx) == 0) {
-							pen = (byte)Cpc.GetPenColor(img.BmpLock, x + p, y);
+							byte pen = (byte)Cpc.GetPenColor(img.BmpLock, x + p, y);
 							if (pen > 15) {
 								pen = 0; // Pb peut survenir si la palette n'est pas la même pour chaque image d'une animation...
 							}
-
 							octet |= (byte)(Cpc.tabOctetMode[pen % 16] >> (p / tx));
 						}
 					bufOut[(x >> 3) + (y >> 1) * (Cpc.TailleX >> 3)] = octet;
@@ -550,24 +548,24 @@ namespace ConvImgCpc {
 			img.main.Enabled = img.main.anim.Enabled = img.Enabled = true;
 		}
 
-		private void chkMaxMem_CheckedChanged(object sender, EventArgs e) {
+		private void ChkMaxMem_CheckedChanged(object sender, EventArgs e) {
 			tbxAdrMax.Enabled = chkMaxMem.Checked;
 		}
 
-		private void chk128Ko_CheckedChanged(object sender, EventArgs e) {
+		private void Chk128Ko_CheckedChanged(object sender, EventArgs e) {
 			tbxAdrMax.Visible = chkMaxMem.Visible = chk128Ko.Checked;
 		}
 
-		private void comboMethode_SelectedIndexChanged(object sender, EventArgs e) {
+		private void ComboMethode_SelectedIndexChanged(object sender, EventArgs e) {
 			chk2Zone.Visible = chkZoneVert.Visible = grpGenereLigne.Visible = comboMethode.SelectedIndex == 0 && Cpc.modeVirtuel < 7;
 			chkZoneVert.Visible = chk2Zone.Visible && chk2Zone.Checked;
 		}
 
-		private void chkDataBrut_CheckedChanged(object sender, EventArgs e) {
+		private void ChkDataBrut_CheckedChanged(object sender, EventArgs e) {
 			chk128Ko.Enabled = chk2Zone.Enabled = chkBoucle.Enabled = chkCol.Enabled = chkDelai.Enabled = comboMethode.Enabled = chkMaxMem.Enabled = !chkDataBrut.Checked;
 		}
 
-		private void chk2Zone_CheckedChanged(object sender, EventArgs e) {
+		private void Chk2Zone_CheckedChanged(object sender, EventArgs e) {
 			chkZoneVert.Visible = chk2Zone.Checked;
 		}
 
@@ -599,7 +597,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void bpSave_Click(object sender, EventArgs e) {
+		private void BpSave_Click(object sender, EventArgs e) {
 			Hide();
 			string labelPalette = "Palette";
 			DoSave(false, pkMethode, labelPalette);

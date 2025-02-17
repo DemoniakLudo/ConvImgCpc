@@ -231,7 +231,7 @@ namespace ConvImgCpc {
 			for (int i = 0x44C0; i < 0x4600; i++)
 				bmp[i] = bmp[i + 0x800] = bmp[i + 0x1000] = bmp[i + 0x1800] = bmp[i + 0x2000] = bmp[i + 0x2800] = bmp[i + 0x3000] = bmp[i + 0x3800] = 0;
 
-			int lgPack = p.PackZX0(bmp, 0x7CC0, bufPack, 0);
+			int lgPack = p.PackZX0(bmp, 0x7CC0, bufPack);
 
 			wr.WriteLine("	ORG	#" + (0x8400 - lgPack).ToString("X4"));
 			wr.WriteLine("	Nolist");

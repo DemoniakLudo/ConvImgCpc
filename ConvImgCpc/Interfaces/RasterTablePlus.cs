@@ -32,7 +32,12 @@ namespace ConvImgCpc {
 		}
 
 		public void DrawLines() {
-			txbStart.Text = newStart.ToString();
+			if (chkSprites.Checked)
+				main.imgCpc.DrawSpritesHard(pictureBox);
+			else
+				pictureBox.Image = bmpImage.Bitmap;
+
+				txbStart.Text = newStart.ToString();
 			for (int i = 0; i < 272; i++)
 				for (int x = 0; x < 768; x += 2) {
 					int c = bmpFond.GetPixel(x, i * 2);
@@ -44,6 +49,7 @@ namespace ConvImgCpc {
 			txbLineStart.Text = raster.minLine.ToString();
 			txbLineEnd.Text = raster.maxLine.ToString();
 			bpGenerate.Enabled = raster.minLine < raster.maxLine;
+
 			pictureBox.Refresh();
 		}
 
@@ -116,8 +122,7 @@ namespace ConvImgCpc {
 			int sens = rbPlus.Checked ? 1 : -1;
 			if (int.TryParse(txbConstant.Text, out lastAddConstat) && int.TryParse(txbStart.Text, out newStart)
 				&& lastAddConstat >= 0 && lastAddConstat < 272 && lastAddConstat + sens * newStart <= 272 && lastAddConstat * sens + newStart >= 0) {
-				double rs, vs, bs;
-				if (double.TryParse(txbStartR.Text, out rs) && double.TryParse(txbStartV.Text, out vs) && double.TryParse(txbStartB.Text, out bs)) {
+				if (double.TryParse(txbStartR.Text, out double rs) && double.TryParse(txbStartV.Text, out double vs) && double.TryParse(txbStartB.Text, out double bs)) {
 					if (rs >= 0 && vs >= 0 && bs >= 0 && rs < 16 && vs < 16 && bs < 16) {
 						for (int i = 0; i < lastAddConstat; i++)
 							raster.line[newStart + i * sens] = (int)(bs + ((int)rs << 4) + ((int)vs << 8));
@@ -161,8 +166,7 @@ namespace ConvImgCpc {
 		}
 
 		private void BpCopyToClipboard_Click(object sender, EventArgs e) {
-			int start = 0, end = 0;
-			if (int.TryParse(txbLineStart.Text, out start) && int.TryParse(txbLineEnd.Text, out end) && start < end && start >= 0 && end < 272) {
+			if (int.TryParse(txbLineStart.Text, out int start) && int.TryParse(txbLineEnd.Text, out int end) && start < end && start >= 0 && end < 272) {
 				raster.minLine = start;
 				raster.maxLine = end;
 				Clipboard.SetText(SaveAsm.GenereDatas(raster.line, start, end, 16));
@@ -185,8 +189,7 @@ namespace ConvImgCpc {
 		}
 
 		private void BpSave_Click(object sender, EventArgs e) {
-			int start, end;
-			if (int.TryParse(txbLineStart.Text, out start) && int.TryParse(txbLineEnd.Text, out end) && start < end && start >= 0 && end < 272) {
+			if (int.TryParse(txbLineStart.Text, out int start) && int.TryParse(txbLineEnd.Text, out int end) && start < end && start >= 0 && end < 272) {
 				raster.minLine = start;
 				raster.maxLine = end;
 				SaveFileDialog dlg = new SaveFileDialog { Filter = "Fichiers xml (*.xml)|*.xml" };
@@ -204,8 +207,7 @@ namespace ConvImgCpc {
 		}
 
 		private void BpScrollUp_Click(object sender, EventArgs e) {
-			int scrLine;
-			int.TryParse(txbScroll.Text, out scrLine);
+			int.TryParse(txbScroll.Text, out int scrLine);
 			if (scrLine > 0 && scrLine < 272) {
 				for (int i = scrLine; i < 272; i++)
 					raster.line[i - scrLine] = raster.line[i];
@@ -217,8 +219,7 @@ namespace ConvImgCpc {
 		}
 
 		private void BpScrollDown_Click(object sender, EventArgs e) {
-			int scrLine;
-			int.TryParse(txbScroll.Text, out scrLine);
+			int.TryParse(txbScroll.Text, out int scrLine);
 			if (scrLine > 0 && scrLine < 272) {
 				for (int i = 271; i >= scrLine; i--)
 					raster.line[i] = raster.line[i - scrLine];
@@ -245,7 +246,6 @@ namespace ConvImgCpc {
 							int start = 0;
 							for (int i = tabBytes.Length == 32 ? 0 : 1; i < 16; i++) {
 								int kit = tabBytes[start] + (tabBytes[start + 1] << 8);
-								int col = (kit & 0xF00) + ((kit & 0x0F) << 4) + ((kit & 0xF0) >> 4);
 								raster.line[newStart + i] = kit & 0xFFF;
 								start += 2;
 							}
@@ -258,8 +258,7 @@ namespace ConvImgCpc {
 		}
 
 		private void BpGenerate_Click(object sender, EventArgs e) {
-			int start, end;
-			if (int.TryParse(txbLineStart.Text, out start) && int.TryParse(txbLineEnd.Text, out end) && start < end && start >= 0 && end < 272) {
+			if (int.TryParse(txbLineStart.Text, out int start) && int.TryParse(txbLineEnd.Text, out int end) && start < end && start >= 0 && end < 272) {
 				raster.minLine = start;
 				raster.maxLine = end;
 				SaveFileDialog dlg = new SaveFileDialog { Filter = "Assembler file (.asm)|*.asm" };
@@ -272,8 +271,7 @@ namespace ConvImgCpc {
 		}
 
 		private void BpGenFade_Click(object sender, EventArgs e) {
-			int start, end;
-			if (int.TryParse(txbLineStart.Text, out start) && int.TryParse(txbLineEnd.Text, out end) && start < end && start >= 0 && end < 272) {
+			if (int.TryParse(txbLineStart.Text, out int start) && int.TryParse(txbLineEnd.Text, out int end) && start < end && start >= 0 && end < 272) {
 				raster.minLine = start;
 				raster.maxLine = end;
 				SaveFileDialog dlg = new SaveFileDialog { Filter = "Assembler file (.asm)|*.asm" };
@@ -309,6 +307,10 @@ namespace ConvImgCpc {
 
 		private void RasterTablePlus_FormClosed(object sender, FormClosedEventArgs e) {
 			main.rasterPlus = null;
+		}
+
+		private void ChkSprites_CheckedChanged(object sender, EventArgs e) {
+			DrawLines();
 		}
 	}
 

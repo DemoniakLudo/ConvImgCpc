@@ -52,7 +52,7 @@
 			this.bpValide.Size = new System.Drawing.Size(75, 23);
 			this.bpValide.TabIndex = 2;
 			this.bpValide.UseVisualStyleBackColor = true;
-			this.bpValide.Click += new System.EventHandler(this.bpValide_Click);
+			this.bpValide.Click += new System.EventHandler(this.BpValide_Click);
 			// 
 			// bpAnnule
 			// 
@@ -61,7 +61,7 @@
 			this.bpAnnule.Size = new System.Drawing.Size(75, 23);
 			this.bpAnnule.TabIndex = 2;
 			this.bpAnnule.UseVisualStyleBackColor = true;
-			this.bpAnnule.Click += new System.EventHandler(this.bpAnnule_Click);
+			this.bpAnnule.Click += new System.EventHandler(this.BpAnnule_Click);
 			// 
 			// EditColor
 			// 

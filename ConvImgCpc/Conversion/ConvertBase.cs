@@ -21,7 +21,7 @@ namespace ConvImgCpc {
 			if (max > min) {
 				hue = v == max ? (b - r) / dif * 60f + 120f : b == max ? (r - v) / dif * 60f + 240f : (v - b) / dif * 60f + (b > v ? 360f : 0);
 				if (hue < 0)
-					hue = hue + 360f;
+					hue += 360f;
 			}
 			hue *= 255f / 360f;
 			float sat = satur * (dif / max) * 255f;
@@ -167,8 +167,8 @@ namespace ConvImgCpc {
 		static private void ConvertPasse1(DirectBitmap source, Param prm) {
 			Array.Clear(coulTrouvee, 0, coulTrouvee.Length);
 			int pct = Dither.SetMatDither(prm);
-			RvbColor p = new RvbColor(0), choix, n1, n2;
-			int indexChoix = 0;
+			RvbColor p, choix, n1, n2;
+			int indexChoix;
 			int incY = prm.trameTc ? 4 : 2;
 			for (int yPix = 0; yPix < Cpc.TailleY; yPix += incY) {
 				int Tx = Cpc.CalcTx(yPix);
@@ -229,7 +229,7 @@ namespace ConvImgCpc {
 				if (prm.lockState[i] == 0 && lockState[i] == 0)
 					Cpc.Palette[i] = 0xFFFF;
 
-	//		try {
+			try {
 				int cUtil, x, FindMax = Cpc.cpcPlus ? 4096 : 27, valMax = 0;
 				for (x = 0; x < maxPen; x++)
 					if (lockState[x] > 0)
@@ -326,10 +326,10 @@ namespace ConvImgCpc {
 						}
 					}
 				}
-			//}
-			//catch (Exception ex) {
-			//	System.Windows.Forms.MessageBox.Show(ex.StackTrace, ex.Message);
-			//}
+			}
+			catch (Exception ex) {
+				System.Windows.Forms.MessageBox.Show(ex.StackTrace, ex.Message);
+			}
 		}
 
 		//

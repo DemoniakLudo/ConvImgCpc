@@ -24,7 +24,7 @@ namespace ConvImgCpc {
 			txbLabelPtr.Visible = chkZeroPtr.Visible = chkLabelPtr.Visible = withPtr;
 		}
 
-		private void bpOk_Click(object sender, EventArgs e) {
+		private void BpOk_Click(object sender, EventArgs e) {
 			saveMediaOk = true;
 			Close();
 		}
