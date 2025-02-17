@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using static ConvImgCpc.ImageCpc;
+
 
 
 namespace ConvImgCpc {
@@ -24,6 +25,21 @@ namespace ConvImgCpc {
 
 		const int WM_LBUTTONUP = 0x0202;
 		const int PM_REMOVE = 0x0001;
+
+		[StructLayout(LayoutKind.Sequential)]
+		public struct NativeMessage {
+			public IntPtr handle;
+			public uint msg;
+			public IntPtr wParam;
+			public IntPtr lParam;
+			public uint time;
+			public System.Drawing.Point p;
+		}
+
+		[DllImport("user32.dll")]
+		public static extern int PeekMessage(out NativeMessage lpMsg, IntPtr window, uint wMsgFilterMin, uint wMsgFilterMax, uint wRemoveMsg);
+
+
 
 		public EditSprites(Main m, Main.PackMethode pk) {
 			InitializeComponent();

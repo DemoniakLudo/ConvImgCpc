@@ -60,7 +60,7 @@
 			this.bpCreer.Size = new System.Drawing.Size(116, 23);
 			this.bpCreer.TabIndex = 1;
 			this.bpCreer.UseVisualStyleBackColor = true;
-			this.bpCreer.Click += new System.EventHandler(this.bpCreer_Click);
+			this.bpCreer.Click += new System.EventHandler(this.BpCreer_Click);
 			// 
 			// label1
 			// 

@@ -243,7 +243,7 @@
 			this.bpSaveGif.TabIndex = 69;
 			this.bpSaveGif.UseVisualStyleBackColor = true;
 			this.bpSaveGif.Visible = false;
-			this.bpSaveGif.Click += new System.EventHandler(this.bpSaveGif_Click);
+			this.bpSaveGif.Click += new System.EventHandler(this.BpSaveGif_Click);
 			// 
 			// txbTps1
 			// 

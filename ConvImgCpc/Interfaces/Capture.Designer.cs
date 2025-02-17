@@ -59,7 +59,7 @@
 			this.rbCapt1.TabIndex = 10;
 			this.rbCapt1.TabStop = true;
 			this.rbCapt1.UseVisualStyleBackColor = true;
-			this.rbCapt1.CheckedChanged += new System.EventHandler(this.rbCapt1_CheckedChanged);
+			this.rbCapt1.CheckedChanged += new System.EventHandler(this.RbCapt1_CheckedChanged);
 			// 
 			// rbCapt2
 			// 
@@ -69,7 +69,7 @@
 			this.rbCapt2.Size = new System.Drawing.Size(14, 13);
 			this.rbCapt2.TabIndex = 10;
 			this.rbCapt2.UseVisualStyleBackColor = true;
-			this.rbCapt2.CheckedChanged += new System.EventHandler(this.rbCapt2_CheckedChanged);
+			this.rbCapt2.CheckedChanged += new System.EventHandler(this.RbCapt2_CheckedChanged);
 			// 
 			// rbCapt4
 			// 
@@ -79,7 +79,7 @@
 			this.rbCapt4.Size = new System.Drawing.Size(14, 13);
 			this.rbCapt4.TabIndex = 10;
 			this.rbCapt4.UseVisualStyleBackColor = true;
-			this.rbCapt4.CheckedChanged += new System.EventHandler(this.rbCapt4_CheckedChanged);
+			this.rbCapt4.CheckedChanged += new System.EventHandler(this.RbCapt4_CheckedChanged);
 			// 
 			// comboBanque
 			// 
@@ -126,7 +126,7 @@
 			this.bpCapture.Size = new System.Drawing.Size(75, 23);
 			this.bpCapture.TabIndex = 17;
 			this.bpCapture.UseVisualStyleBackColor = true;
-			this.bpCapture.Click += new System.EventHandler(this.bpCapture_Click);
+			this.bpCapture.Click += new System.EventHandler(this.BpCapture_Click);
 			// 
 			// rbCaptUser
 			// 
@@ -136,7 +136,7 @@
 			this.rbCaptUser.Size = new System.Drawing.Size(14, 13);
 			this.rbCaptUser.TabIndex = 18;
 			this.rbCaptUser.UseVisualStyleBackColor = true;
-			this.rbCaptUser.CheckedChanged += new System.EventHandler(this.rbCaptUser_CheckedChanged);
+			this.rbCaptUser.CheckedChanged += new System.EventHandler(this.RbCaptUser_CheckedChanged);
 			// 
 			// lblNbX
 			// 
@@ -166,7 +166,7 @@
 			this.txbNbX.TabIndex = 20;
 			this.txbNbX.Text = "1";
 			this.txbNbX.Visible = false;
-			this.txbNbX.TextChanged += new System.EventHandler(this.txbNbX_TextChanged);
+			this.txbNbX.TextChanged += new System.EventHandler(this.TxbNbX_TextChanged);
 			// 
 			// txbNbY
 			// 
@@ -176,7 +176,7 @@
 			this.txbNbY.TabIndex = 20;
 			this.txbNbY.Text = "1";
 			this.txbNbY.Visible = false;
-			this.txbNbY.TextChanged += new System.EventHandler(this.txbNbY_TextChanged);
+			this.txbNbY.TextChanged += new System.EventHandler(this.TxbNbY_TextChanged);
 			// 
 			// chkAutoCapture
 			// 

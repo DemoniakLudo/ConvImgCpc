@@ -10,6 +10,7 @@ namespace ConvImgCpc {
 		public BitmapCpc bitmapCpc;
 		private int offsetX = 0, offsetY = 0;
 		private int numCol = 0;
+		//private int mode = 1;
 		private int taillex = 384; // Résolution image horizontale en pixels mode 1
 		private int tailley = 272; // Résolution image verticale en pixels
 		private LigneSplit curLigneSplit;
@@ -52,7 +53,7 @@ namespace ConvImgCpc {
 				colors[numCol].BackColor = Color.FromArgb(bitmapCpc.GetPaletteColor(0, 0, numCol).GetColorArgb);
 				colors[numCol].Refresh();
 			}
-			bitmapCpc.CreeBmpCpc(img, null);
+			bitmapCpc.CreeBmpCpc(img);
 			DisplayLigne();
 		}
 
@@ -120,7 +121,7 @@ namespace ConvImgCpc {
 		public void Render() {
 			if (doRender) {
 				bitmapCpc.CalcPaletteSplit();
-				bitmapCpc.Render(bmpLock, offsetX, offsetY, false);
+				bitmapCpc.Render(bmpLock, offsetX);
 				DrawZoomPicture();
 				if (chkChgt.Checked) {
 					LigneSplit lSpl = bitmapCpc.splitEcran.GetLigne((int)numLigne.Value);
@@ -157,7 +158,6 @@ namespace ConvImgCpc {
 
 			Bitmap zoomed = (Bitmap)pictureZoom.Image;
 			zoomed?.Dispose();
-
 			zoomed = new Bitmap(bitmapZoom.Width << 3, bitmapZoom.Height << 3);
 			using (Graphics g = Graphics.FromImage(zoomed)) {
 				g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;

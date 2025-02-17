@@ -14,7 +14,7 @@ namespace ConvImgCpc {
 			pictureBox.Image = b;
 		}
 
-		private void chkX2_CheckedChanged(object sender, System.EventArgs e) {
+		private void ChkX2_CheckedChanged(object sender, System.EventArgs e) {
 			if (chkX2.Checked) {
 				this.Width = 1593;
 				this.Height = 1127;

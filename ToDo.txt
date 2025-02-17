@@ -1,0 +1,1 @@
+Mélange de mode sur une ligne (fixer position X où le chgt de mode se fera), ex mode 1 à gauche, mode 0 à droite

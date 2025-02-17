@@ -38,7 +38,7 @@ namespace ConvImgCpc {
 			stopModif = false;
 		}
 
-		private void trackLumR_Scroll(object sender, EventArgs e) {
+		private void TrackLumR_Scroll(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				numericLumR.Value = main.param.coefR = trackLumR.Value;
@@ -47,7 +47,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void trackLumV_Scroll(object sender, EventArgs e) {
+		private void TrackLumV_Scroll(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				numericLumV.Value = main.param.coefV = trackLumV.Value;
@@ -56,7 +56,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void trackLumB_Scroll(object sender, EventArgs e) {
+		private void TrackLumB_Scroll(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				numericLumB.Value = main.param.coefB = trackLumB.Value;
@@ -66,7 +66,7 @@ namespace ConvImgCpc {
 
 		}
 
-		private void numericLumR_ValueChanged(object sender, EventArgs e) {
+		private void NumericLumR_ValueChanged(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				trackLumR.Value = main.param.coefR = (int)numericLumR.Value;
@@ -75,7 +75,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void numericLumV_ValueChanged(object sender, EventArgs e) {
+		private void NumericLumV_ValueChanged(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				trackLumV.Value = main.param.coefV = (int)numericLumV.Value;
@@ -84,7 +84,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void numericLumB_ValueChanged(object sender, EventArgs e) {
+		private void NumericLumB_ValueChanged(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				trackLumB.Value = main.param.coefB = (int)numericLumB.Value;
@@ -93,7 +93,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void trackR1_Scroll(object sender, EventArgs e) {
+		private void TrackR1_Scroll(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				numericR1.Value = main.param.cstR1 = trackR1.Value;
@@ -102,7 +102,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void trackR2_Scroll(object sender, EventArgs e) {
+		private void TrackR2_Scroll(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				numericR2.Value = main.param.cstR2 = trackR2.Value;
@@ -112,7 +112,7 @@ namespace ConvImgCpc {
 
 		}
 
-		private void trackR3_Scroll(object sender, EventArgs e) {
+		private void TrackR3_Scroll(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				numericR3.Value = main.param.cstR3 = trackR3.Value;
@@ -121,7 +121,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void trackR4_Scroll(object sender, EventArgs e) {
+		private void TrackR4_Scroll(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				numericR4.Value = main.param.cstR4 = trackR4.Value;
@@ -131,7 +131,7 @@ namespace ConvImgCpc {
 
 		}
 
-		private void numericR1_ValueChanged(object sender, EventArgs e) {
+		private void NumericR1_ValueChanged(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				main.param.cstR1 = trackR1.Value = (int)numericR1.Value;
@@ -140,7 +140,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void numericR2_ValueChanged(object sender, EventArgs e) {
+		private void NumericR2_ValueChanged(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				main.param.cstR2 = trackR2.Value = (int)numericR2.Value;
@@ -149,7 +149,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void numericR3_ValueChanged(object sender, EventArgs e) {
+		private void NumericR3_ValueChanged(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				main.param.cstR3 = trackR3.Value = (int)numericR3.Value;
@@ -158,7 +158,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void numericR4_ValueChanged(object sender, EventArgs e) {
+		private void NumericR4_ValueChanged(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				main.param.cstR4 = trackR4.Value = (int)numericR4.Value;
@@ -167,7 +167,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void trackV1_Scroll(object sender, EventArgs e) {
+		private void TrackV1_Scroll(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				numericV1.Value = main.param.cstV1 = trackV1.Value;
@@ -176,7 +176,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void trackV2_Scroll(object sender, EventArgs e) {
+		private void TrackV2_Scroll(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				numericV2.Value = main.param.cstV2 = trackV2.Value;
@@ -185,7 +185,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void trackV3_Scroll(object sender, EventArgs e) {
+		private void TrackV3_Scroll(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				numericV3.Value = main.param.cstV3 = trackV3.Value;
@@ -194,7 +194,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void trackV4_Scroll(object sender, EventArgs e) {
+		private void TrackV4_Scroll(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				numericV4.Value = main.param.cstV4 = trackV4.Value;
@@ -203,7 +203,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void numericV1_ValueChanged(object sender, EventArgs e) {
+		private void NumericV1_ValueChanged(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				main.param.cstV1 = trackV1.Value = (int)numericV1.Value;
@@ -212,7 +212,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void numericV2_ValueChanged(object sender, EventArgs e) {
+		private void NumericV2_ValueChanged(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				main.param.cstV2 = trackV2.Value = (int)numericV2.Value;
@@ -221,7 +221,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void numericV3_ValueChanged(object sender, EventArgs e) {
+		private void NumericV3_ValueChanged(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				main.param.cstV3 = trackV3.Value = (int)numericV3.Value;
@@ -230,7 +230,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void numericV4_ValueChanged(object sender, EventArgs e) {
+		private void NumericV4_ValueChanged(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				main.param.cstV4 = trackV4.Value = (int)numericV4.Value;
@@ -239,7 +239,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void trackB1_Scroll(object sender, EventArgs e) {
+		private void TrackB1_Scroll(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				numericB1.Value = main.param.cstB1 = trackB1.Value;
@@ -248,7 +248,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void trackB2_Scroll(object sender, EventArgs e) {
+		private void TrackB2_Scroll(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				numericB2.Value = main.param.cstB2 = trackB2.Value;
@@ -257,7 +257,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void trackB3_Scroll(object sender, EventArgs e) {
+		private void TrackB3_Scroll(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				numericB3.Value = main.param.cstB3 = trackB3.Value;
@@ -266,7 +266,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void trackB4_Scroll(object sender, EventArgs e) {
+		private void TrackB4_Scroll(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				numericB4.Value = main.param.cstB4 = trackB4.Value;
@@ -275,7 +275,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void numericB1_ValueChanged(object sender, EventArgs e) {
+		private void NumericB1_ValueChanged(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				main.param.cstB1 = trackB1.Value = (int)numericB1.Value;
@@ -284,7 +284,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void numericB2_ValueChanged(object sender, EventArgs e) {
+		private void NumericB2_ValueChanged(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				main.param.cstB2 = trackB2.Value = (int)numericB2.Value;
@@ -293,7 +293,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void numericB3_ValueChanged(object sender, EventArgs e) {
+		private void NumericB3_ValueChanged(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				main.param.cstB3 = trackB3.Value = (int)numericB3.Value;
@@ -302,7 +302,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void numericB4_ValueChanged(object sender, EventArgs e) {
+		private void NumericB4_ValueChanged(object sender, EventArgs e) {
 			if (!stopModif) {
 				stopModif = true;
 				main.param.cstB4 = trackB4.Value = (int)numericB4.Value;
@@ -311,7 +311,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void numColor_ValueChanged(object sender, EventArgs e) {
+		private void NumColor_ValueChanged(object sender, EventArgs e) {
 			if (!stopModif) {
 				Enabled = false;
 				stopModif = true;
@@ -322,7 +322,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void rbDistanceSup_CheckedChanged(object sender, EventArgs e) {
+		private void RbDistanceSup_CheckedChanged(object sender, EventArgs e) {
 			if (!stopModif) {
 				Enabled = false;
 				stopModif = true;
@@ -333,7 +333,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void rbDistanceEuclide_CheckedChanged(object sender, EventArgs e) {
+		private void RbDistanceEuclide_CheckedChanged(object sender, EventArgs e) {
 			if (!stopModif) {
 				Enabled = false;
 				stopModif = true;
@@ -344,7 +344,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void rbDistanceManhattan_CheckedChanged(object sender, EventArgs e) {
+		private void RbDistanceManhattan_CheckedChanged(object sender, EventArgs e) {
 			if (!stopModif) {
 				Enabled = false;
 				stopModif = true;
@@ -355,7 +355,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void numPass_ValueChanged(object sender, EventArgs e) {
+		private void NumPass_ValueChanged(object sender, EventArgs e) {
 			if (!stopModif) {
 				Enabled = false;
 				stopModif = true;

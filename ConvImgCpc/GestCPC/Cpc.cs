@@ -192,7 +192,7 @@ namespace ConvImgCpc {
 		}
 
 		static public int GetPenColor(DirectBitmap bmpLock, int x, int y) {
-			int pen = 0;
+			int pen;
 			RvbColor col = bmpLock.GetPixelColor(x, y);
 			if (cpcPlus) {
 				for (pen = 0; pen < 16; pen++) {

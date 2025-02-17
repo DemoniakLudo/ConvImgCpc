@@ -11,7 +11,7 @@ namespace ConvImgCpc {
 			m.ChangeLanguage(Controls, "CreationImages");
 		}
 
-		private void bpCreer_Click(object sender, EventArgs e) {
+		private void BpCreer_Click(object sender, EventArgs e) {
 			ret = (int)nbImages.Value;
 			Close();
 		}

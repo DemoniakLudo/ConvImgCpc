@@ -283,7 +283,6 @@ namespace ConvImgCpc {
 			int t = MinSect == 0x41 ? 2 : MinSect == 1 ? 1 : 0;
 			int pos = GetPosData(t, s) + ((NumDir & 15) << 5);
 			int len = Marshal.SizeOf(Dir);
-			int idSect = GetIndexSecteur(t, s);
 			IntPtr ptr = Marshal.AllocHGlobal(len);
 			Marshal.StructureToPtr(Dir, ptr, true);
 			Marshal.Copy(ptr, Data[t][0], pos, len);

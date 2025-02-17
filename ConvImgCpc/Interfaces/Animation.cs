@@ -99,7 +99,7 @@ namespace ConvImgCpc {
 			DrawImages(main.imgCpc.selImage);
 		}
 
-		private void bpSaveGif_Click(object sender, EventArgs e) {
+		private void BpSaveGif_Click(object sender, EventArgs e) {
 			try {
 				SaveFileDialog dlg = new SaveFileDialog { Filter = "Gif anim (*.gif)|*.gif" };
 				if (dlg.ShowDialog() == DialogResult.OK) {
@@ -154,9 +154,8 @@ namespace ConvImgCpc {
 
 		private void TxbTps_TextChanged(object sender, EventArgs e) {
 			if (!lockTps) {
-				int v = 0;
 				TextBox t = (TextBox)sender;
-				if (int.TryParse(t.Text, out v) && v > 0 && v <= 5000) {
+				if (int.TryParse(t.Text, out int v) && v > 0 && v <= 5000) {
 					int num = (int)numImage.Value;
 					int index = Convert.ToInt32(t.Tag) + num;
 					if (index >= 0 && index < main.imgCpc.tabBmpLock.Length)
@@ -180,7 +179,7 @@ namespace ConvImgCpc {
 		}
 
 		private void BpDel1_2_Click(object sender, EventArgs e) {
-			for (int i = main.imgSrc.NbImg - 1; i > 0; i = i - 2) {
+			for (int i = main.imgSrc.NbImg - 1; i > 0; i -= 2) {
 				main.imgSrc.DeleteImage(i);
 				numImage.Maximum = main.imgSrc.NbImg - 1;
 				main.SetInfo("Suppression image " + i);

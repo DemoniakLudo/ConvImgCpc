@@ -47,7 +47,7 @@
 			this.chkX2.TabIndex = 1;
 			this.chkX2.Text = "x2";
 			this.chkX2.UseVisualStyleBackColor = true;
-			this.chkX2.CheckedChanged += new System.EventHandler(this.chkX2_CheckedChanged);
+			this.chkX2.CheckedChanged += new System.EventHandler(this.ChkX2_CheckedChanged);
 			// 
 			// Rendu
 			// 

@@ -341,21 +341,21 @@ namespace ConvImgCpc {
 				MoveOrSize(e);      // Déplacement/Zoom image
 		}
 
-		private void vScrollBar_Scroll(object sender, ScrollEventArgs e) {
+		private void VScrollBar_Scroll(object sender, ScrollEventArgs e) {
 			offsetY = (vScrollBar.Value >> 1) << 1;
 			Render(true);
 		}
 
-		private void hScrollBar_Scroll(object sender, ScrollEventArgs e) {
+		private void HScrollBar_Scroll(object sender, ScrollEventArgs e) {
 			offsetX = (hScrollBar.Value >> 3) << 3;
 			Render(true);
 		}
 
-		private void tailleCrayon_SelectedIndexChanged(object sender, EventArgs e) {
+		private void TailleCrayon_SelectedIndexChanged(object sender, EventArgs e) {
 			penWidth = int.Parse(tailleCrayon.SelectedItem.ToString());
 		}
 
-		private void modeEdition_CheckedChanged(object sender, System.EventArgs e) {
+		private void ModeEdition_CheckedChanged(object sender, System.EventArgs e) {
 			ReleaseMotif();
 			zoom = 1;
 			chkRendu.Checked = false;
@@ -365,7 +365,7 @@ namespace ConvImgCpc {
 				undo.Reset();
 				grpEdition.Visible = tailleCrayon.Enabled = true;
 				bpUndo.Enabled = bpRedo.Enabled = false;
-				tailleCrayon_SelectedIndexChanged(null, null);
+				TailleCrayon_SelectedIndexChanged(null, null);
 				main.param.autoRecalc = main.autoRecalc.Checked = false;
 			}
 			else {
@@ -384,7 +384,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void chkRendu_CheckedChanged(object sender, System.EventArgs e) {
+		private void ChkRendu_CheckedChanged(object sender, System.EventArgs e) {
 			if (chkRendu.Checked) {
 				fenetreRendu = new Rendu(BmpLock.Bitmap);
 				fenetreRendu.Show();
@@ -394,60 +394,56 @@ namespace ConvImgCpc {
 				CloseRendu();
 		}
 
-		private void rbDraw_CheckedChanged(object sender, EventArgs e) {
+		private void RbDraw_CheckedChanged(object sender, EventArgs e) {
 			bpLoadWin.Enabled = bpSaveWin.Enabled = false;
 			ReleaseMotif();
 			editToolMode = EditTool.Draw;
 		}
 
-		private void rbZoom_CheckedChanged(object sender, EventArgs e) {
+		private void RbZoom_CheckedChanged(object sender, EventArgs e) {
 			bpLoadWin.Enabled = bpSaveWin.Enabled = false;
 			ReleaseMotif();
 			editToolMode = EditTool.Zoom;
 		}
 
-		private void rbCopy_CheckedChanged(object sender, EventArgs e) {
+		private void RbCopy_CheckedChanged(object sender, EventArgs e) {
 			bpLoadWin.Enabled = true;
 			bpSaveWin.Enabled = imgMotif != null;
 			editToolMode = EditTool.Copy;
 		}
 
-		private void rbPickColor_CheckedChanged(object sender, EventArgs e) {
+		private void RbPickColor_CheckedChanged(object sender, EventArgs e) {
 			bpLoadWin.Enabled = bpSaveWin.Enabled = false;
 			editToolMode = EditTool.Pick;
 		}
 
-		private void rbFill_CheckedChanged(object sender, EventArgs e) {
+		private void RbFill_CheckedChanged(object sender, EventArgs e) {
 			bpLoadWin.Enabled = bpSaveWin.Enabled = false;
 			editToolMode = EditTool.Fill;
 		}
 
-		private void bpUndo_Click(object sender, System.EventArgs e) {
+		private void BpUndo_Click(object sender, System.EventArgs e) {
 			Enabled = false;
 			List<MemoPoint> lst = undo.Undo();
 			foreach (MemoPoint p in lst) {
 				int tx = Cpc.CalcTx(p.posy);
 				BmpLock.SetHorLineDouble(p.posx, p.posy, tx, p.oldColor);
 			}
-			if (imgCopy != null)
-				imgCopy.CopyBits(BmpLock);
-
+			imgCopy?.CopyBits(BmpLock);
 			Render(true);
 			bpUndo.Enabled = undo.CanUndo;
 			bpRedo.Enabled = undo.CanRedo;
 			Enabled = true;
 		}
 
-		private void bpRedo_Click(object sender, System.EventArgs e) {
+		private void BpRedo_Click(object sender, System.EventArgs e) {
 			Enabled = false;
 			List<MemoPoint> lst = undo.Redo();
 			foreach (MemoPoint p in lst) {
 				int tx = Cpc.CalcTx(p.posy);
 				BmpLock.SetHorLineDouble(p.posx, p.posy, tx, p.newColor);
 			}
-			if (imgCopy != null)
-				imgCopy.CopyBits(BmpLock);
-
+			imgCopy?.CopyBits(BmpLock);
 			Render(true);
 			bpUndo.Enabled = undo.CanUndo;
 			bpRedo.Enabled = undo.CanRedo;
@@ -455,7 +451,7 @@ namespace ConvImgCpc {
 		}
 
 		// Flip horizontal
-		private void bpHorFlip_Click(object sender, EventArgs e) {
+		private void BpHorFlip_Click(object sender, EventArgs e) {
 			int maxY = Cpc.TailleY >> 1;
 			for (int y = 0; y < maxY; y++) {
 				int zy = Cpc.TailleY - 1 - y;
@@ -474,7 +470,7 @@ namespace ConvImgCpc {
 		}
 
 		// Flip Vertical
-		private void bpVerFlip_Click(object sender, EventArgs e) {
+		private void BpVerFlip_Click(object sender, EventArgs e) {
 			int maxX = Cpc.TailleX >> 1;
 			for (int x = 0; x < maxX; x++) {
 				int zx = Cpc.TailleX - 1 - x;

@@ -65,7 +65,7 @@
 			this.bpOk.TabIndex = 5;
 			this.bpOk.Text = "Ok";
 			this.bpOk.UseVisualStyleBackColor = true;
-			this.bpOk.Click += new System.EventHandler(this.bpOk_Click);
+			this.bpOk.Click += new System.EventHandler(this.BpOk_Click);
 			// 
 			// txbLabelPalette
 			// 

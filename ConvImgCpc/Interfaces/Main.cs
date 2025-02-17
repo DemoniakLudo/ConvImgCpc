@@ -344,7 +344,7 @@ namespace ConvImgCpc {
 				Convert(false);
 		}
 
-		private void bpConvert_Click(object sender, EventArgs e) {
+		private void BpConvert_Click(object sender, EventArgs e) {
 			Convert(true);
 		}
 
@@ -440,8 +440,7 @@ namespace ConvImgCpc {
 					}
 				}
 				else {
-					imageStream = new MemoryStream(tabBytes);
-					imageStream.Position = 0;
+					imageStream = new MemoryStream(tabBytes) { Position = 0 };
 					if (!singlePicture) {
 						imgSrc.InitBitmap(imageStream);
 						nbImages = imgSrc.NbImg;
@@ -529,7 +528,7 @@ namespace ConvImgCpc {
 				radioKeepLarger.Checked = param.sMode == Param.SizeMode.KeepLarger;
 				radioKeepSmaller.Checked = param.sMode == Param.SizeMode.KeepSmaller;
 				radioOrigin.Checked = param.sMode == Param.SizeMode.Origin;
-				sortPal.Checked = (param.newSortPal & 1) != 0;
+				sortPal.Checked = (param.newSortPal & 1) == 1;
 				radioUserSize.Checked = param.sMode == Param.SizeMode.UserSize;
 				nbCols.Value = param.nbCols;
 				nbLignes.Value = param.nbLignes;
@@ -650,10 +649,11 @@ namespace ConvImgCpc {
 		}
 
 		private void BpImport_Click(object sender, EventArgs e) {
-			OpenFileDialog dlg = new OpenFileDialog();
-			dlg.Filter = multilingue.GetString("Main.prg.TxtInfo16") + " (*.bmp, *.gif, *.png, *.jpg, *.jpeg, *.jfif, *.scr)|*.bmp;*.gif;*.png;*.jpg;*.jpeg;*.jfif;*.scr|"
-						+ multilingue.GetString("Main.prg.TxtInfo17") + "|*.*";
-			dlg.InitialDirectory = param.lastReadPath;
+			OpenFileDialog dlg = new OpenFileDialog {
+				Filter = multilingue.GetString("Main.prg.TxtInfo16") + " (*.bmp, *.gif, *.png, *.jpg, *.jpeg, *.jfif, *.scr)|*.bmp;*.gif;*.png;*.jpg;*.jpeg;*.jfif;*.scr|"
+						+ multilingue.GetString("Main.prg.TxtInfo17") + "|*.*",
+				InitialDirectory = param.lastReadPath
+			};
 			if (dlg.ShowDialog() == DialogResult.OK) {
 				imgCpc.ResetX2();
 				ReadScreen(dlg.FileName, true);
@@ -1139,7 +1139,7 @@ namespace ConvImgCpc {
 				contrast.Value--;
 		}
 
-		private void bpCtrstPlus_Click(
+		private void BpCtrstPlus_Click(
 			object sender, EventArgs e) {
 			if (contrast.Value < contrast.Maximum)
 				contrast.Value++;
@@ -1160,7 +1160,7 @@ namespace ConvImgCpc {
 			Convert(false);
 		}
 
-		private void sortPal_CheckedChanged(object sender, EventArgs e) {
+		private void SortPal_CheckedChanged(object sender, EventArgs e) {
 			param.newSortPal++;
 			if (param.newSortPal > 3)
 				param.newSortPal = 0;
@@ -1187,7 +1187,7 @@ namespace ConvImgCpc {
 				Convert(false);
 		}
 
-		private void reducPal2_CheckedChanged(object sender, EventArgs e) {
+		private void ReducPal2_CheckedChanged(object sender, EventArgs e) {
 			param.reductPal2 = reducPal2.Checked;
 			if (Enabled)
 				Convert(false);
@@ -1358,22 +1358,22 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private bool CheckForInternetConnection() {
-			try {
-				HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://google.com/generate_204");
-				request.Timeout = 1000;
-				HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-				Stream receiveStream = response.GetResponseStream();
-				StreamReader readStream = new StreamReader(receiveStream, System.Text.Encoding.UTF8);
-				string ret = readStream.ReadToEnd();
-				response.Close();
-				readStream.Close();
-				return true;
-			}
-			catch {
-				return false;
-			}
-		}
+		//private bool CheckForInternetConnection() {
+		//	try {
+		//		HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://google.com/generate_204");
+		//		request.Timeout = 1000;
+		//		HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+		//		Stream receiveStream = response.GetResponseStream();
+		//		StreamReader readStream = new StreamReader(receiveStream, System.Text.Encoding.UTF8);
+		//		string ret = readStream.ReadToEnd();
+		//		response.Close();
+		//		readStream.Close();
+		//		return true;
+		//	}
+		//	catch {
+		//		return false;
+		//	}
+		//}
 
 		private void CheckMaj(bool noResponseOk = false) {
 			Enabled = noResponseOk;
@@ -1447,31 +1447,28 @@ namespace ConvImgCpc {
 		}
 
 		private void BpXDiv2_Click(object sender, EventArgs e) {
-			numSizeX.Value = numSizeX.Value / 2;
+			numSizeX.Value /= 2;
 			InterfaceChange(sender, e);
 		}
 
 		private void BpXMul2_Click(object sender, EventArgs e) {
-			numSizeX.Value = numSizeX.Value * 2;
+			numSizeX.Value *= 2;
 			InterfaceChange(sender, e);
 		}
 
 		private void BpYDiv2_Click(object sender, EventArgs e) {
-			numSizeY.Value = numSizeY.Value / 2;
+			numSizeY.Value /= 2;
 			InterfaceChange(sender, e);
 		}
 
 		private void BpYMul2_Click(object sender, EventArgs e) {
-			numSizeY.Value = numSizeY.Value * 2;
+			numSizeY.Value *= 2;
 			InterfaceChange(sender, e);
 		}
 
 		private void BpTest_Click(object sender, EventArgs e) {
 			Enabled = false;
-			SaveFileDialog dlg = new SaveFileDialog();
-			dlg.InitialDirectory = param.lastSavePath;
-			string filter = "Sauvegarde matrice assembleur (.asm)|*.asm";
-			dlg.Filter = filter;
+			SaveFileDialog dlg = new SaveFileDialog { InitialDirectory = param.lastSavePath, Filter = "Sauvegarde matrice assembleur (.asm)|*.asm" };
 			if (dlg.ShowDialog() == DialogResult.OK) {
 				imgCpc.ResetGrille();
 				imgCpc.SauveMatrice(dlg.FileName, lblInfoVersion.Text, param, pkMethode);
@@ -1485,11 +1482,12 @@ namespace ConvImgCpc {
 			Convert(false);
 		}
 
-		private void bpTunnel_Click(object sender, EventArgs e) {
+		private void BpTunnel_Click(object sender, EventArgs e) {
 			Enabled = false;
-			SaveFileDialog dlg = new SaveFileDialog();
-			dlg.InitialDirectory = param.lastSavePath;
-			dlg.Filter = "Totem raster assembleur (.asm)|*.asm";
+			SaveFileDialog dlg = new SaveFileDialog {
+				InitialDirectory = param.lastSavePath,
+				Filter = "Totem raster assembleur (.asm)|*.asm"
+			};
 			DialogResult result = dlg.ShowDialog();
 			if (result == System.Windows.Forms.DialogResult.OK) {
 				imgCpc.SauveTunnel(dlg.FileName);
@@ -1497,14 +1495,14 @@ namespace ConvImgCpc {
 			Enabled = true;
 		}
 
-		private void bpRasterPlus_Click(object sender, EventArgs e) {
+		private void BpRasterPlus_Click(object sender, EventArgs e) {
 			if (rasterPlus == null) {
 				rasterPlus = new RasterTablePlus(this, imgCpc.BmpLock);
 				rasterPlus.Show();
 			}
 		}
 
-		private void bpSplitEditor_Click(object sender, EventArgs e) {
+		private void BpSplitEditor_Click(object sender, EventArgs e) {
 			if (editSplit == null) {
 				editSplit = new EditSplit(this, imgCpc.BmpLock);
 				editSplit.Show();

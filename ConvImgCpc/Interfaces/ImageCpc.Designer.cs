@@ -108,7 +108,7 @@
 			this.modeEdition.Size = new System.Drawing.Size(15, 14);
 			this.modeEdition.TabIndex = 2;
 			this.modeEdition.UseVisualStyleBackColor = true;
-			this.modeEdition.CheckedChanged += new System.EventHandler(this.modeEdition_CheckedChanged);
+			this.modeEdition.CheckedChanged += new System.EventHandler(this.ModeEdition_CheckedChanged);
 			// 
 			// hScrollBar
 			// 
@@ -119,7 +119,7 @@
 			this.hScrollBar.SmallChange = 8;
 			this.hScrollBar.TabIndex = 1;
 			this.hScrollBar.Visible = false;
-			this.hScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar_Scroll);
+			this.hScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HScrollBar_Scroll);
 			// 
 			// vScrollBar
 			// 
@@ -130,7 +130,7 @@
 			this.vScrollBar.SmallChange = 8;
 			this.vScrollBar.TabIndex = 0;
 			this.vScrollBar.Visible = false;
-			this.vScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vScrollBar_Scroll);
+			this.vScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.VScrollBar_Scroll);
 			// 
 			// drawColor
 			// 
@@ -174,7 +174,7 @@
 			this.tailleCrayon.Name = "tailleCrayon";
 			this.tailleCrayon.Size = new System.Drawing.Size(31, 21);
 			this.tailleCrayon.TabIndex = 3;
-			this.tailleCrayon.SelectedIndexChanged += new System.EventHandler(this.tailleCrayon_SelectedIndexChanged);
+			this.tailleCrayon.SelectedIndexChanged += new System.EventHandler(this.TailleCrayon_SelectedIndexChanged);
 			// 
 			// grpEdition
 			// 
@@ -225,7 +225,7 @@
 			this.rbFill.TabIndex = 21;
 			this.rbFill.TabStop = true;
 			this.rbFill.UseVisualStyleBackColor = true;
-			this.rbFill.CheckedChanged += new System.EventHandler(this.rbFill_CheckedChanged);
+			this.rbFill.CheckedChanged += new System.EventHandler(this.RbFill_CheckedChanged);
 			// 
 			// bpLoadWin
 			// 
@@ -247,7 +247,7 @@
 			this.rbPickColor.TabIndex = 14;
 			this.rbPickColor.TabStop = true;
 			this.rbPickColor.UseVisualStyleBackColor = true;
-			this.rbPickColor.CheckedChanged += new System.EventHandler(this.rbPickColor_CheckedChanged);
+			this.rbPickColor.CheckedChanged += new System.EventHandler(this.RbPickColor_CheckedChanged);
 			// 
 			// bpVerFlip
 			// 
@@ -257,7 +257,7 @@
 			this.bpVerFlip.TabIndex = 19;
 			this.bpVerFlip.Text = "Ver. Flip";
 			this.bpVerFlip.UseVisualStyleBackColor = true;
-			this.bpVerFlip.Click += new System.EventHandler(this.bpVerFlip_Click);
+			this.bpVerFlip.Click += new System.EventHandler(this.BpVerFlip_Click);
 			// 
 			// bpHorFlip
 			// 
@@ -267,7 +267,7 @@
 			this.bpHorFlip.TabIndex = 18;
 			this.bpHorFlip.Text = "Hor. Flip";
 			this.bpHorFlip.UseVisualStyleBackColor = true;
-			this.bpHorFlip.Click += new System.EventHandler(this.bpHorFlip_Click);
+			this.bpHorFlip.Click += new System.EventHandler(this.BpHorFlip_Click);
 			// 
 			// lblInfoPos
 			// 
@@ -286,7 +286,7 @@
 			this.rbCopy.Size = new System.Drawing.Size(48, 32);
 			this.rbCopy.TabIndex = 16;
 			this.rbCopy.UseVisualStyleBackColor = true;
-			this.rbCopy.CheckedChanged += new System.EventHandler(this.rbCopy_CheckedChanged);
+			this.rbCopy.CheckedChanged += new System.EventHandler(this.RbCopy_CheckedChanged);
 			// 
 			// undrawColor
 			// 
@@ -314,7 +314,7 @@
 			this.rbZoom.Size = new System.Drawing.Size(48, 32);
 			this.rbZoom.TabIndex = 13;
 			this.rbZoom.UseVisualStyleBackColor = true;
-			this.rbZoom.CheckedChanged += new System.EventHandler(this.rbZoom_CheckedChanged);
+			this.rbZoom.CheckedChanged += new System.EventHandler(this.RbZoom_CheckedChanged);
 			// 
 			// rbDraw
 			// 
@@ -326,7 +326,7 @@
 			this.rbDraw.TabIndex = 12;
 			this.rbDraw.TabStop = true;
 			this.rbDraw.UseVisualStyleBackColor = true;
-			this.rbDraw.CheckedChanged += new System.EventHandler(this.rbDraw_CheckedChanged);
+			this.rbDraw.CheckedChanged += new System.EventHandler(this.RbDraw_CheckedChanged);
 			// 
 			// chkDoRedo
 			// 
@@ -346,7 +346,7 @@
 			this.bpRedo.TabIndex = 10;
 			this.bpRedo.Text = "Redo";
 			this.bpRedo.UseVisualStyleBackColor = true;
-			this.bpRedo.Click += new System.EventHandler(this.bpRedo_Click);
+			this.bpRedo.Click += new System.EventHandler(this.BpRedo_Click);
 			// 
 			// bpUndo
 			// 
@@ -357,7 +357,7 @@
 			this.bpUndo.TabIndex = 10;
 			this.bpUndo.Text = "Undo";
 			this.bpUndo.UseVisualStyleBackColor = true;
-			this.bpUndo.Click += new System.EventHandler(this.bpUndo_Click);
+			this.bpUndo.Click += new System.EventHandler(this.BpUndo_Click);
 			// 
 			// chkRendu
 			// 
@@ -367,7 +367,7 @@
 			this.chkRendu.Size = new System.Drawing.Size(15, 14);
 			this.chkRendu.TabIndex = 9;
 			this.chkRendu.UseVisualStyleBackColor = true;
-			this.chkRendu.CheckedChanged += new System.EventHandler(this.chkRendu_CheckedChanged);
+			this.chkRendu.CheckedChanged += new System.EventHandler(this.ChkRendu_CheckedChanged);
 			// 
 			// label4
 			// 
@@ -423,7 +423,7 @@
 			this.modeCaptureSprites.TabIndex = 10;
 			this.modeCaptureSprites.UseVisualStyleBackColor = true;
 			this.modeCaptureSprites.Visible = false;
-			this.modeCaptureSprites.CheckedChanged += new System.EventHandler(this.modeCaptureSprites_CheckedChanged);
+			this.modeCaptureSprites.CheckedChanged += new System.EventHandler(this.ModeCaptureSprites_CheckedChanged);
 			// 
 			// bpCopyPal
 			// 
@@ -462,7 +462,7 @@
 			this.pictureBox.TabIndex = 0;
 			this.pictureBox.TabStop = false;
 			this.pictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TrtMouseMove);
-			this.pictureBox.MouseLeave += new System.EventHandler(this.pictureBox_MouseLeave);
+			this.pictureBox.MouseLeave += new System.EventHandler(this.PictureBox_MouseLeave);
 			this.pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TrtMouseMove);
 			// 
 			// bpGenPal
@@ -484,7 +484,7 @@
 			this.chkGrilleSprite.TabIndex = 28;
 			this.chkGrilleSprite.UseVisualStyleBackColor = true;
 			this.chkGrilleSprite.Visible = false;
-			this.chkGrilleSprite.CheckedChanged += new System.EventHandler(this.chkGrilleSprite_CheckedChanged);
+			this.chkGrilleSprite.CheckedChanged += new System.EventHandler(this.ChkGrilleSprite_CheckedChanged);
 			// 
 			// bpCopyImage
 			// 
@@ -557,7 +557,7 @@
 			this.bpReadCoord.TabIndex = 7;
 			this.bpReadCoord.Text = "Read";
 			this.bpReadCoord.UseVisualStyleBackColor = true;
-			this.bpReadCoord.Click += new System.EventHandler(this.bpReadCoord_Click);
+			this.bpReadCoord.Click += new System.EventHandler(this.BpReadCoord_Click);
 			// 
 			// bpCopiePosSprites
 			// 
@@ -597,7 +597,7 @@
 			// 
 			this.numPosX.Location = new System.Drawing.Point(501, 18);
 			this.numPosX.Maximum = new decimal(new int[] {
-            768,
+            1024,
             0,
             0,
             0});

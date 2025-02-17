@@ -10,9 +10,9 @@ namespace ConvImgCpc {
 		private PosSprite posSprite = new PosSprite();
 		Bitmap tmp;
 
-		private Bitmap DrawSpritesHard(Bitmap source = null) {
-			pictureBox.Image = tmp;
-			Bitmap bmp = new Bitmap(source != null ? source : pictureBox.Image);
+		public Bitmap DrawSpritesHard(PictureBox pict, Bitmap source = null) {
+			pict.Image = tmp;
+			Bitmap bmp = new Bitmap(source ?? pict.Image);
 			int numBank = 0;
 			for (int spr = 0; spr < 16; spr++) {
 				if (posSprite.zoomXSprite[spr] != 0 && posSprite.zoomYSprite[spr] != 0) {
@@ -37,7 +37,7 @@ namespace ConvImgCpc {
 				}
 			}
 			if (source == null)
-				pictureBox.Image = bmp;
+				pict.Image = bmp;
 
 			return bmp;
 		}
@@ -99,7 +99,7 @@ namespace ConvImgCpc {
 			MessageBox.Show("Position des sprites copié(es) dans le presse-papier");
 		}
 
-		private void bpReadCoord_Click(object sender, EventArgs e) {
+		private void BpReadCoord_Click(object sender, EventArgs e) {
 			var dlg = new OpenFileDialog { Filter = "Fichier XML (*.xml)|*.xml" };
 			if (dlg.ShowDialog() == DialogResult.OK) {
 				FileStream fileParam = File.Open(dlg.FileName, FileMode.Open);

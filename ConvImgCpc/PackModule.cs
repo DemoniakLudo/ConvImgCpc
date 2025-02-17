@@ -12,7 +12,6 @@ namespace ConvImgCpc {
 
 		private int[] matches = new int[MAXSTRING];
 		private int[,] matchtable = new int[MAXSTRING, SEEKBACK];
-
 		private Block ghostRoot;
 		private int outputIndex, bitIndex, bitMask;
 		private bool backTrack;

@@ -9,11 +9,11 @@ namespace ConvImgCpc {
 			linkLabel1.Text = link;
 		}
 
-		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+		private void LinkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
 			Process.Start(linkLabel1.Text);
 		}
 
-		private void bpOk_Click(object sender, System.EventArgs e) {
+		private void BpOk_Click(object sender, System.EventArgs e) {
 			Close();
 		}
 	}

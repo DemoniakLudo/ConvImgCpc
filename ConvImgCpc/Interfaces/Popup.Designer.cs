@@ -37,7 +37,7 @@
 			this.linkLabel1.TabIndex = 0;
 			this.linkLabel1.TabStop = true;
 			this.linkLabel1.Text = "linkLabel1";
-			this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+			this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel1_LinkClicked);
 			// 
 			// label1
 			// 
@@ -56,7 +56,7 @@
 			this.bpOk.TabIndex = 2;
 			this.bpOk.Text = "OK";
 			this.bpOk.UseVisualStyleBackColor = true;
-			this.bpOk.Click += new System.EventHandler(this.bpOk_Click);
+			this.bpOk.Click += new System.EventHandler(this.BpOk_Click);
 			// 
 			// Popup
 			// 

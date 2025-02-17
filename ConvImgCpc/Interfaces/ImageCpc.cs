@@ -211,7 +211,7 @@ namespace ConvImgCpc {
 			}
 
 			if (chkAfficheSH.Checked)
-				DrawSpritesHard();
+				DrawSpritesHard(pictureBox);
 
 			pictureBox.Refresh();
 			if (fenetreRendu != null) {
@@ -256,37 +256,39 @@ namespace ConvImgCpc {
 
 		// Déplacement/Zoom image
 		private void MoveOrSize(MouseEventArgs e) {
-			if (e.Button == MouseButtons.Left) {
-				if (!movePos) {
-					main.GetSizePos(ref posx, ref posy, ref sizex, ref sizey);
-					movePos = true;
-					memoMouseX = e.X;
-					memoMouseY = e.Y;
-				}
-				else {
-					main.SetSizePos(posx + memoMouseX - e.X, posy + memoMouseY - e.Y, sizex, sizey, true);
-				}
-			}
-			else {
-				if (e.Button == MouseButtons.Right) {
-					if (chkAfficheSH.Checked && e.X / (chkX2.Checked ? 2 : 1) < Cpc.TailleX && e.Y / (chkX2.Checked ? 4 : 2) < Cpc.TailleY) {
-						numPosX.Value = e.X / (chkX2.Checked ? 2 : 1);
-						numPosY.Value = e.Y / (chkX2.Checked ? 4 : 2);
+			if (e.X >= 0 && e.Y >= 0 && e.Y < Cpc.TailleY && e.X < Cpc.TailleX) {
+				if (e.Button == MouseButtons.Left) {
+					if (!movePos) {
+						main.GetSizePos(ref posx, ref posy, ref sizex, ref sizey);
+						movePos = true;
+						memoMouseX = e.X;
+						memoMouseY = e.Y;
 					}
 					else {
-						if (!moveSize) {
-							main.GetSizePos(ref posx, ref posy, ref sizex, ref sizey);
-							moveSize = true;
-							memoMouseX = e.X;
-							memoMouseY = e.Y;
-						}
-						else {
-							main.SetSizePos(posx, posy, sizex - memoMouseX + e.X, sizey - memoMouseY + e.Y, true);
-						}
+						main.SetSizePos(posx + memoMouseX - e.X, posy + memoMouseY - e.Y, sizex, sizey, true);
 					}
 				}
-				else
-					movePos = moveSize = false;
+				else {
+					if (e.Button == MouseButtons.Right) {
+						if (chkAfficheSH.Checked && e.X / (chkX2.Checked ? 2 : 1) < Cpc.TailleX && e.Y / (chkX2.Checked ? 4 : 2) < Cpc.TailleY) {
+							numPosX.Value = e.X / (chkX2.Checked ? 2 : 1);
+							numPosY.Value = e.Y / (chkX2.Checked ? 4 : 2);
+						}
+						else {
+							if (!moveSize) {
+								main.GetSizePos(ref posx, ref posy, ref sizex, ref sizey);
+								moveSize = true;
+								memoMouseX = e.X;
+								memoMouseY = e.Y;
+							}
+							else {
+								main.SetSizePos(posx, posy, sizex - memoMouseX + e.X, sizey - memoMouseY + e.Y, true);
+							}
+						}
+					}
+					else
+						movePos = moveSize = false;
+				}
 			}
 		}
 
@@ -340,13 +342,13 @@ namespace ConvImgCpc {
 		}
 
 		public void SauveScr(string fileName, Main.OutputFormat format, Param param) {
-			bitmapCpc.CreeBmpCpc(BmpLock, colMode5);
+			bitmapCpc.CreeBmpCpc(BmpLock);
 			SauveImage.SauveScr(fileName, bitmapCpc, main, Main.PackMethode.None, format, param);
 			main.SetInfo("Sauvegarde image CPC ok.");
 		}
 
 		public void SauveCmp(string fileName, Main.PackMethode pkMethode, Main.OutputFormat format, Param param, string version = null) {
-			bitmapCpc.CreeBmpCpc(BmpLock, colMode5);
+			bitmapCpc.CreeBmpCpc(BmpLock);
 			if (Cpc.modeVirtuel >= 7 && version != null) {
 				SaveAnim sa = new SaveAnim(main, fileName, version, pkMethode);
 				string labelPalette = "Palette";
@@ -560,6 +562,8 @@ namespace ConvImgCpc {
 			Array.Clear(ret, 0, ret.Length);
 			int posRet = 0;
 			for (int y = 0; y < Cpc.TailleY; y += 8) {
+				//int adrCPC = Cpc.GetAdrCpc(y);
+				//int tx = Cpc.CalcTx(y);
 				for (int x = 0; x < Cpc.TailleX; x += 8) {
 					byte pen = (byte)Cpc.GetPenColor(BmpLock, x, y);
 					ret[posRet++] = (byte)(Cpc.tabOctetMode[pen] + (Cpc.tabOctetMode[pen] >> 1));
@@ -592,7 +596,7 @@ namespace ConvImgCpc {
 				main.SelectImage(i, true);
 				Convert(!bitmapCpc.isCalc, true);
 				Application.DoEvents();
-				bitmapCpc.CreeBmpCpc(BmpLock, null);
+				bitmapCpc.CreeBmpCpc(BmpLock);
 				byte[] src = bitmapCpc.bmpCpc;
 				if (i == 0)
 					Buffer.BlockCopy(src, 0, bufOut, 0, src.Length);
@@ -614,6 +618,7 @@ namespace ConvImgCpc {
 		}
 
 		public void SauvBump(string fileName, string version) {
+			//RvbColor c2 = new RvbColor(0);
 			int pos = 0;
 			byte[] bump = new byte[Cpc.TailleY * Cpc.TailleX / 64];
 			for (int y = 0; y < Cpc.TailleY; y += 16) {
@@ -722,10 +727,10 @@ namespace ConvImgCpc {
 			if (fileName.ToUpper().EndsWith(".SCR"))
 				fileName = fileName.Substring(0, fileName.Length - 4);
 
-			bitmapCpc.CreeBmpCpc(BmpLock, colMode5, true, 0);
+			bitmapCpc.CreeBmpCpc(BmpLock, true, 0);
 			SauveImage.SauveScr(fileName + "0.SCR", bitmapCpc, main, Main.PackMethode.None, Main.OutputFormat.Binary, param);
 			Cpc.modeVirtuel = model2;
-			bitmapCpc.CreeBmpCpc(BmpLock, colMode5, true, 1);
+			bitmapCpc.CreeBmpCpc(BmpLock, true, 1);
 			SauveImage.SauveScr(fileName + "1.SCR", bitmapCpc, main, Main.PackMethode.None, Main.OutputFormat.Binary, param);
 			main.SetInfo("Sauvegarde des deux images CPC ok.");
 			Cpc.modeVirtuel = mode;
@@ -1014,7 +1019,7 @@ namespace ConvImgCpc {
 					bmpTmp.SetPixel(x, y, BmpLock.GetPixel(x, y));
 
 			if (chkAfficheSH.Checked) {
-				Bitmap newBmp = DrawSpritesHard(bmpTmp.Bitmap);
+				Bitmap newBmp = DrawSpritesHard(pictureBox, bmpTmp.Bitmap);
 				Clipboard.SetImage(newBmp);
 				newBmp.Dispose();
 			}

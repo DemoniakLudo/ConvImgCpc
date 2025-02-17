@@ -67,6 +67,7 @@
 			this.bpScrollDown = new System.Windows.Forms.Button();
 			this.txbScroll = new System.Windows.Forms.TextBox();
 			this.label8 = new System.Windows.Forms.Label();
+			this.chkSprites = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
 			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trkStartV)).BeginInit();
@@ -79,7 +80,7 @@
 			// 
 			this.pictureBox.Location = new System.Drawing.Point(247, 7);
 			this.pictureBox.Name = "pictureBox";
-			this.pictureBox.Size = new System.Drawing.Size(768, 544);
+			this.pictureBox.Size = new System.Drawing.Size(1024, 544);
 			this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.pictureBox.TabIndex = 0;
 			this.pictureBox.TabStop = false;
@@ -544,11 +545,23 @@
 			this.label8.TabIndex = 27;
 			this.label8.Text = "lines";
 			// 
+			// chkSprites
+			// 
+			this.chkSprites.AutoSize = true;
+			this.chkSprites.Location = new System.Drawing.Point(5, 69);
+			this.chkSprites.Name = "chkSprites";
+			this.chkSprites.Size = new System.Drawing.Size(81, 17);
+			this.chkSprites.TabIndex = 39;
+			this.chkSprites.Text = "With sprites";
+			this.chkSprites.UseVisualStyleBackColor = true;
+			this.chkSprites.CheckedChanged += new System.EventHandler(this.ChkSprites_CheckedChanged);
+			// 
 			// RasterTablePlus
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1019, 555);
+			this.Controls.Add(this.chkSprites);
 			this.Controls.Add(this.txbScroll);
 			this.Controls.Add(this.bpScrollDown);
 			this.Controls.Add(this.bpScrollUp);
@@ -627,5 +640,6 @@
 		private System.Windows.Forms.TextBox txbScroll;
 		private System.Windows.Forms.Label label8;
 		private System.Windows.Forms.Button bpImportKit;
+		private System.Windows.Forms.CheckBox chkSprites;
 	}
 }

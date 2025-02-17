@@ -11,14 +11,12 @@ namespace ConvImgCpc {
 		private int valColor;
 		public int ValColor { get { return valColor; } }
 		public bool isValide;
-		private Main main;
 		private int numColor;
 
 		public EditColor(Main m, int numC, int val, int rgbColor, bool cpcPlus) {
 			InitializeComponent();
 			selColor.BackColor = Color.FromArgb(rgbColor);
 			m.ChangeLanguage(Controls, "EditColor");
-			main = m;
 			numColor = numC;
 			lblNumColor.Text += numColor;
 			if (cpcPlus) {
@@ -32,8 +30,8 @@ namespace ConvImgCpc {
 					tabLabel[i].AutoSize = true;
 					tabVal[i].Size = new Size(27, 20);
 					tabTrack[i].Size = new Size(104, 42);
-					tabVal[i].TextChanged += val_TextChanged;
-					tabTrack[i].Scroll += track_Scroll;
+					tabVal[i].TextChanged += Val_TextChanged;
+					tabTrack[i].Scroll += Track_Scroll;
 					tabTrack[i].Maximum = 15;
 					tabVal[i].Tag = tabTrack[i].Tag = i;
 					tabLabel[i].Text = "VRB".Substring(i, 1);
@@ -61,12 +59,13 @@ namespace ConvImgCpc {
 				int i = 0;
 				for (int y = 0; y < 3; y++)
 					for (int x = 0; x < 9; x++) {
-						colors[i] = new Label();
-						colors[i].BorderStyle = BorderStyle.FixedSingle;
-						colors[i].Location = new Point(4 + x * 48, 80 + y * 40);
-						colors[i].Size = new Size(40, 32);
-						colors[i].Tag = i;
-						colors[i].BackColor = Color.FromArgb(Cpc.RgbCPC[i].GetColorArgb);
+						colors[i] = new Label {
+							BorderStyle = BorderStyle.FixedSingle,
+							Location = new Point(4 + x * 48, 80 + y * 40),
+							Size = new Size(40, 32),
+							Tag = i,
+							BackColor = Color.FromArgb(Cpc.RgbCPC[i].GetColorArgb)
+						};
 						colors[i].Click += ClickColor;
 						colors[i].DoubleClick += DblClickColor;
 						Controls.Add(colors[i++]);
@@ -87,12 +86,11 @@ namespace ConvImgCpc {
 
 		private void DblClickColor(object sender, System.EventArgs e) {
 			ClickColor(sender, e);
-			bpValide_Click(sender, e);
+			BpValide_Click(sender, e);
 		}
 
 		private int GetCompValue(string txt) {
-			int v = 0;
-			if (!int.TryParse(txt, out v))
+			if (!int.TryParse(txt, out int v))
 				try {
 					v = int.Parse(txt, System.Globalization.NumberStyles.HexNumber);
 				}
@@ -111,12 +109,12 @@ namespace ConvImgCpc {
 			catch { }
 		}
 
-		private void track_Scroll(object sender, System.EventArgs e) {
+		private void Track_Scroll(object sender, System.EventArgs e) {
 			int i = (int)((TrackBar)sender).Tag;
 			tabVal[i].Text = tabTrack[i].Value.ToString();
 		}
 
-		private void val_TextChanged(object sender, System.EventArgs e) {
+		private void Val_TextChanged(object sender, System.EventArgs e) {
 			try {
 				int i = (int)((TextBox)sender).Tag;
 				tabTrack[i].Value = GetCompValue(tabVal[i].Text);
@@ -125,12 +123,12 @@ namespace ConvImgCpc {
 			catch { }
 		}
 
-		private void bpValide_Click(object sender, System.EventArgs e) {
+		private void BpValide_Click(object sender, System.EventArgs e) {
 			isValide = true;
 			Close();
 		}
 
-		private void bpAnnule_Click(object sender, System.EventArgs e) {
+		private void BpAnnule_Click(object sender, System.EventArgs e) {
 			Close();
 		}
 	}
