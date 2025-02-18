@@ -59,6 +59,7 @@ namespace ConvImgCpc {
 			anim.Hide();
 			imgCpc.Show();
 			Show();
+			imgCpc.SetLockPalette();
 			if (args.Length > 0) {
 				bool isAsm = false, lockFirst = false;
 				Enabled = false;
@@ -92,9 +93,6 @@ namespace ConvImgCpc {
 							// -CFicPalette
 							case 'C':
 								imgCpc.LirePalette(arg, param);
-								for (v = 0; v < 16; v++)
-									imgCpc.lockState[v] = param.lockState[v] = 1;
-
 								break;
 
 							// -Ffichiers
@@ -225,6 +223,7 @@ namespace ConvImgCpc {
 			//		int tpsElapsed = Environment.TickCount - tpsStart;
 			//		if (tpsElapsed < 500 && internet)
 			//			CheckMaj(true);
+
 		}
 
 		public void ChangeLanguage(Control.ControlCollection ctrl, string prefix) {
@@ -521,8 +520,6 @@ namespace ConvImgCpc {
 					numSizeX.Value = param.sizex;
 					numSizeY.Value = param.sizey;
 				}
-				for (int i = 0; i < 16; i++)
-					param.lockState[i] = 0;
 
 				radioFit.Checked = param.sMode == Param.SizeMode.Fit;
 				radioKeepLarger.Checked = param.sMode == Param.SizeMode.KeepLarger;

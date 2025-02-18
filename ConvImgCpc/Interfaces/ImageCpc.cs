@@ -808,6 +808,13 @@ namespace ConvImgCpc {
 			Convert(false);
 		}
 
+		public void SetLockPalette() {
+			for (int i = 0; i < 16; i++) 
+				lockColors[i].Checked = lockState[i] != 0;
+
+			Convert(false);
+		}
+
 		// Copier la palette dans le presse-papier
 		private void BpCopyPal_Click(object sender, EventArgs e) {
 			string palTxt = "";
