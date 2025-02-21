@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using static ConvImgCpc.Main;
 
 namespace ConvImgCpc {
 	public partial class ImageCpc : Form {
@@ -157,7 +158,7 @@ namespace ConvImgCpc {
 				lblUsedColors[i].BackColor = col[i] == 0 ? Color.Red : Color.Green;
 		}
 
-		public void Render(bool forceDrawZoom = false, bool withSpriteGrid = false) {
+		public void Render(bool forceDrawZoom = false, bool withSpriteGrid = false, bool withTilesGrid = false) {
 			groupBoxPosSprite.Visible = Cpc.cpcPlus && Cpc.modeVirtuel <= 2;
 			bpGenPal.Visible = Cpc.cpcPlus;
 			UpdatePalette();
@@ -207,6 +208,18 @@ namespace ConvImgCpc {
 					XorDrawing.DrawXorLine(g, (Bitmap)pictureBox.Image, x, 0, x, Cpc.TailleY, false);
 
 				for (int y = 0; y < Cpc.TailleY; y += 32)
+					XorDrawing.DrawXorLine(g, (Bitmap)pictureBox.Image, 0, y, Cpc.TailleX, y, false);
+			}
+
+			if (chkTilesGrid.Checked || withTilesGrid) {
+				Graphics g = Graphics.FromImage(pictureBox.Image);
+				int tx = Cpc.CalcTx(0);
+				int sizex = (int)tilesSizeX.Value * tx;
+				int sizey = (int)tilesSizeY.Value * 2;
+				for (int x = 0; x < Cpc.TailleX; x += sizex)
+					XorDrawing.DrawXorLine(g, (Bitmap)pictureBox.Image, x, 0, x, Cpc.TailleY, false);
+
+				for (int y = 0; y < Cpc.TailleY; y += sizey)
 					XorDrawing.DrawXorLine(g, (Bitmap)pictureBox.Image, 0, y, Cpc.TailleX, y, false);
 			}
 
@@ -381,6 +394,33 @@ namespace ConvImgCpc {
 				}
 			}
 			return ret;
+		}
+
+		public void SauveFont(string fileName) {
+			SaveMedia dlgSave = new SaveMedia("Bitmap fnt", Path.GetFileNameWithoutExtension(fileName), main.param.withPalette);
+			dlgSave.ShowDialog();
+			if (dlgSave.saveMediaOk) {
+				int tx = Cpc.CalcTx(0);
+				int sizex = (int)tilesSizeX.Value * tx;
+				int sizey = (int)tilesSizeY.Value * 2;
+				StreamWriter sw = SaveAsm.OpenAsm(fileName);
+				int totSize = 0;
+				sw.WriteLine(dlgSave.LabelMedia);
+				for (int y = 0; y < Cpc.TailleY; y += sizey)
+					for (int x = 0; x < Cpc.TailleX; x += sizex) {
+						byte[] ret = MakeSprite(x, y, sizex, sizey);
+						totSize += ret.Length;
+						SaveAsm.GenereDatas(sw, ret, ret.Length, sizex >> 3, 0, null, true);
+						sw.WriteLine(";");
+					}
+				sw.WriteLine("; Taille totale " + totSize.ToString() + " octets");
+
+				if (main.param.withPalette)
+					SaveAsm.GenerePalette(sw, main.param, false, false, dlgSave.LabelPal);
+
+				SaveAsm.CloseAsm(sw);
+				main.SetInfo("Sauvegarde fonte Bitmap assembleur ok.");
+			}
 		}
 
 		public void SauveSprite(string fileName, string version, Param param) {
@@ -809,7 +849,7 @@ namespace ConvImgCpc {
 		}
 
 		public void SetLockPalette() {
-			for (int i = 0; i < 16; i++) 
+			for (int i = 0; i < 16; i++)
 				lockColors[i].Checked = lockState[i] != 0;
 
 			Convert(false);
@@ -873,6 +913,10 @@ namespace ConvImgCpc {
 			chkX2.Checked = false;
 		}
 
+		public void ResetGrille() {
+			chkGrille.Checked = false;
+		}
+
 		private void ImageCpc_FormClosing(object sender, FormClosingEventArgs e) {
 			e.Cancel = true;
 		}
@@ -898,15 +942,6 @@ namespace ConvImgCpc {
 			}
 		}
 
-		public void ResetGrille() {
-			chkGrille.Checked = false;
-		}
-
-		private void BpGenPal_Click(object sender, EventArgs e) {
-			GenPalette g = new GenPalette(Cpc.Palette, 0, DoGenPal);
-			g.ShowDialog();
-		}
-
 		private void DoGenPal() {
 			for (int c = 0; c < 16; c++) {
 				int col = Cpc.Palette[c];
@@ -920,6 +955,11 @@ namespace ConvImgCpc {
 				lockState[c] = 1;
 			}
 			Convert(false);
+		}
+
+		private void BpGenPal_Click(object sender, EventArgs e) {
+			GenPalette g = new GenPalette(Cpc.Palette, 0, DoGenPal);
+			g.ShowDialog();
 		}
 
 		private byte CalcOctet(int x, int y, int maxLen) {
@@ -1036,9 +1076,21 @@ namespace ConvImgCpc {
 			bmpTmp.Dispose();
 		}
 
+		private void ChkTilesGrid_CheckedChanged(object sender, EventArgs e) {
+			bpSaveTiles.Enabled = tilesSizeX.Enabled = tilesSizeY.Enabled = main.Enabled = !chkTilesGrid.Checked;
+			Render(true, false, !chkTilesGrid.Checked);
+		}
+
 		private void BpCopyImage_Click(object sender, EventArgs e) {
 			CopyToClipBoard();
 			Render();
+		}
+
+		private void BpSaveFnt_Click(object sender, EventArgs e) {
+
+			SaveFileDialog dlg = new SaveFileDialog { Filter = "Bitmapfont (*.asm)|*.asm" };
+			if (dlg.ShowDialog() == DialogResult.OK)
+				SauveFont(dlg.FileName);
 		}
 	}
 }

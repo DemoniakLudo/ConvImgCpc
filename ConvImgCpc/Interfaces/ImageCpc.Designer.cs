@@ -79,6 +79,12 @@
 			this.label3 = new System.Windows.Forms.Label();
 			this.numSprite = new System.Windows.Forms.NumericUpDown();
 			this.chkAutoCopy = new System.Windows.Forms.CheckBox();
+			this.tilesSizeX = new System.Windows.Forms.NumericUpDown();
+			this.tilesSizeY = new System.Windows.Forms.NumericUpDown();
+			this.label9 = new System.Windows.Forms.Label();
+			this.label10 = new System.Windows.Forms.Label();
+			this.bpSaveTiles = new System.Windows.Forms.Button();
+			this.chkTilesGrid = new System.Windows.Forms.CheckBox();
 			this.grpEdition.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictImpDraw)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
@@ -88,6 +94,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.numZoomY)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numZoomX)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numSprite)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.tilesSizeX)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.tilesSizeY)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// lockAllPal
@@ -701,12 +709,101 @@
 			this.chkAutoCopy.Text = "AllCopy";
 			this.chkAutoCopy.UseVisualStyleBackColor = true;
 			// 
+			// tilesSizeX
+			// 
+			this.tilesSizeX.Location = new System.Drawing.Point(1022, 4);
+			this.tilesSizeX.Maximum = new decimal(new int[] {
+            64,
+            0,
+            0,
+            0});
+			this.tilesSizeX.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.tilesSizeX.Name = "tilesSizeX";
+			this.tilesSizeX.Size = new System.Drawing.Size(43, 20);
+			this.tilesSizeX.TabIndex = 33;
+			this.tilesSizeX.Value = new decimal(new int[] {
+            16,
+            0,
+            0,
+            0});
+			// 
+			// tilesSizeY
+			// 
+			this.tilesSizeY.Location = new System.Drawing.Point(1022, 30);
+			this.tilesSizeY.Maximum = new decimal(new int[] {
+            64,
+            0,
+            0,
+            0});
+			this.tilesSizeY.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.tilesSizeY.Name = "tilesSizeY";
+			this.tilesSizeY.Size = new System.Drawing.Size(43, 20);
+			this.tilesSizeY.TabIndex = 33;
+			this.tilesSizeY.Value = new decimal(new int[] {
+            16,
+            0,
+            0,
+            0});
+			// 
+			// label9
+			// 
+			this.label9.AutoSize = true;
+			this.label9.Location = new System.Drawing.Point(959, 8);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(56, 13);
+			this.label9.TabIndex = 34;
+			this.label9.Text = "TilesSizeX";
+			// 
+			// label10
+			// 
+			this.label10.AutoSize = true;
+			this.label10.Location = new System.Drawing.Point(959, 33);
+			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(56, 13);
+			this.label10.TabIndex = 34;
+			this.label10.Text = "TilesSizeY";
+			// 
+			// bpSaveTiles
+			// 
+			this.bpSaveTiles.Location = new System.Drawing.Point(1096, 4);
+			this.bpSaveTiles.Name = "bpSaveTiles";
+			this.bpSaveTiles.Size = new System.Drawing.Size(96, 23);
+			this.bpSaveTiles.TabIndex = 35;
+			this.bpSaveTiles.Text = "Save as Tileset";
+			this.bpSaveTiles.UseVisualStyleBackColor = true;
+			this.bpSaveTiles.Click += new System.EventHandler(this.BpSaveFnt_Click);
+			// 
+			// chkTilesGrid
+			// 
+			this.chkTilesGrid.AutoSize = true;
+			this.chkTilesGrid.Location = new System.Drawing.Point(1096, 29);
+			this.chkTilesGrid.Name = "chkTilesGrid";
+			this.chkTilesGrid.Size = new System.Drawing.Size(94, 17);
+			this.chkTilesGrid.TabIndex = 36;
+			this.chkTilesGrid.Text = "Show tiles grid";
+			this.chkTilesGrid.UseVisualStyleBackColor = true;
+			this.chkTilesGrid.CheckedChanged += new System.EventHandler(this.ChkTilesGrid_CheckedChanged);
+			// 
 			// ImageCpc
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1216, 699);
 			this.ControlBox = false;
+			this.Controls.Add(this.chkTilesGrid);
+			this.Controls.Add(this.bpSaveTiles);
+			this.Controls.Add(this.label10);
+			this.Controls.Add(this.label9);
+			this.Controls.Add(this.tilesSizeY);
+			this.Controls.Add(this.tilesSizeX);
 			this.Controls.Add(this.chkAutoCopy);
 			this.Controls.Add(this.groupBoxPosSprite);
 			this.Controls.Add(this.label2);
@@ -746,6 +843,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.numZoomY)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numZoomX)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numSprite)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.tilesSizeX)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.tilesSizeY)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -809,5 +908,11 @@
 		private System.Windows.Forms.Button bpReadCoord;
 		private System.Windows.Forms.CheckBox chkCopyZoom;
 		private System.Windows.Forms.CheckBox chkAutoCopy;
+		private System.Windows.Forms.NumericUpDown tilesSizeX;
+		private System.Windows.Forms.NumericUpDown tilesSizeY;
+		private System.Windows.Forms.Label label9;
+		private System.Windows.Forms.Label label10;
+		private System.Windows.Forms.Button bpSaveTiles;
+		private System.Windows.Forms.CheckBox chkTilesGrid;
 	}
 }

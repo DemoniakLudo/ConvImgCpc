@@ -21,11 +21,11 @@ namespace ConvImgCpc {
 			sw.Dispose();
 		}
 
-		static public void WriteDatas(StreamWriter sw, int[] tabCol, int start, int end, int nbMotsLigne, int ligneSepa = 0, string labelSepa = null) {
+		static public void WriteDatas(StreamWriter sw, int[] tabCol, int start, int end, int nbMotsLigne, int ligneSepa = 0, string labelSepa = null, bool exclTaille = false) {
 			sw.Write(GenereDatas(tabCol, start, end, nbMotsLigne, ligneSepa, labelSepa));
 		}
 
-		static public string GenereDatas(int[] tabCol, int start, int end, int nbMotsLigne, int ligneSepa = 0, string labelSepa = null) {
+		static public string GenereDatas(int[] tabCol, int start, int end, int nbMotsLigne, int ligneSepa = 0, string labelSepa = null, bool exclTaille = false) {
 			string ret = "";
 			string line = "\tDW\t";
 			int nbOctets = 0, nbLigne = 0, indiceLabel = 0;
@@ -53,11 +53,13 @@ namespace ConvImgCpc {
 			if (nbOctets > 0)
 				ret += line.Substring(0, line.Length - 1) + "\r\n";
 
-			ret += "; Taille totale " + (end - start + 1).ToString() + " mots\r\n";
+			if (!exclTaille)
+				ret += "; Taille totale " + (end - start + 1).ToString() + " mots\r\n";
+
 			return ret;
 		}
 
-		static public void GenereDatas(StreamWriter sw, byte[] tabByte, int length, int nbOctetsLigne, int ligneSepa = 0, string labelSepa = null) {
+		static public void GenereDatas(StreamWriter sw, byte[] tabByte, int length, int nbOctetsLigne, int ligneSepa = 0, string labelSepa = null, bool exclTaille = false) {
 			string line = "\tDB\t";
 			int nbOctets = 0, nbLigne = 0, indiceLabel = 0;
 			if (!string.IsNullOrEmpty(labelSepa)) {
@@ -84,7 +86,8 @@ namespace ConvImgCpc {
 			if (nbOctets > 0)
 				sw.WriteLine(line.Substring(0, line.Length - 1));
 
-			sw.WriteLine("; Taille totale " + length.ToString() + " octets");
+			if (!exclTaille)
+				sw.WriteLine("; Taille totale " + length.ToString() + " octets");
 		}
 
 		static private void GenereDepack(StreamWriter sw, Main.PackMethode pkMethode, string jumpLabel = null) {
