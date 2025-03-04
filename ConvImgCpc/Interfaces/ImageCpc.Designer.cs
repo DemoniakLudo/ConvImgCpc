@@ -85,6 +85,9 @@
 			this.label10 = new System.Windows.Forms.Label();
 			this.bpSaveTiles = new System.Windows.Forms.Button();
 			this.chkTilesGrid = new System.Windows.Forms.CheckBox();
+			this.chkPack = new System.Windows.Forms.CheckBox();
+			this.rbRows = new System.Windows.Forms.RadioButton();
+			this.rbCols = new System.Windows.Forms.RadioButton();
 			this.grpEdition.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictImpDraw)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
@@ -711,7 +714,7 @@
 			// 
 			// tilesSizeX
 			// 
-			this.tilesSizeX.Location = new System.Drawing.Point(1022, 4);
+			this.tilesSizeX.Location = new System.Drawing.Point(1008, 4);
 			this.tilesSizeX.Maximum = new decimal(new int[] {
             64,
             0,
@@ -733,7 +736,7 @@
 			// 
 			// tilesSizeY
 			// 
-			this.tilesSizeY.Location = new System.Drawing.Point(1022, 30);
+			this.tilesSizeY.Location = new System.Drawing.Point(1008, 30);
 			this.tilesSizeY.Maximum = new decimal(new int[] {
             64,
             0,
@@ -756,7 +759,7 @@
 			// label9
 			// 
 			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(959, 8);
+			this.label9.Location = new System.Drawing.Point(945, 8);
 			this.label9.Name = "label9";
 			this.label9.Size = new System.Drawing.Size(56, 13);
 			this.label9.TabIndex = 34;
@@ -765,7 +768,7 @@
 			// label10
 			// 
 			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(959, 33);
+			this.label10.Location = new System.Drawing.Point(945, 33);
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(56, 13);
 			this.label10.TabIndex = 34;
@@ -773,7 +776,7 @@
 			// 
 			// bpSaveTiles
 			// 
-			this.bpSaveTiles.Location = new System.Drawing.Point(1096, 4);
+			this.bpSaveTiles.Location = new System.Drawing.Point(1057, 4);
 			this.bpSaveTiles.Name = "bpSaveTiles";
 			this.bpSaveTiles.Size = new System.Drawing.Size(96, 23);
 			this.bpSaveTiles.TabIndex = 35;
@@ -784,13 +787,45 @@
 			// chkTilesGrid
 			// 
 			this.chkTilesGrid.AutoSize = true;
-			this.chkTilesGrid.Location = new System.Drawing.Point(1096, 29);
+			this.chkTilesGrid.Location = new System.Drawing.Point(1057, 31);
 			this.chkTilesGrid.Name = "chkTilesGrid";
-			this.chkTilesGrid.Size = new System.Drawing.Size(94, 17);
+			this.chkTilesGrid.Size = new System.Drawing.Size(45, 17);
 			this.chkTilesGrid.TabIndex = 36;
-			this.chkTilesGrid.Text = "Show tiles grid";
+			this.chkTilesGrid.Text = "Grid";
 			this.chkTilesGrid.UseVisualStyleBackColor = true;
 			this.chkTilesGrid.CheckedChanged += new System.EventHandler(this.ChkTilesGrid_CheckedChanged);
+			// 
+			// chkPack
+			// 
+			this.chkPack.AutoSize = true;
+			this.chkPack.Location = new System.Drawing.Point(1160, 8);
+			this.chkPack.Name = "chkPack";
+			this.chkPack.Size = new System.Drawing.Size(51, 17);
+			this.chkPack.TabIndex = 37;
+			this.chkPack.Text = "Pack";
+			this.chkPack.UseVisualStyleBackColor = true;
+			// 
+			// rbRows
+			// 
+			this.rbRows.AutoSize = true;
+			this.rbRows.Checked = true;
+			this.rbRows.Location = new System.Drawing.Point(1108, 30);
+			this.rbRows.Name = "rbRows";
+			this.rbRows.Size = new System.Drawing.Size(52, 17);
+			this.rbRows.TabIndex = 38;
+			this.rbRows.TabStop = true;
+			this.rbRows.Text = "Rows";
+			this.rbRows.UseVisualStyleBackColor = true;
+			// 
+			// rbCols
+			// 
+			this.rbCols.AutoSize = true;
+			this.rbCols.Location = new System.Drawing.Point(1160, 30);
+			this.rbCols.Name = "rbCols";
+			this.rbCols.Size = new System.Drawing.Size(45, 17);
+			this.rbCols.TabIndex = 38;
+			this.rbCols.Text = "Cols";
+			this.rbCols.UseVisualStyleBackColor = true;
 			// 
 			// ImageCpc
 			// 
@@ -798,6 +833,9 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1216, 699);
 			this.ControlBox = false;
+			this.Controls.Add(this.rbCols);
+			this.Controls.Add(this.rbRows);
+			this.Controls.Add(this.chkPack);
 			this.Controls.Add(this.chkTilesGrid);
 			this.Controls.Add(this.bpSaveTiles);
 			this.Controls.Add(this.label10);
@@ -914,5 +952,8 @@
 		private System.Windows.Forms.Label label10;
 		private System.Windows.Forms.Button bpSaveTiles;
 		private System.Windows.Forms.CheckBox chkTilesGrid;
+		private System.Windows.Forms.CheckBox chkPack;
+		private System.Windows.Forms.RadioButton rbRows;
+		private System.Windows.Forms.RadioButton rbCols;
 	}
 }

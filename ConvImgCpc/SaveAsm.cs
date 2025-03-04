@@ -21,7 +21,7 @@ namespace ConvImgCpc {
 			sw.Dispose();
 		}
 
-		static public void WriteDatas(StreamWriter sw, int[] tabCol, int start, int end, int nbMotsLigne, int ligneSepa = 0, string labelSepa = null, bool exclTaille = false) {
+		static public void WriteDatas(StreamWriter sw, int[] tabCol, int start, int end, int nbMotsLigne, int ligneSepa = 0, string labelSepa = null) {
 			sw.Write(GenereDatas(tabCol, start, end, nbMotsLigne, ligneSepa, labelSepa));
 		}
 

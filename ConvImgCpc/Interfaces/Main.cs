@@ -18,7 +18,7 @@ namespace ConvImgCpc {
 		private ParamInterne paramInterne;
 		public Multilingue multilingue = new Multilingue();
 		public enum PackMethode { None = 0, Standard, ZX0, ZX1, ZX0Ovs };
-		private PackMethode pkMethode = PackMethode.None;
+		public PackMethode pkMethode = PackMethode.None;
 		private Version version = Assembly.GetExecutingAssembly().GetName().Version;
 		public GestDSK dsk;
 		public enum OutputFormat { Binary = 0, Assembler, DSK, SNA };

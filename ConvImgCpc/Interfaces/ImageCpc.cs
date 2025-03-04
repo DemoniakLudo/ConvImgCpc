@@ -396,9 +396,22 @@ namespace ConvImgCpc {
 			return ret;
 		}
 
+		private int MakeCell(StreamWriter sw, int x, int y, int sizex, int sizey, byte[] tempArray, int totSize) {
+			byte[] ret = MakeSprite(x, y, sizex, sizey);
+			if (chkPack.Checked)
+				Array.Copy(ret, 0, tempArray, totSize, ret.Length);
+			else {
+				SaveAsm.GenereDatas(sw, ret, ret.Length, sizex >> 3, 0, null, true);
+				sw.WriteLine(";");
+			}
+			return ret.Length;
+		}
+
 		public void SauveFont(string fileName) {
-			SaveMedia dlgSave = new SaveMedia("Bitmap fnt", Path.GetFileNameWithoutExtension(fileName), main.param.withPalette);
+			SaveMedia dlgSave = new SaveMedia("Bitmap tiles", Path.GetFileNameWithoutExtension(fileName), main.param.withPalette);
 			dlgSave.ShowDialog();
+			byte[] tempArray = new byte[0x10000];
+			byte[] packArray = new byte[0x10000];
 			if (dlgSave.saveMediaOk) {
 				int tx = Cpc.CalcTx(0);
 				int sizex = (int)tilesSizeX.Value * tx;
@@ -406,20 +419,29 @@ namespace ConvImgCpc {
 				StreamWriter sw = SaveAsm.OpenAsm(fileName);
 				int totSize = 0;
 				sw.WriteLine(dlgSave.LabelMedia);
-				for (int y = 0; y < Cpc.TailleY; y += sizey)
-					for (int x = 0; x < Cpc.TailleX; x += sizex) {
-						byte[] ret = MakeSprite(x, y, sizex, sizey);
-						totSize += ret.Length;
-						SaveAsm.GenereDatas(sw, ret, ret.Length, sizex >> 3, 0, null, true);
-						sw.WriteLine(";");
-					}
-				sw.WriteLine("; Taille totale " + totSize.ToString() + " octets");
+				if (rbRows.Checked) {
+					for (int y = 0; y < Cpc.TailleY; y += sizey)
+						for (int x = 0; x < Cpc.TailleX; x += sizex)
+							totSize += MakeCell(sw, x, y, sizex, sizey, tempArray, totSize);
+				}
+				else {
+					for (int x = 0; x < Cpc.TailleX; x += sizex)
+						for (int y = 0; y < Cpc.TailleY; y += sizey)
+							totSize += MakeCell(sw, x, y, sizex, sizey, tempArray, totSize);
+				}
+				if (chkPack.Checked) {
+					int l = new PackModule().Pack(tempArray, totSize, packArray, totSize, main.pkMethode);
+					SaveAsm.GenereDatas(sw, packArray, l, 16);
+
+				}
+				else
+					sw.WriteLine("; Taille totale " + totSize.ToString() + " octets");
 
 				if (main.param.withPalette)
 					SaveAsm.GenerePalette(sw, main.param, false, false, dlgSave.LabelPal);
 
 				SaveAsm.CloseAsm(sw);
-				main.SetInfo("Sauvegarde fonte Bitmap assembleur ok.");
+				main.SetInfo("Sauvegarde tileset assembleur ok.");
 			}
 		}
 
@@ -1087,7 +1109,6 @@ namespace ConvImgCpc {
 		}
 
 		private void BpSaveFnt_Click(object sender, EventArgs e) {
-
 			SaveFileDialog dlg = new SaveFileDialog { Filter = "Bitmapfont (*.asm)|*.asm" };
 			if (dlg.ShowDialog() == DialogResult.OK)
 				SauveFont(dlg.FileName);
