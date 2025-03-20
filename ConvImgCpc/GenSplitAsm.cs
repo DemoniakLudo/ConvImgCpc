@@ -19,7 +19,7 @@ namespace ConvImgCpc {
 			wr.WriteLine("	LD	(#38),HL");
 			wr.WriteLine("	LD	HL,Overscan");
 			wr.WriteLine("	LD	B,#BC");
-			wr.WriteLine("BclCrtc:");
+			wr.WriteLine("BclCrtc");
 			wr.WriteLine("	LD	A,(HL)");
 			wr.WriteLine("	INC	HL");
 			wr.WriteLine("	AND	A");
@@ -30,9 +30,9 @@ namespace ConvImgCpc {
 			wr.WriteLine("	OUTI");
 			wr.WriteLine("	DEC	B");
 			wr.WriteLine("	JR	BclCrtc");
-			wr.WriteLine("SetPalette:");
+			wr.WriteLine("SetPalette");
 			wr.WriteLine("	LD	B,#7F");
-			wr.WriteLine("BclPalette:");
+			wr.WriteLine("BclPalette");
 			wr.WriteLine("	OUT	(C),A");
 			wr.WriteLine("	INC	B");
 			wr.WriteLine("	OUTI");
@@ -41,9 +41,9 @@ namespace ConvImgCpc {
 			wr.WriteLine("	JR	NZ,BclPalette");
 			wr.WriteLine("	EI");
 			wr.WriteLine("	HALT");
-			wr.WriteLine("Boucle:");
+			wr.WriteLine("Boucle");
 			wr.WriteLine("	LD	B,#F5");
-			wr.WriteLine("WaitVbl:");
+			wr.WriteLine("WaitVbl");
 			wr.WriteLine("	IN	A,(C)");
 			wr.WriteLine("	RRA");
 			wr.WriteLine("	JR	NC,WaitVbl");
@@ -110,18 +110,18 @@ namespace ConvImgCpc {
 
 		static private void GenereDZX0(StreamWriter sw, string jumpLabel = null) {
 			sw.WriteLine("; Decompactage");
-			sw.WriteLine("Depack:");
+			sw.WriteLine("Depack");
 			sw.WriteLine("	ld	bc,#ffff			; preserve default offset 1");
 			sw.WriteLine("	push	bc");
 			sw.WriteLine("	inc	bc");
 			sw.WriteLine("	ld	a,#80");
-			sw.WriteLine("dzx0s_literals:");
+			sw.WriteLine("dzx0s_literals");
 			sw.WriteLine("	call	dzx0s_elias		; obtain length");
 			sw.WriteLine("	ldir					; copy literals");
 			sw.WriteLine("	add	a,a					; copy from last offset or new offset?");
 			sw.WriteLine("	jr	c,dzx0s_new_offset");
 			sw.WriteLine("	call	dzx0s_elias		; obtain length");
-			sw.WriteLine("dzx0s_copy:");
+			sw.WriteLine("dzx0s_copy");
 			sw.WriteLine("	ex	(sp),hl				; preserve source,restore offset");
 			sw.WriteLine("	push	hl				; preserve offset");
 			sw.WriteLine("	add	hl,de				; calculate destination - offset");
@@ -130,7 +130,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("	ex	(sp),hl				; preserve offset,restore source");
 			sw.WriteLine("	add	a,a					; copy from literals or new offset?");
 			sw.WriteLine("	jr	nc,dzx0s_literals");
-			sw.WriteLine("dzx0s_new_offset:");
+			sw.WriteLine("dzx0s_new_offset");
 			sw.WriteLine("	call	dzx0s_elias		; obtain offset MSB");
 			sw.WriteLine("	ld b,a");
 			sw.WriteLine("	pop	af					; discard last offset");
@@ -149,17 +149,17 @@ namespace ConvImgCpc {
 			sw.WriteLine("	call	nc,dzx0s_elias_backtrack");
 			sw.WriteLine("	inc	bc");
 			sw.WriteLine("	jr	dzx0s_copy");
-			sw.WriteLine("dzx0s_elias:");
+			sw.WriteLine("dzx0s_elias");
 			sw.WriteLine("	inc	c					; interlaced Elias gamma coding");
-			sw.WriteLine("dzx0s_elias_loop:");
+			sw.WriteLine("dzx0s_elias_loop");
 			sw.WriteLine("	add	a,a");
 			sw.WriteLine("	jr	nz,dzx0s_elias_skip");
 			sw.WriteLine("	ld	a,(hl)				; load another group of 8 bits");
 			sw.WriteLine("	inc	hl");
 			sw.WriteLine("	rla");
-			sw.WriteLine("dzx0s_elias_skip:");
+			sw.WriteLine("dzx0s_elias_skip");
 			sw.WriteLine("	ret 	c");
-			sw.WriteLine("dzx0s_elias_backtrack:");
+			sw.WriteLine("dzx0s_elias_backtrack");
 			sw.WriteLine("	add	a,a");
 			sw.WriteLine("	rl	c");
 			sw.WriteLine("	rl	b");
@@ -203,9 +203,9 @@ namespace ConvImgCpc {
 			wr.WriteLine("");
 			wr.WriteLine("	List");
 			wr.WriteLine("");
-			wr.WriteLine("Overscan:");
+			wr.WriteLine("Overscan");
 			wr.WriteLine("	DB	1,48,2,50,3,#8E,6,34,7,35,12,13,13,0,0");
-			wr.WriteLine("Palette:");
+			wr.WriteLine("Palette");
 			wr.Write("	DB	");
 			for (int i = 0; i < 16; i++) {
 				int col = CpcVGA[palette[0, 0, i] != 0xFFFF ? palette[0, 0, i] : 0];
@@ -231,11 +231,11 @@ namespace ConvImgCpc {
 			for (int i = 0x44C0; i < 0x4600; i++)
 				bmp[i] = bmp[i + 0x800] = bmp[i + 0x1000] = bmp[i + 0x1800] = bmp[i + 0x2000] = bmp[i + 0x2800] = bmp[i + 0x3000] = bmp[i + 0x3800] = 0;
 
-			int lgPack = p.PackZX0(bmp, 0x7CC0, bufPack);
+			int lgPack = p.PackZX0(bmp, 0x7CC0, bufPack, false);
 
 			wr.WriteLine("	ORG	#" + (0x8400 - lgPack).ToString("X4"));
 			wr.WriteLine("	Nolist");
-			wr.WriteLine("ImageCmp:");
+			wr.WriteLine("ImageCmp");
 			GenereDatas(wr, bufPack, lgPack, 16);
 			WriteDebFile(wr);
 			for (int y = 0; y < 272; y++) {

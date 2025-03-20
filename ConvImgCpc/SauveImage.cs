@@ -393,6 +393,54 @@ namespace ConvImgCpc {
 			0x18, 0xF2					//				JR	dzx0s_elias_loop
 		};
 
+		static byte[] codeDZX0_V2 = {
+			0x21, 0x00, 0x00,			//				LD		HL,Source
+			0x11, 0x00, 0x00,			//				LD		DE,Dest
+			0x01, 0xFF, 0xFF,			//				LD		BC,#FFFF
+			0xC5,						//				PUSH	BC
+			0x03,						//				INC		BC
+			0x3E, 0x80,					//				LD		A,#80
+			0xCD, 0x3D, 0xA0,			//				CALL	dzx0s_elias
+			0xED, 0xB0,					//				LDIR
+			0x87,						//				ADD		A,A
+			0x38, 0x0D,					//				JR		C,dzx0s_new_offset
+			0xCD, 0x3D, 0xA0,			//				CALL	dzx0s_elias
+			0xE3,						//				EX		(SP),HL
+			0xE5,						//				PUSH	HL
+			0x19,						//				ADD		HL,DE
+			0xED, 0xB0,					//				LDIR
+			0xE1,						//				POP		HL
+			0xE3,						//				EX		(SP),HL
+			0x87,						//				ADD		A,A
+			0x30, 0xEB,					//				JR		NC,dxz0s_litterals
+			0xC1,						//				POP		BC
+			0x0E,0xFE,					//				LD		C,#FE
+			0xCD, 0x3E, 0xA0,			//				CALL	dzx0_elias_loop
+			0x0C,						//				INC		C
+			0xCA, 0x00, 0x00,			//				JP		Z,AfficheImage
+			0x41,						//				LD		B,C
+			0x4E,						//				LD		C,(HL)
+			0x23,						//				INC		HL
+			0xCB, 0x18,					//				RR		B
+			0xCB, 0x19,					//				RR		C
+			0xC5,						//				PUSH	BC
+			0x01, 0x01, 0x00,			//				LD		BC,#0001
+			0xD4, 0x45, 0xA0,			//				CALL	NC,dzx0s_elias_backtrack
+			0x03,						//				INC		BC
+			0x18, 0xDB,					//				JR		dzx0s_copy
+			0x0C,						//dzx0s_elias:	INC		C
+			0x87,						//dzx0s_elias_loop:	ADD		A,A
+			0x20, 0x03,					//				JR		NZ,dzx0s_elias_skip
+			0x7E,						//				LD		A,(HL)
+			0x23,						//				INC		HL
+			0x17,						//				RLA
+			0xD8,						//				RET		C
+			0x87,						//				ADD		A,A
+			0xCB, 0x11,					//				RL		C
+			0xCB, 0x10,					//				RL		B
+			0x18, 0xF2					//				JR	dzx0s_elias_loop
+		};
+
 		static byte[] codeDZX1 = {
 			0x21, 0x00, 0x00,			//				LD		HL,Source
 			0x11, 0x00, 0x00,			//				LD		DE,Dest
@@ -617,6 +665,21 @@ namespace ConvImgCpc {
 							Poke16(bufPack, lg + 0x01, startAdr);
 							Poke16(bufPack, lg + 0x2A, exec);
 							lg += codeDZX0.Length;
+							exec = newExec;
+							break;
+
+						case Main.PackMethode.ZX0_V2:
+							newExec = (short)(0xA657 - codeDZX0_V2.Length);
+							Buffer.BlockCopy(codeDZX0_V2, 0, bufPack, lg, codeDZX0_V2.Length);
+							Poke16(bufPack, lg + 0x04, startAdr);
+							Poke16(bufPack, lg + 0x0E, (short)(newExec + 0x3D));
+							Poke16(bufPack, lg + 0x16, (short)(newExec + 0x3D));
+							Poke16(bufPack, lg + 0x26, (short)(newExec + 0x3E));
+							Poke16(bufPack, lg + 0x38, (short)(newExec + 0x45));
+							startAdr = (short)(0xA657 - (lg + codeDZX0_V2.Length));
+							Poke16(bufPack, lg + 0x01, startAdr);
+							Poke16(bufPack, lg + 0x2A, exec);
+							lg += codeDZX0_V2.Length;
 							exec = newExec;
 							break;
 

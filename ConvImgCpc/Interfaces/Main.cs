@@ -17,7 +17,7 @@ namespace ConvImgCpc {
 		public Animation anim;
 		private ParamInterne paramInterne;
 		public Multilingue multilingue = new Multilingue();
-		public enum PackMethode { None = 0, Standard, ZX0, ZX1, ZX0Ovs };
+		public enum PackMethode { None = 0, Standard, ZX0, ZX0_V2, ZX1, ZX0Ovs };
 		public PackMethode pkMethode = PackMethode.None;
 		private Version version = Assembly.GetExecutingAssembly().GetName().Version;
 		public GestDSK dsk;
@@ -216,7 +216,7 @@ namespace ConvImgCpc {
 				Enabled = true;
 			}
 			else
-				comboPackMethode.SelectedItem = "ZX0";
+				comboPackMethode.SelectedItem = "ZX0 V2";
 
 			//		int tpsStart = Environment.TickCount;
 			//		bool internet = CheckForInternetConnection();
@@ -1343,6 +1343,10 @@ namespace ConvImgCpc {
 
 				case "ZX0":
 					pkMethode = PackMethode.ZX0;
+					break;
+
+				case "ZX0 V2":
+					pkMethode = PackMethode.ZX0_V2;
 					break;
 
 				case "ZX1":

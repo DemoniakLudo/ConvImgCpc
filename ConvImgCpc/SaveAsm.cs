@@ -101,6 +101,10 @@ namespace ConvImgCpc {
 					GenereDZX0(sw, jumpLabel);
 					break;
 
+				case Main.PackMethode.ZX0_V2:
+					GenereDZX0_V2(sw, jumpLabel);
+					break;
+
 				case Main.PackMethode.ZX1:
 					GenereDZX1(sw, jumpLabel);
 					break;
@@ -109,18 +113,18 @@ namespace ConvImgCpc {
 
 		static private void GenereDZX0(StreamWriter sw, string jumpLabel = null) {
 			sw.WriteLine("; Decompactage");
-			sw.WriteLine("Depack:");
+			sw.WriteLine("Depack");
 			sw.WriteLine("	ld	bc,#ffff			; preserve default offset 1");
 			sw.WriteLine("	push	bc");
 			sw.WriteLine("	inc	bc");
 			sw.WriteLine("	ld	a,#80");
-			sw.WriteLine("dzx0s_literals:");
+			sw.WriteLine("dzx0s_literals");
 			sw.WriteLine("	call	dzx0s_elias		; obtain length");
 			sw.WriteLine("	ldir					; copy literals");
 			sw.WriteLine("	add	a,a					; copy from last offset or new offset?");
 			sw.WriteLine("	jr	c,dzx0s_new_offset");
 			sw.WriteLine("	call	dzx0s_elias		; obtain length");
-			sw.WriteLine("dzx0s_copy:");
+			sw.WriteLine("dzx0s_copy");
 			sw.WriteLine("	ex	(sp),hl				; preserve source,restore offset");
 			sw.WriteLine("	push	hl				; preserve offset");
 			sw.WriteLine("	add	hl,de				; calculate destination - offset");
@@ -129,7 +133,7 @@ namespace ConvImgCpc {
 			sw.WriteLine("	ex	(sp),hl				; preserve offset,restore source");
 			sw.WriteLine("	add	a,a					; copy from literals or new offset?");
 			sw.WriteLine("	jr	nc,dzx0s_literals");
-			sw.WriteLine("dzx0s_new_offset:");
+			sw.WriteLine("dzx0s_new_offset");
 			sw.WriteLine("	call	dzx0s_elias		; obtain offset MSB");
 			sw.WriteLine("	ld b,a");
 			sw.WriteLine("	pop	af					; discard last offset");
@@ -148,17 +152,72 @@ namespace ConvImgCpc {
 			sw.WriteLine("	call	nc,dzx0s_elias_backtrack");
 			sw.WriteLine("	inc	bc");
 			sw.WriteLine("	jr	dzx0s_copy");
-			sw.WriteLine("dzx0s_elias:");
+			sw.WriteLine("dzx0s_elias");
 			sw.WriteLine("	inc	c					; interlaced Elias gamma coding");
-			sw.WriteLine("dzx0s_elias_loop:");
+			sw.WriteLine("dzx0s_elias_loop");
 			sw.WriteLine("	add	a,a");
 			sw.WriteLine("	jr	nz,dzx0s_elias_skip");
 			sw.WriteLine("	ld	a,(hl)				; load another group of 8 bits");
 			sw.WriteLine("	inc	hl");
 			sw.WriteLine("	rla");
-			sw.WriteLine("dzx0s_elias_skip:");
+			sw.WriteLine("dzx0s_elias_skip");
 			sw.WriteLine("	ret 	c");
-			sw.WriteLine("dzx0s_elias_backtrack:");
+			sw.WriteLine("dzx0s_elias_backtrack");
+			sw.WriteLine("	add	a,a");
+			sw.WriteLine("	rl	c");
+			sw.WriteLine("	rl	b");
+			sw.WriteLine("	jr	dzx0s_elias_loop");
+		}
+
+		static private void GenereDZX0_V2(StreamWriter sw, string jumpLabel = null) {
+			sw.WriteLine("; Decompactage");
+			sw.WriteLine("Depack");
+			sw.WriteLine("ld bc,#ffff				; preserve default offset 1");
+			sw.WriteLine("	push	bc");
+			sw.WriteLine("	inc	bc");
+			sw.WriteLine("	ld	a,#80");
+			sw.WriteLine("dzx0s_literals");
+			sw.WriteLine("	call	dzx0s_elias		;obtain length");
+			sw.WriteLine("	ldir					;copy literals");
+			sw.WriteLine("	add	a,a					;copy from last offset or new offset?");
+			sw.WriteLine("	jr	c,dzx0s_new_offset");
+			sw.WriteLine("	call	dzx0s_elias		;obtain length");
+			sw.WriteLine("dzx0s_copy");
+			sw.WriteLine("	ex	(sp),hl				;preserve source, restore offset");
+			sw.WriteLine("	push	hl				;preserve offset");
+			sw.WriteLine("	add	hl,de				;calculate destination -offset");
+			sw.WriteLine("	ldir					;copy from offset");
+			sw.WriteLine("	pop	hl					;restore offset");
+			sw.WriteLine("	ex	(sp),hl				;preserve offset, restore source");
+			sw.WriteLine("	add	a,a					;copy from literals or new offset?");
+			sw.WriteLine("	jr	nc,dzx0s_literals");
+			sw.WriteLine("dzx0s_new_offset");
+			sw.WriteLine("	pop	bc					;discard last offset");
+			sw.WriteLine("	ld	c,#fe				; prepare negative offset");
+			sw.WriteLine("	call dzx0s_elias_loop	;obtain offset MSB");
+			sw.WriteLine("	inc	c");
+			sw.WriteLine((jumpLabel != null ? ("	JP	Z," + jumpLabel) : "	RET	Z") + "		; Plus d'octets à traiter = fini" + Environment.NewLine);
+			sw.WriteLine("	ld	b,c");
+			sw.WriteLine("	ld	c,(hl)				;obtain offset LSB");
+			sw.WriteLine("	inc	hl");
+			sw.WriteLine("	rr	b					;last offset bit becomes first length bit");
+			sw.WriteLine("	rr	c");
+			sw.WriteLine("	push	bc				;preserve new offset");
+			sw.WriteLine("	ld	bc,1				;obtain length");
+			sw.WriteLine("	call	nc,dzx0s_elias_backtrack");
+			sw.WriteLine("	inc	bc");
+			sw.WriteLine("	jr	dzx0s_copy");
+			sw.WriteLine("dzx0s_elias");
+			sw.WriteLine("	inc	c					;interlaced Elias gamma coding");
+			sw.WriteLine("dzx0s_elias_loop");
+			sw.WriteLine("	add	a,a");
+			sw.WriteLine("	jr	nz,dzx0s_elias_skip");
+			sw.WriteLine("	ld	a,(hl)				 ;load another group of 8 bits");
+			sw.WriteLine("	inc	hl");
+			sw.WriteLine("	rla");
+			sw.WriteLine("dzx0s_elias_skip");
+			sw.WriteLine("	ret	c");
+			sw.WriteLine("dzx0s_elias_backtrack");
 			sw.WriteLine("	add	a,a");
 			sw.WriteLine("	rl	c");
 			sw.WriteLine("	rl	b");

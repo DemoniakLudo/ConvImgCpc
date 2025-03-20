@@ -303,7 +303,7 @@ namespace ConvImgCpc {
 			}
 		}
 
-		private void WriteInterlacedEliasGammaZX0(int value, byte[] outputData) {
+		private void WriteInterlacedEliasGammaZX0(int value, byte[] outputData, bool invertMode) {
 			int i;
 
 			for (i = 2; i <= value; i <<= 1)
@@ -311,12 +311,12 @@ namespace ConvImgCpc {
 			i >>= 1;
 			while ((i >>= 1) != 0) {
 				WriteBit(0, outputData);
-				WriteBit(value & i, outputData);
+				WriteBit(invertMode ? (value & i) == 0 ? 1 : 0 : value & i, outputData);
 			}
 			WriteBit(1, outputData);
 		}
 
-		public int PackZX0(byte[] inputData, int inputSize, byte[] outputData) {
+		public int PackZX0(byte[] inputData, int inputSize, byte[] outputData, bool v2) {
 			Show();
 			int bits, length;
 			int maxOffset = inputSize - 1 > MAX_OFFSET_ZX0 ? MAX_OFFSET_ZX0 : inputSize - 1 < 1 ? 1 : inputSize - 1;
@@ -444,34 +444,34 @@ namespace ConvImgCpc {
 
 				if (optimal.offset == 0) {
 					WriteBit(0, outputData);
-					WriteInterlacedEliasGammaZX0(length, outputData);
+					WriteInterlacedEliasGammaZX0(length, outputData, false);
 					for (int i = 0; i < length; i++)
 						outputData[outputIndex++] = inputData[inputIndex++];
 				}
 				else if (optimal.offset == lastOffset) {
 					WriteBit(0, outputData);
-					WriteInterlacedEliasGammaZX0(length, outputData);
+					WriteInterlacedEliasGammaZX0(length, outputData, false);
 					inputIndex += length;
 				}
 				else {
 					WriteBit(1, outputData);
-					WriteInterlacedEliasGammaZX0((optimal.offset - 1) / 128 + 1, outputData);
+					WriteInterlacedEliasGammaZX0((optimal.offset - 1) / 128 + 1, outputData, v2);
 					outputData[outputIndex++] = (byte)((127 - (optimal.offset - 1) % 128) << 1);
 					backTrack = true;
-					WriteInterlacedEliasGammaZX0(length - 1, outputData);
+					WriteInterlacedEliasGammaZX0(length - 1, outputData, false);
 					inputIndex += length;
 					lastOffset = optimal.offset;
 				}
 			}
 			WriteBit(1, outputData);
-			WriteInterlacedEliasGammaZX0(256, outputData);
+			WriteInterlacedEliasGammaZX0(256, outputData, v2);
 			Hide();
 			return outputSize;
 		}
 
 		private void WriteInterlacedEliasGammaZX1(int value, byte[] outputData) {
 			int i;
-			
+
 			for (i = 2; i <= value; i <<= 1)
 				;
 			i >>= 1;
@@ -611,7 +611,11 @@ namespace ConvImgCpc {
 					break;
 
 				case Main.PackMethode.ZX0:
-					ret = PackZX0(bufIn, lengthIn, bufOut);
+					ret = PackZX0(bufIn, lengthIn, bufOut, false);
+					break;
+
+				case Main.PackMethode.ZX0_V2:
+					ret = PackZX0(bufIn, lengthIn, bufOut, true);
 					break;
 
 				case Main.PackMethode.ZX1:
@@ -629,7 +633,7 @@ namespace ConvImgCpc {
 						posOut += lIn;
 					}
 					//Console.WriteLine("Final - PosIn:" + (posIn + 0x200).ToString("X4") + ", posOut:" + (posOut + 0x200).ToString("X4"));
-					ret = PackZX0(bufTmp, posOut, bufOut);
+					ret = PackZX0(bufTmp, posOut, bufOut, false);
 					break;
 			}
 			return ret;

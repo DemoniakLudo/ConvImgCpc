@@ -1334,8 +1334,9 @@
 			this.comboPackMethode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.comboPackMethode.FormattingEnabled = true;
 			this.comboPackMethode.Items.AddRange(new object[] {
-            "ZX0",
-            "ZX1",
+			"ZX0 V2",
+			"ZX0",
+			"ZX1",
             "Standard",
             "ZX0Ovs"});
 			this.comboPackMethode.Location = new System.Drawing.Point(145, 166);
