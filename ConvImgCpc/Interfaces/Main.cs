@@ -630,18 +630,23 @@ namespace ConvImgCpc {
 				imgSrc.InitBitmap(nbImages);
 				if (nbImages == 1) {
 					SetInfo(multilingue.GetString("Main.prg.TxtInfo14"));
-					anim.Hide();
+					//anim.Hide();
 				}
 				else {
 					anim.SetNbImgs(nbImages, 100);
 					SetInfo(multilingue.GetString("Main.prg.TxtInfo15") + nbImages + " images.");
-					anim.Show();
+					Application.DoEvents();
+					//anim.Show();
 				}
 				chkAllPics.Visible = nbImages > 1;
 				imgCpc.InitBitmapCpc(nbImages, 100);
 				SelectImage(0);
 				imgCpc.Reset(true);
 				Convert(false);
+				if ( nbImages==1)
+					anim.Hide();
+				else
+					anim.Show();
 			}
 		}
 
