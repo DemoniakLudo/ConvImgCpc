@@ -277,9 +277,8 @@ namespace ConvImgCpc {
 						memoMouseX = e.X;
 						memoMouseY = e.Y;
 					}
-					else {
+					else 
 						main.SetSizePos(posx + memoMouseX - e.X, posy + memoMouseY - e.Y, sizex, sizey, true);
-					}
 				}
 				else {
 					if (e.Button == MouseButtons.Right) {
@@ -294,9 +293,8 @@ namespace ConvImgCpc {
 								memoMouseX = e.X;
 								memoMouseY = e.Y;
 							}
-							else {
+							else
 								main.SetSizePos(posx, posy, sizex - memoMouseX + e.X, sizey - memoMouseY + e.Y, true);
-							}
 						}
 					}
 					else
@@ -310,7 +308,6 @@ namespace ConvImgCpc {
 			if (Cpc.modeVirtuel == 6) {
 				string singleName = Path.GetDirectoryName(fileName) + "\\" + Path.GetFileNameWithoutExtension(fileName);
 				DirectBitmap bmpRaster = new DirectBitmap(BmpLock.Bitmap.Width >> 1, BmpLock.Bitmap.Height >> 1);
-				//DirectBitmap bmp4Cols = new DirectBitmap(BmpLock.Bitmap.Width >> 1, BmpLock.Bitmap.Height >> 1);
 				RvbColor c2 = new RvbColor(0);
 				int posx = 0;
 				for (int y = 0; y < bmpRaster.Height; y++) {
@@ -321,19 +318,15 @@ namespace ConvImgCpc {
 							RvbColor p = Cpc.RgbCPC[colMode5[y, i]];
 							if (p.r == c.r && p.v == c.v && p.b == c.b) {
 								if (i > 2) {
-									//c = BitmapBase.RgbCPC[colMode5[y, 3]];
 									c2 = p;
 									int start = memoC ? x & 0xFF8 : 0;
 									memoC = true;
 									for (int r = start; r < x; r++)
 										bmpRaster.SetPixel(r, y, c2);
-
-									//									posx = 0;
 								}
 								break;
 							}
 						}
-						//bmp4Cols.SetPixel(x, y, c);
 						bmpRaster.SetPixel(x, y, c2);
 						posx++;
 					}
@@ -432,7 +425,6 @@ namespace ConvImgCpc {
 				if (chkPack.Checked) {
 					int l = new PackModule().Pack(tempArray, totSize, packArray, totSize, main.pkMethode);
 					SaveAsm.GenereDatas(sw, packArray, l, 16);
-
 				}
 				else
 					sw.WriteLine("; Taille totale " + totSize.ToString() + " octets");
