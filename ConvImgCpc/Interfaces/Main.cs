@@ -564,6 +564,7 @@ namespace ConvImgCpc {
 				DisplayErreur(multilingue.GetString("Main.prg.TxtInfo9"));
 			}
 			fileParam.Close();
+			InterfaceChange(null, null);
 		}
 
 		private void SaveParam(string fileName) {
@@ -628,22 +629,18 @@ namespace ConvImgCpc {
 			int nbImages = dlg.NbImages;
 			if (nbImages != -1) {
 				imgSrc.InitBitmap(nbImages);
-				if (nbImages == 1) {
+				if (nbImages == 1)
 					SetInfo(multilingue.GetString("Main.prg.TxtInfo14"));
-					//anim.Hide();
-				}
 				else {
 					anim.SetNbImgs(nbImages, 100);
 					SetInfo(multilingue.GetString("Main.prg.TxtInfo15") + nbImages + " images.");
-					Application.DoEvents();
-					//anim.Show();
 				}
 				chkAllPics.Visible = nbImages > 1;
 				imgCpc.InitBitmapCpc(nbImages, 100);
 				SelectImage(0);
 				imgCpc.Reset(true);
 				Convert(false);
-				if ( nbImages==1)
+				if (nbImages == 1)
 					anim.Hide();
 				else
 					anim.Show();

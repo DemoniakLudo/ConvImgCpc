@@ -66,20 +66,32 @@ namespace ConvImgCpc {
 				sw.WriteLine(labelSepa + (ligneSepa != 0 ? indiceLabel.ToString("00") : ""));
 				indiceLabel++;
 			}
-			for (int i = 0; i < length; i++) {
-				line += "#" + tabByte[i].ToString("X2") + ",";
-				if (++nbOctets >= Math.Min(nbOctetsLigne, Cpc.NbCol)) {
-					sw.WriteLine(line.Substring(0, line.Length - 1));
-					line = "\tDB\t";
-					nbOctets = 0;
-					if (i < length - 1 && ++nbLigne >= ligneSepa && ligneSepa > 0) {
-						nbLigne = 0;
-						if (labelSepa != null) {
-							sw.WriteLine(labelSepa + indiceLabel.ToString("00"));
-							indiceLabel++;
+			// Vérifier si tableau contient la même valeur
+			byte firstVal = tabByte[0];
+			bool sameVal = true;
+			for (int i = 1; i < length; i++)
+				if (tabByte[i] != firstVal) {
+					sameVal = false;
+					break;
+				}
+			if (sameVal)
+				sw.WriteLine("\tDS\t" + length.ToString() + ",#" + firstVal.ToString("X2"));
+			else {
+				for (int i = 0; i < length; i++) {
+					line += "#" + tabByte[i].ToString("X2") + ",";
+					if (++nbOctets >= Math.Min(nbOctetsLigne, Cpc.NbCol)) {
+						sw.WriteLine(line.Substring(0, line.Length - 1));
+						line = "\tDB\t";
+						nbOctets = 0;
+						if (i < length - 1 && ++nbLigne >= ligneSepa && ligneSepa > 0) {
+							nbLigne = 0;
+							if (labelSepa != null) {
+								sw.WriteLine(labelSepa + indiceLabel.ToString("00"));
+								indiceLabel++;
+							}
+							else
+								line += "\r\n";
 						}
-						else
-							line += "\r\n";
 					}
 				}
 			}
